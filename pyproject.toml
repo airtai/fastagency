@@ -83,7 +83,7 @@ lint = [
     "types-Pygments",
     "types-docutils",
     "mypy==1.8.0",
-    "ruff==0.1.8",
+    "ruff==0.3.4",
     "black==23.12.1",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.6",
