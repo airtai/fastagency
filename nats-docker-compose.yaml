@@ -8,6 +8,9 @@ services:
     ports:
       - "4222:4222"
       - "9222:9222"
+    environment:
+      - FASTSTREAM_NATS_PASSWORD=${FASTSTREAM_NATS_PASSWORD}
+      - WASP_NATS_PASSWORD=${WASP_NATS_PASSWORD}
     volumes:
       - ./nats_server.conf:/etc/nats/server.conf
       - /etc/letsencrypt:/etc/letsencrypt

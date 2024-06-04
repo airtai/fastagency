@@ -10,7 +10,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://admin:password@${USER}-postgres-py310-fastagency:5432/fastagency
       - PY_DATABASE_URL=postgresql://admin:password@${USER}-postgres-py310-fastagency:5432/pyfastagency
-      - NATS_URL=nats://${USER}-nats-py310-fastagency:4222
+      - NATS_URL=nats://faststream:faststream_password@${USER}-nats-py310-fastagency:4222
     env_file:
       - ../devcontainer.env
     platform: linux/amd64
@@ -22,6 +22,8 @@ services:
     # ports:
       # - "${PORT_PREFIX}4222:4222"
       # - "${PORT_PREFIX}9222:9222"
+    env_file:
+      - ../devcontainer.env
     volumes:
       - ../../examples/nats/server.conf:/etc/nats/server.conf
     command: [ "--config", "/etc/nats/server.conf" ]

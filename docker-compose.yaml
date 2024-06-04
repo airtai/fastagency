@@ -26,6 +26,8 @@ services:
       - AZURE_API_ENDPOINT=${AZURE_API_ENDPOINT}
       - AZURE_GPT35_MODEL=${AZURE_GPT35_MODEL}
       - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - FASTSTREAM_NATS_PASSWORD=${FASTSTREAM_NATS_PASSWORD}
+      - WASP_NATS_PASSWORD=${WASP_NATS_PASSWORD}
     logging: *default-logging
     networks:
       - fastagency

@@ -8,7 +8,9 @@ nats_url: Optional[str] = environ.get("NATS_URL", None)  # type: ignore[assignme
 
 if nats_url is None:
     domain: str = environ.get("DOMAIN")  # type: ignore[assignment]
-    nats_url = f"tls://{domain}:4222"
+    username: str = "faststream"
+    password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
+    nats_url = f"tls://{username}:{password}@{domain}:4222"
 
 print(f"{nats_url=}")  # noqa
 print("Starting IONats faststream app...")  # noqa
