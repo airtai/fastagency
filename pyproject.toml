@@ -48,7 +48,7 @@ dependencies = [
     "faststream[nats]>=0.5.10,<0.6",
     "typing-extensions>=4.8.0,<5",
     "pydantic>=2.3,<3",
-    "fastapi==0.110.2",
+    "fastapi==0.111.0",
     "prisma>=0.13.1,<0.14",
     "fastapi-code-generator==0.5.0",
     "asyncer==0.0.7",
