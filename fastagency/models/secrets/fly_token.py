@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Any
 from uuid import UUID
 
 from pydantic import Field
@@ -16,7 +16,7 @@ class FlyToken(Model):
     ]
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> str:
+    async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
         my_model = await cls.from_db(model_id)
 
         return my_model.fly_token

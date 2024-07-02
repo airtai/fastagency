@@ -58,7 +58,7 @@ class Deployment(Model):
     fly_token: FlyTokenRef
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> Any:
+    async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> Any:
         raise NotImplementedError
 
     @field_validator("fly_app_name")

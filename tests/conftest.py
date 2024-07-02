@@ -30,11 +30,14 @@ from fastagency.db.helpers import (
 )
 from fastagency.helpers import create_model_ref
 from fastagency.models.agents.assistant import AssistantAgent
+from fastagency.models.agents.user_proxy import UserProxyAgent
+from fastagency.models.agents.web_surfer import WebSurferAgent
 from fastagency.models.base import ObjectReference
 from fastagency.models.llms.anthropic import Anthropic, AnthropicAPIKey
 from fastagency.models.llms.azure import AzureOAI, AzureOAIAPIKey
 from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey
 from fastagency.models.llms.together import TogetherAI, TogetherAIAPIKey
+from fastagency.models.teams.two_agent_teams import TwoAgentTeam
 from fastagency.models.toolboxes.toolbox import OpenAPIAuth, Toolbox
 
 from .helpers import add_random_sufix, expand_fixture, get_by_tag, tag, tag_list
@@ -129,7 +132,13 @@ def openai_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
     return openai_llm_config("gpt-3.5-turbo")
 
 
-@tag("llm_key")
+@tag("llm_config")
+@pytest.fixture()
+def openai_gpt4_llm_config() -> Dict[str, Any]:
+    return openai_llm_config("gpt-4")
+
+
+@tag("llm-key")
 @pytest_asyncio.fixture()
 async def azure_oai_key_ref(
     user_uuid: str, azure_gpt35_turbo_16k_llm_config: Dict[str, Any]
@@ -144,7 +153,7 @@ async def azure_oai_key_ref(
     )
 
 
-@tag("llm")
+@tag("llm", "weather-llm")
 @pytest_asyncio.fixture()
 async def azure_oai_ref(
     user_uuid: str,
@@ -165,43 +174,81 @@ async def azure_oai_ref(
     )
 
 
-@tag("llm_key")
-@pytest_asyncio.fixture()
-async def openai_oai_key_gpt35_ref(
-    user_uuid: str, openai_gpt35_turbo_16k_llm_config: Dict[str, Any]
+async def openai_oai_key_ref(
+    user_uuid: str, openai_llm_config: Dict[str, Any]
 ) -> ObjectReference:
-    api_key = openai_gpt35_turbo_16k_llm_config["config_list"][0]["api_key"]
+    api_key = openai_llm_config["config_list"][0]["api_key"]
+    model = openai_llm_config["config_list"][0]["model"]
     return await create_model_ref(
         OpenAIAPIKey,
         "secret",
         user_uuid=user_uuid,
         name=add_random_sufix("openai_oai_key"),
         api_key=api_key,
+        model=model,
     )
 
 
-@tag("llm")
+@tag("llm-key")
 @pytest_asyncio.fixture()
+async def openai_oai_key_gpt35_ref(
+    user_uuid: str, openai_gpt35_turbo_16k_llm_config: Dict[str, Any]
+) -> ObjectReference:
+    return await openai_oai_key_ref(user_uuid, openai_gpt35_turbo_16k_llm_config)
+
+
+@tag("llm-key")
+@pytest_asyncio.fixture()
+async def openai_oai_key_gpt4_ref(
+    user_uuid: str, openai_gpt4_llm_config: Dict[str, Any]
+) -> ObjectReference:
+    return await openai_oai_key_ref(user_uuid, openai_gpt4_llm_config)
+
+
 async def openai_oai_ref(
     user_uuid: str,
-    openai_gpt35_turbo_16k_llm_config: Dict[str, Any],
-    openai_oai_key_gpt35_ref: ObjectReference,
+    openai_llm_config: Dict[str, Any],
+    openai_oai_key_ref: ObjectReference,
 ) -> ObjectReference:
-    kwargs = openai_gpt35_turbo_16k_llm_config["config_list"][0].copy()
+    kwargs = openai_llm_config["config_list"][0].copy()
     kwargs.pop("api_key")
-    temperature = openai_gpt35_turbo_16k_llm_config["temperature"]
+    temperature = openai_llm_config["temperature"]
     return await create_model_ref(
         OpenAI,
         "llm",
         user_uuid=user_uuid,
         name=add_random_sufix("azure_oai"),
-        api_key=openai_oai_key_gpt35_ref,
+        api_key=openai_oai_key_ref,
         temperature=temperature,
         **kwargs,
     )
 
 
-@tag("llm_key")
+@tag("llm", "weather-llm", "openai-llm")
+@pytest_asyncio.fixture()
+async def openai_oai_gpt35_ref(
+    user_uuid: str,
+    openai_gpt35_turbo_16k_llm_config: Dict[str, Any],
+    openai_oai_key_gpt35_ref: ObjectReference,
+) -> ObjectReference:
+    return await openai_oai_ref(
+        user_uuid, openai_gpt35_turbo_16k_llm_config, openai_oai_key_gpt35_ref
+    )
+
+
+@tag("websurfer-llm", "openai-llm")
+@pytest_asyncio.fixture()
+async def openai_oai_gpt4_ref(
+    user_uuid: str,
+    openai_gpt4_llm_config: Dict[str, Any],
+    openai_oai_key_gpt4_ref: ObjectReference,
+) -> ObjectReference:
+    return await openai_oai_ref(
+        user_uuid, openai_gpt4_llm_config, openai_oai_key_gpt4_ref
+    )
+
+
+@tag("llm-key")
 @pytest_asyncio.fixture()
 async def anthropic_key_ref(user_uuid: str) -> ObjectReference:
     api_key = os.getenv(
@@ -218,7 +265,7 @@ async def anthropic_key_ref(user_uuid: str) -> ObjectReference:
     )
 
 
-@tag("llm")
+@tag("llm", "weather-llm")
 @pytest_asyncio.fixture()
 async def anthropic_ref(
     user_uuid: str,
@@ -233,7 +280,7 @@ async def anthropic_ref(
     )
 
 
-@tag("llm_key")
+@tag("llm-key")
 @pytest_asyncio.fixture()
 async def together_ai_key_ref(user_uuid: str) -> ObjectReference:
     api_key = os.getenv(
@@ -433,13 +480,32 @@ async def weather_toolbox_ref(
 ################################################################################
 
 
-@tag_list("assistant", "weather")
+@tag_list("assistant", "noapi")
 @expand_fixture(
-    dst_fixture_prefix="assistant_weather",
+    dst_fixture_prefix="assistant_noapi",
     src_fixtures_names=get_by_tag("llm"),
     placeholder_name="llm_ref",
 )
-async def placeholder_assistant_ref(
+async def placeholder_assistant_noapi_ref(
+    user_uuid: str, llm_ref: ObjectReference
+) -> ObjectReference:
+    return await create_model_ref(
+        AssistantAgent,
+        "agent",
+        user_uuid=user_uuid,
+        name=add_random_sufix("assistant"),
+        llm=llm_ref,
+        # system_message="You are a helpful assistant. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE'",
+    )
+
+
+@tag_list("assistant", "weather")
+@expand_fixture(
+    dst_fixture_prefix="assistant_weather",
+    src_fixtures_names=get_by_tag("weather-llm"),
+    placeholder_name="llm_ref",
+)
+async def placeholder_assistant_weatherapi_ref(
     user_uuid: str, llm_ref: ObjectReference, weather_toolbox_ref: ObjectReference
 ) -> ObjectReference:
     return await create_model_ref(
@@ -450,6 +516,89 @@ async def placeholder_assistant_ref(
         llm=llm_ref,
         toolbox_1=weather_toolbox_ref,
         system_message="You are a helpful assistant with access to Weather API. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE'",
+    )
+
+
+@tag_list("websurfer")
+@expand_fixture(
+    dst_fixture_prefix="websurfer",
+    src_fixtures_names=get_by_tag("websurfer-llm"),
+    placeholder_name="llm_ref",
+)
+async def placeholder_websurfer_ref(
+    user_uuid: str, llm_ref: ObjectReference
+) -> ObjectReference:
+    return await create_model_ref(
+        WebSurferAgent,
+        "agent",
+        user_uuid=user_uuid,
+        name=add_random_sufix("websurfer"),
+        llm=llm_ref,
+        summarizer_llm=llm_ref,
+        # system_message="You are a helpful assistant with access to Weather API. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE'",
+    )
+
+
+@pytest_asyncio.fixture()
+async def user_proxy_agent_ref(user_uuid: str) -> ObjectReference:
+    return await create_model_ref(
+        UserProxyAgent,
+        "agent",
+        user_uuid=user_uuid,
+        name=add_random_sufix("user_proxy_agent"),
+        max_consecutive_auto_reply=10,
+        human_input_mode="NEVER",
+    )
+
+
+################################################################################
+###
+###                     Fixtures for Two Agent Teams
+###
+################################################################################
+
+
+@tag_list("team", "noapi")
+@expand_fixture(
+    dst_fixture_prefix="two_agent_team_noapi",
+    src_fixtures_names=get_by_tag("assistant", "noapi"),
+    placeholder_name="assistant_ref",
+)
+async def placeholder_team_noapi_ref(
+    user_uuid: str,
+    assistant_ref: ObjectReference,
+    user_proxy_agent_ref: ObjectReference,
+) -> ObjectReference:
+    return await create_model_ref(
+        TwoAgentTeam,
+        "team",
+        user_uuid=user_uuid,
+        name=add_random_sufix("two_agent_team_noapi"),
+        initial_agent=user_proxy_agent_ref,
+        secondary_agent=assistant_ref,
+        human_input_mode="NEVER",
+    )
+
+
+@tag_list("team", "weather")
+@expand_fixture(
+    dst_fixture_prefix="two_agent_team_weatherapi",
+    src_fixtures_names=get_by_tag("assistant", "weather"),
+    placeholder_name="assistant_ref",
+)
+async def placeholder_team_weatherapi_ref(
+    user_uuid: str,
+    assistant_ref: ObjectReference,
+    user_proxy_agent_ref: ObjectReference,
+) -> ObjectReference:
+    return await create_model_ref(
+        TwoAgentTeam,
+        "team",
+        user_uuid=user_uuid,
+        name=add_random_sufix("two_agent_team_weather"),
+        initial_agent=user_proxy_agent_ref,
+        secondary_agent=assistant_ref,
+        human_input_mode="NEVER",
     )
 
 

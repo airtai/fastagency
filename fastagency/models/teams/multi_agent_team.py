@@ -76,7 +76,7 @@ class MultiAgentTeam(TeamBaseModel):
     ] = None
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> Any:
+    async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> Any:
         my_model = await cls.from_db(model_id)
 
         agents_and_clients: List[Tuple[ConversableAgent, List[Client]]] = []

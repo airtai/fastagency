@@ -29,7 +29,7 @@ class AzureOAIAPIKey(Model):
     api_key: Annotated[str, Field(description="The API Key from Azure OpenAI")]
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> str:
+    async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
         my_model = await cls.from_db(model_id)
 
         return my_model.api_key
@@ -77,7 +77,9 @@ class AzureOAI(Model):
     ] = 0.8
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> Dict[str, Any]:
+    async def create_autogen(
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
+    ) -> Dict[str, Any]:
         my_model = await cls.from_db(model_id)
 
         api_key_model = await my_model.api_key.get_data_model().from_db(

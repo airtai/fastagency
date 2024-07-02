@@ -1,71 +1,25 @@
-import uuid
 from typing import Optional
 
 import pytest
-from fastapi import BackgroundTasks
 from pydantic import BaseModel
 
-from fastagency.app import add_model
-from fastagency.helpers import get_model_by_ref
+from fastagency.helpers import create_autogen, get_model_by_ref
 from fastagency.models.base import ObjectReference
 from fastagency.models.toolboxes.toolbox import (
     Client,
-    OpenAPIAuth,
     Toolbox,
 )
 
 
+@pytest.mark.skip("Functionality is not implemented yet")
 class TestOpenAPIAuth:
-    def test_openapi_auth(self) -> None:
-        model = OpenAPIAuth(
-            name="openapi_auth_secret",
-            username="test",
-            password="password",  # pragma: allowlist secret
-        )
-
-        expected = {
-            "name": "openapi_auth_secret",
-            "username": "test",
-            "password": "password",  # pragma: allowlist secret
-        }
-        assert model.model_dump() == expected
-
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
-    async def test_azure_api_key_model_create_autogen(
-        self,
-        user_uuid: str,
-    ) -> None:
-        # Add secret to database
-        openapi_auth = OpenAPIAuth(  # type: ignore [operator]
-            name="openapi_auth_secret",
-            username="test",
-            password="password",  # pragma: allowlist secret
-        )
-        model_uuid = str(uuid.uuid4())
-        await add_model(
-            user_uuid=user_uuid,
-            type_name="secret",
-            model_name=OpenAPIAuth.__name__,  # type: ignore [attr-defined]
-            model_uuid=model_uuid,
-            model=openapi_auth.model_dump(),
-            background_tasks=BackgroundTasks(),
-        )
-
-        # Call create_autogen
-        actual = await OpenAPIAuth.create_autogen(
-            model_id=uuid.UUID(model_uuid),
-            user_id=uuid.UUID(user_uuid),
-        )
-
-        expected = ("test", "password")
-        assert actual == expected
+    pass
 
 
 class TestToolbox:
     @pytest.mark.db()
     @pytest.mark.asyncio()
-    async def test_toolbox_fixture(
+    async def test_toolbox_constructor(
         self, toolbox_ref: ObjectReference, fastapi_openapi_url: str, user_uuid: str
     ) -> None:
         toolbox: Toolbox = await get_model_by_ref(  # type: ignore[assignment]
@@ -76,12 +30,6 @@ class TestToolbox:
         assert toolbox.name == "test_toolbox"
         assert str(toolbox.openapi_url) == fastapi_openapi_url
 
-        client: Client = await Toolbox.create_autogen(
-            user_id=uuid.UUID(user_uuid), model_id=toolbox_ref.uuid
-        )
-        assert client
-        assert isinstance(client, Client)
-
     @pytest.mark.db()
     @pytest.mark.asyncio()
     async def test_toolbox_create_autogen(
@@ -89,10 +37,12 @@ class TestToolbox:
         toolbox_ref: ObjectReference,
         user_uuid: str,
     ) -> None:
-        client = await Toolbox.create_autogen(
-            model_id=toolbox_ref.uuid,
-            user_id=uuid.UUID(user_uuid),
+        client: Client = await create_autogen(
+            model_ref=toolbox_ref,
+            user_uuid=user_uuid,
         )
+        assert client
+        assert isinstance(client, Client)
 
         assert len(client.registered_funcs) == 3
 

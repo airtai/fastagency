@@ -10,7 +10,7 @@ class TestLLMKeys:
     @pytest.mark.asyncio()
     @pytest.mark.db()
     @pytest.mark.llm()
-    @parametrize_fixtures("llm_key_ref", get_by_tag("llm_key"))
+    @parametrize_fixtures("llm_key_ref", get_by_tag("llm-key"))
     async def test_llm_key_constructor(
         self,
         llm_key_ref: ObjectReference,
@@ -21,7 +21,7 @@ class TestLLMKeys:
     @pytest.mark.asyncio()
     @pytest.mark.db()
     @pytest.mark.llm()
-    @parametrize_fixtures("llm_key_ref", get_by_tag("llm_key"))
+    @parametrize_fixtures("llm_key_ref", get_by_tag("llm-key"))
     async def test_llm_key_create_autogen(
         self,
         user_uuid: str,

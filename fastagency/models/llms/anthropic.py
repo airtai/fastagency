@@ -31,7 +31,7 @@ class AnthropicAPIKey(Model):
     ]
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> str:
+    async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
         my_model: AnthropicAPIKey = await cls.from_db(model_id)
 
         return my_model.api_key
@@ -81,7 +81,9 @@ class Anthropic(Model):
     ] = 0.8
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> Dict[str, Any]:
+    async def create_autogen(
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
+    ) -> Dict[str, Any]:
         my_model: Anthropic = await cls.from_db(model_id)
 
         api_key_model: AnthropicAPIKey = (

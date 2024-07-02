@@ -1,4 +1,4 @@
-from typing import Annotated, List, Optional, Tuple
+from typing import Annotated, Any, List, Optional, Tuple
 from uuid import UUID
 
 import autogen
@@ -20,7 +20,7 @@ class UserProxyAgent(Model):
 
     @classmethod
     async def create_autogen(
-        cls, model_id: UUID, user_id: UUID
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
     ) -> Tuple[autogen.agentchat.AssistantAgent, List[Client]]:
         my_model = await cls.from_db(model_id)
 
@@ -30,5 +30,6 @@ class UserProxyAgent(Model):
             name=agent_name,
             max_consecutive_auto_reply=my_model.max_consecutive_auto_reply,
             code_execution_config=False,
+            **kwargs,
         )
         return agent, []

@@ -1,7 +1,10 @@
-from typing import Annotated, List, Optional, Tuple
+from typing import Annotated, Any, Callable, Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
-import autogen.agentchat.contrib.web_surfer
+from autogen.agentchat import Agent as AutogenAgent
+from autogen.agentchat import AssistantAgent as AutogenAssistantAgent
+from autogen.agentchat.contrib.web_surfer import WebSurferAgent as AutogenWebSurferAgent
+from autogen.oai.client import OpenAIWrapper as AutogenOpenAIWrapper
 from pydantic import Field
 from typing_extensions import TypeAlias
 
@@ -10,7 +13,34 @@ from ..base import Model
 from ..registry import register
 from .base import AgentBaseModel, llm_type_refs
 
-# todo: this should be a mixin
+_org_generate_surfer_reply: Optional[Callable[..., Any]] = None
+
+
+def _patch_generate_surfer_reply() -> None:
+    global _org_generate_surfer_reply
+
+    if _org_generate_surfer_reply is None:
+        _org_generate_surfer_reply = AutogenWebSurferAgent.generate_surfer_reply
+
+    def generate_surfer_reply(
+        self: AutogenWebSurferAgent,
+        messages: Optional[List[Dict[str, str]]] = None,
+        sender: Optional[AutogenAgent] = None,
+        config: Optional[AutogenOpenAIWrapper] = None,
+    ) -> Tuple[bool, Optional[Union[str, Dict[str, str]]]]:
+        global _org_generate_surfer_reply
+
+        if messages is not None and "tool_responses" in messages[-1]:
+            messages = messages.copy()
+            messages.append(messages[-1].copy())
+            messages[-1].pop("tool_responses")
+
+        return _org_generate_surfer_reply(self, messages, sender, config)  # type: ignore[no-any-return]
+
+    AutogenWebSurferAgent.generate_surfer_reply = generate_surfer_reply
+
+
+_patch_generate_surfer_reply()
 
 
 @register("secret")
@@ -18,7 +48,7 @@ class BingAPIKey(Model):
     api_key: Annotated[str, Field(description="The API Key from Bing")]
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> str:
+    async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
         my_model = await cls.from_db(model_id)
 
         return my_model.api_key
@@ -45,8 +75,8 @@ class WebSurferAgent(AgentBaseModel):
 
     @classmethod
     async def create_autogen(
-        cls, model_id: UUID, user_id: UUID
-    ) -> Tuple[autogen.agentchat.AssistantAgent, List[Client]]:
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
+    ) -> Tuple[AutogenAssistantAgent, List[Client]]:
         my_model = await cls.from_db(model_id)
 
         llm_model = await my_model.llm.get_data_model().from_db(my_model.llm.uuid)
@@ -78,11 +108,12 @@ class WebSurferAgent(AgentBaseModel):
         }
         agent_name = my_model.name
 
-        agent = autogen.agentchat.contrib.web_surfer.WebSurferAgent(
+        agent = AutogenWebSurferAgent(
             name=agent_name,
             llm_config=llm,
             summarizer_llm_config=summarizer_llm,
             browser_config=browser_config,
+            **kwargs,
         )
 
         return agent, []

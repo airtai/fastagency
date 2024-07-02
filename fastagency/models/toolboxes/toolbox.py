@@ -1,4 +1,4 @@
-from typing import Annotated, Optional, Tuple
+from typing import Annotated, Any, Optional, Tuple
 from uuid import UUID
 
 import httpx
@@ -36,10 +36,10 @@ class OpenAPIAuth(Model):
     ]
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> Tuple[str, str]:
-        my_model = await cls.from_db(model_id)
-
-        return my_model.username, my_model.password
+    async def create_autogen(
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
+    ) -> Tuple[str, str]:
+        raise RuntimeError("This method should never be called.")
 
 
 OpenAPIAuthRef: TypeAlias = OpenAPIAuth.get_reference_model()  # type: ignore[valid-type]
@@ -63,7 +63,9 @@ class Toolbox(Model):
     ] = None
 
     @classmethod
-    async def create_autogen(cls, model_id: UUID, user_id: UUID) -> Client:
+    async def create_autogen(
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
+    ) -> Client:
         my_model = await cls.from_db(model_id)
 
         # Download OpenAPI spec

@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 import autogen
 import pytest
 
@@ -207,7 +209,7 @@ class TestAssistantAgent:
                     "title": "Toolbox",
                 },
                 "system_message": {
-                    "default": "You are a helpful assistant.",
+                    "default": "You are a helpful assistant. After you successfully answer all questions and there are no new questions asked after your response (e.g. there is no specific direction or question asked after you give a response), terminate the chat by outputting 'TERMINATE'",
                     "description": "The system message of the agent. This message is used to inform the agent about his role in the conversation",
                     "title": "System Message",
                     "type": "string",
@@ -217,33 +219,34 @@ class TestAssistantAgent:
             "title": "AssistantAgent",
             "type": "object",
         }
+        # print(f"{schema=}")
         assert schema == expected
 
     @pytest.mark.asyncio()
     @pytest.mark.db()
-    @parametrize_fixtures("assistant_ref", get_by_tag("assistant"))
+    @parametrize_fixtures("assistant_ref", get_by_tag("assistant", "weather"))
     async def test_assistant_create_autogen(
         self,
         user_uuid: str,
         assistant_ref: ObjectReference,
     ) -> None:
+        def is_termination_msg(msg: Dict[str, Any]) -> bool:
+            return "TERMINATE" in ["content"]
+
         ag_assistant, ag_toolkits = await create_autogen(
             model_ref=assistant_ref,
             user_uuid=user_uuid,
+            is_termination_msg=is_termination_msg,
         )
         assert isinstance(ag_assistant, autogen.agentchat.AssistantAgent)
         assert isinstance(ag_toolkits[0], Client)
         assert len(ag_toolkits) == 1
-
-    # todo: fix this test
-    weather_assistants = get_by_tag("assistant", "weather")
-    weather_assistants.remove("assistant_weather_togetherai_ref")
-    # weather_assistants.remove("weather_toolbox_ref")
+        assert ag_assistant._is_termination_msg == is_termination_msg
 
     @pytest.mark.asyncio()
     @pytest.mark.db()
     @pytest.mark.llm()
-    @parametrize_fixtures("assistant_ref", weather_assistants)
+    @parametrize_fixtures("assistant_ref", get_by_tag("assistant", "weather"))
     async def test_assistant_weather_end2end(
         self,
         user_uuid: str,

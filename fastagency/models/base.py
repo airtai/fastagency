@@ -34,7 +34,7 @@ class Model(BaseModel, ABC):
     @classmethod
     @abstractmethod
     async def create_autogen(
-        cls, model_id: UUID, user_id: UUID
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
     ) -> Any: ...  # pragma: no cover
 
     @classmethod

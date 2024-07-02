@@ -212,6 +212,7 @@ async def get_all_models_for_user(
 async def create_autogen(
     model_ref: ObjectReference,
     user_uuid: Union[str, UUID],
+    **kwargs: Any,
 ) -> Any:
     user_id = UUID(user_uuid) if isinstance(user_uuid, str) else user_uuid
     model_id = (
@@ -221,4 +222,4 @@ async def create_autogen(
     )
     model = await get_model_by_ref(model_ref)
 
-    return await model.create_autogen(model_id=model_id, user_id=user_id)
+    return await model.create_autogen(model_id=model_id, user_id=user_id, **kwargs)

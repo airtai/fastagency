@@ -5,6 +5,7 @@ import pytest
 from fastagency.helpers import get_model_by_ref
 from fastagency.models.base import ObjectReference
 from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey
+from tests.helpers import get_by_tag, parametrize_fixtures
 
 
 def test_import(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -38,6 +39,7 @@ class TestOpenAIAPIKey:
 class TestOpenAI:
     @pytest.mark.db()
     @pytest.mark.asyncio()
+    @parametrize_fixtures("openai_oai_ref", get_by_tag("openai-llm"))
     async def test_openai_constructor(self, openai_oai_ref: ObjectReference) -> None:
         # create data
         model = await get_model_by_ref(openai_oai_ref)
@@ -49,7 +51,7 @@ class TestOpenAI:
 
         expected = {
             "name": name,
-            "model": "gpt-3.5-turbo",
+            "model": model.model,
             "api_key": {
                 "type": "secret",
                 "name": "OpenAIAPIKey",
@@ -161,6 +163,7 @@ class TestOpenAI:
 
     @pytest.mark.asyncio()
     @pytest.mark.db()
+    @parametrize_fixtures("openai_oai_ref", get_by_tag("openai-llm"))
     async def test_openai_model_create_autogen(
         self,
         user_uuid: str,
@@ -172,10 +175,11 @@ class TestOpenAI:
         )
         assert isinstance(actual_llm_config, dict)
         api_key = actual_llm_config["config_list"][0]["api_key"]
+        model = actual_llm_config["config_list"][0]["model"]
         expected = {
             "config_list": [
                 {
-                    "model": "gpt-3.5-turbo",
+                    "model": model,
                     "api_key": api_key,
                     "base_url": "https://api.openai.com/v1",
                     "api_type": "openai",
