@@ -1,0 +1,60 @@
+name: Check letsencrypt certs expiry
+
+on:
+  # everyday at 00:00
+  schedule:
+    - cron: "0 0 * * *"
+  # or manually
+  workflow_dispatch:
+
+jobs:
+  check-certs-expiry:
+    name: Check letsencrypt certs expiry
+    strategy:
+      fail-fast: false
+      matrix:
+        domain:
+          [
+            "fastagency.ai",
+            "staging.fastagency.ai",
+            "api.fastagency.ai",
+            "api.staging.fastagency.ai",
+            "weather.tools.fastagency.ai",
+            "weather.tools.staging.fastagency.ai",
+            "monitoring.fastagency.ai",
+          ]
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    container:
+      image: ubuntu:22.04
+    environment:
+      # Use staging if staging in matrix.domain else use production
+      name: ${{ contains(matrix.domain, 'staging') && 'staging' || 'production' }}
+    env:
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      # This is to fix GIT not liking owner of the checkout dir - https://github.com/actions/runner/issues/2033#issuecomment-1204205989
+      - run: chown -R $(id -u):$(id -g) $PWD
+
+      - run: echo "PATH=$PATH:/github/home/.local/bin" >> $GITHUB_ENV
+      - run: "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )"
+      - run: apt-get update -y && apt-get install sshpass -y
+      - run: eval $(ssh-agent -s)
+      - run: mkdir -p ~/.ssh
+      - run: chmod 700 ~/.ssh
+
+      - run: echo "DOMAIN=${{ matrix.domain }}" >> $GITHUB_ENV
+
+      - run: ssh-keyscan "$DOMAIN" >> ~/.ssh/known_hosts
+      - run: chmod 644 ~/.ssh/known_hosts
+
+      - run: echo "$SSH_KEY" | base64 --decode > key.pem
+      - run: chmod 600 key.pem
+
+      - run: ssh -o StrictHostKeyChecking=no -i key.pem azureuser@"$DOMAIN" "ls -la"
+      - run: bash ./scripts/ci-check-certs.sh
+
+      - run: rm key.pem
