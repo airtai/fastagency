@@ -1,0 +1,14 @@
+node_modules
+.DS_Store
+.env
+lib/
+dist/
+*.log
+*.tsbuildinfo
+.eslintcache
+.antlr
+.tmp/
+.pnpm-store
+
+# User settings
+.vscode/settings.json

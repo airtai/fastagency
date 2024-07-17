@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    //
+    "jsx": "react",
+    "newLine": "LF",
+    "noEmitOnError": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
+    // We use eslint @typescript-eslint/no-unused-vars instead
+    //"noUnusedLocals": true,
+    //"noUnusedParameters": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "lib": ["dom", "es2021", "esnext.asynciterable"]
+  }
+}

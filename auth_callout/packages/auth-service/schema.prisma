@@ -1,0 +1,21 @@
+datasource db {
+  // could be postgresql or mysql
+  provider = "postgresql"
+  url      = env("PY_DATABASE_URL")
+}
+
+generator authclient {
+  provider             = "prisma-client-js"
+}
+
+model AuthToken {
+  uuid String @id
+  name String
+  user_uuid String @db.Uuid
+  deployment_uuid String @db.Uuid
+  auth_token String
+  expiry String
+  expires_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}

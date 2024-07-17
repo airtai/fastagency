@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  python-3.10:  # nosemgrep
+    image: mcr.microsoft.com/devcontainers/python:3.10
+    container_name: $USER-python-3.10-fastagencyapi
+    volumes:
+      - ../../:/workspaces/fastagencyapi:cached
+    command: sleep infinity
+    environment:
+      - DATABASE_URL=postgresql://admin:password@${USER}-postgres-py310-fastagencyapi:5432/fastagencyapi
+      - PY_DATABASE_URL=postgresql://admin:password@${USER}-postgres-py310-fastagencyapi:5432/pyfastagencyapi
+      - NATS_URL=nats://${USER}-nats-py310-fastagencyapi:4222
+    env_file:
+      - ../devcontainer.env
+    networks:
+      - fastagencyapi-network
+  nats-fastagencyapi:  # nosemgrep
+    image: nats:latest
+    container_name: $USER-nats-py310-fastagencyapi
+    # ports:
+      # - "${PORT_PREFIX}4222:4222"
+      # - "${PORT_PREFIX}9222:9222"
+    volumes:
+      - ../nats_server.conf:/etc/nats/server.conf
+    command: [ "--config", "/etc/nats/server.conf" ]
+    env_file:
+      - ../devcontainer.env
+    networks:
+      - fastagencyapi-network
+  postgres-fastagencyapi:  # nosemgrep
+    image: postgres:latest
+    container_name: $USER-postgres-py310-fastagencyapi
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password  # pragma: allowlist secret
+      POSTGRES_DB: fastagencyapi
+    # ports:
+    #   - "${PORT_PREFIX}5432:5432"
+    networks:
+      - fastagencyapi-network
+
+networks:
+  fastagencyapi-network:
+    name: "${USER}-fastagencyapi-network"

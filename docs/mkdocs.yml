@@ -1,0 +1,169 @@
+site_name: FastAgency
+# description to improve website indexing
+site_description: "FastAgency: a repository of open-source AI models"
+site_url: https://docs.fastagency.ai/
+site_author: airt
+copyright: '&copy; 2023 <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
+
+docs_dir: docs
+
+watch:
+  - docs
+  - docs_src
+  - includes
+  - overrides
+
+repo_name: airtai/fastagency
+repo_url: https://github.com/airtai/fastagency
+edit_uri: https://github.com/airtai/fastagency/tree/main/docs/docs
+
+exclude_docs: |
+  navigation_template.txt
+  SUMMARY.md
+
+theme:
+  name: material
+  custom_dir: overrides
+  logo: assets/img/logo.svg
+  favicon: assets/img/logo.svg
+  font:
+    text: Roboto
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil-circle-outline
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.tabs            # navbar navigation
+    - navigation.tabs.sticky     # navbar always expanded
+    - navigation.indexes         # attach index document direct to section
+    - navigation.tracking        # show current TOC section in the page url
+    - navigation.prune           # reduce render size
+    - navigation.top             # back-to-top btn
+    - navigation.footer          # show footer with next/prev btns
+    # - navigation.path            # (insiders) breadcrumbs
+    - content.tabs.link          # sync total page tabs
+    # - content.tooltips           # (insiders) improved tooltips
+    - content.code.copy
+    - content.code.annotate      # code anotations with # (1)
+    # - content.code.select        # (insiders) highlight line under cursor
+    - content.action.edit        # add edit btn at every page
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  # - meta                         # (insiders) use .meta.yml files
+  - glightbox                    # image zoom
+  - macros:                      # Jinja templates
+      include_dir: includes
+  - mkdocstrings:                # Generate References
+      default_handler: python
+      handlers:
+        python:
+          paths: [..]
+          import:
+          - https://docs.python.org/3/objects.inv
+          options:
+            filters:
+              - "!^_"
+            show_if_no_docstring: true
+            separate_signature: true
+            docstring_section_style: spacy
+            show_docstring_attributes: false
+            show_root_heading: true
+            show_signature_annotations: true
+            inherited_members: true
+            members_order: alphabetical
+            unwrap_annotated: true
+            merge_init_into_class: true
+            signature_crossrefs: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            load_external_modules: true
+            preload_modules: [httpx, starlette, fastapi]
+  - i18n:
+      docs_structure: folder
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: en
+          default: true
+          name: en - English
+          build: true
+  - git-revision-date-localized: # show page edition date
+      enabled: !ENV [CI, false]
+      type: timeago
+  - literate-nav:                # .md importable navigation
+      nav_file: SUMMARY.md
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+      cache_safe: true
+      css_files:
+        - stylesheets/extra.css
+  - mike:                        # versioning
+      alias_type: copy
+      redirect_template: templates/redirect.html
+      canonical_version: latest
+
+markdown_extensions:
+  - toc:
+      permalink: "#"             # replace TOC block symbol
+      toc_depth: 3
+  - mdx_include:
+      base_path: .
+      line_slice_separator: []
+  - extra
+  - admonition                   # !!! note blocks support
+  - pymdownx.details             # admonition collapsible
+  - pymdownx.superfences         # highlight code syntax
+  - pymdownx.highlight:
+      anchor_linenums: true      # allows link to codeline
+  - pymdownx.inlinehilite        # inline code highlighting `#!python <code>`
+  - pymdownx.tabbed:
+      alternate_style: true      # create tabs group
+  - attr_list                    # specify html attrs in markdown
+  - md_in_html                   # render md wrapped to html tags
+
+extra:
+  analytics:
+    provider: google
+    property: G-HDTMP5FFHP
+  social_image: https://opengraph.githubassets.com/1671805243.560327/airtai/fastagency
+  social:
+    # Discord link should be first
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/qFm6aSqq59
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/airtai/fastagency
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/airt_AI
+    - icon: fontawesome/brands/facebook
+      link: https://www.facebook.com/airt.ai.api/
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/airt-ai/
+
+  version:
+    provider: mike
