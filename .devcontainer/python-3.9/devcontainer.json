@@ -6,10 +6,10 @@
     ],
     "service": "python-3.9",
     "forwardPorts": [
-        "${containerEnv:CONTAINER_PREFIX}-nats-py39-fastagency:9222"
+        "${containerEnv:CONTAINER_PREFIX}-nats-py39-fastagencyapiapi:9222"
     ],
     "shutdownAction": "stopCompose",
-    "workspaceFolder": "/workspaces/fastagency",
+    "workspaceFolder": "/workspaces/fastagencyapi",
     // "runArgs": [],
     "remoteEnv": {},
     "features": {
