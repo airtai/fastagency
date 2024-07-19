@@ -75,9 +75,7 @@ export default function TutorialPage() {
               <ModalCloseButton color='white' />
               <ModalBody display='flex' alignItems='center' justifyContent='center'>
                 <Box
-                  width='100%'
-                  maxWidth='800px'
-                  height='450px'
+                  className='w-full md:w-4/5 lg:w-3/4 aspect-video mx-auto'
                   position='relative'
                   overflow='hidden'
                   borderRadius='md'
@@ -85,11 +83,9 @@ export default function TutorialPage() {
                   <iframe
                     src={`${selectedVideo}?autoplay=1`}
                     title='YouTube video player'
-                    width='100%'
-                    height='100%'
+                    className='absolute top-0 left-0 w-full h-full'
                     allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
                     allowFullScreen
-                    style={{ position: 'absolute', top: 0, left: 0 }}
                   />
                 </Box>
               </ModalBody>

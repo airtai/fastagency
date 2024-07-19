@@ -1,6 +1,6 @@
 app FastAgency {
   wasp: {
-    version: "^0.13.0"
+    version: "^0.14.0"
   },
   title: "FastAgency",
   head: [
@@ -38,12 +38,11 @@ app FastAgency {
     onAuthFailedRedirectTo: "/login",
     onAuthSucceededRedirectTo: "/build",
   },
-  db: {
-    system: PostgreSQL,
-    // seeds: [
-    //   import { devSeedUsers } from "@src/server/scripts/usersSeed.js",
-    // ]
-  },
+  // db: {
+  //   seeds: [
+  //     import { devSeedUsers } from "@src/server/scripts/usersSeed.js",
+  //   ]
+  // },
   client: {
     rootComponent: import App from "@src/client/App",
   },
@@ -63,102 +62,6 @@ app FastAgency {
     fn: import { socketFn } from "@src/server/websocket/webSocket.js"
   },
 }
-
-/* 💽 Wasp defines DB entities via Prisma Database Models:
- * https://wasp-lang.dev/docs/data-model/entities
- */
-
-entity User {=psl
-  id                        Int             @id @default(autoincrement())
-  uuid                      String?         @default(uuid())
-  email                     String?         @unique
-  username                  String?         @unique
-  createdAt                 DateTime        @default(now())
-  lastActiveTimestamp       DateTime        @default(now())
-  isAdmin                   Boolean         @default(false)
-  hasAcceptedTos             Boolean         @default(false)
-  hasSubscribedToMarketingEmails  Boolean         @default(false)
-  isSignUpComplete          Boolean         @default(false)
-  isSetUpComplete           Boolean         @default(false)
-  stripeId                  String?
-  checkoutSessionId         String?
-  hasPaid                   Boolean         @default(false)
-  subscriptionTier          String?
-  subscriptionStatus        String?
-  sendEmail                 Boolean         @default(false)
-  datePaid                  DateTime?
-  credits                   Int             @default(3)
-  chats    Chat[]
-  conversations    Conversation[]
-psl=}
-
-entity DailyStats {=psl
-  id                               Int             @id @default(autoincrement())
-  date                             DateTime        @default(now()) @unique
-  totalViews                       Int             @default(0)
-  prevDayViewsChangePercent        String          @default("0")
-  userCount                        Int             @default(0)
-  paidUserCount                    Int             @default(0)
-  userDelta                        Int             @default(0)
-  paidUserDelta                    Int             @default(0)
-  totalRevenue                     Float             @default(0)
-  totalProfit                      Float             @default(0)
-  sources                          PageViewSource[]
-psl=}
-
-entity PageViewSource {=psl
-  date                     DateTime        @default(now())
-  name                     String
-  visitors                 Int
-  dailyStats               DailyStats?     @relation(fields: [dailyStatsId], references: [id])
-  dailyStatsId             Int?
-  @@id([date, name])
-psl=}
-
-entity Logs {=psl
-  id                       Int             @id @default(autoincrement())
-  createdAt                DateTime        @default(now())
-  message                  String
-  level                    String
-psl=}
-
-entity Chat {=psl
-    id                        Int             @id @default(autoincrement())
-    uuid                      String?         @default(uuid())
-    createdAt                 DateTime        @default(now())
-    updatedAt                 DateTime        @updatedAt
-    team_id                   Int?
-    team_name                 String?
-    team_status               String?
-    userRespondedWithNextAction             Boolean         @default(false)
-    agentChatHistory         String?
-    isExceptionOccured       Boolean         @default(false)
-    showLoader  Boolean         @default(false)
-    streamAgentResponse Boolean         @default(false)
-    customerBrief       String?
-    user        User?    @relation(fields: [userId], references: [id])
-    userId      Int?
-    name        String?          @default("New chat")
-    isChatNameUpdated Boolean         @default(false)
-    isChatTerminated Boolean         @default(false)
-    selectedTeam   String?
-    conversations    Conversation[]
-psl=}
-
-entity Conversation {=psl
-    id                          Int             @id @default(autoincrement())
-    createdAt                   DateTime        @default(now())
-    updatedAt                   DateTime        @updatedAt
-    message                     String
-    role                        String
-    agentConversationHistory    String?
-    isLoading                   Boolean         @default(false)
-    chat                        Chat?           @relation(fields: [chatId], references: [id])
-    chatId                      Int?
-    user                        User?           @relation(fields: [userId], references: [id])
-    userId                      Int?
-
-psl=}
 
 /* 📡 These are the Wasp Routes (You can protect them easily w/ 'authRequired: true');
  * https://wasp-lang.dev/docs/tutorial/pages

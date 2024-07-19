@@ -1,15 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import _ from 'lodash';
 import { type Chat } from 'wasp/entities';
-import Loader from '../admin/common/Loader';
 import { SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
 import { CreateNewChatProps } from '../interfaces/PlaygroundPageInterface';
 import CustomBreadcrumb from './CustomBreadcrumb';
 import NotificationBox from './NotificationBox';
 import { SelectInput } from './form/SelectInput';
 import TextareaAutosize from 'react-textarea-autosize';
-import { getModels, createNewChat, useQuery } from 'wasp/client/operations';
+import { createNewChat } from 'wasp/client/operations';
 
 const SelectTeamToChat = ({ userTeams }: any) => {
   const history = useHistory();
@@ -18,6 +16,8 @@ const SelectTeamToChat = ({ userTeams }: any) => {
   const [message, setMessage] = useState('');
   const [formError, setFormError] = useState<Record<string, any>>({});
   const [notificationErrorMessage, setNotificationErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isRedirecting = useRef(false);
 
   const handleTeamChange = (value: string) => {
     setTeam(value);
@@ -29,25 +29,36 @@ const SelectTeamToChat = ({ userTeams }: any) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (isSubmitting || isRedirecting.current) return;
+
+    setIsSubmitting(true);
+    setFormError({});
+
     if (!allTeams) {
       setFormError((prev) => ({ ...prev, team: 'Please select/create a team' }));
-    } else if (message.trim() === '') {
-      setFormError((prev) => ({ ...prev, message: 'Task description cannot be empty' }));
-    } else {
-      try {
-        const props: CreateNewChatProps = {
-          teamName: team,
-        };
-        const chat: Chat = await createNewChat(props);
-        history.push(`/playground/${chat.uuid}?initiateChatMsg=${message}`);
-      } catch (err: any) {
-        setNotificationErrorMessage(`Error creating chat. Please try again later.`);
-        console.log('Error: ' + err.message);
-      }
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (message.trim() === '') {
+      setFormError((prev) => ({ ...prev, message: 'Message cannot be empty' }));
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const props: CreateNewChatProps = {
+        teamName: team,
+      };
+      const chat: Chat = await createNewChat(props);
+      isRedirecting.current = true;
+      history.push(`/playground/${chat.uuid}?initiateChatMsg=${message}`);
+    } catch (err: any) {
+      setNotificationErrorMessage(`Error creating chat. Please try again later.`);
+      console.log('Error: ' + err.message);
+      setIsSubmitting(false);
     }
   };
-
-  const debouncedHandleSubmit = _.debounce(handleSubmit, 1000);
 
   useEffect(() => {
     if (userTeams && userTeams.length > 0) {
@@ -72,18 +83,14 @@ const SelectTeamToChat = ({ userTeams }: any) => {
             <SelectInput
               id='selectTeam'
               value={team}
-              options={_.map(allTeams, (team: SelectedModelSchema) => team.json_str.name)}
+              options={allTeams ? allTeams.map((team: SelectedModelSchema) => team.json_str.name) : []}
               onChange={handleTeamChange}
               propertyTypes={[]}
               addPropertyClick={() => {}}
               isRequired={false}
             />
-            {formError && (
-              <div className='mb-2' style={{ color: 'red' }}>
-                {formError.team}
-              </div>
-            )}
-            <label className='text-airt-primary inline-block' htmlFor='setSystemMessage'>
+            {formError.team && <div style={{ color: 'red' }}>{formError.team}</div>}
+            <label className='mt-2  text-airt-primary inline-block' htmlFor='setSystemMessage'>
               Message
             </label>
             <TextareaAutosize
@@ -98,23 +105,24 @@ const SelectTeamToChat = ({ userTeams }: any) => {
               placeholder=''
               value={message}
               onChange={handleMessageChange}
-              onKeyDown={(e: any) => {
+              onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
-                  debouncedHandleSubmit(e as any);
+                  handleSubmit(e);
                 }
               }}
             />
-            {formError && (
-              <div className='mb-2' style={{ color: 'red' }}>
+            {formError.message && (
+              <div className='mt-1' style={{ color: 'red' }}>
                 {formError.message}
               </div>
             )}
             <button
-              className='rounded-md px-3.5 py-2.5 text-sm  bg-airt-primary text-airt-font-base   hover:bg-opacity-85 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              className='rounded-md mt-2 px-3.5 py-2.5 text-sm bg-airt-primary text-airt-font-base hover:bg-opacity-85 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
               type='submit'
+              disabled={isSubmitting || isRedirecting.current}
             >
-              Send
+              {isSubmitting ? 'Sending...' : 'Send'}
             </button>
           </form>
         </div>
