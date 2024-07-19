@@ -150,6 +150,9 @@ only-include = ["fastagency", "templates"]
 "src" = ""
 "scripts" = "fastagency/templates"
 
+[tool.hatch.build.targets.sdist]
+only-include = ["fastagency", "templates"]
+
 [tool.mypy]
 
 files = ["fastagency", "tests"]
