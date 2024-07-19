@@ -1,10 +1,11 @@
 import uuid
 
+import openai
 import pytest
 
 from fastagency.helpers import get_model_by_ref
 from fastagency.models.base import ObjectReference
-from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey
+from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey, OpenAIModels
 from tests.helpers import get_by_tag, parametrize_fixtures
 
 
@@ -62,6 +63,14 @@ class TestOpenAI:
             "temperature": 0.8,
         }
         assert model.model_dump() == expected
+
+    def test_openai_model_list(self) -> None:
+        client = openai.OpenAI()
+
+        model_list = [m.id for m in client.models.list() if "gpt-" in m.id]
+        # print(f"{model_list=}")
+
+        assert set(model_list) == set(OpenAIModels.__args__), OpenAIModels.__args__  # type: ignore[attr-defined]
 
     def test_openai_schema(self) -> None:
         schema = OpenAI.model_json_schema()

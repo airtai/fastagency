@@ -12,7 +12,7 @@ __all__ = [
     "TogetherAI",
 ]
 
-# retrieve the models from the API on June 26, 2024
+# retrieve the models from the API on July 19, 2024
 together_model_string = {
     "WizardLM v1.2 (13B)": "WizardLM/WizardLM-13B-V1.2",
     "Code Llama Instruct (34B)": "togethercomputer/CodeLlama-34b-Instruct",
