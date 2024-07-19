@@ -3,21 +3,21 @@ version: '3'
 services:
   python-3.11:  # nosemgrep
     image: mcr.microsoft.com/devcontainers/python:3.11
-    container_name: $USER-python-3.11-fastagencyapi
+    container_name: $USER-python-3.11-fastagency
     volumes:
-      - ../../:/workspaces/fastagencyapi:cached
+      - ../../:/workspaces/fastagency:cached
     command: sleep infinity
     environment:
-      - DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagencyapi:5432/fastagencyapi
-      - PY_DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagencyapi:5432/pyfastagencyapi
-      - NATS_URL=nats://${USER}-nats-py311-fastagencyapi:4222
+      - DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagency:5432/fastagency
+      - PY_DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagency:5432/pyfastagency
+      - NATS_URL=nats://${USER}-nats-py311-fastagency:4222
     env_file:
       - ../devcontainer.env
     networks:
-      - fastagencyapi-network
-  nats-fastagencyapi:  # nosemgrep
+      - fastagency-network
+  nats-fastagency:  # nosemgrep
     image: nats:latest
-    container_name: $USER-nats-py311-fastagencyapi
+    container_name: $USER-nats-py311-fastagency
     # ports:
       # - "${PORT_PREFIX}4222:4222"
       # - "${PORT_PREFIX}9222:9222"
@@ -27,19 +27,19 @@ services:
     env_file:
       - ../devcontainer.env
     networks:
-      - fastagencyapi-network
-  postgres-fastagencyapi:  # nosemgrep
+      - fastagency-network
+  postgres-fastagency:  # nosemgrep
     image: postgres:latest
-    container_name: $USER-postgres-py311-fastagencyapi
+    container_name: $USER-postgres-py311-fastagency
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password  # pragma: allowlist secret
-      POSTGRES_DB: fastagencyapi
+      POSTGRES_DB: fastagency
     # ports:
     #   - "${PORT_PREFIX}5432:5432"
     networks:
-      - fastagencyapi-network
+      - fastagency-network
 
 networks:
-  fastagencyapi-network:
-    name: "${USER}-fastagencyapi-network"
+  fastagency-network:
+    name: "${USER}-fastagency-network"

@@ -1,0 +1,69 @@
+name: Update cron script when changes are made
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/ci-check-certs.sh'
+      - '.github/workflows/update-cron-script.yml'
+  workflow_dispatch:
+
+jobs:
+  check-certs-expiry:
+    name: Update cron script when changes are made
+    strategy:
+      fail-fast: false
+      matrix:
+        domain:
+          [
+            "fastagency.ai",
+            "staging.fastagency.ai",
+            "studio.fastagency.ai",
+            "studio.staging.fastagency.ai",
+            "api.fastagency.ai",
+            "api.staging.fastagency.ai",
+            "weather.tools.fastagency.ai",
+            "weather.tools.staging.fastagency.ai",
+            "monitoring.fastagency.ai",
+          ]
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    container:
+      image: ubuntu:22.04
+    environment:
+      # Use staging if staging in matrix.domain else use production
+      name: ${{ contains(matrix.domain, 'staging') && 'staging' || 'production' }}
+    env:
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      # This is to fix GIT not liking owner of the checkout dir - https://github.com/actions/runner/issues/2033#issuecomment-1204205989
+      - run: chown -R $(id -u):$(id -g) $PWD
+
+      - run: echo "PATH=$PATH:/github/home/.local/bin" >> $GITHUB_ENV
+      # Installing gettext to use envsubst command
+      - run: "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git gettext -y )"
+      - run: apt-get update -y && apt-get install sshpass -y
+      - run: eval $(ssh-agent -s)
+      - run: mkdir -p ~/.ssh
+      - run: chmod 700 ~/.ssh
+
+      - run: echo "DOMAIN=${{ matrix.domain }}" >> $GITHUB_ENV
+
+      - run: ssh-keyscan "$DOMAIN" >> ~/.ssh/known_hosts
+      - run: chmod 644 ~/.ssh/known_hosts
+
+      - run: echo "$SSH_KEY" | base64 --decode > key.pem
+      - run: chmod 600 key.pem
+
+      - run: ssh -o StrictHostKeyChecking=no -i key.pem azureuser@"$DOMAIN" "ls -la"
+
+      - run: envsubst '${DOMAIN}' < scripts/cron-check-certs.sh > tmp.sh
+      - run: chmod +x tmp.sh
+      - run: cat tmp.sh
+      - run: scp -i key.pem tmp.sh azureuser@"$DOMAIN":/home/azureuser/cron_check_certs.sh
+
+      - run: rm key.pem

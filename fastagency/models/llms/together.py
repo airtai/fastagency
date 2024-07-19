@@ -49,17 +49,15 @@ together_model_string = {
     "Platypus2 Instruct (70B)": "garage-bAInd/Platypus2-70B-instruct",
     "Gemma Instruct (2B)": "google/gemma-2b-it",
     "Gemma Instruct (7B)": "google/gemma-7b-it",
-    "Gemma 2 Instruct (27B)": "google/gemma-2-27b-it",
     "OLMo Instruct (7B)": "allenai/OLMo-7B-Instruct",
     "Qwen 1.5 Chat (4B)": "Qwen/Qwen1.5-4B-Chat",
     "MythoMax-L2 (13B)": "Gryphe/MythoMax-L2-13b",
+    "Meta Llama 3 70B Reference": "meta-llama/Llama-3-70b-chat-hf",
     "Mistral (7B) Instruct": "mistralai/Mistral-7B-Instruct-v0.1",
     "Mistral (7B) Instruct v0.2": "mistralai/Mistral-7B-Instruct-v0.2",
     "OpenOrca Mistral (7B) 8K": "Open-Orca/Mistral-7B-OpenOrca",
-    "01-ai Yi Chat (34B)": "zero-one-ai/Yi-34B-Chat",
     "Nous Hermes LLaMA-2 (7B)": "NousResearch/Nous-Hermes-llama-2-7b",
     "Qwen 1.5 Chat (32B)": "Qwen/Qwen1.5-32B-Chat",
-    "DBRX Instruct": "databricks/dbrx-instruct",
     "Qwen 2 Instruct (72B)": "Qwen/Qwen2-72B-Instruct",
     "Qwen 1.5 Chat (72B)": "Qwen/Qwen1.5-72B-Chat",
     "DeepSeek LLM Chat (67B)": "deepseek-ai/deepseek-llm-67b-chat",
@@ -69,12 +67,19 @@ together_model_string = {
     "Mistral (7B) Instruct v0.3": "mistralai/Mistral-7B-Instruct-v0.3",
     "Qwen 1.5 Chat (110B)": "Qwen/Qwen1.5-110B-Chat",
     "LLaMA-2 Chat (13B)": "togethercomputer/llama-2-13b-chat",
-    "Meta Llama 3 8B Chat": "meta-llama/Llama-3-8b-chat-hf",
+    "Gemma-2 Instruct (27B)": "google/gemma-2-27b-it",
+    "01-ai Yi Chat (34B)": "zero-one-ai/Yi-34B-Chat",
+    "Meta Llama 3 70B Instruct Turbo": "meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
+    "Meta Llama 3 8B Instruct Turbo": "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
+    "Meta Llama 3 70B Instruct Lite": "meta-llama/Meta-Llama-3-70B-Instruct-Lite",
+    "Gemma-2 Instruct (9B)": "google/gemma-2-9b-it",
+    "Meta Llama 3 8B Instruct Lite": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
+    "Meta Llama 3 8B Reference": "meta-llama/Llama-3-8b-chat-hf",
     "Mixtral-8x7B Instruct v0.1": "mistralai/Mixtral-8x7B-Instruct-v0.1",
     "LLaMA-2 Chat (7B)": "togethercomputer/llama-2-7b-chat",
     "LLaMA-2 Chat (70B)": "togethercomputer/llama-2-70b-chat",
-    "Meta Llama 3 70B Chat": "meta-llama/Llama-3-70b-chat-hf",
     "Reserved - DBRX Instruct": "medaltv/dbrx-instruct",
+    "DBRX Instruct": "databricks/dbrx-instruct",
     "Koala (7B)": "togethercomputer/Koala-7B",
     "Guanaco (65B) ": "togethercomputer/guanaco-65b",
     "Vicuna v1.3 (7B)": "lmsys/vicuna-7b-v1.3",
@@ -89,7 +94,6 @@ together_model_string = {
     "Guanaco (7B) ": "togethercomputer/guanaco-7b",
     "Meta Llama 3 8B Instruct": "meta-llama/Meta-Llama-3-8B-Instruct",
     "Meta Llama 3 70B Instruct": "meta-llama/Meta-Llama-3-70B-Instruct",
-    "Gemma-2 Instruct (9B)": "google/gemma-2-9b-it",
     "Hermes 2 Theta Llama-3 70B": "NousResearch/Hermes-2-Theta-Llama-3-70B",
     "Llama-3 70B Instruct Gradient 1048K": "gradientai/Llama-3-70B-Instruct-Gradient-1048k",
 }
@@ -127,7 +131,7 @@ class TogetherAI(Model):
     model: Annotated[  # type: ignore[valid-type]
         TogetherModels,
         Field(description="The model to use for the Together API"),
-    ] = "Meta Llama 3 70B Chat"
+    ] = "Meta Llama 3 70B Reference"
 
     api_key: TogetherAIAPIKeyRef
 

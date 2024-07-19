@@ -1,0 +1,338 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  detect-deployment-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+    steps:
+    - name: Determine deployment environment
+      id: set-env
+      run: |
+        if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          echo "environment=production" >> $GITHUB_OUTPUT
+        elif [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+          echo "environment=staging" >> $GITHUB_OUTPUT
+        else
+          echo "environment=none" >> $GITHUB_OUTPUT
+        fi
+
+  docker-build-push-node:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+    env:
+      PORT: ${{ vars.PORT }}
+    steps:
+      - name: Checkout repository with cached git lfs
+        uses: nschloe/action-cached-lfs-checkout@v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install wasp
+        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.14.0
+
+      - name: Temporary wasp fix
+        run: |
+          PATCH_FILE_PATH=$(cat $(whereis wasp | cut -d " " -f 2) | tail -1 | cut -d " " -f 1 | cut -d "=" -f 2)/Generator/templates/server/package.json
+          echo $PATCH_FILE_PATH
+          sed -i 's/"postinstall": "patch-package"/"postinstall": ""/' $PATCH_FILE_PATH
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.2.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: docker pull ghcr.io/airtai/fastagency-studio-node:$GITHUB_REF_NAME || docker pull ghcr.io/airtai/fastagency-studio-node:dev || true
+      - name: Build wasp
+        run: cd app && wasp build
+      - run: docker build --build-arg PORT=$PORT -t ghcr.io/airtai/fastagency-studio-node:${GITHUB_REF_NAME////-} ./app/.wasp/build/
+      - name: Add tag latest if branch is main
+        if: github.ref_name == 'main'
+        run: docker tag ghcr.io/airtai/fastagency-studio-node:$GITHUB_REF_NAME ghcr.io/airtai/fastagency-studio-node:latest
+      - name: Push only if branch name is main or dev
+        if: github.ref_name == 'main' || github.ref_name == 'dev'
+        run: docker push ghcr.io/airtai/fastagency-studio-node --all-tags
+      - name: Sleep for 10 seconds
+        run: sleep 10
+
+  docker-build-push-fastapi:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install wasp
+        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.14.0
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.2.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: docker pull ghcr.io/airtai/fastagency-studio:$GITHUB_REF_NAME || docker pull ghcr.io/airtai/fastagency-studio:dev || true
+      - run: docker build --build-arg PORT=$PORT -t ghcr.io/airtai/fastagency-studio:${GITHUB_REF_NAME////-} .
+      - name: Add tag latest if branch is main
+        if: github.ref_name == 'main'
+        run: docker tag ghcr.io/airtai/fastagency-studio:$GITHUB_REF_NAME ghcr.io/airtai/fastagency-studio:latest
+      - name: Push only if branch name is main or dev
+        if: github.ref_name == 'main' || github.ref_name == 'dev'
+        run: docker push ghcr.io/airtai/fastagency-studio --all-tags
+      - name: Sleep for 10 seconds
+        run: sleep 10
+
+  docker-build-push-auth-callout:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+    env:
+      PORT: ${{ vars.PORT }}
+    steps:
+      - name: Checkout repository with cached git lfs
+        uses: nschloe/action-cached-lfs-checkout@v1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.2.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: docker pull ghcr.io/airtai/fastagency-studio-auth-callout:$GITHUB_REF_NAME || docker pull ghcr.io/airtai/fastagency-studio-auth-callout:dev || true
+      - run: docker build -t ghcr.io/airtai/fastagency-studio-auth-callout:${GITHUB_REF_NAME////-} ./auth_callout
+      - name: Add tag latest if branch is main
+        if: github.ref_name == 'main'
+        run: docker tag ghcr.io/airtai/fastagency-studio-auth-callout:$GITHUB_REF_NAME ghcr.io/airtai/fastagency-studio-auth-callout:latest
+      - name: Push only if branch name is main or dev
+        if: github.ref_name == 'main' || github.ref_name == 'dev'
+        run: docker push ghcr.io/airtai/fastagency-studio-auth-callout --all-tags
+
+  # https://github.com/marketplace/actions/alls-green#why
+  check: # This job does nothing and is only used for the branch protection
+    if: github.event.pull_request.draft == false
+    needs:
+      - docker-build-push-auth-callout
+      - docker-build-push-fastapi
+      - docker-build-push-node
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1 # nosemgrep
+        with:
+          jobs: ${{ toJSON(needs) }}
+      - name: Sleep for 10 seconds
+        run: sleep 10
+
+  deploy-fastapi:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    needs:
+      - check
+      - detect-deployment-environment
+    environment:
+      name: ${{ needs.detect-deployment-environment.outputs.environment }}
+    env:
+      GITHUB_USERNAME: ${{ github.actor }}
+      GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      DEVELOPER_TOKEN: ${{ secrets.DEVELOPER_TOKEN }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      PY_DATABASE_URL: ${{ secrets.PY_DATABASE_URL }}
+      FASTAGENCY_SERVER_URL: ${{ vars.FASTAGENCY_SERVER_URL }}
+      FASTSTREAM_NATS_PASSWORD: ${{ secrets.FASTSTREAM_NATS_PASSWORD }}
+      DOMAIN: ${{ vars.DOMAIN }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      AZURE_API_VERSION: ${{ vars.AZURE_API_VERSION }}
+      AZURE_API_ENDPOINT: ${{ vars.AZURE_API_ENDPOINT }}
+      AZURE_GPT35_MODEL: ${{ vars.AZURE_GPT35_MODEL }}
+      AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+      BING_API_KEY: ${{ secrets.BING_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v3 # Don't change it to cheackout@v4. V4 is not working with container image.
+      # This is to fix GIT not liking owner of the checkout dir - https://github.com/actions/runner/issues/2033#issuecomment-1204205989
+      - run: chown -R $(id -u):$(id -g) $PWD
+
+      - run: if [[ $GITHUB_REF_NAME == "main" ]]; then echo "TAG=latest" >> $GITHUB_ENV ; else echo "TAG=dev" >> $GITHUB_ENV ; fi;
+
+      - run: echo "PATH=$PATH:/github/home/.local/bin" >> $GITHUB_ENV
+      - run: "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git gettext -y )"
+      - run: eval $(ssh-agent -s)
+      - run: mkdir -p ~/.ssh
+      - run: chmod 700 ~/.ssh
+      - run: ssh-keyscan "$DOMAIN" >> ~/.ssh/known_hosts
+      - run: chmod 644 ~/.ssh/known_hosts
+      - run: echo "$SSH_KEY" | base64 --decode > key.pem
+      - run: chmod 600 key.pem
+
+      - run: ssh -o StrictHostKeyChecking=no -i key.pem azureuser@"$DOMAIN" "docker images"
+      - run: bash scripts/deploy.sh
+
+      - run: rm key.pem
+
+  deploy-node:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    needs:
+      - check
+      - detect-deployment-environment
+    environment:
+      name: ${{ needs.detect-deployment-environment.outputs.environment }}
+    env:
+      GITHUB_USERNAME: ${{ github.actor }}
+      GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      PORT: ${{ vars.PORT }}
+      GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      ADMIN_EMAILS: ${{ vars.ADMIN_EMAILS }}
+      WASP_SERVER_URL: ${{ vars.WASP_SERVER_URL }}
+      FASTAGENCY_SERVER_URL: ${{ vars.FASTAGENCY_SERVER_URL }}
+      WASP_NATS_PASSWORD: ${{ secrets.WASP_NATS_PASSWORD }}
+      NODE_DOMAIN: ${{ vars.NODE_DOMAIN }}
+      WASP_WEB_CLIENT_URL: ${{ vars.WASP_WEB_CLIENT_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+    steps:
+      - name: Checkout repository with cached git lfs
+        uses: nschloe/action-cached-lfs-checkout@v1
+      # This is to fix GIT not liking owner of the checkout dir - https://github.com/actions/runner/issues/2033#issuecomment-1204205989
+      - run: chown -R $(id -u):$(id -g) $PWD
+
+      - run: if [[ $GITHUB_REF_NAME == "main" ]]; then echo "TAG=latest" >> $GITHUB_ENV ; else echo "TAG=dev" >> $GITHUB_ENV ; fi;
+
+      - run: echo "PATH=$PATH:/github/home/.local/bin" >> $GITHUB_ENV
+      - run: "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )"
+      - run: eval $(ssh-agent -s)
+      - run: mkdir -p ~/.ssh
+      - run: chmod 700 ~/.ssh
+      - run: ssh-keyscan "$NODE_DOMAIN" >> ~/.ssh/known_hosts
+      - run: chmod 644 ~/.ssh/known_hosts
+      - run: echo "$SSH_KEY" | base64 --decode > key.pem
+      - run: chmod 600 key.pem
+
+      - run: ssh -o StrictHostKeyChecking=no -i key.pem azureuser@"$NODE_DOMAIN" "docker images"
+      - run: bash scripts/deploy-node.sh
+
+      - run: rm key.pem
+
+  deploy-auth-callout:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    needs:
+      - check
+      - detect-deployment-environment
+    environment:
+      name: ${{ needs.detect-deployment-environment.outputs.environment }}
+    env:
+      GITHUB_USERNAME: ${{ github.actor }}
+      GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      DEVELOPER_TOKEN: ${{ secrets.DEVELOPER_TOKEN }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      PY_DATABASE_URL: ${{ secrets.PY_DATABASE_URL }}
+      AUTH_NATS_PASSWORD: ${{ secrets.AUTH_NATS_PASSWORD }}
+      NATS_PRIV_NKEY: ${{ secrets.NATS_PRIV_NKEY }}
+      DOMAIN: ${{ vars.DOMAIN }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+
+    steps:
+      - uses: actions/checkout@v3 # Don't change it to cheackout@v4. V4 is not working with container image.
+      # This is to fix GIT not liking owner of the checkout dir - https://github.com/actions/runner/issues/2033#issuecomment-1204205989
+      - run: chown -R $(id -u):$(id -g) $PWD
+
+      - run: if [[ $GITHUB_REF_NAME == "main" ]]; then echo "TAG=latest" >> $GITHUB_ENV ; else echo "TAG=dev" >> $GITHUB_ENV ; fi;
+
+      - run: echo "PATH=$PATH:/github/home/.local/bin" >> $GITHUB_ENV
+      - run: "which ssh-agent || ( apt-get update -y && apt-get install openssh-client git gettext -y )"
+      - run: eval $(ssh-agent -s)
+      - run: mkdir -p ~/.ssh
+      - run: chmod 700 ~/.ssh
+      - run: ssh-keyscan "$DOMAIN" >> ~/.ssh/known_hosts
+      - run: chmod 644 ~/.ssh/known_hosts
+      - run: echo "$SSH_KEY" | base64 --decode > key.pem
+      - run: chmod 600 key.pem
+
+      - run: ssh -o StrictHostKeyChecking=no -i key.pem azureuser@"$DOMAIN" "docker images"
+      - run: bash scripts/deploy-auth-callout.sh
+
+      - run: rm key.pem
+
+  deploy-frontend:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    needs:
+      - check
+      - detect-deployment-environment
+    environment:
+      name: ${{ needs.detect-deployment-environment.outputs.environment }}
+    env:
+      NODE_DOMAIN: ${{ vars.NODE_DOMAIN }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      REACT_APP_API_URL: ${{ vars.REACT_APP_API_URL }}
+    steps:
+      - name: Checkout repository with cached git lfs
+        uses: nschloe/action-cached-lfs-checkout@v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install wasp
+        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.14.0
+
+      - name: Temporary wasp fix
+        run: |
+          PATCH_FILE_PATH=$(cat $(whereis wasp | cut -d " " -f 2) | tail -1 | cut -d " " -f 1 | cut -d "=" -f 2)/Generator/templates/server/package.json
+          echo $PATCH_FILE_PATH
+          sed -i 's/"postinstall": "patch-package"/"postinstall": ""/' $PATCH_FILE_PATH
+
+      - name: Build wasp
+        run: cd app && wasp build
+      - name: Build frontend
+        run: cd app && cd .wasp/build/web-app && npm install && REACT_APP_API_URL=$REACT_APP_API_URL npm run build
+      - name: Copy 404.html
+        run: cp 404.html app/.wasp/build/web-app/build
+
+      - name: Deploy UI to nginx directory
+        run: |
+          apt-get update -y && apt-get install openssh-client git -y
+          eval $(ssh-agent -s)
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan "$NODE_DOMAIN" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          echo "$SSH_KEY" | base64 --decode > key.pem
+          chmod 600 key.pem
+          ssh -o StrictHostKeyChecking=no -i key.pem azureuser@"$NODE_DOMAIN" "ls -lah /var/www/html/UI"
+          scp -i key.pem -r app/.wasp/build/web-app/build azureuser@"$NODE_DOMAIN":/var/www/html/UI
+          ssh -o StrictHostKeyChecking=no -i key.pem azureuser@"$NODE_DOMAIN" "ls -lah /var/www/html/UI"
+          rm key.pem

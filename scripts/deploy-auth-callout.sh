@@ -46,7 +46,7 @@ $ssh_command "docker container prune -f || echo 'No stopped containers to delete
 
 echo "INFO: pulling docker image"
 $ssh_command "echo $GITHUB_PASSWORD | docker login -u '$GITHUB_USERNAME' --password-stdin '$REGISTRY'"
-$ssh_command "docker pull ghcr.io/airtai/fastagency-auth-callout:'$TAG'"
+$ssh_command "docker pull ghcr.io/airtai/fastagency-studio-auth-callout:'$TAG'"
 sleep 10
 
 echo "Deleting old image"
@@ -58,4 +58,4 @@ $ssh_command "docker run --name $container_name \
 	-e AUTH_NATS_PASSWORD='$AUTH_NATS_PASSWORD' -e NATS_PRIV_NKEY='$NATS_PRIV_NKEY' \
 	-e DOMAIN='$DOMAIN' \
     --restart always \
-	-d ghcr.io/airtai/fastagency-auth-callout:$TAG"
+	-d ghcr.io/airtai/fastagency-studio-auth-callout:$TAG"
