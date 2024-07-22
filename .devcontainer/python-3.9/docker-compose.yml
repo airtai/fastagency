@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  python-3.9:  # nosemgrep
+  python-3.9-fastagencyapi:  # nosemgrep
     image: mcr.microsoft.com/devcontainers/python:3.9
     container_name: $USER-python-3.9-fastagencyapi
     volumes:
@@ -15,7 +15,7 @@ services:
       - ../devcontainer.env
     networks:
       - fastagencyapi-network
-  nats-fastagency:  # nosemgrep
+  nats-fastagencyapi:  # nosemgrep
     image: nats:latest
     container_name: $USER-nats-py39-fastagencyapi
     # ports:
@@ -28,7 +28,7 @@ services:
       - ../devcontainer.env
     networks:
       - fastagencyapi-network
-  postgres-fastagency:  # nosemgrep
+  postgres-fastagencyapi:  # nosemgrep
     image: postgres:latest
     container_name: $USER-postgres-py39-fastagencyapi
     environment:
