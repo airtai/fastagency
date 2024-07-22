@@ -4,7 +4,7 @@
     "dockerComposeFile": [
         "./docker-compose.yml"
     ],
-    "service": "python-3.10",
+    "service": "python-3.10-fastagencyapi",
     "forwardPorts": [
         "${containerEnv:CONTAINER_PREFIX}-nats-py310-fastagencyapi:9222"
     ],

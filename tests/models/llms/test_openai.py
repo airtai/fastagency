@@ -1,10 +1,11 @@
 import uuid
 
+import openai
 import pytest
 
 from fastagency.helpers import get_model_by_ref
 from fastagency.models.base import ObjectReference
-from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey
+from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey, OpenAIModels
 from tests.helpers import get_by_tag, parametrize_fixtures
 
 
@@ -63,6 +64,15 @@ class TestOpenAI:
         }
         assert model.model_dump() == expected
 
+    @pytest.mark.openai()
+    def test_openai_model_list(self) -> None:
+        client = openai.OpenAI()
+
+        model_list = [m.id for m in client.models.list() if "gpt-" in m.id]
+        # print(f"{model_list=}")
+
+        assert set(model_list) == set(OpenAIModels.__args__), OpenAIModels.__args__  # type: ignore[attr-defined]
+
     def test_openai_schema(self) -> None:
         schema = OpenAI.model_json_schema()
         expected = {
@@ -108,22 +118,23 @@ class TestOpenAI:
                     "default": "gpt-3.5-turbo",
                     "description": "The model to use for the OpenAI API, e.g. 'gpt-3.5-turbo'",
                     "enum": [
-                        "gpt-4o",
-                        "gpt-4-turbo",
-                        "gpt-4",
-                        "gpt-3.5-turbo",
-                        "gpt-4o-2024-05-13",
-                        "gpt-4-32k",
                         "gpt-4-turbo-2024-04-09",
+                        "gpt-4-1106-preview",
+                        "gpt-4-turbo",
                         "gpt-4-turbo-preview",
                         "gpt-4-0125-preview",
-                        "gpt-4-1106-preview",
-                        "gpt-4-vision-preview",
-                        "gpt-4-1106-vision-preview",
-                        "gpt-4-0613",
-                        "gpt-4-32k-0613",
+                        "gpt-4o-2024-05-13",
+                        "gpt-3.5-turbo",
+                        "gpt-3.5-turbo-instruct",
+                        "gpt-3.5-turbo-instruct-0914",
+                        "gpt-4o-mini-2024-07-18",
+                        "gpt-4o-mini",
+                        "gpt-3.5-turbo-16k",
                         "gpt-3.5-turbo-0125",
                         "gpt-3.5-turbo-1106",
+                        "gpt-4-0613",
+                        "gpt-4o",
+                        "gpt-4",
                     ],
                     "title": "Model",
                     "type": "string",
@@ -149,8 +160,8 @@ class TestOpenAI:
                 "temperature": {
                     "default": 0.8,
                     "description": "The temperature to use for the model, must be between 0 and 2",
-                    "minimum": 0.0,
                     "maximum": 2.0,
+                    "minimum": 0.0,
                     "title": "Temperature",
                     "type": "number",
                 },
@@ -159,6 +170,7 @@ class TestOpenAI:
             "title": "OpenAI",
             "type": "object",
         }
+        # print(f"{schema=}")
         assert schema == expected
 
     @pytest.mark.asyncio()

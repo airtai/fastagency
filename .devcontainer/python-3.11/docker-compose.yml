@@ -1,15 +1,15 @@
 version: '3'
 
 services:
-  python-3.11:  # nosemgrep
+  python-3.11-fastagencyapi:  # nosemgrep
     image: mcr.microsoft.com/devcontainers/python:3.11
     container_name: $USER-python-3.11-fastagencyapi
     volumes:
       - ../../:/workspaces/fastagencyapi:cached
     command: sleep infinity
     environment:
-      - DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagencyapi:5432/fastagencyapi
-      - PY_DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagencyapi:5432/pyfastagencyapi
+      - DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagencyapi:5432/fastagency
+      - PY_DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagencyapi:5432/pyfastagency
       - NATS_URL=nats://${USER}-nats-py311-fastagencyapi:4222
     env_file:
       - ../devcontainer.env
@@ -34,7 +34,7 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password  # pragma: allowlist secret
-      POSTGRES_DB: fastagencyapi
+      POSTGRES_DB: fastagency
     # ports:
     #   - "${PORT_PREFIX}5432:5432"
     networks:

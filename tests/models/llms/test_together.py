@@ -127,10 +127,10 @@ class TestTogetherAI:
                     "type": "string",
                 },
                 "model": {
-                    "default": "Meta Llama 3 70B Chat",
+                    "default": "Meta Llama 3 70B Reference",
                     "description": "The model to use for the Together API",
                     #     "enum": [
-                    #         "Meta Llama 3 70B Chat",
+                    #         "Meta Llama 3 70B Reference",
                     #         ...
                     #     ],
                     "title": "Model",
@@ -167,7 +167,7 @@ class TestTogetherAI:
             "title": "TogetherAI",
             "type": "object",
         }
-        assert "Meta Llama 3 70B Chat" in schema["properties"]["model"]["enum"]
+        assert "Meta Llama 3 70B Reference" in schema["properties"]["model"]["enum"]
         schema["properties"]["model"].pop("enum")
         assert schema == expected
 

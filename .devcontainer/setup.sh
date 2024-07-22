@@ -7,15 +7,12 @@ pip install -e ".[dev]"
 # install pre-commit hook if not installed already
 pre-commit install
 
-# create .mypy_cache directory (see https://github.com/python/mypy/issues/10768#issuecomment-2178450153)
-mkdir .mypy_cache
-
 # install wasp
-curl -sSL https://get.wasp-lang.dev/installer.sh | sh
+curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.14.0
 
 cd app && wasp db migrate-dev && cd ..
 
-prisma migrate deploy
+prisma migrate deploy --schema=schema.prisma
 prisma generate --schema=schema.prisma --generator=pyclient
 
 # Install packages for auth callout

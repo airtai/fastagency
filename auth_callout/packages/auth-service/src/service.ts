@@ -100,10 +100,10 @@ async function msgHandler(req: Nats.Msg, enc: TextEncoder, dec: TextDecoder, iss
     `chat.server.messages.${authToken.user_uuid}.${authToken.deployment_uuid}.${chat_uuid}`,
     "_INBOX.>",
     "$JS.API.STREAM.NAMES",
-    // `$JS.API.STREAM.NAMES.fastagencyapi`,
-    "$JS.API.CONSUMER.INFO.fastagencyapi.*",
-    "$JS.API.CONSUMER.CREATE.fastagencyapi",
-    "$JS.API.CONSUMER.DURABLE.CREATE.fastagencyapi.*",
+    // `$JS.API.STREAM.NAMES.FastAgency`,
+    "$JS.API.CONSUMER.INFO.FastAgency.*",
+    "$JS.API.CONSUMER.CREATE.FastAgency",
+    "$JS.API.CONSUMER.DURABLE.CREATE.FastAgency.*",
   ];
   console.log(`Auth service user ${auth_user} granted permission to subjects: ${JSON.stringify(grantedRooms)}`);
 
