@@ -98,6 +98,7 @@ together_model_string = {
     "carson ml318bit": "carson/ml318bit",
     "carson ml31405bit": "carson/ml31405bit",
     "carson ml3170bit": "carson/ml3170bit",
+    "carson ml318br": "carson/ml318br",
     "Llama-3 70B Instruct Gradient 1048K": "gradientai/Llama-3-70B-Instruct-Gradient-1048k",
 }
 
