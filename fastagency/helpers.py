@@ -13,17 +13,18 @@ from fastagency.saas_app_generator import (
 )
 
 from .auth_token.auth import create_deployment_auth_token
-
-# from fastagency.app import add_model
-from .db.helpers import find_model_using_raw, get_db_connection, get_user
 from .models.base import Model, ObjectReference
 from .models.registry import Registry
+
+# from fastagency.app import add_model
+# from .db.helpers import find_model_using_raw, get_db_connection, get_user
+from .protocols.prisma import PrismaProtocol
 
 T = TypeVar("T", bound=Model)
 
 
 async def get_model_by_uuid(model_uuid: Union[str, UUID]) -> Model:
-    model_dict = await find_model_using_raw(model_uuid=model_uuid)
+    model_dict = await PrismaProtocol().find_model_using_raw(model_uuid=model_uuid)
 
     registry = Registry.get_default()
     model = registry.validate(
@@ -43,11 +44,11 @@ async def validate_tokens_and_create_gh_repo(
     model: Dict[str, Any],
     model_uuid: str,
 ) -> SaasAppGenerator:
-    async with get_db_connection():
-        found_gh_token = await find_model_using_raw(
+    async with PrismaProtocol().get_db_connection():
+        found_gh_token = await PrismaProtocol().find_model_using_raw(
             model_uuid=model["gh_token"]["uuid"]
         )
-        found_fly_token = await find_model_using_raw(
+        found_fly_token = await PrismaProtocol().find_model_using_raw(
             model_uuid=model["fly_token"]["uuid"]
         )
 
@@ -81,8 +82,8 @@ async def deploy_saas_app(
 
     await asyncify(saas_app.execute)()
 
-    async with get_db_connection() as db:
-        found_model = await find_model_using_raw(model_uuid=model_uuid)
+    async with PrismaProtocol().get_db_connection() as db:
+        found_model = await PrismaProtocol().find_model_using_raw(model_uuid=model_uuid)
         found_model["json_str"]["app_deploy_status"] = "completed"
 
         await db.model.update(
@@ -125,8 +126,8 @@ async def add_model_to_user(
             updated_validated_model_dict["gh_repo_url"] = saas_app.gh_repo_url
             validated_model_json = json.dumps(updated_validated_model_dict)
 
-        await get_user(user_uuid=user_uuid)
-        async with get_db_connection() as db:
+        await PrismaProtocol().get_user(user_uuid=user_uuid)
+        async with PrismaProtocol().get_db_connection() as db:
             await db.model.create(
                 data={
                     "uuid": model_uuid,
@@ -209,7 +210,7 @@ async def get_all_models_for_user(
     if type_name:
         filters["type_name"] = type_name
 
-    async with get_db_connection() as db:
+    async with PrismaProtocol().get_db_connection() as db:
         models = await db.model.find_many(where=filters)  # type: ignore[arg-type]
 
     return models  # type: ignore[no-any-return]

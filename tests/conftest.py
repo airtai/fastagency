@@ -24,10 +24,6 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-from fastagency.db.helpers import (
-    get_db_connection,
-    get_wasp_db_url,
-)
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent
 from fastagency.models.agents.user_proxy import UserProxyAgent
@@ -41,6 +37,12 @@ from fastagency.models.llms.together import TogetherAI, TogetherAIAPIKey
 from fastagency.models.teams.two_agent_teams import TwoAgentTeam
 from fastagency.models.toolboxes.toolbox import OpenAPIAuth, Toolbox
 
+# from fastagency.db.helpers import (
+#     get_db_connection,
+#     get_wasp_db_url,
+# )
+from fastagency.protocols.prisma import PrismaProtocol
+
 from .helpers import add_random_sufix, expand_fixture, get_by_tag, tag, tag_list
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -51,8 +53,8 @@ async def user_uuid() -> AsyncIterator[str]:
     try:
         random_id = random.randint(1, 1_000_000)
         generated_uuid = str(uuid.uuid4())
-        wasp_db_url = await get_wasp_db_url()
-        async with get_db_connection(db_url=wasp_db_url) as db:
+        wasp_db_url = await PrismaProtocol().get_wasp_db_url()
+        async with PrismaProtocol().get_db_connection(db_url=wasp_db_url) as db:
             insert_query = (
                 'INSERT INTO "User" (email, username, uuid) VALUES ('
                 + f"'user{random_id}@airt.ai', 'user{random_id}', '{generated_uuid}')"

@@ -8,6 +8,8 @@ from fastapi.testclient import TestClient
 
 import fastagency.app
 import fastagency.auth_token.auth
+import fastagency.protocols
+import fastagency.protocols.prisma
 from fastagency.app import app
 from fastagency.auth_token.auth import (
     create_deployment_auth_token,
@@ -85,7 +87,9 @@ async def test_create_deployment_token(
         }
 
     monkeypatch.setattr(
-        fastagency.auth_token.auth, "find_model_using_raw", mock_find_model_using_raw
+        fastagency.protocols.prisma.PrismaProtocol,
+        "find_model_using_raw",
+        mock_find_model_using_raw,
     )
 
     token = await create_deployment_auth_token(user_uuid, deployment_uuid)
@@ -107,7 +111,9 @@ async def test_create_deployment_token_with_wrong_user_uuid(
         }
 
     monkeypatch.setattr(
-        fastagency.auth_token.auth, "find_model_using_raw", mock_find_model_using_raw
+        fastagency.protocols.prisma.PrismaProtocol,
+        "find_model_using_raw",
+        mock_find_model_using_raw,
     )
 
     with pytest.raises(HTTPException) as e:
@@ -131,7 +137,9 @@ async def test_create_deployment_auth_token_route(
         }
 
     monkeypatch.setattr(
-        fastagency.auth_token.auth, "find_model_using_raw", mock_find_model_using_raw
+        fastagency.protocols.prisma.PrismaProtocol,
+        "find_model_using_raw",
+        mock_find_model_using_raw,
     )
 
     response = client.post(
@@ -157,7 +165,9 @@ async def test_get_all_deployment_auth_tokens(
         }
 
     monkeypatch.setattr(
-        fastagency.auth_token.auth, "find_model_using_raw", mock_find_model_using_raw
+        fastagency.protocols.prisma.PrismaProtocol,
+        "find_model_using_raw",
+        mock_find_model_using_raw,
     )
 
     response = client.post(
@@ -167,7 +177,9 @@ async def test_get_all_deployment_auth_tokens(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.app, "find_model_using_raw", mock_find_model_using_raw
+        fastagency.protocols.prisma.PrismaProtocol,
+        "find_model_using_raw",
+        mock_find_model_using_raw,
     )
     response = client.get(f"/user/{user_uuid}/deployment/{deployment_uuid}")
     assert response.status_code == 200
@@ -192,7 +204,9 @@ async def test_delete_deployment_auth_token(
         }
 
     monkeypatch.setattr(
-        fastagency.auth_token.auth, "find_model_using_raw", mock_find_model_using_raw
+        fastagency.protocols.prisma.PrismaProtocol,
+        "find_model_using_raw",
+        mock_find_model_using_raw,
     )
 
     response = client.post(
@@ -202,7 +216,9 @@ async def test_delete_deployment_auth_token(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.app, "find_model_using_raw", mock_find_model_using_raw
+        fastagency.protocols.prisma.PrismaProtocol,
+        "find_model_using_raw",
+        mock_find_model_using_raw,
     )
     response = client.get(f"/user/{user_uuid}/deployment/{deployment_uuid}")
     assert len(response.json()) == 1

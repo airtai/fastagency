@@ -13,9 +13,10 @@ from faststream.nats import NatsMessage
 from nats.js import api
 from pydantic import BaseModel
 
-from ..db.helpers import find_model_using_raw
+# from ..db.helpers import find_model_using_raw
 from ..models.teams.multi_agent_team import MultiAgentTeam
 from ..models.teams.two_agent_teams import TwoAgentTeam
+from ..protocols.prisma import PrismaProtocol
 from .app import app, broker, stream  # noqa
 
 if TYPE_CHECKING:
@@ -166,7 +167,7 @@ class InitiateModel(BaseModel):
 async def create_team(
     team_id: UUID, user_id: UUID
 ) -> Callable[[str], List[Dict[str, Any]]]:
-    team_dict = await find_model_using_raw(team_id)
+    team_dict = await PrismaProtocol().find_model_using_raw(team_id)
 
     team_model: Union[TwoAgentTeam, MultiAgentTeam]
     if "initial_agent" in team_dict["json_str"]:

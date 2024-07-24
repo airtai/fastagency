@@ -5,7 +5,8 @@ from uuid import UUID
 from pydantic import BaseModel, Field, create_model, model_validator
 from typing_extensions import TypeAlias
 
-from ..db.helpers import find_model_using_raw
+# from ..db.helpers import find_model_using_raw
+from ..protocols.prisma import PrismaProtocol
 
 M = TypeVar("M", bound="Model")
 
@@ -39,7 +40,7 @@ class Model(BaseModel, ABC):
 
     @classmethod
     async def from_db(cls: Type[T], model_id: UUID) -> T:
-        my_model_dict = await find_model_using_raw(model_id)
+        my_model_dict = await PrismaProtocol().find_model_using_raw(model_id)
         my_model = cls(**my_model_dict["json_str"])
 
         return my_model
