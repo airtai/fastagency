@@ -73,6 +73,7 @@ together_model_string = {
     "Mixtral-8x7B Instruct v0.1": "mistralai/Mixtral-8x7B-Instruct-v0.1",
     "Reserved - DBRX Instruct": "medaltv/dbrx-instruct",
     "DBRX Instruct": "databricks/dbrx-instruct",
+    "Meta Llama 3.1 8B Instruct": "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
     "Meta Llama 3 8B Instruct Turbo": "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
     "Dolphin 2.5 Mixtral 8x7b": "cognitivecomputations/dolphin-2.5-mixtral-8x7b",
     "Mixtral-8x22B Instruct v0.1": "mistralai/Mixtral-8x22B-Instruct-v0.1",
@@ -80,6 +81,9 @@ together_model_string = {
     "Meta Llama 3 8B Instruct Lite": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
     "LLaMA-2 Chat (7B)": "togethercomputer/llama-2-7b-chat",
     "LLaMA-2 Chat (70B)": "togethercomputer/llama-2-70b-chat",
+    "Meta Llama 3.1 70B Instruct Turbo": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+    "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "Koala (7B)": "togethercomputer/Koala-7B",
     "Guanaco (65B) ": "togethercomputer/guanaco-65b",
     "Vicuna v1.3 (7B)": "lmsys/vicuna-7b-v1.3",
@@ -100,6 +104,8 @@ together_model_string = {
     "carson ml3170bit": "carson/ml3170bit",
     "carson ml318br": "carson/ml318br",
     "Llama-3 70B Instruct Gradient 1048K": "gradientai/Llama-3-70B-Instruct-Gradient-1048k",
+    "Meta Llama 3.1 70B Instruct": "meta-llama/Meta-Llama-3.1-70B-Instruct-Reference",
+    "Meta Llama 3.1 70B": "meta-llama/Meta-Llama-3.1-70B-Reference",
 }
 
 TogetherModels: TypeAlias = Literal[tuple(together_model_string.keys())]  # type: ignore[valid-type]
