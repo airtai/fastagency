@@ -24,10 +24,6 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-# from fastagency.db.helpers import (
-#     get_db_connection,
-#     get_wasp_db_url,
-# )
 from fastagency.db.prisma import PrismaProtocol
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent

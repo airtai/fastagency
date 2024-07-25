@@ -6,7 +6,6 @@ from typing_extensions import TypeAlias
 
 from fastagency.openapi.client import Client
 
-# from ...db.helpers import find_model_using_raw
 from ...db.prisma import PrismaProtocol
 from ..base import Model
 from ..registry import Registry

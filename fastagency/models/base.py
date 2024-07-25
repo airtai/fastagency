@@ -5,7 +5,6 @@ from uuid import UUID
 from pydantic import BaseModel, Field, create_model, model_validator
 from typing_extensions import TypeAlias
 
-# from ..db.helpers import find_model_using_raw
 from ..db.prisma import PrismaProtocol
 
 M = TypeVar("M", bound="Model")
