@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.protocols.base.BaseProtocol
+::: fastagency.db.base.BaseProtocol

@@ -35,6 +35,11 @@ search:
                 - [hash_auth_token](api/fastagency/auth_token/auth/hash_auth_token.md)
                 - [parse_expiry](api/fastagency/auth_token/auth/parse_expiry.md)
                 - [verify_auth_token](api/fastagency/auth_token/auth/verify_auth_token.md)
+        - db
+            - base
+                - [BaseProtocol](api/fastagency/db/base/BaseProtocol.md)
+            - prisma
+                - [PrismaProtocol](api/fastagency/db/prisma/PrismaProtocol.md)
         - faststream_app
             - [ping_handler](api/fastagency/faststream_app/ping_handler.md)
         - helpers
@@ -129,11 +134,6 @@ search:
             - fastapi_code_generator_helpers
                 - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                 - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
-        - protocols
-            - base
-                - [BaseProtocol](api/fastagency/protocols/base/BaseProtocol.md)
-            - prisma
-                - [PrismaProtocol](api/fastagency/protocols/prisma/PrismaProtocol.md)
         - saas_app_generator
             - [InvalidFlyTokenError](api/fastagency/saas_app_generator/InvalidFlyTokenError.md)
             - [InvalidGHTokenError](api/fastagency/saas_app_generator/InvalidGHTokenError.md)
