@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.db.prisma.PrismaProtocol
+::: fastagency.db.prisma.FrontendDBProtocol

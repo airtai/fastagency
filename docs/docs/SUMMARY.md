@@ -39,7 +39,8 @@ search:
             - base
                 - [BaseProtocol](api/fastagency/db/base/BaseProtocol.md)
             - prisma
-                - [PrismaProtocol](api/fastagency/db/prisma/PrismaProtocol.md)
+                - [BackendDBProtocol](api/fastagency/db/prisma/BackendDBProtocol.md)
+                - [FrontendDBProtocol](api/fastagency/db/prisma/FrontendDBProtocol.md)
         - faststream_app
             - [ping_handler](api/fastagency/faststream_app/ping_handler.md)
         - helpers
