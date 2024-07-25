@@ -304,7 +304,7 @@ class TestModelRoutes:
         with (
             patch("fastagency.app.PrismaProtocol.get_user", side_effect=Exception()),
             patch(
-                "fastagency.protocols.prisma.PrismaProtocol.get_db_connection",
+                "fastagency.db.prisma.PrismaProtocol.get_db_connection",
                 side_effect=Exception(),
             ),
             patch("fastagency.helpers.deploy_saas_app") as mock_task,

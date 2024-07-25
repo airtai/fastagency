@@ -9,7 +9,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel
 
 # from fastagency.db.helpers import find_model_using_raw, get_db_connection, get_user
-from ..protocols.prisma import PrismaProtocol
+from ..db.prisma import PrismaProtocol
 
 
 def generate_auth_token(length: int = 32) -> str:

@@ -12,6 +12,9 @@ from prisma.models import Model
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
+
+# from .db.helpers import find_model_using_raw, get_db_connection, get_user
+from .db.prisma import PrismaProtocol
 from .helpers import (
     add_model_to_user,
     create_model,
@@ -19,9 +22,6 @@ from .helpers import (
 )
 from .models.registry import Registry, Schemas
 from .models.toolboxes.toolbox import Toolbox
-
-# from .db.helpers import find_model_using_raw, get_db_connection, get_user
-from .protocols.prisma import PrismaProtocol
 
 logging.basicConfig(level=logging.INFO)
 

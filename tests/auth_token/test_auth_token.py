@@ -8,8 +8,8 @@ from fastapi.testclient import TestClient
 
 import fastagency.app
 import fastagency.auth_token.auth
-import fastagency.protocols
-import fastagency.protocols.prisma
+import fastagency.db
+import fastagency.db.prisma
 from fastagency.app import app
 from fastagency.auth_token.auth import (
     create_deployment_auth_token,
@@ -87,7 +87,7 @@ async def test_create_deployment_token(
         }
 
     monkeypatch.setattr(
-        fastagency.protocols.prisma.PrismaProtocol,
+        fastagency.db.prisma.PrismaProtocol,
         "find_model_using_raw",
         mock_find_model_using_raw,
     )
@@ -111,7 +111,7 @@ async def test_create_deployment_token_with_wrong_user_uuid(
         }
 
     monkeypatch.setattr(
-        fastagency.protocols.prisma.PrismaProtocol,
+        fastagency.db.prisma.PrismaProtocol,
         "find_model_using_raw",
         mock_find_model_using_raw,
     )
@@ -137,7 +137,7 @@ async def test_create_deployment_auth_token_route(
         }
 
     monkeypatch.setattr(
-        fastagency.protocols.prisma.PrismaProtocol,
+        fastagency.db.prisma.PrismaProtocol,
         "find_model_using_raw",
         mock_find_model_using_raw,
     )
@@ -165,7 +165,7 @@ async def test_get_all_deployment_auth_tokens(
         }
 
     monkeypatch.setattr(
-        fastagency.protocols.prisma.PrismaProtocol,
+        fastagency.db.prisma.PrismaProtocol,
         "find_model_using_raw",
         mock_find_model_using_raw,
     )
@@ -177,7 +177,7 @@ async def test_get_all_deployment_auth_tokens(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.protocols.prisma.PrismaProtocol,
+        fastagency.db.prisma.PrismaProtocol,
         "find_model_using_raw",
         mock_find_model_using_raw,
     )
@@ -204,7 +204,7 @@ async def test_delete_deployment_auth_token(
         }
 
     monkeypatch.setattr(
-        fastagency.protocols.prisma.PrismaProtocol,
+        fastagency.db.prisma.PrismaProtocol,
         "find_model_using_raw",
         mock_find_model_using_raw,
     )
@@ -216,7 +216,7 @@ async def test_delete_deployment_auth_token(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.protocols.prisma.PrismaProtocol,
+        fastagency.db.prisma.PrismaProtocol,
         "find_model_using_raw",
         mock_find_model_using_raw,
     )

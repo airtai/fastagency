@@ -24,6 +24,11 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
+# from fastagency.db.helpers import (
+#     get_db_connection,
+#     get_wasp_db_url,
+# )
+from fastagency.db.prisma import PrismaProtocol
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent
 from fastagency.models.agents.user_proxy import UserProxyAgent
@@ -36,12 +41,6 @@ from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey
 from fastagency.models.llms.together import TogetherAI, TogetherAIAPIKey
 from fastagency.models.teams.two_agent_teams import TwoAgentTeam
 from fastagency.models.toolboxes.toolbox import OpenAPIAuth, Toolbox
-
-# from fastagency.db.helpers import (
-#     get_db_connection,
-#     get_wasp_db_url,
-# )
-from fastagency.protocols.prisma import PrismaProtocol
 
 from .helpers import add_random_sufix, expand_fixture, get_by_tag, tag, tag_list
 
