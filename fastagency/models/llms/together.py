@@ -85,6 +85,8 @@ together_model_string = {
     "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
     "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "Koala (7B)": "togethercomputer/Koala-7B",
+    "Qwen 2 Instruct (1.5B)": "Qwen/Qwen2-1.5B-Instruct",
+    "Qwen 2 Instruct (7B)": "Qwen/Qwen2-7B-Instruct",
     "Guanaco (65B) ": "togethercomputer/guanaco-65b",
     "Vicuna v1.3 (7B)": "lmsys/vicuna-7b-v1.3",
     "Nous Hermes LLaMA-2 (70B)": "NousResearch/Nous-Hermes-Llama2-70b",
