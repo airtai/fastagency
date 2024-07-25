@@ -41,13 +41,12 @@ async def validate_tokens_and_create_gh_repo(
     model: Dict[str, Any],
     model_uuid: str,
 ) -> SaasAppGenerator:
-    async with BackendDBProtocol().get_db_connection():
-        found_gh_token = await BackendDBProtocol().find_model_using_raw(
-            model_uuid=model["gh_token"]["uuid"]
-        )
-        found_fly_token = await BackendDBProtocol().find_model_using_raw(
-            model_uuid=model["fly_token"]["uuid"]
-        )
+    found_gh_token = await BackendDBProtocol().find_model_using_raw(
+        model_uuid=model["gh_token"]["uuid"]
+    )
+    found_fly_token = await BackendDBProtocol().find_model_using_raw(
+        model_uuid=model["fly_token"]["uuid"]
+    )
 
     found_gh_token_uuid = found_gh_token["json_str"]["gh_token"]
     found_fly_token_uuid = found_fly_token["json_str"]["fly_token"]
@@ -79,12 +78,9 @@ async def deploy_saas_app(
 
     await asyncify(saas_app.execute)()
 
+    found_model = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
+    found_model["json_str"]["app_deploy_status"] = "completed"
     async with BackendDBProtocol().get_db_connection() as db:
-        found_model = await BackendDBProtocol().find_model_using_raw(
-            model_uuid=model_uuid
-        )
-        found_model["json_str"]["app_deploy_status"] = "completed"
-
         await db.model.update(
             where={"uuid": found_model["uuid"]},  # type: ignore[arg-type]
             data={  # type: ignore[typeddict-unknown-key]

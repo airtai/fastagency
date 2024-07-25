@@ -181,11 +181,8 @@ async def update_model(
     registry = Registry.get_default()
     validated_model = registry.validate(type_name, model_name, model)
 
+    found_model = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
     async with BackendDBProtocol().get_db_connection() as db:
-        found_model = await BackendDBProtocol().find_model_using_raw(
-            model_uuid=model_uuid
-        )
-
         await db.model.update(
             where={"uuid": found_model["uuid"]},  # type: ignore[arg-type]
             data={  # type: ignore[typeddict-unknown-key]
@@ -203,10 +200,8 @@ async def update_model(
 async def models_delete(
     user_uuid: str, type_name: str, model_uuid: str
 ) -> Dict[str, Any]:
+    found_model = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
     async with BackendDBProtocol().get_db_connection() as db:
-        found_model = await BackendDBProtocol().find_model_using_raw(
-            model_uuid=model_uuid
-        )
         model = await db.model.delete(
             where={"uuid": found_model["uuid"]}  # type: ignore[arg-type]
         )
