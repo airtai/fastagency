@@ -9,32 +9,28 @@ from prisma import Prisma  # type: ignore[attr-defined]
 from .base import BaseProtocol
 
 
-class PrismaProtocol(BaseProtocol):
+class BackendDBProtocol(BaseProtocol):
+    async def get_db_url(self) -> str:
+        db_url: str = environ.get("PY_DATABASE_URL", None)  # type: ignore[assignment,arg-type]
+        if not db_url:
+            raise ValueError(
+                "No database URL provided nor set as environment variable 'PY_DATABASE_URL'"
+            )  # pragma: no cover
+        if "connect_timeout" not in db_url:
+            db_url += "?connect_timeout=60"
+        return db_url
+
     @asynccontextmanager
     async def get_db_connection(  # type: ignore[override]
         self,
-        db_url: Optional[str] = None,
     ) -> AsyncGenerator[Prisma, None]:
-        if not db_url:
-            db_url = environ.get("PY_DATABASE_URL", None)
-            if not db_url:
-                raise ValueError(
-                    "No database URL provided nor set as environment variable 'PY_DATABASE_URL'"
-                )  # pragma: no cover
-        if "connect_timeout" not in db_url:
-            db_url += "?connect_timeout=60"
+        db_url = await self.get_db_url()
         db = Prisma(datasource={"url": db_url})
         await db.connect()
         try:
             yield db
         finally:
             await db.disconnect()
-
-    async def get_wasp_db_url(self) -> str:
-        wasp_db_url: str = environ.get("DATABASE_URL")  # type: ignore[assignment]
-        if "connect_timeout" not in wasp_db_url:
-            wasp_db_url += "?connect_timeout=60"
-        return wasp_db_url
 
     async def find_model_using_raw(
         self, model_uuid: Union[str, UUID]
@@ -52,9 +48,32 @@ class PrismaProtocol(BaseProtocol):
             )
         return model
 
+
+class FrontendDBProtocol(BaseProtocol):
+    async def get_db_url(self) -> str:
+        db_url: str = environ.get("DATABASE_URL", None)  # type: ignore[assignment,arg-type]
+        if not db_url:
+            raise ValueError(
+                "No database URL provided nor set as environment variable 'DATABASE_URL'"
+            )  # pragma: no cover
+        if "connect_timeout" not in db_url:
+            db_url += "?connect_timeout=60"
+        return db_url
+
+    @asynccontextmanager
+    async def get_db_connection(  # type: ignore[override]
+        self,
+    ) -> AsyncGenerator[Prisma, None]:
+        db_url = await self.get_db_url()
+        db = Prisma(datasource={"url": db_url})
+        await db.connect()
+        try:
+            yield db
+        finally:
+            await db.disconnect()
+
     async def get_user(self, user_uuid: Union[int, str]) -> Any:
-        wasp_db_url = await self.get_wasp_db_url()
-        async with self.get_db_connection(db_url=wasp_db_url) as db:
+        async with self.get_db_connection() as db:
             select_query = 'SELECT * from "User" where uuid=' + f"'{user_uuid}'"  # nosec: [B608]
             user = await db.query_first(
                 select_query  # nosec: [B608]

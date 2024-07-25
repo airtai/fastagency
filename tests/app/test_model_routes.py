@@ -302,9 +302,11 @@ class TestModelRoutes:
         model_uuid = str(uuid.uuid4())
 
         with (
-            patch("fastagency.app.PrismaProtocol.get_user", side_effect=Exception()),
             patch(
-                "fastagency.db.prisma.PrismaProtocol.get_db_connection",
+                "fastagency.app.FrontendDBProtocol.get_user", side_effect=Exception()
+            ),
+            patch(
+                "fastagency.db.prisma.BackendDBProtocol.get_db_connection",
                 side_effect=Exception(),
             ),
             patch("fastagency.helpers.deploy_saas_app") as mock_task,

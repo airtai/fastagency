@@ -24,7 +24,7 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-from fastagency.db.prisma import PrismaProtocol
+from fastagency.db.prisma import FrontendDBProtocol
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent
 from fastagency.models.agents.user_proxy import UserProxyAgent
@@ -48,8 +48,7 @@ async def user_uuid() -> AsyncIterator[str]:
     try:
         random_id = random.randint(1, 1_000_000)
         generated_uuid = str(uuid.uuid4())
-        wasp_db_url = await PrismaProtocol().get_wasp_db_url()
-        async with PrismaProtocol().get_db_connection(db_url=wasp_db_url) as db:
+        async with FrontendDBProtocol().get_db_connection() as db:
             insert_query = (
                 'INSERT INTO "User" (email, username, uuid) VALUES ('
                 + f"'user{random_id}@airt.ai', 'user{random_id}', '{generated_uuid}')"
