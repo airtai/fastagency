@@ -5,11 +5,12 @@ from uuid import UUID
 
 from fastapi import HTTPException
 from prisma import Prisma  # type: ignore[attr-defined]
+from prisma.actions import AuthTokenActions, ModelActions
 
-from .base import BaseProtocol
+from .base import BaseBackendProtocol, BaseFrontendProtocol
 
 
-class BackendDBProtocol(BaseProtocol):
+class BackendDBProtocol(BaseBackendProtocol):
     async def get_db_url(self) -> str:
         db_url: str = environ.get("PY_DATABASE_URL", None)  # type: ignore[assignment,arg-type]
         if not db_url:
@@ -48,8 +49,22 @@ class BackendDBProtocol(BaseProtocol):
             )
         return model
 
+    @asynccontextmanager
+    async def get_model_connection(  # type: ignore[override]
+        self,
+    ) -> AsyncGenerator[ModelActions[Any], None]:
+        async with self.get_db_connection() as db:
+            yield db.model
 
-class FrontendDBProtocol(BaseProtocol):
+    @asynccontextmanager
+    async def get_authtoken_connection(  # type: ignore[override]
+        self,
+    ) -> AsyncGenerator[AuthTokenActions[Any], None]:
+        async with self.get_db_connection() as db:
+            yield db.authtoken
+
+
+class FrontendDBProtocol(BaseFrontendProtocol):
     async def get_db_url(self) -> str:
         db_url: str = environ.get("DATABASE_URL", None)  # type: ignore[assignment,arg-type]
         if not db_url:

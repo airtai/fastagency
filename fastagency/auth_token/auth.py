@@ -94,8 +94,8 @@ async def create_deployment_auth_token(
     auth_token = generate_auth_token()
     hashed_token = hash_auth_token(auth_token)
 
-    async with BackendDBProtocol().get_db_connection() as db:
-        await db.authtoken.create(  # type: ignore[attr-defined]
+    async with BackendDBProtocol().get_authtoken_connection() as authtoken:
+        await authtoken.create(  # type: ignore[attr-defined]
             data={
                 "uuid": str(uuid.uuid4()),
                 "name": name,

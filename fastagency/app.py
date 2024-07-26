@@ -182,8 +182,8 @@ async def update_model(
     validated_model = registry.validate(type_name, model_name, model)
 
     found_model = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
-    async with BackendDBProtocol().get_db_connection() as db:
-        await db.model.update(
+    async with BackendDBProtocol().get_model_connection() as m:
+        await m.update(
             where={"uuid": found_model["uuid"]},  # type: ignore[arg-type]
             data={  # type: ignore[typeddict-unknown-key]
                 "type_name": type_name,
@@ -201,8 +201,8 @@ async def models_delete(
     user_uuid: str, type_name: str, model_uuid: str
 ) -> Dict[str, Any]:
     found_model = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
-    async with BackendDBProtocol().get_db_connection() as db:
-        model = await db.model.delete(
+    async with BackendDBProtocol().get_model_connection() as m:
+        model = await m.delete(
             where={"uuid": found_model["uuid"]}  # type: ignore[arg-type]
         )
 
@@ -392,8 +392,8 @@ async def get_all_deployment_auth_tokens(
             status_code=403, detail="User does not have access to this deployment"
         )
 
-    async with BackendDBProtocol().get_db_connection() as db:
-        auth_tokens = await db.authtoken.find_many(
+    async with BackendDBProtocol().get_authtoken_connection() as authtoken:
+        auth_tokens = await authtoken.find_many(
             where={"deployment_uuid": deployment_uuid, "user_uuid": user_uuid},
         )
     return [
@@ -420,8 +420,8 @@ async def delete_deployment_auth_token(
             status_code=403, detail="User does not have access to this deployment"
         )
 
-    async with BackendDBProtocol().get_db_connection() as db:
-        auth_token = await db.authtoken.delete(
+    async with BackendDBProtocol().get_authtoken_connection() as authtoken:
+        auth_token = await authtoken.delete(
             where={  # type: ignore[typeddict-unknown-key]
                 "uuid": auth_token_uuid,
                 "deployment_uuid": deployment_uuid,

@@ -80,8 +80,8 @@ async def deploy_saas_app(
 
     found_model = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
     found_model["json_str"]["app_deploy_status"] = "completed"
-    async with BackendDBProtocol().get_db_connection() as db:
-        await db.model.update(
+    async with BackendDBProtocol().get_model_connection() as model:
+        await model.update(
             where={"uuid": found_model["uuid"]},  # type: ignore[arg-type]
             data={  # type: ignore[typeddict-unknown-key]
                 "type_name": type_name,
@@ -122,8 +122,8 @@ async def add_model_to_user(
             validated_model_json = json.dumps(updated_validated_model_dict)
 
         await FrontendDBProtocol().get_user(user_uuid=user_uuid)
-        async with BackendDBProtocol().get_db_connection() as db:
-            await db.model.create(
+        async with BackendDBProtocol().get_model_connection() as m:
+            await m.create(
                 data={
                     "uuid": model_uuid,
                     "user_uuid": user_uuid,
@@ -205,8 +205,8 @@ async def get_all_models_for_user(
     if type_name:
         filters["type_name"] = type_name
 
-    async with BackendDBProtocol().get_db_connection() as db:
-        models = await db.model.find_many(where=filters)  # type: ignore[arg-type]
+    async with BackendDBProtocol().get_model_connection() as model:
+        models = await model.find_many(where=filters)  # type: ignore[arg-type]
 
     return models  # type: ignore[no-any-return]
 

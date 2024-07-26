@@ -37,6 +37,8 @@ search:
                 - [verify_auth_token](api/fastagency/auth_token/auth/verify_auth_token.md)
         - db
             - base
+                - [BaseBackendProtocol](api/fastagency/db/base/BaseBackendProtocol.md)
+                - [BaseFrontendProtocol](api/fastagency/db/base/BaseFrontendProtocol.md)
                 - [BaseProtocol](api/fastagency/db/base/BaseProtocol.md)
             - prisma
                 - [BackendDBProtocol](api/fastagency/db/prisma/BackendDBProtocol.md)
