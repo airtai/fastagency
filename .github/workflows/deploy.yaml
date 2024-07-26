@@ -51,7 +51,7 @@ jobs:
           sed -i 's/"postinstall": "patch-package"/"postinstall": ""/' $PATCH_FILE_PATH
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v3.2.0
+        uses: docker/login-action@v3.3.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -86,7 +86,7 @@ jobs:
         run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.14.0
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v3.2.0
+        uses: docker/login-action@v3.3.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -115,7 +115,7 @@ jobs:
         uses: nschloe/action-cached-lfs-checkout@v1
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v3.2.0
+        uses: docker/login-action@v3.3.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
