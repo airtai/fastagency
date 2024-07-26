@@ -1,36 +1,40 @@
 from contextlib import asynccontextmanager
-from typing import Any, AsyncGenerator, Dict
+from typing import (
+    Any,
+    AsyncGenerator,
+    Dict,
+    Protocol,
+    runtime_checkable,
+)
 
 from prisma import Prisma  # type: ignore[attr-defined]
 from prisma.actions import AuthTokenActions, ModelActions
 
 
-class BaseProtocol:
-    async def get_db_url(self) -> str:
-        raise NotImplementedError()
+@runtime_checkable
+class BaseProtocol(Protocol):
+    @staticmethod
+    async def get_db_url() -> str: ...
 
     @asynccontextmanager  # type: ignore[arg-type]
-    async def get_db_connection(self) -> AsyncGenerator[Prisma, None]:
-        raise NotImplementedError()
+    async def get_db_connection(self) -> AsyncGenerator[Prisma, None]: ...
 
 
-class BaseBackendProtocol(BaseProtocol):
-    async def find_model_using_raw(self, model_uuid: str) -> Dict[str, Any]:
-        raise NotImplementedError()
+@runtime_checkable
+class BaseBackendProtocol(BaseProtocol, Protocol):
+    async def find_model_using_raw(self, model_uuid: str) -> Dict[str, Any]: ...
 
     @asynccontextmanager  # type: ignore[arg-type]
     async def get_model_connection(
         self,
-    ) -> AsyncGenerator[ModelActions[Any], None]:
-        raise NotImplementedError()
+    ) -> AsyncGenerator[ModelActions[Any], None]: ...
 
     @asynccontextmanager  # type: ignore[arg-type]
     async def get_authtoken_connection(
         self,
-    ) -> AsyncGenerator[AuthTokenActions[Any], None]:
-        raise NotImplementedError()
+    ) -> AsyncGenerator[AuthTokenActions[Any], None]: ...
 
 
-class BaseFrontendProtocol(BaseProtocol):
-    async def get_user(self, user_uuid: str) -> Dict[str, Any]:
-        raise NotImplementedError()
+@runtime_checkable
+class BaseFrontendProtocol(BaseProtocol, Protocol):
+    async def get_user(self, user_uuid: str) -> Dict[str, Any]: ...

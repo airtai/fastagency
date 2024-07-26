@@ -7,11 +7,15 @@ from fastapi import HTTPException
 from prisma import Prisma  # type: ignore[attr-defined]
 from prisma.actions import AuthTokenActions, ModelActions
 
-from .base import BaseBackendProtocol, BaseFrontendProtocol
+from .base import (
+    BaseBackendProtocol,
+    BaseFrontendProtocol,
+)
 
 
 class BackendDBProtocol(BaseBackendProtocol):
-    async def get_db_url(self) -> str:
+    @staticmethod
+    async def get_db_url() -> str:
         db_url: str = environ.get("PY_DATABASE_URL", None)  # type: ignore[assignment,arg-type]
         if not db_url:
             raise ValueError(
@@ -25,7 +29,7 @@ class BackendDBProtocol(BaseBackendProtocol):
     async def get_db_connection(  # type: ignore[override]
         self,
     ) -> AsyncGenerator[Prisma, None]:
-        db_url = await self.get_db_url()
+        db_url = await BackendDBProtocol.get_db_url()
         db = Prisma(datasource={"url": db_url})
         await db.connect()
         try:
@@ -65,7 +69,8 @@ class BackendDBProtocol(BaseBackendProtocol):
 
 
 class FrontendDBProtocol(BaseFrontendProtocol):
-    async def get_db_url(self) -> str:
+    @staticmethod
+    async def get_db_url() -> str:
         db_url: str = environ.get("DATABASE_URL", None)  # type: ignore[assignment,arg-type]
         if not db_url:
             raise ValueError(
@@ -79,7 +84,7 @@ class FrontendDBProtocol(BaseFrontendProtocol):
     async def get_db_connection(  # type: ignore[override]
         self,
     ) -> AsyncGenerator[Prisma, None]:
-        db_url = await self.get_db_url()
+        db_url = await FrontendDBProtocol.get_db_url()
         db = Prisma(datasource={"url": db_url})
         await db.connect()
         try:
