@@ -406,13 +406,14 @@ async def get_all_deployment_auth_tokens(
             status_code=403, detail="User does not have access to this deployment"
         )
 
-    async with PrismaBackendDB().get_authtoken_connection() as authtoken:
-        auth_tokens = await authtoken.find_many(
-            where={"deployment_uuid": deployment_uuid, "user_uuid": user_uuid},
-        )
+    auth_tokens = await backend_db.find_many_auth_token(
+        user_uuid=user_uuid, deployment_uuid=deployment_uuid
+    )
     return [
         DeploymentAuthTokenInfo(
-            uuid=auth_token.uuid, name=auth_token.name, expiry=auth_token.expiry
+            uuid=auth_token["uuid"],
+            name=auth_token["name"],
+            expiry=auth_token["expiry"],
         )
         for auth_token in auth_tokens
     ]
@@ -434,16 +435,13 @@ async def delete_deployment_auth_token(
             status_code=403, detail="User does not have access to this deployment"
         )
 
-    async with PrismaBackendDB().get_authtoken_connection() as authtoken:
-        auth_token = await authtoken.delete(
-            where={  # type: ignore[typeddict-unknown-key]
-                "uuid": auth_token_uuid,
-                "deployment_uuid": deployment_uuid,
-                "user_uuid": user_uuid,
-            },
-        )
+    auth_token = await backend_db.delete_auth_token(
+        auth_token_uuid=auth_token_uuid,
+        deployment_uuid=deployment_uuid,
+        user_uuid=user_uuid,
+    )
     return DeploymentAuthTokenInfo(
-        uuid=auth_token.uuid,  # type: ignore[union-attr]
-        name=auth_token.name,  # type: ignore[union-attr]
-        expiry=auth_token.expiry,  # type: ignore[union-attr]
+        uuid=auth_token["uuid"],  # type: ignore[union-attr]
+        name=auth_token["name"],  # type: ignore[union-attr]
+        expiry=auth_token["expiry"],  # type: ignore[union-attr]
     )

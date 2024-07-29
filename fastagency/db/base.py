@@ -1,8 +1,10 @@
 from contextlib import asynccontextmanager
+from datetime import datetime
 from typing import (
     Any,
     AsyncGenerator,
     Dict,
+    List,
     Optional,
     Protocol,
     runtime_checkable,
@@ -15,6 +17,23 @@ class BaseBackendProtocol(Protocol):
 
     async def find_model(self, model_uuid: str) -> Dict[str, Any]: ...
     async def delete_model(self, model_uuid: str) -> Dict[str, Any]: ...
+
+    async def create_auth_token(
+        self,
+        auth_token_uuid: str,
+        name: str,
+        user_uuid: str,
+        deployment_uuid: str,
+        hashed_auth_token: str,
+        expiry: str,
+        expires_at: datetime,
+    ) -> Dict[str, Any]: ...
+    async def find_many_auth_token(
+        self, user_uuid: str, deployment_uuid: str
+    ) -> List[Dict[str, Any]]: ...
+    async def delete_auth_token(
+        self, auth_token_uuid: str, deployment_uuid: str, user_uuid: str
+    ) -> Dict[str, Any]: ...
 
     @staticmethod
     @asynccontextmanager

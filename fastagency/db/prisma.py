@@ -1,11 +1,12 @@
 from contextlib import asynccontextmanager
+from datetime import datetime
 from os import environ
-from typing import Any, AsyncGenerator, Dict, Optional, Union
+from typing import Any, AsyncGenerator, Dict, List, Optional, Union
 from uuid import UUID
 
 from fastapi import HTTPException
 from prisma import Prisma  # type: ignore[attr-defined]
-from prisma.actions import AuthTokenActions, ModelActions
+from prisma.actions import ModelActions
 
 from .base import BaseBackendProtocol, BaseFrontendProtocol
 
@@ -56,19 +57,58 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
             deleted_model = await db.model.delete(where={"uuid": model_uuid})
         return deleted_model.model_dump()
 
+    async def create_auth_token(
+        self,
+        auth_token_uuid: str,
+        name: str,
+        user_uuid: str,
+        deployment_uuid: str,
+        hashed_auth_token: str,
+        expiry: str,
+        expires_at: datetime,
+    ) -> Dict[str, Any]:
+        async with self._get_db_connection() as db:
+            created_auth_token = await db.authtoken.create(  # type: ignore[attr-defined]
+                data={
+                    "uuid": auth_token_uuid,
+                    "name": name,
+                    "user_uuid": user_uuid,
+                    "deployment_uuid": deployment_uuid,
+                    "auth_token": hashed_auth_token,
+                    "expiry": expiry,
+                    "expires_at": expires_at,
+                }
+            )
+        return created_auth_token.model_dump()
+
+    async def find_many_auth_token(
+        self, user_uuid: str, deployment_uuid: str
+    ) -> List[Dict[str, Any]]:
+        async with self._get_db_connection() as db:
+            auth_tokens = await db.authtoken.find_many(
+                where={"deployment_uuid": deployment_uuid, "user_uuid": user_uuid},
+            )
+        return [auth_token.model_dump() for auth_token in auth_tokens]
+
+    async def delete_auth_token(
+        self, auth_token_uuid: str, deployment_uuid: str, user_uuid: str
+    ) -> Dict[str, Any]:
+        async with self._get_db_connection() as db:
+            deleted_auth_token = await db.authtoken.delete(
+                where={  # type: ignore[typeddict-unknown-key]
+                    "uuid": auth_token_uuid,
+                    "deployment_uuid": deployment_uuid,
+                    "user_uuid": user_uuid,
+                },
+            )
+        return deleted_auth_token.model_dump()
+
     @asynccontextmanager
     async def get_model_connection(  # type: ignore[override]
         self,
     ) -> AsyncGenerator[ModelActions[Any], None]:
         async with self._get_db_connection() as db:
             yield db.model
-
-    @asynccontextmanager
-    async def get_authtoken_connection(  # type: ignore[override]
-        self,
-    ) -> AsyncGenerator[AuthTokenActions[Any], None]:
-        async with self._get_db_connection() as db:
-            yield db.authtoken
 
 
 class PrismaFrontendDB(BaseFrontendProtocol, PrismaBaseDB):  # type: ignore[misc]
