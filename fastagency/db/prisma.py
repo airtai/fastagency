@@ -129,7 +129,7 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
                     "expires_at": expires_at,
                 }
             )
-        return created_auth_token.model_dump()
+        return created_auth_token.model_dump()  # type: ignore[no-any-return,union-attr]
 
     async def find_many_auth_token(
         self, user_uuid: str, deployment_uuid: str
