@@ -9,7 +9,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel
 
 from ..db.base import BaseFrontendProtocol
-from ..db.prisma import BackendDBProtocol
+from ..db.prisma import PrismaBackendDB
 
 
 def generate_auth_token(length: int = 32) -> str:
@@ -83,9 +83,7 @@ async def create_deployment_auth_token(
 ) -> DeploymentAuthToken:
     frontend_db = await BaseFrontendProtocol.get_default()
     user = await frontend_db.get_user(user_uuid=user_uuid)
-    deployment = await BackendDBProtocol().find_model_using_raw(
-        model_uuid=deployment_uuid
-    )
+    deployment = await PrismaBackendDB().find_model(model_uuid=deployment_uuid)
 
     if user["uuid"] != deployment["user_uuid"]:
         raise HTTPException(
@@ -96,7 +94,7 @@ async def create_deployment_auth_token(
     auth_token = generate_auth_token()
     hashed_token = hash_auth_token(auth_token)
 
-    async with BackendDBProtocol().get_authtoken_connection() as authtoken:
+    async with PrismaBackendDB().get_authtoken_connection() as authtoken:
         await authtoken.create(  # type: ignore[attr-defined]
             data={
                 "uuid": str(uuid.uuid4()),

@@ -80,16 +80,16 @@ async def test_create_deployment_token(
 ) -> None:
     deployment_uuid = str(uuid.uuid4())
 
-    async def mock_find_model_using_raw(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.BackendDBProtocol,
-        "find_model_using_raw",
-        mock_find_model_using_raw,
+        fastagency.db.prisma.PrismaBackendDB,
+        "find_model",
+        mock_find_model,
     )
 
     token = await create_deployment_auth_token(user_uuid, deployment_uuid)
@@ -104,16 +104,16 @@ async def test_create_deployment_token_with_wrong_user_uuid(
 ) -> None:
     deployment_uuid = str(uuid.uuid4())
 
-    async def mock_find_model_using_raw(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
         return {
             "user_uuid": "random_wrong_uuid",
             "uuid": deployment_uuid,
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.BackendDBProtocol,
-        "find_model_using_raw",
-        mock_find_model_using_raw,
+        fastagency.db.prisma.PrismaBackendDB,
+        "find_model",
+        mock_find_model,
     )
 
     with pytest.raises(HTTPException) as e:
@@ -130,16 +130,16 @@ async def test_create_deployment_auth_token_route(
 ) -> None:
     deployment_uuid = str(uuid.uuid4())
 
-    async def mock_find_model_using_raw(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.BackendDBProtocol,
-        "find_model_using_raw",
-        mock_find_model_using_raw,
+        fastagency.db.prisma.PrismaBackendDB,
+        "find_model",
+        mock_find_model,
     )
 
     response = client.post(
@@ -158,16 +158,16 @@ async def test_get_all_deployment_auth_tokens(
 ) -> None:
     deployment_uuid = str(uuid.uuid4())
 
-    async def mock_find_model_using_raw(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.BackendDBProtocol,
-        "find_model_using_raw",
-        mock_find_model_using_raw,
+        fastagency.db.prisma.PrismaBackendDB,
+        "find_model",
+        mock_find_model,
     )
 
     response = client.post(
@@ -177,9 +177,9 @@ async def test_get_all_deployment_auth_tokens(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.db.prisma.BackendDBProtocol,
-        "find_model_using_raw",
-        mock_find_model_using_raw,
+        fastagency.db.prisma.PrismaBackendDB,
+        "find_model",
+        mock_find_model,
     )
     response = client.get(f"/user/{user_uuid}/deployment/{deployment_uuid}")
     assert response.status_code == 200
@@ -197,16 +197,16 @@ async def test_delete_deployment_auth_token(
 ) -> None:
     deployment_uuid = str(uuid.uuid4())
 
-    async def mock_find_model_using_raw(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.BackendDBProtocol,
-        "find_model_using_raw",
-        mock_find_model_using_raw,
+        fastagency.db.prisma.PrismaBackendDB,
+        "find_model",
+        mock_find_model,
     )
 
     response = client.post(
@@ -216,9 +216,9 @@ async def test_delete_deployment_auth_token(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.db.prisma.BackendDBProtocol,
-        "find_model_using_raw",
-        mock_find_model_using_raw,
+        fastagency.db.prisma.PrismaBackendDB,
+        "find_model",
+        mock_find_model,
     )
     response = client.get(f"/user/{user_uuid}/deployment/{deployment_uuid}")
     assert len(response.json()) == 1

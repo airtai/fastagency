@@ -35,12 +35,10 @@ class PrismaBaseDB:
             await db.disconnect()
 
 
-class BackendDBProtocol(BaseBackendProtocol, PrismaBaseDB):
+class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
     ENV_VAR = "PY_DATABASE_URL"
 
-    async def find_model_using_raw(
-        self, model_uuid: Union[str, UUID]
-    ) -> Dict[str, Any]:
+    async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
         model_uuid = str(model_uuid)
         async with self.get_db_connection() as db:
             model: Optional[Dict[str, Any]] = await db.query_first(

@@ -23,7 +23,7 @@ class BaseProtocol(Protocol):
 
 @runtime_checkable
 class BaseBackendProtocol(Protocol):
-    async def find_model_using_raw(self, model_uuid: str) -> Dict[str, Any]: ...
+    async def find_model(self, model_uuid: str) -> Dict[str, Any]: ...
 
     @asynccontextmanager  # type: ignore[arg-type]
     async def get_model_connection(

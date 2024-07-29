@@ -14,7 +14,7 @@ from fastagency.saas_app_generator import (
 
 from .auth_token.auth import create_deployment_auth_token
 from .db.base import BaseFrontendProtocol
-from .db.prisma import BackendDBProtocol
+from .db.prisma import PrismaBackendDB
 from .models.base import Model, ObjectReference
 from .models.registry import Registry
 
@@ -22,7 +22,7 @@ T = TypeVar("T", bound=Model)
 
 
 async def get_model_by_uuid(model_uuid: Union[str, UUID]) -> Model:
-    model_dict = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
+    model_dict = await PrismaBackendDB().find_model(model_uuid=model_uuid)
 
     registry = Registry.get_default()
     model = registry.validate(
@@ -42,10 +42,10 @@ async def validate_tokens_and_create_gh_repo(
     model: Dict[str, Any],
     model_uuid: str,
 ) -> SaasAppGenerator:
-    found_gh_token = await BackendDBProtocol().find_model_using_raw(
+    found_gh_token = await PrismaBackendDB().find_model(
         model_uuid=model["gh_token"]["uuid"]
     )
-    found_fly_token = await BackendDBProtocol().find_model_using_raw(
+    found_fly_token = await PrismaBackendDB().find_model(
         model_uuid=model["fly_token"]["uuid"]
     )
 
@@ -79,9 +79,9 @@ async def deploy_saas_app(
 
     await asyncify(saas_app.execute)()
 
-    found_model = await BackendDBProtocol().find_model_using_raw(model_uuid=model_uuid)
+    found_model = await PrismaBackendDB().find_model(model_uuid=model_uuid)
     found_model["json_str"]["app_deploy_status"] = "completed"
-    async with BackendDBProtocol().get_model_connection() as model:
+    async with PrismaBackendDB().get_model_connection() as model:
         await model.update(
             where={"uuid": found_model["uuid"]},  # type: ignore[arg-type]
             data={  # type: ignore[typeddict-unknown-key]
@@ -124,7 +124,7 @@ async def add_model_to_user(
 
         frontend_db = await BaseFrontendProtocol.get_default()
         await frontend_db.get_user(user_uuid=user_uuid)
-        async with BackendDBProtocol().get_model_connection() as m:
+        async with PrismaBackendDB().get_model_connection() as m:
             await m.create(
                 data={
                     "uuid": model_uuid,
@@ -207,7 +207,7 @@ async def get_all_models_for_user(
     if type_name:
         filters["type_name"] = type_name
 
-    async with BackendDBProtocol().get_model_connection() as model:
+    async with PrismaBackendDB().get_model_connection() as model:
         models = await model.find_many(where=filters)  # type: ignore[arg-type]
 
     return models  # type: ignore[no-any-return]

@@ -42,7 +42,7 @@ search:
                 - [BaseFrontendProtocol](api/fastagency/db/base/BaseFrontendProtocol.md)
                 - [BaseProtocol](api/fastagency/db/base/BaseProtocol.md)
             - prisma
-                - [BackendDBProtocol](api/fastagency/db/prisma/BackendDBProtocol.md)
+                - [PrismaBackendDB](api/fastagency/db/prisma/PrismaBackendDB.md)
                 - [PrismaBaseDB](api/fastagency/db/prisma/PrismaBaseDB.md)
                 - [PrismaFrontendDB](api/fastagency/db/prisma/PrismaFrontendDB.md)
         - faststream_app
