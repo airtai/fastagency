@@ -40,7 +40,6 @@ search:
             - base
                 - [BaseBackendProtocol](api/fastagency/db/base/BaseBackendProtocol.md)
                 - [BaseFrontendProtocol](api/fastagency/db/base/BaseFrontendProtocol.md)
-                - [BaseProtocol](api/fastagency/db/base/BaseProtocol.md)
             - prisma
                 - [PrismaBackendDB](api/fastagency/db/prisma/PrismaBackendDB.md)
                 - [PrismaBaseDB](api/fastagency/db/prisma/PrismaBaseDB.md)

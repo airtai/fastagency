@@ -8,17 +8,7 @@ from typing import (
     runtime_checkable,
 )
 
-from prisma import Prisma  # type: ignore[attr-defined]
 from prisma.actions import AuthTokenActions, ModelActions
-
-
-@runtime_checkable
-class BaseProtocol(Protocol):
-    @staticmethod
-    async def get_db_url(env_var: str) -> str: ...
-
-    @asynccontextmanager  # type: ignore[arg-type]
-    async def get_db_connection(self) -> AsyncGenerator[Prisma, None]: ...
 
 
 @runtime_checkable
