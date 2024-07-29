@@ -1,6 +1,12 @@
 from contextlib import asynccontextmanager
-from os import environ
-from typing import Any, AsyncGenerator, Dict, Optional, Protocol, runtime_checkable
+from typing import (
+    Any,
+    AsyncGenerator,
+    Dict,
+    Optional,
+    Protocol,
+    runtime_checkable,
+)
 
 from prisma import Prisma  # type: ignore[attr-defined]
 from prisma.actions import AuthTokenActions, ModelActions
@@ -16,33 +22,7 @@ class BaseProtocol(Protocol):
 
 
 @runtime_checkable
-class BaseDBProtocol(Protocol):
-    ENV_VAR: str
-
-    @staticmethod
-    async def get_db_url(env_var: str) -> str:
-        db_url: Optional[str] = environ.get(env_var, None)
-        if not db_url:
-            raise ValueError(
-                f"No database URL provided nor set as environment variable '{env_var}'"
-            )
-        if "connect_timeout" not in db_url:
-            db_url += "?connect_timeout=60"
-        return db_url
-
-    @asynccontextmanager
-    async def get_db_connection(self) -> AsyncGenerator[Prisma, None]:
-        db_url = await self.get_db_url(self.ENV_VAR)
-        db = Prisma(datasource={"url": db_url})
-        await db.connect()
-        try:
-            yield db
-        finally:
-            await db.disconnect()
-
-
-@runtime_checkable
-class BaseBackendProtocol(BaseDBProtocol, Protocol):
+class BaseBackendProtocol(Protocol):
     async def find_model_using_raw(self, model_uuid: str) -> Dict[str, Any]: ...
 
     @asynccontextmanager  # type: ignore[arg-type]
@@ -57,5 +37,21 @@ class BaseBackendProtocol(BaseDBProtocol, Protocol):
 
 
 @runtime_checkable
-class BaseFrontendProtocol(BaseDBProtocol, Protocol):
+class BaseFrontendProtocol(Protocol):
+    _default_db: Optional["BaseFrontendProtocol"] = None
+
     async def get_user(self, user_uuid: str) -> Dict[str, Any]: ...
+
+    @staticmethod
+    @asynccontextmanager
+    async def set_default(db: "BaseFrontendProtocol") -> AsyncGenerator[None, None]:
+        old_default = BaseFrontendProtocol._default_db
+        try:
+            BaseFrontendProtocol._default_db = db
+            yield
+        finally:
+            BaseFrontendProtocol._default_db = old_default
+
+    @staticmethod
+    async def get_default() -> Optional["BaseFrontendProtocol"]:
+        return BaseFrontendProtocol._default_db

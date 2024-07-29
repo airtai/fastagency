@@ -13,7 +13,8 @@ from fastagency.saas_app_generator import (
 )
 
 from .auth_token.auth import create_deployment_auth_token
-from .db.prisma import BackendDBProtocol, FrontendDBProtocol
+from .db.base import BaseFrontendProtocol
+from .db.prisma import BackendDBProtocol
 from .models.base import Model, ObjectReference
 from .models.registry import Registry
 
@@ -121,7 +122,8 @@ async def add_model_to_user(
             updated_validated_model_dict["gh_repo_url"] = saas_app.gh_repo_url
             validated_model_json = json.dumps(updated_validated_model_dict)
 
-        await FrontendDBProtocol().get_user(user_uuid=user_uuid)
+        frontend_db = await BaseFrontendProtocol.get_default()
+        await frontend_db.get_user(user_uuid=user_uuid)
         async with BackendDBProtocol().get_model_connection() as m:
             await m.create(
                 data={

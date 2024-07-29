@@ -1,5 +1,6 @@
 import json
 import logging
+from contextlib import asynccontextmanager
 from os import environ
 from typing import Annotated, Any, Dict, List, Optional, Tuple, Union
 from uuid import UUID
@@ -12,7 +13,8 @@ from prisma.models import Model
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
-from .db.prisma import BackendDBProtocol, FrontendDBProtocol
+from .db.base import BaseFrontendProtocol
+from .db.prisma import BackendDBProtocol, PrismaFrontendDB
 from .helpers import (
     add_model_to_user,
     create_model,
@@ -23,7 +25,14 @@ from .models.toolboxes.toolbox import Toolbox
 
 logging.basicConfig(level=logging.INFO)
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with BaseFrontendProtocol.set_default(PrismaFrontendDB()):
+        yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/models/schemas")
@@ -136,7 +145,8 @@ async def add_model(
 
 
 async def create_toolbox_for_new_user(user_uuid: Union[str, UUID]) -> Dict[str, Any]:
-    await FrontendDBProtocol().get_user(user_uuid=user_uuid)  # type: ignore[arg-type]
+    frontend_db = await BaseFrontendProtocol.get_default()
+    await frontend_db.get_user(user_uuid=user_uuid)  # type: ignore[arg-type]
 
     domain = environ.get("DOMAIN", "localhost")
     toolbox_openapi_url = (
@@ -382,7 +392,8 @@ class DeploymentAuthTokenInfo(BaseModel):
 async def get_all_deployment_auth_tokens(
     user_uuid: str, deployment_uuid: str
 ) -> List[DeploymentAuthTokenInfo]:
-    user = await FrontendDBProtocol().get_user(user_uuid=user_uuid)
+    frontend_db = await BaseFrontendProtocol.get_default()
+    user = await frontend_db.get_user(user_uuid=user_uuid)
     deployment = await BackendDBProtocol().find_model_using_raw(
         model_uuid=deployment_uuid
     )
@@ -410,7 +421,8 @@ async def delete_deployment_auth_token(
     deployment_uuid: str,
     auth_token_uuid: str,
 ) -> DeploymentAuthTokenInfo:
-    user = await FrontendDBProtocol().get_user(user_uuid=user_uuid)
+    frontend_db = await BaseFrontendProtocol.get_default()
+    user = await frontend_db.get_user(user_uuid=user_uuid)
     deployment = await BackendDBProtocol().find_model_using_raw(
         model_uuid=deployment_uuid
     )

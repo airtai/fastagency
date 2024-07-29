@@ -20,6 +20,7 @@ search:
             - [get_all_models](api/fastagency/app/get_all_models.md)
             - [get_azure_llm_client](api/fastagency/app/get_azure_llm_client.md)
             - [get_models_schemas](api/fastagency/app/get_models_schemas.md)
+            - [lifespan](api/fastagency/app/lifespan.md)
             - [mask](api/fastagency/app/mask.md)
             - [models_delete](api/fastagency/app/models_delete.md)
             - [setup_user](api/fastagency/app/setup_user.md)
@@ -38,12 +39,12 @@ search:
         - db
             - base
                 - [BaseBackendProtocol](api/fastagency/db/base/BaseBackendProtocol.md)
-                - [BaseDBProtocol](api/fastagency/db/base/BaseDBProtocol.md)
                 - [BaseFrontendProtocol](api/fastagency/db/base/BaseFrontendProtocol.md)
                 - [BaseProtocol](api/fastagency/db/base/BaseProtocol.md)
             - prisma
                 - [BackendDBProtocol](api/fastagency/db/prisma/BackendDBProtocol.md)
-                - [FrontendDBProtocol](api/fastagency/db/prisma/FrontendDBProtocol.md)
+                - [PrismaBaseDB](api/fastagency/db/prisma/PrismaBaseDB.md)
+                - [PrismaFrontendDB](api/fastagency/db/prisma/PrismaFrontendDB.md)
         - faststream_app
             - [ping_handler](api/fastagency/faststream_app/ping_handler.md)
         - helpers
@@ -57,6 +58,8 @@ search:
             - [get_model_by_uuid](api/fastagency/helpers/get_model_by_uuid.md)
             - [validate_tokens_and_create_gh_repo](api/fastagency/helpers/validate_tokens_and_create_gh_repo.md)
         - io
+            - app
+                - [lifespan](api/fastagency/io/app/lifespan.md)
             - ionats
                 - [ErrorResoponseModel](api/fastagency/io/ionats/ErrorResoponseModel.md)
                 - [IONats](api/fastagency/io/ionats/IONats.md)

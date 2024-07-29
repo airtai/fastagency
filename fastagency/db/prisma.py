@@ -1,14 +1,41 @@
 from contextlib import asynccontextmanager
+from os import environ
 from typing import Any, AsyncGenerator, Dict, Optional, Union
 from uuid import UUID
 
 from fastapi import HTTPException
+from prisma import Prisma  # type: ignore[attr-defined]
 from prisma.actions import AuthTokenActions, ModelActions
 
 from .base import BaseBackendProtocol, BaseFrontendProtocol
 
 
-class BackendDBProtocol(BaseBackendProtocol):
+class PrismaBaseDB:
+    ENV_VAR: str
+
+    @staticmethod
+    async def get_db_url(env_var: str) -> str:
+        db_url: Optional[str] = environ.get(env_var, None)
+        if not db_url:
+            raise ValueError(
+                f"No database URL provided nor set as environment variable '{env_var}'"
+            )
+        if "connect_timeout" not in db_url:
+            db_url += "?connect_timeout=60"
+        return db_url
+
+    @asynccontextmanager
+    async def get_db_connection(self) -> AsyncGenerator[Prisma, None]:
+        db_url = await self.get_db_url(self.ENV_VAR)
+        db = Prisma(datasource={"url": db_url})
+        await db.connect()
+        try:
+            yield db
+        finally:
+            await db.disconnect()
+
+
+class BackendDBProtocol(BaseBackendProtocol, PrismaBaseDB):
     ENV_VAR = "PY_DATABASE_URL"
 
     async def find_model_using_raw(
@@ -41,7 +68,7 @@ class BackendDBProtocol(BaseBackendProtocol):
             yield db.authtoken
 
 
-class FrontendDBProtocol(BaseFrontendProtocol):  # type: ignore[misc]
+class PrismaFrontendDB(BaseFrontendProtocol, PrismaBaseDB):  # type: ignore[misc]
     ENV_VAR = "DATABASE_URL"
 
     async def get_user(self, user_uuid: Union[int, str]) -> Any:
