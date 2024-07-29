@@ -2,14 +2,13 @@ import json
 import logging
 from contextlib import asynccontextmanager
 from os import environ
-from typing import Annotated, Any, Dict, List, Optional, Tuple, Union
+from typing import Annotated, Any, AsyncGenerator, Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
 import httpx
 import yaml
 from fastapi import BackgroundTasks, Body, FastAPI, HTTPException, Path
 from openai import AsyncAzureOpenAI
-from prisma.models import Model
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
@@ -27,7 +26,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     prisma_backend_db = PrismaBackendDB()
     prisma_frontend_db = PrismaFrontendDB()
 
@@ -94,7 +93,7 @@ async def validate_secret_model(
     type: str = "secret"
 
     backend_db = await BaseBackendProtocol.get_default()
-    found_model = await backend_db.find_model(model_uuid=model_uuid)
+    found_model = await backend_db.find_model(model_uuid=str(model_uuid))
     if "api_key" in found_model["json_str"]:
         model["api_key"] = found_model["json_str"]["api_key"]
     try:
@@ -118,7 +117,7 @@ async def get_all_models(
 ) -> List[Any]:
     models = await get_all_models_for_user(user_uuid=user_uuid, type_name=type_name)
 
-    ta = TypeAdapter(List[Model])
+    ta = TypeAdapter(List[Dict[str, Any]])
     ret_val_without_mask = ta.dump_python(models, serialize_as_any=True)  # type: ignore[call-arg]
 
     ret_val = []

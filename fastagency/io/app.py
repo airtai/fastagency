@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from os import environ
-from typing import Optional
+from typing import AsyncGenerator, Optional
 
 from faststream import ContextRepo, FastStream
 from faststream.nats import JStream, NatsBroker
@@ -21,7 +21,7 @@ print("Starting IONats faststream app...")  # noqa
 
 
 @asynccontextmanager
-async def lifespan(context: ContextRepo):
+async def lifespan(context: ContextRepo) -> AsyncGenerator[None, None]:
     prisma_backend_db = PrismaBackendDB()
     prisma_frontend_db = PrismaFrontendDB()
 

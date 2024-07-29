@@ -56,7 +56,7 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
                     "json_str": json_str,  # type: ignore[typeddict-item]
                 }
             )
-        return created_model.model_dump()
+        return created_model.model_dump()  # type: ignore[no-any-return]
 
     async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
         model_uuid = str(model_uuid)
@@ -100,12 +100,12 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
                     "user_uuid": user_uuid,
                 },
             )
-        return updated_model.model_dump()
+        return updated_model.model_dump()  # type: ignore[no-any-return,union-attr]
 
     async def delete_model(self, model_uuid: str) -> Dict[str, Any]:
         async with self._get_db_connection() as db:
             deleted_model = await db.model.delete(where={"uuid": model_uuid})
-        return deleted_model.model_dump()
+        return deleted_model.model_dump()  # type: ignore[no-any-return,union-attr]
 
     async def create_auth_token(
         self,
@@ -151,7 +151,7 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
                     "user_uuid": user_uuid,
                 },
             )
-        return deleted_auth_token.model_dump()
+        return deleted_auth_token.model_dump()  # type: ignore[no-any-return,union-attr]
 
 
 class PrismaFrontendDB(BaseFrontendProtocol, PrismaBaseDB):  # type: ignore[misc]

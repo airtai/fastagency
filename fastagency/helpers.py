@@ -22,7 +22,7 @@ T = TypeVar("T", bound=Model)
 
 async def get_model_by_uuid(model_uuid: Union[str, UUID]) -> Model:
     backend_db = await BaseBackendProtocol.get_default()
-    model_dict = await backend_db.find_model(model_uuid=model_uuid)
+    model_dict = await backend_db.find_model(model_uuid=str(model_uuid))
 
     registry = Registry.get_default()
     model = registry.validate(
@@ -197,7 +197,9 @@ async def get_all_models_for_user(
     type_name: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     backend_db = await BaseBackendProtocol.get_default()
-    models = await backend_db.find_many_model(user_uuid=user_uuid, type_name=type_name)
+    models = await backend_db.find_many_model(
+        user_uuid=str(user_uuid), type_name=type_name
+    )
 
     return models  # type: ignore[no-any-return]
 

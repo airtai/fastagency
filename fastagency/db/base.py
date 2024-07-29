@@ -65,8 +65,8 @@ class BaseBackendProtocol(Protocol):
             BaseBackendProtocol._default_db = old_default
 
     @staticmethod
-    async def get_default() -> Optional["BaseBackendProtocol"]:
-        return BaseBackendProtocol._default_db
+    async def get_default() -> "BaseBackendProtocol":
+        return BaseBackendProtocol._default_db  # type: ignore[return-value]
 
 
 @runtime_checkable
@@ -86,5 +86,5 @@ class BaseFrontendProtocol(Protocol):
             BaseFrontendProtocol._default_db = old_default
 
     @staticmethod
-    async def get_default() -> Optional["BaseFrontendProtocol"]:
-        return BaseFrontendProtocol._default_db
+    async def get_default() -> "BaseFrontendProtocol":
+        return BaseFrontendProtocol._default_db  # type: ignore[return-value]
