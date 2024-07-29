@@ -6,7 +6,6 @@ from uuid import UUID
 
 from fastapi import HTTPException
 from prisma import Prisma  # type: ignore[attr-defined]
-from prisma.actions import ModelActions
 
 from .base import BaseBackendProtocol, BaseFrontendProtocol
 
@@ -39,6 +38,26 @@ class PrismaBaseDB:
 class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
     ENV_VAR = "PY_DATABASE_URL"
 
+    async def create_model(
+        self,
+        model_uuid: str,
+        user_uuid: str,
+        type_name: str,
+        model_name: str,
+        json_str: str,
+    ) -> Dict[str, Any]:
+        async with self._get_db_connection() as db:
+            created_model = await db.model.create(
+                data={
+                    "uuid": model_uuid,
+                    "user_uuid": user_uuid,
+                    "type_name": type_name,
+                    "model_name": model_name,
+                    "json_str": json_str,  # type: ignore[typeddict-item]
+                }
+            )
+        return created_model.model_dump()
+
     async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
         model_uuid = str(model_uuid)
         async with self._get_db_connection() as db:
@@ -51,6 +70,37 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
                 status_code=404, detail="Something went wrong. Please try again later."
             )
         return model
+
+    async def find_many_model(
+        self, user_uuid: str, type_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        filters: Dict[str, Any] = {"user_uuid": user_uuid}
+        if type_name:
+            filters["type_name"] = type_name
+
+        async with self._get_db_connection() as db:
+            models = await db.model.find_many(where=filters)  # type: ignore[arg-type]
+        return [model.model_dump() for model in models]
+
+    async def update_model(
+        self,
+        model_uuid: str,
+        user_uuid: str,
+        type_name: str,
+        model_name: str,
+        json_str: str,
+    ) -> Dict[str, Any]:
+        async with self._get_db_connection() as db:
+            updated_model = await db.model.update(
+                where={"uuid": model_uuid},  # type: ignore[arg-type]
+                data={  # type: ignore[typeddict-unknown-key]
+                    "type_name": type_name,
+                    "model_name": model_name,
+                    "json_str": json_str,  # type: ignore[typeddict-item]
+                    "user_uuid": user_uuid,
+                },
+            )
+        return updated_model.model_dump()
 
     async def delete_model(self, model_uuid: str) -> Dict[str, Any]:
         async with self._get_db_connection() as db:
@@ -102,13 +152,6 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
                 },
             )
         return deleted_auth_token.model_dump()
-
-    @asynccontextmanager
-    async def get_model_connection(  # type: ignore[override]
-        self,
-    ) -> AsyncGenerator[ModelActions[Any], None]:
-        async with self._get_db_connection() as db:
-            yield db.model
 
 
 class PrismaFrontendDB(BaseFrontendProtocol, PrismaBaseDB):  # type: ignore[misc]

@@ -200,16 +200,13 @@ async def update_model(
 
     backend_db = await BaseBackendProtocol.get_default()
     found_model = await backend_db.find_model(model_uuid=model_uuid)
-    async with PrismaBackendDB().get_model_connection() as m:
-        await m.update(
-            where={"uuid": found_model["uuid"]},  # type: ignore[arg-type]
-            data={  # type: ignore[typeddict-unknown-key]
-                "type_name": type_name,
-                "model_name": model_name,
-                "json_str": validated_model.model_dump_json(),  # type: ignore[typeddict-item]
-                "user_uuid": user_uuid,
-            },
-        )
+    await backend_db.update_model(
+        model_uuid=found_model["uuid"],
+        user_uuid=user_uuid,
+        type_name=type_name,
+        model_name=model_name,
+        json_str=validated_model.model_dump_json(),
+    )
 
     return validated_model.model_dump()
 

@@ -15,7 +15,26 @@ from typing import (
 class BaseBackendProtocol(Protocol):
     _default_db: Optional["BaseBackendProtocol"] = None
 
+    async def create_model(
+        self,
+        model_uuid: str,
+        user_uuid: str,
+        type_name: str,
+        model_name: str,
+        json_str: str,
+    ) -> Dict[str, Any]: ...
     async def find_model(self, model_uuid: str) -> Dict[str, Any]: ...
+    async def find_many_model(
+        self, user_uuid: str, type_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]: ...
+    async def update_model(
+        self,
+        model_uuid: str,
+        user_uuid: str,
+        type_name: str,
+        model_name: str,
+        json_str: str,
+    ) -> Dict[str, Any]: ...
     async def delete_model(self, model_uuid: str) -> Dict[str, Any]: ...
 
     async def create_auth_token(
