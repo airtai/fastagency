@@ -13,7 +13,7 @@ from fastagency.saas_app_generator import (
 )
 
 from .auth_token.auth import create_deployment_auth_token
-from .db.base import BaseFrontendProtocol
+from .db.base import BaseBackendProtocol, BaseFrontendProtocol
 from .db.prisma import PrismaBackendDB
 from .models.base import Model, ObjectReference
 from .models.registry import Registry
@@ -22,7 +22,8 @@ T = TypeVar("T", bound=Model)
 
 
 async def get_model_by_uuid(model_uuid: Union[str, UUID]) -> Model:
-    model_dict = await PrismaBackendDB().find_model(model_uuid=model_uuid)
+    backend_db = await BaseBackendProtocol.get_default()
+    model_dict = await backend_db.find_model(model_uuid=model_uuid)
 
     registry = Registry.get_default()
     model = registry.validate(
@@ -42,12 +43,9 @@ async def validate_tokens_and_create_gh_repo(
     model: Dict[str, Any],
     model_uuid: str,
 ) -> SaasAppGenerator:
-    found_gh_token = await PrismaBackendDB().find_model(
-        model_uuid=model["gh_token"]["uuid"]
-    )
-    found_fly_token = await PrismaBackendDB().find_model(
-        model_uuid=model["fly_token"]["uuid"]
-    )
+    backend_db = await BaseBackendProtocol.get_default()
+    found_gh_token = await backend_db.find_model(model_uuid=model["gh_token"]["uuid"])
+    found_fly_token = await backend_db.find_model(model_uuid=model["fly_token"]["uuid"])
 
     found_gh_token_uuid = found_gh_token["json_str"]["gh_token"]
     found_fly_token_uuid = found_fly_token["json_str"]["fly_token"]
@@ -79,7 +77,8 @@ async def deploy_saas_app(
 
     await asyncify(saas_app.execute)()
 
-    found_model = await PrismaBackendDB().find_model(model_uuid=model_uuid)
+    backend_db = await BaseBackendProtocol.get_default()
+    found_model = await backend_db.find_model(model_uuid=model_uuid)
     found_model["json_str"]["app_deploy_status"] = "completed"
     async with PrismaBackendDB().get_model_connection() as model:
         await model.update(

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from fastapi import HTTPException
 from pydantic import BaseModel
 
-from ..db.base import BaseFrontendProtocol
+from ..db.base import BaseBackendProtocol, BaseFrontendProtocol
 from ..db.prisma import PrismaBackendDB
 
 
@@ -82,8 +82,9 @@ async def create_deployment_auth_token(
     expiry: str = "99999d",
 ) -> DeploymentAuthToken:
     frontend_db = await BaseFrontendProtocol.get_default()
+    backend_db = await BaseBackendProtocol.get_default()
     user = await frontend_db.get_user(user_uuid=user_uuid)
-    deployment = await PrismaBackendDB().find_model(model_uuid=deployment_uuid)
+    deployment = await backend_db.find_model(model_uuid=deployment_uuid)
 
     if user["uuid"] != deployment["user_uuid"]:
         raise HTTPException(

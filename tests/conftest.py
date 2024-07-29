@@ -25,8 +25,8 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-from fastagency.db.base import BaseFrontendProtocol
-from fastagency.db.prisma import PrismaFrontendDB
+from fastagency.db.base import BaseBackendProtocol, BaseFrontendProtocol
+from fastagency.db.prisma import PrismaBackendDB, PrismaFrontendDB
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent
 from fastagency.models.agents.user_proxy import UserProxyAgent
@@ -47,10 +47,13 @@ F = TypeVar("F", bound=Callable[..., Any])
 
 @pytest_asyncio.fixture(scope="session", autouse=True)  # type: ignore[misc]
 async def set_default_db() -> AsyncGenerator[None, None]:
-    # prisma_backend_db = PrismaBackendDB()
+    prisma_backend_db = PrismaBackendDB()
     prisma_frontend_db = PrismaFrontendDB()
 
-    async with BaseFrontendProtocol.set_default(prisma_frontend_db):
+    async with (
+        BaseBackendProtocol.set_default(prisma_backend_db),
+        BaseFrontendProtocol.set_default(prisma_frontend_db),
+    ):
         yield
 
 
@@ -59,7 +62,7 @@ async def user_uuid() -> AsyncIterator[str]:
     try:
         random_id = random.randint(1, 1_000_000)
         generated_uuid = str(uuid.uuid4())
-        async with PrismaFrontendDB().get_db_connection() as db:
+        async with PrismaFrontendDB()._get_db_connection() as db:
             insert_query = (
                 'INSERT INTO "User" (email, username, uuid) VALUES ('
                 + f"'user{random_id}@airt.ai', 'user{random_id}', '{generated_uuid}')"

@@ -14,7 +14,7 @@ class PrismaBaseDB:
     ENV_VAR: str
 
     @staticmethod
-    async def get_db_url(env_var: str) -> str:
+    async def _get_db_url(env_var: str) -> str:
         db_url: Optional[str] = environ.get(env_var, None)
         if not db_url:
             raise ValueError(
@@ -25,8 +25,8 @@ class PrismaBaseDB:
         return db_url
 
     @asynccontextmanager
-    async def get_db_connection(self) -> AsyncGenerator[Prisma, None]:
-        db_url = await self.get_db_url(self.ENV_VAR)
+    async def _get_db_connection(self) -> AsyncGenerator[Prisma, None]:
+        db_url = await self._get_db_url(self.ENV_VAR)
         db = Prisma(datasource={"url": db_url})
         await db.connect()
         try:
@@ -40,7 +40,7 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
 
     async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
         model_uuid = str(model_uuid)
-        async with self.get_db_connection() as db:
+        async with self._get_db_connection() as db:
             model: Optional[Dict[str, Any]] = await db.query_first(
                 'SELECT * from "Model" where uuid='  # nosec: [B608]
                 + f"'{model_uuid}'"
@@ -51,18 +51,23 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
             )
         return model
 
+    async def delete_model(self, model_uuid: str) -> Dict[str, Any]:
+        async with self._get_db_connection() as db:
+            deleted_model = await db.model.delete(where={"uuid": model_uuid})
+        return deleted_model.model_dump()
+
     @asynccontextmanager
     async def get_model_connection(  # type: ignore[override]
         self,
     ) -> AsyncGenerator[ModelActions[Any], None]:
-        async with self.get_db_connection() as db:
+        async with self._get_db_connection() as db:
             yield db.model
 
     @asynccontextmanager
     async def get_authtoken_connection(  # type: ignore[override]
         self,
     ) -> AsyncGenerator[AuthTokenActions[Any], None]:
-        async with self.get_db_connection() as db:
+        async with self._get_db_connection() as db:
             yield db.authtoken
 
 
@@ -70,7 +75,7 @@ class PrismaFrontendDB(BaseFrontendProtocol, PrismaBaseDB):  # type: ignore[misc
     ENV_VAR = "DATABASE_URL"
 
     async def get_user(self, user_uuid: Union[int, str]) -> Any:
-        async with self.get_db_connection() as db:
+        async with self._get_db_connection() as db:
             select_query = 'SELECT * from "User" where uuid=' + f"'{user_uuid}'"  # nosec: [B608]
             user = await db.query_first(
                 select_query  # nosec: [B608]

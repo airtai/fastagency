@@ -13,7 +13,7 @@ from prisma.models import Model
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
-from .db.base import BaseFrontendProtocol
+from .db.base import BaseBackendProtocol, BaseFrontendProtocol
 from .db.prisma import PrismaBackendDB, PrismaFrontendDB
 from .helpers import (
     add_model_to_user,
@@ -28,7 +28,13 @@ logging.basicConfig(level=logging.INFO)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with BaseFrontendProtocol.set_default(PrismaFrontendDB()):
+    prisma_backend_db = PrismaBackendDB()
+    prisma_frontend_db = PrismaFrontendDB()
+
+    async with (
+        BaseBackendProtocol.set_default(prisma_backend_db),
+        BaseFrontendProtocol.set_default(prisma_frontend_db),
+    ):
         yield
 
 
@@ -87,7 +93,8 @@ async def validate_secret_model(
 ) -> Dict[str, Any]:
     type: str = "secret"
 
-    found_model = await PrismaBackendDB().find_model(model_uuid=model_uuid)
+    backend_db = await BaseBackendProtocol.get_default()
+    found_model = await backend_db.find_model(model_uuid=model_uuid)
     if "api_key" in found_model["json_str"]:
         model["api_key"] = found_model["json_str"]["api_key"]
     try:
@@ -191,7 +198,8 @@ async def update_model(
     registry = Registry.get_default()
     validated_model = registry.validate(type_name, model_name, model)
 
-    found_model = await PrismaBackendDB().find_model(model_uuid=model_uuid)
+    backend_db = await BaseBackendProtocol.get_default()
+    found_model = await backend_db.find_model(model_uuid=model_uuid)
     async with PrismaBackendDB().get_model_connection() as m:
         await m.update(
             where={"uuid": found_model["uuid"]},  # type: ignore[arg-type]
@@ -210,13 +218,10 @@ async def update_model(
 async def models_delete(
     user_uuid: str, type_name: str, model_uuid: str
 ) -> Dict[str, Any]:
-    found_model = await PrismaBackendDB().find_model(model_uuid=model_uuid)
-    async with PrismaBackendDB().get_model_connection() as m:
-        model = await m.delete(
-            where={"uuid": found_model["uuid"]}  # type: ignore[arg-type]
-        )
-
-    return model.json_str  # type: ignore
+    backend_db = await BaseBackendProtocol.get_default()
+    found_model = await backend_db.find_model(model_uuid=model_uuid)
+    model = await backend_db.delete_model(model_uuid=found_model["uuid"])
+    return model["json_str"]  # type: ignore
 
 
 def get_azure_llm_client() -> Tuple[AsyncAzureOpenAI, str]:
@@ -349,7 +354,8 @@ async def chat(request: ChatRequest) -> Dict[str, Any]:
 
 @app.post("/deployment/{deployment_uuid}/chat")
 async def deployment_chat(deployment_uuid: str) -> Dict[str, Any]:
-    found_model = await PrismaBackendDB().find_model(model_uuid=deployment_uuid)
+    backend_db = await BaseBackendProtocol.get_default()
+    found_model = await backend_db.find_model(model_uuid=deployment_uuid)
     team_name = found_model["json_str"]["name"]
     team_uuid = found_model["json_str"]["team"]["uuid"]
 
@@ -391,8 +397,9 @@ async def get_all_deployment_auth_tokens(
     user_uuid: str, deployment_uuid: str
 ) -> List[DeploymentAuthTokenInfo]:
     frontend_db = await BaseFrontendProtocol.get_default()
+    backend_db = await BaseBackendProtocol.get_default()
     user = await frontend_db.get_user(user_uuid=user_uuid)
-    deployment = await PrismaBackendDB().find_model(model_uuid=deployment_uuid)
+    deployment = await backend_db.find_model(model_uuid=deployment_uuid)
 
     if user["uuid"] != deployment["user_uuid"]:
         raise HTTPException(  # pragma: no cover
@@ -418,8 +425,9 @@ async def delete_deployment_auth_token(
     auth_token_uuid: str,
 ) -> DeploymentAuthTokenInfo:
     frontend_db = await BaseFrontendProtocol.get_default()
+    backend_db = await BaseBackendProtocol.get_default()
     user = await frontend_db.get_user(user_uuid=user_uuid)
-    deployment = await PrismaBackendDB().find_model(model_uuid=deployment_uuid)
+    deployment = await backend_db.find_model(model_uuid=deployment_uuid)
 
     if user["uuid"] != deployment["user_uuid"]:
         raise HTTPException(  # pragma: no cover

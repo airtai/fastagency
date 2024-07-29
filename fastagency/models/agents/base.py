@@ -6,7 +6,7 @@ from typing_extensions import TypeAlias
 
 from fastagency.openapi.client import Client
 
-from ...db.prisma import PrismaBackendDB
+from ...db.base import BaseBackendProtocol
 from ..base import Model
 from ..registry import Registry
 from ..toolboxes.toolbox import ToolboxRef
@@ -54,12 +54,13 @@ class AgentBaseModel(Model):
 
     async def get_clients_from_toolboxes(self, user_id: UUID) -> List[Client]:
         clients: List[Client] = []
+        backend_db = await BaseBackendProtocol.get_default()
         for i in range(3):
             toolbox_property = getattr(self, f"toolbox_{i+1}")
             if toolbox_property is None:
                 continue
 
-            toolbox_dict = await PrismaBackendDB().find_model(toolbox_property.uuid)
+            toolbox_dict = await backend_db.find_model(toolbox_property.uuid)
             toolbox_model = toolbox_property.get_data_model()(
                 **toolbox_dict["json_str"]
             )

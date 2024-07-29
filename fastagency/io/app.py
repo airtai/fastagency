@@ -5,8 +5,8 @@ from typing import Optional
 from faststream import ContextRepo, FastStream
 from faststream.nats import JStream, NatsBroker
 
-from ..db.base import BaseFrontendProtocol
-from ..db.prisma import PrismaFrontendDB
+from ..db.base import BaseBackendProtocol, BaseFrontendProtocol
+from ..db.prisma import PrismaBackendDB, PrismaFrontendDB
 
 nats_url: Optional[str] = environ.get("NATS_URL", None)  # type: ignore[assignment]
 if nats_url is None:
@@ -22,7 +22,13 @@ print("Starting IONats faststream app...")  # noqa
 
 @asynccontextmanager
 async def lifespan(context: ContextRepo):
-    async with BaseFrontendProtocol.set_default(PrismaFrontendDB()):
+    prisma_backend_db = PrismaBackendDB()
+    prisma_frontend_db = PrismaFrontendDB()
+
+    async with (
+        BaseBackendProtocol.set_default(prisma_backend_db),
+        BaseFrontendProtocol.set_default(prisma_frontend_db),
+    ):
         yield
 
 
