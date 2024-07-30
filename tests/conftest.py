@@ -26,7 +26,7 @@ from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
 from fastagency.db.base import BackendDBProtocol, FrontendDBProtocol
-from fastagency.db.prisma import PrismaBackendDB, PrismaFrontendDB
+from fastagency.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent
 from fastagency.models.agents.user_proxy import UserProxyAgent
@@ -47,12 +47,12 @@ F = TypeVar("F", bound=Callable[..., Any])
 
 @pytest_asyncio.fixture(scope="session", autouse=True)  # type: ignore[misc]
 async def set_default_db() -> AsyncGenerator[None, None]:
-    prisma_backend_db = PrismaBackendDB()
-    prisma_frontend_db = PrismaFrontendDB()
+    backend_db = InMemoryBackendDB()
+    frontend_db = InMemoryFrontendDB()
 
     with (
-        BackendDBProtocol.set_default(prisma_backend_db),
-        FrontendDBProtocol.set_default(prisma_frontend_db),
+        BackendDBProtocol.set_default(backend_db),
+        FrontendDBProtocol.set_default(frontend_db),
     ):
         yield
 

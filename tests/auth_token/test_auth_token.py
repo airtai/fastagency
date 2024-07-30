@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 import fastagency.app
 import fastagency.auth_token.auth
 import fastagency.db
+import fastagency.db.inmemory
 import fastagency.db.prisma
 from fastagency.app import app
 from fastagency.auth_token.auth import (
@@ -87,7 +88,7 @@ async def test_create_deployment_token(
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.PrismaBackendDB,
+        fastagency.db.inmemory.InMemoryBackendDB,
         "find_model",
         mock_find_model,
     )
@@ -111,7 +112,7 @@ async def test_create_deployment_token_with_wrong_user_uuid(
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.PrismaBackendDB,
+        fastagency.db.inmemory.InMemoryBackendDB,
         "find_model",
         mock_find_model,
     )
@@ -137,7 +138,7 @@ async def test_create_deployment_auth_token_route(
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.PrismaBackendDB,
+        fastagency.db.inmemory.InMemoryBackendDB,
         "find_model",
         mock_find_model,
     )
@@ -165,7 +166,7 @@ async def test_get_all_deployment_auth_tokens(
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.PrismaBackendDB,
+        fastagency.db.inmemory.InMemoryBackendDB,
         "find_model",
         mock_find_model,
     )
@@ -177,7 +178,7 @@ async def test_get_all_deployment_auth_tokens(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.db.prisma.PrismaBackendDB,
+        fastagency.db.inmemory.InMemoryBackendDB,
         "find_model",
         mock_find_model,
     )
@@ -204,7 +205,7 @@ async def test_delete_deployment_auth_token(
         }
 
     monkeypatch.setattr(
-        fastagency.db.prisma.PrismaBackendDB,
+        fastagency.db.inmemory.InMemoryBackendDB,
         "find_model",
         mock_find_model,
     )
@@ -216,7 +217,7 @@ async def test_delete_deployment_auth_token(
     assert response.status_code == 200
 
     monkeypatch.setattr(
-        fastagency.db.prisma.PrismaBackendDB,
+        fastagency.db.inmemory.InMemoryBackendDB,
         "find_model",
         mock_find_model,
     )
