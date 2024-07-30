@@ -166,8 +166,7 @@ class InitiateModel(BaseModel):
 async def create_team(
     team_id: UUID, user_id: UUID
 ) -> Callable[[str], List[Dict[str, Any]]]:
-    backend_db = BackendDBProtocol.get_default()
-    team_dict = await backend_db.find_model(str(team_id))
+    team_dict = await BackendDBProtocol.db().find_model(str(team_id))
 
     team_model: Union[TwoAgentTeam, MultiAgentTeam]
     if "initial_agent" in team_dict["json_str"]:

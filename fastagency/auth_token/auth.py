@@ -80,10 +80,8 @@ async def create_deployment_auth_token(
     name: str = "Default deployment token",
     expiry: str = "99999d",
 ) -> DeploymentAuthToken:
-    frontend_db = FrontendDBProtocol.get_default()
-    backend_db = BackendDBProtocol.get_default()
-    user = await frontend_db.get_user(user_uuid=user_uuid)
-    deployment = await backend_db.find_model(model_uuid=deployment_uuid)
+    user = await FrontendDBProtocol.db().get_user(user_uuid=user_uuid)
+    deployment = await BackendDBProtocol.db().find_model(model_uuid=deployment_uuid)
 
     if user["uuid"] != deployment["user_uuid"]:
         raise HTTPException(
@@ -94,7 +92,7 @@ async def create_deployment_auth_token(
     auth_token = generate_auth_token()
     hashed_token = hash_auth_token(auth_token)
 
-    await backend_db.create_auth_token(
+    await BackendDBProtocol.db().create_auth_token(
         auth_token_uuid=str(uuid.uuid4()),
         name=name,
         user_uuid=user_uuid,

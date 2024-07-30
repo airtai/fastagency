@@ -71,7 +71,7 @@ class BackendDBProtocol(Protocol):
             BackendDBProtocol._default_db = old_default
 
     @staticmethod
-    def get_default() -> "BackendDBProtocol":
+    def db() -> "BackendDBProtocol":
         return BackendDBProtocol._default_db  # type: ignore[return-value]
 
 
@@ -92,5 +92,5 @@ class FrontendDBProtocol(Protocol):
             FrontendDBProtocol._default_db = old_default
 
     @staticmethod
-    def get_default() -> "FrontendDBProtocol":
+    def db() -> "FrontendDBProtocol":
         return FrontendDBProtocol._default_db  # type: ignore[return-value]

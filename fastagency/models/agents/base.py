@@ -54,13 +54,14 @@ class AgentBaseModel(Model):
 
     async def get_clients_from_toolboxes(self, user_id: UUID) -> List[Client]:
         clients: List[Client] = []
-        backend_db = BackendDBProtocol.get_default()
         for i in range(3):
             toolbox_property = getattr(self, f"toolbox_{i+1}")
             if toolbox_property is None:
                 continue
 
-            toolbox_dict = await backend_db.find_model(toolbox_property.uuid)
+            toolbox_dict = await BackendDBProtocol.db().find_model(
+                toolbox_property.uuid
+            )
             toolbox_model = toolbox_property.get_data_model()(
                 **toolbox_dict["json_str"]
             )

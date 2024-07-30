@@ -21,8 +21,7 @@ T = TypeVar("T", bound=Model)
 
 
 async def get_model_by_uuid(model_uuid: Union[str, UUID]) -> Model:
-    backend_db = BackendDBProtocol.get_default()
-    model_dict = await backend_db.find_model(model_uuid=str(model_uuid))
+    model_dict = await BackendDBProtocol.db().find_model(model_uuid=str(model_uuid))
 
     registry = Registry.get_default()
     model = registry.validate(
@@ -42,9 +41,12 @@ async def validate_tokens_and_create_gh_repo(
     model: Dict[str, Any],
     model_uuid: str,
 ) -> SaasAppGenerator:
-    backend_db = BackendDBProtocol.get_default()
-    found_gh_token = await backend_db.find_model(model_uuid=model["gh_token"]["uuid"])
-    found_fly_token = await backend_db.find_model(model_uuid=model["fly_token"]["uuid"])
+    found_gh_token = await BackendDBProtocol.db().find_model(
+        model_uuid=model["gh_token"]["uuid"]
+    )
+    found_fly_token = await BackendDBProtocol.db().find_model(
+        model_uuid=model["fly_token"]["uuid"]
+    )
 
     found_gh_token_uuid = found_gh_token["json_str"]["gh_token"]
     found_fly_token_uuid = found_fly_token["json_str"]["fly_token"]
@@ -76,10 +78,9 @@ async def deploy_saas_app(
 
     await asyncify(saas_app.execute)()
 
-    backend_db = BackendDBProtocol.get_default()
-    found_model = await backend_db.find_model(model_uuid=model_uuid)
+    found_model = await BackendDBProtocol.db().find_model(model_uuid=model_uuid)
     found_model["json_str"]["app_deploy_status"] = "completed"
-    await backend_db.update_model(
+    await BackendDBProtocol.db().update_model(
         model_uuid=found_model["uuid"],
         user_uuid=user_uuid,
         type_name=type_name,
@@ -117,10 +118,8 @@ async def add_model_to_user(
             updated_validated_model_dict["gh_repo_url"] = saas_app.gh_repo_url
             validated_model_json = json.dumps(updated_validated_model_dict)
 
-        frontend_db = FrontendDBProtocol.get_default()
-        backend_db = BackendDBProtocol.get_default()
-        await frontend_db.get_user(user_uuid=user_uuid)
-        await backend_db.create_model(
+        await FrontendDBProtocol.db().get_user(user_uuid=user_uuid)
+        await BackendDBProtocol.db().create_model(
             model_uuid=model_uuid,
             user_uuid=user_uuid,
             type_name=type_name,
@@ -196,8 +195,7 @@ async def get_all_models_for_user(
     user_uuid: Union[str, UUID],
     type_name: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
-    backend_db = BackendDBProtocol.get_default()
-    models = await backend_db.find_many_model(
+    models = await BackendDBProtocol.db().find_many_model(
         user_uuid=str(user_uuid), type_name=type_name
     )
 
