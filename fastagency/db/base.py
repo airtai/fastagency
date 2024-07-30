@@ -12,8 +12,8 @@ from typing import (
 
 
 @runtime_checkable
-class BaseBackendProtocol(Protocol):
-    _default_db: Optional["BaseBackendProtocol"] = None
+class BackendDBProtocol(Protocol):
+    _default_db: Optional["BackendDBProtocol"] = None
 
     async def create_model(
         self,
@@ -56,35 +56,35 @@ class BaseBackendProtocol(Protocol):
 
     @staticmethod
     @asynccontextmanager
-    async def set_default(db: "BaseBackendProtocol") -> AsyncGenerator[None, None]:
-        old_default = BaseBackendProtocol._default_db
+    async def set_default(db: "BackendDBProtocol") -> AsyncGenerator[None, None]:
+        old_default = BackendDBProtocol._default_db
         try:
-            BaseBackendProtocol._default_db = db
+            BackendDBProtocol._default_db = db
             yield
         finally:
-            BaseBackendProtocol._default_db = old_default
+            BackendDBProtocol._default_db = old_default
 
     @staticmethod
-    async def get_default() -> "BaseBackendProtocol":
-        return BaseBackendProtocol._default_db  # type: ignore[return-value]
+    async def get_default() -> "BackendDBProtocol":
+        return BackendDBProtocol._default_db  # type: ignore[return-value]
 
 
 @runtime_checkable
-class BaseFrontendProtocol(Protocol):
-    _default_db: Optional["BaseFrontendProtocol"] = None
+class FrontendDBProtocol(Protocol):
+    _default_db: Optional["FrontendDBProtocol"] = None
 
     async def get_user(self, user_uuid: str) -> Dict[str, Any]: ...
 
     @staticmethod
     @asynccontextmanager
-    async def set_default(db: "BaseFrontendProtocol") -> AsyncGenerator[None, None]:
-        old_default = BaseFrontendProtocol._default_db
+    async def set_default(db: "FrontendDBProtocol") -> AsyncGenerator[None, None]:
+        old_default = FrontendDBProtocol._default_db
         try:
-            BaseFrontendProtocol._default_db = db
+            FrontendDBProtocol._default_db = db
             yield
         finally:
-            BaseFrontendProtocol._default_db = old_default
+            FrontendDBProtocol._default_db = old_default
 
     @staticmethod
-    async def get_default() -> "BaseFrontendProtocol":
-        return BaseFrontendProtocol._default_db  # type: ignore[return-value]
+    async def get_default() -> "FrontendDBProtocol":
+        return FrontendDBProtocol._default_db  # type: ignore[return-value]

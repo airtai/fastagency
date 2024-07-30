@@ -7,7 +7,7 @@ from uuid import UUID
 from fastapi import HTTPException
 from prisma import Prisma  # type: ignore[attr-defined]
 
-from .base import BaseBackendProtocol, BaseFrontendProtocol
+from .base import BackendDBProtocol, FrontendDBProtocol
 
 
 class PrismaBaseDB:
@@ -35,7 +35,7 @@ class PrismaBaseDB:
             await db.disconnect()
 
 
-class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
+class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
     ENV_VAR = "PY_DATABASE_URL"
 
     async def create_model(
@@ -154,7 +154,7 @@ class PrismaBackendDB(BaseBackendProtocol, PrismaBaseDB):
         return deleted_auth_token.model_dump()  # type: ignore[no-any-return,union-attr]
 
 
-class PrismaFrontendDB(BaseFrontendProtocol, PrismaBaseDB):  # type: ignore[misc]
+class PrismaFrontendDB(FrontendDBProtocol, PrismaBaseDB):  # type: ignore[misc]
     ENV_VAR = "DATABASE_URL"
 
     async def get_user(self, user_uuid: Union[int, str]) -> Any:

@@ -13,7 +13,7 @@ from faststream.nats import NatsMessage
 from nats.js import api
 from pydantic import BaseModel
 
-from ..db.base import BaseBackendProtocol
+from ..db.base import BackendDBProtocol
 from ..models.teams.multi_agent_team import MultiAgentTeam
 from ..models.teams.two_agent_teams import TwoAgentTeam
 from .app import app, broker, stream  # noqa
@@ -166,7 +166,7 @@ class InitiateModel(BaseModel):
 async def create_team(
     team_id: UUID, user_id: UUID
 ) -> Callable[[str], List[Dict[str, Any]]]:
-    backend_db = await BaseBackendProtocol.get_default()
+    backend_db = await BackendDBProtocol.get_default()
     team_dict = await backend_db.find_model(str(team_id))
 
     team_model: Union[TwoAgentTeam, MultiAgentTeam]

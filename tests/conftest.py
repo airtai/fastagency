@@ -25,7 +25,7 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-from fastagency.db.base import BaseBackendProtocol, BaseFrontendProtocol
+from fastagency.db.base import BackendDBProtocol, FrontendDBProtocol
 from fastagency.db.prisma import PrismaBackendDB, PrismaFrontendDB
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent
@@ -51,8 +51,8 @@ async def set_default_db() -> AsyncGenerator[None, None]:
     prisma_frontend_db = PrismaFrontendDB()
 
     async with (
-        BaseBackendProtocol.set_default(prisma_backend_db),
-        BaseFrontendProtocol.set_default(prisma_frontend_db),
+        BackendDBProtocol.set_default(prisma_backend_db),
+        FrontendDBProtocol.set_default(prisma_frontend_db),
     ):
         yield
 
