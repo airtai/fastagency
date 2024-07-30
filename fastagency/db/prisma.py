@@ -168,3 +168,16 @@ class PrismaFrontendDB(FrontendDBProtocol, PrismaBaseDB):  # type: ignore[misc]
                 status_code=404, detail=f"user_uuid {user_uuid} not found"
             )
         return user
+
+    async def _create_user(
+        self, user_uuid: Union[int, str], email: str, username: str
+    ) -> str:
+        """Only to create user in testing."""
+        async with self._get_db_connection() as db:
+            insert_query = (
+                'INSERT INTO "User" (email, username, uuid) VALUES ('  # nosec: [B608]
+                + f"'{email}', '{username}', '{user_uuid}')"
+            )
+            await db.execute_raw(insert_query)
+
+        return str(user_uuid)

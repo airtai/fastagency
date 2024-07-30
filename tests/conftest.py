@@ -62,15 +62,13 @@ async def user_uuid() -> AsyncIterator[str]:
     try:
         random_id = random.randint(1, 1_000_000)
         generated_uuid = str(uuid.uuid4())
-        async with PrismaFrontendDB()._get_db_connection() as db:
-            insert_query = (
-                'INSERT INTO "User" (email, username, uuid) VALUES ('
-                + f"'user{random_id}@airt.ai', 'user{random_id}', '{generated_uuid}')"
-            )
-            await db.execute_raw(insert_query)
+        email = f"user{random_id}@airt.ai"
+        username = f"user{random_id}"
 
-            select_query = 'SELECT * FROM "User" WHERE uuid=' + f"'{generated_uuid}'"
-            user = await db.query_first(select_query)
+        await FrontendDBProtocol.db()._create_user(
+            user_uuid=generated_uuid, email=email, username=username
+        )
+        user = await FrontendDBProtocol.db().get_user(user_uuid=generated_uuid)
 
         yield user["uuid"]
     finally:

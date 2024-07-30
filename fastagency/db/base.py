@@ -7,6 +7,7 @@ from typing import (
     List,
     Optional,
     Protocol,
+    Union,
     runtime_checkable,
 )
 
@@ -80,6 +81,10 @@ class FrontendDBProtocol(Protocol):
     _default_db: Optional["FrontendDBProtocol"] = None
 
     async def get_user(self, user_uuid: str) -> Dict[str, Any]: ...
+
+    async def _create_user(
+        self, user_uuid: Union[int, str], email: str, username: str
+    ) -> str: ...
 
     @staticmethod
     @contextmanager
