@@ -1,9 +1,9 @@
-from contextlib import asynccontextmanager
+from contextlib import contextmanager
 from datetime import datetime
 from typing import (
     Any,
-    AsyncGenerator,
     Dict,
+    Generator,
     List,
     Optional,
     Protocol,
@@ -61,8 +61,8 @@ class BackendDBProtocol(Protocol):
     ) -> Dict[str, Any]: ...
 
     @staticmethod
-    @asynccontextmanager
-    async def set_default(db: "BackendDBProtocol") -> AsyncGenerator[None, None]:
+    @contextmanager
+    def set_default(db: "BackendDBProtocol") -> Generator[None, None, None]:
         old_default = BackendDBProtocol._default_db
         try:
             BackendDBProtocol._default_db = db
@@ -71,7 +71,7 @@ class BackendDBProtocol(Protocol):
             BackendDBProtocol._default_db = old_default
 
     @staticmethod
-    async def get_default() -> "BackendDBProtocol":
+    def get_default() -> "BackendDBProtocol":
         return BackendDBProtocol._default_db  # type: ignore[return-value]
 
 
@@ -82,8 +82,8 @@ class FrontendDBProtocol(Protocol):
     async def get_user(self, user_uuid: str) -> Dict[str, Any]: ...
 
     @staticmethod
-    @asynccontextmanager
-    async def set_default(db: "FrontendDBProtocol") -> AsyncGenerator[None, None]:
+    @contextmanager
+    def set_default(db: "FrontendDBProtocol") -> Generator[None, None, None]:
         old_default = FrontendDBProtocol._default_db
         try:
             FrontendDBProtocol._default_db = db
@@ -92,5 +92,5 @@ class FrontendDBProtocol(Protocol):
             FrontendDBProtocol._default_db = old_default
 
     @staticmethod
-    async def get_default() -> "FrontendDBProtocol":
+    def get_default() -> "FrontendDBProtocol":
         return FrontendDBProtocol._default_db  # type: ignore[return-value]

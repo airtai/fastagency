@@ -25,7 +25,7 @@ async def lifespan(context: ContextRepo) -> AsyncGenerator[None, None]:
     prisma_backend_db = PrismaBackendDB()
     prisma_frontend_db = PrismaFrontendDB()
 
-    async with (
+    with (
         BackendDBProtocol.set_default(prisma_backend_db),
         FrontendDBProtocol.set_default(prisma_frontend_db),
     ):

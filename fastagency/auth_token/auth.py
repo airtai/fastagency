@@ -80,8 +80,8 @@ async def create_deployment_auth_token(
     name: str = "Default deployment token",
     expiry: str = "99999d",
 ) -> DeploymentAuthToken:
-    frontend_db = await FrontendDBProtocol.get_default()
-    backend_db = await BackendDBProtocol.get_default()
+    frontend_db = FrontendDBProtocol.get_default()
+    backend_db = BackendDBProtocol.get_default()
     user = await frontend_db.get_user(user_uuid=user_uuid)
     deployment = await backend_db.find_model(model_uuid=deployment_uuid)
 
