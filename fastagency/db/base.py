@@ -11,6 +11,11 @@ from typing import (
     runtime_checkable,
 )
 
+class KeyNotFound(ValueError):
+    pass
+
+class KeyExists(ValueError):
+    pass
 
 @runtime_checkable
 class BackendDBProtocol(Protocol):

@@ -6,7 +6,7 @@ from typing_extensions import TypeAlias
 
 from fastagency.openapi.client import Client
 
-from ...db.base import BackendDBProtocol
+from ...db.base import BackendDBProtocol, DefaultDB
 from ..base import Model
 from ..registry import Registry
 from ..toolboxes.toolbox import ToolboxRef
