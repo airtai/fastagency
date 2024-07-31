@@ -310,7 +310,10 @@ class TestModelRoutes:
         model_uuid = str(uuid.uuid4())
 
         with (
-            patch("fastagency.app.PrismaFrontendDB.get_user", side_effect=Exception()),
+            patch(
+                "fastagency.app.DefaultDB._frontend_db.get_user",
+                side_effect=Exception(),
+            ),
             patch(
                 "fastagency.db.prisma.PrismaBackendDB._get_db_connection",
                 side_effect=Exception(),

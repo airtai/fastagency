@@ -1,12 +1,10 @@
-from contextlib import asynccontextmanager
 from os import environ
-from typing import AsyncGenerator, Optional
+from typing import Optional
 
-from faststream import ContextRepo, FastStream
+from faststream import FastStream
 from faststream.nats import JStream, NatsBroker
 
-from ..db.base import DefaultDB
-from ..db.prisma import PrismaBackendDB, PrismaFrontendDB
+from ..db.prisma import faststream_lifespan
 
 nats_url: Optional[str] = environ.get("NATS_URL", None)  # type: ignore[assignment]
 if nats_url is None:
@@ -20,19 +18,8 @@ print(f"{nats_url=}")  # noqa
 print("Starting IONats faststream app...")  # noqa
 
 
-@asynccontextmanager
-async def lifespan(context: ContextRepo) -> AsyncGenerator[None, None]:
-    prisma_backend_db = PrismaBackendDB()
-    prisma_frontend_db = PrismaFrontendDB()
-
-    with (
-        DefaultDB.set(backend_db=prisma_backend_db, frontend_db=prisma_frontend_db),
-    ):
-        yield
-
-
 broker = NatsBroker(nats_url, user=username, password=password)
-app = FastStream(broker, lifespan=lifespan)
+app = FastStream(broker, lifespan=faststream_lifespan)
 
 stream = JStream(
     name="FastAgency",

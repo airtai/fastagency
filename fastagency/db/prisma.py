@@ -1,13 +1,17 @@
 from contextlib import asynccontextmanager
 from datetime import datetime
 from os import environ
-from typing import Any, AsyncGenerator, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, AsyncGenerator, Dict, List, Optional, Union
 from uuid import UUID
 
 from fastapi import HTTPException
 from prisma import Prisma  # type: ignore[attr-defined]
 
-from .base import BackendDBProtocol, FrontendDBProtocol
+from .base import BackendDBProtocol, DefaultDB, FrontendDBProtocol
+
+if TYPE_CHECKING:
+    from fastapi import FastAPI
+    from faststream import ContextRepo
 
 
 class PrismaBaseDB:
@@ -181,3 +185,26 @@ class PrismaFrontendDB(FrontendDBProtocol, PrismaBaseDB):  # type: ignore[misc]
             await db.execute_raw(insert_query)
 
         return str(user_uuid)
+
+
+@asynccontextmanager
+async def _lifespan() -> AsyncGenerator[None, None]:
+    prisma_backend_db = PrismaBackendDB()
+    prisma_frontend_db = PrismaFrontendDB()
+
+    with (
+        DefaultDB.set(backend_db=prisma_backend_db, frontend_db=prisma_frontend_db),
+    ):
+        yield
+
+
+@asynccontextmanager
+async def fastapi_lifespan(app: "FastAPI") -> AsyncGenerator[None, None]:
+    async with _lifespan():
+        yield
+
+
+@asynccontextmanager
+async def faststream_lifespan(context: "ContextRepo") -> AsyncGenerator[None, None]:
+    async with _lifespan():
+        yield

@@ -1,8 +1,7 @@
 import json
 import logging
-from contextlib import asynccontextmanager
 from os import environ
-from typing import Annotated, Any, AsyncGenerator, Dict, List, Optional, Tuple, Union
+from typing import Annotated, Any, Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
 import httpx
@@ -13,7 +12,7 @@ from pydantic import BaseModel, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
 from .db.base import DefaultDB
-from .db.prisma import PrismaBackendDB, PrismaFrontendDB
+from .db.prisma import fastapi_lifespan
 from .helpers import (
     add_model_to_user,
     create_model,
@@ -25,18 +24,7 @@ from .models.toolboxes.toolbox import Toolbox
 logging.basicConfig(level=logging.INFO)
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    prisma_backend_db = PrismaBackendDB()
-    prisma_frontend_db = PrismaFrontendDB()
-
-    with (
-        DefaultDB.set(backend_db=prisma_backend_db, frontend_db=prisma_frontend_db),
-    ):
-        yield
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=fastapi_lifespan)
 
 
 @app.get("/models/schemas")
