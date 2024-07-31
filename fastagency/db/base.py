@@ -14,8 +14,6 @@ from typing import (
 
 @runtime_checkable
 class BackendDBProtocol(Protocol):
-    _default_db: Optional["BackendDBProtocol"] = None
-
     async def create_model(
         self,
         model_uuid: str,
@@ -61,41 +59,41 @@ class BackendDBProtocol(Protocol):
         self, auth_token_uuid: str, deployment_uuid: str, user_uuid: str
     ) -> Dict[str, Any]: ...
 
-    @staticmethod
-    @contextmanager
-    def set_default(db: "BackendDBProtocol") -> Generator[None, None, None]:
-        old_default = BackendDBProtocol._default_db
-        try:
-            BackendDBProtocol._default_db = db
-            yield
-        finally:
-            BackendDBProtocol._default_db = old_default
-
-    @staticmethod
-    def db() -> "BackendDBProtocol":
-        return BackendDBProtocol._default_db  # type: ignore[return-value]
-
 
 @runtime_checkable
 class FrontendDBProtocol(Protocol):
-    _default_db: Optional["FrontendDBProtocol"] = None
-
     async def get_user(self, user_uuid: str) -> Dict[str, Any]: ...
 
     async def _create_user(
         self, user_uuid: Union[int, str], email: str, username: str
     ) -> str: ...
 
-    @staticmethod
-    @contextmanager
-    def set_default(db: "FrontendDBProtocol") -> Generator[None, None, None]:
-        old_default = FrontendDBProtocol._default_db
-        try:
-            FrontendDBProtocol._default_db = db
-            yield
-        finally:
-            FrontendDBProtocol._default_db = old_default
+
+class DefaultDB:
+    _backend_db: Optional[BackendDBProtocol] = None
+    _frontend_db: Optional[FrontendDBProtocol] = None
 
     @staticmethod
-    def db() -> "FrontendDBProtocol":
-        return FrontendDBProtocol._default_db  # type: ignore[return-value]
+    @contextmanager
+    def set(
+        *,
+        backend_db: BackendDBProtocol,
+        frontend_db: FrontendDBProtocol,
+    ) -> Generator[None, None, None]:
+        old_backend_default = DefaultDB._backend_db
+        old_frontend_default = DefaultDB._frontend_db
+        try:
+            DefaultDB._backend_db = backend_db
+            DefaultDB._frontend_db = frontend_db
+            yield
+        finally:
+            DefaultDB._backend_db = old_backend_default
+            DefaultDB._frontend_db = old_frontend_default
+
+    @staticmethod
+    def backend() -> BackendDBProtocol:
+        return DefaultDB._backend_db  # type: ignore[return-value]
+
+    @staticmethod
+    def frontend() -> FrontendDBProtocol:
+        return DefaultDB._frontend_db  # type: ignore[return-value]

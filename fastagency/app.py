@@ -92,7 +92,7 @@ async def validate_secret_model(
 ) -> Dict[str, Any]:
     type: str = "secret"
 
-    found_model = await BackendDBProtocol.db().find_model(model_uuid=str(model_uuid))
+    found_model = await DefaultDB.backend().find_model(model_uuid=str(model_uuid))
     if "api_key" in found_model["json_str"]:
         model["api_key"] = found_model["json_str"]["api_key"]
     try:
@@ -150,7 +150,7 @@ async def add_model(
 
 
 async def create_toolbox_for_new_user(user_uuid: Union[str, UUID]) -> Dict[str, Any]:
-    await FrontendDBProtocol.db().get_user(user_uuid=user_uuid)  # type: ignore[arg-type]
+    await DefaultDB.frontend().get_user(user_uuid=user_uuid)  # type: ignore[arg-type]
 
     domain = environ.get("DOMAIN", "localhost")
     toolbox_openapi_url = (
@@ -195,8 +195,8 @@ async def update_model(
     registry = Registry.get_default()
     validated_model = registry.validate(type_name, model_name, model)
 
-    found_model = await BackendDBProtocol.db().find_model(model_uuid=model_uuid)
-    await BackendDBProtocol.db().update_model(
+    found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
+    await DefaultDB.backend().update_model(
         model_uuid=found_model["uuid"],
         user_uuid=user_uuid,
         type_name=type_name,
@@ -211,8 +211,8 @@ async def update_model(
 async def models_delete(
     user_uuid: str, type_name: str, model_uuid: str
 ) -> Dict[str, Any]:
-    found_model = await BackendDBProtocol.db().find_model(model_uuid=model_uuid)
-    model = await BackendDBProtocol.db().delete_model(model_uuid=found_model["uuid"])
+    found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
+    model = await DefaultDB.backend().delete_model(model_uuid=found_model["uuid"])
     return model["json_str"]  # type: ignore
 
 
@@ -346,7 +346,7 @@ async def chat(request: ChatRequest) -> Dict[str, Any]:
 
 @app.post("/deployment/{deployment_uuid}/chat")
 async def deployment_chat(deployment_uuid: str) -> Dict[str, Any]:
-    found_model = await BackendDBProtocol.db().find_model(model_uuid=deployment_uuid)
+    found_model = await DefaultDB.backend().find_model(model_uuid=deployment_uuid)
     team_name = found_model["json_str"]["name"]
     team_uuid = found_model["json_str"]["team"]["uuid"]
 
@@ -387,15 +387,15 @@ class DeploymentAuthTokenInfo(BaseModel):
 async def get_all_deployment_auth_tokens(
     user_uuid: str, deployment_uuid: str
 ) -> List[DeploymentAuthTokenInfo]:
-    user = await FrontendDBProtocol.db().get_user(user_uuid=user_uuid)
-    deployment = await BackendDBProtocol.db().find_model(model_uuid=deployment_uuid)
+    user = await DefaultDB.frontend().get_user(user_uuid=user_uuid)
+    deployment = await DefaultDB.backend().find_model(model_uuid=deployment_uuid)
 
     if user["uuid"] != deployment["user_uuid"]:
         raise HTTPException(  # pragma: no cover
             status_code=403, detail="User does not have access to this deployment"
         )
 
-    auth_tokens = await BackendDBProtocol.db().find_many_auth_token(
+    auth_tokens = await DefaultDB.backend().find_many_auth_token(
         user_uuid=user_uuid, deployment_uuid=deployment_uuid
     )
     return [
@@ -414,15 +414,15 @@ async def delete_deployment_auth_token(
     deployment_uuid: str,
     auth_token_uuid: str,
 ) -> DeploymentAuthTokenInfo:
-    user = await FrontendDBProtocol.db().get_user(user_uuid=user_uuid)
-    deployment = await BackendDBProtocol.db().find_model(model_uuid=deployment_uuid)
+    user = await DefaultDB.frontend().get_user(user_uuid=user_uuid)
+    deployment = await DefaultDB.backend().find_model(model_uuid=deployment_uuid)
 
     if user["uuid"] != deployment["user_uuid"]:
         raise HTTPException(  # pragma: no cover
             status_code=403, detail="User does not have access to this deployment"
         )
 
-    auth_token = await BackendDBProtocol.db().delete_auth_token(
+    auth_token = await DefaultDB.backend().delete_auth_token(
         auth_token_uuid=auth_token_uuid,
         deployment_uuid=deployment_uuid,
         user_uuid=user_uuid,

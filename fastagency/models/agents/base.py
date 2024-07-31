@@ -59,7 +59,7 @@ class AgentBaseModel(Model):
             if toolbox_property is None:
                 continue
 
-            toolbox_dict = await BackendDBProtocol.db().find_model(
+            toolbox_dict = await DefaultDB.backend().find_model(
                 toolbox_property.uuid
             )
             toolbox_model = toolbox_property.get_data_model()(

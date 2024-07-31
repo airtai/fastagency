@@ -23,7 +23,7 @@ class TestPrismaFrontendDB:
     async def test_db(self) -> None:
         frontend_db = PrismaFrontendDB()
         with FrontendDBProtocol.set_default(frontend_db):
-            assert FrontendDBProtocol.db() == frontend_db
+            assert DefaultDB.frontend() == frontend_db
 
     async def test_create_user_get_user(self) -> None:
         frontend_db = PrismaFrontendDB()
@@ -53,7 +53,7 @@ class TestPrismaBackendDB:
     async def test_db(self) -> None:
         backend_db = PrismaBackendDB()
         with BackendDBProtocol.set_default(backend_db):
-            assert BackendDBProtocol.db() == backend_db
+            assert DefaultDB.backend() == backend_db
 
     async def test_model_CRUD(self) -> None:  # noqa: N802
         # Setup

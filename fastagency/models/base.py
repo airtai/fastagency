@@ -39,7 +39,7 @@ class Model(BaseModel, ABC):
 
     @classmethod
     async def from_db(cls: Type[T], model_id: UUID) -> T:
-        my_model_dict = await BackendDBProtocol.db().find_model(str(model_id))
+        my_model_dict = await DefaultDB.backend().find_model(str(model_id))
         my_model = cls(**my_model_dict["json_str"])
 
         return my_model

@@ -65,10 +65,10 @@ async def user_uuid() -> AsyncIterator[str]:
         email = f"user{random_id}@airt.ai"
         username = f"user{random_id}"
 
-        await FrontendDBProtocol.db()._create_user(
+        await DefaultDB.frontend()._create_user(
             user_uuid=generated_uuid, email=email, username=username
         )
-        user = await FrontendDBProtocol.db().get_user(user_uuid=generated_uuid)
+        user = await DefaultDB.frontend().get_user(user_uuid=generated_uuid)
 
         yield user["uuid"]
     finally:

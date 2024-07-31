@@ -108,7 +108,7 @@ class TestModelRoutes:
     @pytest.mark.asyncio()
     async def test_setup_user(self) -> None:
         random_id = random.randint(1, 1_000_000)
-        user_uuid = await FrontendDBProtocol.db()._create_user(
+        user_uuid = await DefaultDB.frontend()._create_user(
             user_uuid=str(uuid.uuid4()),
             email=f"user{random_id}@airt.ai",
             username=f"user{random_id}",
