@@ -9,7 +9,7 @@ import httpx
 import yaml
 from fastapi import BackgroundTasks, Body, FastAPI, HTTPException, Path
 from openai import AsyncAzureOpenAI
-from pydantic import BaseModel, TypeAdapter, ValidationError
+from pydantic import BaseModel, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
 from .db.base import DefaultDB
@@ -113,10 +113,9 @@ async def get_all_models(
     user_uuid: str,
     type_name: Optional[str] = None,
 ) -> List[Any]:
-    models = await get_all_models_for_user(user_uuid=user_uuid, type_name=type_name)
-
-    ta = TypeAdapter(List[Dict[str, Any]])
-    ret_val_without_mask = ta.dump_python(models, serialize_as_any=True)  # type: ignore[call-arg]
+    ret_val_without_mask = await get_all_models_for_user(
+        user_uuid=user_uuid, type_name=type_name
+    )
 
     ret_val = []
     for model in ret_val_without_mask:
