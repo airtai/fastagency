@@ -3,9 +3,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 from uuid import UUID
 
-from fastapi import HTTPException
-
-from .base import BackendDBProtocol, FrontendDBProtocol
+from .base import BackendDBProtocol, FrontendDBProtocol, KeyNotFoundError
 
 
 class InMemoryBackendDB(BackendDBProtocol):
@@ -38,9 +36,7 @@ class InMemoryBackendDB(BackendDBProtocol):
         for model in self._models:
             if model["uuid"] == str(model_uuid):
                 return model
-        raise HTTPException(
-            status_code=404, detail="Something went wrong. Please try again later."
-        )
+        raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
 
     async def find_many_model(
         self, user_uuid: Union[str, UUID], type_name: Optional[str] = None
@@ -62,14 +58,14 @@ class InMemoryBackendDB(BackendDBProtocol):
                 model["json_str"] = json.loads(json_str)
                 model["updated_at"] = datetime.now()
                 return model
-        raise HTTPException(status_code=404, detail="Model not found")
+        raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
 
     async def delete_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
         for model in self._models:
             if model["uuid"] == str(model_uuid):
                 self._models.remove(model)
                 return model
-        raise HTTPException(status_code=404, detail="Model not found")
+        raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
 
     async def create_auth_token(
         self,
@@ -119,7 +115,7 @@ class InMemoryBackendDB(BackendDBProtocol):
             ):
                 self._auth_tokens.remove(auth_token)
                 return auth_token
-        raise HTTPException(status_code=404, detail="Auth token not found")
+        raise KeyNotFoundError(f"auth_token_uuid {auth_token_uuid} not found")
 
 
 class InMemoryFrontendDB(FrontendDBProtocol):
@@ -131,7 +127,7 @@ class InMemoryFrontendDB(FrontendDBProtocol):
         for user in self._users:
             if user["uuid"] == str(user_uuid):
                 return user
-        raise HTTPException(status_code=404, detail=f"user_uuid {user_uuid} not found")
+        raise KeyNotFoundError(f"user_uuid {user_uuid} not found")
 
     async def _create_user(
         self, user_uuid: Union[str, UUID], email: str, username: str

@@ -1,17 +1,29 @@
 import json
 import logging
 from os import environ
-from typing import Annotated, Any, Dict, List, Optional, Tuple, Union
+from typing import (
+    Annotated,
+    Any,
+    Callable,
+    Coroutine,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
 from uuid import UUID
 
 import httpx
 import yaml
 from fastapi import BackgroundTasks, Body, FastAPI, HTTPException, Path
+from fastapi.requests import Request
+from fastapi.responses import JSONResponse, Response
 from openai import AsyncAzureOpenAI
 from pydantic import BaseModel, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
-from .db.base import DefaultDB
+from .db.base import DefaultDB, KeyNotFoundError
 from .db.prisma import fastapi_lifespan
 from .helpers import (
     add_model_to_user,
@@ -25,6 +37,16 @@ logging.basicConfig(level=logging.INFO)
 
 
 app = FastAPI(lifespan=fastapi_lifespan)
+
+
+@app.middleware("http")
+async def handle_keynotfounderror_middleware(
+    request: Request, call_next: Callable[[Request], Coroutine[Any, Any, Response]]
+) -> Response:
+    try:
+        return await call_next(request)
+    except KeyNotFoundError as e:
+        return JSONResponse(status_code=404, content={"detail": str(e)})
 
 
 @app.get("/models/schemas")

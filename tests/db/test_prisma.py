@@ -8,7 +8,7 @@ import pytest
 
 import fastagency.db
 import fastagency.db.prisma
-from fastagency.db.base import DefaultDB
+from fastagency.db.base import DefaultDB, KeyNotFoundError
 from fastagency.db.prisma import PrismaBackendDB, PrismaFrontendDB
 from fastagency.models.llms.azure import AzureOAIAPIKey
 
@@ -45,6 +45,13 @@ class TestPrismaFrontendDB:
         assert user["uuid"] == str(user_uuid)
         assert user["email"] == email
         assert user["username"] == username
+
+    async def test_user_exception(self) -> None:
+        frontend_db = PrismaFrontendDB()
+        user_uuid = uuid.uuid4()
+        with pytest.raises(KeyNotFoundError) as e:
+            await frontend_db.get_user(user_uuid)
+        assert f"user_uuid {user_uuid} not found" == str(e.value)
 
 
 @pytest.mark.db()
@@ -143,3 +150,37 @@ class TestPrismaBackendDB:
             auth_token_uuid, deployment_uuid, user_uuid
         )
         assert deleted_auth_token["uuid"] == str(auth_token_uuid)
+
+    async def test_model_exception(self) -> None:
+        backend_db = PrismaBackendDB()
+        model_uuid = uuid.uuid4()
+        user_uuid = uuid.uuid4()
+        with pytest.raises(KeyNotFoundError) as e:
+            await backend_db.find_model(model_uuid)
+        assert f"model_uuid {model_uuid} not found" == str(e.value)
+
+        with pytest.raises(KeyNotFoundError) as e:
+            await backend_db.update_model(
+                model_uuid=model_uuid,
+                user_uuid=user_uuid,
+                type_name="secret",
+                model_name="AzureOAIAPIKey2",
+                json_str="[]",
+            )
+        assert f"model_uuid {model_uuid} not found" == str(e.value)
+
+        with pytest.raises(KeyNotFoundError) as e:
+            await backend_db.delete_model(model_uuid)
+        assert f"model_uuid {model_uuid} not found" == str(e.value)
+
+    async def test_auth_token_exception(self) -> None:
+        backend_db = PrismaBackendDB()
+        auth_token_uuid = uuid.uuid4()
+        deployment_uuid = uuid.uuid4()
+        user_uuid = uuid.uuid4()
+
+        with pytest.raises(KeyNotFoundError) as e:
+            await backend_db.delete_auth_token(
+                auth_token_uuid, deployment_uuid, user_uuid
+            )
+        assert f"auth_token_uuid {auth_token_uuid} not found" == str(e.value)

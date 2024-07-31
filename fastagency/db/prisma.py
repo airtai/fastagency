@@ -4,10 +4,9 @@ from os import environ
 from typing import TYPE_CHECKING, Any, AsyncGenerator, Dict, List, Optional, Union
 from uuid import UUID
 
-from fastapi import HTTPException
 from prisma import Prisma  # type: ignore[attr-defined]
 
-from .base import BackendDBProtocol, DefaultDB, FrontendDBProtocol
+from .base import BackendDBProtocol, DefaultDB, FrontendDBProtocol, KeyNotFoundError
 
 if TYPE_CHECKING:
     from fastapi import FastAPI
@@ -70,9 +69,7 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
                 + f"'{model_uuid}'"
             )
         if not model:
-            raise HTTPException(
-                status_code=404, detail="Something went wrong. Please try again later."
-            )
+            raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
         return model
 
     async def find_many_model(
@@ -104,11 +101,15 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
                     "user_uuid": str(user_uuid),
                 },
             )
+        if updated_model is None:
+            raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
         return updated_model.model_dump()  # type: ignore[no-any-return,union-attr]
 
     async def delete_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
         async with self._get_db_connection() as db:
             deleted_model = await db.model.delete(where={"uuid": str(model_uuid)})
+        if deleted_model is None:
+            raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
         return deleted_model.model_dump()  # type: ignore[no-any-return,union-attr]
 
     async def create_auth_token(
@@ -161,6 +162,8 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
                     "user_uuid": str(user_uuid),
                 },
             )
+        if deleted_auth_token is None:
+            raise KeyNotFoundError(f"auth_token_uuid {auth_token_uuid} not found")
         return deleted_auth_token.model_dump()  # type: ignore[no-any-return,union-attr]
 
 
@@ -174,9 +177,7 @@ class PrismaFrontendDB(FrontendDBProtocol, PrismaBaseDB):  # type: ignore[misc]
                 select_query  # nosec: [B608]
             )
         if not user:
-            raise HTTPException(
-                status_code=404, detail=f"user_uuid {user_uuid} not found"
-            )
+            raise KeyNotFoundError(f"user_uuid {user_uuid} not found")
         return user
 
     async def _create_user(
