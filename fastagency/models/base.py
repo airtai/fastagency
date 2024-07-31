@@ -5,7 +5,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field, create_model, model_validator
 from typing_extensions import TypeAlias
 
-from ..db.base import BackendDBProtocol, DefaultDB
+from ..db.base import DefaultDB
 
 M = TypeVar("M", bound="Model")
 

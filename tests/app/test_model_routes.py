@@ -7,7 +7,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from fastagency.app import app, mask
-from fastagency.db.base import FrontendDBProtocol
+from fastagency.db.base import DefaultDB
 from fastagency.models.llms.azure import AzureOAIAPIKey
 from fastagency.saas_app_generator import SaasAppGenerator
 

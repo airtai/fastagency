@@ -25,7 +25,7 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-from fastagency.db.base import BackendDBProtocol, FrontendDBProtocol
+from fastagency.db.base import DefaultDB
 from fastagency.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.models.agents.assistant import AssistantAgent
@@ -51,8 +51,7 @@ async def set_default_db() -> AsyncGenerator[None, None]:
     frontend_db = InMemoryFrontendDB()
 
     with (
-        BackendDBProtocol.set_default(backend_db),
-        FrontendDBProtocol.set_default(frontend_db),
+        DefaultDB.set(backend_db=backend_db, frontend_db=frontend_db),
     ):
         yield
 

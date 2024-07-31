@@ -12,7 +12,7 @@ from openai import AsyncAzureOpenAI
 from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from .auth_token.auth import DeploymentAuthToken, create_deployment_auth_token
-from .db.base import BackendDBProtocol, DefaultDB, FrontendDBProtocol
+from .db.base import DefaultDB
 from .db.prisma import PrismaBackendDB, PrismaFrontendDB
 from .helpers import (
     add_model_to_user,
@@ -31,8 +31,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     prisma_frontend_db = PrismaFrontendDB()
 
     with (
-        BackendDBProtocol.set_default(prisma_backend_db),
-        FrontendDBProtocol.set_default(prisma_frontend_db),
+        DefaultDB.set(backend_db=prisma_backend_db, frontend_db=prisma_frontend_db),
     ):
         yield
 

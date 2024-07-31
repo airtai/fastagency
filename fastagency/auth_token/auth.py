@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from fastapi import HTTPException
 from pydantic import BaseModel
 
-from ..db.base import BackendDBProtocol, DefaultDB, FrontendDBProtocol
+from ..db.base import DefaultDB
 
 
 def generate_auth_token(length: int = 32) -> str:

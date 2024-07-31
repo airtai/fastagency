@@ -5,7 +5,7 @@ from typing import AsyncGenerator, Optional
 from faststream import ContextRepo, FastStream
 from faststream.nats import JStream, NatsBroker
 
-from ..db.base import BackendDBProtocol, FrontendDBProtocol
+from ..db.base import DefaultDB
 from ..db.prisma import PrismaBackendDB, PrismaFrontendDB
 
 nats_url: Optional[str] = environ.get("NATS_URL", None)  # type: ignore[assignment]
@@ -26,8 +26,7 @@ async def lifespan(context: ContextRepo) -> AsyncGenerator[None, None]:
     prisma_frontend_db = PrismaFrontendDB()
 
     with (
-        BackendDBProtocol.set_default(prisma_backend_db),
-        FrontendDBProtocol.set_default(prisma_frontend_db),
+        DefaultDB.set(backend_db=prisma_backend_db, frontend_db=prisma_frontend_db),
     ):
         yield
 

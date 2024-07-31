@@ -13,7 +13,7 @@ from fastagency.saas_app_generator import (
 )
 
 from .auth_token.auth import create_deployment_auth_token
-from .db.base import BackendDBProtocol, FrontendDBProtocol
+from .db.base import DefaultDB
 from .models.base import Model, ObjectReference
 from .models.registry import Registry
 

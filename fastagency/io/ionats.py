@@ -13,7 +13,7 @@ from faststream.nats import NatsMessage
 from nats.js import api
 from pydantic import BaseModel
 
-from ..db.base import BackendDBProtocol
+from ..db.base import DefaultDB
 from ..models.teams.multi_agent_team import MultiAgentTeam
 from ..models.teams.two_agent_teams import TwoAgentTeam
 from .app import app, broker, stream  # noqa

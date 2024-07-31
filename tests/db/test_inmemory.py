@@ -7,22 +7,26 @@ import pytest
 
 import fastagency.db
 import fastagency.db.inmemory
-from fastagency.db.base import BackendDBProtocol, FrontendDBProtocol
+from fastagency.db.base import DefaultDB
 from fastagency.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.models.llms.azure import AzureOAIAPIKey
 
 
 @pytest.mark.asyncio()
 class TestInMemoryFrontendDB:
-    async def test_set_default(self) -> None:
+    async def test_set(self) -> None:
         frontend_db = InMemoryFrontendDB()
-        with FrontendDBProtocol.set_default(frontend_db):
-            assert FrontendDBProtocol._default_db == frontend_db
+        backend_db = InMemoryBackendDB()
+        with DefaultDB.set(backend_db=backend_db, frontend_db=frontend_db):
+            assert DefaultDB._frontend_db == frontend_db
+            assert DefaultDB._backend_db == backend_db
 
     async def test_db(self) -> None:
         frontend_db = InMemoryFrontendDB()
-        with FrontendDBProtocol.set_default(frontend_db):
+        backend_db = InMemoryBackendDB()
+        with DefaultDB.set(backend_db=backend_db, frontend_db=frontend_db):
             assert DefaultDB.frontend() == frontend_db
+            assert DefaultDB.backend() == backend_db
 
     async def test_create_user_get_user(self) -> None:
         frontend_db = InMemoryFrontendDB()
@@ -44,16 +48,6 @@ class TestInMemoryFrontendDB:
 @pytest.mark.db()
 @pytest.mark.asyncio()
 class TestInMemoryBackendDB:
-    async def test_set_default(self) -> None:
-        backend_db = InMemoryBackendDB()
-        with BackendDBProtocol.set_default(backend_db):
-            assert BackendDBProtocol._default_db == backend_db
-
-    async def test_db(self) -> None:
-        backend_db = InMemoryBackendDB()
-        with BackendDBProtocol.set_default(backend_db):
-            assert DefaultDB.backend() == backend_db
-
     async def test_model_CRUD(self) -> None:  # noqa: N802
         # Setup
         frontend_db = InMemoryFrontendDB()
