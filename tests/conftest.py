@@ -60,7 +60,7 @@ async def set_default_db() -> AsyncGenerator[None, None]:
 async def user_uuid() -> AsyncIterator[str]:
     try:
         random_id = random.randint(1, 1_000_000)
-        generated_uuid = str(uuid.uuid4())
+        generated_uuid = uuid.uuid4()
         email = f"user{random_id}@airt.ai"
         username = f"user{random_id}"
 

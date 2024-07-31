@@ -10,6 +10,7 @@ from typing import (
     Union,
     runtime_checkable,
 )
+from uuid import UUID
 
 
 class KeyNotFoundError(ValueError):
@@ -24,57 +25,60 @@ class KeyExistsError(ValueError):
 class BackendDBProtocol(Protocol):
     async def create_model(
         self,
-        model_uuid: str,
-        user_uuid: str,
+        model_uuid: Union[str, UUID],
+        user_uuid: Union[str, UUID],
         type_name: str,
         model_name: str,
         json_str: str,
     ) -> Dict[str, Any]: ...
 
-    async def find_model(self, model_uuid: str) -> Dict[str, Any]: ...
+    async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]: ...
 
     async def find_many_model(
-        self, user_uuid: str, type_name: Optional[str] = None
+        self, user_uuid: Union[str, UUID], type_name: Optional[str] = None
     ) -> List[Dict[str, Any]]: ...
 
     async def update_model(
         self,
-        model_uuid: str,
-        user_uuid: str,
+        model_uuid: Union[str, UUID],
+        user_uuid: Union[str, UUID],
         type_name: str,
         model_name: str,
         json_str: str,
     ) -> Dict[str, Any]: ...
 
-    async def delete_model(self, model_uuid: str) -> Dict[str, Any]: ...
+    async def delete_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]: ...
 
     async def create_auth_token(
         self,
-        auth_token_uuid: str,
+        auth_token_uuid: Union[str, UUID],
         name: str,
-        user_uuid: str,
-        deployment_uuid: str,
+        user_uuid: Union[str, UUID],
+        deployment_uuid: Union[str, UUID],
         hashed_auth_token: str,
         expiry: str,
         expires_at: datetime,
     ) -> Dict[str, Any]: ...
 
     async def find_many_auth_token(
-        self, user_uuid: str, deployment_uuid: str
+        self, user_uuid: Union[str, UUID], deployment_uuid: Union[str, UUID]
     ) -> List[Dict[str, Any]]: ...
 
     async def delete_auth_token(
-        self, auth_token_uuid: str, deployment_uuid: str, user_uuid: str
+        self,
+        auth_token_uuid: Union[str, UUID],
+        deployment_uuid: Union[str, UUID],
+        user_uuid: Union[str, UUID],
     ) -> Dict[str, Any]: ...
 
 
 @runtime_checkable
 class FrontendDBProtocol(Protocol):
-    async def get_user(self, user_uuid: str) -> Dict[str, Any]: ...
+    async def get_user(self, user_uuid: Union[str, UUID]) -> Dict[str, Any]: ...
 
     async def _create_user(
-        self, user_uuid: Union[int, str], email: str, username: str
-    ) -> str: ...
+        self, user_uuid: Union[str, UUID], email: str, username: str
+    ) -> Union[str, UUID]: ...
 
 
 class DefaultDB:

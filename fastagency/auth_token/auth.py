@@ -4,6 +4,7 @@ import secrets
 import string
 import uuid
 from datetime import datetime, timedelta
+from typing import Union
 
 from fastapi import HTTPException
 from pydantic import BaseModel
@@ -75,8 +76,8 @@ async def parse_expiry(expiry: str) -> datetime:
 
 
 async def create_deployment_auth_token(
-    user_uuid: str,
-    deployment_uuid: str,
+    user_uuid: Union[str, uuid.UUID],
+    deployment_uuid: Union[str, uuid.UUID],
     name: str = "Default deployment token",
     expiry: str = "99999d",
 ) -> DeploymentAuthToken:
@@ -93,7 +94,7 @@ async def create_deployment_auth_token(
     hashed_token = hash_auth_token(auth_token)
 
     await DefaultDB.backend().create_auth_token(
-        auth_token_uuid=str(uuid.uuid4()),
+        auth_token_uuid=uuid.uuid4(),
         name=name,
         user_uuid=user_uuid,
         deployment_uuid=deployment_uuid,

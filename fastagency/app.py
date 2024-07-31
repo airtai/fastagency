@@ -79,7 +79,7 @@ async def validate_secret_model(
 ) -> Dict[str, Any]:
     type: str = "secret"
 
-    found_model = await DefaultDB.backend().find_model(model_uuid=str(model_uuid))
+    found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
     if "api_key" in found_model["json_str"]:
         model["api_key"] = found_model["json_str"]["api_key"]
     try:

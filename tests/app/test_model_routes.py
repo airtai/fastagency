@@ -109,7 +109,7 @@ class TestModelRoutes:
     async def test_setup_user(self) -> None:
         random_id = random.randint(1, 1_000_000)
         user_uuid = await DefaultDB.frontend()._create_user(
-            user_uuid=str(uuid.uuid4()),
+            user_uuid=uuid.uuid4(),
             email=f"user{random_id}@airt.ai",
             username=f"user{random_id}",
         )
@@ -130,7 +130,7 @@ class TestModelRoutes:
         )
         assert response.status_code == 200
         expected_toolbox_model = {
-            "user_uuid": user_uuid,
+            "user_uuid": str(user_uuid),
             "type_name": "toolbox",
             "model_name": "Toolbox",
             "json_str": {
@@ -307,7 +307,7 @@ class TestModelRoutes:
         }
         type_name = "deployment"
         model_name = "Deployment"
-        model_uuid = str(uuid.uuid4())
+        model_uuid = uuid.uuid4()
 
         with (
             patch(

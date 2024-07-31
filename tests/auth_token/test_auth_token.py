@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any, Dict, Union
+from uuid import UUID
 
 import pytest
 from fastapi import HTTPException
@@ -79,9 +80,9 @@ async def test_parse_expiry_with_invalid_expiry(expiry_str: str, expected: str) 
 async def test_create_deployment_token(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    deployment_uuid = str(uuid.uuid4())
+    deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
@@ -103,9 +104,9 @@ async def test_create_deployment_token(
 async def test_create_deployment_token_with_wrong_user_uuid(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    deployment_uuid = str(uuid.uuid4())
+    deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
         return {
             "user_uuid": "random_wrong_uuid",
             "uuid": deployment_uuid,
@@ -129,9 +130,9 @@ async def test_create_deployment_token_with_wrong_user_uuid(
 async def test_create_deployment_auth_token_route(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    deployment_uuid = str(uuid.uuid4())
+    deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
@@ -157,9 +158,9 @@ async def test_create_deployment_auth_token_route(
 async def test_get_all_deployment_auth_tokens(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    deployment_uuid = str(uuid.uuid4())
+    deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
@@ -196,9 +197,9 @@ async def test_get_all_deployment_auth_tokens(
 async def test_delete_deployment_auth_token(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    deployment_uuid = str(uuid.uuid4())
+    deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,

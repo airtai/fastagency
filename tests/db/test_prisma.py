@@ -1,7 +1,8 @@
 import random
 import uuid
 from datetime import datetime, timedelta
-from typing import Any, Dict
+from typing import Any, Dict, Union
+from uuid import UUID
 
 import pytest
 
@@ -33,7 +34,7 @@ class TestPrismaFrontendDB:
         frontend_db = PrismaFrontendDB()
 
         random_id = random.randint(1, 1_000_000)
-        generated_uuid = str(uuid.uuid4())
+        generated_uuid = uuid.uuid4()
         email = f"user{random_id}@airt.ai"
         username = f"user{random_id}"
 
@@ -41,7 +42,7 @@ class TestPrismaFrontendDB:
         assert user_uuid == generated_uuid
 
         user = await frontend_db.get_user(user_uuid)
-        assert user["uuid"] == user_uuid
+        assert user["uuid"] == str(user_uuid)
         assert user["email"] == email
         assert user["username"] == username
 
@@ -55,9 +56,9 @@ class TestPrismaBackendDB:
         backend_db = PrismaBackendDB()
         random_id = random.randint(1, 1_000_000)
         user_uuid = await frontend_db._create_user(
-            str(uuid.uuid4()), f"user{random_id}@airt.ai", f"user{random_id}"
+            uuid.uuid4(), f"user{random_id}@airt.ai", f"user{random_id}"
         )
-        model_uuid = str(uuid.uuid4())
+        model_uuid = uuid.uuid4()
         azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name="who cares?")
 
         # Tests
@@ -68,18 +69,18 @@ class TestPrismaBackendDB:
             model_name="AzureOAIAPIKey",
             json_str=azure_oai_api_key.model_dump_json(),
         )
-        assert model["uuid"] == model_uuid
-        assert model["user_uuid"] == user_uuid
+        assert model["uuid"] == str(model_uuid)
+        assert model["user_uuid"] == str(user_uuid)
         assert model["type_name"] == "secret"
         assert model["model_name"] == "AzureOAIAPIKey"
         assert model["json_str"] == azure_oai_api_key.model_dump()
 
         found_model = await backend_db.find_model(model_uuid)
-        assert found_model["uuid"] == model_uuid
+        assert found_model["uuid"] == str(model_uuid)
 
         many_model = await backend_db.find_many_model(user_uuid)
         assert len(many_model) == 1
-        assert many_model[0]["uuid"] == model_uuid
+        assert many_model[0]["uuid"] == str(model_uuid)
 
         updated_model = await backend_db.update_model(
             model_uuid=model_uuid,
@@ -88,11 +89,11 @@ class TestPrismaBackendDB:
             model_name="AzureOAIAPIKey2",
             json_str=azure_oai_api_key.model_dump_json(),
         )
-        assert updated_model["uuid"] == model_uuid
+        assert updated_model["uuid"] == str(model_uuid)
         assert updated_model["model_name"] == "AzureOAIAPIKey2"
 
         deleted_model = await backend_db.delete_model(model_uuid)
-        assert deleted_model["uuid"] == model_uuid
+        assert deleted_model["uuid"] == str(model_uuid)
 
     async def test_auth_token_CRUD(self, monkeypatch: pytest.MonkeyPatch) -> None:  # noqa: N802
         # Setup
@@ -100,12 +101,14 @@ class TestPrismaBackendDB:
         backend_db = PrismaBackendDB()
         random_id = random.randint(1, 1_000_000)
         user_uuid = await frontend_db._create_user(
-            str(uuid.uuid4()), f"user{random_id}@airt.ai", f"user{random_id}"
+            uuid.uuid4(), f"user{random_id}@airt.ai", f"user{random_id}"
         )
-        deployment_uuid = str(uuid.uuid4())
-        auth_token_uuid = str(uuid.uuid4())
+        deployment_uuid = uuid.uuid4()
+        auth_token_uuid = uuid.uuid4()
 
-        async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, str]:
+        async def mock_find_model(
+            *args: Any, **kwargs: Any
+        ) -> Dict[str, Union[str, UUID]]:
             return {
                 "user_uuid": user_uuid,
                 "uuid": deployment_uuid,
@@ -127,16 +130,16 @@ class TestPrismaBackendDB:
             expiry="99d",
             expires_at=datetime.utcnow() + timedelta(days=99),
         )
-        assert auth_token["uuid"] == auth_token_uuid
+        assert auth_token["uuid"] == str(auth_token_uuid)
         assert auth_token["name"] == "Test token"
 
         many_auth_token = await backend_db.find_many_auth_token(
             user_uuid, deployment_uuid
         )
         assert len(many_auth_token) == 1
-        assert many_auth_token[0]["uuid"] == auth_token_uuid
+        assert many_auth_token[0]["uuid"] == str(auth_token_uuid)
 
         deleted_auth_token = await backend_db.delete_auth_token(
             auth_token_uuid, deployment_uuid, user_uuid
         )
-        assert deleted_auth_token["uuid"] == auth_token_uuid
+        assert deleted_auth_token["uuid"] == str(auth_token_uuid)
