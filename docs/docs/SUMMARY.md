@@ -20,6 +20,7 @@ search:
             - [get_all_models](api/fastagency/app/get_all_models.md)
             - [get_azure_llm_client](api/fastagency/app/get_azure_llm_client.md)
             - [get_models_schemas](api/fastagency/app/get_models_schemas.md)
+            - [handle_keynotfounderror_middleware](api/fastagency/app/handle_keynotfounderror_middleware.md)
             - [mask](api/fastagency/app/mask.md)
             - [models_delete](api/fastagency/app/models_delete.md)
             - [setup_user](api/fastagency/app/setup_user.md)
