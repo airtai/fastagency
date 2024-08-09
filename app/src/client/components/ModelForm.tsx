@@ -1,6 +1,6 @@
 // src/components/ModelForm.tsx
 import React from 'react';
-import { SchemaCategory, ApiSchema, JsonSchema, SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
+import { Property, Schemas, JsonSchema, SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
 
 import ModelFormContainer from './ModelFormContainer';
 import DynamicFormBuilder from './DynamicFormBuilder';
@@ -9,7 +9,7 @@ import { FormData } from '../hooks/useForm';
 
 interface ModelFormProps {
   allUserProperties: any;
-  data: SchemaCategory;
+  data: Property;
   selectedModel: string;
   updateExistingModel: SelectedModelSchema | null;
   resumeFormData: SelectedModelSchema | null;
@@ -34,7 +34,7 @@ const ModelForm: React.FC<ModelFormProps> = ({
   onDeleteCallback,
   handleAddProperty,
 }) => {
-  const modelSchemas: ApiSchema[] = data.schemas;
+  const modelSchemas: Schemas[] = data.schemas;
   const initialModelSchema: JsonSchema = getSchemaByName(data.schemas, selectedModel);
   const validationURL: string = `models/${data.name}/${selectedModel}/validate`;
   return (

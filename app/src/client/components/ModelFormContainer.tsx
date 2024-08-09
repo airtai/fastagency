@@ -1,11 +1,11 @@
 // components/ModelFormContainer.tsx
 import React from 'react';
-import { ApiSchema, SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
+import { Schemas, SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
 
 interface ModelFormContainerProps {
   propertyHeader: string;
   selectedModel: string;
-  modelSchemas: ApiSchema[];
+  modelSchemas: Schemas[];
   onModelChange: (selectedModel: string) => void;
   updateExistingModel: SelectedModelSchema | null;
 }

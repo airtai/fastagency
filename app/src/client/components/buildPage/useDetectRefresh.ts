@@ -1,4 +1,5 @@
-// useDetectRefresh.ts
+/* This file should be deleted */
+
 import { useEffect } from 'react';
 
 const useDetectRefresh = (onRefresh: () => void) => {

@@ -1,3 +1,5 @@
+/* This file should be deleted */
+
 import { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { processFormDataStack, FORM_DATA_STORAGE_KEY } from './utils';

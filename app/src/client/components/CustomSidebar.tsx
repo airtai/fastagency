@@ -212,10 +212,10 @@ interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
   onSideNavItemClick: (selectedItem: string) => void;
-  sideNavSelectedItem: string;
+  activeProperty: string;
 }
 
-const CustomSidebar = ({ sidebarOpen, setSidebarOpen, onSideNavItemClick, sideNavSelectedItem }: SidebarProps) => {
+const CustomSidebar = ({ sidebarOpen, setSidebarOpen, onSideNavItemClick, activeProperty }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
 
@@ -316,7 +316,7 @@ const CustomSidebar = ({ sidebarOpen, setSidebarOpen, onSideNavItemClick, sideNa
                     className={cn(
                       'group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-airt-font-base duration-300 ease-in-out hover:bg-airt-secondary hover:text-airt-primary dark:hover:bg-meta-4',
                       {
-                        'bg-airt-secondary text-airt-primary': item.componentName === sideNavSelectedItem,
+                        'bg-airt-secondary text-airt-primary': item.componentName === activeProperty,
                       }
                     )}
                   >

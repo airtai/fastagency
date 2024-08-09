@@ -1,17 +1,30 @@
 import _ from 'lodash';
 
 import { getModels } from 'wasp/client/operations';
-import { Property, Schema, Schemas, JsonSchema, SchemaDefs } from '../interfaces/BuildPageInterfaces';
-import { SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
-import { SELECT_PLACEHOLDER, SELECT_CLEAR_PLACEHOLDER } from './constants';
+import { Property, Schema, Schemas, JsonSchema, SchemaDefs } from '../../interfaces/BuildPageInterfaces';
+import { PropertiesSchema, ListOfSchemas } from '../../interfaces/BuildPageInterfacesNew';
+import { SelectedModelSchema } from '../../interfaces/BuildPageInterfaces';
+import { SELECT_PLACEHOLDER, SELECT_CLEAR_PLACEHOLDER } from '../../utils/constants';
 
-export const filerOutComponentData = (data: Schema, componentName: string): Property => {
-  return data.list_of_schemas.filter((schema: any) => schema.name === componentName)[0];
+/* These are the function you need*/
+
+export const filerOutComponentData = (propertiesSchema: PropertiesSchema, componentName: string): ListOfSchemas => {
+  return propertiesSchema.list_of_schemas.filter((schema: any) => schema.name === componentName)[0];
+};
+export const capitalizeFirstLetter = (s: string): string => {
+  return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-export function capitalizeFirstLetter(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
+export const filterPropertiesByType = (userProperties: any, activeProperty: string) => {
+  if (userProperties) {
+    const properties = _.filter(userProperties, ['type_name', activeProperty]);
+    return _.sortBy(properties, ['created_at']);
+  }
+};
+
+/* These are the function you need*/
+
+/* Delete the below functions*/
 
 export const getSchemaByName = (schemas: Schemas[], schemaName: string): JsonSchema => {
   const Schemas: Schemas | undefined = schemas.find((s) => s.name === schemaName);

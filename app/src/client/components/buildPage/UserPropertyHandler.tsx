@@ -1,3 +1,5 @@
+/* This file should be deleted */
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash';

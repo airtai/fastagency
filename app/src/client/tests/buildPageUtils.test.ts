@@ -28,12 +28,12 @@ import {
   isIntegerOrNull,
   getPropertiesWithDefaultFirst,
 } from '../utils/buildPageUtils';
-import { SchemaCategory, ApiResponse, SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
+import { Property, Schema, SelectedModelSchema } from '../interfaces/BuildPageInterfaces';
 
 describe('buildPageUtils', () => {
   describe('filerOutComponentData', () => {
     test('filerOutComponentData', () => {
-      const input: ApiResponse = {
+      const input: Schema = {
         list_of_schemas: [
           {
             name: 'secret',
@@ -435,7 +435,7 @@ describe('buildPageUtils', () => {
           },
         ],
       };
-      const expected: SchemaCategory = {
+      const expected: Property = {
         name: 'secret',
         schemas: [
           {

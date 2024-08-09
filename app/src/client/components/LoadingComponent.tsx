@@ -13,9 +13,9 @@ const commonMessageStyles = {
   padding: '1rem',
 };
 
-const MessageIcon = () => (
+const MessageIcon = ({ color }: { color: string }) => (
   <svg
-    className='animate-spin -ml-1 mr-3 h-5 w-5 text-airt-font-base'
+    className={`animate-spin -ml-1 mr-3 h-5 w-5 text-${color}`}
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
     viewBox='0 0 24 24'
@@ -29,18 +29,23 @@ const MessageIcon = () => (
   </svg>
 );
 
-export default function LoadingComponent() {
+interface Props {
+  theme?: 'light' | 'dark';
+}
+
+export default function LoadingComponent({ theme = 'light' }: Props) {
+  const color = theme === 'light' ? 'airt-font-base' : 'airt-primary';
   return (
     <div style={wrapperStyles}>
-      <div className='text-airt-font-base' style={commonMessageStyles}>
+      <div className={`text-${color}`} style={commonMessageStyles}>
         <div className='relative rounded-xl overflow-auto p-8'>
           <div className='flex items-center justify-center'>
             <button
               type='button'
-              className='inline-flex items-center px-4 py-2 leading-6 text-sm shadow rounded-md transition ease-in-out duration-150 cursor-not-allowed border border-airt-font-base'
+              className={`inline-flex items-center px-4 py-2 leading-6 text-sm shadow rounded-md transition ease-in-out duration-150 cursor-not-allowed border border-${color} text-${color}`}
               disabled
             >
-              <MessageIcon /> Loading...
+              <MessageIcon color={color} /> Loading...
             </button>
           </div>
         </div>

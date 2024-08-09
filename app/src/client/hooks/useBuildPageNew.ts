@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
+import { PropertiesSchema } from '../interfaces/BuildPageInterfacesNew';
+import { getSchema } from 'wasp/client/operations';
 
-import { getAvailableModels } from '../services/modelService';
-
-import { Schema } from '../interfaces/BuildPageInterfaces';
-
-export const useBuildPage = () => {
-  const [data, setData] = useState<Schema | null>(null);
+export const useBuildPageNew = () => {
+  const [data, setData] = useState<PropertiesSchema | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -13,9 +11,10 @@ export const useBuildPage = () => {
     try {
       setLoading(true);
       setError(null);
-      const response: Schema = await getAvailableModels();
+      const response: PropertiesSchema = await getSchema();
       setData(response);
     } catch (error: any) {
+      console.error('Failed to fetch schemas:', error);
       setError(error.message);
       setData(null);
     } finally {

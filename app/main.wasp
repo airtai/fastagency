@@ -83,30 +83,35 @@ page BuildPage {
   component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
 }
 
-route SecretsRoute { path: "/build/secrets", to: SecretsPage }
-page SecretsPage {
-  component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
+route BuildRouteNew { path: "/build-new/:type?", to: BuildPageNew }
+page BuildPageNew {
+  component: import BuildPageNewWithCustomAuth from "@src/client/app/BuildPageNew"
 }
 
-route ToolBoxRoute { path: "/build/toolboxes", to: ToolBoxPage }
-page ToolBoxPage {
-  component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
-}
+// route SecretsRoute { path: "/build/secrets", to: SecretsPage }
+// page SecretsPage {
+//   component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
+// }
 
-route LLMsRoute { path: "/build/llms", to: LLMsPage }
-page LLMsPage {
-  component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
-}
+// route ToolBoxRoute { path: "/build/toolboxes", to: ToolBoxPage }
+// page ToolBoxPage {
+//   component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
+// }
 
-route TeamsRoute { path: "/build/teams", to: TeamsPage }
-page TeamsPage {
-  component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
-}
+// route LLMsRoute { path: "/build/llms", to: LLMsPage }
+// page LLMsPage {
+//   component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
+// }
 
-route AgentsRoute { path: "/build/agents", to: AgentsPage }
-page AgentsPage {
-  component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
-}
+// route TeamsRoute { path: "/build/teams", to: TeamsPage }
+// page TeamsPage {
+//   component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
+// }
+
+// route AgentsRoute { path: "/build/agents", to: AgentsPage }
+// page AgentsPage {
+//   component: import BuildPageWithCustomAuth from "@src/client/app/BuildPage"
+// }
 
 route LoginRoute { path: "/login", to: LoginPage }
 page LoginPage {
@@ -304,6 +309,11 @@ action userModelSetup {
 }
 
 // 📚 Queries
+
+query getSchema {
+  fn: import { getSchema } from "@src/server/queries.js",
+  entities: []
+}
 
 query getDailyStats {
   fn: import { getDailyStats } from "@src/server/queries.js",

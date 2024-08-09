@@ -142,7 +142,7 @@ const BuildPage = ({ user }: BuildPageProps) => {
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           onSideNavItemClick={handleSideNavItemClick}
-          sideNavSelectedItem={sideNavSelectedItem}
+          activeProperty={sideNavSelectedItem}
         />
         {/* <!-- ===== Sidebar End ===== --> */}
 

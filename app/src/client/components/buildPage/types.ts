@@ -1,3 +1,5 @@
+/* This file should be deleted */
+
 export interface Props {
   data: any;
   togglePropertyList: boolean;

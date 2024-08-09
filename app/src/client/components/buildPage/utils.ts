@@ -1,3 +1,5 @@
+/* This file should be deleted */
+
 import _ from 'lodash';
 import { FormData } from '../../hooks/useForm';
 import { FormDataStackItem } from './types';
