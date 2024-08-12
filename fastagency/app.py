@@ -46,7 +46,7 @@ async def handle_keynotfounderror_middleware(
     try:
         return await call_next(request)
     except KeyNotFoundError as e:
-        return JSONResponse(status_code=404, content={"detail": str(e)})
+        return JSONResponse(status_code=404, content={"detail": e.args[0]})
 
 
 @app.get("/models/schemas")
