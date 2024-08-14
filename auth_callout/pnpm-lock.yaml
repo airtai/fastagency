@@ -16,10 +16,10 @@ importers:
         version: 4.9.5
       vite:
         specifier: ^4.5.0
-        version: 4.5.0(@types/node@20.9.0)
+        version: 4.5.0(@types/node@22.3.0)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(typescript@4.9.5)(vite@4.5.0(@types/node@20.9.0))
+        version: 0.6.2(typescript@4.9.5)(vite@4.5.0(@types/node@22.3.0))
 
   packages/auth-service:
     dependencies:
@@ -40,8 +40,8 @@ importers:
         version: 5.16.1
     devDependencies:
       '@types/node':
-        specifier: ^20.9.0
-        version: 20.9.0
+        specifier: ^22.3.0
+        version: 22.3.0
 
 packages:
 
@@ -225,8 +225,8 @@ packages:
   '@prisma/get-platform@5.16.1':
     resolution: {integrity: sha512-R4IKnWnMkR2nUAbU5gjrPehdQYUUd7RENFD2/D+xXTNhcqczp0N+WEGQ3ViyI3+6mtVcjjNIMdnUTNyu3GxIgA==}
 
-  '@types/node@20.9.0':
-    resolution: {integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==}
+  '@types/node@22.3.0':
+    resolution: {integrity: sha512-nrWpWVaDZuaVc5X84xJ0vNrLvomM205oQyLsRt7OHNZbSHslcWsvgFR7O7hire2ZonjLrWBbedmotmIlJDVd6g==}
 
   ansi-escapes@4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
@@ -505,8 +505,8 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+  undici-types@6.18.2:
+    resolution: {integrity: sha512-5ruQbENj95yDYJNS3TvcaxPMshV7aizdv/hWYjGIKoANWKjhWNBsr2YEuYZKodQulB1b8l7ILOuDQep3afowQQ==}
 
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
@@ -716,9 +716,9 @@ snapshots:
     dependencies:
       '@prisma/debug': 5.16.1
 
-  '@types/node@20.9.0':
+  '@types/node@22.3.0':
     dependencies:
-      undici-types: 5.26.5
+      undici-types: 6.18.2
 
   ansi-escapes@4.3.2:
     dependencies:
@@ -997,11 +997,11 @@ snapshots:
 
   typescript@4.9.5: {}
 
-  undici-types@5.26.5: {}
+  undici-types@6.18.2: {}
 
   universalify@2.0.1: {}
 
-  vite-plugin-checker@0.6.2(typescript@4.9.5)(vite@4.5.0(@types/node@20.9.0)):
+  vite-plugin-checker@0.6.2(typescript@4.9.5)(vite@4.5.0(@types/node@22.3.0)):
     dependencies:
       '@babel/code-frame': 7.22.13
       ansi-escapes: 4.3.2
@@ -1016,7 +1016,7 @@ snapshots:
       semver: 7.5.4
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
-      vite: 4.5.0(@types/node@20.9.0)
+      vite: 4.5.0(@types/node@22.3.0)
       vscode-languageclient: 7.0.0
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.11
@@ -1024,13 +1024,13 @@ snapshots:
     optionalDependencies:
       typescript: 4.9.5
 
-  vite@4.5.0(@types/node@20.9.0):
+  vite@4.5.0(@types/node@22.3.0):
     dependencies:
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.4
     optionalDependencies:
-      '@types/node': 20.9.0
+      '@types/node': 22.3.0
       fsevents: 2.3.3
 
   vscode-jsonrpc@6.0.0: {}
