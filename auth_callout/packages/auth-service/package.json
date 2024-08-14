@@ -14,7 +14,7 @@
     "@prisma/client": "^5.16.1",
     "nats": "^2.6.1",
     "nats-jwt": "^0.0.7",
-    "nkeys.js": "^1.0.5",
+    "nkeys.js": "^1.1.0",
     "prisma": "^5.16.1"
   },
   "scripts": {

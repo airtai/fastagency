@@ -33,8 +33,8 @@ importers:
         specifier: ^0.0.7
         version: 0.0.7
       nkeys.js:
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^1.1.0
+        version: 1.1.0
       prisma:
         specifier: ^5.16.1
         version: 5.16.1
@@ -401,6 +401,10 @@ packages:
 
   nkeys.js@1.0.5:
     resolution: {integrity: sha512-u25YnRPHiGVsNzwyHnn+PT90sgAhnS8jUJ1nxmkHMFYCJ6+Ic0lv291w7uhRBpJVJ3PH2GWbYqA151lGCRrB5g==}
+    engines: {node: '>=10.0.0'}
+
+  nkeys.js@1.1.0:
+    resolution: {integrity: sha512-tB/a0shZL5UZWSwsoeyqfTszONTt4k2YS0tuQioMOD180+MbombYVgzDUYHlx+gejYK6rgf08n/2Df99WY0Sxg==}
     engines: {node: '>=10.0.0'}
 
   normalize-path@3.0.0:
@@ -909,6 +913,10 @@ snapshots:
       nkeys.js: 1.0.5
 
   nkeys.js@1.0.5:
+    dependencies:
+      tweetnacl: 1.0.3
+
+  nkeys.js@1.1.0:
     dependencies:
       tweetnacl: 1.0.3
 
