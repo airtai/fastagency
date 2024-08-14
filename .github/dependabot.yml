@@ -16,7 +16,7 @@ updates:
     schedule:
       interval: "weekly"
   # Pnpm
-  - package-ecosystem: "pnpm"
+  - package-ecosystem: "npm"
     directory: "/auth_callout"
     schedule:
       interval: "weekly"
