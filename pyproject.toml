@@ -49,7 +49,7 @@ dependencies = [
     "typing-extensions>=4.8.0,<5",
     "pydantic>=2.3,<3",
     "fastapi==0.111.1",
-    "prisma>=0.13.1,<0.14",
+    "prisma>=0.13.1,<0.15",
     "fastapi-code-generator==0.5.1",
     "asyncer==0.0.7",
     "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
