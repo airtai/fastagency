@@ -15,7 +15,7 @@
     "nats": "^2.6.1",
     "nats-jwt": "^0.0.7",
     "nkeys.js": "^1.0.5",
-    "prisma": "^5.16.1"
+    "prisma": "^5.18.0"
   },
   "scripts": {
     "serve": "tsx src/service.ts"
