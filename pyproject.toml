@@ -44,12 +44,12 @@ classifiers = [
 dynamic = ["version"]
 
 dependencies = [
-    "pyautogen[anthropic,together]==0.2.32",
+    "pyautogen[anthropic,together]==0.2.34",
     "faststream[nats]>=0.5.10,<0.6",
     "typing-extensions>=4.8.0,<5",
     "pydantic>=2.3,<3",
     "fastapi==0.111.1",
-    "prisma>=0.13.1,<0.14",
+    "prisma>=0.13.1,<0.15",
     "fastapi-code-generator==0.5.1",
     "asyncer==0.0.7",
     "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
@@ -88,7 +88,7 @@ lint = [
     "types-ujson",
     "types-Pygments",
     "types-docutils",
-    "mypy==1.10.1",
+    "mypy==1.11.1",
     "ruff==0.5.2",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.9",
@@ -97,9 +97,9 @@ lint = [
 ]
 
 test-core = [
-    "coverage[toml]==7.6.0",
+    "coverage[toml]==7.6.1",
     "pytest==8.2.2",
-    "pytest-asyncio==0.23.7",
+    "pytest-asyncio==0.23.8",
     "dirty-equals==0.7.1.post0",
     "pytest-rerunfailures==14.0",
 ]
