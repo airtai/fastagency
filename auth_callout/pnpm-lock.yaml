@@ -12,14 +12,14 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2
       typescript:
-        specifier: ^4.9.5
-        version: 4.9.5
+        specifier: ^5.5.4
+        version: 5.5.4
       vite:
         specifier: ^4.5.0
         version: 4.5.0(@types/node@20.9.0)
       vite-plugin-checker:
         specifier: ^0.6.2
-        version: 0.6.2(typescript@4.9.5)(vite@4.5.0(@types/node@20.9.0))
+        version: 0.6.2(typescript@5.5.4)(vite@4.5.0(@types/node@20.9.0))
 
   packages/auth-service:
     dependencies:
@@ -500,9 +500,9 @@ packages:
     resolution: {integrity: sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==}
     engines: {node: '>=10'}
 
-  typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
+  typescript@5.5.4:
+    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
+    engines: {node: '>=14.17'}
     hasBin: true
 
   undici-types@5.26.5:
@@ -995,13 +995,13 @@ snapshots:
 
   type-fest@0.21.3: {}
 
-  typescript@4.9.5: {}
+  typescript@5.5.4: {}
 
   undici-types@5.26.5: {}
 
   universalify@2.0.1: {}
 
-  vite-plugin-checker@0.6.2(typescript@4.9.5)(vite@4.5.0(@types/node@20.9.0)):
+  vite-plugin-checker@0.6.2(typescript@5.5.4)(vite@4.5.0(@types/node@20.9.0)):
     dependencies:
       '@babel/code-frame': 7.22.13
       ansi-escapes: 4.3.2
@@ -1022,7 +1022,7 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.11
       vscode-uri: 3.0.8
     optionalDependencies:
-      typescript: 4.9.5
+      typescript: 5.5.4
 
   vite@4.5.0(@types/node@20.9.0):
     dependencies:
