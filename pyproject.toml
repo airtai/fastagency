@@ -62,7 +62,7 @@ dependencies = [
 # public distributions
 
 server = [
-    "uvicorn==0.30.1",
+    "uvicorn==0.30.6",
 ]
 
 # dev dependencies
@@ -77,7 +77,7 @@ devdocs = [
     "mkdocs-minify-plugin==0.8.0",
     "mkdocs-macros-plugin==1.0.5",  # includes with variables
     "mkdocs-glightbox==0.4.0",  # img zoom
-    "pillow==10.3.0",
+    "pillow==10.4.0",
     "cairosvg==2.7.1",
     "requests",  # do not pin it
 ]
@@ -92,7 +92,7 @@ lint = [
     "ruff==0.5.2",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.9",
-    "semgrep==1.78.0",
+    "semgrep==1.85.0",
     "pytest-mypy-plugins==3.1.2",
 ]
 
@@ -107,9 +107,9 @@ test-core = [
 testing = [
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
-    "pydantic-settings==2.3.4",
+    "pydantic-settings==2.4.0",
     "PyYAML==6.0.1",
-    "watchfiles==0.22.0",
+    "watchfiles==0.23.0",
     "email-validator==2.2.0",
 ]
 
