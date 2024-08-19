@@ -77,7 +77,7 @@ devdocs = [
     "mkdocs-minify-plugin==0.8.0",
     "mkdocs-macros-plugin==1.0.5",  # includes with variables
     "mkdocs-glightbox==0.4.0",  # img zoom
-    "pillow==10.3.0",
+    "pillow==10.4.0",
     "cairosvg==2.7.1",
     "requests",  # do not pin it
 ]
