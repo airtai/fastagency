@@ -1,10 +1,7 @@
 from os import environ
 from typing import Optional
 
-from faststream import (
-    ContextRepo,  # noqa
-    FastStream,
-)
+from faststream import FastStream
 from faststream.nats import JStream, NatsBroker
 
 from ..db.prisma import faststream_lifespan
