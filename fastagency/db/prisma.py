@@ -4,13 +4,13 @@ from os import environ
 from typing import TYPE_CHECKING, Any, AsyncGenerator, Dict, List, Optional, Union
 from uuid import UUID
 
+from faststream import ContextRepo
 from prisma import Prisma  # type: ignore[attr-defined]
 
 from .base import BackendDBProtocol, DefaultDB, FrontendDBProtocol, KeyNotFoundError
 
 if TYPE_CHECKING:
     from fastapi import FastAPI
-    from faststream import ContextRepo
 
 
 class PrismaBaseDB:
@@ -212,6 +212,6 @@ async def fastapi_lifespan(app: "FastAPI") -> AsyncGenerator[None, None]:
 
 
 @asynccontextmanager
-async def faststream_lifespan(context: "ContextRepo") -> AsyncGenerator[None, None]:
+async def faststream_lifespan(context: ContextRepo) -> AsyncGenerator[None, None]:
     async with _lifespan():
         yield
