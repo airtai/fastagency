@@ -38,8 +38,8 @@ class TestOpenAIAPIKey:
 
 
 class TestOpenAI:
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     @parametrize_fixtures("openai_oai_ref", get_by_tag("openai-llm"))
     async def test_openai_constructor(self, openai_oai_ref: ObjectReference) -> None:
         # create data
@@ -64,7 +64,7 @@ class TestOpenAI:
         }
         assert model.model_dump() == expected
 
-    @pytest.mark.openai()
+    @pytest.mark.openai
     def test_openai_model_list(self) -> None:
         client = openai.OpenAI()
 
@@ -175,8 +175,8 @@ class TestOpenAI:
         # print(f"{schema=}")
         assert schema == expected
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     @parametrize_fixtures("openai_oai_ref", get_by_tag("openai-llm"))
     async def test_openai_model_create_autogen(
         self,

@@ -9,7 +9,7 @@ import pytest
 from fastagency.saas_app_generator import InvalidGHTokenError, SaasAppGenerator
 
 
-@pytest.fixture()
+@pytest.fixture
 def saas_app_generator() -> SaasAppGenerator:
     fly_api_token = "some-token"
     fastagency_deployment_uuid = "some-uuid"

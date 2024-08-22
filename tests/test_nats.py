@@ -34,7 +34,7 @@ def as_dict(model: BaseModel) -> Dict[str, Any]:
 
 
 class TestAutogen:
-    @pytest.mark.azure_oai()
+    @pytest.mark.azure_oai
     def test_ioconsole(
         self,
         azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
@@ -88,9 +88,9 @@ class TestAutogen:
         get_forecast_for_city_mock.assert_called_once_with("New York")
         assert "sunny" in last_message["content"]
 
-    @pytest.mark.azure_oai()
-    @pytest.mark.nats()
-    @pytest.mark.asyncio()
+    @pytest.mark.azure_oai
+    @pytest.mark.nats
+    @pytest.mark.asyncio
     async def test_ionats_success(  # noqa: C901
         self,
         azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
@@ -240,9 +240,9 @@ class TestAutogen:
             result = (result_set.pop()).result()
             assert result == {"msg": "Chat completed."}
 
-    @pytest.mark.azure_oai()
-    @pytest.mark.nats()
-    @pytest.mark.asyncio()
+    @pytest.mark.azure_oai
+    @pytest.mark.nats
+    @pytest.mark.asyncio
     async def test_ionats_error_msg(
         self,
         azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
@@ -318,10 +318,10 @@ class TestAutogen:
             result = (result_set.pop()).result()
             assert result == {"msg": "Triggering error in test"}
 
-    @pytest.mark.azure_oai()
-    @pytest.mark.nats()
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.azure_oai
+    @pytest.mark.nats
+    @pytest.mark.db
+    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "llm_model,api_key_model",  # noqa: PT006
         [

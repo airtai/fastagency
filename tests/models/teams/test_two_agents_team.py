@@ -185,10 +185,10 @@ class TestTwoAgentTeam:
         assert schema == expected
 
 
-@pytest.mark.db()
-@pytest.mark.llm()
+@pytest.mark.db
+@pytest.mark.llm
 class TestTwoAgentTeamSimpleChat:
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     @parametrize_fixtures("team_ref", get_by_tag("team", "noapi"))
     async def test_simple_chat(
         self,
@@ -206,7 +206,7 @@ class TestTwoAgentTeamSimpleChat:
         history = ag_team.initiate_chat("What is 2 + 2?")
         assert sum(["TERMINATE" in msg["content"] for msg in history.chat_history]) == 1
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     @parametrize_fixtures("team_ref", get_by_tag("team", "weather"))
     async def test_chat_with_weatherapi(
         self,

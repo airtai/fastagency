@@ -7,9 +7,9 @@ from ...helpers import get_by_tag, parametrize_fixtures
 
 
 class TestLLMKeys:
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.llm()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.llm
     @parametrize_fixtures("llm_key_ref", get_by_tag("llm-key"))
     async def test_llm_key_constructor(
         self,
@@ -18,9 +18,9 @@ class TestLLMKeys:
         model = await get_model_by_ref(llm_key_ref)
         assert isinstance(model, Model)
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.llm()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.llm
     @parametrize_fixtures("llm_key_ref", get_by_tag("llm-key"))
     async def test_llm_key_create_autogen(
         self,

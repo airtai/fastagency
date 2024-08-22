@@ -13,7 +13,7 @@ from fastagency.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.models.llms.azure import AzureOAIAPIKey
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 class TestInMemoryFrontendDB:
     async def test_set(self) -> None:
         frontend_db = InMemoryFrontendDB()
@@ -53,8 +53,8 @@ class TestInMemoryFrontendDB:
         assert f"user_uuid {user_uuid} not found" == str(e.value)
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 class TestInMemoryBackendDB:
     async def test_model_CRUD(self) -> None:  # noqa: N802
         # Setup

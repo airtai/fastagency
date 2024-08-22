@@ -16,9 +16,9 @@ from tests.helpers import get_by_tag, parametrize_fixtures
 
 
 class TestWebSurferAgent:
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.llm()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.llm
     @parametrize_fixtures("websurfer_ref", get_by_tag("websurfer"))
     async def test_websurfer_construction(
         self,
@@ -30,9 +30,9 @@ class TestWebSurferAgent:
         isinstance(websurfer, WebSurferAgent)
         assert websurfer.bing_api_key is not None
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.llm()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.llm
     @parametrize_fixtures("llm_ref", get_by_tag("websurfer-llm"))
     async def test_websurfer_llm_construction(
         self,
@@ -285,8 +285,8 @@ class TestWebSurferAgent:
         # print(f"{schema=}")
         assert schema == expected
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     @parametrize_fixtures("websurfer_ref", get_by_tag("websurfer"))
     async def test_assistant_create_autogen(
         self,
@@ -304,9 +304,9 @@ class TestWebSurferAgent:
         assert isinstance(ag_assistant, autogen.agentchat.AssistantAgent)
         assert len(ag_toolkits) == 1
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.llm()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.llm
     @parametrize_fixtures("websurfer_ref", get_by_tag("websurfer"))
     @pytest.mark.parametrize(
         "task",
@@ -435,8 +435,8 @@ class TestWebSurferAgent:
 
 # todo
 class TestBingAPIKey:
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     async def test_bing_api_key_model_create_autogen(
         self,
         azure_gpt35_turbo_16k_llm_config: Dict[str, Any],

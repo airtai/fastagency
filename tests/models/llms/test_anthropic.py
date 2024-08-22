@@ -17,8 +17,8 @@ def test_import(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 class TestAnthropic:
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     async def test_anthropic_constructor(self, anthropic_ref: ObjectReference) -> None:
         # create data
         model = await get_model_by_ref(anthropic_ref)
@@ -135,9 +135,9 @@ class TestAnthropic:
         }
         assert schema == expected
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.anthropic()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.anthropic
     async def test_anthropic_model_create_autogen(
         self,
         user_uuid: str,

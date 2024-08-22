@@ -17,8 +17,8 @@ def test_import(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 class TestAzureOAI:
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     async def test_azure_constructor(
         self, azure_oai_gpt35_ref: ObjectReference
     ) -> None:
@@ -142,8 +142,8 @@ class TestAzureOAI:
         }
         assert schema == expected
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     async def test_azure_model_create_autogen(
         self,
         user_uuid: str,

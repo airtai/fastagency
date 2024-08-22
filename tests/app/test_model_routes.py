@@ -57,7 +57,7 @@ class MockChatCompletion:
         self.choices = choices
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "api_key,expected",  # noqa: PT006
     [("whatever", "wha*ever"), ("some_other_key", "som*******_key")],
@@ -66,9 +66,9 @@ async def test_mask(api_key: str, expected: str) -> None:
     assert await mask(api_key) == expected
 
 
-@pytest.mark.db()
+@pytest.mark.db
 class TestModelRoutes:
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_get_all_models(
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -105,7 +105,7 @@ class TestModelRoutes:
             for key in expected[i]:
                 assert actual[i][key] == expected[i][key]
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_setup_user(self) -> None:
         random_id = random.randint(1, 1_000_000)
         user_uuid = await DefaultDB.frontend()._create_user(
@@ -159,7 +159,7 @@ class TestModelRoutes:
         actual = response.json()
         assert actual == expected_setup_again
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_add_model(self, user_uuid: str) -> None:
         model_uuid = str(uuid.uuid4())
         azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name="who cares?")
@@ -176,7 +176,7 @@ class TestModelRoutes:
         actual = response.json()
         assert actual == expected
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_add_model_deployment(self, user_uuid: str) -> None:
         team_uuid = str(uuid.uuid4())
         deployment_uuid = str(uuid.uuid4())
@@ -250,7 +250,7 @@ class TestModelRoutes:
         actual = response.json()
         assert actual == expected
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_add_model_deployment_with_long_name(self, user_uuid: str) -> None:
         team_uuid = str(uuid.uuid4())
         deployment_uuid = str(uuid.uuid4())
@@ -283,7 +283,7 @@ class TestModelRoutes:
 
         assert response.status_code != 200
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_background_task_not_called_on_error(self, user_uuid: str) -> None:
         team_uuid = str(uuid.uuid4())
         deployment_uuid = str(uuid.uuid4())
@@ -328,7 +328,7 @@ class TestModelRoutes:
         mock_task.assert_not_called()
         assert response.status_code != 200
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_update_model(
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -357,7 +357,7 @@ class TestModelRoutes:
         actual = response.json()
         assert actual == expected
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_update_model_deployment(self, user_uuid: str) -> None:
         team_uuid = str(uuid.uuid4())
         deployment_uuid = str(uuid.uuid4())
@@ -459,7 +459,7 @@ class TestModelRoutes:
         actual = response.json()
         assert actual == expected
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_delete_model(
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -485,8 +485,8 @@ class TestModelRoutes:
         actual = response.json()
         assert actual == expected
 
-    @pytest.mark.llm()
-    @pytest.mark.asyncio()
+    @pytest.mark.llm
+    @pytest.mark.asyncio
     async def test_chat_with_no_function_calling(
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -530,8 +530,8 @@ class TestModelRoutes:
         # Assert the mock was called with the correct arguments
         mock_create.assert_called_once()
 
-    @pytest.mark.llm()
-    @pytest.mark.asyncio()
+    @pytest.mark.llm
+    @pytest.mark.asyncio
     async def test_chat_error(
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -571,8 +571,8 @@ class TestModelRoutes:
         # Assert the mock was called with the correct arguments
         mock_create.assert_called_once()
 
-    @pytest.mark.llm()
-    @pytest.mark.asyncio()
+    @pytest.mark.llm
+    @pytest.mark.asyncio
     async def test_chat_with_function_calling(
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -626,7 +626,7 @@ class TestModelRoutes:
         # Assert the mock was called with the correct arguments
         mock_create.assert_called_once()
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_ping(self) -> None:
         deployment_uuid = str(uuid.uuid4())
         response = client.get(f"/deployment/{deployment_uuid}/ping")

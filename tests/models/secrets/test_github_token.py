@@ -19,8 +19,8 @@ class TestGitHubToken:
             gh_token.gh_token == "*" * 64  # pragma: allowlist secret
         )  # pragma: allowlist secret
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     @pytest.mark.parametrize("gh_token_model", [(GitHubToken)])
     async def test_github_token_model_create_autogen(
         self,

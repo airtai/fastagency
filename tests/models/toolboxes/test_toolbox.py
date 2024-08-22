@@ -17,8 +17,8 @@ class TestOpenAPIAuth:
 
 
 class TestToolbox:
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     async def test_toolbox_constructor(
         self, toolbox_ref: ObjectReference, fastapi_openapi_url: str, user_uuid: str
     ) -> None:
@@ -30,8 +30,8 @@ class TestToolbox:
         assert toolbox.name == "test_toolbox"
         assert str(toolbox.openapi_url) == fastapi_openapi_url
 
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     async def test_toolbox_create_autogen(
         self,
         toolbox_ref: ObjectReference,

@@ -13,8 +13,8 @@ from fastagency.db.prisma import PrismaBackendDB, PrismaFrontendDB
 from fastagency.models.llms.azure import AzureOAIAPIKey
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 class TestPrismaFrontendDB:
     async def test_set(self) -> None:
         frontend_db = PrismaFrontendDB()
@@ -54,8 +54,8 @@ class TestPrismaFrontendDB:
         assert f"user_uuid {user_uuid} not found" == str(e.value)
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 class TestPrismaBackendDB:
     async def test_model_CRUD(self) -> None:  # noqa: N802
         # Setup

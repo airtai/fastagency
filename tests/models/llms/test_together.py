@@ -43,7 +43,7 @@ class TestTogetherAIAPIKey:
 
 
 class TestTogetherAI:
-    @pytest.mark.togetherai()
+    @pytest.mark.togetherai
     def test_together_model_string(self) -> None:
         # requires that environment variables TOGETHER_API_KEY is set
         client = Together()
@@ -57,8 +57,8 @@ class TestTogetherAI:
         # print(expected_together_model_string)
         assert together_model_string == expected_together_model_string
 
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     async def test_togetherai_constructor(
         self,
         togetherai_ref: ObjectReference,
@@ -171,8 +171,8 @@ class TestTogetherAI:
         schema["properties"]["model"].pop("enum")
         assert schema == expected
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     async def test_togetherai_model_create_autogen(
         self,
         user_uuid: str,

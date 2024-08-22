@@ -13,7 +13,7 @@ from fastagency.openapi.client import Client
 
 
 class TestClientEnd2End:
-    @pytest.fixture()
+    @pytest.fixture
     def fastapi_app(self) -> FastAPI:
         app = FastAPI(
             title="My FastAPI app",
@@ -80,7 +80,7 @@ class TestClientEnd2End:
         assert fastapi_app is not None
         assert isinstance(fastapi_app, FastAPI)
 
-    @pytest.fixture()
+    @pytest.fixture
     def openapi_schema(self, fastapi_app: FastAPI) -> Dict[str, Any]:
         return fastapi_app.openapi()
 
@@ -355,7 +355,7 @@ class TestClientEnd2End:
         }
         assert openapi_schema == expected
 
-    @pytest.fixture()
+    @pytest.fixture
     def generated_code_path(self, openapi_schema: Dict[str, Any]) -> Iterator[Path]:
         with TemporaryDirectory() as temp_dir:
             td = Path(temp_dir)
@@ -533,7 +533,7 @@ class HTTPValidationError(BaseModel):
             models = f.read()
             assert models == expected
 
-    @pytest.fixture()
+    @pytest.fixture
     def client(self, openapi_schema: Dict[str, Any]) -> Client:
         client = Client.create(json.dumps(openapi_schema))
         return client
