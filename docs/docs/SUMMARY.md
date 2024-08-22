@@ -36,6 +36,18 @@ search:
                 - [hash_auth_token](api/fastagency/auth_token/auth/hash_auth_token.md)
                 - [parse_expiry](api/fastagency/auth_token/auth/parse_expiry.md)
                 - [verify_auth_token](api/fastagency/auth_token/auth/verify_auth_token.md)
+        - core
+            - autogen
+                - [AutoGenIOAdapter](api/fastagency/core/autogen/AutoGenIOAdapter.md)
+                - [AutoGenTeam](api/fastagency/core/autogen/AutoGenTeam.md)
+                - [AutoGenTeamChatable](api/fastagency/core/autogen/AutoGenTeamChatable.md)
+                - [AutogenTeamAgents](api/fastagency/core/autogen/AutogenTeamAgents.md)
+            - base
+                - [ChatMessage](api/fastagency/core/base/ChatMessage.md)
+                - [Chatable](api/fastagency/core/base/Chatable.md)
+                - [ChatableFactory](api/fastagency/core/base/ChatableFactory.md)
+                - [ChatableIO](api/fastagency/core/base/ChatableIO.md)
+                - [ConsoleIO](api/fastagency/core/base/ConsoleIO.md)
         - db
             - base
                 - [BackendDBProtocol](api/fastagency/db/base/BackendDBProtocol.md)
