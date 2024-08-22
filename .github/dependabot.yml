@@ -15,8 +15,3 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-  # Pnpm
-  - package-ecosystem: "npm"
-    directory: "/auth_callout"
-    schedule:
-      interval: "weekly"
