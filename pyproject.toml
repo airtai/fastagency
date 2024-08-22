@@ -44,6 +44,12 @@ classifiers = [
 dynamic = ["version"]
 
 dependencies = [
+]
+
+[project.optional-dependencies]
+# public distributions
+
+studio = [
     "pyautogen[anthropic,together]==0.2.35",
     "faststream[nats]>=0.5.10,<0.6",
     "typing-extensions>=4.8.0,<5",
@@ -57,9 +63,6 @@ dependencies = [
     "python-weather==2.0.3",  # should be removed when we move API to another project
     "together>=1.2.1,<2",
 ]
-
-[project.optional-dependencies]
-# public distributions
 
 server = [
     "uvicorn==0.30.6",
@@ -105,6 +108,7 @@ test-core = [
 ]
 
 testing = [
+    "fastagency[studio]",
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
     "pydantic-settings==2.4.0",
@@ -114,10 +118,9 @@ testing = [
 ]
 
 dev = [
-    "fastagency[server,lint,testing,devdocs]",
+    "fastagency[studio,server,lint,testing,devdocs]",
     "pre-commit==3.7.1",
     "detect-secrets==1.5.0",
-    "asyncer==0.0.7",
 ]
 
 [project.urls]
