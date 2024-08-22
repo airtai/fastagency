@@ -12,9 +12,9 @@ from ...helpers import get_by_tag, parametrize_fixtures
 
 
 class TestAssistantAgent:
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.llm()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.llm
     @parametrize_fixtures("assistant_ref", get_by_tag("assistant"))
     async def test_assistant_construction(
         self,
@@ -222,8 +222,8 @@ class TestAssistantAgent:
         # print(f"{schema=}")
         assert schema == expected
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     @parametrize_fixtures("assistant_ref", get_by_tag("assistant", "weather"))
     async def test_assistant_create_autogen(
         self,
@@ -243,9 +243,9 @@ class TestAssistantAgent:
         assert len(ag_toolkits) == 1
         assert ag_assistant._is_termination_msg == is_termination_msg
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
-    @pytest.mark.llm()
+    @pytest.mark.asyncio
+    @pytest.mark.db
+    @pytest.mark.llm
     @parametrize_fixtures("assistant_ref", get_by_tag("assistant", "weather"))
     async def test_assistant_weather_end2end(
         self,

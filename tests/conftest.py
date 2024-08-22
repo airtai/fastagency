@@ -122,19 +122,19 @@ def azure_model_llm_config(model_env_name: str) -> Dict[str, Any]:
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def azure_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT35_MODEL")
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def azure_gpt4_llm_config() -> Dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT4_MODEL")
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def azure_gpt4o_llm_config() -> Dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT4o_MODEL")
 
@@ -159,7 +159,7 @@ def openai_llm_config(model: str) -> Dict[str, Any]:
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def openai_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
     return openai_llm_config("gpt-3.5-turbo")
 

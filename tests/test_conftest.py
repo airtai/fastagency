@@ -44,8 +44,8 @@ def test_openai_gpt35_turbo_16k_llm_config(
     assert openai_gpt35_turbo_16k_llm_config == expected
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_azure_oai_key_ref(azure_oai_key_ref: ObjectReference) -> None:
     assert isinstance(azure_oai_key_ref, ObjectReference)
     assert azure_oai_key_ref.type == "secret"
@@ -55,8 +55,8 @@ async def test_azure_oai_key_ref(azure_oai_key_ref: ObjectReference) -> None:
     assert azure_oai_key.name.startswith("azure_oai_key_")
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_azure_oai_gpt35_ref(azure_oai_gpt35_ref: ObjectReference) -> None:
     assert isinstance(azure_oai_gpt35_ref, ObjectReference)
     assert azure_oai_gpt35_ref.type == "llm"
@@ -96,17 +96,17 @@ def test_weather_fastapi_openapi(weather_fastapi_openapi_url: str) -> None:
     assert resp_json["info"]["title"] == "Weather"
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_weather_toolbox_ref(weather_toolbox_ref: ObjectReference) -> None:
     assert isinstance(weather_toolbox_ref, ObjectReference)
 
 
-@pytest.mark.anthropic()
+@pytest.mark.anthropic
 def test_empty_anthropic() -> None:
     pass
 
 
-@pytest.mark.openai()
+@pytest.mark.openai
 def test_empty_openai() -> None:
     pass

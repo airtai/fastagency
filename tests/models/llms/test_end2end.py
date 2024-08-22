@@ -10,9 +10,9 @@ from ...helpers import add_random_sufix, get_by_tag, parametrize_fixtures
 
 
 @parametrize_fixtures("llm_ref", get_by_tag("llm"))
-@pytest.mark.asyncio()
-@pytest.mark.db()
-@pytest.mark.llm()
+@pytest.mark.asyncio
+@pytest.mark.db
+@pytest.mark.llm
 @pytest.mark.skip(reason="This test is not working properly in CI")
 async def test_end2end_simple_chat_with_two_agents(
     user_uuid: str,

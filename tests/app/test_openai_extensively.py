@@ -15,7 +15,7 @@ client = TestClient(app)
 
 
 class TestValidateOpenAIKey:
-    @pytest.fixture()
+    @pytest.fixture
     def model_dict(self) -> Dict[str, Any]:
         model = OpenAIAPIKey(
             api_key="sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest",  # pragma: allowlist secret
@@ -50,8 +50,8 @@ class TestValidateOpenAIKey:
         }
         assert msg_dict == expected
 
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     async def test_validate_secret_model(
         self,
         model_dict: Dict[str, Any],
@@ -80,7 +80,7 @@ class TestValidateOpenAIKey:
 
 # we will do this for OpenAI only, the rest should be the same
 class TestValidateOpenAI:
-    @pytest.fixture()
+    @pytest.fixture
     def model_dict(self) -> Dict[str, Any]:
         key_uuid = uuid.uuid4()
         OpenAIAPIKeyRef = OpenAIAPIKey.get_reference_model()  # noqa: N806
@@ -181,8 +181,8 @@ def test_get_schemas() -> None:
 
 
 class TestToolbox:
-    @pytest.mark.db()
-    @pytest.mark.asyncio()
+    @pytest.mark.db
+    @pytest.mark.asyncio
     async def test_add_toolbox(self, user_uuid: str, fastapi_openapi_url: str) -> None:
         openapi_auth = OpenAPIAuth(
             name="openapi_auth_secret",
@@ -225,7 +225,7 @@ class TestToolbox:
         actual = response.json()
         assert actual == expected
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_validate_toolbox(self, fastapi_openapi_url: str) -> None:
         openapi_auth = OpenAPIAuth(
             name="openapi_auth_secret",
@@ -244,7 +244,7 @@ class TestToolbox:
 
         await validate_toolbox(toolbox)
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_validate_toolbox_route(self, fastapi_openapi_url: str) -> None:
         openapi_auth = OpenAPIAuth(
             name="openapi_auth_secret",
@@ -269,7 +269,7 @@ class TestToolbox:
         )
         assert response.status_code == 200
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_validate_toolbox_with_404_url(self) -> None:
         invalid_url = "http://i.dont.exist.airt.ai/openapi.json"
 
@@ -294,7 +294,7 @@ class TestToolbox:
         assert e.value.status_code == 422
         assert e.value.detail == "OpenAPI URL is invalid"
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_validate_toolbox_with_invalid_openapi_spec(self) -> None:
         invalid_url = "http://echo.jsontest.com/key/value/one/two"
 
@@ -319,7 +319,7 @@ class TestToolbox:
         assert e.value.status_code == 422
         assert e.value.detail == "OpenAPI URL does not contain a valid OpenAPI spec"
 
-    @pytest.mark.asyncio()
+    @pytest.mark.asyncio
     async def test_validate_toolbox_with_yaml_openapi_spec(self) -> None:
         invalid_url = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.yaml"
 

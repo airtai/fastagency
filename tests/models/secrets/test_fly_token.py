@@ -19,8 +19,8 @@ class TestFlyToken:
             fly_token.fly_token == "*" * 64  # pragma: allowlist secret
         )  # pragma: allowlist secret
 
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     @pytest.mark.parametrize("fly_token_model", [(FlyToken)])
     async def test_github_token_model_create_autogen(
         self,

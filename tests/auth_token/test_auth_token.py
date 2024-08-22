@@ -47,7 +47,7 @@ def test_verify_auth_token() -> None:
     assert not verify_auth_token("wrong_token", "wrong_hash")
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test_parse_expiry() -> None:
     expiry = await parse_expiry("1d")
     assert expiry is not None
@@ -55,7 +55,7 @@ async def test_parse_expiry() -> None:
     assert expiry > datetime.utcnow()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "expiry_str, expected",  # noqa: PT006
     [
@@ -75,8 +75,8 @@ async def test_parse_expiry_with_invalid_expiry(expiry_str: str, expected: str) 
     assert e.value.detail == expected
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_create_deployment_token(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -99,8 +99,8 @@ async def test_create_deployment_token(
     assert len(token.auth_token) == 32, token.auth_token
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_create_deployment_token_with_wrong_user_uuid(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -125,8 +125,8 @@ async def test_create_deployment_token_with_wrong_user_uuid(
     assert e.value.detail == "User does not have access to this deployment"
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_create_deployment_auth_token_route(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -153,8 +153,8 @@ async def test_create_deployment_auth_token_route(
     assert response.json()["auth_token"] is not None
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_get_all_deployment_auth_tokens(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -192,8 +192,8 @@ async def test_get_all_deployment_auth_tokens(
     assert response_json[0]["expiry"] == "99d"
 
 
-@pytest.mark.db()
-@pytest.mark.asyncio()
+@pytest.mark.db
+@pytest.mark.asyncio
 async def test_delete_deployment_auth_token(
     user_uuid: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:

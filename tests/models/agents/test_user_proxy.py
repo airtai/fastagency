@@ -9,8 +9,8 @@ from fastagency.models.agents.user_proxy import UserProxyAgent
 
 
 class TestUserProxyAgent:
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     async def test_user_proxy_model_create_autogen(
         self,
         user_uuid: str,

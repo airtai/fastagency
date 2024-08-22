@@ -263,8 +263,8 @@ class TestMultiAgentTeam:
         assert validated_team == team
 
     @pytest.mark.skip(reason="Temporarily disabling multi agent team")
-    @pytest.mark.asyncio()
-    @pytest.mark.db()
+    @pytest.mark.asyncio
+    @pytest.mark.db
     @pytest.mark.parametrize("enable_monkeypatch", [True, False])
     @pytest.mark.parametrize(
         "llm_model,api_key_model",  # noqa: PT006
