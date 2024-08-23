@@ -25,20 +25,20 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
-from fastagency.db.base import DefaultDB
-from fastagency.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
-from fastagency.helpers import create_autogen, create_model_ref, get_model_by_ref
-from fastagency.models.agents.assistant import AssistantAgent
-from fastagency.models.agents.user_proxy import UserProxyAgent
-from fastagency.models.agents.web_surfer import BingAPIKey, WebSurferAgent
-from fastagency.models.agents.web_surfer_autogen import WebSurferChat
-from fastagency.models.base import ObjectReference
-from fastagency.models.llms.anthropic import Anthropic, AnthropicAPIKey
-from fastagency.models.llms.azure import AzureOAI, AzureOAIAPIKey
-from fastagency.models.llms.openai import OpenAI, OpenAIAPIKey
-from fastagency.models.llms.together import TogetherAI, TogetherAIAPIKey
-from fastagency.models.teams.two_agent_teams import TwoAgentTeam
-from fastagency.models.toolboxes.toolbox import OpenAPIAuth, Toolbox
+from fastagency.studio.db.base import DefaultDB
+from fastagency.studio.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
+from fastagency.studio.helpers import create_autogen, create_model_ref, get_model_by_ref
+from fastagency.studio.models.agents.assistant import AssistantAgent
+from fastagency.studio.models.agents.user_proxy import UserProxyAgent
+from fastagency.studio.models.agents.web_surfer import BingAPIKey, WebSurferAgent
+from fastagency.studio.models.agents.web_surfer_autogen import WebSurferChat
+from fastagency.studio.models.base import ObjectReference
+from fastagency.studio.models.llms.anthropic import Anthropic, AnthropicAPIKey
+from fastagency.studio.models.llms.azure import AzureOAI, AzureOAIAPIKey
+from fastagency.studio.models.llms.openai import OpenAI, OpenAIAPIKey
+from fastagency.studio.models.llms.together import TogetherAI, TogetherAIAPIKey
+from fastagency.studio.models.teams.two_agent_teams import TwoAgentTeam
+from fastagency.studio.models.toolboxes.toolbox import OpenAPIAuth, Toolbox
 
 from .helpers import add_random_sufix, expand_fixture, get_by_tag, tag, tag_list
 
@@ -122,19 +122,19 @@ def azure_model_llm_config(model_env_name: str) -> Dict[str, Any]:
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def azure_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT35_MODEL")
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def azure_gpt4_llm_config() -> Dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT4_MODEL")
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def azure_gpt4o_llm_config() -> Dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT4o_MODEL")
 
@@ -159,19 +159,19 @@ def openai_llm_config(model: str) -> Dict[str, Any]:
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def openai_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
     return openai_llm_config("gpt-3.5-turbo")
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def openai_gpt4o_llm_config() -> Dict[str, Any]:
     return openai_llm_config("gpt-4o")
 
 
 @tag("llm_config")
-@pytest.fixture()
+@pytest.fixture
 def openai_gpt4o_mini_llm_config() -> Dict[str, Any]:
     return openai_llm_config("gpt-4o-mini")
 

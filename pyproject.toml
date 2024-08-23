@@ -44,7 +44,13 @@ classifiers = [
 dynamic = ["version"]
 
 dependencies = [
-    "pyautogen[anthropic,together]==0.2.34",
+]
+
+[project.optional-dependencies]
+# public distributions
+
+studio = [
+    "pyautogen[anthropic,together]==0.2.35",
     "faststream[nats]>=0.5.10,<0.6",
     "typing-extensions>=4.8.0,<5",
     "pydantic>=2.3,<3",
@@ -58,8 +64,9 @@ dependencies = [
     "together>=1.2.1,<2",
 ]
 
-[project.optional-dependencies]
-# public distributions
+submodules = [
+    "fastagency[studio]",
+]
 
 server = [
     "uvicorn==0.30.6",
@@ -67,10 +74,10 @@ server = [
 
 # dev dependencies
 devdocs = [
-    "mkdocs-material==9.5.29",
+    "mkdocs-material==9.5.32",
     "mkdocs-static-i18n==1.2.3",
     "mdx-include==1.4.2",
-    "mkdocstrings[python]==0.25.1",
+    "mkdocstrings[python]==0.25.2",
     "mkdocs-literate-nav==0.6.1",
     "mkdocs-git-revision-date-localized-plugin==1.2.6",
     "mike==2.1.2",  # versioning
@@ -89,7 +96,7 @@ lint = [
     "types-Pygments",
     "types-docutils",
     "mypy==1.11.1",
-    "ruff==0.5.2",
+    "ruff==0.6.1",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.9",
     "semgrep==1.85.0",
@@ -98,13 +105,14 @@ lint = [
 
 test-core = [
     "coverage[toml]==7.6.1",
-    "pytest==8.2.2",
+    "pytest==8.3.2",
     "pytest-asyncio==0.23.8",
     "dirty-equals==0.7.1.post0",
     "pytest-rerunfailures==14.0",
 ]
 
 testing = [
+    "fastagency[submodules]",
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
     "pydantic-settings==2.4.0",
@@ -114,10 +122,9 @@ testing = [
 ]
 
 dev = [
-    "fastagency[server,lint,testing,devdocs]",
+    "fastagency[submodules,server,lint,testing,devdocs]",
     "pre-commit==3.7.1",
     "detect-secrets==1.5.0",
-    "asyncer==0.0.7",
 ]
 
 [project.urls]

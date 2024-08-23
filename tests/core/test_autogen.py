@@ -7,7 +7,7 @@ from fastagency.core.autogen import AutoGenTeam, AutogenTeamAgents
 from fastagency.core.base import ConsoleIO
 
 
-@pytest.mark.openai()
+@pytest.mark.openai
 def test_simple(openai_gpt4o_mini_llm_config: Dict[str, Any]) -> None:
     team = AutoGenTeam()
 
