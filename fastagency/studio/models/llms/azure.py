@@ -26,7 +26,9 @@ AzureApiVersionsLiteral: TypeAlias = Literal[
 
 @register("secret")
 class AzureOAIAPIKey(Model):
-    api_key: Annotated[str, Field(title="API Key", description="The API Key from Azure OpenAI")]
+    api_key: Annotated[
+        str, Field(title="API Key", description="The API Key from Azure OpenAI")
+    ]
 
     @classmethod
     async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
@@ -53,7 +55,7 @@ class AzureOAI(Model):
 
     api_key: Annotated[
         AzureOAIAPIKeyRef,
-        Field(title="API Key", description="The API Key from Azure OpenAI")
+        Field(title="API Key", description="The API Key from Azure OpenAI"),
     ]
 
     base_url: Annotated[
@@ -67,7 +69,10 @@ class AzureOAI(Model):
 
     api_version: Annotated[
         AzureApiVersionsLiteral,
-        Field(title="API Version", description="The version of the Azure OpenAI API, e.g. '2024-02-01'"),
+        Field(
+            title="API Version",
+            description="The version of the Azure OpenAI API, e.g. '2024-02-01'",
+        ),
     ] = "2024-02-01"
 
     temperature: Annotated[

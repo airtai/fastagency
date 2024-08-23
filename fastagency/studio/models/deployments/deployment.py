@@ -56,11 +56,17 @@ class Deployment(Model):
     ]
     gh_token: Annotated[
         GitHubTokenRef,
-        Field(title="GH Token", description="The GitHub token to use for creating a new repository")
+        Field(
+            title="GH Token",
+            description="The GitHub token to use for creating a new repository",
+        ),
     ]
     fly_token: Annotated[
         FlyTokenRef,
-        Field(title="Fly Token", description="The Fly.io token to use for deploying the deployment")
+        Field(
+            title="Fly Token",
+            description="The Fly.io token to use for deploying the deployment",
+        ),
     ]
 
     @classmethod

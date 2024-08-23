@@ -93,7 +93,8 @@ class WebSurferAgent(AgentBaseModel):
         int, Field(description="The viewport size of the browser")
     ] = 4096
     bing_api_key: Annotated[
-        Optional[BingAPIKeyRef], Field(title="Bing API Key", description="The Bing API key for the browser")
+        Optional[BingAPIKeyRef],
+        Field(title="Bing API Key", description="The Bing API key for the browser"),
     ] = None
 
     @classmethod

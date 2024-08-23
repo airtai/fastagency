@@ -147,7 +147,7 @@ class TogetherAI(Model):
 
     api_key: Annotated[
         TogetherAIAPIKeyRef,
-        Field(title="API Key", description="The API Key from Together.ai")
+        Field(title="API Key", description="The API Key from Together.ai"),
     ]
 
     base_url: Annotated[URL, Field(description="The base URL of the OpenAI API")] = URL(

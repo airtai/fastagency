@@ -79,7 +79,7 @@ class OpenAI(Model):
         Field(
             title="API Key",
             description="The API Key from OpenAI",
-        )
+        ),
     ]
 
     base_url: Annotated[URL, Field(description="The base URL of the OpenAI API")] = URL(
