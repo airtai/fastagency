@@ -12,7 +12,7 @@ __all__ = ["FlyToken"]
 @register("secret")
 class FlyToken(Model):
     fly_token: Annotated[
-        str, Field(description="The Fly.io token to use for deploying the deployment")
+        str, Field(title="Fly Token", description="The Fly.io token to use for deploying the deployment")
     ]
 
     @classmethod

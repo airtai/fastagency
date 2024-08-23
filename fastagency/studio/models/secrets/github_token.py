@@ -12,7 +12,7 @@ __all__ = ["GitHubToken"]
 @register("secret")
 class GitHubToken(Model):
     gh_token: Annotated[
-        str, Field(description="The GitHub token to use for creating a new repository")
+        str, Field(title="GH Token", description="The GitHub token to use for creating a new repository")
     ]
 
     @classmethod

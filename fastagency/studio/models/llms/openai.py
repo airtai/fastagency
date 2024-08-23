@@ -41,6 +41,7 @@ class OpenAIAPIKey(Model):
     api_key: Annotated[
         str,
         Field(
+            title="API Key",
             description="The API Key from OpenAI",
         ),
     ]
@@ -73,7 +74,13 @@ class OpenAI(Model):
         Field(description="The model to use for the OpenAI API, e.g. 'gpt-3.5-turbo'"),
     ] = "gpt-3.5-turbo"
 
-    api_key: OpenAIAPIKeyRef
+    api_key: Annotated[
+        OpenAIAPIKeyRef,
+        Field(
+            title="API Key",
+            description="The API Key from OpenAI",
+        )
+    ]
 
     base_url: Annotated[URL, Field(description="The base URL of the OpenAI API")] = URL(
         url="https://api.openai.com/v1"
