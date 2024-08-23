@@ -63,7 +63,7 @@ class AutoGenTeamChatable(Chatable):
             chat_history = self.initial_agent.initiate_chat(
                 self.receiving_agent,
                 message=message,
-                summary_method="last_message",
+                summary_method="last_msg",
                 **kwargs,
             )
             return chat_history.summary  # type: ignore[no-any-return]
@@ -74,7 +74,7 @@ class AutoGenTeamChatable(Chatable):
                 self.receiving_agent,
                 message=message,
                 clear_history=False,
-                summary_method="last_message",
+                summary_method="last_msg",
                 **kwargs,
             )
             return chat_history.summary  # type: ignore[no-any-return]
