@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Any, Callable, Optional, TypeVar, TypedDict
 
 from autogen.agentchat import ConversableAgent
@@ -57,15 +58,26 @@ class AutoGenTeamChatable(Chatable):
         self.io: Optional[ChatableIO] = io
         self.iostream = AutoGenIOAdapter(self.io)
 
-    def init_chat(self, message: str) -> None:
+    def init_chat(self, message: str, **kwargs: Any) -> str:
         with IOStream.set_default(self.iostream):
-            self.initial_agent.initiate_chat(self.receiving_agent, message=message)
-
-    def continue_chat(self, message: str) -> None:
-        with IOStream.set_default(self.iostream):
-            self.initial_agent.initiate_chat(
-                self.receiving_agent, message=message, clear_history=False
+            chat_history = self.initial_agent.initiate_chat(
+                self.receiving_agent,
+                message=message,
+                summary_method="last_message",
+                **kwargs,
             )
+            return chat_history.summary  # type: ignore[no-any-return]
+
+    def continue_chat(self, message: str, **kwargs: Any) -> str:
+        with IOStream.set_default(self.iostream):
+            chat_history = self.initial_agent.initiate_chat(
+                self.receiving_agent,
+                message=message,
+                clear_history=False,
+                summary_method="last_message",
+                **kwargs,
+            )
+            return chat_history.summary  # type: ignore[no-any-return]
 
 
 class AutogenTeamAgents(TypedDict):
@@ -78,6 +90,11 @@ class AutogenTeamAgents(TypedDict):
 AutoGenTeamFactory = TypeVar(
     "AutoGenTeamFactory", bound=Callable[[], AutogenTeamAgents]
 )
+
+
+@dataclass
+class AutoGenContext:
+    ask_user_for_input: Callable[[str], str]
 
 
 class AutoGenTeam:

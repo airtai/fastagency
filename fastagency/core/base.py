@@ -1,6 +1,6 @@
 import getpass
 from dataclasses import dataclass
-from typing import Optional, Protocol, runtime_checkable
+from typing import Any, Optional, Protocol, runtime_checkable
 
 
 @dataclass
@@ -37,9 +37,9 @@ class ConsoleIO(ChatableIO):
 
 @runtime_checkable
 class Chatable(Protocol):
-    def init_chat(self, message: str) -> None: ...
+    def init_chat(self, message: str, **kwargs: Any) -> str: ...
 
-    def continue_chat(self, message: str) -> None: ...
+    def continue_chat(self, message: str, **kwargs: Any) -> str: ...
 
 
 @runtime_checkable
