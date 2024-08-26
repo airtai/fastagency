@@ -16,7 +16,7 @@ from .base import AgentBaseModel, llm_type_refs
 
 @register("secret")
 class BingAPIKey(Model):
-    api_key: Annotated[str, Field(description="The API Key from Bing")]
+    api_key: Annotated[str, Field(title="API Key", description="The API Key from Bing")]
 
     @classmethod
     async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
@@ -93,7 +93,8 @@ class WebSurferAgent(AgentBaseModel):
         int, Field(description="The viewport size of the browser")
     ] = 4096
     bing_api_key: Annotated[
-        Optional[BingAPIKeyRef], Field(description="The Bing API key for the browser")
+        Optional[BingAPIKeyRef],
+        Field(title="Bing API Key", description="The Bing API key for the browser"),
     ] = None
 
     @classmethod

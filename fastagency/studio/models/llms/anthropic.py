@@ -26,6 +26,7 @@ class AnthropicAPIKey(Model):
     api_key: Annotated[
         str,
         Field(
+            title="API Key",
             description="The API Key from Anthropic",
         ),
     ]
@@ -60,7 +61,13 @@ class Anthropic(Model):
         ),
     ] = "claude-3-5-sonnet-20240620"
 
-    api_key: AnthropicAPIKeyRef
+    api_key: Annotated[
+        AnthropicAPIKeyRef,
+        Field(
+            title="API Key",
+            description="The API Key from Anthropic",
+        ),
+    ]
 
     base_url: Annotated[URL, Field(description="The base URL of the Anthropic API")] = (
         URL(url="https://api.anthropic.com/v1")

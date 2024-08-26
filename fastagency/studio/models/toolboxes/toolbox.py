@@ -25,13 +25,13 @@ class OpenAPIAuth(Model):
     username: Annotated[
         str,
         Field(
-            description="username for openapi routes authentication",
+            description="Username for OpenAPI routes authentication",
         ),
     ]
     password: Annotated[
         str,
         Field(
-            description="password for openapi routes authentication",
+            description="Password for OpenAPI routes authentication",
         ),
     ]
 

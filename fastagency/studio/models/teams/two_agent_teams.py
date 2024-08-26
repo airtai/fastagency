@@ -41,14 +41,14 @@ class TwoAgentTeam(TeamBaseModel):
     initial_agent: Annotated[
         agent_type_refs,
         Field(
-            title="Initial agent",
+            title="Initial Agent",
             description="Agent that starts the conversation",
         ),
     ]
     secondary_agent: Annotated[
         agent_type_refs,
         Field(
-            title="Secondary agent",
+            title="Secondary Agent",
             description="Agent that continues the conversation",
         ),
     ]

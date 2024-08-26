@@ -28,7 +28,7 @@ class TeamBaseModel(Model):
     human_input_mode: Annotated[
         Literal["ALWAYS", "TERMINATE", "NEVER"],
         Field(
-            title="Human input mode",
+            title="Human Input Mode",
             description="Mode for human input",
         ),
     ] = "ALWAYS"

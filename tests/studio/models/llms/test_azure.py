@@ -30,7 +30,6 @@ class TestAzureOAI:
         name = model.name
         api_key_uuid = model.api_key.uuid  # type: ignore [attr-defined]
         base_url = model.base_url  # type: ignore [attr-defined]
-
         expected = {
             "name": name,
             "model": "gpt-35-turbo-16k",
@@ -93,7 +92,11 @@ class TestAzureOAI:
                     "title": "Model",
                     "type": "string",
                 },
-                "api_key": {"$ref": "#/$defs/AzureOAIAPIKeyRef"},
+                "api_key": {
+                    "allOf": [{"$ref": "#/$defs/AzureOAIAPIKeyRef"}],
+                    "description": "The API Key from Azure OpenAI",
+                    "title": "API Key",
+                },
                 "base_url": {
                     "default": "https://api.openai.com/v1",
                     "description": "The base URL of the Azure OpenAI API",
@@ -108,7 +111,7 @@ class TestAzureOAI:
                     "default": "azure",
                     "description": "The type of the API, must be 'azure'",
                     "enum": ["azure"],
-                    "title": "API type",
+                    "title": "API Type",
                     "type": "string",
                 },
                 "api_version": {
@@ -124,14 +127,14 @@ class TestAzureOAI:
                         "2024-05-01-preview",
                         "2024-02-01",
                     ],
-                    "title": "Api Version",
+                    "title": "API Version",
                     "type": "string",
                 },
                 "temperature": {
                     "default": 0.8,
                     "description": "The temperature to use for the model, must be between 0 and 2",
-                    "minimum": 0.0,
                     "maximum": 2.0,
+                    "minimum": 0.0,
                     "title": "Temperature",
                     "type": "number",
                 },
