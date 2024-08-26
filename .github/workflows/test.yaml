@@ -107,7 +107,7 @@ jobs:
         with:
           node-version: 20
       - name: Run wasp prisma commands
-        run: cd app && prisma db push --schema=schema.prisma && prisma generate --schema=schema.prisma && cd ..
+        run: prisma db push --schema=wasp_schema.prisma && prisma generate --schema=wasp_schema.prisma
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[docs,testing]
