@@ -69,9 +69,9 @@ class Anthropic(Model):
         ),
     ]
 
-    base_url: Annotated[URL, Field(description="The base URL of the Anthropic API")] = (
-        URL(url="https://api.anthropic.com/v1")
-    )
+    base_url: Annotated[
+        URL, Field(title="Base URL", description="The base URL of the Anthropic API")
+    ] = URL(url="https://api.anthropic.com/v1")
 
     api_type: Annotated[
         Literal["anthropic"],

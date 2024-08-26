@@ -150,9 +150,9 @@ class TogetherAI(Model):
         Field(title="API Key", description="The API Key from Together.ai"),
     ]
 
-    base_url: Annotated[URL, Field(description="The base URL of the OpenAI API")] = URL(
-        url="https://api.together.xyz/v1"
-    )
+    base_url: Annotated[
+        URL, Field(title="Base URL", description="The base URL of the OpenAI API")
+    ] = URL(url="https://api.together.xyz/v1")
 
     api_type: Annotated[
         Literal["togetherai"],
