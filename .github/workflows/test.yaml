@@ -106,14 +106,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Run wasp prisma commands
-        run: prisma db push --schema=wasp_schema.prisma && prisma generate --schema=wasp_schema.prisma
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[docs,testing]
       - name: Install Pydantic v2
         run: pip install --pre "pydantic>=2,<3"
       - run: mkdir coverage
+      - name: Run wasp prisma commands
+        run: prisma db push --schema=wasp_schema.prisma && prisma generate --schema=wasp_schema.prisma
       - name: Prisma
         run: prisma migrate deploy && prisma generate
       - name: Test without LLMs
