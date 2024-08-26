@@ -8,8 +8,8 @@ pip install -e ".[dev]"
 pre-commit install
 
 # run wasp prisma commands
-prima migrate deploy --schema=wasp_schema.prisma
-prisma generate --schema=wasp_schema.prisma --generator=client
+cd app && prisma migrate deploy --schema=schema.prisma && cd ..
+cd app && prisma generate --schema=schema.prisma --generator=client && cd ..
 
 # run python prisma commands
 prisma migrate deploy --schema=schema.prisma
