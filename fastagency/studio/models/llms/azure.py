@@ -63,7 +63,7 @@ class AzureOAI(Model):
     ]
 
     base_url: Annotated[
-        URL, Field(description="The base URL of the Azure OpenAI API")
+        URL, Field(title="Base URL", description="The base URL of the Azure OpenAI API")
     ] = UrlModel(url="https://{your-resource-name}.openai.azure.com").url
 
     api_type: Annotated[

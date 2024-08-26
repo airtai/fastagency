@@ -113,7 +113,7 @@ class TestAnthropic:
                     "format": "uri",
                     "maxLength": 2083,
                     "minLength": 1,
-                    "title": "Base Url",
+                    "title": "Base URL",
                     "type": "string",
                 },
                 "api_type": {
