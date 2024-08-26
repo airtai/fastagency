@@ -1,10 +1,16 @@
 from typing import Any, Dict
 
 import pytest
+from pydantic import ValidationError
 
 from fastagency.studio.helpers import create_autogen, get_model_by_ref
 from fastagency.studio.models.base import ObjectReference
-from fastagency.studio.models.llms.azure import AzureOAI, AzureOAIAPIKey
+from fastagency.studio.models.llms.azure import (
+    BASE_URL_ERROR_MESSAGE,
+    AzureOAI,
+    AzureOAIAPIKey,
+    UrlModel,
+)
 
 
 def test_import(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -44,6 +50,35 @@ class TestAzureOAI:
             "temperature": 0.8,
         }
         assert model.model_dump() == expected
+
+    @pytest.mark.parametrize(
+        "base_url",
+        [
+            "https://{your-resource-name.openai.azure.com",
+            "https://your-resource-name}.openai.azure.com",
+            "https://{your-resource-name}.openai.azure.com",
+        ],
+    )
+    @pytest.mark.db
+    @pytest.mark.asyncio
+    async def test_azure_constructor_with_invalid_base_url(
+        self, azure_oai_gpt35_ref: ObjectReference, base_url: str
+    ) -> None:
+        # create data
+        model = await get_model_by_ref(azure_oai_gpt35_ref)
+        assert isinstance(model, AzureOAI)
+
+        # Construct a new AzureOAI model with the invalid base_url
+        with pytest.raises(ValidationError, match=BASE_URL_ERROR_MESSAGE):
+            AzureOAI(
+                name=model.name,
+                model=model.model,
+                api_key=model.api_key,
+                base_url=UrlModel(url=base_url).url,
+                api_type=model.api_type,
+                api_version=model.api_version,
+                temperature=model.temperature,
+            )
 
     def test_azure_model_schema(self) -> None:
         schema = AzureOAI.model_json_schema()
@@ -98,7 +133,7 @@ class TestAzureOAI:
                     "title": "API Key",
                 },
                 "base_url": {
-                    "default": "https://api.openai.com/v1",
+                    "default": "https://{your-resource-name}.openai.azure.com",
                     "description": "The base URL of the Azure OpenAI API",
                     "format": "uri",
                     "maxLength": 2083,
