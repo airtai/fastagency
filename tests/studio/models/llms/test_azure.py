@@ -98,7 +98,7 @@ class TestAzureOAI:
                     "title": "API Key",
                 },
                 "base_url": {
-                    "default": "https://api.openai.com/v1",
+                    "default": "https://{your-resource-name}.openai.azure.com",
                     "description": "The base URL of the Azure OpenAI API",
                     "format": "uri",
                     "maxLength": 2083,
