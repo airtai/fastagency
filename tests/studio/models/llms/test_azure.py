@@ -54,9 +54,9 @@ class TestAzureOAI:
     @pytest.mark.parametrize(
         "base_url",
         [
-            "https://{your-resource-name}.openai.azure.com",
-            "https://your-resource-name}.openai.azure.com",
             "https://{your-resource-name.openai.azure.com",
+            "https://your-resource-name}.openai.azure.com",
+            "https://{your-resource-name}.openai.azure.com",
         ],
     )
     @pytest.mark.db
