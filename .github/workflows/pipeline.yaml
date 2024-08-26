@@ -192,37 +192,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: airtai/fastagency
 
-  unit-test-wasp:
-    if: github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event.pull_request.draft == false
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout repository with cached git lfs
-        uses: nschloe/action-cached-lfs-checkout@v1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install wasp
-        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.14.0
-
-      - name: Temporary wasp fix
-        run: |
-          PATCH_FILE_PATH=$(cat $(whereis wasp | cut -d " " -f 2) | tail -1 | cut -d " " -f 1 | cut -d "=" -f 2)/Generator/templates/server/package.json
-          echo $PATCH_FILE_PATH
-          sed -i 's/"postinstall": "patch-package"/"postinstall": ""/' $PATCH_FILE_PATH
-
-      - name: Run client tests
-        run: cd app && wasp test client run --silent
-
-      - name: Build wasp
-        run: cd app && wasp build
-
-      - name: Build frontend
-        run: cd app && cd .wasp/build/web-app && npm install && REACT_APP_API_URL=$REACT_APP_API_URL npm run build
-
   pre-commit-check:
     runs-on: ubuntu-latest
     env:
@@ -252,7 +221,6 @@ jobs:
       - coverage-combine
       - test-macos-latest
       - test-windows-latest
-      - unit-test-wasp
 
     runs-on: ubuntu-latest
 
