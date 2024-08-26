@@ -82,9 +82,9 @@ class OpenAI(Model):
         ),
     ]
 
-    base_url: Annotated[URL, Field(description="The base URL of the OpenAI API")] = URL(
-        url="https://api.openai.com/v1"
-    )
+    base_url: Annotated[
+        URL, Field(title="Base URL", description="The base URL of the OpenAI API")
+    ] = URL(url="https://api.openai.com/v1")
 
     api_type: Annotated[
         Literal["openai"],
