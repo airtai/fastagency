@@ -116,7 +116,7 @@ testing = [
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
     "pydantic-settings==2.4.0",
-    "PyYAML==6.0.1",
+    "PyYAML==6.0.2",
     "watchfiles==0.23.0",
     "email-validator==2.2.0",
 ]
