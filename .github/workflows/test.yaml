@@ -106,10 +106,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install wasp
-        run: curl -sSL https://get.wasp-lang.dev/installer.sh | sh -s -- -v 0.14.0
-      - name: Run wasp migration
-        run: cd app && wasp db migrate-dev && cd ..
+      - name: Run wasp prisma commands
+        run: prisma migrate deploy --schema=wasp_schema.prisma && prisma generate --schema=wasp_schema.prisma
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[docs,testing]
