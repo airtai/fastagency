@@ -155,7 +155,7 @@ class TestTwoAgentTeam:
                     "default": "ALWAYS",
                     "description": "Mode for human input",
                     "enum": ["ALWAYS", "TERMINATE", "NEVER"],
-                    "title": "Human input mode",
+                    "title": "Human Input Mode",
                     "type": "string",
                 },
                 "initial_agent": {
@@ -165,7 +165,7 @@ class TestTwoAgentTeam:
                         {"$ref": "#/$defs/WebSurferAgentRef"},
                     ],
                     "description": "Agent that starts the conversation",
-                    "title": "Initial agent",
+                    "title": "Initial Agent",
                 },
                 "secondary_agent": {
                     "anyOf": [
@@ -174,7 +174,7 @@ class TestTwoAgentTeam:
                         {"$ref": "#/$defs/WebSurferAgentRef"},
                     ],
                     "description": "Agent that continues the conversation",
-                    "title": "Secondary agent",
+                    "title": "Secondary Agent",
                 },
             },
             "required": ["name", "initial_agent", "secondary_agent"],
