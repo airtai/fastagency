@@ -50,12 +50,24 @@ class Deployment(Model):
     team: Annotated[
         team_type_refs,
         Field(
-            title="Team name",
+            title="Team Name",
             description="The team that is used in the deployment",
         ),
     ]
-    gh_token: GitHubTokenRef
-    fly_token: FlyTokenRef
+    gh_token: Annotated[
+        GitHubTokenRef,
+        Field(
+            title="GH Token",
+            description="The GitHub token to use for creating a new repository",
+        ),
+    ]
+    fly_token: Annotated[
+        FlyTokenRef,
+        Field(
+            title="Fly Token",
+            description="The Fly.io token to use for deploying the deployment",
+        ),
+    ]
 
     @classmethod
     async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> Any:

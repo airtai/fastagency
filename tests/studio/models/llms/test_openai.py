@@ -141,7 +141,11 @@ class TestOpenAI:
                     "title": "Model",
                     "type": "string",
                 },
-                "api_key": {"$ref": "#/$defs/OpenAIAPIKeyRef"},
+                "api_key": {
+                    "allOf": [{"$ref": "#/$defs/OpenAIAPIKeyRef"}],
+                    "description": "The API Key from OpenAI",
+                    "title": "API Key",
+                },
                 "base_url": {
                     "default": "https://api.openai.com/v1",
                     "description": "The base URL of the OpenAI API",
