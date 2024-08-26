@@ -115,6 +115,7 @@ search:
                     - azure
                         - [AzureOAI](api/fastagency/studio/models/llms/azure/AzureOAI.md)
                         - [AzureOAIAPIKey](api/fastagency/studio/models/llms/azure/AzureOAIAPIKey.md)
+                        - [UrlModel](api/fastagency/studio/models/llms/azure/UrlModel.md)
                     - openai
                         - [OpenAI](api/fastagency/studio/models/llms/openai/OpenAI.md)
                         - [OpenAIAPIKey](api/fastagency/studio/models/llms/openai/OpenAIAPIKey.md)
