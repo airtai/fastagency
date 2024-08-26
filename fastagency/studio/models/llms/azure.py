@@ -1,7 +1,8 @@
-from typing import Annotated, Any, Dict, Literal
+from typing import Annotated, Any, Dict, Literal, Type
 from uuid import UUID
 
-from pydantic import AfterValidator, BaseModel, Field, HttpUrl
+from pydantic import AfterValidator, BaseModel, Field, HttpUrl, field_validator
+from pydantic_core import PydanticCustomError
 from typing_extensions import TypeAlias
 
 from ..base import Model
@@ -48,6 +49,9 @@ class UrlModel(BaseModel):
     url: URL
 
 
+BASE_URL_ERROR_MESSAGE = "The Base URL contains curly braces, indicating a placeholder. Please replace the entire placeholder, including the curly braces, with your actual Azure resource name."
+
+
 @register("llm")
 class AzureOAI(Model):
     model: Annotated[
@@ -87,6 +91,13 @@ class AzureOAI(Model):
             le=2.0,
         ),
     ] = 0.8
+
+    @field_validator("base_url")
+    @classmethod
+    def validate_base_url(cls: Type["AzureOAI"], value: Any) -> Any:
+        if "{" in value or "}" in value:
+            raise PydanticCustomError("invalid_base_url", BASE_URL_ERROR_MESSAGE)
+        return value
 
     @classmethod
     async def create_autogen(
