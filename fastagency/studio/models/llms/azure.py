@@ -49,6 +49,9 @@ class UrlModel(BaseModel):
     url: URL
 
 
+BASE_URL_ERROR_MESSAGE = "The Base URL contains curly braces, indicating a placeholder. Please replace the entire placeholder, including the curly braces, with your actual Azure resource name."
+
+
 @register("llm")
 class AzureOAI(Model):
     model: Annotated[
@@ -93,10 +96,7 @@ class AzureOAI(Model):
     @classmethod
     def validate_base_url(cls: Type["AzureOAI"], value: Any) -> Any:
         if "{" in value or "}" in value:
-            raise PydanticCustomError(
-                "invalid_base_url",
-                "The Base URL contains curly braces, indicating a placeholder. Please replace the entire placeholder, including the curly braces, with your actual Azure resource name.",
-            )
+            raise PydanticCustomError("invalid_base_url", BASE_URL_ERROR_MESSAGE)
         return value
 
     @classmethod
