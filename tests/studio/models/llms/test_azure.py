@@ -95,7 +95,7 @@ class TestAzureOAI:
                 },
                 "api_key": {"$ref": "#/$defs/AzureOAIAPIKeyRef"},
                 "base_url": {
-                    "default": "https://api.openai.com/v1",
+                    "default": "https://{your-resource-name}.openai.azure.com",
                     "description": "The base URL of the Azure OpenAI API",
                     "format": "uri",
                     "maxLength": 2083,
@@ -130,8 +130,8 @@ class TestAzureOAI:
                 "temperature": {
                     "default": 0.8,
                     "description": "The temperature to use for the model, must be between 0 and 2",
-                    "minimum": 0.0,
                     "maximum": 2.0,
+                    "minimum": 0.0,
                     "title": "Temperature",
                     "type": "number",
                 },
