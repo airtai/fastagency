@@ -4,13 +4,14 @@ from typing import Any, Callable, Optional, TypeVar, TypedDict
 from autogen.agentchat import ConversableAgent
 from autogen.io.base import IOStream
 
-from .base import ChatMessage, Chatable, ChatableIO
+from ..base import ChatMessage, Chatable, ChatableIO
 
 __all__ = [
     "AutoGenIOAdapter",
     "AutoGenTeam",
     "AutoGenTeamChatable",
     "AutoGenTeamFactory",
+    "AutogenTeamAgents",
 ]
 
 
