@@ -129,14 +129,14 @@ class TestTogetherAI:
                 "model": {
                     "default": "Meta Llama 3 70B Reference",
                     "description": "The model to use for the Together API",
-                    #     "enum": [
-                    #         "Meta Llama 3 70B Reference",
-                    #         ...
-                    #     ],
                     "title": "Model",
                     "type": "string",
                 },
-                "api_key": {"$ref": "#/$defs/TogetherAIAPIKeyRef"},
+                "api_key": {
+                    "allOf": [{"$ref": "#/$defs/TogetherAIAPIKeyRef"}],
+                    "description": "The API Key from Together.ai",
+                    "title": "API Key",
+                },
                 "base_url": {
                     "default": "https://api.together.xyz/v1",
                     "description": "The base URL of the OpenAI API",

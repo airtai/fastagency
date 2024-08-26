@@ -102,7 +102,11 @@ class TestAnthropic:
                     "title": "Model",
                     "type": "string",
                 },
-                "api_key": {"$ref": "#/$defs/AnthropicAPIKeyRef"},
+                "api_key": {
+                    "allOf": [{"$ref": "#/$defs/AnthropicAPIKeyRef"}],
+                    "description": "The API Key from Anthropic",
+                    "title": "API Key",
+                },
                 "base_url": {
                     "default": "https://api.anthropic.com/v1",
                     "description": "The base URL of the Anthropic API",

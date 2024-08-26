@@ -276,6 +276,7 @@ class TestWebSurferAgent:
                     "anyOf": [{"$ref": "#/$defs/BingAPIKeyRef"}, {"type": "null"}],
                     "default": None,
                     "description": "The Bing API key for the browser",
+                    "title": "Bing API Key",
                 },
             },
             "required": ["name", "llm", "summarizer_llm"],

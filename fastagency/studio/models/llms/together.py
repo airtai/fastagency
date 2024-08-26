@@ -117,6 +117,7 @@ class TogetherAIAPIKey(Model):
     api_key: Annotated[
         str,
         Field(
+            title="API Key",
             description="The API Key from Together.ai",
             min_length=64,
             max_length=64,
@@ -144,7 +145,10 @@ class TogetherAI(Model):
         Field(description="The model to use for the Together API"),
     ] = "Meta Llama 3 70B Reference"
 
-    api_key: TogetherAIAPIKeyRef
+    api_key: Annotated[
+        TogetherAIAPIKeyRef,
+        Field(title="API Key", description="The API Key from Together.ai"),
+    ]
 
     base_url: Annotated[URL, Field(description="The base URL of the OpenAI API")] = URL(
         url="https://api.together.xyz/v1"
