@@ -1,7 +1,7 @@
 from typing import Annotated, Any, Dict, Literal
 from uuid import UUID
 
-from pydantic import AfterValidator, Field, HttpUrl
+from pydantic import AfterValidator, BaseModel, Field, HttpUrl
 from typing_extensions import TypeAlias
 
 from ..base import Model
@@ -42,6 +42,10 @@ AzureOAIAPIKeyRef: TypeAlias = AzureOAIAPIKey.get_reference_model()  # type: ign
 URL = Annotated[HttpUrl, AfterValidator(lambda x: str(x).rstrip("/"))]
 
 
+class UrlModel(BaseModel):
+    url: URL
+
+
 @register("llm")
 class AzureOAI(Model):
     model: Annotated[
@@ -55,7 +59,7 @@ class AzureOAI(Model):
 
     base_url: Annotated[
         URL, Field(description="The base URL of the Azure OpenAI API")
-    ] = URL(url="https://api.openai.com/v1")
+    ] = UrlModel(url="https://{your-resource-name}.openai.azure.com").url
 
     api_type: Annotated[
         Literal["azure"],
