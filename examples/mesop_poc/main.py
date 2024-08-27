@@ -64,7 +64,6 @@ def conversation_page():
     state = me.state(State)
     with me.box(style=ROOT_BOX_STYLE):
         header()
-        input_user_feedback(on_user_feedback)
         messages = state.conversation.messages
         with me.box(
             style=me.Style(
@@ -87,15 +86,18 @@ def conversation_page():
                         )
                     ),
                 )
+        if state.waitingForInput:
+            input_user_feedback(on_user_feedback)
 
 def on_user_feedback(e: me.ClickEvent):
     state = me.state(State)
     feedback = state.feedback
     state.feedback = ""
+    yield
     conversation = state.conversation
     messages = conversation.messages
     messages.append(ChatMessage(role="user", content=feedback))
-    messages.append(ChatMessage(role="model", in_progress=True))
+    messages.append(ChatMessage(role="autogen", in_progress=True))
     yield
 
     me.scroll_into_view(key="end_of_messages")
