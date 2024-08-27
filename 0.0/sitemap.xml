@@ -43,6 +43,138 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type/"/>
     </url>
     <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/ChatRequest/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/ChatRequest/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/DeploymentAuthTokenInfo/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/DeploymentAuthTokenInfo/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/add_model/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/add_model/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/chat/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/chat/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/create_auth_token/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/create_auth_token/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/create_toolbox_for_new_user/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/create_toolbox_for_new_user/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/delete_deployment_auth_token/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/delete_deployment_auth_token/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/deployment_chat/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/deployment_chat/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/deployment_ping/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/deployment_ping/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/generate_chat_name/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/generate_chat_name/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_all_deployment_auth_tokens/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_all_deployment_auth_tokens/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_all_models/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_all_models/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_azure_llm_client/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_azure_llm_client/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_models_schemas/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/get_models_schemas/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/handle_keynotfounderror_middleware/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/handle_keynotfounderror_middleware/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/mask/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/mask/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/models_delete/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/models_delete/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/setup_user/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/setup_user/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/update_model/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/update_model/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/validate_model/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/validate_model/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/validate_secret_model/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/validate_secret_model/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/app/validate_toolbox/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/app/validate_toolbox/"/>
+    </url>
+    <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/auth_token/auth/DeploymentAuthToken/</loc>
         <lastmod>2024-08-27</lastmod>
         <changefreq>daily</changefreq>
@@ -121,6 +253,36 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/db/inmemory/InMemoryFrontendDB/"/>
     </url>
     <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/PrismaBackendDB/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/PrismaBackendDB/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/PrismaBaseDB/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/PrismaBaseDB/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/PrismaFrontendDB/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/PrismaFrontendDB/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/fastapi_lifespan/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/fastapi_lifespan/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/faststream_lifespan/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/db/prisma/faststream_lifespan/"/>
+    </url>
+    <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/faststream_app/ping_handler/</loc>
         <lastmod>2024-08-27</lastmod>
         <changefreq>daily</changefreq>
@@ -179,6 +341,60 @@
         <lastmod>2024-08-27</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/helpers/validate_tokens_and_create_gh_repo/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/ErrorResoponseModel/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/ErrorResoponseModel/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/IONats/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/IONats/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/InitiateModel/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/InitiateModel/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/InputRequestModel/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/InputRequestModel/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/InputResponseModel/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/InputResponseModel/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/PrintModel/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/PrintModel/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/ServerResponseModel/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/ServerResponseModel/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/TerminateModel/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/TerminateModel/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/create_team/</loc>
+        <lastmod>2024-08-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/io/ionats/create_team/"/>
     </url>
     <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/studio/models/Registry/</loc>
