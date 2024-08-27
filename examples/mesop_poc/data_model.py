@@ -21,5 +21,6 @@ class State:
     waitingForAnswer: bool = False
     waitingForInput: bool = False
     input: str = ""
+    feedback: str = ""
     conversation: Conversation
-    autogen: int
+    autogen: int = -1
