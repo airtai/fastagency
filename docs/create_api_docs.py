@@ -54,7 +54,8 @@ def _import_submodules(module_name: str) -> Optional[List[ModuleType]]:
         try:
             # nosemgrep: python.lang.security.audit.non-literal-import.non-literal-import
             return import_module(name)
-        except Exception:
+        except Exception as e:
+            print(f"Failed to import {name} with error: {e}")
             return None
 
     package_names = _get_submodules(module_name)
