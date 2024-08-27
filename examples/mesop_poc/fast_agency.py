@@ -4,6 +4,7 @@ import os
 from  queue import Queue
 from autogen import ConversableAgent, UserProxyAgent
 from autogen.io.base import IOStream
+from autogen.agentchat import ChatResult
 from typing import Any
 
 class Question:
@@ -63,15 +64,15 @@ class InProcessIOStream(IOStream):
         self._in_queue.put(input)
         print("provide_input done")
 
-    def responseIsOver(self):
-        self._out_queue.put("--game-over--")
+    def responseIsOver(self, chatResult: ChatResult):
+        self._out_queue.put(chatResult)
 
     def getResponsesStream(self):
         def responsesGenerator():
             while True:
                 try:
                     value = self._out_queue.get()
-                    if value == "--game-over--":
+                    if isinstance(value, ChatResult):
                         break
                     # Question shold also end the generator
                     if isinstance(value, Question):
@@ -79,6 +80,7 @@ class InProcessIOStream(IOStream):
                         break
                     yield value
                 except queue.Empty:
+                    print("_out_queue empty ending the generator")
                     break
         return responsesGenerator
 
@@ -110,7 +112,8 @@ def initiate_chat(message: str):
                 human_input_mode="NEVER",  # Never ask for human input.
             )
             result = user_proxy.initiate_chat(cathy, message=message, max_turns=3)
-            io.responseIsOver()
+            #print("##### result of chat is..", result)
+            io.responseIsOver(result)
             #what should I do with result?
 
     io = InProcessIOStream()

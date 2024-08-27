@@ -1,9 +1,9 @@
 import mesop as me
 from examples.mesop_poc.data_model import State
 
-def _on_user_feedback_blur(e: me.InputBlurEvent):
+def _on_blur(e: me.InputBlurEvent):
     state = me.state(State)
-    state.feedback = e.value
+    setattr(state, e.key, e.value)
 
 
 def input_user_feedback(send_feedback):
@@ -19,7 +19,8 @@ def input_user_feedback(send_feedback):
         with me.box(style=me.Style(flex_grow=1)):
             me.native_textarea(
                 placeholder="Provide a feedback to the team",
-                on_blur=_on_user_feedback_blur,
+                on_blur=_on_blur,
+                key="feedback",
                 style=me.Style(
                     padding=me.Padding(top=16, left=16),
                     outline="none",
@@ -31,11 +32,6 @@ def input_user_feedback(send_feedback):
             type="icon", on_click=send_feedback
         ):
             me.icon("send")
-
-
-def _on_prompt_blur(e: me.InputBlurEvent):
-    state = me.state(State)
-    state.prompt = e.value
 
 
 def input_prompt(send_prompt):
@@ -52,7 +48,8 @@ def input_prompt(send_prompt):
         with me.box(style=me.Style(flex_grow=1)):
             me.native_textarea(
                 placeholder="Enter a prompt",
-                on_blur=_on_prompt_blur,
+                key="prompt",
+                on_blur=_on_blur,
                 style=me.Style(
                     padding=me.Padding(top=16, left=16),
                     outline="none",

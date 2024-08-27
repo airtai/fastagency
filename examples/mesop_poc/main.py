@@ -1,7 +1,7 @@
 import mesop as me
 
 from examples.mesop_poc.data_model import State, ChatMessage
-from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_response_to_autogen
+from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
 from examples.mesop_poc.fast_agency import Question
 from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
 from examples.mesop_poc.components.message import user_message, autogen_message
@@ -101,7 +101,7 @@ def on_user_feedback(e: me.ClickEvent):
     yield
 
     me.scroll_into_view(key="end_of_messages")
-    autogen_response = send_user_response_to_autogen(feedback)
+    autogen_response = send_user_feedback_to_autogen(feedback)
 
     for chunk in autogen_response:
         if isinstance(chunk, Question):
