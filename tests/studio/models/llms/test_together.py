@@ -2,7 +2,7 @@ import uuid
 from typing import Dict
 
 import pytest
-from together import Together
+import together
 
 from fastagency.studio.helpers import get_model_by_ref
 from fastagency.studio.models.base import ObjectReference
@@ -43,10 +43,13 @@ class TestTogetherAIAPIKey:
 
 
 class TestTogetherAI:
+    @pytest.mark.skipif(
+        together.version == "1.2.8", reason="Bug in getting models list"
+    )
     @pytest.mark.togetherai
     def test_together_model_string(self) -> None:
         # requires that environment variables TOGETHER_API_KEY is set
-        client = Together()
+        client = together.Together()
 
         expected_together_model_string: Dict[str, str] = {
             model.display_name: model.id
