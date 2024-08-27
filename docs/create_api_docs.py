@@ -1,6 +1,7 @@
 """API documentation generator."""
 
 import itertools
+import shutil
 from importlib import import_module
 from inspect import getmembers, isclass, isfunction
 from pathlib import Path
@@ -245,6 +246,7 @@ def _generate_api_docs_for_module(root_path: Path, module_name: str) -> str:
     api_summary = _get_api_summary(members_with_submodules)
 
     api_root = root_path / "docs" / "en" / "api"
+    shutil.rmtree(api_root / module_name, ignore_errors=True)
     api_root.mkdir(parents=True, exist_ok=True)
 
     (api_root / ".meta.yml").write_text(API_META)
@@ -255,14 +257,6 @@ def _generate_api_docs_for_module(root_path: Path, module_name: str) -> str:
     symbols = _load_submodules(module_name, members_with_submodules)
 
     _update_api_docs(symbols, root_path, module_name)
-
-    # todo: fix the problem and remove this
-    src = """                    - [ContactDict](api/fastagency/asyncapi/schema/info/ContactDict.md)
-"""
-    dst = """                    - [ContactDict](api/fastagency/asyncapi/schema/info/ContactDict.md)
-                    - [EmailStr](api/fastagency/asyncapi/schema/info/EmailStr.md)
-"""
-    api_summary = api_summary.replace(src, dst)
 
     return api_summary
 
