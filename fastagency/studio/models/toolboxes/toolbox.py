@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Optional, Tuple
+from typing import Annotated, Any, Optional, Tuple, Union
 from uuid import UUID
 
 import httpx
@@ -15,9 +15,30 @@ URL = Annotated[HttpUrl, AfterValidator(lambda x: str(x).rstrip("/"))]
 
 __all__ = [
     "Client",
+    "OpenAPIAuthToken",
     "OpenAPIAuth",
     "Toolbox",
 ]
+
+
+@Registry.get_default().register("secret")
+class OpenAPIAuthToken(Model):
+    token: Annotated[
+        str,
+        Field(
+            description="Authentication token for OpenAPI routes",
+            pattern=r"^Bearer .+$"
+        ),
+    ]
+
+    @classmethod
+    async def create_autogen(
+        cls, model_id: UUID, user_id: UUID, **kwargs: Any
+    ) -> Tuple[str, str]:
+        raise RuntimeError("This method should never be called.")
+
+
+OpenAPIAuthTokenRef: TypeAlias = OpenAPIAuthToken.get_reference_model()  # type: ignore[valid-type]
 
 
 @Registry.get_default().register("secret")
@@ -55,7 +76,7 @@ class Toolbox(Model):
         ),
     ]
     openapi_auth: Annotated[
-        Optional[OpenAPIAuthRef],
+        Optional[Union[OpenAPIAuthTokenRef, OpenAPIAuthRef]],
         Field(
             title="OpenAPI Auth",
             description="Authentication information for the API mentioned in the OpenAPI specification",
