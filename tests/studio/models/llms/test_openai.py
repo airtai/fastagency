@@ -19,15 +19,25 @@ def test_import(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 class TestOpenAIAPIKey:
-    def test_constructor_success(self) -> None:
+    @pytest.mark.parametrize(
+        "openai_api_key",
+        [
+            "sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest",  # pragma: allowlist secret
+            # OpenAI currently supports three prefixes for API keys:
+            # project-based API key format
+            "sk-proj-SomeLengthStringWhichCanHave-and_inItAndTheLengthCanAlsoBeChangedFrequently",  # pragma: allowlist secret
+            # user-level API key format
+            "sk-None-SomeLengthStringWhichCanHave-and_inIt",  # pragma: allowlist secret
+            # service account APi key format
+            "sk-svcacct-SomeLengthStringWhichCanHave-and_inIt",  # pragma: allowlist secret
+        ],
+    )
+    def test_constructor_success(self, openai_api_key: str) -> None:
         api_key = OpenAIAPIKey(
-            api_key="sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest",  # pragma: allowlist secret
+            api_key=openai_api_key,
             name="Hello World!",
         )  # pragma: allowlist secret
-        assert (
-            api_key.api_key
-            == "sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest"  # pragma: allowlist secret
-        )  # pragma: allowlist secret
+        assert api_key.api_key == openai_api_key  # pragma: allowlist secret
 
     def test_constructor_failure(self) -> None:
         with pytest.raises(ValueError, match="Invalid OpenAI API Key"):
