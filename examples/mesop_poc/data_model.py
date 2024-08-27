@@ -20,7 +20,7 @@ class Conversation:
 class State:
     waitingForAnswer: bool = False
     waitingForInput: bool = False
-    input: str = ""
+    prompt: str = ""
     feedback: str = ""
     conversation: Conversation
     autogen: int = -1

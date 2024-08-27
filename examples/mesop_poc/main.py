@@ -6,7 +6,7 @@ from examples.mesop_poc.fast_agency import Question
 from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
 from examples.mesop_poc.components.message import user_message, autogen_message
 from examples.mesop_poc.components.common import header
-from examples.mesop_poc.components.inputs import input_user_feedback
+from examples.mesop_poc.components.inputs import input_user_feedback, input_prompt
 
 
 SECURITY_POLICY = me.SecurityPolicy(
@@ -31,83 +31,24 @@ def home_page():
                 "Enter a prompt to chat with Autogen team",
                 style=me.Style(font_size=20, margin=me.Margin(bottom=24)),
             )
-            chat_input()
-
-
-def chat_input():
-    state = me.state(State)
-    with me.box(
-        style=me.Style(
-            border_radius=16,
-            padding=me.Padding.all(8),
-            background="white",
-            display="flex",
-            width="100%",
-        )
-    ):
-        with me.box(style=me.Style(flex_grow=1)):
-            me.native_textarea(
-                value=state.input,
-                placeholder="Enter a prompt",
-                on_blur=on_blur,
-                style=me.Style(
-                    padding=me.Padding(top=16, left=16),
-                    outline="none",
-                    width="100%",
-                    border=me.Border.all(me.BorderSide(style="none")),
-                ),
-            )
-        with me.content_button(
-            type="icon", on_click=send_prompt
-        ):
-            me.icon("send")
-
-
-def on_blur(e: me.InputBlurEvent):
-    state = me.state(State)
-    state.input = e.value
-
-def on_user_feedback(e: me.ClickEvent):
-    state = me.state(State)
-    print("send input")
-    feedback = state.feedback
-    state.feedback = ""
-    conversation = state.conversation
-    messages = conversation.messages
-    messages.append(ChatMessage(role="user", content=feedback))
-    messages.append(ChatMessage(role="model", in_progress=True))
-    yield
-
-    me.scroll_into_view(key="end_of_messages")
-    autogen_response = send_user_response_to_autogen(feedback)
-
-    for chunk in autogen_response:
-        if isinstance(chunk, Question):
-            chunk = str(chunk)
-        messages[-1].content += chunk
-        yield
-
-    messages[-1].in_progress = False
-    yield
+            input_prompt(send_prompt)
 
 
 def send_prompt(e: me.ClickEvent):
     state = me.state(State)
-    print("send prompt")
     me.navigate("/conversation")
-    input = state.input
-    state.input = ""
+    prompt = state.prompt
+    state.prompt = ""
 
     conversation = state.conversation
     messages = conversation.messages
-    history = messages[:]
-    messages.append(ChatMessage(role="user", content=input))
-    messages.append(ChatMessage(role="model", in_progress=True))
+    messages.append(ChatMessage(role="user", content=prompt))
+    messages.append(ChatMessage(role="autogen", in_progress=True))
     yield
 
     me.scroll_into_view(key="end_of_messages")
 
-    autogen_response = send_prompt_to_autogen(input, history)
+    autogen_response = send_prompt_to_autogen(prompt)
 
     for chunk in autogen_response:
         if isinstance(chunk, Question):
@@ -146,3 +87,25 @@ def conversation_page():
                         )
                     ),
                 )
+
+def on_user_feedback(e: me.ClickEvent):
+    state = me.state(State)
+    feedback = state.feedback
+    state.feedback = ""
+    conversation = state.conversation
+    messages = conversation.messages
+    messages.append(ChatMessage(role="user", content=feedback))
+    messages.append(ChatMessage(role="model", in_progress=True))
+    yield
+
+    me.scroll_into_view(key="end_of_messages")
+    autogen_response = send_user_response_to_autogen(feedback)
+
+    for chunk in autogen_response:
+        if isinstance(chunk, Question):
+            chunk = str(chunk)
+        messages[-1].content += chunk
+        yield
+
+    messages[-1].in_progress = False
+    yield

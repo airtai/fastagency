@@ -4,7 +4,7 @@ from typing import Iterable
 from examples.mesop_poc.data_model import State, ChatMessage
 from examples.mesop_poc.fast_agency import getAutogen, initiate_chat, getMoreResponses, Question
 
-def send_prompt_to_autogen(prompt: str, history: list[ChatMessage]) -> Iterable[str]:
+def send_prompt_to_autogen(prompt: str) -> Iterable[str]:
     state = me.state(State)
     autogen = initiate_chat(prompt)
     state.autogen = autogen
