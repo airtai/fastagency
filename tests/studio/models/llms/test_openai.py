@@ -25,11 +25,11 @@ class TestOpenAIAPIKey:
             "sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest",  # pragma: allowlist secret
             # OpenAI currently supports three prefixes for API keys:
             # project-based API key format
-            "sk-proj-SomeLengthStringWhichCanHave-and_inItAndTheLengthCanAlsoBeChangedFrequently",  # pragma: allowlist secret
+            "sk-proj-SomeLengthStringWhichCanHave-and_inItAndTheLengthCanBeChangedAtAnyTime",  # pragma: allowlist secret
             # user-level API key format
-            "sk-None-SomeLengthStringWhichCanHave-and_inIt",  # pragma: allowlist secret
+            "sk-None-SomeLengthStringWhichCanHave-and_inItAndTheLengthCanBeChangedAtAnyTime",  # pragma: allowlist secret
             # service account APi key format
-            "sk-svcacct-SomeLengthStringWhichCanHave-and_inIt",  # pragma: allowlist secret
+            "sk-svcacct-SomeLengthStringWhichCanHave-and_inItAndTheLengthCanBeChangedAtAnyTime",  # pragma: allowlist secret
         ],
     )
     def test_constructor_success(self, openai_api_key: str) -> None:
