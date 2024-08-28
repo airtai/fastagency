@@ -16,7 +16,10 @@
 </code></pre></div> <div class="doc doc-contents "> </div> </div> <div class="doc doc-object doc-function"> <h3 id=fastagency.studio.models.llms.together.TogetherAI.create_autogen class="doc doc-heading"> <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code> <span class="doc doc-object-name doc-function-name">create_autogen</span> <span class="doc doc-labels"> <small class="doc doc-label doc-label-async"><code>async</code></small> <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small> </span> <a href=#fastagency.studio.models.llms.together.TogetherAI.create_autogen class=headerlink title="Permanent link">#</a></h3> <div class="doc-signature highlight"><pre><span></span><code><a id=__codelineno-0-1 name=__codelineno-0-1 href=#__codelineno-0-1></a><span class=nf>create_autogen</span><span class=p>(</span>
 <a id=__codelineno-0-2 name=__codelineno-0-2 href=#__codelineno-0-2></a>    <span class=n>model_id</span><span class=p>:</span> <span class=n><a class="autorefs autorefs-external" title="uuid.UUID" href="https://docs.python.org/3/library/uuid.html#uuid.UUID">UUID</a></span><span class=p>,</span> <span class=n>user_id</span><span class=p>:</span> <span class=n><a class="autorefs autorefs-external" title="uuid.UUID" href="https://docs.python.org/3/library/uuid.html#uuid.UUID">UUID</a></span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>:</span> <span class=n><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span>
 <a id=__codelineno-0-3 name=__codelineno-0-3 href=#__codelineno-0-3></a><span class=p>)</span> <span class=o>-&gt;</span> <span class=n><a class="autorefs autorefs-external" title="typing.Dict" href="https://docs.python.org/3/library/typing.html#typing.Dict">Dict</a></span><span class=p>[</span><span class=n><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class=p>,</span> <span class=n><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class=p>]</span>
-</code></pre></div> <div class="doc doc-contents "> <details class=quote> <summary>Source code in <code>fastagency/studio/models/llms/together.py</code></summary> <div class=highlight><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span></span><span class=normal><a href=#__codelineno-0-173>173</a></span>
+</code></pre></div> <div class="doc doc-contents "> <details class=quote> <summary>Source code in <code>fastagency/studio/models/llms/together.py</code></summary> <div class=highlight><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span></span><span class=normal><a href=#__codelineno-0-170>170</a></span>
+<span class=normal><a href=#__codelineno-0-171>171</a></span>
+<span class=normal><a href=#__codelineno-0-172>172</a></span>
+<span class=normal><a href=#__codelineno-0-173>173</a></span>
 <span class=normal><a href=#__codelineno-0-174>174</a></span>
 <span class=normal><a href=#__codelineno-0-175>175</a></span>
 <span class=normal><a href=#__codelineno-0-176>176</a></span>
@@ -39,36 +42,33 @@
 <span class=normal><a href=#__codelineno-0-193>193</a></span>
 <span class=normal><a href=#__codelineno-0-194>194</a></span>
 <span class=normal><a href=#__codelineno-0-195>195</a></span>
-<span class=normal><a href=#__codelineno-0-196>196</a></span>
-<span class=normal><a href=#__codelineno-0-197>197</a></span>
-<span class=normal><a href=#__codelineno-0-198>198</a></span>
-<span class=normal><a href=#__codelineno-0-199>199</a></span></pre></div></td><td class=code><div><pre><span></span><code><a id=__codelineno-0-173 name=__codelineno-0-173></a><span class=nd>@classmethod</span>
-<a id=__codelineno-0-174 name=__codelineno-0-174></a><span class=k>async</span> <span class=k>def</span> <span class=nf>create_autogen</span><span class=p>(</span>
-<a id=__codelineno-0-175 name=__codelineno-0-175></a>    <span class=bp>cls</span><span class=p>,</span> <span class=n>model_id</span><span class=p>:</span> <span class=n>UUID</span><span class=p>,</span> <span class=n>user_id</span><span class=p>:</span> <span class=n>UUID</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>:</span> <span class=n>Any</span>
-<a id=__codelineno-0-176 name=__codelineno-0-176></a><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>Dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>]:</span>
-<a id=__codelineno-0-177 name=__codelineno-0-177></a>    <span class=n>my_model</span><span class=p>:</span> <span class=n>TogetherAI</span> <span class=o>=</span> <span class=k>await</span> <span class=bp>cls</span><span class=o>.</span><span class=n>from_db</span><span class=p>(</span><span class=n>model_id</span><span class=p>)</span>
-<a id=__codelineno-0-178 name=__codelineno-0-178></a>
-<a id=__codelineno-0-179 name=__codelineno-0-179></a>    <span class=n>api_key_model</span><span class=p>:</span> <span class=n>TogetherAIAPIKey</span> <span class=o>=</span> <span class=p>(</span>
-<a id=__codelineno-0-180 name=__codelineno-0-180></a>        <span class=k>await</span> <span class=n>my_model</span><span class=o>.</span><span class=n>api_key</span><span class=o>.</span><span class=n>get_data_model</span><span class=p>()</span><span class=o>.</span><span class=n>from_db</span><span class=p>(</span><span class=n>my_model</span><span class=o>.</span><span class=n>api_key</span><span class=o>.</span><span class=n>uuid</span><span class=p>)</span>
-<a id=__codelineno-0-181 name=__codelineno-0-181></a>    <span class=p>)</span>
-<a id=__codelineno-0-182 name=__codelineno-0-182></a>
-<a id=__codelineno-0-183 name=__codelineno-0-183></a>    <span class=n>api_key</span> <span class=o>=</span> <span class=k>await</span> <span class=n>api_key_model</span><span class=o>.</span><span class=n>create_autogen</span><span class=p>(</span><span class=n>my_model</span><span class=o>.</span><span class=n>api_key</span><span class=o>.</span><span class=n>uuid</span><span class=p>,</span> <span class=n>user_id</span><span class=p>)</span>
-<a id=__codelineno-0-184 name=__codelineno-0-184></a>
-<a id=__codelineno-0-185 name=__codelineno-0-185></a>    <span class=n>config_list</span> <span class=o>=</span> <span class=p>[</span>
-<a id=__codelineno-0-186 name=__codelineno-0-186></a>        <span class=p>{</span>
-<a id=__codelineno-0-187 name=__codelineno-0-187></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=n>together_model_string</span><span class=p>[</span><span class=n>my_model</span><span class=o>.</span><span class=n>model</span><span class=p>],</span>
-<a id=__codelineno-0-188 name=__codelineno-0-188></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>api_key</span><span class=p>,</span>
-<a id=__codelineno-0-189 name=__codelineno-0-189></a>            <span class=s2>&quot;base_url&quot;</span><span class=p>:</span> <span class=nb>str</span><span class=p>(</span><span class=n>my_model</span><span class=o>.</span><span class=n>base_url</span><span class=p>),</span>
-<a id=__codelineno-0-190 name=__codelineno-0-190></a>            <span class=s2>&quot;api_type&quot;</span><span class=p>:</span> <span class=n>my_model</span><span class=o>.</span><span class=n>api_type</span><span class=p>,</span>
-<a id=__codelineno-0-191 name=__codelineno-0-191></a>        <span class=p>}</span>
-<a id=__codelineno-0-192 name=__codelineno-0-192></a>    <span class=p>]</span>
-<a id=__codelineno-0-193 name=__codelineno-0-193></a>
-<a id=__codelineno-0-194 name=__codelineno-0-194></a>    <span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
-<a id=__codelineno-0-195 name=__codelineno-0-195></a>        <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=n>config_list</span><span class=p>,</span>
-<a id=__codelineno-0-196 name=__codelineno-0-196></a>        <span class=s2>&quot;temperature&quot;</span><span class=p>:</span> <span class=n>my_model</span><span class=o>.</span><span class=n>temperature</span><span class=p>,</span>
-<a id=__codelineno-0-197 name=__codelineno-0-197></a>    <span class=p>}</span>
-<a id=__codelineno-0-198 name=__codelineno-0-198></a>
-<a id=__codelineno-0-199 name=__codelineno-0-199></a>    <span class=k>return</span> <span class=n>llm_config</span>
+<span class=normal><a href=#__codelineno-0-196>196</a></span></pre></div></td><td class=code><div><pre><span></span><code><a id=__codelineno-0-170 name=__codelineno-0-170></a><span class=nd>@classmethod</span>
+<a id=__codelineno-0-171 name=__codelineno-0-171></a><span class=k>async</span> <span class=k>def</span> <span class=nf>create_autogen</span><span class=p>(</span>
+<a id=__codelineno-0-172 name=__codelineno-0-172></a>    <span class=bp>cls</span><span class=p>,</span> <span class=n>model_id</span><span class=p>:</span> <span class=n>UUID</span><span class=p>,</span> <span class=n>user_id</span><span class=p>:</span> <span class=n>UUID</span><span class=p>,</span> <span class=o>**</span><span class=n>kwargs</span><span class=p>:</span> <span class=n>Any</span>
+<a id=__codelineno-0-173 name=__codelineno-0-173></a><span class=p>)</span> <span class=o>-&gt;</span> <span class=n>Dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>]:</span>
+<a id=__codelineno-0-174 name=__codelineno-0-174></a>    <span class=n>my_model</span><span class=p>:</span> <span class=n>TogetherAI</span> <span class=o>=</span> <span class=k>await</span> <span class=bp>cls</span><span class=o>.</span><span class=n>from_db</span><span class=p>(</span><span class=n>model_id</span><span class=p>)</span>
+<a id=__codelineno-0-175 name=__codelineno-0-175></a>
+<a id=__codelineno-0-176 name=__codelineno-0-176></a>    <span class=n>api_key_model</span><span class=p>:</span> <span class=n>TogetherAIAPIKey</span> <span class=o>=</span> <span class=p>(</span>
+<a id=__codelineno-0-177 name=__codelineno-0-177></a>        <span class=k>await</span> <span class=n>my_model</span><span class=o>.</span><span class=n>api_key</span><span class=o>.</span><span class=n>get_data_model</span><span class=p>()</span><span class=o>.</span><span class=n>from_db</span><span class=p>(</span><span class=n>my_model</span><span class=o>.</span><span class=n>api_key</span><span class=o>.</span><span class=n>uuid</span><span class=p>)</span>
+<a id=__codelineno-0-178 name=__codelineno-0-178></a>    <span class=p>)</span>
+<a id=__codelineno-0-179 name=__codelineno-0-179></a>
+<a id=__codelineno-0-180 name=__codelineno-0-180></a>    <span class=n>api_key</span> <span class=o>=</span> <span class=k>await</span> <span class=n>api_key_model</span><span class=o>.</span><span class=n>create_autogen</span><span class=p>(</span><span class=n>my_model</span><span class=o>.</span><span class=n>api_key</span><span class=o>.</span><span class=n>uuid</span><span class=p>,</span> <span class=n>user_id</span><span class=p>)</span>
+<a id=__codelineno-0-181 name=__codelineno-0-181></a>
+<a id=__codelineno-0-182 name=__codelineno-0-182></a>    <span class=n>config_list</span> <span class=o>=</span> <span class=p>[</span>
+<a id=__codelineno-0-183 name=__codelineno-0-183></a>        <span class=p>{</span>
+<a id=__codelineno-0-184 name=__codelineno-0-184></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=n>together_model_string</span><span class=p>[</span><span class=n>my_model</span><span class=o>.</span><span class=n>model</span><span class=p>],</span>
+<a id=__codelineno-0-185 name=__codelineno-0-185></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>api_key</span><span class=p>,</span>
+<a id=__codelineno-0-186 name=__codelineno-0-186></a>            <span class=s2>&quot;base_url&quot;</span><span class=p>:</span> <span class=nb>str</span><span class=p>(</span><span class=n>my_model</span><span class=o>.</span><span class=n>base_url</span><span class=p>),</span>
+<a id=__codelineno-0-187 name=__codelineno-0-187></a>            <span class=s2>&quot;api_type&quot;</span><span class=p>:</span> <span class=n>my_model</span><span class=o>.</span><span class=n>api_type</span><span class=p>,</span>
+<a id=__codelineno-0-188 name=__codelineno-0-188></a>        <span class=p>}</span>
+<a id=__codelineno-0-189 name=__codelineno-0-189></a>    <span class=p>]</span>
+<a id=__codelineno-0-190 name=__codelineno-0-190></a>
+<a id=__codelineno-0-191 name=__codelineno-0-191></a>    <span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
+<a id=__codelineno-0-192 name=__codelineno-0-192></a>        <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=n>config_list</span><span class=p>,</span>
+<a id=__codelineno-0-193 name=__codelineno-0-193></a>        <span class=s2>&quot;temperature&quot;</span><span class=p>:</span> <span class=n>my_model</span><span class=o>.</span><span class=n>temperature</span><span class=p>,</span>
+<a id=__codelineno-0-194 name=__codelineno-0-194></a>    <span class=p>}</span>
+<a id=__codelineno-0-195 name=__codelineno-0-195></a>
+<a id=__codelineno-0-196 name=__codelineno-0-196></a>    <span class=k>return</span> <span class=n>llm_config</span>
 </code></pre></div></td></tr></table></div> </details> </div> </div> <div class="doc doc-object doc-function"> <h3 id=fastagency.studio.models.llms.together.TogetherAI.from_db class="doc doc-heading"> <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code> <span class="doc doc-object-name doc-function-name">from_db</span> <span class="doc doc-labels"> <small class="doc doc-label doc-label-async"><code>async</code></small> <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small> </span> <a href=#fastagency.studio.models.llms.together.TogetherAI.from_db class=headerlink title="Permanent link">#</a></h3> <div class="doc-signature highlight"><pre><span></span><code><a id=__codelineno-0-1 name=__codelineno-0-1 href=#__codelineno-0-1></a><span class=nf>from_db</span><span class=p>(</span><span class=n>model_id</span><span class=p>:</span> <span class=n><a class="autorefs autorefs-external" title="uuid.UUID" href="https://docs.python.org/3/library/uuid.html#uuid.UUID">UUID</a></span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n><span title="fastagency.studio.models.base.T">T</span></span>
 </code></pre></div> <div class="doc doc-contents "> <details class=quote> <summary>Source code in <code>fastagency/studio/models/base.py</code></summary> <div class=highlight><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span></span><span class=normal><a href=#__codelineno-0-40>40</a></span>
 <span class=normal><a href=#__codelineno-0-41>41</a></span>
