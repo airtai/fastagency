@@ -53,12 +53,13 @@ def send_prompt(e: me.ClickEvent):
 
     for chunk in autogen_response:
         if isinstance(chunk, Question):
-            chunk = str(chunk)
+            chunk = chunk.plain_text()
             messages[-1].content += chunk
             messages[-1].in_progress = False
             yield
             return
-        messages[-1].content += chunk
+        print("chunk", chunk)
+        messages[-1].content += chunk.plain_text()
         yield
     messages[-1].in_progress = False
     state.conversationCompleted = True
@@ -124,12 +125,12 @@ def on_user_feedback(e: me.ClickEvent):
 
     for chunk in autogen_response:
         if isinstance(chunk, Question):
-            chunk = str(chunk)
+            chunk = chunk.plain_text()
             messages[-1].content += chunk
             messages[-1].in_progress = False
             yield
             return
-        messages[-1].content += chunk
+        messages[-1].content += chunk.plain_text()
         yield
 
     messages[-1].in_progress = False

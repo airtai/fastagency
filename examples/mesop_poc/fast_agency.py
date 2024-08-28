@@ -1,21 +1,47 @@
 import queue
 import threading
 import os
+import re
 from  queue import Queue
 from autogen import ConversableAgent, UserProxyAgent
 from autogen.io.base import IOStream
 from autogen.agentchat import ChatResult
 from typing import Any
 
-class Question:
-    def __init__(self, question):
-        self.question = question
+class AutogenOutputElement:
+    def __init__(self, text):
+        self.text = text
+
+    def plain_text(self):
+        t = self.text
+        t = re.sub(r"\x1b\[0m", "", t)
+        t = re.sub(r"\x1b\[1m", "", t)
+        t = re.sub(r"\x1b\[4m", "", t)
+        t = re.sub(r"\x1b\[30m", "", t)
+        t = re.sub(r"\x1b\[31m", "", t)
+        t = re.sub(r"\x1b\[32m", "", t)
+        t = re.sub(r"\x1b\[33m", "", t)
+        t = re.sub(r"\x1b\[34m", "", t)
+        t = re.sub(r"\x1b\[35m", "", t)
+        t = re.sub(r"\x1b\[36m", "", t)
+        t = re.sub(r"\x1b\[37m", "", t)
+        return t
 
     def __str__(self):
-        return self.question
+        return f'{self.__class__.__name__}({self.plain_text()})'
 
     def __repr__(self):
-        return self.question
+        return str(self)
+
+class Question(AutogenOutputElement):
+    def __init__(self, question):
+        super().__init__(question)
+
+
+class AnswerFragment(AutogenOutputElement):
+    def __init__(self, fragment):
+        super().__init__(fragment)
+
 
 
 class InProcessIOStream(IOStream):
@@ -38,8 +64,8 @@ class InProcessIOStream(IOStream):
             flush (bool, optional): Whether to flush the output. Defaults to False.
         """
         xs = sep.join(map(str, objects)) + end
-        print("stavljam u out queue", xs)
-        self._out_queue.put(xs)
+        print("stavljam u out queue", AnswerFragment(xs))
+        self._out_queue.put(AnswerFragment(xs))
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         """Read a line from the input stream.
