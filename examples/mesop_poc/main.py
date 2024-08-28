@@ -13,6 +13,7 @@ SECURITY_POLICY = me.SecurityPolicy(
     allowed_iframe_parents=["https://huggingface.co"]
 )
 
+
 @me.page(
     path="/",
     stylesheets=STYLESHEETS,
@@ -92,7 +93,16 @@ def conversation_page():
         if state.waitingForFeedback:
             input_user_feedback(on_user_feedback)
         if state.conversationCompleted:
-            conversation_completed()
+            conversation_completed(reset_conversation)
+
+def reset_conversation():
+    state = me.state(State)
+    state.conversationCompleted = False
+    state.conversation.messages = []
+    state.waitingForFeedback = False
+    state.autogen = -1
+    state.prompt = ""
+    state.feedback = ""
 
 def on_user_feedback(e: me.ClickEvent):
     state = me.state(State)

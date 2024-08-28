@@ -5,7 +5,6 @@ from examples.mesop_poc.data_model import State
 def header():
     def navigate_home(e: me.ClickEvent):
         me.navigate("/")
-        state = me.state(State)
 
     with me.box(
         on_click=navigate_home,
@@ -24,10 +23,10 @@ def header():
             ),
         )
 
-def conversation_completed():
+def conversation_completed(reset_conversation):
     def navigate_home(e: me.ClickEvent):
+        reset_conversation()
         me.navigate("/")
-        state = me.state(State)
 
     with me.box(
         style=me.Style(
