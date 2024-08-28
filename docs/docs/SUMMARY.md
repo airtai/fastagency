@@ -12,8 +12,10 @@ search:
             - [MultipleChoice](api/fastagency/core/MultipleChoice.md)
             - [Workflows](api/fastagency/core/Workflows.md)
             - autogen
+                - [AutoGenWorkflows](api/fastagency/core/autogen/AutoGenWorkflows.md)
                 - [IOStreamAdapter](api/fastagency/core/autogen/IOStreamAdapter.md)
                 - base
+                    - [AutoGenWorkflows](api/fastagency/core/autogen/base/AutoGenWorkflows.md)
                     - [IOStreamAdapter](api/fastagency/core/autogen/base/IOStreamAdapter.md)
             - base
                 - [ChatMessage](api/fastagency/core/base/ChatMessage.md)
