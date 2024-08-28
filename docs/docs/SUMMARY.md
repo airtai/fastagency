@@ -6,17 +6,24 @@ search:
 - Reference
     - fastagency
         - core
+            - [ChatMessage](api/fastagency/core/ChatMessage.md)
+            - [Chatable](api/fastagency/core/Chatable.md)
+            - [ConsoleIO](api/fastagency/core/ConsoleIO.md)
+            - [MultipleChoice](api/fastagency/core/MultipleChoice.md)
+            - [Workflows](api/fastagency/core/Workflows.md)
             - autogen
-                - [AutoGenIOAdapter](api/fastagency/core/autogen/AutoGenIOAdapter.md)
-                - [AutoGenTeam](api/fastagency/core/autogen/AutoGenTeam.md)
-                - [AutoGenTeamChatable](api/fastagency/core/autogen/AutoGenTeamChatable.md)
-                - [AutogenTeamAgents](api/fastagency/core/autogen/AutogenTeamAgents.md)
+                - [IOStreamAdapter](api/fastagency/core/autogen/IOStreamAdapter.md)
+                - base
+                    - [IOStreamAdapter](api/fastagency/core/autogen/base/IOStreamAdapter.md)
             - base
                 - [ChatMessage](api/fastagency/core/base/ChatMessage.md)
                 - [Chatable](api/fastagency/core/base/Chatable.md)
-                - [ChatableFactory](api/fastagency/core/base/ChatableFactory.md)
-                - [ChatableIO](api/fastagency/core/base/ChatableIO.md)
-                - [ConsoleIO](api/fastagency/core/base/ConsoleIO.md)
+                - [MultipleChoice](api/fastagency/core/base/MultipleChoice.md)
+                - [Workflows](api/fastagency/core/base/Workflows.md)
+            - console
+                - [ConsoleIO](api/fastagency/core/console/ConsoleIO.md)
+                - base
+                    - [ConsoleIO](api/fastagency/core/console/base/ConsoleIO.md)
         - openapi
             - client
                 - [Client](api/fastagency/openapi/client/Client.md)

@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.autogen.AutogenTeamAgents
+::: fastagency.core.console.ConsoleIO
