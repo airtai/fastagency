@@ -43,9 +43,6 @@ class TestTogetherAIAPIKey:
 
 
 class TestTogetherAI:
-    @pytest.mark.skipif(
-        together.version == "1.2.8", reason="Bug in getting models list"
-    )
     @pytest.mark.togetherai
     def test_together_model_string(self) -> None:
         # requires that environment variables TOGETHER_API_KEY is set
