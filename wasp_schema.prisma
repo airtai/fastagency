@@ -1,0 +1,100 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+}
+
+model User {
+  id                        Int             @id @default(autoincrement())
+  uuid                      String?         @default(uuid())
+  email                     String?         @unique
+  username                  String?         @unique
+  createdAt                 DateTime        @default(now())
+  lastActiveTimestamp       DateTime        @default(now())
+  isAdmin                   Boolean         @default(false)
+  hasAcceptedTos             Boolean         @default(false)
+  hasSubscribedToMarketingEmails  Boolean         @default(false)
+  isSignUpComplete          Boolean         @default(false)
+  isSetUpComplete           Boolean         @default(false)
+  stripeId                  String?
+  checkoutSessionId         String?
+  hasPaid                   Boolean         @default(false)
+  subscriptionTier          String?
+  subscriptionStatus        String?
+  sendEmail                 Boolean         @default(false)
+  datePaid                  DateTime?
+  credits                   Int             @default(3)
+  chats    Chat[]
+  conversations    Conversation[]
+}
+
+model DailyStats {
+  id                               Int             @id @default(autoincrement())
+  date                             DateTime        @default(now()) @unique
+  totalViews                       Int             @default(0)
+  prevDayViewsChangePercent        String          @default("0")
+  userCount                        Int             @default(0)
+  paidUserCount                    Int             @default(0)
+  userDelta                        Int             @default(0)
+  paidUserDelta                    Int             @default(0)
+  totalRevenue                     Float             @default(0)
+  totalProfit                      Float             @default(0)
+  sources                          PageViewSource[]
+}
+
+model PageViewSource {
+  date                     DateTime        @default(now())
+  name                     String
+  visitors                 Int
+  dailyStats               DailyStats?     @relation(fields: [dailyStatsId], references: [id])
+  dailyStatsId             Int?
+  @@id([date, name])
+}
+
+model Logs {
+  id                       Int             @id @default(autoincrement())
+  createdAt                DateTime        @default(now())
+  message                  String
+  level                    String
+}
+
+model Chat {
+    id                        Int             @id @default(autoincrement())
+    uuid                      String?         @default(uuid())
+    createdAt                 DateTime        @default(now())
+    updatedAt                 DateTime        @updatedAt
+    team_id                   Int?
+    team_name                 String?
+    team_status               String?
+    userRespondedWithNextAction             Boolean         @default(false)
+    agentChatHistory         String?
+    isExceptionOccured       Boolean         @default(false)
+    showLoader  Boolean         @default(false)
+    streamAgentResponse Boolean         @default(false)
+    customerBrief       String?
+    user        User?    @relation(fields: [userId], references: [id])
+    userId      Int?
+    name        String?          @default("New chat")
+    isChatNameUpdated Boolean         @default(false)
+    isChatTerminated Boolean         @default(false)
+    selectedTeam   String?
+    conversations    Conversation[]
+}
+
+model Conversation {
+    id                          Int             @id @default(autoincrement())
+    createdAt                   DateTime        @default(now())
+    updatedAt                   DateTime        @updatedAt
+    message                     String
+    role                        String
+    agentConversationHistory    String?
+    isLoading                   Boolean         @default(false)
+    chat                        Chat?           @relation(fields: [chatId], references: [id])
+    chatId                      Int?
+    user                        User?           @relation(fields: [userId], references: [id])
+    userId                      Int?
+}

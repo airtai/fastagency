@@ -2,7 +2,7 @@ import uuid
 from typing import Dict
 
 import pytest
-from together import Together
+import together
 
 from fastagency.studio.helpers import get_model_by_ref
 from fastagency.studio.models.base import ObjectReference
@@ -46,7 +46,7 @@ class TestTogetherAI:
     @pytest.mark.togetherai
     def test_together_model_string(self) -> None:
         # requires that environment variables TOGETHER_API_KEY is set
-        client = Together()
+        client = together.Together()
 
         expected_together_model_string: Dict[str, str] = {
             model.display_name: model.id
@@ -143,7 +143,7 @@ class TestTogetherAI:
                     "format": "uri",
                     "maxLength": 2083,
                     "minLength": 1,
-                    "title": "Base Url",
+                    "title": "Base URL",
                     "type": "string",
                 },
                 "api_type": {

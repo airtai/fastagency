@@ -56,7 +56,7 @@ mesop = [
 
 autogen = [
     "pyautogen[anthropic,together]==0.2.35",
-    "together>=1.2.1,<2",
+    "together>=1.2.9,<2",
 ]
 
 openapi = [

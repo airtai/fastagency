@@ -1,6 +1,13 @@
-import getpass
 from dataclasses import dataclass
-from typing import Any, Optional, Protocol, runtime_checkable
+from typing import Callable, List, Optional, Protocol, TypeVar, runtime_checkable
+
+__all__ = [
+    "ChatMessage",
+    "MultipleChoice",
+    "Chatable",
+    "Workflow",
+    "Workflows",
+]
 
 
 @dataclass
@@ -11,37 +18,34 @@ class ChatMessage:
     body: Optional[str]
 
 
-@runtime_checkable
-class ChatableIO(Protocol):
-    def input(self, message: ChatMessage, *, password: bool = False) -> str: ...
-
-    def print(self, message: ChatMessage) -> None: ...
-
-
-class ConsoleIO(ChatableIO):
-    def input(self, message: ChatMessage, *, password: bool = False) -> str:
-        prompt = f"{message.sender} -> {message.recepient}:" + "\n" + f"{message.body}"
-        if password:
-            return getpass.getpass(prompt)
-        else:
-            return input(prompt)
-
-    def print(self, message: ChatMessage) -> None:
-        if message.sender is not None:
-            print(  # noqa: T201 `print` found
-                f"{message.sender} -> {message.recepient}:" + "\n" + f"{message.body}"
-            )
-        else:
-            print(message.body)  # noqa: T201 `print` found
+@dataclass
+class MultipleChoice:
+    message: ChatMessage
+    choices: List[str]
+    default: Optional[str] = None
+    single: bool = True
 
 
 @runtime_checkable
 class Chatable(Protocol):
-    def init_chat(self, message: str, **kwargs: Any) -> str: ...
+    def input(self, message: ChatMessage, *, password: bool = False) -> str: ...
 
-    def continue_chat(self, message: str, **kwargs: Any) -> str: ...
+    def print(self, message: ChatMessage) -> None: ...
+
+    def select(self, choice: MultipleChoice) -> str: ...
+
+    def create_subconversation(self) -> "Chatable": ...
+
+
+Workflow = TypeVar("Workflow", bound=Callable[[Chatable, str, str], str])
 
 
 @runtime_checkable
-class ChatableFactory(Protocol):
-    def create(self, session_id: str) -> Chatable: ...
+class Workflows(Protocol):
+    def register(
+        self, name: str, description: str
+    ) -> Callable[[Workflow], Workflow]: ...
+
+    def run(
+        self, name: str, session_id: str, io: Chatable, initial_message: str
+    ) -> str: ...

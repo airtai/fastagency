@@ -55,7 +55,10 @@ class OpenAIAPIKey(Model):
     @field_validator("api_key")
     @classmethod
     def validate_api_key(cls: Type["OpenAIAPIKey"], value: Any) -> Any:
-        if not re.match(r"^sk-[a-zA-Z0-9]{20}T3BlbkFJ[a-zA-Z0-9]{20}$", value):
+        if not re.match(
+            r"^(sk-(proj-|None-|svcacct-)[A-Za-z0-9_-]+|sk-[a-zA-Z0-9]{20}T3BlbkFJ[a-zA-Z0-9]{20})$",
+            value,
+        ):
             raise ValueError("Invalid OpenAI API Key")
         return value
 
@@ -82,9 +85,9 @@ class OpenAI(Model):
         ),
     ]
 
-    base_url: Annotated[URL, Field(description="The base URL of the OpenAI API")] = URL(
-        url="https://api.openai.com/v1"
-    )
+    base_url: Annotated[
+        URL, Field(title="Base URL", description="The base URL of the OpenAI API")
+    ] = URL(url="https://api.openai.com/v1")
 
     api_type: Annotated[
         Literal["openai"],
