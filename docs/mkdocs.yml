@@ -25,7 +25,7 @@ theme:
   name: material
   custom_dir: overrides
   logo: assets/img/logo.svg
-  favicon: assets/img/logo.svg
+  favicon: assets/img/favicon.ico
   font:
     text: Roboto
   palette:
