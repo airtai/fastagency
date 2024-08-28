@@ -107,9 +107,12 @@ def reset_conversation():
 def on_user_feedback(e: me.ClickEvent):
     state = me.state(State)
     feedback = state.feedback
-    state.feedback = ""
-    print("feedback obrisan, bio je", feedback)
+    state.waitingForFeedback = False
     yield
+    state.feedback = ""
+    state.waitingForFeedback = False
+    yield
+    print("feedback obrisan, bio je", feedback)
     conversation = state.conversation
     messages = conversation.messages
     messages.append(ChatMessage(role="user", content=feedback))
