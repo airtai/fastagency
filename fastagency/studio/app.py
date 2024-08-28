@@ -102,8 +102,10 @@ async def validate_secret_model(
     type: str = "secret"
 
     found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
-    if "api_key" in found_model["json_str"]:
+
+    if "api_key" not in model:
         model["api_key"] = found_model["json_str"]["api_key"]
+
     try:
         validated_model = Registry.get_default().validate(type, name, model)
         return validated_model.model_dump()

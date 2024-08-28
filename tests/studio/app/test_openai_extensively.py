@@ -68,14 +68,29 @@ class TestValidateOpenAIKey:
             background_tasks=BackgroundTasks(),
         )
 
-        # Remove api_key and send name alone to validate route
-        model_dict.pop("api_key")
+        # Pass only name in the request, this should only update the name and retain the existing api_key
+        model_dict_with_updated_name = {"name": "Hello World! Updated"}
 
         response = client.post(
             f"/user/{user_uuid}/models/secret/OpenAIAPIKey/{api_key_model_uuid}/validate",
-            json=model_dict,
+            json=model_dict_with_updated_name,
         )
         assert response.status_code == 200
+
+        expected = {"name": "Hello World! Updated", "api_key": model_dict["api_key"]}
+        assert response.json() == expected
+
+        # Pass both name and api_key in the request, this should update both name and api_key
+        model_dict_with_updated_name_and_api_key = {
+            "name": "Hello World! Updated Again",
+            "api_key": "sk-proj-SomeLengthStringWhichCanHave-and_inItAndTheLengthCanBeChangedAtAnyTime",  # pragma: allowlist secret
+        }
+        response = client.post(
+            f"/user/{user_uuid}/models/secret/OpenAIAPIKey/{api_key_model_uuid}/validate",
+            json=model_dict_with_updated_name_and_api_key,
+        )
+        assert response.status_code == 200
+        assert response.json() == model_dict_with_updated_name_and_api_key
 
 
 # we will do this for OpenAI only, the rest should be the same
