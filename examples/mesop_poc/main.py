@@ -5,7 +5,7 @@ from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_fee
 from examples.mesop_poc.fast_agency import Question
 from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
 from examples.mesop_poc.components.message import user_message, autogen_message
-from examples.mesop_poc.components.common import header
+from examples.mesop_poc.components.ui_common import header, conversation_completed
 from examples.mesop_poc.components.inputs import input_user_feedback, input_prompt
 
 
@@ -92,7 +92,7 @@ def conversation_page():
         if state.waitingForFeedback:
             input_user_feedback(on_user_feedback)
         if state.conversationCompleted:
-            me.text("Conversation completed")
+            conversation_completed()
 
 def on_user_feedback(e: me.ClickEvent):
     state = me.state(State)

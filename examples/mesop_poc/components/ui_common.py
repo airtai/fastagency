@@ -23,3 +23,19 @@ def header():
                 letter_spacing="0.3px",
             ),
         )
+
+def conversation_completed():
+    def navigate_home(e: me.ClickEvent):
+        me.navigate("/")
+        state = me.state(State)
+
+    with me.box(
+        style=me.Style(
+            cursor="pointer",
+            padding=me.Padding.all(16),
+        ),
+    ):
+        me.button(
+            "Conversation with team has ended, start a new one",
+            on_click=navigate_home,
+        )
