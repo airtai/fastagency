@@ -1,30 +1,65 @@
-# from typing import Any, Dict
+from typing import Any, Dict
 
-# import pytest
-# from autogen.agentchat import AssistantAgent, UserProxyAgent
+import pytest
+from autogen.agentchat import ConversableAgent
 
-# from fastagency.core.autogen import AutoGenTeam, AutogenTeamAgents
-# from fastagency.core.base import ConsoleIO
+from fastagency.core import ChatMessage, Chatable, ConsoleIO
+from fastagency.core.autogen import AutoGenWorkflows
 
 
-# @pytest.mark.openai
-# def test_simple(openai_gpt4o_mini_llm_config: Dict[str, Any]) -> None:
-#     team = AutoGenTeam()
+@pytest.mark.openai
+def test_simple(openai_gpt4o_mini_llm_config: Dict[str, Any]) -> None:
+    wf = AutoGenWorkflows()
 
-#     @team.factory(name="my team", description="my team description")
-#     def create_team() -> AutogenTeamAgents:
-#         initial_agent = UserProxyAgent(
-#             name="user_proxy", human_input_mode="NEVER", max_consecutive_auto_reply=5
-#         )
-#         receiving_agent = AssistantAgent(
-#             name="assistant", llm_config=openai_gpt4o_mini_llm_config
-#         )
+    @wf.register(
+        name="simple_learning", description="Student and teacher learning chat"
+    )
+    def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+        student_agent = ConversableAgent(
+            name="Student_Agent",
+            system_message="You are a student willing to learn.",
+            llm_config=openai_gpt4o_mini_llm_config,
+        )
+        teacher_agent = ConversableAgent(
+            name="Teacher_Agent",
+            system_message="You are a math teacher.",
+            llm_config=openai_gpt4o_mini_llm_config,
+        )
 
-#         return {
-#             "initial_agent": initial_agent,
-#             "receiving_agent": receiving_agent,
-#         }
+        chat_result = student_agent.initiate_chat(
+            teacher_agent,
+            message=initial_message,
+            summary_method="reflection_with_llm",
+            max_turns=5,
+        )
 
-#     my_team = team.create(session_id="session_id", io=ConsoleIO())
+        return chat_result.summary  # type: ignore[no-any-return]
 
-#     my_team.init_chat("Write me a sonnet about lige in Zagreb")
+    initial_message = "What is triangle inequality?"
+
+    io = ConsoleIO()
+
+    io.print(
+        ChatMessage(
+            sender="user",
+            recepient="workflow",
+            heading="Workflow BEGIN",
+            body=f"Starting workflow with initial_message: {initial_message}",
+        )
+    )
+
+    result = wf.run(
+        name="simple_learning",
+        session_id="session_id",
+        io=io.create_subconversation(),
+        initial_message=initial_message,
+    )
+
+    io.print(
+        ChatMessage(
+            sender="user",
+            recepient="workflow",
+            heading="Workflow END",
+            body=f"Ending workflow with result: {result}",
+        )
+    )

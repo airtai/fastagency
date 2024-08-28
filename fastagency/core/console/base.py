@@ -24,7 +24,7 @@ class ConsoleIO(Chatable):
     def _format_message(self, message: ChatMessage) -> str:
         return f"""+{'-' * 80}+
 |
-| {message.sender} -> {message.recepient}: {message.heading.upper() if message.heading else ''}
+| {message.sender} -> {message.recepient}: {message.heading if message.heading else ''}
 |
 {textwrap.indent(textwrap.fill(message.body if message.body else '', replace_whitespace=False, drop_whitespace=False), '| ', predicate=lambda line: True)}
 +{'-' * 80}+
@@ -34,7 +34,7 @@ class ConsoleIO(Chatable):
         message = choice.message
         retval = f"""+{'-' * 80}+
 |
-| {message.sender} -> {message.recepient}: {message.heading.upper() if message.heading else ''}
+| {message.sender} -> {message.recepient}: {message.heading if message.heading else ''}
 |
 {textwrap.indent(textwrap.fill(message.body if message.body else '', replace_whitespace=False, drop_whitespace=False), '| ', predicate=lambda line: True)}
 |
