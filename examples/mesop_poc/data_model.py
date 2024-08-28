@@ -18,8 +18,8 @@ class Conversation:
 
 @me.stateclass
 class State:
-    waitingForAnswer: bool = False
-    waitingForInput: bool = False
+    conversationCompleted: bool = False
+    waitingForFeedback: bool = False
     prompt: str = ""
     feedback: str = ""
     conversation: Conversation

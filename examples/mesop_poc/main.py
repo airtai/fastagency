@@ -39,7 +39,7 @@ def send_prompt(e: me.ClickEvent):
     me.navigate("/conversation")
     prompt = state.prompt
     state.prompt = ""
-
+    state.conversationCompleted = False
     conversation = state.conversation
     messages = conversation.messages
     messages.append(ChatMessage(role="user", content=prompt))
@@ -53,9 +53,14 @@ def send_prompt(e: me.ClickEvent):
     for chunk in autogen_response:
         if isinstance(chunk, Question):
             chunk = str(chunk)
+            messages[-1].content += chunk
+            messages[-1].in_progress = False
+            yield
+            return
         messages[-1].content += chunk
         yield
     messages[-1].in_progress = False
+    state.conversationCompleted = True
     yield
 
 
@@ -70,8 +75,6 @@ def conversation_page():
                 overflow_y="auto",
             )
         ):
-            me.text("Autogen: ", style=me.Style(font_weight=500))
-
             for message in messages:
                 if message.role == "user":
                     user_message(message.content)
@@ -86,13 +89,16 @@ def conversation_page():
                         )
                     ),
                 )
-        if state.waitingForInput:
+        if state.waitingForFeedback:
             input_user_feedback(on_user_feedback)
+        if state.conversationCompleted:
+            me.text("Conversation completed")
 
 def on_user_feedback(e: me.ClickEvent):
     state = me.state(State)
     feedback = state.feedback
     state.feedback = ""
+    print("feedback obrisan, bio je", feedback)
     yield
     conversation = state.conversation
     messages = conversation.messages
@@ -106,8 +112,13 @@ def on_user_feedback(e: me.ClickEvent):
     for chunk in autogen_response:
         if isinstance(chunk, Question):
             chunk = str(chunk)
+            messages[-1].content += chunk
+            messages[-1].in_progress = False
+            yield
+            return
         messages[-1].content += chunk
         yield
 
     messages[-1].in_progress = False
+    state.conversationCompleted = True
     yield

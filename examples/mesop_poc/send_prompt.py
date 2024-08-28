@@ -13,9 +13,9 @@ def send_prompt_to_autogen(prompt: str) -> Iterable[str]:
         if isinstance(chunk, Question):
             print("auto providing input - not")
             state = me.state(State)
-            state.waitingForInput = True
+            state.waitingForFeedback = True
             #getAutogen(autogen).provide_input("")
-            chunk = chunk.question
+            #chunk = chunk.question
         yield chunk
     print("end of send prompt responoses -----------------")
 
@@ -23,14 +23,15 @@ def send_user_feedback_to_autogen(userResponse: str) -> Iterable[str]:
     state = me.state(State)
     #print("sending user response state je", state)
     print("sending user response state je", state.autogen)
-    state.waitingForInput = False
+    state.waitingForFeedback = False
     responses = getMoreResponses(userResponse, state.autogen)
     for chunk in responses():
         if isinstance(chunk, Question):
             print("auto providing input - not")
             state = me.state(State)
-            state.waitingForInput = True
+            state.waitingForFeedback = True
             #getAutogen(autogen).provide_input("") #uncomment this for autoreply
-            chunk = chunk.question
+            #chunk = chunk.question
+            yield chunk
         yield chunk
     print("end of send feedback responses -----------------")
