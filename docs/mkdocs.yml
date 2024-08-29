@@ -3,7 +3,7 @@ site_name: FastAgency
 site_description: "FastAgency: a repository of open-source AI models"
 site_url: https://docs.fastagency.ai/
 site_author: airt
-copyright: '&copy; 2023 <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
+copyright: '&copy; 2023 onwards <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
 
 docs_dir: docs
 
@@ -25,19 +25,21 @@ theme:
   name: material
   custom_dir: overrides
   logo: assets/img/logo.svg
-  favicon: assets/img/logo.svg
+  favicon: assets/img/favicon.ico
   font:
     text: Roboto
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
