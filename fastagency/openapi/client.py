@@ -31,6 +31,15 @@ if TYPE_CHECKING:
 
 __all__ = ["Client"]
 
+API_KEY_LOOKUP = {
+    "APIKeyHeader": "X-Key",
+}
+
+def _get_api_key_header(api_key: inspect.Parameter) -> str:
+    for key in API_KEY_LOOKUP:
+        if key in api_key.annotation:
+            return API_KEY_LOOKUP[key]
+    raise ValueError(f"API key {api_key} not found in API_KEY_LOOKUP")
 
 @contextmanager
 def add_to_globals(new_globals: Dict[str, Any]) -> Iterator[None]:
@@ -60,7 +69,7 @@ class Client:
     @staticmethod
     def _get_params(
         path: str, func: Callable[..., Any]
-    ) -> Tuple[Set[str], Set[str], Optional[str]]:
+    ) -> Tuple[Set[str], Set[str], Optional[str], Set[str]]:
         sig = inspect.signature(func)
 
         params_names = set(sig.parameters.keys())
@@ -71,14 +80,18 @@ class Client:
 
         body = "body" if "body" in params_names else None
 
-        q_params = set(params_names) - path_params - {body}
+        security = None
+        if "token" in params_names:
+            security = _get_api_key_header(sig.parameters["token"])
 
-        return q_params, path_params, body
+        q_params = set(params_names) - path_params - {body} - {"token"}
+
+        return q_params, path_params, body, security
 
     def _process_params(
         self, path: str, func: Callable[[Any], Any], **kwargs: Any
     ) -> Tuple[str, Dict[str, Any], Dict[str, Any]]:
-        q_params, path_params, body = Client._get_params(path, func)
+        q_params, path_params, body, security = Client._get_params(path, func)
 
         expanded_path = path.format(**{p: kwargs[p] for p in path_params})
 
@@ -94,6 +107,8 @@ class Client:
             else {}
         )
         body_dict["headers"] = {"Content-Type": "application/json"}
+        if security:
+            body_dict["headers"][security] = kwargs["token"]
 
         params = {k: v for k, v in kwargs.items() if k in q_params}
 
@@ -150,6 +165,7 @@ class Client:
         input_text: str,
         output_dir: Path,
         disable_timestamp: bool = False,
+        custom_visitors: Optional[List[Path]] = None,
     ) -> str:
         with patch_get_parameter_type():
             generate_code(
@@ -159,6 +175,7 @@ class Client:
                 output_dir=output_dir,
                 template_dir=cls._get_template_dir(),
                 disable_timestamp=disable_timestamp,
+                custom_visitors=custom_visitors,
             )
             # Use unique file name for main.py
             main_name = f"main_{output_dir.name}"

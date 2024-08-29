@@ -33,7 +33,20 @@ app = Client(
     {% if operation.tags %}
     , tags={{operation.tags}}
     {% endif %})
-def {{operation.function_name}}({{operation.snake_case_arguments}}) -> {{operation.return_type}}:
+def {{operation.function_name}}({{operation.snake_case_arguments}}
+    {% if operation.security %}
+    , token:Union[
+        {% for security in operation.security %}
+
+        {% for key, value in security.items() %}
+        "{{key}}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+
+        {% if not loop.last %},{% endif %}
+        {% endfor %}
+    ]
+    {% endif %}
+    ) -> {{operation.return_type}}:
     {%- if operation.summary %}
     """
     {{ operation.summary }}
