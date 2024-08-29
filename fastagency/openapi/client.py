@@ -81,10 +81,10 @@ class Client:
         body = "body" if "body" in params_names else None
 
         security = None
-        if "token" in params_names:
-            security = _get_api_key_header(sig.parameters["token"])
+        if "security" in params_names:
+            security = _get_api_key_header(sig.parameters["security"])
 
-        q_params = set(params_names) - path_params - {body} - {"token"}
+        q_params = set(params_names) - path_params - {body} - {"security"}
 
         return q_params, path_params, body, security
 
@@ -108,7 +108,7 @@ class Client:
         )
         body_dict["headers"] = {"Content-Type": "application/json"}
         if security:
-            body_dict["headers"][security] = kwargs["token"]
+            body_dict["headers"][security] = kwargs["security"]
 
         params = {k: v for k, v in kwargs.items() if k in q_params}
 
