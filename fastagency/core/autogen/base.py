@@ -1,14 +1,20 @@
+import json
 import logging
 import re
 from typing import Any, Callable, Dict, List, Tuple
 
 from autogen.io import IOStream
 
-from ..base import ChatMessage, Chatable, Workflow, Workflows
+from ..base import (
+    Chatable,
+    IOMessage,
+    Workflow,
+    Workflows,
+)
 
 __all__ = [
-    "IOStreamAdapter",
     "AutoGenWorkflows",
+    "IOStreamAdapter",
 ]
 
 
@@ -37,28 +43,43 @@ class IOStreamAdapter:  # IOStream
 
         """
         self.io = io
-        self.current_message = ChatMessage(
-            sender=None, recepient=None, heading=None, body=None
-        )
-        self.messages: List[ChatMessage] = []
+        self.current_message: Dict[str, Any] = {}
+        self.messages: List[IOMessage] = []
+        if not isinstance(self.io, Chatable):
+            raise ValueError("The io object must be an instance of Chatable.")
+
+    def _create_and_append_message(self) -> None:
+        pass
 
     def _process_message(self, body: str) -> bool:
-        logger.info(f"Processing message: {body=}, {self.current_message=}")
+        # logger.info(f"Processing message: {body=}, {self.current_message=}")
 
         # the end of the message
         if (
             body
             == "\n--------------------------------------------------------------------------------\n"
         ):
-            self.messages.append(self.current_message)
-            self.current_message = ChatMessage(
-                sender=None, recepient=None, heading=None, body=None
-            )
+            # logger.error(f"End of message: {self.current_message=}")
+            msg_type = self.current_message.get("type", "text_message")
+
+            if msg_type == "suggested_function_call":
+                body = self.current_message["content"].pop("body")
+                args_json = re.findall("^Arguments: \\n(.*)\\n$", body)[0]
+                self.current_message["content"]["arguments"] = json.loads(args_json)
+            if msg_type == "function_call_execution":
+                body = self.current_message["content"].pop("body")
+                self.current_message["content"]["retval"] = body
+
+            # logger.error(f"End of message: {self.current_message=}")
+            msg = IOMessage(**self.current_message)
+
+            self.messages.append(msg)
+            self.current_message = {}
             return True
 
         # match parts of the message
         if body == "\x1b[31m\n>>>>>>>> USING AUTO REPLY...\x1b[0m\n":
-            self.current_message.heading = "AUTO REPLY"
+            self.current_message["heading"] = "AUTO REPLY"
         elif re.match(
             "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
             body,
@@ -67,30 +88,43 @@ class IOStreamAdapter:  # IOStream
                 "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
                 body,
             )[0]
-            self.current_message.sender = sender
-            self.current_message.recepient = recepient
+            self.current_message["sender"] = sender
+            self.current_message["recepient"] = recepient
         elif re.match(
             "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
             body,
         ):
+            self.current_message["type"] = "suggested_function_call"
+
             call_id, function_name = re.findall(
                 "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
                 body,
             )[0]
-            self.current_message.heading = (
-                f"SUGGESTED TOOL CALL ({call_id}): {function_name}"
-            )
+            # self.current_message["heading"] = (
+            #     f"SUGGESTED TOOL CALL ({call_id}): {function_name}"
+            # )
+            self.current_message["content"] = {
+                "function_name": function_name,
+                "call_id": call_id,
+                "body": "",
+            }
         elif re.match("\\x1b\\[32m(\\*+)\\x1b\\[0m\n", body):
             pass
         elif re.match(
             "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
             body,
         ):
+            self.current_message["type"] = "function_call_execution"
+
             function_name = re.findall(
                 "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
                 body,
             )[0]
-            self.current_message.heading = f"EXECUTING FUNCTION {function_name}"
+            self.current_message["heading"] = f"EXECUTING FUNCTION {function_name}"
+            self.current_message["content"] = {
+                "function_name": function_name,
+                "body": "",
+            }
         elif re.match(
             "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
             body,
@@ -99,12 +133,15 @@ class IOStreamAdapter:  # IOStream
                 "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
                 body,
             )[0]
-            self.current_message.heading = f"RESPONSE FROM CALLING TOOL ({call_id})"
+            self.current_message["heading"] = f"RESPONSE FROM CALLING TOOL ({call_id})"
+            self.current_message["content"]["call_id"] = call_id
         else:
-            body = (
-                self.current_message.body if self.current_message.body else ""
-            ) + body
-            self.current_message.body = body
+            if "content" not in self.current_message:
+                self.current_message["content"] = {"body": ""}
+
+            self.current_message["content"]["body"] = (
+                self.current_message["content"]["body"] + body
+            )
 
         return False
 
@@ -115,10 +152,10 @@ class IOStreamAdapter:  # IOStream
         ready_to_send = self._process_message(body)
         if ready_to_send:
             message = self.messages[-1]
-            self.io.print(message)
+            self.io.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
-        message = ChatMessage(sender=None, recepient=None, heading=None, body=prompt)
+        message = IOMessage(sender=None, recepient=None, heading=None, body=prompt)
         return self.io.input(message, password=password)
 
 

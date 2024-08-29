@@ -1,11 +1,32 @@
-from .base import ChatMessage, Chatable, MultipleChoice, Workflow, Workflows
+from .base import (
+    Chatable,
+    FunctionCallExecutionContent,
+    IOMessage,
+    IOStreamingMessage,
+    MessageContent,
+    MessageType,
+    MultipleChoiceContent,
+    SuggestedFunctionCallContent,
+    TextInputContent,
+    TextMessageContent,
+    Workflow,
+    Workflows,
+)
 from .console import ConsoleIO
 
 __all__ = [
-    "ChatMessage",
     "Chatable",
     "ConsoleIO",
-    "MultipleChoice",
+    "FunctionCallExecutionContent",
+    "IOMessage",
+    "IOStreamingMessage",
+    "MessageContent",
+    "MessageType",
+    "MultipleChoiceContent",
+    "IOMessage",
+    "SuggestedFunctionCallContent",
+    "TextInputContent",
+    "TextMessageContent",
     "Workflow",
     "Workflows",
 ]

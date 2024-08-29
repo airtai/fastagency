@@ -3,7 +3,7 @@ from typing import Any, Dict
 import pytest
 from autogen.agentchat import ConversableAgent
 
-from fastagency.core import ChatMessage, Chatable, ConsoleIO
+from fastagency.core import Chatable, ConsoleIO, IOMessage
 from fastagency.core.autogen import AutoGenWorkflows
 
 
@@ -40,7 +40,7 @@ def test_simple(openai_gpt4o_mini_llm_config: Dict[str, Any]) -> None:
     io = ConsoleIO()
 
     io.print(
-        ChatMessage(
+        IOMessage(
             sender="user",
             recepient="workflow",
             heading="Workflow BEGIN",
@@ -56,7 +56,7 @@ def test_simple(openai_gpt4o_mini_llm_config: Dict[str, Any]) -> None:
     )
 
     io.print(
-        ChatMessage(
+        IOMessage(
             sender="user",
             recepient="workflow",
             heading="Workflow END",

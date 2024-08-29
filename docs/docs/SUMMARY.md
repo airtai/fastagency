@@ -6,10 +6,15 @@ search:
 - Reference
     - fastagency
         - core
-            - [ChatMessage](api/fastagency/core/ChatMessage.md)
             - [Chatable](api/fastagency/core/Chatable.md)
             - [ConsoleIO](api/fastagency/core/ConsoleIO.md)
-            - [MultipleChoice](api/fastagency/core/MultipleChoice.md)
+            - [FunctionCallExecutionContent](api/fastagency/core/FunctionCallExecutionContent.md)
+            - [IOMessage](api/fastagency/core/IOMessage.md)
+            - [IOStreamingMessage](api/fastagency/core/IOStreamingMessage.md)
+            - [MultipleChoiceContent](api/fastagency/core/MultipleChoiceContent.md)
+            - [SuggestedFunctionCallContent](api/fastagency/core/SuggestedFunctionCallContent.md)
+            - [TextInputContent](api/fastagency/core/TextInputContent.md)
+            - [TextMessageContent](api/fastagency/core/TextMessageContent.md)
             - [Workflows](api/fastagency/core/Workflows.md)
             - autogen
                 - [AutoGenWorkflows](api/fastagency/core/autogen/AutoGenWorkflows.md)
@@ -18,9 +23,14 @@ search:
                     - [AutoGenWorkflows](api/fastagency/core/autogen/base/AutoGenWorkflows.md)
                     - [IOStreamAdapter](api/fastagency/core/autogen/base/IOStreamAdapter.md)
             - base
-                - [ChatMessage](api/fastagency/core/base/ChatMessage.md)
                 - [Chatable](api/fastagency/core/base/Chatable.md)
-                - [MultipleChoice](api/fastagency/core/base/MultipleChoice.md)
+                - [FunctionCallExecutionContent](api/fastagency/core/base/FunctionCallExecutionContent.md)
+                - [IOMessage](api/fastagency/core/base/IOMessage.md)
+                - [IOStreamingMessage](api/fastagency/core/base/IOStreamingMessage.md)
+                - [MultipleChoiceContent](api/fastagency/core/base/MultipleChoiceContent.md)
+                - [SuggestedFunctionCallContent](api/fastagency/core/base/SuggestedFunctionCallContent.md)
+                - [TextInputContent](api/fastagency/core/base/TextInputContent.md)
+                - [TextMessageContent](api/fastagency/core/base/TextMessageContent.md)
                 - [Workflows](api/fastagency/core/base/Workflows.md)
             - console
                 - [ConsoleIO](api/fastagency/core/console/ConsoleIO.md)
