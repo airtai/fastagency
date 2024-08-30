@@ -111,17 +111,6 @@ class IOMessage:
     heading: Optional[str] = None
     streaming: bool = False
 
-    @classmethod
-    def from_dict(cls, **kwargs: Any) -> "IOMessage":
-        type = kwargs.get("type", "text_message")
-        content_dict = kwargs.get("content", {})
-        content_cls = _get_message_class(type)
-        content = content_cls(**content_dict)
-        kwargs["type"] = type
-        kwargs["content"] = content
-
-        return IOMessage(**kwargs)
-
     def __post_init__(self) -> None:
         """Create content object if content is a dict."""
         content = self.content if self.content is not None else {}
