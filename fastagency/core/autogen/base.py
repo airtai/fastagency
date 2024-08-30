@@ -1,13 +1,16 @@
 import json
 import logging
 import re
-from typing import Any, Callable, Dict, List, Tuple
+from dataclasses import asdict, dataclass
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from autogen.io import IOStream
 
 from ..base import (
     Chatable,
     IOMessage,
+    MessageType,
+    TextInput,
     Workflow,
     Workflows,
 )
@@ -33,6 +36,75 @@ handler.setFormatter(formatter)
 # Add the handler to the logger
 logger.addHandler(handler)
 
+_patterns = {
+    "end_of_message": "^\\n--------------------------------------------------------------------------------\\n$",
+    "auto_reply": "^\\x1b\\[31m\\n>>>>>>>> USING AUTO REPLY...\\x1b\\[0m\\n$",
+    "sender_recepient": "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
+    "suggested_function_call": "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
+    "stars": "\\x1b\\[32m(\\*+)\\x1b\\[0m\n",
+    "function_call_execution": "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
+    "response_from_calling_tool": "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
+    "arguments": "^Arguments: \\n(.*)\\n$",
+}
+
+
+def _match(key: str, string: str, /) -> Optional[re.Match[str]]:
+    pattern = _patterns[key]
+    return re.match(pattern, string)
+
+
+def _findall(key: str, string: str, /) -> Tuple[str, ...]:
+    pattern = _patterns[key]
+    return re.findall(pattern, string)[0]  # type: ignore[no-any-return]
+
+
+@dataclass
+class CurrentMessage:
+    sender: Optional[str] = None
+    recepient: Optional[str] = None
+    type: MessageType = "text_message"
+    auto_reply: bool = False
+    body: Optional[str] = None
+    call_id: Optional[str] = None
+    function_name: Optional[str] = None
+    arguments: Optional[Dict[str, Any]] = None
+    retval: Optional[Any] = None
+
+    def process_chunk(self, chunk: str) -> bool:
+        if _match("end_of_message", chunk):
+            return True
+
+        if _match("auto_reply", chunk):
+            self.auto_reply = True
+        elif _match("sender_recepient", chunk):
+            self.sender, self.recepient = _findall("sender_recepient", chunk)
+        elif _match("suggested_function_call", chunk):
+            self.call_id, self.function_name = _findall(
+                "suggested_function_call", chunk
+            )
+            self.type = "suggested_function_call"
+        elif _match("stars", chunk):
+            pass
+        elif _match("function_call_execution", chunk):
+            self.function_name = _findall("function_call_execution", chunk)  # type: ignore[assignment]
+            self.type = "function_call_execution"
+        elif _match("response_from_calling_tool", chunk):
+            self.call_id = _findall("response_from_calling_tool", chunk)  # type: ignore[assignment]
+        else:
+            if self.type == "suggested_function_call":
+                arguments_json: str = _findall("arguments", chunk)  # type: ignore[assignment]
+                self.arguments = json.loads(arguments_json)
+            elif self.type == "function_call_execution":
+                self.retval = chunk
+            else:
+                self.body = chunk if self.body is None else self.body + chunk
+
+        return False
+
+    def create_message(self) -> IOMessage:
+        kwargs = {k: v for k, v in asdict(self).items() if v is not None}
+        return IOMessage.create(**kwargs)
+
 
 class IOStreamAdapter:  # IOStream
     def __init__(self, io: Chatable) -> None:
@@ -43,120 +115,37 @@ class IOStreamAdapter:  # IOStream
 
         """
         self.io = io
-        self.current_message: Dict[str, Any] = {}
+        self.current_message = CurrentMessage()
+
         self.messages: List[IOMessage] = []
         if not isinstance(self.io, Chatable):
             raise ValueError("The io object must be an instance of Chatable.")
 
-    def _create_and_append_message(self) -> None:
-        pass
-
-    def _process_message(self, body: str) -> bool:
-        # logger.info(f"Processing message: {body=}, {self.current_message=}")
-
-        # the end of the message
-        if (
-            body
-            == "\n--------------------------------------------------------------------------------\n"
-        ):
-            # logger.error(f"End of message: {self.current_message=}")
-            msg_type = self.current_message.get("type", "text_message")
-
-            if msg_type == "suggested_function_call":
-                body = self.current_message["content"].pop("body")
-                args_json = re.findall("^Arguments: \\n(.*)\\n$", body)[0]
-                self.current_message["content"]["arguments"] = json.loads(args_json)
-            if msg_type == "function_call_execution":
-                body = self.current_message["content"].pop("body")
-                self.current_message["content"]["retval"] = body
-
-            # logger.error(f"End of message: {self.current_message=}")
-            msg = IOMessage(**self.current_message)
-
+    def _process_message_chunk(self, chunk: str) -> bool:
+        if self.current_message.process_chunk(chunk):
+            msg = self.current_message.create_message()
             self.messages.append(msg)
-            self.current_message = {}
+            self.current_message = CurrentMessage()
+
             return True
-
-        # match parts of the message
-        if body == "\x1b[31m\n>>>>>>>> USING AUTO REPLY...\x1b[0m\n":
-            self.current_message["heading"] = "AUTO REPLY"
-        elif re.match(
-            "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
-            body,
-        ):
-            sender, recepient = re.findall(
-                "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
-                body,
-            )[0]
-            self.current_message["sender"] = sender
-            self.current_message["recepient"] = recepient
-        elif re.match(
-            "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
-            body,
-        ):
-            self.current_message["type"] = "suggested_function_call"
-
-            call_id, function_name = re.findall(
-                "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
-                body,
-            )[0]
-            # self.current_message["heading"] = (
-            #     f"SUGGESTED TOOL CALL ({call_id}): {function_name}"
-            # )
-            self.current_message["content"] = {
-                "function_name": function_name,
-                "call_id": call_id,
-                "body": "",
-            }
-        elif re.match("\\x1b\\[32m(\\*+)\\x1b\\[0m\n", body):
-            pass
-        elif re.match(
-            "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
-            body,
-        ):
-            self.current_message["type"] = "function_call_execution"
-
-            function_name = re.findall(
-                "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
-                body,
-            )[0]
-            self.current_message["heading"] = f"EXECUTING FUNCTION {function_name}"
-            self.current_message["content"] = {
-                "function_name": function_name,
-                "body": "",
-            }
-        elif re.match(
-            "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
-            body,
-        ):
-            call_id = re.findall(
-                "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
-                body,
-            )[0]
-            self.current_message["heading"] = f"RESPONSE FROM CALLING TOOL ({call_id})"
-            self.current_message["content"]["call_id"] = call_id
         else:
-            if "content" not in self.current_message:
-                self.current_message["content"] = {"body": ""}
-
-            self.current_message["content"]["body"] = (
-                self.current_message["content"]["body"] + body
-            )
-
-        return False
+            return False
 
     def print(
         self, *objects: Any, sep: str = " ", end: str = "\n", flush: bool = False
     ) -> None:
         body = sep.join(map(str, objects)) + end
-        ready_to_send = self._process_message(body)
+        ready_to_send = self._process_message_chunk(body)
         if ready_to_send:
             message = self.messages[-1]
             self.io.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
-        message = IOMessage(sender=None, recepient=None, heading=None, body=prompt)
-        return self.io.input(message, password=password)
+        message = TextInput(
+            sender=None, recepient=None, prompt=prompt, password=password
+        )
+        retval: str = self.io.process_message(message)  # type: ignore[assignment]
+        return retval
 
 
 class AutoGenWorkflows(Workflows):

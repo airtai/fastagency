@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.MultipleChoiceContent
+::: fastagency.core.base.SystemMessage

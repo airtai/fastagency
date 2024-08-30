@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.TextMessageContent
+::: fastagency.core.base.TextMessage

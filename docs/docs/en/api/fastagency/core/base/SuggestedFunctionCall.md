@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.base.MultipleChoiceContent
+::: fastagency.core.base.SuggestedFunctionCall

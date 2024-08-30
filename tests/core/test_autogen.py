@@ -37,29 +37,37 @@ def test_simple(openai_gpt4o_mini_llm_config: Dict[str, Any]) -> None:
 
     initial_message = "What is triangle inequality?"
 
+    name = "simple_learning"
+
     io = ConsoleIO()
 
-    io.print(
-        IOMessage(
+    io.process_message(
+        IOMessage.create(
             sender="user",
             recepient="workflow",
-            heading="Workflow BEGIN",
-            body=f"Starting workflow with initial_message: {initial_message}",
+            type="system_message",
+            message={
+                "heading": "Workflow BEGIN",
+                "body": f"Starting workflow with initial_message: {initial_message}",
+            },
         )
     )
 
     result = wf.run(
-        name="simple_learning",
+        name=name,
         session_id="session_id",
         io=io.create_subconversation(),
         initial_message=initial_message,
     )
 
-    io.print(
-        IOMessage(
+    io.process_message(
+        IOMessage.create(
             sender="user",
             recepient="workflow",
-            heading="Workflow END",
-            body=f"Ending workflow with result: {result}",
+            type="system_message",
+            message={
+                "heading": "Workflow END",
+                "body": f"Ending workflow with result: {result}",
+            },
         )
     )
