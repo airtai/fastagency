@@ -1,30 +1,11 @@
-import logging
-from typing import Annotated
-
-from autogen import register_function
 from autogen.agentchat import ConversableAgent
 from fixtures import openai_gpt4o_mini_llm_config
 
-from fastagency.core import Chatable, IOMessage
+from fastagency.core import Chatable
 from fastagency.core.io.console import ConsoleIO
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
 
 from fastagency import FastAgency
-
-# Get the logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-# Create a stream handler
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-
-# Create a formatter and set it for the handler
-formatter = logging.Formatter("[%(levelname)s] %(message)s")
-handler.setFormatter(formatter)
-
-# Add the handler to the logger
-logger.addHandler(handler)
 
 
 wf = AutoGenWorkflows()

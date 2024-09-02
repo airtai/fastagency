@@ -6,7 +6,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from autogen.io import IOStream
 
-from ..base import (
+from ...base import (
     Chatable,
     IOMessage,
     MessageType,
@@ -177,3 +177,7 @@ class AutoGenWorkflows(Workflows):
 
         with IOStream.set_default(iostream):
             return workflow(io, initial_message, session_id)
+
+    @property
+    def names(self) -> List[str]:
+        return list(self._workflows.keys())

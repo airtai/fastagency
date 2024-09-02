@@ -43,16 +43,16 @@ def _run_app(
     path: Optional[Path],
     app: Optional[str],
     workflow: Optional[str],
+    initial_message: Optional[str],
     dev_mode: bool = False,
 ) -> None:
     try:
-        use_fastagency_app = get_import_string(path=path, app_name=app)
+        _, fa_app = get_import_string(path=path, app_name=app)
     except FastAgencyCLIError as e:
         logger.error(str(e))
         raise typer.Exit(code=1) from None
 
-    typer.echo(f"Running FastAgency app at: {use_fastagency_app}")
-    raise typer.Exit(code=1)
+    fa_app.run(name=workflow, initial_message=initial_message)
 
 
 def _get_help_messages(dev_mode: bool = False) -> Dict[str, str]:
@@ -107,9 +107,23 @@ def run(
             help="The name of the workflow to run. If not provided, the default workflow will be run.",
         ),
     ] = None,
+    initial_message: Annotated[
+        Optional[str],
+        typer.Option(
+            "--initial_message",
+            "-i",
+            help="The initial message to send to the workflow. If not provided, a default message will be sent.",
+        ),
+    ] = None,
 ) -> None:
     dev_mode = False
-    _run_app(path=path, app=app, workflow=workflow, dev_mode=dev_mode)
+    _run_app(
+        path=path,
+        app=app,
+        workflow=workflow,
+        initial_message=initial_message,
+        dev_mode=dev_mode,
+    )
 
 
 @app.command(**_get_help_messages(False))  # type: ignore[arg-type]
@@ -135,9 +149,23 @@ def dev(
             help="The name of the workflow to run. If not provided, the default workflow will be run.",
         ),
     ] = None,
+    initial_message: Annotated[
+        Optional[str],
+        typer.Option(
+            "--initial_message",
+            "-i",
+            help="The initial message to send to the workflow. If not provided, a default message will be sent.",
+        ),
+    ] = None,
 ) -> None:
     dev_mode = True
-    _run_app(path=path, app=app, workflow=workflow, dev_mode=dev_mode)
+    _run_app(
+        path=path,
+        app=app,
+        workflow=workflow,
+        initial_message=initial_message,
+        dev_mode=dev_mode,
+    )
 
 
 @app.command(help="Display the version of FastAgency")

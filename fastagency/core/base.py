@@ -195,3 +195,6 @@ class Workflows(Protocol):
     def run(
         self, name: str, session_id: str, io: Chatable, initial_message: str
     ) -> str: ...
+
+    @property
+    def names(self) -> List[str]: ...

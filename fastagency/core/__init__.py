@@ -11,11 +11,9 @@ from .base import (
     Workflow,
     Workflows,
 )
-from .console import ConsoleIO
 
 __all__ = [
     "Chatable",
-    "ConsoleIO",
     "FastAgency",
     "FunctionCallExecution",
     "IOMessage",

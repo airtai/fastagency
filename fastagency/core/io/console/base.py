@@ -4,7 +4,7 @@ import textwrap
 from dataclasses import dataclass
 from typing import List, Optional
 
-from ..base import IOMessage, IOMessageVisitor, MultipleChoice, TextInput, TextMessage
+from ...base import IOMessage, IOMessageVisitor, MultipleChoice, TextInput, TextMessage
 
 
 class ConsoleIO(IOMessageVisitor):  # Chatable

@@ -3,7 +3,7 @@ import sys
 from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
-from typing import Union
+from typing import Tuple, Union
 
 from rich import print
 from rich.padding import Padding
@@ -11,14 +11,10 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.tree import Tree
 
+from .. import FastAgency
 from .exceptions import FastAgencyCLIError
 
 logger = getLogger(__name__)
-
-try:
-    from .. import FastAgency
-except ImportError:  # pragma: no cover
-    FastAgency = None  # type: ignore[misc, assignment]
 
 
 def get_default_path() -> Path:
@@ -99,7 +95,9 @@ def get_module_data_from_path(path: Path) -> ModuleData:
     )
 
 
-def get_app_name(*, mod_data: ModuleData, app_name: Union[str, None] = None) -> str:  # noqa: C901
+def get_app_name(  # noqa: C901
+    *, mod_data: ModuleData, app_name: Union[str, None] = None
+) -> "Tuple[str, FastAgency]":
     try:
         mod = importlib.import_module(mod_data.module_import_str)  # nosemgrep
     except (ImportError, ValueError) as e:
@@ -124,22 +122,22 @@ def get_app_name(*, mod_data: ModuleData, app_name: Union[str, None] = None) -> 
             raise FastAgencyCLIError(
                 f"The app name {app_name} in {mod_data.module_import_str} doesn't seem to be a FastAgency app"
             )
-        return app_name
+        return app_name, app
     for preferred_name in ["app", "api"]:
         if preferred_name in object_names_set:
             obj = getattr(mod, preferred_name)
             if isinstance(obj, FastAgency):
-                return preferred_name
+                return preferred_name, obj
     for name in object_names:
         obj = getattr(mod, name)
         if isinstance(obj, FastAgency):
-            return name
+            return name, obj
     raise FastAgencyCLIError("Could not find FastAgency app in module, try using --app")
 
 
 def get_import_string(
     *, path: Union[Path, None] = None, app_name: Union[str, None] = None
-) -> str:
+) -> Tuple[str, FastAgency]:
     if not path:
         path = get_default_path()
     logger.info(f"Using path [blue]{path}[/blue]")
@@ -148,7 +146,7 @@ def get_import_string(
         raise FastAgencyCLIError(f"Path does not exist {path}")
     mod_data = get_module_data_from_path(path)
     sys.path.insert(0, str(mod_data.extra_sys_path))
-    use_app_name = get_app_name(mod_data=mod_data, app_name=app_name)
+    use_app_name, app = get_app_name(mod_data=mod_data, app_name=app_name)
     import_example = Syntax(
         f"from {mod_data.module_import_str} import {use_app_name}", "python"
     )
@@ -165,4 +163,4 @@ def get_import_string(
     print(import_panel)
     import_string = f"{mod_data.module_import_str}:{use_app_name}"
     logger.info(f"Using import string [b green]{import_string}[/b green]")
-    return import_string
+    return import_string, app

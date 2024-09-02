@@ -3,8 +3,9 @@ from typing import Any, Dict
 import pytest
 from autogen.agentchat import ConversableAgent
 
-from fastagency.core import Chatable, ConsoleIO, IOMessage
-from fastagency.core.autogen import AutoGenWorkflows
+from fastagency.core import Chatable, IOMessage
+from fastagency.core.io.console import ConsoleIO
+from fastagency.core.runtimes.autogen import AutoGenWorkflows
 
 
 @pytest.mark.openai
