@@ -9,6 +9,8 @@ search:
             - client
                 - [Client](api/fastagency/openapi/client/Client.md)
                 - [add_to_globals](api/fastagency/openapi/client/add_to_globals.md)
+            - custom_visitor
+                - [custom_visitor](api/fastagency/openapi/custom_visitor/custom_visitor.md)
             - fastapi_code_generator_helpers
                 - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                 - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
@@ -147,6 +149,7 @@ search:
                     - toolbox
                         - [Client](api/fastagency/studio/models/toolboxes/toolbox/Client.md)
                         - [OpenAPIAuth](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuth.md)
+                        - [OpenAPIAuthToken](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuthToken.md)
                         - [Toolbox](api/fastagency/studio/models/toolboxes/toolbox/Toolbox.md)
             - saas_app_generator
                 - [InvalidFlyTokenError](api/fastagency/studio/saas_app_generator/InvalidFlyTokenError.md)

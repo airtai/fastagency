@@ -35,11 +35,13 @@ API_KEY_LOOKUP = {
     "APIKeyHeader": "X-Key",
 }
 
+
 def _get_api_key_header(api_key: inspect.Parameter) -> str:
     for key in API_KEY_LOOKUP:
         if key in api_key.annotation:
             return API_KEY_LOOKUP[key]
     raise ValueError(f"API key {api_key} not found in API_KEY_LOOKUP")
+
 
 @contextmanager
 def add_to_globals(new_globals: Dict[str, Any]) -> Iterator[None]:
@@ -167,6 +169,10 @@ class Client:
         disable_timestamp: bool = False,
         custom_visitors: Optional[List[Path]] = None,
     ) -> str:
+        if custom_visitors is None:
+            custom_visitors = []
+        custom_visitors.append(Path(__file__).parent / "custom_visitor.py")
+
         with patch_get_parameter_type():
             generate_code(
                 input_name="openapi.json",
