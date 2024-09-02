@@ -181,3 +181,7 @@ class AutoGenWorkflows(Workflows):
     @property
     def names(self) -> List[str]:
         return list(self._workflows.keys())
+
+    def get_description(self, name: str) -> str:
+        _, description = self._workflows.get(name, (None, "Description not available!"))
+        return description

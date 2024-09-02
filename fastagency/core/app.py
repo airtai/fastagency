@@ -1,8 +1,9 @@
 __all__ = ["FastAgency"]
 
+import textwrap
 from typing import Optional
 
-from .base import Chatable, IOMessage, TextInput, Workflows
+from .base import Chatable, SystemMessage, TextInput, Workflows
 
 
 class FastAgency:
@@ -25,52 +26,53 @@ class FastAgency:
         """
         while True:
             name = self.wf.names[0] if name is None else name
+            description = self.wf.get_description(name)
 
             if initial_message is None:
                 initial_message = self.io.process_message(
                     TextInput(
                         sender="FastAgency",
                         recepient="user",
-                        prompt="Please enter initial message:",
+                        prompt=(
+                            f"Starting a new workflow '{name}' with the following description:"
+                            + "\n\n"
+                            + f"{description}"
+                            + "\n\nPlease enter an initial message:"
+                        ),
+                    )
+                )
+            else:
+                self.io.process_message(
+                    SystemMessage(
+                        sender="FastAgency",
+                        recepient="user",
+                        message={
+                            "body": (
+                                f"Starting a new workflow '{name}' with the following description:"
+                                + "\n\n"
+                                + textwrap.indent(description, prefix=" " * 2)
+                                + "\n\nand using the following initial message:"
+                                + textwrap.indent(initial_message, prefix=" " * 2)
+                            )
+                        },
                     )
                 )
 
-            initial_message = (
-                "Hi, I'm a user!" if initial_message is None else initial_message
+            result = self.wf.run(
+                name=name,
+                session_id="session_id",
+                io=self.io.create_subconversation(),
+                initial_message="Hi!" if initial_message is None else initial_message,
             )
 
-            self._run_workflow(name, initial_message)
+            self.io.process_message(
+                SystemMessage(
+                    sender="user",
+                    recepient="workflow",
+                    message={
+                        "body": f"End of workflow '{name}' with result: {result}",
+                    },
+                )
+            )
 
             initial_message = None
-
-    def _run_workflow(self, name: str, initial_message: str) -> None:
-        self.io.process_message(
-            IOMessage.create(
-                sender="user",
-                recepient="workflow",
-                type="system_message",
-                message={
-                    "heading": f"Workflow {name} BEGIN",
-                    "body": f"Starting workflow with initial_message: {initial_message}",
-                },
-            )
-        )
-
-        result = self.wf.run(
-            name=name,
-            session_id="session_id",
-            io=self.io.create_subconversation(),
-            initial_message=initial_message,
-        )
-
-        self.io.process_message(
-            IOMessage.create(
-                sender="user",
-                recepient="workflow",
-                type="system_message",
-                message={
-                    "heading": f"Workflow {name} END",
-                    "body": f"Ending workflow with result: {result}",
-                },
-            )
-        )
