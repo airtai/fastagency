@@ -54,7 +54,7 @@ studio = [
     "faststream[nats]>=0.5.10,<0.6",
     "typing-extensions>=4.8.0,<5",
     "pydantic>=2.3,<3",
-    "fastapi==0.111.1",
+    "fastapi==0.112.2",
     "prisma>=0.13.1,<0.15",
     "fastapi-code-generator==0.5.1",
     "asyncer==0.0.7",
