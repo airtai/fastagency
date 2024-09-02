@@ -1,3 +1,4 @@
+from .app import FastAgency
 from .base import (
     Chatable,
     FunctionCallExecution,
@@ -15,6 +16,7 @@ from .console import ConsoleIO
 __all__ = [
     "Chatable",
     "ConsoleIO",
+    "FastAgency",
     "FunctionCallExecution",
     "IOMessage",
     "MessageType",

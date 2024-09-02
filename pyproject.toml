@@ -44,6 +44,7 @@ classifiers = [
 dynamic = ["version"]
 
 dependencies = [
+    "typer>=0.9",
     "typing-extensions>=4.8.0,<5",
 ]
 
@@ -148,7 +149,7 @@ Source = "https://github.com/airtai/fastagency"
 Discord = "https://discord.gg/qFm6aSqq59"
 
 [project.scripts]
-# fastagency = "fastagency.__main__:cli"
+fastagency = "fastagency.__main__:cli"
 
 [tool.hatch.version]
 path = "fastagency/__about__.py"
