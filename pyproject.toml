@@ -54,7 +54,7 @@ studio = [
     "faststream[nats]>=0.5.10,<0.6",
     "typing-extensions>=4.8.0,<5",
     "pydantic>=2.3,<3",
-    "fastapi==0.111.1",
+    "fastapi==0.112.2",
     "prisma>=0.13.1,<0.15",
     "fastapi-code-generator==0.5.1",
     "asyncer==0.0.7",
@@ -79,8 +79,8 @@ devdocs = [
     "mdx-include==1.4.2",
     "mkdocstrings[python]==0.25.2",
     "mkdocs-literate-nav==0.6.1",
-    "mkdocs-git-revision-date-localized-plugin==1.2.6",
-    "mike==2.1.2",  # versioning
+    "mkdocs-git-revision-date-localized-plugin==1.2.7",
+    "mike==2.1.3",  # versioning
     "mkdocs-minify-plugin==0.8.0",
     "mkdocs-macros-plugin==1.0.5",  # includes with variables
     "mkdocs-glightbox==0.4.0",  # img zoom
@@ -96,7 +96,7 @@ lint = [
     "types-Pygments",
     "types-docutils",
     "mypy==1.11.1",
-    "ruff==0.6.2",
+    "ruff==0.6.3",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.9",
     "semgrep==1.85.0",
@@ -117,7 +117,7 @@ testing = [
     "fastagency[server]", # Uvicorn is needed for testing
     "pydantic-settings==2.4.0",
     "PyYAML==6.0.2",
-    "watchfiles==0.23.0",
+    "watchfiles==0.24.0",
     "email-validator==2.2.0",
 ]
 
