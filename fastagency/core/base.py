@@ -88,7 +88,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
         return retval
 
 
-# type of input messages
+# type of output messages
 @dataclass
 class TextMessage(IOMessage):
     body: Optional[str] = None
@@ -113,7 +113,7 @@ class FunctionCallExecution(IOMessage):
     retval: Any = None
 
 
-# types of output messages
+# types of input messages
 @dataclass
 class TextInput(IOMessage):
     prompt: Optional[str] = None
@@ -127,6 +127,7 @@ class MultipleChoice(IOMessage):
     choices: List[str] = field(default_factory=list)
     default: Optional[str] = None
     single: bool = True
+    # todo: add validation
 
 
 @dataclass
