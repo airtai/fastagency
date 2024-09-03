@@ -1,4 +1,4 @@
-name: Pipeline
+name: Tests
 
 on:
   push:

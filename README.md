@@ -7,8 +7,8 @@
 ---
 
 <p align="center">
-  <a href="https://github.com/airtai/fastagency/actions/workflows/test.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/test.yaml/badge.svg?branch=main" alt="Test Passing"/>
+  <a href="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml" target="_blank">
+    <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
   <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
