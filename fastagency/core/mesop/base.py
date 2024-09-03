@@ -1,31 +1,56 @@
 from dataclasses import dataclass
 from queue import Queue
-from typing import Any, List, Optional
+from typing import ClassVar, Dict, Generator, List, Optional
+from uuid import UUID, uuid4
 
-from ..base import IOMessage, IOMessageVisitor, MultipleChoice, TextInput, TextMessage
+from ..base import (
+    AskingMessage,
+    IOMessage,
+    IOMessageVisitor,
+    MultipleChoice,
+    TextInput,
+    TextMessage,
+    WorkflowCompleted,
+)
 
 
-class MesopIO(IOMessageVisitor):  # Chatable
-    @dataclass
-    class MesopMessage:
-        """A Mesop message."""
+@dataclass
+class MesopMessage:
+    """A Mesop message."""
 
-        level: int
-        message: IOMessage
+    message: IOMessage
+    conversation: "MesopIO"
 
+
+class MesopIO(IOMessageVisitor):
     def __init__(self, super_conversation: Optional["MesopIO"] = None) -> None:
         """Initialize the console IO object.
 
         Args:
             super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
         """
+        self.id: UUID = uuid4()
         self.super_conversation: Optional[MesopIO] = super_conversation
         self.sub_conversations: List[MesopIO] = []
         self._in_queue: Optional[Queue[str]] = None
-        self._out_queue: Optional[Queue[IOMessage]] = None
+        self._out_queue: Optional[Queue[MesopMessage]] = None
         if super_conversation is None:
             self._in_queue = Queue()
             self._out_queue = Queue()
+
+    _registry: ClassVar[Dict[UUID, "MesopIO"]] = {}
+
+    @classmethod
+    def register(cls, conversation: "MesopIO") -> None:
+        cls._registry[conversation.id] = conversation
+
+    @classmethod
+    def get_conversation(cls, id: UUID) -> "MesopIO":
+        return cls._registry[id]
+
+    @classmethod
+    def unregister(cls, conversation: "MesopIO") -> None:
+        del cls._registry[conversation.id]
 
     @property
     def is_root_conversation(self) -> bool:
@@ -44,7 +69,7 @@ class MesopIO(IOMessageVisitor):  # Chatable
         return queue  # type: ignore[return-value]
 
     @property
-    def out_queue(self) -> Queue[Any]:
+    def out_queue(self) -> Queue[MesopMessage]:
         queue = self.root_conversation._out_queue
         return queue  # type: ignore[return-value]
 
@@ -58,8 +83,8 @@ class MesopIO(IOMessageVisitor):  # Chatable
         self.out_queue.put(mesop_msg)
 
     def _mesop_message(self, mesop_msg: IOMessage) -> MesopMessage:
-        return self.MesopMessage(
-            level=self.level,
+        return MesopMessage(
+            conversation=self,
             message=mesop_msg,
         )
 
@@ -90,12 +115,23 @@ class MesopIO(IOMessageVisitor):  # Chatable
 
         return sub_conversation
 
-    # def getChatStream(self):
-    #    def chatGenerator():
-    #        while True:
-    #            message = self.out_queue.get()
-    #            if isinstance(message.message, ChatResult):
-    #                yield message
-    #                break
-    #
-    #   return chatGenerator
+    def _is_stream_braker(self, message: IOMessage) -> bool:
+        return isinstance(message, (AskingMessage, WorkflowCompleted))
+
+    def respond(self, message: str) -> None:
+        self.in_queue.put(message)
+
+    @classmethod
+    def respond_to(
+        cls, conversation_id: UUID, message: str
+    ) -> Generator[MesopMessage, None, None]:
+        conversation = cls.get_conversation(conversation_id)
+        conversation.respond(message)
+        return conversation.get_chat_stream()
+
+    def get_chat_stream(self) -> Generator[MesopMessage, None, None]:
+        while True:
+            message = self.out_queue.get()
+            if self._is_stream_braker(message.message):
+                yield message
+                break
