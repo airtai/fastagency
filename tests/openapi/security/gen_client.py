@@ -1,5 +1,5 @@
-import tempfile
 from pathlib import Path
+
 from fastagency.openapi.client import Client
 
 # with tempfile.TemporaryDirectory() as temp_dir:
@@ -16,5 +16,3 @@ main_name = Client.generate_code(
     # custom_visitors=[Path("./custom_visitor.py")]
 )
 print(main_name)
-
-
