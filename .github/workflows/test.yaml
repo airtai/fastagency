@@ -129,10 +129,12 @@ jobs:
           COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
           CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Check coverage file
-        run: ls -l coverage
+        run: ls -al coverage
       - name: Store coverage files
         uses: actions/upload-artifact@v4
         with:
           name: .coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
-          path: coverage
+          path: coverage/.coverage.*
           if-no-files-found: error
+          overwrite: true
+          include-hidden-files: true
