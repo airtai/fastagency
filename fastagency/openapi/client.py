@@ -25,22 +25,12 @@ import requests
 from fastapi_code_generator.__main__ import generate_code
 
 from .fastapi_code_generator_helpers import patch_get_parameter_type
+from .security import BaseSecurity, BaseSecurityParameters
 
 if TYPE_CHECKING:
     from autogen.agentchat import ConversableAgent
 
 __all__ = ["Client"]
-
-# API_KEY_LOOKUP = {
-#     "APIKeyHeader": "X-Key",
-# }
-
-
-# def _get_api_key_header(api_key: inspect.Parameter) -> str:
-#     for key in API_KEY_LOOKUP:
-#         if key in api_key.annotation:
-#             return API_KEY_LOOKUP[key]
-#     raise ValueError(f"API key {api_key} not found in API_KEY_LOOKUP")
 
 
 @contextmanager
@@ -67,6 +57,9 @@ class Client:
         self.kwargs = kwargs
         self.registered_funcs: List[Callable[..., Any]] = []
         self.globals: Dict[str, Any] = {}
+
+        self.security: Dict[str, BaseSecurity] = {}
+        self.security_params: Dict[Optional[str], BaseSecurityParameters] = {}
 
     @staticmethod
     def _get_params(
@@ -115,17 +108,59 @@ class Client:
 
         return url, params, body_dict
 
+    def set_security_params(
+        self, params: BaseSecurityParameters, *, name: Optional[str] = None
+    ) -> None:
+        if name is not None:
+            security = self.security.get(name)
+            if params.get_security() != security:
+                raise ValueError(
+                    f"Security parameters {params} do not match security {security}"
+                )
+
+        self.security_params[name] = params
+
+    def _get_security_params(self, name: str) -> Optional[BaseSecurityParameters]:
+        # check if security is set for the method
+        security = self.security.get(name)
+        if security is None:
+            return None
+
+        security_params = self.security_params.get(name)
+        if security_params is None:
+            # check if default security parameters are set
+            security_params = self.security_params.get(None)
+            if security_params is None:
+                raise ValueError(
+                    f"Security parameters are not set for {name} and there are no default security parameters"
+                )
+
+        # check if security matches security parameters
+        if security_params.get_security() != security:
+            raise ValueError(
+                f"Security parameters {security_params} do not match security {security}"
+            )
+
+        return security_params
+
     def _request(
         self,
         method: Literal["put", "get", "post", "delete"],
         path: str,
         description: Optional[str] = None,
+        security: Optional[BaseSecurity] = None,
         **kwargs: Any,
     ) -> Callable[..., Dict[str, Any]]:
         def decorator(func: Callable[..., Any]) -> Callable[..., Dict[str, Any]]:
+            name = func.__name__
+
             @wraps(func)
             def wrapper(*args: Any, **kwargs: Any) -> Dict[str, Any]:
                 url, params, body_dict = self._process_params(path, func, **kwargs)
+
+                if security is not None:
+                    self.security[name] = security
+
                 response = getattr(requests, method)(url, params=params, **body_dict)
                 return response.json()  # type: ignore [no-any-return]
 

@@ -14,6 +14,10 @@ search:
             - fastapi_code_generator_helpers
                 - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                 - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
+            - security
+                - [APIKeyHeader](api/fastagency/openapi/security/APIKeyHeader.md)
+                - [BaseSecurity](api/fastagency/openapi/security/BaseSecurity.md)
+                - [BaseSecurityParameters](api/fastagency/openapi/security/BaseSecurityParameters.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
