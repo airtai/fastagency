@@ -22,7 +22,7 @@ class MesopIO(IOMessageVisitor):  # Chatable
         self.super_conversation: Optional[MesopIO] = super_conversation
         self.sub_conversations: List[MesopIO] = []
         self._in_queue: Optional[Queue[str]] = None
-        self._out_queue: Optional[Queue[Any]] = None
+        self._out_queue: Optional[Queue[IOMessage]] = None
         if super_conversation is None:
             self._in_queue = Queue()
             self._out_queue = Queue()
