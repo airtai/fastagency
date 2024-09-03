@@ -1,6 +1,6 @@
 """A repository of open-source AI agents."""
 
-from .__about__ import __version__  # noqa: F401
-# from .models import get_llm_registry, get_agent_registry
+from .__about__ import __version__
+from .core import FastAgency
 
-# __all__ = ["get_llm_registry"]
+__all__ = ["FastAgency", "__version__"]

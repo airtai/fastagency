@@ -164,6 +164,18 @@ def openai_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
     return openai_llm_config("gpt-3.5-turbo")
 
 
+@tag("llm_config")
+@pytest.fixture
+def openai_gpt4o_llm_config() -> Dict[str, Any]:
+    return openai_llm_config("gpt-4o")
+
+
+@tag("llm_config")
+@pytest.fixture
+def openai_gpt4o_mini_llm_config() -> Dict[str, Any]:
+    return openai_llm_config("gpt-4o-mini")
+
+
 # @tag("llm_config")
 # @pytest.fixture()
 # def openai_gpt4_llm_config() -> Dict[str, Any]:
