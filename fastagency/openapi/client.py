@@ -31,16 +31,16 @@ if TYPE_CHECKING:
 
 __all__ = ["Client"]
 
-API_KEY_LOOKUP = {
-    "APIKeyHeader": "X-Key",
-}
+# API_KEY_LOOKUP = {
+#     "APIKeyHeader": "X-Key",
+# }
 
 
-def _get_api_key_header(api_key: inspect.Parameter) -> str:
-    for key in API_KEY_LOOKUP:
-        if key in api_key.annotation:
-            return API_KEY_LOOKUP[key]
-    raise ValueError(f"API key {api_key} not found in API_KEY_LOOKUP")
+# def _get_api_key_header(api_key: inspect.Parameter) -> str:
+#     for key in API_KEY_LOOKUP:
+#         if key in api_key.annotation:
+#             return API_KEY_LOOKUP[key]
+#     raise ValueError(f"API key {api_key} not found in API_KEY_LOOKUP")
 
 
 @contextmanager
@@ -71,7 +71,7 @@ class Client:
     @staticmethod
     def _get_params(
         path: str, func: Callable[..., Any]
-    ) -> Tuple[Set[str], Set[str], Optional[str], Set[str]]:
+    ) -> Tuple[Set[str], Set[str], Optional[str], bool]:
         sig = inspect.signature(func)
 
         params_names = set(sig.parameters.keys())
@@ -82,9 +82,7 @@ class Client:
 
         body = "body" if "body" in params_names else None
 
-        security = None
-        if "security" in params_names:
-            security = _get_api_key_header(sig.parameters["security"])
+        security = True if "security" in params_names else False
 
         q_params = set(params_names) - path_params - {body} - {"security"}
 
@@ -110,7 +108,8 @@ class Client:
         )
         body_dict["headers"] = {"Content-Type": "application/json"}
         if security:
-            body_dict["headers"][security] = kwargs["security"]
+            q_params, body_dict = kwargs["security"].add_security(q_params, body_dict)
+            # body_dict["headers"][security] = kwargs["security"]
 
         params = {k: v for k, v in kwargs.items() if k in q_params}
 

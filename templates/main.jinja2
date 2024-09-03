@@ -3,6 +3,7 @@
 from typing import *
 
 from fastagency.openapi.client import Client
+from fastagency.openapi.security import SecurityFactory
 
 app = Client(
     {% if info %}
@@ -12,6 +13,22 @@ app = Client(
     {% endfor %}
     {% endif %}
     )
+
+{% for k, v in security_schemes.items() %}
+
+{{ k|lower }} = SecurityFactory.get_security(
+    type="{{ v["type"] }}",
+    name="{{ v["name"] }}",
+    in_value="{{ v["in"] }}",
+)
+
+{{ k }}ParameterCls = {{ k|lower }}.get_parameter_cls()
+
+
+
+{% endfor %}
+
+
 
 
 {% for operation in operations %}
