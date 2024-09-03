@@ -91,6 +91,13 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
         return retval
 
 
+# message type that asks user something
+
+
+@dataclass
+class AskingMessage(IOMessage): ...
+
+
 # type of output messages
 @dataclass
 class TextMessage(IOMessage):
@@ -118,14 +125,14 @@ class FunctionCallExecution(IOMessage):
 
 # types of input messages
 @dataclass
-class TextInput(IOMessage):
+class TextInput(AskingMessage):
     prompt: Optional[str] = None
     suggestions: List[str] = field(default_factory=list)
     password: bool = False
 
 
 @dataclass
-class MultipleChoice(IOMessage):
+class MultipleChoice(AskingMessage):
     prompt: Optional[str] = None
     choices: List[str] = field(default_factory=list)
     default: Optional[str] = None
