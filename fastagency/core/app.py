@@ -3,7 +3,7 @@ __all__ = ["FastAgency"]
 import textwrap
 from typing import Optional
 
-from .base import Chatable, SystemMessage, TextInput, Workflows
+from .base import Chatable, SystemMessage, TextInput, WorkflowCompleted, Workflows
 
 
 class FastAgency:
@@ -66,12 +66,10 @@ class FastAgency:
             )
 
             self.io.process_message(
-                SystemMessage(
-                    sender="user",
-                    recepient="workflow",
-                    message={
-                        "body": f"End of workflow '{name}' with result: {result}",
-                    },
+                WorkflowCompleted(
+                    sender="workflow",
+                    recepient="user",
+                    result=result,
                 )
             )
 
