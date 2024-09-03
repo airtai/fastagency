@@ -5,6 +5,63 @@ search:
 - [Features](fastagency.md)
 - Reference
     - fastagency
+        - [FastAgency](api/fastagency/FastAgency.md)
+        - cli
+            - cli
+                - [callback](api/fastagency/cli/cli/callback.md)
+                - [dev](api/fastagency/cli/cli/dev.md)
+                - [main](api/fastagency/cli/cli/main.md)
+                - [run](api/fastagency/cli/cli/run.md)
+                - [version](api/fastagency/cli/cli/version.md)
+                - [version_callback](api/fastagency/cli/cli/version_callback.md)
+            - discover
+                - [ModuleData](api/fastagency/cli/discover/ModuleData.md)
+                - [get_app_name](api/fastagency/cli/discover/get_app_name.md)
+                - [get_default_path](api/fastagency/cli/discover/get_default_path.md)
+                - [get_import_string](api/fastagency/cli/discover/get_import_string.md)
+                - [get_module_data_from_path](api/fastagency/cli/discover/get_module_data_from_path.md)
+            - exceptions
+                - [FastAgencyCLIError](api/fastagency/cli/exceptions/FastAgencyCLIError.md)
+            - logging
+                - [setup_logging](api/fastagency/cli/logging/setup_logging.md)
+        - core
+            - [Chatable](api/fastagency/core/Chatable.md)
+            - [FastAgency](api/fastagency/core/FastAgency.md)
+            - [FunctionCallExecution](api/fastagency/core/FunctionCallExecution.md)
+            - [IOMessage](api/fastagency/core/IOMessage.md)
+            - [MultipleChoice](api/fastagency/core/MultipleChoice.md)
+            - [SuggestedFunctionCall](api/fastagency/core/SuggestedFunctionCall.md)
+            - [TextInput](api/fastagency/core/TextInput.md)
+            - [TextMessage](api/fastagency/core/TextMessage.md)
+            - [Workflows](api/fastagency/core/Workflows.md)
+            - app
+                - [FastAgency](api/fastagency/core/app/FastAgency.md)
+            - base
+                - [AskingMessage](api/fastagency/core/base/AskingMessage.md)
+                - [Chatable](api/fastagency/core/base/Chatable.md)
+                - [FunctionCallExecution](api/fastagency/core/base/FunctionCallExecution.md)
+                - [IOMessage](api/fastagency/core/base/IOMessage.md)
+                - [IOMessageVisitor](api/fastagency/core/base/IOMessageVisitor.md)
+                - [MultipleChoice](api/fastagency/core/base/MultipleChoice.md)
+                - [SuggestedFunctionCall](api/fastagency/core/base/SuggestedFunctionCall.md)
+                - [SystemMessage](api/fastagency/core/base/SystemMessage.md)
+                - [TextInput](api/fastagency/core/base/TextInput.md)
+                - [TextMessage](api/fastagency/core/base/TextMessage.md)
+                - [WorkflowCompleted](api/fastagency/core/base/WorkflowCompleted.md)
+                - [Workflows](api/fastagency/core/base/Workflows.md)
+            - io
+                - console
+                    - [ConsoleIO](api/fastagency/core/io/console/ConsoleIO.md)
+                    - base
+                        - [ConsoleIO](api/fastagency/core/io/console/base/ConsoleIO.md)
+            - runtimes
+                - autogen
+                    - [AutoGenWorkflows](api/fastagency/core/runtimes/autogen/AutoGenWorkflows.md)
+                    - [IOStreamAdapter](api/fastagency/core/runtimes/autogen/IOStreamAdapter.md)
+                    - base
+                        - [AutoGenWorkflows](api/fastagency/core/runtimes/autogen/base/AutoGenWorkflows.md)
+                        - [CurrentMessage](api/fastagency/core/runtimes/autogen/base/CurrentMessage.md)
+                        - [IOStreamAdapter](api/fastagency/core/runtimes/autogen/base/IOStreamAdapter.md)
         - openapi
             - client
                 - [Client](api/fastagency/openapi/client/Client.md)
