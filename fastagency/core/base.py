@@ -24,8 +24,9 @@ __all__ = [
     "SystemMessage",
     "TextInput",
     "TextMessage",
-    "Workflows",
     "Workflow",
+    "WorkflowCompleted",
+    "Workflows",
 ]
 
 MessageType = Literal[
