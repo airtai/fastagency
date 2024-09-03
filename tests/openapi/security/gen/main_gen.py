@@ -10,18 +10,7 @@ from typing import Any
 from models_gen import HTTPValidationError
 
 from fastagency.openapi.client import Client
-from fastagency.openapi.security import APIKeyHeader, APIKeyHeaderParameters
-
-api_key_header = APIKeyHeader(name="x-key")
-
-# def set_security(apikeyheader: APIKeyHeader, value: str):
-#     app.set_security("apikey
-
-
-class MyClient(Client):
-    def set_api_key_header_params(self, params: APIKeyHeaderParameters):
-        self.api_key_header_params = params
-
+from fastagency.openapi.security import APIKeyHeader
 
 app = Client(
     title="FastAPI",
@@ -30,20 +19,11 @@ app = Client(
 )
 
 
-# apikeyheader = SecurityFactory.get_security(
-#     type="apiKey",
-#     name="x-key",
-#     in_value="header",
-# )
-
-# APIKeyHeaderParameterCls = apikeyheader.get_parameter_cls()
-
-
 @app.get(
     "/items/",
     response_model=Any,
     responses={"422": {"model": HTTPValidationError}},
-    security=api_key_header,
+    security=APIKeyHeader(name="x-key"),
 )
 def read_items_items__get(
     city: Annotated[str, """city for which forecast is requested"""],

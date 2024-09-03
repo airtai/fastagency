@@ -75,7 +75,7 @@ class Client:
 
         body = "body" if "body" in params_names else None
 
-        security = True if "security" in params_names else False
+        security = "security" in params_names
 
         q_params = set(params_names) - path_params - {body} - {"security"}
 
@@ -109,16 +109,19 @@ class Client:
         return url, params, body_dict
 
     def set_security_params(
-        self, params: BaseSecurityParameters, *, name: Optional[str] = None
+        self, security_params: BaseSecurityParameters, name: Optional[str] = None
     ) -> None:
         if name is not None:
             security = self.security.get(name)
-            if params.get_security() != security:
+            if security is None:
+                raise ValueError(f"Security is not set for '{name}'")
+
+            if not security.accept(security_params):
                 raise ValueError(
-                    f"Security parameters {params} do not match security {security}"
+                    f"Security parameters {security_params} do not match security {security}"
                 )
 
-        self.security_params[name] = params
+        self.security_params[name] = security_params
 
     def _get_security_params(self, name: str) -> Optional[BaseSecurityParameters]:
         # check if security is set for the method
@@ -136,7 +139,7 @@ class Client:
                 )
 
         # check if security matches security parameters
-        if security_params.get_security() != security:
+        if not security.accept(security_params):
             raise ValueError(
                 f"Security parameters {security_params} do not match security {security}"
             )
@@ -154,12 +157,22 @@ class Client:
         def decorator(func: Callable[..., Any]) -> Callable[..., Dict[str, Any]]:
             name = func.__name__
 
+            if security is not None:
+                self.security[name] = security
+
             @wraps(func)
             def wrapper(*args: Any, **kwargs: Any) -> Dict[str, Any]:
                 url, params, body_dict = self._process_params(path, func, **kwargs)
 
+                security = self.security.get(name)
                 if security is not None:
-                    self.security[name] = security
+                    security_params = self._get_security_params(name)
+                    if security_params is None:
+                        raise ValueError(
+                            f"Security parameters are not set for '{name}'"
+                        )
+                    else:
+                        security_params.apply(params, body_dict, security)
 
                 response = getattr(requests, method)(url, params=params, **body_dict)
                 return response.json()  # type: ignore [no-any-return]
