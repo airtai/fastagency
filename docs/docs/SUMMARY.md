@@ -46,6 +46,7 @@ search:
                 - [SystemMessage](api/fastagency/core/base/SystemMessage.md)
                 - [TextInput](api/fastagency/core/base/TextInput.md)
                 - [TextMessage](api/fastagency/core/base/TextMessage.md)
+                - [WorkflowCompleted](api/fastagency/core/base/WorkflowCompleted.md)
                 - [Workflows](api/fastagency/core/base/Workflows.md)
             - io
                 - console
