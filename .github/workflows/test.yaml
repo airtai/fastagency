@@ -120,14 +120,14 @@ jobs:
         if: ${{ inputs.use-llms == '' }}
         run: bash scripts/test.sh -vv -m "not (anthropic or azure_oai or openai or togetherai or llm)"
         env:
-          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
-          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
+          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-no-llms
+          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-no-llms
       - name: Test with LLMs
         if: ${{ inputs.use-llms != '' }}
         run: bash scripts/test.sh -vv -m "${{ inputs.use-llms }}"
         env:
-          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
-          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
+          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-with-llms
+          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-with-llms
       - name: Check coverage file
         run: ls -l coverage
       - name: Store coverage files
