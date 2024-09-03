@@ -8,6 +8,9 @@ from autogen.io.base import IOStream
 from autogen.agentchat import ChatResult
 from typing import Any
 
+from fastagency.core import Chatable, ConsoleIO, IOMessage
+from fastagency.core.autogen.base import AutoGenWorkflows
+
 class AutogenOutputElement:
     def __init__(self, text):
         self.text = text
@@ -96,18 +99,14 @@ class InProcessIOStream(IOStream):
     def getResponsesStream(self):
         def responsesGenerator():
             while True:
-                try:
-                    value = self._out_queue.get()
-                    if isinstance(value, ChatResult):
-                        break
-                    # Question shold also end the generator
-                    if isinstance(value, Question):
-                        yield value
-                        break
-                    yield value
-                except queue.Empty:
-                    print("_out_queue empty ending the generator")
+                value = self._out_queue.get()
+                if isinstance(value, ChatResult):
                     break
+                # Question shold also end the generator
+                if isinstance(value, Question):
+                    yield value
+                    break
+                yield value
         return responsesGenerator
 
 
