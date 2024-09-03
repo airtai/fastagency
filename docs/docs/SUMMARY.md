@@ -37,6 +37,7 @@ search:
             - app
                 - [FastAgency](api/fastagency/core/app/FastAgency.md)
             - base
+                - [AskingMessage](api/fastagency/core/base/AskingMessage.md)
                 - [Chatable](api/fastagency/core/base/Chatable.md)
                 - [FunctionCallExecution](api/fastagency/core/base/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/core/base/IOMessage.md)
