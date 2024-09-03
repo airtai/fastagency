@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.autogen.base.AutoGenWorkflows
+::: fastagency.cli.discover.get_app_name
