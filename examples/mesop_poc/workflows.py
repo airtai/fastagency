@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from examples.fixtures import openai_gpt4o_mini_llm_config
 
 from fastagency.core import Chatable
-from fastagency.core.autogen.base import AutoGenWorkflows
+from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
 
 # Get the logger
 logger = logging.getLogger(__name__)

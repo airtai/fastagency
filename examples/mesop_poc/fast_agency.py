@@ -9,7 +9,6 @@ from autogen.agentchat import ChatResult
 from typing import Any
 
 from fastagency.core import Chatable, ConsoleIO, IOMessage
-from fastagency.core.autogen.base import AutoGenWorkflows
 
 class AutogenOutputElement:
     def __init__(self, text):
