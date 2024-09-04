@@ -1,3 +1,6 @@
+![alt text](https://github.com/airtai/fastagency/blob/main/docs/docs/assets/img/FA-Secondary-LOGO.jpg?raw=true)
+
+
 # FastAgency
 
 
@@ -49,11 +52,6 @@
       <img alt="Discord" src="https://img.shields.io/discord/1247409549158121512?logo=discord">
   </a>
 </p>
-
----
-
-![alt text](https://github.com/airtai/fastagency/blob/main/docs/docs/assets/img/FA-Secondary-LOGO.jpg?raw=true)
-
 
 ---
 

@@ -1,19 +1,23 @@
 ---
+title: FastAgency
+
 hide:
   - navigation
-search:
-  exclude: true
+
 ---
+
 
 # FastAgency
 
-<b>A repository of open-source AI agents</b>
+
+<b>The fastest way to bring multi-agent workflows to production.</b>
+
 
 ---
 
 <p align="center">
-  <a href="https://github.com/airtai/fastagency/actions/workflows/test.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/test.yaml/badge.svg?branch=main" alt="Test Passing"/>
+  <a href="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml" target="_blank">
+    <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
   <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
@@ -50,17 +54,10 @@ search:
     <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Code of Conduct">
   </a>
 
-  <a href="https://discord.gg/qFm6aSqq59" target="_blank">
-      <img alt="Discord" src="https://img.shields.io/discord/1085457301214855171?logo=discord">
+  <a href="https://discord.gg/kJjSGWrknU" target="_blank">
+      <img alt="Discord" src="https://img.shields.io/discord/1247409549158121512?logo=discord">
   </a>
 </p>
-
----
-
-## Features
-
-[**FastAgency**](https://fastagency.ai/) simplifies the process of writing AI agents.
-
 
 ---
 
@@ -68,9 +65,9 @@ search:
 
 Please show your support and stay in touch by:
 
-- giving our [GitHub repository](https://github.com/airtai/fastagency/){.external-link target="_blank"} a star, and
+- giving our [GitHub repository](https://github.com/airtai/fastagency/) a star, and
 
-- joining our [Discord server](https://discord.gg/qFm6aSqq59){.external-link target="_blank"}
+- joining our [Discord server](https://discord.gg/kJjSGWrknU)
 
 Your support helps us to stay in touch with you and encourages us to
 continue developing and improving the framework. Thank you for your
