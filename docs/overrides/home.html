@@ -1,0 +1,337 @@
+<!-- Elements added to "home.html" will only be displayed on the home page -->
+
+{% extends "main.html" %}
+
+{% block styles %}
+{{ super() }}
+
+<style>
+    .md-main {
+        flex-grow: 0;
+    }
+   .md-main .md-content {
+      display: none;
+   }
+
+   .md-main .md-main__inner {
+      margin: 0;
+   }
+
+   .tx-container {
+      padding-top: .0rem;
+      overflow: hidden;
+      padding: 0 0 2rem 0;
+      position: relative;
+      text-align: center;
+      background-color: #F25C49;
+      flex-grow: 1;
+      /* height: calc(100vh - 113px); */
+   }
+
+   .tx-hero {
+      margin: 32px 42px;
+      color: var(--md-primary-bg-color);
+      justify-content: center;
+   }
+
+   .tx-hero h1 {
+      margin-bottom: 1rem;
+      color: currentColor;
+      font-weight: 700
+   }
+
+   .tx-hero__content {
+      /* padding-bottom: 1rem; */
+      margin: 0 auto;
+      z-index: 3;
+      position: relative;
+   }
+
+   .tx-hero__content>.sub-header.small-screen-only {
+        font-size: 24px;
+    }
+
+   .tx-hero__content>.large-screen-only {
+      display: none;
+   }
+
+   .tx-hero__content>p {
+      font-size: 20px;
+      line-height: 1.4rem;
+      margin-bottom: 0;
+      font-weight: 500;
+   }
+
+   .tx-hero__content>a {
+      background: #003257;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 16px;
+      margin-top: 1.5rem;
+      padding: 0.5rem 2rem;
+      font-weight: bold;
+      display: inline-block;
+   }
+
+   .tx-hero__content>a:hover {
+      background: #3e99c5;
+      color: #fff;
+   }
+
+   .tx-hero__image {
+      width: 100%;
+      height: auto;
+      margin: 0 auto;
+      z-index: 3;
+      position: relative;
+      /* order:1; */
+   }
+
+   .tx-hero .md-button {
+      margin-top: .5rem;
+      margin-right: .5rem;
+      color: var(--md-primary-bg-color)
+   }
+
+   .tx-hero .md-button--primary {
+      background-color: var(--md-primary-bg-color);
+      color: hsla(280deg, 37%, 48%, 1);
+      border-color: var(--md-primary-bg-color)
+   }
+
+   .tx-hero .md-button:focus,
+   .tx-hero .md-button:hover {
+      background-color: var(--md-accent-fg-color);
+      color: var(--md-default-bg-color);
+      border-color: var(--md-accent-fg-color)
+   }
+
+   .top-hr {
+      margin-top: 42px;
+   }
+
+   /* Custom styling starts */
+
+   .top-gradient {
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    top: 0px;
+    height: 100vh;
+    /* height: calc(100vh - 105px); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: linear-gradient(rgb(227, 63, 42) 0%, rgba(227, 63, 42, 0) 20%, rgba(227, 63, 42, 0) 65%, rgba(242, 92, 73, 0.7) 80%, rgba(242, 92, 73, 0.9) 90%, rgb(242, 92, 73) 95%, rgb(242, 92, 73) 100%), url('assets/img/pod-loga.svg');
+    background-size: cover;
+   }
+
+   .tx-hero__content>a.read-more-btn {
+        position: relative;
+        display: inline-block;
+        border-radius: 9999px;
+        padding-left: 14px;
+        padding-right: 28px;
+        padding-top: 13px;
+        padding-bottom: 9px;
+        margin-bottom: 10px;;
+        font-size: 14px;
+        font-weight: bold;
+        background-color: #FFC800;
+        color: #E33F2A;
+        transition: all 200ms ease-in-out;
+        opacity: 1;
+        box-shadow: rgb(0, 128, 255) 5px 5px 0px 0px;
+   }
+
+   .tx-hero__content>a.read-more-btn:hover {
+        opacity: 0.8;
+    }
+
+    .tx-hero__content>a.read-more-btn>span {
+        display: inline-block;
+        position: absolute;
+        margin-top: 0px;
+        margin-left: 4px;
+    }
+
+   /* Custom styling ends */
+
+   @media screen and (max-width:30em) {
+      .tx-hero h1 {
+         font-size: 1.4rem
+      }
+   }
+
+   @media screen and (min-width:60em) {
+      .md-sidebar--secondary {
+         display: none
+      }
+
+      .tx-hero {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-direction: column;
+      }
+
+      .tx-hero__content>.small-screen-only {
+         display: none;
+      }
+
+      .tx-hero__content>.large-screen-only {
+        display: block;
+        line-height: 0.5rem;
+        }
+
+      .tx-hero__content>p.large-screen-only {
+         font-size: 48px;
+      }
+
+      .tx-hero__content>.description.large-screen-only {
+         margin: 50px 0px 0px 0px;
+      }
+
+      .tx-hero__image {
+         width: 37rem;
+         padding-right: 2.5rem;
+      }
+
+      /* Custom style starts*/
+      .md-sidebar--secondary:not([hidden]) {
+         display: none;
+      }
+      /* Custom style ends*/
+
+   }
+
+   @media screen and (min-width:76.25em) {
+      .md-sidebar--primary {
+         display: none
+      }
+
+      .top-hr {
+         width: 100%;
+         display: flex;
+         max-width: 61rem;
+         margin-right: auto;
+         margin-left: auto;
+         padding: 0 .2rem;
+      }
+
+      .bottom-hr {
+         margin-top: 10px;
+         width: 100%;
+         display: flex;
+         max-width: 61rem;
+         margin-right: auto;
+         margin-left: auto;
+         padding: 0 .2rem;
+      }
+   }
+
+   .hr {
+      border-bottom: 1px solid #eee;
+      width: 100%;
+      margin: 20px 0;
+   }
+
+   .text-center {
+      text-align: center;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+      margin-top: 15px;
+      font-family: 'Lato', sans-serif;
+      font-size: 23px;
+      font-weight: 300;
+      padding-bottom: 10px;
+   }
+
+   .logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-flow: row wrap;
+      margin: 0 auto;
+   }
+
+   .logos img {
+      flex: 1 1 auto;
+      padding: 25px;
+      max-height: 130px;
+      vertical-align: middle;
+   }
+
+   .hr-logos {
+      margin-top: 0;
+      margin-bottom: 30px;
+   }
+
+   .no-margin {
+      margin: 0;
+   }
+
+   .little-font {
+      font-size: 0.7rem;
+   }
+
+   .md-footer {
+      background-color: var(--md-primary-fg-color);
+      color: var(--md-footer-fg-color);
+   }
+</style>
+{% endblock %}
+
+{% block tabs %}
+<!-- Main site entry button descriptions -->
+<section class="tx-container">
+    <div class="top-gradient"></div>
+   <div class="md-grid md-typeset">
+      <div class="tx-hero">
+         <!-- Custom Image -->
+         <div class="tx-hero__image">
+            <img src="assets/img/fa-main-logo.svg" draggable="false">
+         </div>
+         <!-- Main Tagline -->
+         <div class="tx-hero__content">
+            <p class="large-screen-only">FastAgency Studio: A Low-Code Platform</p>
+            <p class="large-screen-only">for Building Multi-Agent AI Services.</p>
+            <p class="sub-header small-screen-only">FastAgency Studio: A Low-Code Platform for Building Multi-Agent AI Services.</p>
+            <div class="description large-screen-only">
+                <p>Quickly build scalable SaaS solutions using our powerful, multi-agent AI framework</p>
+                <p>that streamlines complex processes.</p>
+            </div>
+            <div class="description small-screen-only">
+                <p>Quickly build scalable SaaS solutions using our powerful, multi-agent AI framework that streamlines complex processes.</p>
+            </div>
+            <a href="fastagency/" title="Getting Started" class="read-more-btn">
+               GET STARTED
+               <span aria-hidden="true">→</span>
+            </a>
+         </div>
+      </div>
+   </div>
+</section>
+
+{% endblock %}
+
+{% block footer %}
+<footer class="md-footer">
+   {% if "navigation.footer" in features %}
+   {% if page.meta and page.meta.hide %}
+   {% set hidden = "hidden" if "footer" in page.meta.hide %}
+   {% endif %}
+   {% endif %}
+
+   <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+         {% include "partials/copyright.html" %}
+         {% if config.extra.social %}
+         {% include "partials/social.html" %}
+         {% endif %}
+      </div>
+   </div>
+</footer>
+{% endblock %}
