@@ -2,7 +2,8 @@
 search:
   exclude: true
 ---
-- [Features](fastagency.md)
+- Getting Started
+    - [Getting Started](getting-started/index.md)
 - Reference
 {api}
 - Contributing
