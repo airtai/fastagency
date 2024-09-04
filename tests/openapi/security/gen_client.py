@@ -5,9 +5,9 @@ from fastagency.openapi.client import Client
 # with tempfile.TemporaryDirectory() as temp_dir:
 td = Path("./gen")
 sufix = td.name
-print(td.absolute())
+print(td.absolute())  # noqa: T201
 
-with open("openapi.json") as f:
+with open("openapi.json") as f:  # noqa: PTH123
     openapi_json = f.read()
 
 main_name = Client.generate_code(
@@ -15,4 +15,4 @@ main_name = Client.generate_code(
     output_dir=td,
     # custom_visitors=[Path("./custom_visitor.py")]
 )
-print(main_name)
+# print(main_name)

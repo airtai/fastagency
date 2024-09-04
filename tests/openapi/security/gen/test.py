@@ -15,4 +15,4 @@ app.set_security_params(
 # no security params added to the signature of the method
 resp = read_items_items__get(city="New York")
 
-print(resp)
+print(resp)  # noqa: T201

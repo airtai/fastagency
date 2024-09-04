@@ -4,7 +4,8 @@ from fastapi import Depends, FastAPI, Query
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
 
-app = FastAPI(servers=[{"url": "http://localhost:8889"}])
+PORT = 9999
+app = FastAPI(servers=[{"url": f"http://localhost:{PORT}"}])
 
 header_scheme = APIKeyHeader(name="x-key")
 

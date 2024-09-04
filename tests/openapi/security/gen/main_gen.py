@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import *
+from typing import *  # noqa: F403
 from typing import Any
 
 from models_gen import HTTPValidationError
@@ -26,7 +26,7 @@ app = Client(
     security=APIKeyHeader(name="x-key"),
 )
 def read_items_items__get(
-    city: Annotated[str, """city for which forecast is requested"""],
+    city: Annotated[str, """city for which forecast is requested"""],  # noqa: F405, F722
 ) -> Any | HTTPValidationError:
-    """Read Items"""
+    """Read Items"""  # noqa: D415
     pass
