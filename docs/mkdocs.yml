@@ -27,7 +27,7 @@ theme:
   logo: assets/img/logo.svg
   favicon: assets/img/favicon.ico
   font:
-    text: Rubik
+    text: Roboto
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
