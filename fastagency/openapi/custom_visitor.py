@@ -8,6 +8,8 @@ from fastagency.openapi.security import BaseSecurity
 
 
 def custom_visitor(parser: OpenAPIParser, model_path: Path) -> Dict[str, object]:
+    if "securitySchemes" not in parser.raw_obj["components"]:
+        return {}
     security_schemes = parser.raw_obj["components"]["securitySchemes"]
 
     # for k, v in security_schemes.items():
