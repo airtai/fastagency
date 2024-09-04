@@ -15,7 +15,7 @@ from models_gen import HTTPValidationError
 app = Client(
     title='FastAPI',
     version='0.1.0',
-    servers=[{'url': 'http://localhost:8888'}],
+    servers=[{'url': 'http://localhost:9999'}],
 )
 
 

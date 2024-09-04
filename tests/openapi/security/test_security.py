@@ -54,7 +54,8 @@ def test_generate_client() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir) / "gen"
 
-        with Path("./openapi.json").open() as f:
+        openapi_json_path = Path(__file__).parent / "expected_openapi.json"
+        with openapi_json_path.open() as f:
             openapi_json = f.read()
 
         main_name = Client.generate_code(
