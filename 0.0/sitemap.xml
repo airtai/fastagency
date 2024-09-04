@@ -7,12 +7,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/"/>
     </url>
     <url>
-        <loc>https://docs.fastagency.ai/latest/fastagency/</loc>
-        <lastmod>2024-09-04</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/fastagency/"/>
-    </url>
-    <url>
         <loc>https://docs.fastagency.ai/latest/release/</loc>
         <lastmod>2024-09-04</lastmod>
         <changefreq>daily</changefreq>
@@ -917,6 +911,12 @@
         <lastmod>2024-09-04</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/studio/saas_app_generator/main/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/getting-started/</loc>
+        <lastmod>2024-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/getting-started/"/>
     </url>
     <url>
         <loc>https://docs.fastagency.ai/latest/getting-started/contributing/CONTRIBUTING/</loc>
