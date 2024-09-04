@@ -86,7 +86,6 @@ class MesopIO(IOMessageVisitor):
         self.out_queue.put(mesop_msg)
 
     def _mesop_message(self, io_message: IOMessage) -> MesopMessage:
-        print("creating messop message, my queue is", self.out_queue)
         return MesopMessage(
             conversation=self,
             io_message=io_message,
@@ -135,11 +134,8 @@ class MesopIO(IOMessageVisitor):
 
     def get_message_stream(self) -> Generator[MesopMessage, None, None]:
         while True:
-            print("get message_stream, MyQueue is", self.out_queue)
             message = self.out_queue.get()
-            print("------------------------------Got message", message)
             if self._is_stream_braker(message.io_message):
-                print("Stram breaker!")
                 yield message
                 break
             yield message

@@ -58,7 +58,6 @@ def send_prompt(e: me.ClickEvent):
     me.scroll_into_view(key="end_of_messages")
     yield
     responses = send_prompt_to_autogen(prompt)
-    print("0000000000Got responses", responses)
     for message in responses:
         _handle_message(message)
         yield
