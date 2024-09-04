@@ -5,6 +5,7 @@ import tempfile
 import threading
 import time
 from pathlib import Path
+from typing import Iterator
 
 import requests
 import uvicorn
@@ -18,11 +19,11 @@ PORT = 9999
 
 
 class Server(uvicorn.Server):
-    def install_signal_handlers(self):
+    def install_signal_handlers(self) -> None:
         pass
 
     @contextlib.contextmanager
-    def run_in_thread(self):
+    def run_in_thread(self) -> Iterator[None]:
         thread = threading.Thread(target=self.run)
         thread.start()
         try:
@@ -34,7 +35,7 @@ class Server(uvicorn.Server):
             thread.join()
 
 
-def test_secure_app_openapi():
+def test_secure_app_openapi() -> None:
     config = uvicorn.Config(app, host="0.0.0.0", port=PORT, log_level="info")
     server = Server(config=config)
 
@@ -49,7 +50,7 @@ def test_secure_app_openapi():
         assert actual_openapi_json == expected_openapi_json
 
 
-def test_generate_client():
+def test_generate_client() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir) / "gen"
 
@@ -82,7 +83,7 @@ def test_generate_client():
         assert actual_models_gen == expected_models_gen
 
 
-def test_import_and_call_generate_client():
+def test_import_and_call_generate_client() -> None:
     config = uvicorn.Config(app, host="0.0.0.0", port=PORT, log_level="info")
     server = Server(config=config)
 
@@ -117,5 +118,5 @@ def test_import_and_call_generate_client():
             )
 
             # no security params added to the signature of the method
-            resp = read_items_items__get(city="New York")
-            assert resp == {"is_authenticated": True}
+            client_resp = read_items_items__get(city="New York")
+            assert client_resp == {"is_authenticated": True}
