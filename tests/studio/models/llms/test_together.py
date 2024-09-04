@@ -54,7 +54,7 @@ class TestTogetherAI:
             if model.type == "chat"
         }
 
-        print(expected_together_model_string)
+        # print(expected_together_model_string)
         assert together_model_string == expected_together_model_string
 
     @pytest.mark.db
