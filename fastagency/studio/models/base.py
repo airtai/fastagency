@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Annotated, Any, Literal, Optional, Protocol, Type, TypeVar
 from uuid import UUID
 
-from pydantic import BaseModel, Field, create_model, model_validator
+from pydantic import BaseModel, Field, create_model, model_validator, field_validator
 from typing_extensions import TypeAlias
 
 from ..db.base import DefaultDB
@@ -43,6 +43,23 @@ class Model(BaseModel, ABC):
         my_model = cls(**my_model_dict["json_str"])
 
         return my_model
+    
+    @model_validator(mode='after')
+    def validate_name_uniqueness(self) -> "Model":
+        name = self.name
+        user_uuid = self.user_uuid
+
+        print("="* 50)
+        print(f"{name=}")
+        print(f"{user_uuid=}")
+        print("="* 50)
+
+
+        # Implement the logic to check the database
+        # if not self.is_name_unique(user_uuid, name):
+        #     raise ValueError(f"The name '{name}' is not unique for this user.")
+
+        return self
 
 
 class ObjectReference(BaseModel):

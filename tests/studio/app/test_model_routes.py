@@ -177,6 +177,38 @@ class TestModelRoutes:
         assert actual == expected
 
     @pytest.mark.asyncio
+    async def test_add_model_with_duplicate_name(self, user_uuid: str) -> None:
+        model_uuid = str(uuid.uuid4())
+        name = f"model_name_{model_uuid}"
+        azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name=name)
+        response = client.post(
+            f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{model_uuid}",
+            json=azure_oai_api_key.model_dump(),
+        )
+
+        assert response.status_code == 200
+        expected = {
+            "api_key": "whatever",  # pragma: allowlist secret
+            "name": name,
+        }
+        actual = response.json()
+        assert actual == expected
+
+        response = client.get(f"/user/{user_uuid}/models")
+        assert response.status_code == 200
+        print(f"{response.json()=}")
+
+        with pytest.raises(ValueError) as e:
+            existing_name = name
+            new_model_uuid = str(uuid.uuid4())
+            new_azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name=existing_name)
+            response = client.post(
+                f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{new_model_uuid}",
+                json=new_azure_oai_api_key.model_dump(),
+            )
+
+
+    @pytest.mark.asyncio
     async def test_add_model_deployment(self, user_uuid: str) -> None:
         team_uuid = str(uuid.uuid4())
         deployment_uuid = str(uuid.uuid4())
