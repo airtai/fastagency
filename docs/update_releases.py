@@ -51,7 +51,7 @@ def _convert_links_and_usernames(text):
 
 
 def _collect_already_published_versions(text: str) -> List[str]:
-    data: List[str] = re.findall(r"## (\d.\d.\d.*)", text)
+    data: List[str] = re.findall(r"## [v]?(\d.\d.\d.*)", text)
     return data
 
 
@@ -74,7 +74,9 @@ def update_release_notes(realease_notes_path: Path) -> None:
     old_versions = _collect_already_published_versions(changelog)
 
     for version, body in filter(
-        lambda v: v[0] not in old_versions,
+        lambda v: v[0] not in old_versions
+        if "v" not in v[0]
+        else v[0][1:] not in old_versions,
         _get_github_releases(),
     ):
         body = body.replace("##", "###")
