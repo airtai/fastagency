@@ -28,7 +28,7 @@ jobs:
         run: |
           set -ux
           python -m pip install --upgrade pip
-          pip install -e ".[submodules,docs,lint,test-core]"
+          pip install -e ".[submodules,docs,lint,test-core,server]"
       - name: Run mypy
         shell: bash
         run: mypy fastagency tests
