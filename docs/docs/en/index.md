@@ -1,4 +1,4 @@
 ---
 title: FastAgency
-# template: home.html
+template: home.html
 ---
