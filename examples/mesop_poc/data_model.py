@@ -9,7 +9,7 @@ from fastagency.core.base import IOMessage
 class ConversationMessage:
     level: int
     conversationId: UUID
-    message: IOMessage
+    io_message: IOMessage
 
 @dataclass
 class Conversation:

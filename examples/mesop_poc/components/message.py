@@ -10,7 +10,7 @@ def message_box(message: ConversationMessage):
             margin=me.Margin.symmetric(vertical=16),
         )
     ):
-        message_text = str(message.io_message).json()
+        message_text = str(message.io_message)
         me.markdown(message_text)
 
 def user_message(content: str):

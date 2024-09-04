@@ -37,7 +37,7 @@ def _handle_message(message:MesopMessage ):
     messages = state.conversation.messages
     level = message.conversation.level
     conversationId = message.conversation.id
-    cm = ConversationMessage(level=level,conversationId=conversationId, message=message.message)
+    cm = ConversationMessage(level=level,conversationId=conversationId, io_message=message.io_message)
     messages.append(cm)
     io_message = message.io_message
     if isinstance(io_message, AskingMessage):
@@ -58,6 +58,7 @@ def send_prompt(e: me.ClickEvent):
     me.scroll_into_view(key="end_of_messages")
     yield
     responses = send_prompt_to_autogen(prompt)
+    print("0000000000Got responses", responses)
     for message in responses:
         _handle_message(message)
         yield

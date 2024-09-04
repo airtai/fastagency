@@ -1,3 +1,4 @@
+import threading
 from dataclasses import dataclass
 from queue import Queue
 from typing import ClassVar, Dict, Generator, List, Optional
@@ -85,6 +86,7 @@ class MesopIO(IOMessageVisitor):
         self.out_queue.put(mesop_msg)
 
     def _mesop_message(self, io_message: IOMessage) -> MesopMessage:
+        print("creating messop message, my queue is", self.out_queue)
         return MesopMessage(
             conversation=self,
             io_message=io_message,
@@ -133,44 +135,50 @@ class MesopIO(IOMessageVisitor):
 
     def get_message_stream(self) -> Generator[MesopMessage, None, None]:
         while True:
+            print("get message_stream, MyQueue is", self.out_queue)
             message = self.out_queue.get()
+            print("------------------------------Got message", message)
             if self._is_stream_braker(message.io_message):
+                print("Stram breaker!")
                 yield message
                 break
+            yield message
 
 
 def run_workflow(wf: AutoGenWorkflows, name: str, initial_message: str) -> MesopIO:
+    def conversation_worker(io: MesopIO, subconversation: MesopIO) -> None:
+        io.process_message(
+            IOMessage.create(
+                sender="user",
+                recepient="workflow",
+                type="system_message",
+                message={
+                    "heading": "Workflow BEGIN",
+                    "body": f"Starting workflow with initial_message: {initial_message}",
+                },
+            )
+        )
+        result = wf.run(
+            name=name,
+            session_id="session_id",
+            io=subconversation,
+            initial_message=initial_message,
+        )
+        io.process_message(
+            IOMessage.create(
+                sender="user",
+                recepient="workflow",
+                type="system_message",
+                message={
+                    "heading": "Workflow END",
+                    "body": f"Ending workflow with result: {result}",
+                },
+            )
+        )
+
     io = MesopIO()
-
-    io.process_message(
-        IOMessage.create(
-            sender="user",
-            recepient="workflow",
-            type="system_message",
-            message={
-                "heading": "Workflow BEGIN",
-                "body": f"Starting workflow with initial_message: {initial_message}",
-            },
-        )
-    )
     subconversation = io.create_subconversation()
-    result = wf.run(
-        name=name,
-        session_id="session_id",
-        io=subconversation,
-        initial_message=initial_message,
-    )
-
-    io.process_message(
-        IOMessage.create(
-            sender="user",
-            recepient="workflow",
-            type="system_message",
-            message={
-                "heading": "Workflow END",
-                "body": f"Ending workflow with result: {result}",
-            },
-        )
-    )
+    thread = threading.Thread(target=conversation_worker, args=(io, subconversation))
+    thread.start()
 
     return subconversation
