@@ -6,9 +6,10 @@
 {{ super() }}
 
 <style>
-    .md-main {
-        flex-grow: 0;
-    }
+   .md-main {
+      flex-grow: 0;
+   }
+
    .md-main .md-content {
       display: none;
    }
@@ -48,8 +49,8 @@
    }
 
    .tx-hero__content>.sub-header.small-screen-only {
-        font-size: 24px;
-    }
+      font-size: 24px;
+   }
 
    .tx-hero__content>.large-screen-only {
       display: none;
@@ -113,47 +114,48 @@
    /* Custom styling starts */
 
    .top-gradient {
-    position: absolute;
-    z-index: 0;
-    left: 0;
-    right: 0;
-    top: 0px;
-    height: 100vh;
-    /* height: calc(100vh - 105px); */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: linear-gradient(rgb(227, 63, 42) 0%, rgba(227, 63, 42, 0) 20%, rgba(227, 63, 42, 0) 65%, rgba(242, 92, 73, 0.7) 80%, rgba(242, 92, 73, 0.9) 90%, rgb(242, 92, 73) 95%, rgb(242, 92, 73) 100%), url('assets/img/pod-loga.svg');
-    background-size: cover;
+      position: absolute;
+      z-index: 0;
+      left: 0;
+      right: 0;
+      top: 0px;
+      height: 100vh;
+      /* height: calc(100vh - 105px); */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-image: linear-gradient(rgb(227, 63, 42) 0%, rgba(227, 63, 42, 0) 20%, rgba(227, 63, 42, 0) 65%, rgba(242, 92, 73, 0.7) 80%, rgba(242, 92, 73, 0.9) 90%, rgb(242, 92, 73) 95%, rgb(242, 92, 73) 100%), url('assets/img/pod-loga.svg');
+      background-size: cover;
    }
 
    .tx-hero__content>a.read-more-btn {
-        position: relative;
-        display: inline-block;
-        border-radius: 9999px;
-        padding-left: 14px;
-        padding-right: 28px;
-        padding-top: 13px;
-        padding-bottom: 9px;
-        margin-bottom: 10px;;
-        font-size: 14px;
-        font-weight: bold;
-        background-color: #FFC800;
-        color: #E33F2A;
-        transition: all 200ms ease-in-out;
-        opacity: 1;
-        box-shadow: rgb(0, 128, 255) 5px 5px 0px 0px;
+      position: relative;
+      display: inline-block;
+      border-radius: 9999px;
+      padding-left: 14px;
+      padding-right: 28px;
+      padding-top: 13px;
+      padding-bottom: 9px;
+      margin-bottom: 10px;
+      ;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #FFC800;
+      color: #E33F2A;
+      transition: all 200ms ease-in-out;
+      opacity: 1;
+      box-shadow: rgb(0, 128, 255) 5px 5px 0px 0px;
    }
 
    .tx-hero__content>a.read-more-btn:hover {
-        opacity: 0.8;
-    }
+      opacity: 0.8;
+   }
 
-    .tx-hero__content>a.read-more-btn>span {
-        display: inline-block;
-        position: absolute;
-        margin-top: 0px;
-        margin-left: 4px;
-    }
+   .tx-hero__content>a.read-more-btn>span {
+      display: inline-block;
+      position: absolute;
+      margin-top: 0px;
+      margin-left: 4px;
+   }
 
    /* Custom styling ends */
 
@@ -180,9 +182,9 @@
       }
 
       .tx-hero__content>.large-screen-only {
-        display: block;
-        line-height: 0.5rem;
-        }
+         display: block;
+         line-height: 0.5rem;
+      }
 
       .tx-hero__content>p.large-screen-only {
          font-size: 48px;
@@ -201,6 +203,7 @@
       .md-sidebar--secondary:not([hidden]) {
          display: none;
       }
+
       /* Custom style ends*/
 
    }
@@ -287,7 +290,7 @@
 {% block tabs %}
 <!-- Main site entry button descriptions -->
 <section class="tx-container">
-    <div class="top-gradient"></div>
+   <div class="top-gradient"></div>
    <div class="md-grid md-typeset">
       <div class="tx-hero">
          <!-- Custom Image -->
@@ -296,17 +299,19 @@
          </div>
          <!-- Main Tagline -->
          <div class="tx-hero__content">
-            <p class="large-screen-only">FastAgency: The Open-Source Framework for</p>
-            <p class="large-screen-only">Rapid AI Agent Development.</p>
-            <p class="sub-header small-screen-only">FastAgency: The Open-Source Framework for Rapid AI Agent Development.</p>
+            <p class="large-screen-only">The fastest way to bring</p>
+            <p class="large-screen-only">multi-agent workflows to production.</p>
+            <p class="sub-header small-screen-only">FastAgency: The fastest way to bring multi-agent workflows to
+               production.</p>
             <div class="description large-screen-only">
-                <p>Accelerate your AI development with FastAgency’s modular, open-source agents, designed</p>
-                <p>for quick integration and scaling of complex solutions.</p>
+               <p>Accelerate your AI development with FastAgency’s modular, open-source agents, designed</p>
+               <p>for quick integration and scaling of complex solutions.</p>
             </div>
             <div class="description small-screen-only">
-                <p>Accelerate your AI development with FastAgency’s modular, open-source agents, designed for quick integration and scaling of complex solutions.</p>
+               <p>Accelerate your AI development with FastAgency’s modular, open-source agents, designed for quick
+                  integration and scaling of complex solutions.</p>
             </div>
-            <a href="fastagency/" title="Getting Started" class="read-more-btn">
+            <a href="getting-started/" title="Getting Started" class="read-more-btn">
                GET STARTED
                <span aria-hidden="true">→</span>
             </a>

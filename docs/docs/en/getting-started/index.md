@@ -11,7 +11,60 @@ search:
   boost: 10
 ---
 
-# Getting Started
+
+# Getting Started with FastAgency
+
+
+<b>The fastest way to bring multi-agent workflows to production.</b>
+
+
+---
+
+<p align="center">
+  <a href="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml" target="_blank">
+    <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
+  </a>
+
+  <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
+      <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
+  </a>
+
+  <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
+    <img src="https://static.pepy.tech/personalized-badge/fastagency?period=month&units=international_system&left_color=grey&right_color=green&left_text=downloads/month" alt="Downloads"/>
+  </a>
+
+  <a href="https://pypi.org/project/fastagency" target="_blank">
+    <img src="https://img.shields.io/pypi/v/fastagency?label=PyPI" alt="Package version">
+  </a>
+
+  <a href="https://pypi.org/project/fastagency" target="_blank">
+    <img src="https://img.shields.io/pypi/pyversions/fastagency.svg" alt="Supported Python versions">
+  </a>
+
+  <br/>
+
+  <a href="https://github.com/airtai/fastagency/actions/workflows/codeql.yml" target="_blank">
+    <img src="https://github.com/airtai/fastagency/actions/workflows/codeql.yml/badge.svg" alt="CodeQL">
+  </a>
+
+  <a href="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml" target="_blank">
+    <img src="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml/badge.svg" alt="Dependency Review">
+  </a>
+
+  <a href="https://github.com/airtai/fastagency/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/airtai/fastagency.png" alt="License">
+  </a>
+
+  <a href="https://github.com/airtai/fastagency/blob/main/CODE_OF_CONDUCT.md" target="_blank">
+    <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Code of Conduct">
+  </a>
+
+  <a href="https://discord.gg/kJjSGWrknU" target="_blank">
+      <img alt="Discord" src="https://img.shields.io/discord/1247409549158121512?logo=discord">
+  </a>
+</p>
+
+---
 
 Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the [AutoGen](https://microsoft.github.io/autogen/) framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/) in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
 
@@ -157,7 +210,6 @@ The output will vary based on the interface:
 
 === "Console"
     ```console
-
     ╭─ Python module file ─╮
     │                      │
     │  🐍 main.py          │
@@ -171,18 +223,16 @@ The output will vary based on the interface:
     │                             │
     ╰─────────────────────────────╯
 
-    +--------------------------------------------------------------------------------+
-    |
-    | FastAgency -> user: text_input
-    |
-    | Starting a new workflow 'simple_learning' with the following
-    | description:
-    |
-    | Student and teacher learning chat
-    |
-    | Please enter an
-    | initial message: (suggestions: )
-    +--------------------------------------------------------------------------------+
+    ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+    │                                                                              │
+    │ Starting a new workflow 'simple_learning' with the following                 │
+    │ description:                                                                 │
+    │                                                                              │
+    │ Student and teacher learning chat                                            │
+    │                                                                              │
+    │ Please enter an                                                              │
+    │ initial message:                                                             │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
     ```
 
     For Console applications, you will see a command-line prompt where you can enter the initial message and interact with your workflow.
@@ -213,3 +263,27 @@ The output will vary based on the interface:
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/), to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
 
 Feel free to customize your workflow and application based on your needs. For more details on configurations and additional features, refer to the [AutoGen documentation](https://microsoft.github.io/autogen/) and [Mesop documentation](https://google.github.io/mesop/).
+
+---
+
+## Stay in touch
+
+Please show your support and stay in touch by:
+
+- giving our [GitHub repository](https://github.com/airtai/fastagency/) a star, and
+
+- joining our [Discord server](https://discord.gg/kJjSGWrknU)
+
+Your support helps us to stay in touch with you and encourages us to
+continue developing and improving the framework. Thank you for your
+support!
+
+---
+
+## Contributors
+
+Thanks to all of these amazing people who made the project better!
+
+<a href="https://github.com/airtai/fastagency/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
+</a>

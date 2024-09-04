@@ -2,7 +2,6 @@
 search:
   exclude: true
 ---
-- [Features](features.md)
 - Getting Started
     - [Getting Started](getting-started/index.md)
 - Reference
