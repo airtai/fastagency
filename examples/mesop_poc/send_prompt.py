@@ -1,31 +1,21 @@
 import mesop as me
 
 from typing import Iterable
-from examples.mesop_poc.data_model import State, ChatMessage
-from examples.mesop_poc.fast_agency import getAutogen, initiate_chat, getMoreResponses, Question
+from fastagency.core.base import IOMessage
+from fastagency.core.mesop.base import MesopIO, run_workflow
+from examples.mesop_poc.data_model import State
+
+from examples.mesop_poc.workflows import wf
 
 def send_prompt_to_autogen(prompt: str) -> Iterable[str]:
+    mesop_io = run_workflow(wf, "simple_learning", prompt)
     state = me.state(State)
-    autogen = initiate_chat(prompt)
-    state.autogen = autogen
-    responses = getAutogen(autogen).getResponsesStream()
-    for chunk in responses():
-        if isinstance(chunk, Question):
-            print("auto providing input - not")
-            state = me.state(State)
-            state.waitingForFeedback = True
-        yield chunk
-    print("end of send prompt responoses -----------------")
+    state.conversation = mesop_io.id
+    return mesop_io.get_message_stream()
 
 def send_user_feedback_to_autogen(userResponse: str) -> Iterable[str]:
     state = me.state(State)
-    state.waitingForFeedback = False
-    responses = getMoreResponses(userResponse, state.autogen)
-    for chunk in responses():
-        if isinstance(chunk, Question):
-            print("auto providing input - not")
-            state = me.state(State)
-            state.waitingForFeedback = True
-            yield chunk
-        yield chunk
-    print("end of send feedback responses -----------------")
+    mesopId = state.fastagency
+    mesop_io = MesopIO.get_conversation(mesopId)
+    mesop_io.respond(userResponse)
+    return mesop_io.get_message_stream()

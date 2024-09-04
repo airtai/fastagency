@@ -1,20 +1,19 @@
 from dataclasses import dataclass, field
-from typing import Literal
-from enum import Enum
-from autogen.io.base import IOStream
+from typing import Literal, Optional
+from uuid import UUID
 import mesop as me
+from fastagency.core.base import IOMessage
 
-Role = Literal["user", "autogen"]
 
 @dataclass(kw_only=True)
-class ChatMessage:
-    role: Role = "user"
-    content: str = ""
-    in_progress: bool = False
+class ConversationMessage:
+    level: int
+    conversationId: UUID
+    message: IOMessage
 
 @dataclass
 class Conversation:
-    messages: list[ChatMessage] = field(default_factory=list)
+    messages: list[ConversationMessage] = field(default_factory=list)
 
 @me.stateclass
 class State:
@@ -23,4 +22,4 @@ class State:
     prompt: str = ""
     feedback: str = ""
     conversation: Conversation
-    autogen: int = -1
+    fastagency: Optional[UUID] = None

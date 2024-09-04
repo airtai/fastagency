@@ -3,6 +3,8 @@ from queue import Queue
 from typing import ClassVar, Dict, Generator, List, Optional
 from uuid import UUID, uuid4
 
+from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+
 from ..base import (
     AskingMessage,
     IOMessage,
@@ -18,7 +20,7 @@ from ..base import (
 class MesopMessage:
     """A Mesop message."""
 
-    message: IOMessage
+    io_message: IOMessage
     conversation: "MesopIO"
 
 
@@ -82,10 +84,10 @@ class MesopIO(IOMessageVisitor):
     def _publish(self, mesop_msg: MesopMessage) -> None:
         self.out_queue.put(mesop_msg)
 
-    def _mesop_message(self, mesop_msg: IOMessage) -> MesopMessage:
+    def _mesop_message(self, io_message: IOMessage) -> MesopMessage:
         return MesopMessage(
             conversation=self,
-            message=mesop_msg,
+            io_message=io_message,
         )
 
     def visit_default(self, message: IOMessage) -> None:
@@ -127,11 +129,48 @@ class MesopIO(IOMessageVisitor):
     ) -> Generator[MesopMessage, None, None]:
         conversation = cls.get_conversation(conversation_id)
         conversation.respond(message)
-        return conversation.get_chat_stream()
+        return conversation.get_message_stream()
 
-    def get_chat_stream(self) -> Generator[MesopMessage, None, None]:
+    def get_message_stream(self) -> Generator[MesopMessage, None, None]:
         while True:
             message = self.out_queue.get()
-            if self._is_stream_braker(message.message):
+            if self._is_stream_braker(message.io_message):
                 yield message
                 break
+
+
+def run_workflow(wf: AutoGenWorkflows, name: str, initial_message: str) -> MesopIO:
+    io = MesopIO()
+
+    io.process_message(
+        IOMessage.create(
+            sender="user",
+            recepient="workflow",
+            type="system_message",
+            message={
+                "heading": "Workflow BEGIN",
+                "body": f"Starting workflow with initial_message: {initial_message}",
+            },
+        )
+    )
+    subconversation = io.create_subconversation()
+    result = wf.run(
+        name=name,
+        session_id="session_id",
+        io=subconversation,
+        initial_message=initial_message,
+    )
+
+    io.process_message(
+        IOMessage.create(
+            sender="user",
+            recepient="workflow",
+            type="system_message",
+            message={
+                "heading": "Workflow END",
+                "body": f"Ending workflow with result: {result}",
+            },
+        )
+    )
+
+    return subconversation

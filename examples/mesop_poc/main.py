@@ -1,18 +1,16 @@
 import mesop as me
 
-from examples.mesop_poc.data_model import State, ChatMessage
+from examples.mesop_poc.data_model import State, ConversationMessage
 from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
-from examples.mesop_poc.fast_agency import Question
 from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
-from examples.mesop_poc.components.message import user_message, autogen_message
+from examples.mesop_poc.components.message import message_box
 from examples.mesop_poc.components.ui_common import header, conversation_completed
 from examples.mesop_poc.components.inputs import input_user_feedback, input_prompt
-
+from fastagency.core.mesop.base import MesopMessage, AskingMessage, WorkflowCompleted
 
 SECURITY_POLICY = me.SecurityPolicy(
     allowed_iframe_parents=["https://huggingface.co"]
 )
-
 
 @me.page(
     path="/",
@@ -34,6 +32,20 @@ def home_page():
             )
             input_prompt(send_prompt)
 
+def _handle_message(message:MesopMessage ):
+    state = me.state(State)
+    messages = state.conversation.messages
+    level = message.conversation.level
+    conversationId = message.conversation.id
+    cm = ConversationMessage(level=level,conversationId=conversationId, message=message.message)
+    messages.append(cm)
+    io_message = message.io_message
+    if isinstance(io_message, AskingMessage):
+        state.waitingForFeedback = True
+        state.conversationCompleted = False
+    if isinstance(io_message, WorkflowCompleted):
+        state.conversationCompleted = True
+        state.waitingForFeedback = False
 
 def send_prompt(e: me.ClickEvent):
     state = me.state(State)
@@ -41,30 +53,15 @@ def send_prompt(e: me.ClickEvent):
     prompt = state.prompt
     state.prompt = ""
     state.conversationCompleted = False
-    conversation = state.conversation
-    messages = conversation.messages
-    messages.append(ChatMessage(role="user", content=prompt))
-    messages.append(ChatMessage(role="autogen", in_progress=True))
+    state.waitingForFeedback = False
     yield
-
     me.scroll_into_view(key="end_of_messages")
-
-    autogen_response = send_prompt_to_autogen(prompt)
-
-    for chunk in autogen_response:
-        if isinstance(chunk, Question):
-            chunk = chunk.plain_text()
-            messages[-1].content += chunk
-            messages[-1].in_progress = False
-            yield
-            return
-        print("chunk", chunk)
-        messages[-1].content += chunk.plain_text()
-        yield
-    messages[-1].in_progress = False
-    state.conversationCompleted = True
     yield
-
+    responses = send_prompt_to_autogen(prompt)
+    for message in responses:
+        _handle_message(message)
+        yield
+    yield
 
 @me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)
 def conversation_page():
@@ -78,16 +75,13 @@ def conversation_page():
             )
         ):
             for message in messages:
-                if message.role == "user":
-                    user_message(message.content)
-                else:
-                    autogen_message(message)
+                message_box(message)
             if messages:
                 me.box(
                     key="end_of_messages",
                     style=me.Style(
                         margin=me.Margin(
-                            bottom="50vh" if messages[-1].in_progress else 0
+                            bottom="50vh"
                         )
                     ),
                 )
@@ -113,26 +107,10 @@ def on_user_feedback(e: me.ClickEvent):
     state.feedback = ""
     state.waitingForFeedback = False
     yield
-    print("feedback obrisan, bio je", feedback)
-    conversation = state.conversation
-    messages = conversation.messages
-    messages.append(ChatMessage(role="user", content=feedback))
-    messages.append(ChatMessage(role="autogen", in_progress=True))
-    yield
-
     me.scroll_into_view(key="end_of_messages")
-    autogen_response = send_user_feedback_to_autogen(feedback)
-
-    for chunk in autogen_response:
-        if isinstance(chunk, Question):
-            chunk = chunk.plain_text()
-            messages[-1].content += chunk
-            messages[-1].in_progress = False
-            yield
-            return
-        messages[-1].content += chunk.plain_text()
+    yield
+    responses = send_user_feedback_to_autogen(feedback)
+    for message in responses:
+        _handle_message(message)
         yield
-
-    messages[-1].in_progress = False
-    state.conversationCompleted = True
     yield

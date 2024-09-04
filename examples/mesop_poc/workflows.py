@@ -29,6 +29,7 @@ logger.addHandler(handler)
 # Log messages
 logger.warning("warning message")
 logger.info("info message")
+
 wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
