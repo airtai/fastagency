@@ -1,11 +1,22 @@
+import os
+
 from autogen.agentchat import ConversableAgent
-from fixtures import openai_gpt4o_mini_llm_config
 
 from fastagency.core import Chatable
 from fastagency.core.io.console import ConsoleIO
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
 
 from fastagency import FastAgency
+
+llm_config = {
+    "config_list": [
+        {
+            "model": "gpt-4o-mini",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+        }
+    ],
+    "temperature": 0.8,
+}
 
 
 wf = AutoGenWorkflows()
@@ -15,12 +26,12 @@ def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
-        llm_config=openai_gpt4o_mini_llm_config,
+        llm_config=llm_config,
     )
     teacher_agent = ConversableAgent(
         name="Teacher_Agent",
         system_message="You are a math teacher.",
-        llm_config=openai_gpt4o_mini_llm_config,
+        llm_config=llm_config,
     )
 
     chat_result = student_agent.initiate_chat(

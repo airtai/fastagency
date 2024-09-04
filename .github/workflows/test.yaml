@@ -1,4 +1,4 @@
-name: Test
+name: Internal test runner
 
 on:
   workflow_call:
