@@ -40,15 +40,15 @@ together_model_string = {
     "Meta Llama 3 70B Instruct Reference": "meta-llama/Llama-3-70b-chat-hf",
     "DBRX Instruct": "databricks/dbrx-instruct",
     "Nous Hermes 2 - Mixtral 8x7B-DPO ": "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
-    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "Meta Llama 3 8B Instruct Turbo": "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
     "Meta Llama 3 8B Instruct Lite": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
     "Meta Llama 3.1 70B Instruct Turbo": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     "Meta Llama 3.1 8B Instruct": "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
     "Mixtral-8x22B Instruct v0.1": "mistralai/Mixtral-8x22B-Instruct-v0.1",
     "Gryphe MythoMax L2 Lite (13B)": "Gryphe/MythoMax-L2-13b-Lite",
-    "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
     "Hermes 3 - Llama-3.1 405B": "NousResearch/Hermes-3-Llama-3.1-405B-Turbo",
+    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
     "WizardLM v1.2 (13B)": "WizardLM/WizardLM-13B-V1.2",
     "Koala (7B)": "togethercomputer/Koala-7B",
     "Qwen 2 Instruct (1.5B)": "Qwen/Qwen2-1.5B-Instruct",
@@ -104,7 +104,6 @@ together_model_string = {
     "carson ml318br": "carson/ml318br",
     "Llama-3 70B Instruct Gradient 1048K": "gradientai/Llama-3-70B-Instruct-Gradient-1048k",
     "Meta Llama 3.1 70B Instruct": "meta-llama/Meta-Llama-3.1-70B-Instruct-Reference",
-    "Meta Llama 3.1 70B": "meta-llama/Meta-Llama-3.1-70B-Reference",
 }
 
 TogetherModels: TypeAlias = Literal[tuple(together_model_string.keys())]  # type: ignore[valid-type]
