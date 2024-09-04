@@ -1,4 +1,4 @@
-from typing import Any, Dict, Literal, Protocol, Type
+from typing import Any, ClassVar, Dict, Literal, Protocol, Type
 
 from pydantic import BaseModel, model_validator
 
@@ -6,8 +6,8 @@ from pydantic import BaseModel, model_validator
 class BaseSecurity(BaseModel):
     """Base class for security classes."""
 
-    type: Literal["apiKey", "http", "mutualTLS", "oauth2", "openIdConnect"]
-    in_value: Literal["header", "query", "cookie", "bearer", "basic", "tls"]
+    type: ClassVar[Literal["apiKey", "http", "mutualTLS", "oauth2", "openIdConnect"]]
+    in_value: ClassVar[Literal["header", "query", "cookie", "bearer", "basic", "tls"]]
     name: str
 
     @model_validator(mode="after")  # type: ignore[misc]
@@ -30,6 +30,26 @@ class BaseSecurity(BaseModel):
     def accept(self, security_params: "BaseSecurityParameters") -> bool:
         return isinstance(self, security_params.get_security_class())
 
+    @classmethod
+    def is_supported(cls, type: str, in_value: str) -> bool:
+        return type == cls.type and in_value == cls.in_value
+
+    @staticmethod
+    def get_security_class(type: str, in_value: str) -> str:
+        sub_classes = [
+            APIKeyHeader,
+            APIKeyQuery,
+            APIKeyCookie,
+        ]
+
+        for sub_class in sub_classes:
+            if sub_class.is_supported(type, in_value):
+                return sub_class.__name__
+        else:
+            raise NotImplementedError(
+                f"Unsupported type '{type}' and in_value '{in_value}' combination"
+            )
+
 
 class BaseSecurityParameters(Protocol):
     """Base class for security parameters."""
@@ -47,8 +67,8 @@ class BaseSecurityParameters(Protocol):
 class APIKeyHeader(BaseSecurity):
     """API Key Header security class."""
 
-    type: Literal["apiKey"] = "apiKey"
-    in_value: Literal["header"] = "header"
+    type: ClassVar[Literal["apiKey"]] = "apiKey"
+    in_value: ClassVar[Literal["header"]] = "header"
 
     class Parameters(BaseModel):  # BaseSecurityParameters
         """API Key Header security parameters class."""
@@ -70,3 +90,56 @@ class APIKeyHeader(BaseSecurity):
 
         def get_security_class(self) -> Type[BaseSecurity]:
             return APIKeyHeader
+
+
+class APIKeyQuery(BaseSecurity):
+    """API Key Query security class."""
+
+    type: ClassVar[Literal["apiKey"]] = "apiKey"
+    in_value: ClassVar[Literal["query"]] = "query"
+
+    class Parameters(BaseModel):  # BaseSecurityParameters
+        """API Key Query security parameters class."""
+
+        value: str
+
+        def apply(
+            self,
+            q_params: Dict[str, Any],
+            body_dict: Dict[str, Any],
+            security: BaseSecurity,
+        ) -> None:
+            api_key_query: APIKeyQuery = security  # type: ignore[assignment]
+
+            q_params[api_key_query.name] = self.value
+
+        def get_security_class(self) -> Type[BaseSecurity]:
+            return APIKeyQuery
+
+
+class APIKeyCookie(BaseSecurity):
+    """API Key Cookie security class."""
+
+    type: ClassVar[Literal["apiKey"]] = "apiKey"
+    in_value: ClassVar[Literal["cookie"]] = "cookie"
+
+    class Parameters(BaseModel):  # BaseSecurityParameters
+        """API Key Cookie security parameters class."""
+
+        value: str
+
+        def apply(
+            self,
+            q_params: Dict[str, Any],
+            body_dict: Dict[str, Any],
+            security: BaseSecurity,
+        ) -> None:
+            api_key_cookie: APIKeyCookie = security  # type: ignore[assignment]
+
+            if "cookies" not in body_dict:
+                body_dict["cookies"] = {}
+
+            body_dict["cookies"][api_key_cookie.name] = self.value
+
+        def get_security_class(self) -> Type[BaseSecurity]:
+            return APIKeyCookie

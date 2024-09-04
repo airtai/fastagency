@@ -3,7 +3,8 @@
 from typing import *
 
 from fastagency.openapi.client import Client
-from fastagency.openapi.security import SecurityFactory
+from fastagency.openapi.security import {% for i in security_classes %}{{i}}{% if not loop.last %}, {% endif %}{% endfor %}
+
 
 app = Client(
     {% if info %}
@@ -13,22 +14,6 @@ app = Client(
     {% endfor %}
     {% endif %}
     )
-
-{% for k, v in security_schemes.items() %}
-
-{{ k|lower }} = SecurityFactory.get_security(
-    type="{{ v["type"] }}",
-    name="{{ v["name"] }}",
-    in_value="{{ v["in"] }}",
-)
-
-{{ k }}ParameterCls = {{ k|lower }}.get_parameter_cls()
-
-
-
-{% endfor %}
-
-
 
 
 {% for operation in operations %}
@@ -49,20 +34,16 @@ app = Client(
     {% endif %}
     {% if operation.tags %}
     , tags={{operation.tags}}
-    {% endif %})
-def {{operation.function_name}}({{operation.snake_case_arguments}}
-    {% if operation.security %}
-    , security:Union[
-        {% for security in operation.security %}
-
-        {% for key, value in security.items() %}
-        "{{key}}"{% if not loop.last %},{% endif %}
-        {% endfor %}
-
-        {% if not loop.last %},{% endif %}
-        {% endfor %}
-    ]
     {% endif %}
+    {% if operation.security %}
+    {% for security in operation.security %}
+    {% for key, value in security.items() %}
+    , security={{security_parameters[key]}}
+    {% endfor %}
+    {% endfor %}
+    {% endif %}
+    )
+def {{operation.function_name}}({{operation.snake_case_arguments}}
     ) -> {{operation.return_type}}:
     {%- if operation.summary %}
     """

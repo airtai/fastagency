@@ -15,7 +15,9 @@ search:
                 - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                 - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
             - security
+                - [APIKeyCookie](api/fastagency/openapi/security/APIKeyCookie.md)
                 - [APIKeyHeader](api/fastagency/openapi/security/APIKeyHeader.md)
+                - [APIKeyQuery](api/fastagency/openapi/security/APIKeyQuery.md)
                 - [BaseSecurity](api/fastagency/openapi/security/BaseSecurity.md)
                 - [BaseSecurityParameters](api/fastagency/openapi/security/BaseSecurityParameters.md)
         - studio
