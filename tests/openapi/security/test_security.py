@@ -72,11 +72,11 @@ def test_generate_client() -> None:
         with (td / "models_gen.py").open() as f:
             actual_models_gen = f.readlines()[4:]
 
-        expected_main_gen_path = Path(__file__).parent / "expected_main_gen.py"
+        expected_main_gen_path = Path(__file__).parent / "expected_main_gen.txt"
         with expected_main_gen_path.open() as f:
             expected_main_gen = f.readlines()[4:]
 
-        expected_models_gen_path = Path(__file__).parent / "expected_models_gen.py"
+        expected_models_gen_path = Path(__file__).parent / "expected_models_gen.txt"
         with expected_models_gen_path.open() as f:
             expected_models_gen = f.readlines()[4:]
 
