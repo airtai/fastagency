@@ -1,3 +1,3 @@
-from .base import Mesop
+from .base import MesopIO
 
-__all__ = ["Mesop"]
+__all__ = ["MesopIO"]

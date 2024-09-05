@@ -1,13 +1,13 @@
 import logging
 import mesop as me
 import json
-from examples.mesop_poc.data_model import State
-from fastagency.core.mesop.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
-from fastagency.core.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
-from fastagency.core.mesop.message import message_box
-from fastagency.core.mesop.components.ui_common import header, conversation_completed
-from fastagency.core.mesop.components.inputs import input_user_feedback, input_prompt
-from fastagency.core.mesop.base import MesopMessage, AskingMessage, WorkflowCompleted
+from fastagency.core.io.mesop.data_model import State
+from fastagency.core.io.mesop.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
+from fastagency.core.io.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
+from fastagency.core.io.mesop.message import message_box
+from fastagency.core.io.mesop.components.ui_common import header, conversation_completed
+from fastagency.core.io.mesop.components.inputs import input_user_feedback, input_prompt
+from fastagency.core.io.mesop.base import MesopMessage, AskingMessage, WorkflowCompleted
 
 SECURITY_POLICY = me.SecurityPolicy(
     allowed_iframe_parents=["https://huggingface.co"]
@@ -72,11 +72,11 @@ def _handle_message(state: State, message:MesopMessage ):
     messages.append(message_string)
     state.conversation.messages = list(messages)
     if isinstance(io_message, AskingMessage):
-        state.waitingForFeedback = True
-        state.conversationCompleted = False
+        state.waiting_for_feedback = True
+        state.conversation_completed = False
     if isinstance(io_message, WorkflowCompleted):
-        state.conversationCompleted = True
-        state.waitingForFeedback = False
+        state.conversation_completed = True
+        state.waiting_for_feedback = False
 
 def send_prompt(e: me.ClickEvent):
     logger.info(f"send_prompt: {e}")
@@ -84,8 +84,8 @@ def send_prompt(e: me.ClickEvent):
     me.navigate("/conversation")
     prompt = state.prompt
     state.prompt = ""
-    state.conversationCompleted = False
-    state.waitingForFeedback = False
+    state.conversation_completed = False
+    state.waiting_for_feedback = False
     yield
     me.scroll_into_view(key="end_of_messages")
     yield
@@ -119,17 +119,17 @@ def conversation_page():
                         )
                     ),
                 )
-        if state.waitingForFeedback:
+        if state.waiting_for_feedback:
             input_user_feedback(on_user_feedback)
-        if state.conversationCompleted:
+        if state.conversation_completed:
             conversation_completed(reset_conversation)
 
 def reset_conversation():
     logger.info("reset_conversation")
     state = me.state(State)
-    state.conversationCompleted = False
+    state.conversation_completed = False
     state.conversation.messages = []
-    state.waitingForFeedback = False
+    state.waiting_for_feedback = False
     state.autogen = -1
     state.prompt = ""
     state.feedback = ""
@@ -143,11 +143,11 @@ def on_user_feedback(e: me.ClickEvent):
         raise
 
     feedback = state.feedback
-    state.waitingForFeedback = False
+    state.waiting_for_feedback = False
     yield
     logger.info("on_user_feedback 2")
     state.feedback = ""
-    state.waitingForFeedback = False
+    state.waiting_for_feedback = False
     yield
     logger.info("on_user_feedback 3")
     me.scroll_into_view(key="end_of_messages")

@@ -59,9 +59,34 @@ search:
                     - base
                         - [ConsoleIO](api/fastagency/core/io/console/base/ConsoleIO.md)
                 - mesop
-                    - [Mesop](api/fastagency/core/io/mesop/Mesop.md)
+                    - [MesopIO](api/fastagency/core/io/mesop/MesopIO.md)
                     - base
-                        - [Mesop](api/fastagency/core/io/mesop/base/Mesop.md)
+                        - [MesopIO](api/fastagency/core/io/mesop/base/MesopIO.md)
+                        - [MesopMessage](api/fastagency/core/io/mesop/base/MesopMessage.md)
+                        - [run_workflow](api/fastagency/core/io/mesop/base/run_workflow.md)
+                    - components
+                        - inputs
+                            - [input_prompt](api/fastagency/core/io/mesop/components/inputs/input_prompt.md)
+                            - [input_user_feedback](api/fastagency/core/io/mesop/components/inputs/input_user_feedback.md)
+                        - ui_common
+                            - [conversation_completed](api/fastagency/core/io/mesop/components/ui_common/conversation_completed.md)
+                            - [header](api/fastagency/core/io/mesop/components/ui_common/header.md)
+                    - data_model
+                        - [Conversation](api/fastagency/core/io/mesop/data_model/Conversation.md)
+                        - [State](api/fastagency/core/io/mesop/data_model/State.md)
+                    - main
+                        - [conversation_page](api/fastagency/core/io/mesop/main/conversation_page.md)
+                        - [get_workflows](api/fastagency/core/io/mesop/main/get_workflows.md)
+                        - [home_page](api/fastagency/core/io/mesop/main/home_page.md)
+                        - [on_user_feedback](api/fastagency/core/io/mesop/main/on_user_feedback.md)
+                        - [reset_conversation](api/fastagency/core/io/mesop/main/reset_conversation.md)
+                        - [send_prompt](api/fastagency/core/io/mesop/main/send_prompt.md)
+                    - message
+                        - [MesopGUIMessageVisitor](api/fastagency/core/io/mesop/message/MesopGUIMessageVisitor.md)
+                        - [message_box](api/fastagency/core/io/mesop/message/message_box.md)
+                    - send_prompt
+                        - [send_prompt_to_autogen](api/fastagency/core/io/mesop/send_prompt/send_prompt_to_autogen.md)
+                        - [send_user_feedback_to_autogen](api/fastagency/core/io/mesop/send_prompt/send_user_feedback_to_autogen.md)
             - runtimes
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/core/runtimes/autogen/AutoGenWorkflows.md)

@@ -3,7 +3,7 @@ from typing import Optional
 
 import mesop as me
 
-from fastagency.core.base import (
+from ...base import (
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
