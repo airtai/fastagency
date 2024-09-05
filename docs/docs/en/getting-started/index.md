@@ -258,6 +258,140 @@ The output will vary based on the interface:
 
     For Mesop applications, the output will include a URL where you can access your web-based application.
 
+## Using External REST APIs
+
+### Creating a Weather Agent
+
+This tutorial demonstrates how to integrate external REST API calls into `AutoGen` agents using `FastAgency`. We'll create a weather agent that interacts with a weather REST API and a user agent to facilitate the conversation. This example will help you understand how to set up agents and facilitate agent communication through an external REST API. To interact with the REST API, the AutoGen agent needs to understand the available routes, so it requires the `openapi.json` file from the external REST API.
+
+For this tutorial's use case, Airt.ai provides a [weather API](https://weather.tools.fastagency.ai/docs).
+
+#### Imports
+These imports are similar to the imports section we have already covered, with the only difference being the additional import of the `OpenAPI` Client:
+
+```python
+import os
+
+from autogen.agentchat import ConversableAgent
+
+from fastagency.core import Chatable
+from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.core.io.console import ConsoleIO
+from fastagency.openapi.client import Client
+
+from fastagency import FastAgency
+```
+
+#### Define Workflow
+
+In this workflow, the only difference is that we create a Python client for the external REST API by passing the URL of the `openapi.json` to the `Client.create` method. Then, we register the generated client with the agent using the methods `register_for_llm` and `register_for_execution`. Here's a simple example of a workflow definition:
+
+```python
+llm_config = {
+    "config_list": [
+        {
+            "model": "gpt-4o-mini",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+        }
+    ],
+    "temperature": 0.8,
+}
+
+WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
+
+wf = AutoGenWorkflows()
+
+@wf.register(name="simple_weather", description="Weather chat")
+def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+
+    weather_client = Client.create(openapi_url=WEATHER_OPENAPI_URL)
+
+    user_agent = UserProxyAgent(
+        name="User_Agent",
+        system_message="You are a user agent",
+        llm_config=llm_config,
+        human_input_mode="NEVER",
+    )
+    weather_agent = ConversableAgent(
+        name="Weather_Agent",
+        system_message="You are a weather agent",
+        llm_config=llm_config,
+        human_input_mode="NEVER",
+    )
+
+    weather_client.register_for_llm(weather_agent)
+    weather_client.register_for_execution(user_agent)
+
+    chat_result = user_agent.initiate_chat(
+        weather_agent,
+        message=initial_message,
+        summary_method="reflection_with_llm",
+        max_turns=3,
+    )
+
+    return chat_result.summary
+```
+
+This code snippet sets up a simple weather agent that calls an external weather API using the registered functions generated from the `openapi.json` URL.
+
+### Define FastAgency Application
+
+Next, define your FastAgency application.
+
+```python
+from fastagency.core.io.console import ConsoleIO
+
+app = FastAgency(wf=wf, io=ConsoleIO())
+```
+
+## Run Application
+
+Once everything is set up, you can run your FastAgency application using the following command:
+
+```console
+fastagency run
+```
+
+### Output
+
+The output will vary based on the city and the current weather conditions:
+
+```console
+ ╭── Python module file ──╮
+ │                        │
+ │  🐍 sample_weather.py  │
+ │                        │
+ ╰────────────────────────╯
+╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+│                                                                              │
+│ Starting a new workflow 'simple_weather' with the following                  │
+│ description:                                                                 │
+│                                                                              │
+│ Weather chat                                                                 │
+│                                                                              │
+│ Please enter an initial message:                                             │
+╰──────────────────────────────────────────────────────────────────────────────╯
+What is the weather in Zagreb?
+
+    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ What is the weather in Zagreb?                                               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Weather_Agent -> User_Agent [suggested_function_call] ──────────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "get_weather__get",                                       │
+    │   "call_id":                                                                 │
+    │ "call_gGl4uAhMvPTXjgrOvkVZwCh3",                                             │
+    │   "arguments": {                                                             │
+    │     "city": "Zagreb"                                                         │
+    │                                                                              │
+    │   }                                                                          │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
 ## Future Plans
 
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/), to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
