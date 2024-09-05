@@ -152,7 +152,7 @@ class TestOpenAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/OpenAIAPIKeyRef"}],
+                    "$ref": "#/$defs/OpenAIAPIKeyRef",
                     "description": "The API Key from OpenAI",
                     "title": "API Key",
                 },
