@@ -5,8 +5,14 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import Generator, List, Optional
 
-from ...app import FastAgency
-from ...base import IOMessage, IOMessageVisitor, MultipleChoice, TextInput, TextMessage
+from ...base import (
+    IOMessage,
+    IOMessageVisitor,
+    MultipleChoice,
+    Runnable,
+    TextInput,
+    TextMessage,
+)
 
 
 class ConsoleIO(IOMessageVisitor):  # Chatable
@@ -29,7 +35,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         self.sub_conversations: List[ConsoleIO] = []
 
     @contextmanager
-    def start(self, app: FastAgency) -> Generator[None, None, None]:
+    def start(self, app: Runnable) -> Generator[None, None, None]:
         yield
 
     @property

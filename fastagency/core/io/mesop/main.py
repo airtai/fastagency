@@ -11,7 +11,7 @@ class State:
 
 
 @me.page(path="/starter_kit")
-def page():
+def page() -> None:
     with (
         me.box(
             style=me.Style(
@@ -37,7 +37,7 @@ def page():
     footer()
 
 
-def header_text():
+def header_text() -> None:
     with me.box(
         style=me.Style(
             padding=me.Padding(

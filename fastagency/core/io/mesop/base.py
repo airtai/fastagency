@@ -2,11 +2,11 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator, List, Optional
 
-from ...app import FastAgency
 from ...base import (
     AskingMessage,
     IOMessage,
     IOMessageVisitor,
+    Runnable,
 )
 
 
@@ -27,7 +27,7 @@ class Mesop(IOMessageVisitor):  # Chatable
         self.sub_conversations: List[Mesop] = []
 
     @contextmanager
-    def start(self, app: FastAgency) -> Generator[None, None, None]:
+    def start(self, app: Runnable) -> Generator[None, None, None]:
         yield
 
     def visit_default(self, message: IOMessage) -> None:

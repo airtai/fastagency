@@ -24,6 +24,7 @@ __all__ = [
     "IOMessage",
     "MessageType",
     "MultipleChoice",
+    "Runnable",
     "SuggestedFunctionCall",
     "SystemMessage",
     "TextInput",
@@ -198,9 +199,22 @@ class IOMessageVisitor(ABC):
 
 
 @runtime_checkable
+class Runnable(Protocol):
+    @contextmanager
+    def start(self) -> Generator[None, None, None]: ...
+
+    def run(
+        self, name: Optional[str], initial_message: Optional[str] = None
+    ) -> None: ...
+
+    @property
+    def wf(self) -> "Workflows": ...
+
+
+@runtime_checkable
 class Chatable(Protocol):
-    # @contextmanager
-    # def start(self, app: FastAgency) -> Generator[None, None, None]: ...
+    @contextmanager
+    def start(self, app: Runnable) -> Generator[None, None, None]: ...
 
     def process_message(self, message: IOMessage) -> Optional[str]: ...
 
