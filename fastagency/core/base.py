@@ -75,6 +75,9 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
     def create(type: Optional[MessageType] = None, **kwargs: Any) -> "IOMessage":
         cls = IOMessage._get_message_class(type)
 
+        content = kwargs.pop("content", {})
+        kwargs.update(content)
+
         return cls(**kwargs)
 
     @staticmethod
