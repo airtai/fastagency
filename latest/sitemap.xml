@@ -85,6 +85,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/cli/discover/get_module_data_from_path/"/>
     </url>
     <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/cli/discover/import_from_string/</loc>
+        <lastmod>2024-09-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/cli/discover/import_from_string/"/>
+    </url>
+    <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/cli/exceptions/FastAgencyCLIError/</loc>
         <lastmod>2024-09-05</lastmod>
         <changefreq>daily</changefreq>
@@ -193,6 +199,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/core/base/MultipleChoice/"/>
     </url>
     <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/core/base/Runnable/</loc>
+        <lastmod>2024-09-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/core/base/Runnable/"/>
+    </url>
+    <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/core/base/SuggestedFunctionCall/</loc>
         <lastmod>2024-09-05</lastmod>
         <changefreq>daily</changefreq>
@@ -229,6 +241,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/core/base/Workflows/"/>
     </url>
     <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/core/base/run_workflow/</loc>
+        <lastmod>2024-09-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/core/base/run_workflow/"/>
+    </url>
+    <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/core/io/console/ConsoleIO/</loc>
         <lastmod>2024-09-05</lastmod>
         <changefreq>daily</changefreq>
@@ -239,6 +257,18 @@
         <lastmod>2024-09-05</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/core/io/console/base/ConsoleIO/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/core/io/mesop/Mesop/</loc>
+        <lastmod>2024-09-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/core/io/mesop/Mesop/"/>
+    </url>
+    <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/core/io/mesop/base/Mesop/</loc>
+        <lastmod>2024-09-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/core/io/mesop/base/Mesop/"/>
     </url>
     <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/core/runtimes/autogen/AutoGenWorkflows/</loc>
