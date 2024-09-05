@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.io.mesop.main.example_box
+::: fastagency.core.io.mesop.Mesop

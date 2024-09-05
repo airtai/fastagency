@@ -1,5 +1,6 @@
-from collections.abc import Generator
-from contextlib import contextmanager
+import os
+import subprocess
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -27,9 +28,37 @@ class Mesop(IOMessageVisitor):  # Chatable
         self.super_conversation: Optional[Mesop] = super_conversation
         self.sub_conversations: list[Mesop] = []
 
-    @contextmanager
-    def start(self, app: Runnable) -> Generator[None, None, None]:
-        yield
+    def create(self, app: Runnable, import_string: str) -> None:
+        pass
+
+    def start(
+        self,
+        app: Runnable,
+        import_string: str,
+        name: Optional[str] = None,
+        initial_message: Optional[str] = None,
+    ) -> None:
+        env = os.environ.copy()
+        env["IMPORT_STRING"] = import_string
+        process = subprocess.Popen(
+            ["mesop", self.main_path],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1,
+            env=env,
+        )
+        try:
+            # Print stdout line by line
+            for line in process.stdout:
+                print(line, end="")  # noqa: T201 `print` found
+
+            # Print stderr line by line
+            for line in process.stderr:
+                print(line, end="", file=sys.stderr)  # noqa: T201 `print` found
+
+        finally:
+            process.terminate()
 
     def visit_default(self, message: IOMessage) -> None:
         print("-" * 80)  # noqa: T201 `print` found

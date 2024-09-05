@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.io.mesop.main.example_row
+::: fastagency.cli.discover.import_from_string

@@ -1,8 +1,6 @@
 import getpass
 import json
 import textwrap
-from collections.abc import Generator
-from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import Optional
 
@@ -13,6 +11,7 @@ from ...base import (
     Runnable,
     TextInput,
     TextMessage,
+    run_workflow,
 )
 
 
@@ -35,9 +34,17 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         self.super_conversation: Optional[ConsoleIO] = super_conversation
         self.sub_conversations: list[ConsoleIO] = []
 
-    @contextmanager
-    def start(self, app: Runnable) -> Generator[None, None, None]:
-        yield
+    def create(self, app: "Runnable", import_string: str) -> None:
+        pass
+
+    def start(
+        self,
+        app: "Runnable",
+        import_string: str,
+        name: Optional[str] = None,
+        initial_message: Optional[str] = None,
+    ) -> None:
+        run_workflow(app.wf, self, name, initial_message)
 
     @property
     def level(self) -> int:

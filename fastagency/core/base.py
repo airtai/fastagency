@@ -1,7 +1,6 @@
 import re
+import textwrap
 from abc import ABC, abstractmethod
-from collections.abc import Generator
-from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field, fields
 from typing import (
     Any,
@@ -28,6 +27,7 @@ __all__ = [
     "Workflow",
     "WorkflowCompleted",
     "Workflows",
+    "run_workflow",
 ]
 
 MessageType = Literal[
@@ -61,7 +61,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
     @staticmethod
     def _get_message_class(type: Optional[MessageType]) -> "Type[IOMessage]":
         type = type or "text_message"
-        lookup: dict[MessageType, Type[IOMessage]] = {
+        lookup: dict[MessageType, type[IOMessage]] = {
             "text_message": TextMessage,
             "suggested_function_call": SuggestedFunctionCall,
             "function_call_execution": FunctionCallExecution,
@@ -195,22 +195,16 @@ class IOMessageVisitor(ABC):
 
 
 @runtime_checkable
-class Runnable(Protocol):
-    @contextmanager
-    def start(self) -> Generator[None, None, None]: ...
-
-    def run(
-        self, name: Optional[str], initial_message: Optional[str] = None
-    ) -> None: ...
-
-    @property
-    def wf(self) -> "Workflows": ...
-
-
-@runtime_checkable
 class Chatable(Protocol):
-    @contextmanager
-    def start(self, app: Runnable) -> Generator[None, None, None]: ...
+    def create(self, app: "Runnable", import_string: str) -> None: ...
+
+    def start(
+        self,
+        app: "Runnable",
+        import_string: str,
+        name: Optional[str] = None,
+        initial_message: Optional[str] = None,
+    ) -> None: ...
 
     def process_message(self, message: IOMessage) -> Optional[str]: ...
 
@@ -238,3 +232,87 @@ class Workflows(Protocol):
     def names(self) -> list[str]: ...
 
     def get_description(self, name: str) -> str: ...
+
+
+@runtime_checkable
+class Runnable(Protocol):
+    def create(self, import_string: str) -> None: ...
+
+    def start(
+        self,
+        import_string: str,
+        name: Optional[str] = None,
+        initial_message: Optional[str] = None,
+    ) -> None: ...
+
+    @property
+    def wf(self) -> Workflows: ...
+
+    @property
+    def io(self) -> Chatable: ...
+
+
+def run_workflow(
+    wf: Workflows,
+    io: Chatable,
+    name: Optional[str],
+    initial_message: Optional[str] = None,
+) -> None:
+    """Run a workflow.
+
+    Args:
+        wf (Workflows): The workflows object to use.
+        io (Chatable): The IO object to use.
+        name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
+        initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
+    """
+    while True:
+        name = wf.names[0] if name is None else name
+        description = wf.get_description(name)
+
+        if initial_message is None:
+            initial_message = io.process_message(
+                TextInput(
+                    sender="FastAgency",
+                    recepient="user",
+                    prompt=(
+                        f"Starting a new workflow '{name}' with the following description:"
+                        + "\n\n"
+                        + f"{description}"
+                        + "\n\nPlease enter an initial message"
+                    ),
+                )
+            )
+        else:
+            io.process_message(
+                SystemMessage(
+                    sender="FastAgency",
+                    recepient="user",
+                    message={
+                        "body": (
+                            f"Starting a new workflow '{name}' with the following description:"
+                            + "\n\n"
+                            + textwrap.indent(description, prefix=" " * 2)
+                            + "\n\nand using the following initial message:"
+                            + textwrap.indent(initial_message, prefix=" " * 2)
+                        )
+                    },
+                )
+            )
+
+        result = wf.run(
+            name=name,
+            session_id="session_id",
+            io=io.create_subconversation(),
+            initial_message="Hi!" if initial_message is None else initial_message,
+        )
+
+        io.process_message(
+            WorkflowCompleted(
+                sender="workflow",
+                recepient="user",
+                result=result,
+            )
+        )
+
+        initial_message = None

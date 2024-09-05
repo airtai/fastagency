@@ -1,6 +1,21 @@
+import os
 import time
 
 import mesop as me
+
+from fastagency.cli.discover import import_from_string
+
+import_string = os.environ.get("IMPORT_STRING", None)
+if import_string is None:
+    raise ValueError("No import string provided")
+
+# import app using import string
+app = import_from_string(import_string)
+
+# get workflows from the app
+wf = app.wf
+
+# run workflow...
 
 
 @me.stateclass
@@ -10,7 +25,7 @@ class State:
     in_progress: bool
 
 
-@me.page(path="/starter_kit")
+@me.page(path="/")
 def page() -> None:
     with (
         me.box(
