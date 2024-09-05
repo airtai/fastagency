@@ -5,8 +5,6 @@ from typing import Optional
 from fastagency.core.base import IOMessage
 from fastagency.core.mesop.base import IOMessageVisitor, TextInput, TextMessage, MultipleChoice
 
-from examples.mesop_poc.data_model import ConversationMessage
-
 def message_box(message: str):
     message_dict = json.loads(message)
     level = message_dict["level"]
@@ -15,31 +13,6 @@ def message_box(message: str):
     io_message = IOMessage.create(**io_message_dict)
     visitor = MesopGUIMessageVisitor(level, conversationId)
     visitor.process_message(io_message)
-
-def user_message(content: str):
-    with me.box(
-        style=me.Style(
-            background="#e7f2ff",
-            padding=me.Padding.all(16),
-            margin=me.Margin.symmetric(vertical=16),
-            border_radius=16,
-        )
-    ):
-        me.text(content)
-
-#def autogen_message(message: ChatMessage):
-#    with me.box(
-#        style=me.Style(
-#            background="#fff",
-#            padding=me.Padding.all(16),
-#            border_radius=16,
-#            margin=me.Margin.symmetric(vertical=16),
-#        )
-#    ):
-#        me.markdown(message.content)
-#        if message.in_progress:
-#            me.progress_spinner()
-
 
 class MesopGUIMessageVisitor(IOMessageVisitor):
     def __init__(self, level, conversationId):
@@ -84,7 +57,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         text = message.prompt + "\n" + "\n".join([f"{i+1}. {choice}" for i, choice in enumerate(message.choices)])
         with me.box(
             style=me.Style(
-                background="#bff",
+                background="#cff",
                 padding=me.Padding.all(16),
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),

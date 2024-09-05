@@ -1,18 +1,7 @@
 from dataclasses import dataclass, field
-from typing import Literal, Optional
-from uuid import UUID
+from typing import  Optional
 import mesop as me
-from fastagency.core.base import IOMessage
 
-
-@dataclass(kw_only=True)
-class ConversationMessage:
-    level: int
-    conversationId: str
-    recipient: str
-    sender: str
-    text: str
-    #io_message: IOMessage
 
 @dataclass
 class Conversation:
