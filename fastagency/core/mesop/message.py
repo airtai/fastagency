@@ -82,6 +82,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             text = message.prompt
         else:
             text = "Please enter a value"
+        if message.choices:
             options = ",".join(
                 f"{i+1}. {choice}" for i, choice in enumerate(message.choices)
             )
