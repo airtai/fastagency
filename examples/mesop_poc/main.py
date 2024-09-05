@@ -1,7 +1,7 @@
 import mesop as me
 import json
 from examples.mesop_poc.data_model import State
-from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
+from fastagency.core.mesop.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
 from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
 from fastagency.core.mesop.message import message_box
 from examples.mesop_poc.components.ui_common import header, conversation_completed
