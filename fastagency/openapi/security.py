@@ -34,13 +34,9 @@ class BaseSecurity(BaseModel):
     def is_supported(cls, type: str, in_value: str) -> bool:
         return type == cls.type and in_value == cls.in_value
 
-    @staticmethod
-    def get_security_class(type: str, in_value: str) -> str:
-        sub_classes = [
-            APIKeyHeader,
-            APIKeyQuery,
-            APIKeyCookie,
-        ]
+    @classmethod
+    def get_security_class(cls, type: str, in_value: str) -> str:
+        sub_classes = cls.__subclasses__()
 
         for sub_class in sub_classes:
             if sub_class.is_supported(type, in_value):
