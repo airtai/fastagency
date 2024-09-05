@@ -257,13 +257,23 @@ class Client:
         }
 
     @classmethod
-    def create(cls, openapi_json: str) -> "Client":
+    def create(
+        cls, openapi_json: Optional[str] = None, openapi_url: Optional[str] = None
+    ) -> "Client":
+        if openapi_json is None and openapi_url is None:
+            raise ValueError("Either openapi_json or openapi_url should be provided")
+
+        if openapi_json is None and openapi_url is not None:
+            with requests.get(openapi_url) as response:
+                response.raise_for_status()
+                openapi_json = response.text
+
         with tempfile.TemporaryDirectory() as temp_dir:
             td = Path(temp_dir)
             sufix = td.name
 
             main_name = cls.generate_code(
-                input_text=openapi_json,
+                input_text=openapi_json,  # type: ignore [arg-type]
                 output_dir=td,
             )
             # add td to sys.path
