@@ -1,23 +1,38 @@
 import json
-import mesop as me
 from typing import Optional
 
-from fastagency.core.base import IOMessage
-from fastagency.core.mesop.base import IOMessageVisitor, TextInput, TextMessage, MultipleChoice
+import mesop as me
 
-def message_box(message: str):
+from fastagency.core.base import (
+    IOMessage,
+    IOMessageVisitor,
+    MultipleChoice,
+    TextInput,
+    TextMessage,
+)
+
+
+def message_box(message: str) -> None:
     message_dict = json.loads(message)
     level = message_dict["level"]
-    conversationId = message_dict["conversationId"]
+    conversation_id = message_dict["conversationId"]
     io_message_dict = message_dict["io_message"]
     io_message = IOMessage.create(**io_message_dict)
-    visitor = MesopGUIMessageVisitor(level, conversationId)
+    visitor = MesopGUIMessageVisitor(level, conversation_id)
     visitor.process_message(io_message)
 
+
 class MesopGUIMessageVisitor(IOMessageVisitor):
-    def __init__(self, level, conversationId):
+    """A visitor that creates UI elements for messages.
+
+    Args:
+        level (int): The level of the message.
+        conversation_id (str): The ID of the conversation.
+    """
+
+    def __init__(self, level: int, conversation_id: str) -> None:
         self._level = level
-        self._conversationId = conversationId
+        self._conversation_id = conversation_id
 
     def visit_default(self, message: IOMessage) -> None:
         with me.box(
@@ -42,7 +57,15 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.markdown(message.body)
 
     def visit_text_input(self, message: TextInput) -> str:
-        text = message.prompt + "\n" + ",".join([f"{suggestion}" for i, suggestion in enumerate(message.suggestions)])
+        if message.prompt:
+            text = message.prompt
+        else:
+            text = "Please enter a value"
+
+        if message.suggestions:
+            suggestions = ",".join(suggestion for suggestion in message.suggestions)
+            text += "\n" + suggestions
+
         with me.box(
             style=me.Style(
                 background="#bff",
@@ -52,9 +75,17 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             )
         ):
             me.markdown(text)
+        return ""
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
-        text = message.prompt + "\n" + "\n".join([f"{i+1}. {choice}" for i, choice in enumerate(message.choices)])
+        if message.prompt:
+            text = message.prompt
+        else:
+            text = "Please enter a value"
+            options = ",".join(
+                f"{i+1}. {choice}" for i, choice in enumerate(message.choices)
+            )
+            text += "\n" + options
         with me.box(
             style=me.Style(
                 background="#cff",
@@ -64,6 +95,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             )
         ):
             me.markdown(text)
+        return ""
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         return self.visit(message)
