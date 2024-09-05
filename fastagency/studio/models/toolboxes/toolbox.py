@@ -27,7 +27,6 @@ class OpenAPIAuthToken(Model):
         str,
         Field(
             description="Authentication token for OpenAPI routes",
-            pattern=r"^Bearer .+$",
         ),
     ]
 
