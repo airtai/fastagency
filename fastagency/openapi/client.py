@@ -218,7 +218,7 @@ class Client:
     ) -> str:
         if custom_visitors is None:
             custom_visitors = []
-        custom_visitors.append(Path(__file__).parent / "custom_visitor.py")
+        custom_visitors.append(Path(__file__).parent / "security_schema_visitor.py")
 
         with patch_get_parameter_type():
             generate_code(
