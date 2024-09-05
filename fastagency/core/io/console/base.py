@@ -1,9 +1,11 @@
 import getpass
 import json
 import textwrap
+from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Generator, List, Optional
 
+from ...app import FastAgency
 from ...base import IOMessage, IOMessageVisitor, MultipleChoice, TextInput, TextMessage
 
 
@@ -25,6 +27,10 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         """
         self.super_conversation: Optional[ConsoleIO] = super_conversation
         self.sub_conversations: List[ConsoleIO] = []
+
+    @contextmanager
+    def start(self, app: FastAgency) -> Generator[None, None, None]:
+        yield
 
     @property
     def level(self) -> int:

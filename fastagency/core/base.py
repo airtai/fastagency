@@ -1,10 +1,12 @@
 import re
 from abc import ABC, abstractmethod
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field, fields
 from typing import (
     Any,
     Callable,
     Dict,
+    Generator,
     List,
     Literal,
     Optional,
@@ -13,6 +15,8 @@ from typing import (
     TypeVar,
     runtime_checkable,
 )
+
+# from .app import FastAgency
 
 __all__ = [
     "Chatable",
@@ -74,6 +78,9 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
     @staticmethod
     def create(type: Optional[MessageType] = None, **kwargs: Any) -> "IOMessage":
         cls = IOMessage._get_message_class(type)
+
+        content = kwargs.pop("content", {})
+        kwargs.update(content)
 
         return cls(**kwargs)
 
@@ -192,6 +199,9 @@ class IOMessageVisitor(ABC):
 
 @runtime_checkable
 class Chatable(Protocol):
+    # @contextmanager
+    # def start(self, app: FastAgency) -> Generator[None, None, None]: ...
+
     def process_message(self, message: IOMessage) -> Optional[str]: ...
 
     # def process_streaming_message(

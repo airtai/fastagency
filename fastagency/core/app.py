@@ -1,7 +1,8 @@
 __all__ = ["FastAgency"]
 
 import textwrap
-from typing import Optional
+from contextlib import contextmanager
+from typing import Generator, Optional
 
 from .base import Chatable, SystemMessage, TextInput, WorkflowCompleted, Workflows
 
@@ -16,6 +17,12 @@ class FastAgency:
         """
         self.wf = wf
         self.io = io
+
+    @contextmanager
+    def start(self) -> Generator[None, None, None]:
+        """Start the FastAgency."""
+        with self.io.start(app=self):
+            yield
 
     def run(self, name: Optional[str], initial_message: Optional[str] = None) -> None:
         """Run a workflow.

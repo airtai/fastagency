@@ -1,3 +1,4 @@
+import logging
 import mesop as me
 
 from examples.mesop_poc.data_model import State, ConversationMessage
@@ -11,6 +12,34 @@ from fastagency.core.mesop.base import MesopMessage, AskingMessage, WorkflowComp
 SECURITY_POLICY = me.SecurityPolicy(
     allowed_iframe_parents=["https://huggingface.co"]
 )
+
+# Get the logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+logger.handlers = []
+
+# Create a stream handler
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)
+
+# Create a formatter and set it for the handler
+formatter = logging.Formatter("[%(levelname)s] %(message)s")
+handler.setFormatter(formatter)
+
+# Add the handler to the logger
+logger.addHandler(handler)
+
+# Log messages
+logger.warning("warning message")
+logger.info("info message")
+
+def get_workflow():
+    # todo: dynamic import
+    from examples.mesop_poc.main import app
+    wf = app.wf[0]
+    return wf
+
 
 @me.page(
     path="/",
@@ -32,7 +61,8 @@ def home_page():
             )
             input_prompt(send_prompt)
 
-def _handle_message(message:MesopMessage ):
+def _handle_message(message:MesopMessage):
+    logger.info(f"_handle_message: {message}")
     state = me.state(State)
     messages = state.conversation.messages
     level = message.conversation.level
@@ -48,6 +78,7 @@ def _handle_message(message:MesopMessage ):
         state.waitingForFeedback = False
 
 def send_prompt(e: me.ClickEvent):
+    logger.info(f"send_prompt: {e}")
     state = me.state(State)
     me.navigate("/conversation")
     prompt = state.prompt
@@ -65,6 +96,7 @@ def send_prompt(e: me.ClickEvent):
 
 @me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)
 def conversation_page():
+    logger.info("conversation_page")
     state = me.state(State)
     with me.box(style=ROOT_BOX_STYLE):
         header()
@@ -91,6 +123,7 @@ def conversation_page():
             conversation_completed(reset_conversation)
 
 def reset_conversation():
+    logger.info("reset_conversation")
     state = me.state(State)
     state.conversationCompleted = False
     state.conversation.messages = []
@@ -100,17 +133,28 @@ def reset_conversation():
     state.feedback = ""
 
 def on_user_feedback(e: me.ClickEvent):
-    state = me.state(State)
+    logger.info("on_user_feedback 1")
+    try:
+        state = me.state(State)
+    except Exception as e:
+        logger.info(f"ERROR: {e}")
+        raise
+
     feedback = state.feedback
     state.waitingForFeedback = False
     yield
+    logger.info("on_user_feedback 2")
     state.feedback = ""
     state.waitingForFeedback = False
     yield
+    logger.info("on_user_feedback 3")
     me.scroll_into_view(key="end_of_messages")
     yield
+    logger.info("on_user_feedback 4")
     responses = send_user_feedback_to_autogen(feedback)
     for message in responses:
         _handle_message(message)
         yield
+        logger.info("on_user_feedback 5")
     yield
+    logger.info("on_user_feedback 6")

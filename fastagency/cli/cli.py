@@ -48,11 +48,12 @@ def _run_app(
 ) -> None:
     try:
         _, fa_app = get_import_string(path=path, app_name=app)
+
+        with fa_app.start():
+            fa_app.run(name=workflow, initial_message=initial_message)
     except FastAgencyCLIError as e:
         logger.error(str(e))
         raise typer.Exit(code=1) from None
-
-    fa_app.run(name=workflow, initial_message=initial_message)
 
 
 def _get_help_messages(dev_mode: bool = False) -> Dict[str, str]:
