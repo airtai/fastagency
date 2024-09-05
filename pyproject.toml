@@ -148,7 +148,7 @@ Homepage = "https://docs.fastagency.ai/latest/"
 Documentation = "https://docs.fastagency.airt.ai/latest/"
 Tracker = "https://github.com/airtai/fastagency/issues"
 Source = "https://github.com/airtai/fastagency"
-Discord = "https://discord.gg/qFm6aSqq59"
+Discord = "https://discord.gg/kJjSGWrknU"
 
 [project.scripts]
 fastagency = "fastagency.__main__:cli"
