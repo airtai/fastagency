@@ -12,9 +12,11 @@
     <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
+<!--
   <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
       <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
   </a>
+ -->
 
   <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
     <img src="https://static.pepy.tech/personalized-badge/fastagency?period=month&units=international_system&left_color=grey&right_color=green&left_text=downloads/month" alt="Downloads"/>
@@ -70,54 +72,31 @@ We are also working on adding support for other frameworks, such as [CrewAI](htt
 
 To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
 
-=== "Console"
-    ```console
-    pip install "fastagency[autogen]"
-    ```
+```console
+pip install "fastagency[autogen]"
+```
 
-    This command installs FastAgency with support for the Console interface and AutoGen framework.
-
-=== "Mesop"
-    ```console
-    pip install "fastagency[autogen,mesop]"
-    ```
-
-    This command installs FastAgency with support for both the Console and Mesop interfaces, providing a more comprehensive setup.
+This command installs FastAgency with support for the Console interface and AutoGen framework.
 
 ## Write Code
 
 ### Imports
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
-=== "Console"
-    ```python
-    import os
+```python
+import os
 
-    from autogen.agentchat import ConversableAgent
+from autogen.agentchat import ConversableAgent
 
-    from fastagency.core import Chatable
-    from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-    from fastagency.core.io.console import ConsoleIO
+from fastagency.core import Chatable
+from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.core.io.console import ConsoleIO
 
-    from fastagency import FastAgency
-    ```
+from fastagency import FastAgency
+```
 
-    For Console applications, import `ConsoleIO` to handle command-line input and output.
+For Console applications, import `ConsoleIO` to handle command-line input and output.
 
-=== "Mesop"
-    ```python
-    import os
-
-    from autogen.agentchat import ConversableAgent
-
-    from fastagency.core import Chatable
-    from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-    from fastagency.core.io.mesop import MesopIO
-
-    from fastagency import FastAgency
-    ```
-
-    For Mesop applications, import `MesopIO` to integrate with the Mesop web interface.
 
 ### Define Workflow
 
@@ -165,23 +144,14 @@ This code snippet sets up a simple learning chat between a student and a teacher
 
 Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
-=== "Console"
-    ```python
-    from fastagency.core.io.console import ConsoleIO
+```python
+from fastagency.core.io.console import ConsoleIO
 
-    app = FastAgency(wf=wf, io=ConsoleIO())
-    ```
+app = FastAgency(wf=wf, io=ConsoleIO())
+```
 
-    For Console applications, use `ConsoleIO` to handle user interaction via the command line.
+For Console applications, use `ConsoleIO` to handle user interaction via the command line.
 
-=== "Mesop"
-    ```python
-    from fastagency.core.io.mesop import MesopIO
-
-    app = FastAgency(wf=wf, io=MesopIO())
-    ```
-
-    For Mesop applications, use `MesopIO` to enable web-based interactions.
 
 ## Run Application
 
@@ -195,89 +165,41 @@ fastagency run
 
 The output will vary based on the interface:
 
-=== "Console"
-    ```console
-    ╭─ Python module file ─╮
-    │                      │
-    │  🐍 main.py          │
-    │                      │
-    ╰──────────────────────╯
+```console
+╭─ Python module file ─╮
+│                      │
+│  🐍 main.py          │
+│                      │
+╰──────────────────────╯
 
 
-    ╭─ Importable FastAgency app ─╮
-    │                             │
-    │  from main import app       │
-    │                             │
-    ╰─────────────────────────────╯
+╭─ Importable FastAgency app ─╮
+│                             │
+│  from main import app       │
+│                             │
+╰─────────────────────────────╯
 
-    ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
-    │                                                                              │
-    │ Starting a new workflow 'simple_learning' with the following                 │
-    │ description:                                                                 │
-    │                                                                              │
-    │ Student and teacher learning chat                                            │
-    │                                                                              │
-    │ Please enter an                                                              │
-    │ initial message:                                                             │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
-    ```
+╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+│                                                                              │
+│ Starting a new workflow 'simple_learning' with the following                 │
+│ description:                                                                 │
+│                                                                              │
+│ Student and teacher learning chat                                            │
+│                                                                              │
+│ Please enter an                                                              │
+│ initial message:                                                             │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
 
-    For Console applications, you will see a command-line prompt where you can enter the initial message and interact with your workflow.
+For Console applications, you will see a command-line prompt where you can enter the initial message and interact with your workflow.
 
-=== "Mesop"
-    ```console
-    ╭─ Python module file ─╮
-    │                      │
-    │  🐍 main_mesop.py    │
-    │                      │
-    ╰──────────────────────╯
-
-
-    ╭─ Importable FastAgency app ──╮
-    │                              │
-    │  from main_mesop import app  │
-    │                              │
-    ╰──────────────────────────────╯
-
-    Running with hot reload:
-
-    Running server on: http://localhost:32123
-    * Serving Flask app 'mesop.server.server'
-    * Debug mode: off
-    ```
-
-    For Mesop applications, the output will include a URL where you can access your web-based application.
+---
 
 ## Future Plans
 
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/), to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
 
 Feel free to customize your workflow and application based on your needs. For more details on configurations and additional features, refer to the [AutoGen documentation](https://microsoft.github.io/autogen/) and [Mesop documentation](https://google.github.io/mesop/).
-
----
-
-## Stay in touch
-
-Please show your support and stay in touch by:
-
-- giving our [GitHub repository](https://github.com/airtai/fastagency/) a star, and
-
-- joining our [Discord server](https://discord.gg/kJjSGWrknU)
-
-Your support helps us to stay in touch with you and encourages us to
-continue developing and improving the framework. Thank you for your
-support!
-
----
-
-## Contributors
-
-Thanks to all of these amazing people who made the project better!
-
-<a href="https://github.com/airtai/fastagency/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
-</a>
-
 
 ---
 
