@@ -5,16 +5,19 @@ import mesop as me
 from fastagency.core.base import IOMessage
 
 
-#@dataclass(kw_only=True)
-@dataclass
+@dataclass(kw_only=True)
 class ConversationMessage:
     level: int
     conversationId: str
-    io_message: IOMessage
+    recipient: str
+    sender: str
+    text: str
+    #io_message: IOMessage
 
 @dataclass
 class Conversation:
-    messages: list[ConversationMessage] = field(default_factory=list)
+    #messages: list[ConversationMessage] = field(default_factory=list)
+    messages: list[str] = field(default_factory=list)
 
 @me.stateclass
 class State:

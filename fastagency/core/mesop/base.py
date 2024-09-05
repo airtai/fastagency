@@ -40,6 +40,7 @@ class MesopIO(IOMessageVisitor):
         if super_conversation is None:
             self._in_queue = Queue()
             self._out_queue = Queue()
+        MesopIO.register(self)
 
     _registry: ClassVar[Dict[str, "MesopIO"]] = {}
 

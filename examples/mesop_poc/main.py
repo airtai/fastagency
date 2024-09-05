@@ -1,7 +1,7 @@
 import mesop as me
-
+import json
 from examples.mesop_poc.data_model import State, ConversationMessage
-from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
+from examples.mesop_poc.send_prompt import MesopGUIMessageVisitor, send_prompt_to_autogen, send_user_feedback_to_autogen
 from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
 from examples.mesop_poc.components.message import message_box
 from examples.mesop_poc.components.ui_common import header, conversation_completed
@@ -17,6 +17,7 @@ SECURITY_POLICY = me.SecurityPolicy(
     stylesheets=STYLESHEETS,
     security_policy=SECURITY_POLICY,
 )
+
 def home_page():
     with me.box(style=ROOT_BOX_STYLE):
         header()
@@ -32,14 +33,18 @@ def home_page():
             )
             input_prompt(send_prompt)
 
-def _handle_message(message:MesopMessage ):
-    state = me.state(State)
+def _handle_message(state: State, message:MesopMessage ):
     messages = state.conversation.messages
-    level = message.conversation.level
-    conversationId = message.conversation.id
-    cm = ConversationMessage(level=level,conversationId=conversationId, io_message=message.io_message)
-    messages.append(cm)
+    #level = message.conversation.level
+    #conversationId = message.conversation.id
     io_message = message.io_message
+    message_dict = io_message.model_dump()
+    message_string = json.dumps(message_dict)
+    #if messages is None:
+    #    state.conversation.messages = list([message_string])
+    #else:
+    messages.append(message_string)
+    state.conversation.messages = list(messages)
     if isinstance(io_message, AskingMessage):
         state.waitingForFeedback = True
         state.conversationCompleted = False
@@ -48,6 +53,7 @@ def _handle_message(message:MesopMessage ):
         state.waitingForFeedback = False
 
 def send_prompt(e: me.ClickEvent):
+    print("send_prompt")
     state = me.state(State)
     me.navigate("/conversation")
     prompt = state.prompt
@@ -59,7 +65,8 @@ def send_prompt(e: me.ClickEvent):
     yield
     responses = send_prompt_to_autogen(prompt)
     for message in responses:
-        _handle_message(message)
+        state = me.state(State)
+        _handle_message(state, message)
         yield
     yield
 
@@ -111,6 +118,7 @@ def on_user_feedback(e: me.ClickEvent):
     yield
     responses = send_user_feedback_to_autogen(feedback)
     for message in responses:
-        _handle_message(message)
+        state = me.state(State)
+        _handle_message(state, message)
         yield
     yield
