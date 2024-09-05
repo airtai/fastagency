@@ -15,9 +15,9 @@ def send_prompt_to_autogen(prompt: str) -> Iterable[MesopMessage]:
     return mesop_io.get_message_stream()
 
 
-def send_user_feedback_to_autogen(userResponse: str) -> Iterable[MesopMessage]:
+def send_user_feedback_to_autogen(user_response: str) -> Iterable[MesopMessage]:
     state = me.state(State)
     mesop_id = state.fastagency
     mesop_io = MesopIO.get_conversation(mesop_id)
-    mesop_io.respond(userResponse)
+    mesop_io.respond(user_response)
     return mesop_io.get_message_stream()
