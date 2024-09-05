@@ -23,14 +23,13 @@ def message_box(message: str) -> None:
 
 
 class MesopGUIMessageVisitor(IOMessageVisitor):
-    """A visitor that creates UI elements for messages.
-
-    Args:
-        level (int): The level of the message.
-        conversation_id (str): The ID of the conversation.
-    """
-
     def __init__(self, level: int, conversation_id: str) -> None:
+        """Initialize the MesopGUIMessageVisitor object.
+
+        Args:
+            level (int): The level of the message.
+            conversation_id (str): The ID of the conversation.
+        """
         self._level = level
         self._conversation_id = conversation_id
 
