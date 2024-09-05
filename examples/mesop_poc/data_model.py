@@ -5,10 +5,11 @@ import mesop as me
 from fastagency.core.base import IOMessage
 
 
-@dataclass(kw_only=True)
+#@dataclass(kw_only=True)
+@dataclass
 class ConversationMessage:
     level: int
-    conversationId: UUID
+    conversationId: str
     io_message: IOMessage
 
 @dataclass
@@ -22,4 +23,4 @@ class State:
     prompt: str = ""
     feedback: str = ""
     conversation: Conversation
-    fastagency: Optional[UUID] = None
+    fastagency: Optional[str] = None

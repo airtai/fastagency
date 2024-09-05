@@ -2,7 +2,7 @@ import threading
 from dataclasses import dataclass
 from queue import Queue
 from typing import ClassVar, Dict, Generator, List, Optional
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
 
@@ -32,7 +32,7 @@ class MesopIO(IOMessageVisitor):
         Args:
             super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
         """
-        self.id: UUID = uuid4()
+        self.id: str = uuid4().hex
         self.super_conversation: Optional[MesopIO] = super_conversation
         self.sub_conversations: List[MesopIO] = []
         self._in_queue: Optional[Queue[str]] = None
@@ -41,14 +41,14 @@ class MesopIO(IOMessageVisitor):
             self._in_queue = Queue()
             self._out_queue = Queue()
 
-    _registry: ClassVar[Dict[UUID, "MesopIO"]] = {}
+    _registry: ClassVar[Dict[str, "MesopIO"]] = {}
 
     @classmethod
     def register(cls, conversation: "MesopIO") -> None:
         cls._registry[conversation.id] = conversation
 
     @classmethod
-    def get_conversation(cls, id: UUID) -> "MesopIO":
+    def get_conversation(cls, id: str) -> "MesopIO":
         return cls._registry[id]
 
     @classmethod
@@ -126,7 +126,7 @@ class MesopIO(IOMessageVisitor):
 
     @classmethod
     def respond_to(
-        cls, conversation_id: UUID, message: str
+        cls, conversation_id: str, message: str
     ) -> Generator[MesopMessage, None, None]:
         conversation = cls.get_conversation(conversation_id)
         conversation.respond(message)
