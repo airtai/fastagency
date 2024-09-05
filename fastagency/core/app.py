@@ -1,8 +1,9 @@
 __all__ = ["FastAgency"]
 
 import textwrap
+from collections.abc import Generator
 from contextlib import contextmanager
-from typing import Generator, Optional
+from typing import Optional
 
 from .base import Chatable, SystemMessage, TextInput, WorkflowCompleted, Workflows
 
@@ -37,8 +38,8 @@ class FastAgency:  # Runnable
             initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
         """
         while True:
-            name = self._wf.names[0] if name is None else name
-            description = self._wf.get_description(name)
+            name = self.wf.names[0] if name is None else name
+            description = self.wf.get_description(name)
 
             if initial_message is None:
                 initial_message = self._io.process_message(
@@ -49,7 +50,7 @@ class FastAgency:  # Runnable
                             f"Starting a new workflow '{name}' with the following description:"
                             + "\n\n"
                             + f"{description}"
-                            + "\n\nPlease enter an initial message:"
+                            + "\n\nPlease enter an initial message"
                         ),
                     )
                 )

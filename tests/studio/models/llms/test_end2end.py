@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 from autogen.agentchat import AssistantAgent
@@ -20,9 +20,9 @@ async def test_end2end_simple_chat_with_two_agents(
 ) -> None:
     llm_config = await create_autogen(model_ref=llm_ref, user_uuid=user_uuid)
 
-    flags: Dict[str, bool] = {}
+    flags: dict[str, bool] = {}
 
-    def is_termination_msg(msg: Dict[str, Any]) -> bool:
+    def is_termination_msg(msg: dict[str, Any]) -> bool:
         flags["terminated"] = "TERMINATE" in msg["content"]
         return flags["terminated"]
 

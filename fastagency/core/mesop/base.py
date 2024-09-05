@@ -1,7 +1,8 @@
 import threading
+from collections.abc import Generator
 from dataclasses import dataclass
 from queue import Queue
-from typing import ClassVar, Dict, Generator, List, Optional
+from typing import ClassVar, Optional
 from uuid import uuid4
 
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
@@ -34,14 +35,14 @@ class MesopIO(IOMessageVisitor):
         """
         self.id: str = uuid4().hex
         self.super_conversation: Optional[MesopIO] = super_conversation
-        self.sub_conversations: List[MesopIO] = []
+        self.sub_conversations: list[MesopIO] = []
         self._in_queue: Optional[Queue[str]] = None
         self._out_queue: Optional[Queue[MesopMessage]] = None
         if super_conversation is None:
             self._in_queue = Queue()
             self._out_queue = Queue()
 
-    _registry: ClassVar[Dict[str, "MesopIO"]] = {}
+    _registry: ClassVar[dict[str, "MesopIO"]] = {}
 
     @classmethod
     def register(cls, conversation: "MesopIO") -> None:

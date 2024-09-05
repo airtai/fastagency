@@ -2,7 +2,8 @@
 search:
   exclude: true
 ---
-- [Features](fastagency.md)
+- Getting Started
+    - [Getting Started](getting-started/index.md)
 - Reference
     - fastagency
         - [FastAgency](api/fastagency/FastAgency.md)
@@ -43,6 +44,7 @@ search:
                 - [IOMessage](api/fastagency/core/base/IOMessage.md)
                 - [IOMessageVisitor](api/fastagency/core/base/IOMessageVisitor.md)
                 - [MultipleChoice](api/fastagency/core/base/MultipleChoice.md)
+                - [Runnable](api/fastagency/core/base/Runnable.md)
                 - [SuggestedFunctionCall](api/fastagency/core/base/SuggestedFunctionCall.md)
                 - [SystemMessage](api/fastagency/core/base/SystemMessage.md)
                 - [TextInput](api/fastagency/core/base/TextInput.md)
@@ -54,6 +56,22 @@ search:
                     - [ConsoleIO](api/fastagency/core/io/console/ConsoleIO.md)
                     - base
                         - [ConsoleIO](api/fastagency/core/io/console/base/ConsoleIO.md)
+                - mesop
+                    - base
+                        - [Mesop](api/fastagency/core/io/mesop/base/Mesop.md)
+                    - main
+                        - [State](api/fastagency/core/io/mesop/main/State.md)
+                        - [call_api](api/fastagency/core/io/mesop/main/call_api.md)
+                        - [chat_input](api/fastagency/core/io/mesop/main/chat_input.md)
+                        - [click_example_box](api/fastagency/core/io/mesop/main/click_example_box.md)
+                        - [click_send](api/fastagency/core/io/mesop/main/click_send.md)
+                        - [example_box](api/fastagency/core/io/mesop/main/example_box.md)
+                        - [example_row](api/fastagency/core/io/mesop/main/example_row.md)
+                        - [footer](api/fastagency/core/io/mesop/main/footer.md)
+                        - [header_text](api/fastagency/core/io/mesop/main/header_text.md)
+                        - [output](api/fastagency/core/io/mesop/main/output.md)
+                        - [page](api/fastagency/core/io/mesop/main/page.md)
+                        - [textarea_on_blur](api/fastagency/core/io/mesop/main/textarea_on_blur.md)
             - runtimes
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/core/runtimes/autogen/AutoGenWorkflows.md)
@@ -69,6 +87,14 @@ search:
             - fastapi_code_generator_helpers
                 - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                 - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
+            - security
+                - [APIKeyCookie](api/fastagency/openapi/security/APIKeyCookie.md)
+                - [APIKeyHeader](api/fastagency/openapi/security/APIKeyHeader.md)
+                - [APIKeyQuery](api/fastagency/openapi/security/APIKeyQuery.md)
+                - [BaseSecurity](api/fastagency/openapi/security/BaseSecurity.md)
+                - [BaseSecurityParameters](api/fastagency/openapi/security/BaseSecurityParameters.md)
+            - security_schema_visitor
+                - [custom_visitor](api/fastagency/openapi/security_schema_visitor/custom_visitor.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
@@ -204,6 +230,7 @@ search:
                     - toolbox
                         - [Client](api/fastagency/studio/models/toolboxes/toolbox/Client.md)
                         - [OpenAPIAuth](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuth.md)
+                        - [OpenAPIAuthToken](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuthToken.md)
                         - [Toolbox](api/fastagency/studio/models/toolboxes/toolbox/Toolbox.md)
             - saas_app_generator
                 - [InvalidFlyTokenError](api/fastagency/studio/saas_app_generator/InvalidFlyTokenError.md)

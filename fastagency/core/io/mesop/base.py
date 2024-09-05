@@ -1,6 +1,7 @@
+from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Generator, List, Optional
+from typing import Optional
 
 from ...base import (
     AskingMessage,
@@ -24,7 +25,7 @@ class Mesop(IOMessageVisitor):  # Chatable
             port (Optional[int], optional): The port to use for the conversation. Defaults to None.
         """
         self.super_conversation: Optional[Mesop] = super_conversation
-        self.sub_conversations: List[Mesop] = []
+        self.sub_conversations: list[Mesop] = []
 
     @contextmanager
     def start(self, app: Runnable) -> Generator[None, None, None]:

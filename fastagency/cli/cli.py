@@ -1,6 +1,6 @@
 from logging import getLogger
 from pathlib import Path
-from typing import Annotated, Dict, Optional
+from typing import Annotated, Optional
 
 import typer
 
@@ -56,7 +56,7 @@ def _run_app(
         raise typer.Exit(code=1) from None
 
 
-def _get_help_messages(dev_mode: bool = False) -> Dict[str, str]:
+def _get_help_messages(dev_mode: bool = False) -> dict[str, str]:
     help = f"""Run a [bold]FastAgency[/bold] app in [yellow]{'development' if dev_mode else 'production'}[/yellow] mode. 🚀
 
 This is equivalent to [bold]fastapi run[/bold] but with [bold]reload[/bold] enabled and listening on the [blue]127.0.0.1[/blue] address.

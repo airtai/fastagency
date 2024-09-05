@@ -1,5 +1,5 @@
 import uuid
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 from fastapi import BackgroundTasks
@@ -25,7 +25,7 @@ class TestGitHubToken:
     async def test_github_token_model_create_autogen(
         self,
         gh_token_model: Model,
-        azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
         user_uuid: str,
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:

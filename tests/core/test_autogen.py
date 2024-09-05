@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 from autogen.agentchat import ConversableAgent
@@ -9,7 +9,7 @@ from fastagency.core.runtimes.autogen import AutoGenWorkflows
 
 
 @pytest.mark.openai
-def test_simple(openai_gpt4o_mini_llm_config: Dict[str, Any]) -> None:
+def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     wf = AutoGenWorkflows()
 
     @wf.register(

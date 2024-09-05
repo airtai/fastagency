@@ -4,6 +4,7 @@ import re
 import shutil
 import sys
 import tempfile
+from collections.abc import Iterator
 from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
@@ -12,19 +13,15 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    Dict,
-    Iterator,
-    List,
     Literal,
     Optional,
-    Set,
-    Tuple,
 )
 
 import requests
 from fastapi_code_generator.__main__ import generate_code
 
 from .fastapi_code_generator_helpers import patch_get_parameter_type
+from .security import BaseSecurity, BaseSecurityParameters
 
 if TYPE_CHECKING:
     from autogen.agentchat import ConversableAgent
@@ -33,8 +30,8 @@ __all__ = ["Client"]
 
 
 @contextmanager
-def add_to_globals(new_globals: Dict[str, Any]) -> Iterator[None]:
-    old_globals: Dict[str, Any] = {}
+def add_to_globals(new_globals: dict[str, Any]) -> Iterator[None]:
+    old_globals: dict[str, Any] = {}
     try:
         for key, value in new_globals.items():
             if key in globals():
@@ -48,19 +45,22 @@ def add_to_globals(new_globals: Dict[str, Any]) -> Iterator[None]:
 
 class Client:
     def __init__(
-        self, servers: List[Dict[str, Any]], title: Optional[str] = None, **kwargs: Any
+        self, servers: list[dict[str, Any]], title: Optional[str] = None, **kwargs: Any
     ) -> None:
         """Proxy class to generate client from OpenAPI schema."""
         self.servers = servers
         self.title = title
         self.kwargs = kwargs
-        self.registered_funcs: List[Callable[..., Any]] = []
-        self.globals: Dict[str, Any] = {}
+        self.registered_funcs: list[Callable[..., Any]] = []
+        self.globals: dict[str, Any] = {}
+
+        self.security: dict[str, BaseSecurity] = {}
+        self.security_params: dict[Optional[str], BaseSecurityParameters] = {}
 
     @staticmethod
     def _get_params(
         path: str, func: Callable[..., Any]
-    ) -> Tuple[Set[str], Set[str], Optional[str]]:
+    ) -> tuple[set[str], set[str], Optional[str], bool]:
         sig = inspect.signature(func)
 
         params_names = set(sig.parameters.keys())
@@ -71,14 +71,16 @@ class Client:
 
         body = "body" if "body" in params_names else None
 
-        q_params = set(params_names) - path_params - {body}
+        security = "security" in params_names
 
-        return q_params, path_params, body
+        q_params = set(params_names) - path_params - {body} - {"security"}
+
+        return q_params, path_params, body, security
 
     def _process_params(
         self, path: str, func: Callable[[Any], Any], **kwargs: Any
-    ) -> Tuple[str, Dict[str, Any], Dict[str, Any]]:
-        q_params, path_params, body = Client._get_params(path, func)
+    ) -> tuple[str, dict[str, Any], dict[str, Any]]:
+        q_params, path_params, body, security = Client._get_params(path, func)
 
         expanded_path = path.format(**{p: kwargs[p] for p in path_params})
 
@@ -94,22 +96,80 @@ class Client:
             else {}
         )
         body_dict["headers"] = {"Content-Type": "application/json"}
+        if security:
+            q_params, body_dict = kwargs["security"].add_security(q_params, body_dict)
+            # body_dict["headers"][security] = kwargs["security"]
 
         params = {k: v for k, v in kwargs.items() if k in q_params}
 
         return url, params, body_dict
+
+    def set_security_params(
+        self, security_params: BaseSecurityParameters, name: Optional[str] = None
+    ) -> None:
+        if name is not None:
+            security = self.security.get(name)
+            if security is None:
+                raise ValueError(f"Security is not set for '{name}'")
+
+            if not security.accept(security_params):
+                raise ValueError(
+                    f"Security parameters {security_params} do not match security {security}"
+                )
+
+        self.security_params[name] = security_params
+
+    def _get_security_params(self, name: str) -> Optional[BaseSecurityParameters]:
+        # check if security is set for the method
+        security = self.security.get(name)
+        if security is None:
+            return None
+
+        security_params = self.security_params.get(name)
+        if security_params is None:
+            # check if default security parameters are set
+            security_params = self.security_params.get(None)
+            if security_params is None:
+                raise ValueError(
+                    f"Security parameters are not set for {name} and there are no default security parameters"
+                )
+
+        # check if security matches security parameters
+        if not security.accept(security_params):
+            raise ValueError(
+                f"Security parameters {security_params} do not match security {security}"
+            )
+
+        return security_params
 
     def _request(
         self,
         method: Literal["put", "get", "post", "delete"],
         path: str,
         description: Optional[str] = None,
+        security: Optional[BaseSecurity] = None,
         **kwargs: Any,
-    ) -> Callable[..., Dict[str, Any]]:
-        def decorator(func: Callable[..., Any]) -> Callable[..., Dict[str, Any]]:
+    ) -> Callable[..., dict[str, Any]]:
+        def decorator(func: Callable[..., Any]) -> Callable[..., dict[str, Any]]:
+            name = func.__name__
+
+            if security is not None:
+                self.security[name] = security
+
             @wraps(func)
-            def wrapper(*args: Any, **kwargs: Any) -> Dict[str, Any]:
+            def wrapper(*args: Any, **kwargs: Any) -> dict[str, Any]:
                 url, params, body_dict = self._process_params(path, func, **kwargs)
+
+                security = self.security.get(name)
+                if security is not None:
+                    security_params = self._get_security_params(name)
+                    if security_params is None:
+                        raise ValueError(
+                            f"Security parameters are not set for '{name}'"
+                        )
+                    else:
+                        security_params.apply(params, body_dict, security)
+
                 response = getattr(requests, method)(url, params=params, **body_dict)
                 return response.json()  # type: ignore [no-any-return]
 
@@ -125,16 +185,16 @@ class Client:
 
         return decorator  # type: ignore [return-value]
 
-    def put(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def put(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("put", path, **kwargs)
 
-    def get(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def get(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("get", path, **kwargs)
 
-    def post(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def post(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("post", path, **kwargs)
 
-    def delete(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def delete(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("delete", path, **kwargs)
 
     @classmethod
@@ -150,7 +210,12 @@ class Client:
         input_text: str,
         output_dir: Path,
         disable_timestamp: bool = False,
+        custom_visitors: Optional[list[Path]] = None,
     ) -> str:
+        if custom_visitors is None:
+            custom_visitors = []
+        custom_visitors.append(Path(__file__).parent / "security_schema_visitor.py")
+
         with patch_get_parameter_type():
             generate_code(
                 input_name="openapi.json",
@@ -159,6 +224,7 @@ class Client:
                 output_dir=output_dir,
                 template_dir=cls._get_template_dir(),
                 disable_timestamp=disable_timestamp,
+                custom_visitors=custom_visitors,
             )
             # Use unique file name for main.py
             main_name = f"main_{output_dir.name}"

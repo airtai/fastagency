@@ -1,5 +1,5 @@
 import uuid
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 from pydantic import ValidationError
@@ -277,7 +277,7 @@ class TestMultiAgentTeam:
         enable_monkeypatch: bool,
         llm_model: Model,
         api_key_model: Model,
-        azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
         user_uuid: str,
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:

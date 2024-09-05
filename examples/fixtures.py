@@ -2,7 +2,11 @@ import os
 from typing import Any, Dict
 
 
+<<<<<<< HEAD
 def openai_llm_config(model: str) -> Dict[str, Any]:
+=======
+def openai_llm_config(model: str) -> dict[str, Any]:
+>>>>>>> origin/main
     zeros = "0" * 20
     api_key = os.getenv("OPENAI_API_KEY", default=f"sk-{zeros}T3BlbkFJ{zeros}")
 

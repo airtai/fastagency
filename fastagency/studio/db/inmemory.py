@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 from uuid import UUID
 
 from .base import BackendDBProtocol, FrontendDBProtocol, KeyNotFoundError
@@ -9,8 +9,8 @@ from .base import BackendDBProtocol, FrontendDBProtocol, KeyNotFoundError
 class InMemoryBackendDB(BackendDBProtocol):
     def __init__(self) -> None:
         """In memory backend database."""
-        self._models: List[Dict[str, Any]] = []
-        self._auth_tokens: List[Dict[str, Any]] = []
+        self._models: list[dict[str, Any]] = []
+        self._auth_tokens: list[dict[str, Any]] = []
 
     async def create_model(
         self,
@@ -19,7 +19,7 @@ class InMemoryBackendDB(BackendDBProtocol):
         type_name: str,
         model_name: str,
         json_str: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         model = {
             "uuid": str(model_uuid),
             "user_uuid": str(user_uuid),
@@ -32,7 +32,7 @@ class InMemoryBackendDB(BackendDBProtocol):
         self._models.append(model)
         return model
 
-    async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
+    async def find_model(self, model_uuid: Union[str, UUID]) -> dict[str, Any]:
         for model in self._models:
             if model["uuid"] == str(model_uuid):
                 return model
@@ -40,7 +40,7 @@ class InMemoryBackendDB(BackendDBProtocol):
 
     async def find_many_model(
         self, user_uuid: Union[str, UUID], type_name: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         return [model for model in self._models if model["user_uuid"] == str(user_uuid)]
 
     async def update_model(
@@ -50,7 +50,7 @@ class InMemoryBackendDB(BackendDBProtocol):
         type_name: str,
         model_name: str,
         json_str: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         for model in self._models:
             if model["uuid"] == str(model_uuid):
                 model["type_name"] = type_name
@@ -60,7 +60,7 @@ class InMemoryBackendDB(BackendDBProtocol):
                 return model
         raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
 
-    async def delete_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
+    async def delete_model(self, model_uuid: Union[str, UUID]) -> dict[str, Any]:
         for model in self._models:
             if model["uuid"] == str(model_uuid):
                 self._models.remove(model)
@@ -76,7 +76,7 @@ class InMemoryBackendDB(BackendDBProtocol):
         hashed_auth_token: str,
         expiry: str,
         expires_at: datetime,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         auth_token = {
             "uuid": str(auth_token_uuid),
             "name": name,
@@ -93,7 +93,7 @@ class InMemoryBackendDB(BackendDBProtocol):
 
     async def find_many_auth_token(
         self, user_uuid: Union[str, UUID], deployment_uuid: Union[str, UUID]
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         return [
             auth_token
             for auth_token in self._auth_tokens
@@ -106,7 +106,7 @@ class InMemoryBackendDB(BackendDBProtocol):
         auth_token_uuid: Union[str, UUID],
         deployment_uuid: Union[str, UUID],
         user_uuid: Union[str, UUID],
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         for auth_token in self._auth_tokens:
             if (
                 auth_token["uuid"] == str(auth_token_uuid)
@@ -121,7 +121,7 @@ class InMemoryBackendDB(BackendDBProtocol):
 class InMemoryFrontendDB(FrontendDBProtocol):
     def __init__(self) -> None:
         """In memory frontend database."""
-        self._users: List[Dict[str, Any]] = []
+        self._users: list[dict[str, Any]] = []
 
     async def get_user(self, user_uuid: Union[str, UUID]) -> Any:
         for user in self._users:

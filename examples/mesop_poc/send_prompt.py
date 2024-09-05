@@ -1,6 +1,6 @@
 import mesop as me
 
-from typing import Iterable
+from collections.abc import Iterable
 from fastagency.core.base import IOMessage
 from fastagency.core.mesop.base import MesopIO, run_workflow
 from examples.mesop_poc.data_model import State

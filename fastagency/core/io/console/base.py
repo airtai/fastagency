@@ -1,9 +1,10 @@
 import getpass
 import json
 import textwrap
+from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Generator, List, Optional
+from typing import Optional
 
 from ...base import (
     IOMessage,
@@ -32,7 +33,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
             super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
         """
         self.super_conversation: Optional[ConsoleIO] = super_conversation
-        self.sub_conversations: List[ConsoleIO] = []
+        self.sub_conversations: list[ConsoleIO] = []
 
     @contextmanager
     def start(self, app: Runnable) -> Generator[None, None, None]:
@@ -45,13 +46,29 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         )
 
     def _format_message(self, console_msg: ConsoleMessage) -> str:
-        return f"""+{'-' * 80}+
-|
-| {console_msg.sender} -> {console_msg.recepient}: {console_msg.heading if console_msg.heading else ''}
-|
-{textwrap.indent(textwrap.fill(console_msg.body if console_msg.body else '', replace_whitespace=False, drop_whitespace=False), '| ', predicate=lambda line: True)}
-+{'-' * 80}+
+        heading = f"[{console_msg.heading}]" if console_msg.heading else ""
+        title = f"{console_msg.sender} -> {console_msg.recepient} {heading}"[:74]
+
+        s = f"""╭─ {title} {'─' * (74 - len(title))}─╮
+│
+{textwrap.indent(textwrap.fill(console_msg.body if console_msg.body else '', replace_whitespace=False, drop_whitespace=False), '│ ', predicate=lambda line: True)}
+╰{'─' * 78}╯
 """
+        # remove empty lines
+        s = "\n".join([line for line in s.split("\n") if line.strip()])
+
+        # add trailing withespace and │ to each line except the first and the last
+        lines = s.split("\n")
+        s = (
+            lines[0]
+            + "\n"
+            + "\n".join([line + " " * (79 - len(line)) + "│" for line in lines[1:-1]])
+            + "\n"
+            + lines[-1]
+            + "\n"
+        )
+
+        return s
 
     def _indent(self, text: str) -> str:
         return textwrap.indent(text, " " * 4 * self.level)
@@ -82,11 +99,16 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         self._format_and_print(console_msg)
 
     def visit_text_input(self, message: TextInput) -> str:
+        suggestions = (
+            f" (suggestions: {', '.join(message.suggestions)})"
+            if message.suggestions
+            else ""
+        )
         console_msg = self.ConsoleMessage(
             sender=message.sender,
             recepient=message.recepient,
             heading=message.type,
-            body=f"{message.prompt} (suggestions: {', '.join(message.suggestions)})",
+            body=f"{message.prompt}{suggestions}:",
         )
 
         prompt = self._format_message(console_msg)

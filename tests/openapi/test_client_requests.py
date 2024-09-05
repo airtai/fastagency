@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 import requests
 from _pytest.monkeypatch import MonkeyPatch
@@ -17,13 +17,13 @@ class Item(BaseModel):
 
 
 class ValidationError(BaseModel):
-    loc: List[Union[str, int]] = Field(..., title="Location")
+    loc: list[Union[str, int]] = Field(..., title="Location")
     msg: str = Field(..., title="Message")
     type: str = Field(..., title="Error Type")
 
 
 class HTTPValidationError(BaseModel):
-    detail: Optional[List[ValidationError]] = Field(None, title="Detail")
+    detail: Optional[list[ValidationError]] = Field(None, title="Detail")
 
 
 app = Client(
@@ -35,13 +35,13 @@ app = Client(
 
 class MockResponse:
     def __init__(
-        self, json_data: Union[List[Dict[str, Any]], Dict[str, Any]], status_code: int
+        self, json_data: Union[list[dict[str, Any]], dict[str, Any]], status_code: int
     ) -> None:
         """Mock response object for requests."""
         self.json_data = json_data
         self.status_code = status_code
 
-    def json(self) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
+    def json(self) -> Union[list[dict[str, Any]], dict[str, Any]]:
         """Return the json data."""
         return self.json_data
 
@@ -180,9 +180,9 @@ def test_client_put(monkeypatch: MonkeyPatch) -> None:
         pass
 
     def mock_requests_put(
-        url: str, params: Dict[str, Any], **body_dict: Any
+        url: str, params: dict[str, Any], **body_dict: Any
     ) -> MockResponse:
-        json_resp: Dict[str, Any] = {
+        json_resp: dict[str, Any] = {
             "name": body_dict["json"]["name"],
             "description": body_dict["json"]["description"],
             "price": body_dict["json"]["price"],
@@ -221,9 +221,9 @@ def test_client_post(monkeypatch: MonkeyPatch) -> None:
         pass
 
     def mock_requests_post(
-        url: str, params: Dict[str, Any], **body_dict: Any
+        url: str, params: dict[str, Any], **body_dict: Any
     ) -> MockResponse:
-        json_resp: Dict[str, Any] = {
+        json_resp: dict[str, Any] = {
             "name": body_dict["json"]["name"],
             "description": body_dict["json"]["description"],
             "price": body_dict["json"]["price"],
@@ -251,16 +251,16 @@ def test_client_post(monkeypatch: MonkeyPatch) -> None:
 def test_client_get(monkeypatch: MonkeyPatch) -> None:
     @app.get(
         "/items",
-        response_model=List[Item],
+        response_model=list[Item],
         responses={"422": {"model": HTTPValidationError}},
     )
     def update_items() -> Union[Any, HTTPValidationError]:
         pass
 
     def mock_requests_get(
-        url: str, params: Dict[str, Any], **body_dict: Any
+        url: str, params: dict[str, Any], **body_dict: Any
     ) -> MockResponse:
-        json_resp: List[Dict[str, Any]] = [
+        json_resp: list[dict[str, Any]] = [
             {
                 "name": "name",
                 "description": "description",
@@ -307,9 +307,9 @@ def test_client_delete(monkeypatch: MonkeyPatch) -> None:
         pass
 
     def mock_requests_delete(
-        url: str, params: Dict[str, Any], **body_dict: Any
+        url: str, params: dict[str, Any], **body_dict: Any
     ) -> MockResponse:
-        json_resp: Dict[str, Any] = {}
+        json_resp: dict[str, Any] = {}
 
         return MockResponse(json_resp, 200)
 

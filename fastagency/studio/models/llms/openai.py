@@ -1,5 +1,5 @@
 import re
-from typing import Annotated, Any, Dict, Literal, Type
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import AfterValidator, Field, HttpUrl, field_validator
@@ -54,7 +54,7 @@ class OpenAIAPIKey(Model):
 
     @field_validator("api_key")
     @classmethod
-    def validate_api_key(cls: Type["OpenAIAPIKey"], value: Any) -> Any:
+    def validate_api_key(cls: type["OpenAIAPIKey"], value: Any) -> Any:
         if not re.match(
             r"^(sk-(proj-|None-|svcacct-)[A-Za-z0-9_-]+|sk-[a-zA-Z0-9]{20}T3BlbkFJ[a-zA-Z0-9]{20})$",
             value,
@@ -106,7 +106,7 @@ class OpenAI(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         my_model: OpenAI = await cls.from_db(model_id)
 
         api_key_model: OpenAIAPIKey = await my_model.api_key.get_data_model().from_db(

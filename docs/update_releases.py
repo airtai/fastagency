@@ -1,13 +1,13 @@
 """Update the release notes with the latest version and changelog."""
 
 import re
+from collections.abc import Sequence
 from pathlib import Path
-from typing import List, Sequence, Tuple
 
 import requests
 
 
-def _find_metablock(lines: List[str]) -> Tuple[List[str], List[str]]:
+def _find_metablock(lines: list[str]) -> tuple[list[str], list[str]]:
     if lines[0] != "---":
         return [], lines
 
@@ -19,7 +19,7 @@ def _find_metablock(lines: List[str]) -> Tuple[List[str], List[str]]:
     return lines[:index], lines[index:]
 
 
-def _find_header(lines: List[str]) -> Tuple[str, List[str]]:
+def _find_header(lines: list[str]) -> tuple[str, list[str]]:
     for i in range(len(lines)):
         if (line := lines[i]).startswith("#"):
             return line, lines[i + 1 :]
@@ -27,7 +27,7 @@ def _find_header(lines: List[str]) -> Tuple[str, List[str]]:
     return "", lines
 
 
-def _get_github_releases() -> Sequence[Tuple[str, str]]:
+def _get_github_releases() -> Sequence[tuple[str, str]]:
     # Get the latest version from GitHub releases
     response = requests.get("https://api.github.com/repos/airtai/FastAgency/releases")
     return ((x["tag_name"], x["body"]) for x in reversed(response.json()))
@@ -50,8 +50,8 @@ def _convert_links_and_usernames(text):
     return text
 
 
-def _collect_already_published_versions(text: str) -> List[str]:
-    data: List[str] = re.findall(r"## (\d.\d.\d.*)", text)
+def _collect_already_published_versions(text: str) -> list[str]:
+    data: list[str] = re.findall(r"## [v]?(\d.\d.\d.*)", text)
     return data
 
 
@@ -74,7 +74,9 @@ def update_release_notes(realease_notes_path: Path) -> None:
     old_versions = _collect_already_published_versions(changelog)
 
     for version, body in filter(
-        lambda v: v[0] not in old_versions,
+        lambda v: v[0] not in old_versions
+        if "v" not in v[0]
+        else v[0][1:] not in old_versions,
         _get_github_releases(),
     ):
         body = body.replace("##", "###")

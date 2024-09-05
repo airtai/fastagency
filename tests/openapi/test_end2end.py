@@ -1,7 +1,8 @@
 import json
+from collections.abc import Iterator
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Annotated, Any, Dict, Iterator, Optional
+from typing import Annotated, Any, Optional
 
 import fastapi
 import pytest
@@ -47,13 +48,13 @@ class TestClientEnd2End:
             q: Annotated[
                 Optional[str], Query(description="some extra query parameter")
             ] = None,
-        ) -> Dict[str, Any]:
+        ) -> dict[str, Any]:
             return {"item_id": item_id, "q": q}
 
         @app.post("/items/")
         async def create_item(
             item: Annotated[Item, Body(description="The item to create")],
-        ) -> Dict[str, Any]:
+        ) -> dict[str, Any]:
             item_id = 1
             return {"item_id": item_id, "item": item}
 
@@ -63,7 +64,7 @@ class TestClientEnd2End:
                 int, fastapi.Path(description="The ID of the item to update")
             ],
             item: Annotated[Item, Body(description="The item to update")],
-        ) -> Dict[str, Any]:
+        ) -> dict[str, Any]:
             return {"item_id": item_id, "item": item}
 
         @app.delete("/items/{item_id}", description="Delete an item by ID")
@@ -71,7 +72,7 @@ class TestClientEnd2End:
             item_id: Annotated[
                 int, fastapi.Path(description="The ID of the item to delete")
             ],
-        ) -> Dict[str, Any]:
+        ) -> dict[str, Any]:
             return {"item_id": item_id}
 
         return app
@@ -81,10 +82,10 @@ class TestClientEnd2End:
         assert isinstance(fastapi_app, FastAPI)
 
     @pytest.fixture
-    def openapi_schema(self, fastapi_app: FastAPI) -> Dict[str, Any]:
+    def openapi_schema(self, fastapi_app: FastAPI) -> dict[str, Any]:
         return fastapi_app.openapi()
 
-    def test_openapi_schema(self, openapi_schema: Dict[str, Any]) -> None:
+    def test_openapi_schema(self, openapi_schema: dict[str, Any]) -> None:
         expected = {
             "openapi": "3.1.0",
             "info": {
@@ -356,7 +357,7 @@ class TestClientEnd2End:
         assert openapi_schema == expected
 
     @pytest.fixture
-    def generated_code_path(self, openapi_schema: Dict[str, Any]) -> Iterator[Path]:
+    def generated_code_path(self, openapi_schema: dict[str, Any]) -> Iterator[Path]:
         with TemporaryDirectory() as temp_dir:
             td = Path(temp_dir)
             Client.generate_code(
@@ -534,7 +535,7 @@ class HTTPValidationError(BaseModel):
             assert models == expected
 
     @pytest.fixture
-    def client(self, openapi_schema: Dict[str, Any]) -> Client:
+    def client(self, openapi_schema: dict[str, Any]) -> Client:
         client = Client.create(json.dumps(openapi_schema))
         return client
 
@@ -557,7 +558,7 @@ class HTTPValidationError(BaseModel):
         assert func_desc == expected_func_desc
 
     def test_register_for_llm(
-        self, client: Client, azure_gpt35_turbo_16k_llm_config: Dict[str, Any]
+        self, client: Client, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
     ) -> None:
         expected_tools = [
             {
@@ -691,7 +692,7 @@ class HTTPValidationError(BaseModel):
         assert tools == expected_tools
 
     def test_register_for_execution(
-        self, client: Client, azure_gpt35_turbo_16k_llm_config: Dict[str, Any]
+        self, client: Client, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
     ) -> None:
         expected_keys = {
             "create_item_items__post",

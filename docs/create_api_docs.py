@@ -7,7 +7,7 @@ from inspect import getmembers, isclass, isfunction
 from pathlib import Path
 from pkgutil import walk_packages
 from types import FunctionType, ModuleType
-from typing import Any, List, Optional, Tuple, Type, Union
+from typing import Any, Optional, Union
 
 API_META = (
     "# 0.5 - API\n"
@@ -22,7 +22,7 @@ API_META = (
 MD_API_META = "---\n" + API_META + "\n---\n\n"
 
 
-def _get_submodules(package_name: str) -> List[str]:
+def _get_submodules(package_name: str) -> list[str]:
     """Get all submodules of a package.
 
     Args:
@@ -49,7 +49,7 @@ def _get_submodules(package_name: str) -> List[str]:
     return [package_name, *submodules]
 
 
-def _import_submodules(module_name: str) -> Optional[List[ModuleType]]:
+def _import_submodules(module_name: str) -> Optional[list[ModuleType]]:
     def _import_module(name: str) -> Optional[ModuleType]:
         try:
             # nosemgrep: python.lang.security.audit.non-literal-import.non-literal-import
@@ -65,7 +65,7 @@ def _import_submodules(module_name: str) -> Optional[List[ModuleType]]:
 
 def _import_functions_and_classes(
     m: ModuleType,
-) -> List[Tuple[str, Union[FunctionType, Type[Any]]]]:
+) -> list[tuple[str, Union[FunctionType, type[Any]]]]:
     funcs_and_classes = [
         (x, y) for x, y in getmembers(m) if isfunction(y) or isclass(y)
     ]
@@ -82,9 +82,9 @@ def _is_private(name: str) -> bool:
     return any(part.startswith("_") for part in parts)
 
 
-def _import_all_members(module_name: str) -> List[str]:
+def _import_all_members(module_name: str) -> list[str]:
     submodules = _import_submodules(module_name)
-    members: List[Tuple[str, Union[FunctionType, Type[Any]]]] = list(
+    members: list[tuple[str, Union[FunctionType, type[Any]]]] = list(
         itertools.chain(*[_import_functions_and_classes(m) for m in submodules])
     )
 
@@ -97,7 +97,7 @@ def _import_all_members(module_name: str) -> List[str]:
     return names
 
 
-def _merge_lists(members: List[str], submodules: List[str]) -> List[str]:
+def _merge_lists(members: list[str], submodules: list[str]) -> list[str]:
     members_copy = members[:]
     for sm in submodules:
         for i, el in enumerate(members_copy):
@@ -107,8 +107,8 @@ def _merge_lists(members: List[str], submodules: List[str]) -> List[str]:
     return members_copy
 
 
-def _add_all_submodules(members: List[str]) -> List[str]:
-    def _f(x: str) -> List[str]:
+def _add_all_submodules(members: list[str]) -> list[str]:
+    def _f(x: str) -> list[str]:
         xs = x.split(".")
         return [".".join(xs[:i]) + "." for i in range(1, len(xs))]
 
@@ -133,7 +133,7 @@ def _get_api_summary_item(x: str) -> str:
         return f"{indent}- [{xs[-1]}](api/{'/'.join(xs)}.md)"
 
 
-def _get_api_summary(members: List[str]) -> str:
+def _get_api_summary(members: list[str]) -> str:
     return "\n".join([_get_api_summary_item(x) for x in members])
 
 
@@ -150,11 +150,11 @@ def _generate_api_doc(name: str, docs_path: Path) -> Path:
     return path
 
 
-def _generate_api_docs(members: List[str], docs_path: Path) -> List[Path]:
+def _generate_api_docs(members: list[str], docs_path: Path) -> list[Path]:
     return [_generate_api_doc(x, docs_path) for x in members if not x.endswith(".")]
 
 
-def _get_submodule_members(module_name: str) -> List[str]:
+def _get_submodule_members(module_name: str) -> list[str]:
     """Get a list of all submodules contained within the module.
 
     Args:
@@ -165,7 +165,7 @@ def _get_submodule_members(module_name: str) -> List[str]:
     """
     members = _import_all_members(module_name)
     members_with_submodules = _add_all_submodules(members)
-    members_with_submodules_str: List[str] = [
+    members_with_submodules_str: list[str] = [
         x[:-1] if x.endswith(".") else x for x in members_with_submodules
     ]
     return members_with_submodules_str
@@ -173,8 +173,8 @@ def _get_submodule_members(module_name: str) -> List[str]:
 
 def _load_submodules(
     module_name: str,
-    members_with_submodules: List[str],
-) -> List[Union[FunctionType, Type[Any]]]:
+    members_with_submodules: list[str],
+) -> list[Union[FunctionType, type[Any]]]:
     """Load the given submodules from the module.
 
     Args:
@@ -196,7 +196,7 @@ def _load_submodules(
 
 
 def _update_single_api_doc(
-    symbol: Union[FunctionType, Type[Any]], docs_path: Path, module_name: str
+    symbol: Union[FunctionType, type[Any]], docs_path: Path, module_name: str
 ) -> None:
     en_docs_path = docs_path / "docs" / "en"
 
@@ -223,7 +223,7 @@ def _update_single_api_doc(
 
 
 def _update_api_docs(
-    symbols: List[Union[FunctionType, Type[Any]]], docs_path: Path, module_name: str
+    symbols: list[Union[FunctionType, type[Any]]], docs_path: Path, module_name: str
 ) -> None:
     for symbol in symbols:
         _update_single_api_doc(

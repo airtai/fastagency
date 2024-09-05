@@ -1,6 +1,6 @@
 import json
 import uuid
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Optional, TypeVar, Union
 from uuid import UUID
 
 from asyncer import asyncify
@@ -38,7 +38,7 @@ async def get_model_by_ref(model_ref: ObjectReference) -> Model:
 
 
 async def validate_tokens_and_create_gh_repo(
-    model: Dict[str, Any],
+    model: dict[str, Any],
     model_uuid: str,
 ) -> SaasAppGenerator:
     found_gh_token = await DefaultDB.backend().find_model(
@@ -94,9 +94,9 @@ async def add_model_to_user(
     type_name: str,
     model_name: str,
     model_uuid: str,
-    model: Dict[str, Any],
+    model: dict[str, Any],
     background_tasks: BackgroundTasks,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     try:
         registry = Registry.get_default()
         validated_model = registry.validate(type_name, model_name, model)
@@ -151,12 +151,12 @@ async def add_model_to_user(
 
 
 async def create_model(
-    cls: Type[T],
+    cls: type[T],
     type_name: str,
     user_uuid: Union[str, UUID],
     background_tasks: Optional[BackgroundTasks] = None,
     **kwargs: Any,
-) -> Tuple[UUID, Dict[str, Any]]:
+) -> tuple[UUID, dict[str, Any]]:
     model = cls(**kwargs)
     model_uuid = uuid.uuid4()
 
@@ -172,7 +172,7 @@ async def create_model(
 
 
 async def create_model_ref(
-    cls: Type[T],
+    cls: type[T],
     type_name: str,
     user_uuid: Union[str, UUID],
     background_tasks: Optional[BackgroundTasks] = None,
@@ -194,7 +194,7 @@ async def create_model_ref(
 async def get_all_models_for_user(
     user_uuid: Union[str, UUID],
     type_name: Optional[str] = None,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     models = await DefaultDB.backend().find_many_model(
         user_uuid=user_uuid, type_name=type_name
     )
