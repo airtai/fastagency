@@ -9,5 +9,5 @@ ROOT_BOX_STYLE = me.Style(
 )
 
 STYLESHEETS = [
-  "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+    "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
 ]
