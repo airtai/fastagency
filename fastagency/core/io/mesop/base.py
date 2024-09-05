@@ -1,5 +1,5 @@
 import os
-import subprocess
+import subprocess  # nosec: B404
 import sys
 from pathlib import Path
 from typing import Optional
@@ -40,7 +40,7 @@ class Mesop(IOMessageVisitor):  # Chatable
     ) -> None:
         env = os.environ.copy()
         env["IMPORT_STRING"] = import_string
-        process = subprocess.Popen(
+        process = subprocess.Popen(  # nosec: B603, B607
             ["mesop", self.main_path],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -50,11 +50,11 @@ class Mesop(IOMessageVisitor):  # Chatable
         )
         try:
             # Print stdout line by line
-            for line in process.stdout:
+            for line in process.stdout:  # type: ignore[union-attr]
                 print(line, end="")  # noqa: T201 `print` found
 
             # Print stderr line by line
-            for line in process.stderr:
+            for line in process.stderr:  # type: ignore[union-attr]
                 print(line, end="", file=sys.stderr)  # noqa: T201 `print` found
 
         finally:

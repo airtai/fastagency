@@ -41,6 +41,7 @@ class MesopIO(IOMessageVisitor):
         if super_conversation is None:
             self._in_queue = Queue()
             self._out_queue = Queue()
+        MesopIO.register(self)
 
     _registry: ClassVar[dict[str, "MesopIO"]] = {}
 
@@ -158,7 +159,7 @@ def run_workflow(wf: AutoGenWorkflows, name: str, initial_message: str) -> Mesop
         result = wf.run(
             name=name,
             session_id="session_id",
-            io=subconversation,
+            io=subconversation,  # type: ignore[arg-type]
             initial_message=initial_message,
         )
         io.process_message(
@@ -170,6 +171,15 @@ def run_workflow(wf: AutoGenWorkflows, name: str, initial_message: str) -> Mesop
                     "heading": "Workflow END",
                     "body": f"Ending workflow with result: {result}",
                 },
+            )
+        )
+
+        io.process_message(
+            IOMessage.create(
+                sender="user",
+                recepient="workflow",
+                type="workflow_completed",
+                result=result,
             )
         )
 

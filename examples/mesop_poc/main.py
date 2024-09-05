@@ -1,12 +1,12 @@
 import logging
 import mesop as me
-
-from examples.mesop_poc.data_model import State, ConversationMessage
-from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
-from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
-from examples.mesop_poc.components.message import message_box
-from examples.mesop_poc.components.ui_common import header, conversation_completed
-from examples.mesop_poc.components.inputs import input_user_feedback, input_prompt
+import json
+from examples.mesop_poc.data_model import State
+from fastagency.core.mesop.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
+from fastagency.core.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
+from fastagency.core.mesop.message import message_box
+from fastagency.core.mesop.components.ui_common import header, conversation_completed
+from fastagency.core.mesop.components.inputs import input_user_feedback, input_prompt
 from fastagency.core.mesop.base import MesopMessage, AskingMessage, WorkflowCompleted
 
 SECURITY_POLICY = me.SecurityPolicy(
@@ -46,6 +46,7 @@ def get_workflow():
     stylesheets=STYLESHEETS,
     security_policy=SECURITY_POLICY,
 )
+
 def home_page():
     with me.box(style=ROOT_BOX_STYLE):
         header()
@@ -61,15 +62,15 @@ def home_page():
             )
             input_prompt(send_prompt)
 
-def _handle_message(message:MesopMessage):
-    logger.info(f"_handle_message: {message}")
-    state = me.state(State)
+def _handle_message(state: State, message:MesopMessage ):
     messages = state.conversation.messages
     level = message.conversation.level
     conversationId = message.conversation.id
-    cm = ConversationMessage(level=level,conversationId=conversationId, io_message=message.io_message)
-    messages.append(cm)
     io_message = message.io_message
+    message_dict = io_message.model_dump()
+    message_string = json.dumps({"level": level, "conversationId": conversationId, "io_message": message_dict})
+    messages.append(message_string)
+    state.conversation.messages = list(messages)
     if isinstance(io_message, AskingMessage):
         state.waitingForFeedback = True
         state.conversationCompleted = False
@@ -90,7 +91,8 @@ def send_prompt(e: me.ClickEvent):
     yield
     responses = send_prompt_to_autogen(prompt)
     for message in responses:
-        _handle_message(message)
+        state = me.state(State)
+        _handle_message(state, message)
         yield
     yield
 
@@ -153,7 +155,8 @@ def on_user_feedback(e: me.ClickEvent):
     logger.info("on_user_feedback 4")
     responses = send_user_feedback_to_autogen(feedback)
     for message in responses:
-        _handle_message(message)
+        state = me.state(State)
+        _handle_message(state, message)
         yield
         logger.info("on_user_feedback 5")
     yield

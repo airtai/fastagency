@@ -61,7 +61,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
     @staticmethod
     def _get_message_class(type: Optional[MessageType]) -> "Type[IOMessage]":
         type = type or "text_message"
-        lookup: dict[MessageType, type[IOMessage]] = {
+        lookup: dict[MessageType, "Type[IOMessage]"] = {
             "text_message": TextMessage,
             "suggested_function_call": SuggestedFunctionCall,
             "function_call_execution": FunctionCallExecution,

@@ -195,13 +195,17 @@ def import_from_string(import_string: str) -> FastAgency:
             raise ImportError(f"The file for module '{module_name}' does not exist.")
 
         # Add the current directory to the Python path to allow imports from local files
-        sys.path.append(Path.cwd())
+        sys.path.append(str(Path.cwd()))
 
         # Import the module using importlib
-        module = importlib.import_module(module_name)
+        module = importlib.import_module(module_name)  # nosemgrep
 
         # Get the attribute (like 'app') from the module
         attribute = getattr(module, attribute_name)
+        if not isinstance(attribute, FastAgency):
+            raise ImportError(
+                f"The attribute '{attribute_name}' in module '{module_name}' is not a FastAgency app."
+            )
 
         return attribute
     except ValueError:

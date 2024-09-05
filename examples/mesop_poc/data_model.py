@@ -1,20 +1,12 @@
 from dataclasses import dataclass, field
-from typing import Literal, Optional
-from uuid import UUID
+from typing import  Optional
 import mesop as me
-from fastagency.core.base import IOMessage
 
-
-#@dataclass(kw_only=True)
-@dataclass
-class ConversationMessage:
-    level: int
-    conversationId: str
-    io_message: IOMessage
 
 @dataclass
 class Conversation:
-    messages: list[ConversationMessage] = field(default_factory=list)
+    #messages: list[ConversationMessage] = field(default_factory=list)
+    messages: list[str] = field(default_factory=list)
 
 @me.stateclass
 class State:

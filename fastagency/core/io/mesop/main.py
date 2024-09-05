@@ -1,5 +1,6 @@
 import os
 import time
+from collections.abc import Iterator
 
 import mesop as me
 
@@ -25,7 +26,7 @@ class State:
     in_progress: bool
 
 
-@me.page(path="/")
+@me.page(path="/")  # type: ignore[misc]
 def page() -> None:
     with (
         me.box(
@@ -79,7 +80,7 @@ EXAMPLES = [
 ]
 
 
-def example_row():
+def example_row() -> None:
     is_mobile = me.viewport_size().width < 640
     with me.box(
         style=me.Style(
@@ -93,7 +94,7 @@ def example_row():
             example_box(example, is_mobile)
 
 
-def example_box(example: str, is_mobile: bool):
+def example_box(example: str, is_mobile: bool) -> None:
     with me.box(
         style=me.Style(
             width="100%" if is_mobile else 200,
@@ -111,12 +112,12 @@ def example_box(example: str, is_mobile: bool):
         me.text(example)
 
 
-def click_example_box(e: me.ClickEvent):
+def click_example_box(e: me.ClickEvent) -> None:
     state = me.state(State)
     state.input = e.key
 
 
-def chat_input():
+def chat_input() -> None:
     state = me.state(State)
     with me.box(
         style=me.Style(
@@ -155,12 +156,12 @@ def chat_input():
             me.icon("send")
 
 
-def textarea_on_blur(e: me.InputBlurEvent):
+def textarea_on_blur(e: me.InputBlurEvent) -> None:
     state = me.state(State)
     state.input = e.value
 
 
-def click_send(e: me.ClickEvent):
+def click_send(e: me.ClickEvent) -> Iterator[None]:
     state = me.state(State)
     if not state.input:
         return
@@ -176,7 +177,7 @@ def click_send(e: me.ClickEvent):
     yield
 
 
-def call_api(input):
+def call_api(input: str) -> Iterator[str]:
     # Replace this with an actual API call
     time.sleep(0.5)
     yield "Example of streaming an output"
@@ -184,7 +185,7 @@ def call_api(input):
     yield "\n\nOutput: " + input
 
 
-def output():
+def output() -> None:
     state = me.state(State)
     if state.output or state.in_progress:
         with me.box(
@@ -202,7 +203,7 @@ def output():
                     me.progress_spinner()
 
 
-def footer():
+def footer() -> None:
     with me.box(
         style=me.Style(
             position="sticky",
