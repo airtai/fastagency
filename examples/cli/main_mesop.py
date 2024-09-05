@@ -3,7 +3,7 @@ import os
 from autogen.agentchat import ConversableAgent
 
 from fastagency.core import Chatable
-from fastagency.core.io.mesop import Mesop
+from fastagency.core.io.mesop import MesopIO
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
 
 from fastagency import FastAgency
@@ -43,4 +43,4 @@ def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
 
     return chat_result.summary
 
-app = FastAgency(wf=wf, io=Mesop())
+app = FastAgency(wf=wf, io=MesopIO())

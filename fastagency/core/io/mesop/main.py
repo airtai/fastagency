@@ -1,219 +1,179 @@
+import json
+import logging
 import os
-import time
 from collections.abc import Iterator
 
 import mesop as me
 
 from fastagency.cli.discover import import_from_string
+from fastagency.core.base import AskingMessage, WorkflowCompleted, Workflows
+from fastagency.core.io.mesop.base import MesopMessage
+from fastagency.core.io.mesop.components.inputs import input_prompt, input_user_feedback
+from fastagency.core.io.mesop.components.ui_common import conversation_completed, header
+from fastagency.core.io.mesop.data_model import State
+from fastagency.core.io.mesop.message import message_box
+from fastagency.core.io.mesop.send_prompt import (
+    send_prompt_to_autogen,
+    send_user_feedback_to_autogen,
+)
+from fastagency.core.io.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
 
-import_string = os.environ.get("IMPORT_STRING", None)
-if import_string is None:
-    raise ValueError("No import string provided")
+# Get the logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
-# import app using import string
-app = import_from_string(import_string)
+# Create a stream handler
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)
 
-# get workflows from the app
-wf = app.wf
+# Create a formatter and set it for the handler
+formatter = logging.Formatter("[%(levelname)s] %(message)s")
+handler.setFormatter(formatter)
 
-# run workflow...
-
-
-@me.stateclass
-class State:
-    input: str
-    output: str
-    in_progress: bool
-
-
-@me.page(path="/")  # type: ignore[misc]
-def page() -> None:
-    with (
-        me.box(
-            style=me.Style(
-                background="#fff",
-                min_height="calc(100% - 48px)",
-                padding=me.Padding(bottom=16),
-            )
-        ),
-        me.box(
-            style=me.Style(
-                width="min(720px, 100%)",
-                margin=me.Margin.symmetric(horizontal="auto"),
-                padding=me.Padding.symmetric(
-                    horizontal=16,
-                ),
-            )
-        ),
-    ):
-        header_text()
-        example_row()
-        chat_input()
-        output()
-    footer()
+# Add the handler to the logger
+logger.addHandler(handler)
 
 
-def header_text() -> None:
-    with me.box(
-        style=me.Style(
-            padding=me.Padding(
-                top=64,
-                bottom=36,
-            ),
-        )
-    ):
-        me.text(
-            "Mesop Starter Kit",
-            style=me.Style(
-                font_size=36,
-                font_weight=700,
-                background="linear-gradient(90deg, #4285F4, #AA5CDB, #DB4437) text",
-                color="transparent",
-            ),
-        )
+def get_workflows() -> Workflows:
+    import_string = os.environ.get("IMPORT_STRING", None)
+    if import_string is None:
+        raise ValueError("No import string provided")
+
+    # import app using import string
+    app = import_from_string(import_string)
+
+    # get workflows from the app
+    wf = app.wf
+
+    return wf
 
 
-EXAMPLES = [
-    "How to tie a shoe",
-    "Make a brownie recipe",
-    "Write an email asking for a sick day off",
-]
+SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface.co"])
 
 
-def example_row() -> None:
-    is_mobile = me.viewport_size().width < 640
-    with me.box(
-        style=me.Style(
-            display="flex",
-            flex_direction="column" if is_mobile else "row",
-            gap=24,
-            margin=me.Margin(bottom=36),
-        )
-    ):
-        for example in EXAMPLES:
-            example_box(example, is_mobile)
-
-
-def example_box(example: str, is_mobile: bool) -> None:
-    with me.box(
-        style=me.Style(
-            width="100%" if is_mobile else 200,
-            height=140,
-            background="#F0F4F9",
-            padding=me.Padding.all(16),
-            font_weight=500,
-            line_height="1.5",
-            border_radius=16,
-            cursor="pointer",
-        ),
-        key=example,
-        on_click=click_example_box,
-    ):
-        me.text(example)
-
-
-def click_example_box(e: me.ClickEvent) -> None:
-    state = me.state(State)
-    state.input = e.key
-
-
-def chat_input() -> None:
-    state = me.state(State)
-    with me.box(
-        style=me.Style(
-            padding=me.Padding.all(8),
-            background="white",
-            display="flex",
-            width="100%",
-            border=me.Border.all(me.BorderSide(width=0, style="solid", color="black")),
-            border_radius=12,
-            box_shadow="0 10px 20px #0000000a, 0 2px 6px #0000000a, 0 0 1px #0000000a",
-        )
-    ):
+@me.page(  # type: ignore[misc]
+    path="/",
+    stylesheets=STYLESHEETS,
+    security_policy=SECURITY_POLICY,
+)
+def home_page() -> None:
+    with me.box(style=ROOT_BOX_STYLE):
+        header()
         with me.box(
             style=me.Style(
-                flex_grow=1,
+                width="min(680px, 100%)",
+                margin=me.Margin.symmetric(horizontal="auto", vertical=36),
             )
         ):
-            me.native_textarea(
-                value=state.input,
-                autosize=True,
-                min_rows=4,
-                placeholder="Enter your prompt",
-                style=me.Style(
-                    padding=me.Padding(top=16, left=16),
-                    background="white",
-                    outline="none",
-                    width="100%",
-                    overflow_y="auto",
-                    border=me.Border.all(
-                        me.BorderSide(style="none"),
-                    ),
-                ),
-                on_blur=textarea_on_blur,
+            me.text(
+                "Enter a prompt to chat with Autogen team",
+                style=me.Style(font_size=20, margin=me.Margin(bottom=24)),
             )
-        with me.content_button(type="icon", on_click=click_send):
-            me.icon("send")
+            input_prompt(send_prompt)
 
 
-def textarea_on_blur(e: me.InputBlurEvent) -> None:
+def _handle_message(state: State, message: MesopMessage) -> None:
+    messages = state.conversation.messages
+    level = message.conversation.level
+    conversation_id = message.conversation.id
+    io_message = message.io_message
+    message_dict = io_message.model_dump()
+    message_string = json.dumps(
+        {"level": level, "conversationId": conversation_id, "io_message": message_dict}
+    )
+    messages.append(message_string)
+    state.conversation.messages = list(messages)
+    if isinstance(io_message, AskingMessage):
+        state.waiting_for_feedback = True
+        state.conversation_completed = False
+    if isinstance(io_message, WorkflowCompleted):
+        state.conversation_completed = True
+        state.waiting_for_feedback = False
+
+
+def send_prompt(e: me.ClickEvent) -> Iterator[None]:
+    logger.info(f"send_prompt: {e}")
     state = me.state(State)
-    state.input = e.value
-
-
-def click_send(e: me.ClickEvent) -> Iterator[None]:
-    state = me.state(State)
-    if not state.input:
-        return
-    state.in_progress = True
-    input = state.input
-    state.input = ""
+    me.navigate("/conversation")
+    prompt = state.prompt
+    state.prompt = ""
+    state.conversation_completed = False
+    state.waiting_for_feedback = False
     yield
 
-    for chunk in call_api(input):
-        state.output += chunk
+    me.scroll_into_view(key="end_of_messages")
+    yield
+
+    wf = get_workflows()
+    name = wf.names[0]
+    responses = send_prompt_to_autogen(prompt=prompt, wf=wf, name=name)
+    for message in responses:
+        state = me.state(State)
+        _handle_message(state, message)
         yield
-    state.in_progress = False
     yield
 
 
-def call_api(input: str) -> Iterator[str]:
-    # Replace this with an actual API call
-    time.sleep(0.5)
-    yield "Example of streaming an output"
-    time.sleep(1)
-    yield "\n\nOutput: " + input
-
-
-def output() -> None:
+@me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)  # type: ignore[misc]
+def conversation_page() -> None:
+    logger.info("conversation_page")
     state = me.state(State)
-    if state.output or state.in_progress:
+    with me.box(style=ROOT_BOX_STYLE):
+        header()
+        messages = state.conversation.messages
         with me.box(
             style=me.Style(
-                background="#F0F4F9",
-                padding=me.Padding.all(16),
-                border_radius=16,
-                margin=me.Margin(top=36),
+                overflow_y="auto",
             )
         ):
-            if state.output:
-                me.markdown(state.output)
-            if state.in_progress:
-                with me.box(style=me.Style(margin=me.Margin(top=16))):
-                    me.progress_spinner()
+            for message in messages:
+                message_box(message)
+            if messages:
+                me.box(
+                    key="end_of_messages",
+                    style=me.Style(margin=me.Margin(bottom="50vh")),
+                )
+        if state.waiting_for_feedback:
+            input_user_feedback(on_user_feedback)
+        if state.conversation_completed:
+            conversation_completed(reset_conversation)
 
 
-def footer() -> None:
-    with me.box(
-        style=me.Style(
-            position="sticky",
-            bottom=0,
-            padding=me.Padding.symmetric(vertical=16, horizontal=16),
-            width="100%",
-            background="#F0F4F9",
-            font_size=14,
-        )
-    ):
-        me.html(
-            "Made with <a href='https://google.github.io/mesop/'>Mesop</a>",
-        )
+def reset_conversation() -> None:
+    logger.info("reset_conversation")
+    state = me.state(State)
+    state.conversation_completed = False
+    state.conversation.messages = []
+    state.waiting_for_feedback = False
+    state.autogen = -1
+    state.prompt = ""
+    state.feedback = ""
+
+
+def on_user_feedback(e: me.ClickEvent) -> Iterator[None]:
+    logger.info("on_user_feedback 1")
+    try:
+        state = me.state(State)
+    except Exception as e:
+        logger.info(f"ERROR: {e}")
+        raise
+
+    feedback = state.feedback
+    state.waiting_for_feedback = False
+    yield
+    logger.info("on_user_feedback 2")
+    state.feedback = ""
+    state.waiting_for_feedback = False
+    yield
+    logger.info("on_user_feedback 3")
+    me.scroll_into_view(key="end_of_messages")
+    yield
+    logger.info("on_user_feedback 4")
+    responses = send_user_feedback_to_autogen(feedback)
+    for message in responses:
+        state = me.state(State)
+        _handle_message(state, message)
+        yield
+        logger.info("on_user_feedback 5")
+    yield
+    logger.info("on_user_feedback 6")

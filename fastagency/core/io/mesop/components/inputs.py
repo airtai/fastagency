@@ -1,8 +1,9 @@
+from collections.abc import Iterator
 from typing import Callable
 
 import mesop as me
 
-from examples.mesop_poc.data_model import State
+from ..data_model import State
 
 
 def _on_blur(e: me.InputBlurEvent) -> None:
@@ -10,7 +11,9 @@ def _on_blur(e: me.InputBlurEvent) -> None:
     setattr(state, e.key, e.value)
 
 
-def input_user_feedback(send_feedback: Callable[[me.ClickEvent], None]) -> None:
+def input_user_feedback(
+    send_feedback: Callable[[me.ClickEvent], Iterator[None]],
+) -> None:
     with me.box(
         style=me.Style(
             border_radius=16,
@@ -36,7 +39,7 @@ def input_user_feedback(send_feedback: Callable[[me.ClickEvent], None]) -> None:
             me.icon("send")
 
 
-def input_prompt(send_prompt: Callable[[me.ClickEvent], None]) -> None:
+def input_prompt(send_prompt: Callable[[me.ClickEvent], Iterator[None]]) -> None:
     with me.box(
         style=me.Style(
             border_radius=16,
