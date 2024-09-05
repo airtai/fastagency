@@ -3,10 +3,9 @@
 import logging
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Annotated, Optional
 
 import typer
-from typing_extensions import Annotated
 
 logging.basicConfig(level=logging.INFO)
 

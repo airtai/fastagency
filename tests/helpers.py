@@ -3,7 +3,7 @@ import inspect
 import random
 import types
 from asyncio import iscoroutinefunction
-from typing import Any, Callable, Dict, List, Tuple, TypeVar
+from typing import Any, Callable, TypeVar
 
 import pytest
 import pytest_asyncio
@@ -17,11 +17,11 @@ def add_random_sufix(prefix: str) -> str:
 
 F = TypeVar("F", bound=Callable[..., Any])
 
-_tags: Dict[str, List[str]] = {}
+_tags: dict[str, list[str]] = {}
 
 
 def tag(*args: str) -> Callable[[F], F]:
-    def decorator(f: F, args: Tuple[str, ...] = args) -> F:
+    def decorator(f: F, args: tuple[str, ...] = args) -> F:
         global _tags
         if not hasattr(f, "_pytestfixturefunction"):
             raise ValueError(f"function {f.__name__} is not a fixture")
@@ -41,23 +41,23 @@ def tag(*args: str) -> Callable[[F], F]:
     return decorator
 
 
-def tag_list(*args: str) -> Callable[[List[F]], List[F]]:
-    def decorator(fs: List[F], args: Tuple[str, ...] = args) -> List[F]:
+def tag_list(*args: str) -> Callable[[list[F]], list[F]]:
+    def decorator(fs: list[F], args: tuple[str, ...] = args) -> list[F]:
         return [tag(*args)(f) for f in fs]
 
     return decorator
 
 
-def get_by_tag(*args: str) -> List[str]:
+def get_by_tag(*args: str) -> list[str]:
     xs = [_tags.get(my_tag, []) for my_tag in args]
     return list(functools.reduce(set.intersection, map(set, xs)))  # type: ignore[arg-type]
 
 
-def get_tags() -> List[str]:
+def get_tags() -> list[str]:
     return list(_tags.keys())
 
 
-def get_caller_globals() -> Dict[str, Any]:
+def get_caller_globals() -> dict[str, Any]:
     # Get the caller's frame
     caller_frame = inspect.stack()[2].frame
 
@@ -68,7 +68,7 @@ def get_caller_globals() -> Dict[str, Any]:
 
 
 def parametrize_fixtures(
-    parameter_name: str, src_fixtures: List[str]
+    parameter_name: str, src_fixtures: list[str]
 ) -> Callable[[F], F]:
     def decorator(f: F, parameter_name: str = parameter_name) -> F:
         f = pytest.mark.parametrize(parameter_name, src_fixtures, indirect=True)(f)
@@ -148,11 +148,11 @@ def rename_parameter(src_name: str, dst_name: str) -> Callable[[F], F]:
 
 def expand_fixture(
     dst_fixture_prefix: str,
-    src_fixtures_names: List[str],
+    src_fixtures_names: list[str],
     placeholder_name: str,
-) -> Callable[[F], List[F]]:
-    def decorator(f: F) -> List[F]:
-        retval: List[F] = []
+) -> Callable[[F], list[F]]:
+    def decorator(f: F) -> list[F]:
+        retval: list[F] = []
         for src_type in src_fixtures_names:
             name = f"{dst_fixture_prefix}_{src_type}"
 

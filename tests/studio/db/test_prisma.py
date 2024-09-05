@@ -1,7 +1,7 @@
 import random
 import uuid
 from datetime import datetime, timedelta
-from typing import Any, Dict, Union
+from typing import Any, Union
 from uuid import UUID
 
 import pytest
@@ -115,7 +115,7 @@ class TestPrismaBackendDB:
 
         async def mock_find_model(
             *args: Any, **kwargs: Any
-        ) -> Dict[str, Union[str, UUID]]:
+        ) -> dict[str, Union[str, UUID]]:
             return {
                 "user_uuid": user_uuid,
                 "uuid": deployment_uuid,

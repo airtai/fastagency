@@ -2,7 +2,7 @@ import json
 import logging
 import re
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Optional
 
 from autogen.io import IOStream
 
@@ -53,7 +53,7 @@ def _match(key: str, string: str, /) -> Optional[re.Match[str]]:
     return re.match(pattern, string)
 
 
-def _findall(key: str, string: str, /) -> Tuple[str, ...]:
+def _findall(key: str, string: str, /) -> tuple[str, ...]:
     pattern = _patterns[key]
     return re.findall(pattern, string)[0]  # type: ignore[no-any-return]
 
@@ -67,7 +67,7 @@ class CurrentMessage:
     body: Optional[str] = None
     call_id: Optional[str] = None
     function_name: Optional[str] = None
-    arguments: Optional[Dict[str, Any]] = None
+    arguments: Optional[dict[str, Any]] = None
     retval: Optional[Any] = None
 
     def process_chunk(self, chunk: str) -> bool:
@@ -117,7 +117,7 @@ class IOStreamAdapter:  # IOStream
         self.io = io
         self.current_message = CurrentMessage()
 
-        self.messages: List[IOMessage] = []
+        self.messages: list[IOMessage] = []
         if not isinstance(self.io, Chatable):
             raise ValueError("The io object must be an instance of Chatable.")
 
@@ -151,7 +151,7 @@ class IOStreamAdapter:  # IOStream
 class AutoGenWorkflows(Workflows):
     def __init__(self) -> None:
         """Initialize the workflows."""
-        self._workflows: Dict[str, Tuple[Callable[[Chatable, str, str], str], str]] = {}
+        self._workflows: dict[str, tuple[Callable[[Chatable, str, str], str], str]] = {}
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
@@ -179,7 +179,7 @@ class AutoGenWorkflows(Workflows):
             return workflow(io, initial_message, session_id)
 
     @property
-    def names(self) -> List[str]:
+    def names(self) -> list[str]:
         return list(self._workflows.keys())
 
     def get_description(self, name: str) -> str:

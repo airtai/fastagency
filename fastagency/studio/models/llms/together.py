@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Dict, Literal
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import AfterValidator, Field, HttpUrl
@@ -170,7 +170,7 @@ class TogetherAI(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         my_model: TogetherAI = await cls.from_db(model_id)
 
         api_key_model: TogetherAIAPIKey = (

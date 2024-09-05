@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Dict, Literal, Protocol, Type
+from typing import Any, ClassVar, Literal, Protocol
 
 from pydantic import BaseModel, model_validator
 
@@ -52,12 +52,12 @@ class BaseSecurityParameters(Protocol):
 
     def apply(
         self,
-        q_params: Dict[str, Any],
-        body_dict: Dict[str, Any],
+        q_params: dict[str, Any],
+        body_dict: dict[str, Any],
         security: BaseSecurity,
     ) -> None: ...
 
-    def get_security_class(self) -> Type[BaseSecurity]: ...
+    def get_security_class(self) -> type[BaseSecurity]: ...
 
 
 class APIKeyHeader(BaseSecurity):
@@ -73,8 +73,8 @@ class APIKeyHeader(BaseSecurity):
 
         def apply(
             self,
-            q_params: Dict[str, Any],
-            body_dict: Dict[str, Any],
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
             security: BaseSecurity,
         ) -> None:
             api_key_header: APIKeyHeader = security  # type: ignore[assignment]
@@ -84,7 +84,7 @@ class APIKeyHeader(BaseSecurity):
 
             body_dict["headers"][api_key_header.name] = self.value
 
-        def get_security_class(self) -> Type[BaseSecurity]:
+        def get_security_class(self) -> type[BaseSecurity]:
             return APIKeyHeader
 
 
@@ -101,15 +101,15 @@ class APIKeyQuery(BaseSecurity):
 
         def apply(
             self,
-            q_params: Dict[str, Any],
-            body_dict: Dict[str, Any],
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
             security: BaseSecurity,
         ) -> None:
             api_key_query: APIKeyQuery = security  # type: ignore[assignment]
 
             q_params[api_key_query.name] = self.value
 
-        def get_security_class(self) -> Type[BaseSecurity]:
+        def get_security_class(self) -> type[BaseSecurity]:
             return APIKeyQuery
 
 
@@ -126,8 +126,8 @@ class APIKeyCookie(BaseSecurity):
 
         def apply(
             self,
-            q_params: Dict[str, Any],
-            body_dict: Dict[str, Any],
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
             security: BaseSecurity,
         ) -> None:
             api_key_cookie: APIKeyCookie = security  # type: ignore[assignment]
@@ -137,5 +137,5 @@ class APIKeyCookie(BaseSecurity):
 
             body_dict["cookies"][api_key_cookie.name] = self.value
 
-        def get_security_class(self) -> Type[BaseSecurity]:
+        def get_security_class(self) -> type[BaseSecurity]:
             return APIKeyCookie

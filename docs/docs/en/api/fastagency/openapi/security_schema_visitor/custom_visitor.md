@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.openapi.custom_visitor.custom_visitor
+::: fastagency.openapi.security_schema_visitor.custom_visitor

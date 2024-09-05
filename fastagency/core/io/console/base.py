@@ -2,7 +2,7 @@ import getpass
 import json
 import textwrap
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 from ...base import IOMessage, IOMessageVisitor, MultipleChoice, TextInput, TextMessage
 
@@ -24,7 +24,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
             super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
         """
         self.super_conversation: Optional[ConsoleIO] = super_conversation
-        self.sub_conversations: List[ConsoleIO] = []
+        self.sub_conversations: list[ConsoleIO] = []
 
     @property
     def level(self) -> int:

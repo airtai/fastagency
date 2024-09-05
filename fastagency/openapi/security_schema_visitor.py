@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Dict
 
 from fastapi_code_generator.parser import OpenAPIParser
 from fastapi_code_generator.visitor import Visitor
@@ -7,7 +6,7 @@ from fastapi_code_generator.visitor import Visitor
 from fastagency.openapi.security import BaseSecurity
 
 
-def custom_visitor(parser: OpenAPIParser, model_path: Path) -> Dict[str, object]:
+def custom_visitor(parser: OpenAPIParser, model_path: Path) -> dict[str, object]:
     if "securitySchemes" not in parser.raw_obj["components"]:
         return {}
     security_schemes = parser.raw_obj["components"]["securitySchemes"]

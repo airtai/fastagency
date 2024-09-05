@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Optional, Tuple, Union
+from typing import Annotated, Any, Optional, Union
 from uuid import UUID
 
 import httpx
@@ -33,7 +33,7 @@ class OpenAPIAuthToken(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Tuple[str, str]:
+    ) -> tuple[str, str]:
         raise RuntimeError("This method should never be called.")
 
 
@@ -58,7 +58,7 @@ class OpenAPIAuth(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Tuple[str, str]:
+    ) -> tuple[str, str]:
         raise RuntimeError("This method should never be called.")
 
 

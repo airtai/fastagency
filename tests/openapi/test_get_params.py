@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Union
+from typing import Any, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -15,13 +15,13 @@ class Item(BaseModel):
 
 
 class ValidationError(BaseModel):
-    loc: List[Union[str, int]] = Field(..., title="Location")
+    loc: list[Union[str, int]] = Field(..., title="Location")
     msg: str = Field(..., title="Message")
     type: str = Field(..., title="Error Type")
 
 
 class HTTPValidationError(BaseModel):
-    detail: Optional[List[ValidationError]] = Field(None, title="Detail")
+    detail: Optional[list[ValidationError]] = Field(None, title="Detail")
 
 
 app = Client(

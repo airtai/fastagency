@@ -1,10 +1,8 @@
+from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import datetime
 from typing import (
     Any,
-    Dict,
-    Generator,
-    List,
     Optional,
     Protocol,
     Union,
@@ -30,13 +28,13 @@ class BackendDBProtocol(Protocol):
         type_name: str,
         model_name: str,
         json_str: str,
-    ) -> Dict[str, Any]: ...
+    ) -> dict[str, Any]: ...
 
-    async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]: ...
+    async def find_model(self, model_uuid: Union[str, UUID]) -> dict[str, Any]: ...
 
     async def find_many_model(
         self, user_uuid: Union[str, UUID], type_name: Optional[str] = None
-    ) -> List[Dict[str, Any]]: ...
+    ) -> list[dict[str, Any]]: ...
 
     async def update_model(
         self,
@@ -45,9 +43,9 @@ class BackendDBProtocol(Protocol):
         type_name: str,
         model_name: str,
         json_str: str,
-    ) -> Dict[str, Any]: ...
+    ) -> dict[str, Any]: ...
 
-    async def delete_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]: ...
+    async def delete_model(self, model_uuid: Union[str, UUID]) -> dict[str, Any]: ...
 
     async def create_auth_token(
         self,
@@ -58,23 +56,23 @@ class BackendDBProtocol(Protocol):
         hashed_auth_token: str,
         expiry: str,
         expires_at: datetime,
-    ) -> Dict[str, Any]: ...
+    ) -> dict[str, Any]: ...
 
     async def find_many_auth_token(
         self, user_uuid: Union[str, UUID], deployment_uuid: Union[str, UUID]
-    ) -> List[Dict[str, Any]]: ...
+    ) -> list[dict[str, Any]]: ...
 
     async def delete_auth_token(
         self,
         auth_token_uuid: Union[str, UUID],
         deployment_uuid: Union[str, UUID],
         user_uuid: Union[str, UUID],
-    ) -> Dict[str, Any]: ...
+    ) -> dict[str, Any]: ...
 
 
 @runtime_checkable
 class FrontendDBProtocol(Protocol):
-    async def get_user(self, user_uuid: Union[str, UUID]) -> Dict[str, Any]: ...
+    async def get_user(self, user_uuid: Union[str, UUID]) -> dict[str, Any]: ...
 
     async def _create_user(
         self, user_uuid: Union[str, UUID], email: str, username: str

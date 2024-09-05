@@ -67,8 +67,6 @@ search:
             - client
                 - [Client](api/fastagency/openapi/client/Client.md)
                 - [add_to_globals](api/fastagency/openapi/client/add_to_globals.md)
-            - custom_visitor
-                - [custom_visitor](api/fastagency/openapi/custom_visitor/custom_visitor.md)
             - fastapi_code_generator_helpers
                 - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                 - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
@@ -78,6 +76,8 @@ search:
                 - [APIKeyQuery](api/fastagency/openapi/security/APIKeyQuery.md)
                 - [BaseSecurity](api/fastagency/openapi/security/BaseSecurity.md)
                 - [BaseSecurityParameters](api/fastagency/openapi/security/BaseSecurityParameters.md)
+            - security_schema_visitor
+                - [custom_visitor](api/fastagency/openapi/security_schema_visitor/custom_visitor.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)

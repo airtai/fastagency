@@ -1,6 +1,6 @@
 import random
 import uuid
-from typing import List, Optional
+from typing import Optional
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -35,7 +35,7 @@ class ChatCompletionMessage:
         content: Optional[str],
         role: str,
         function_call: Optional[str],
-        tool_calls: List[ChatCompletionMessageToolCall],
+        tool_calls: list[ChatCompletionMessageToolCall],
     ):
         """ChatCompletionMessage class."""
         self.content = content
@@ -51,7 +51,7 @@ class Choice:
 
 
 class MockChatCompletion:
-    def __init__(self, id: str, choices: List[Choice]):
+    def __init__(self, id: str, choices: list[Choice]):
         """MockChatCompletion class."""
         self.id = id
         self.choices = choices

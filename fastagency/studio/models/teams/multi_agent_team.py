@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Dict, List, Optional, Tuple
+from typing import Annotated, Any, Optional
 from uuid import UUID
 
 from autogen import ConversableAgent, GroupChat, GroupChatManager
@@ -16,7 +16,7 @@ registry = Registry.get_default()
 class AutogenMultiAgentTeam:
     def __init__(
         self,
-        agents_and_clients: List[Tuple[ConversableAgent, List[Client]]],
+        agents_and_clients: list[tuple[ConversableAgent, list[Client]]],
     ) -> None:
         self.agents = [agent for agent, _ in agents_and_clients]
         self.clients = [clients for _, clients in agents_and_clients]
@@ -29,7 +29,7 @@ class AutogenMultiAgentTeam:
             ]
             register_toolbox_functions(agent, other_agents, clients)
 
-    def initiate_chat(self, message: str) -> List[Dict[str, Any]]:
+    def initiate_chat(self, message: str) -> list[dict[str, Any]]:
         groupchat = GroupChat(agents=self.agents, messages=[])
         manager = GroupChatManager(groupchat=groupchat)
         return self.agents[0].initiate_chat(  # type: ignore[no-any-return]
@@ -79,7 +79,7 @@ class MultiAgentTeam(TeamBaseModel):
     async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> Any:
         my_model = await cls.from_db(model_id)
 
-        agents_and_clients: List[Tuple[ConversableAgent, List[Client]]] = []
+        agents_and_clients: list[tuple[ConversableAgent, list[Client]]] = []
         for i in range(5):
             agent_property = getattr(my_model, f"agent_{i+1}")
             if agent_property is None:

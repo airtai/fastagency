@@ -5,15 +5,12 @@ import socket
 import threading
 import time
 import uuid
+from collections.abc import AsyncGenerator, AsyncIterator, Iterator
 from platform import system
 from typing import (
     Annotated,
     Any,
-    AsyncGenerator,
-    AsyncIterator,
     Callable,
-    Dict,
-    Iterator,
     Optional,
     TypeVar,
 )
@@ -81,7 +78,7 @@ async def user_uuid() -> AsyncIterator[str]:
 ################################################################################
 
 
-def azure_model_llm_config(model_env_name: str) -> Dict[str, Any]:
+def azure_model_llm_config(model_env_name: str) -> dict[str, Any]:
     api_key = os.getenv("AZURE_OPENAI_API_KEY", default="*" * 64)
     api_base = os.getenv(
         "AZURE_API_ENDPOINT", default="https://my-deployment.openai.azure.com"
@@ -123,23 +120,23 @@ def azure_model_llm_config(model_env_name: str) -> Dict[str, Any]:
 
 @tag("llm_config")
 @pytest.fixture
-def azure_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
+def azure_gpt35_turbo_16k_llm_config() -> dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT35_MODEL")
 
 
 @tag("llm_config")
 @pytest.fixture
-def azure_gpt4_llm_config() -> Dict[str, Any]:
+def azure_gpt4_llm_config() -> dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT4_MODEL")
 
 
 @tag("llm_config")
 @pytest.fixture
-def azure_gpt4o_llm_config() -> Dict[str, Any]:
+def azure_gpt4o_llm_config() -> dict[str, Any]:
     return azure_model_llm_config("AZURE_GPT4o_MODEL")
 
 
-def openai_llm_config(model: str) -> Dict[str, Any]:
+def openai_llm_config(model: str) -> dict[str, Any]:
     zeros = "0" * 20
     api_key = os.getenv("OPENAI_API_KEY", default=f"sk-{zeros}T3BlbkFJ{zeros}")
 
@@ -160,19 +157,19 @@ def openai_llm_config(model: str) -> Dict[str, Any]:
 
 @tag("llm_config")
 @pytest.fixture
-def openai_gpt35_turbo_16k_llm_config() -> Dict[str, Any]:
+def openai_gpt35_turbo_16k_llm_config() -> dict[str, Any]:
     return openai_llm_config("gpt-3.5-turbo")
 
 
 @tag("llm_config")
 @pytest.fixture
-def openai_gpt4o_llm_config() -> Dict[str, Any]:
+def openai_gpt4o_llm_config() -> dict[str, Any]:
     return openai_llm_config("gpt-4o")
 
 
 @tag("llm_config")
 @pytest.fixture
-def openai_gpt4o_mini_llm_config() -> Dict[str, Any]:
+def openai_gpt4o_mini_llm_config() -> dict[str, Any]:
     return openai_llm_config("gpt-4o-mini")
 
 
@@ -185,7 +182,7 @@ def openai_gpt4o_mini_llm_config() -> Dict[str, Any]:
 @tag("llm-key")
 @pytest_asyncio.fixture()
 async def azure_oai_key_ref(
-    user_uuid: str, azure_gpt35_turbo_16k_llm_config: Dict[str, Any]
+    user_uuid: str, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
 ) -> ObjectReference:
     api_key = azure_gpt35_turbo_16k_llm_config["config_list"][0]["api_key"]
     return await create_model_ref(
@@ -201,7 +198,7 @@ async def azure_oai_key_ref(
 @pytest_asyncio.fixture()
 async def azure_oai_gpt35_ref(
     user_uuid: str,
-    azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
     azure_oai_key_ref: ObjectReference,
 ) -> ObjectReference:
     kwargs = azure_gpt35_turbo_16k_llm_config["config_list"][0].copy()
@@ -222,7 +219,7 @@ async def azure_oai_gpt35_ref(
 @pytest_asyncio.fixture()
 async def azure_oai_gpt4_ref(
     user_uuid: str,
-    azure_gpt4_llm_config: Dict[str, Any],
+    azure_gpt4_llm_config: dict[str, Any],
     azure_oai_key_ref: ObjectReference,
 ) -> ObjectReference:
     kwargs = azure_gpt4_llm_config["config_list"][0].copy()
@@ -243,7 +240,7 @@ async def azure_oai_gpt4_ref(
 @pytest_asyncio.fixture()
 async def azure_oai_gpt4o_ref(
     user_uuid: str,
-    azure_gpt4o_llm_config: Dict[str, Any],
+    azure_gpt4o_llm_config: dict[str, Any],
     azure_oai_key_ref: ObjectReference,
 ) -> ObjectReference:
     kwargs = azure_gpt4o_llm_config["config_list"][0].copy()
@@ -261,7 +258,7 @@ async def azure_oai_gpt4o_ref(
 
 
 async def openai_oai_key_ref(
-    user_uuid: str, openai_llm_config: Dict[str, Any]
+    user_uuid: str, openai_llm_config: dict[str, Any]
 ) -> ObjectReference:
     api_key = openai_llm_config["config_list"][0]["api_key"]
     model = openai_llm_config["config_list"][0]["model"]
@@ -278,7 +275,7 @@ async def openai_oai_key_ref(
 @tag("llm-key")
 @pytest_asyncio.fixture()
 async def openai_oai_key_gpt35_ref(
-    user_uuid: str, openai_gpt35_turbo_16k_llm_config: Dict[str, Any]
+    user_uuid: str, openai_gpt35_turbo_16k_llm_config: dict[str, Any]
 ) -> ObjectReference:
     return await openai_oai_key_ref(user_uuid, openai_gpt35_turbo_16k_llm_config)
 
@@ -293,7 +290,7 @@ async def openai_oai_key_gpt35_ref(
 
 async def openai_oai_ref(
     user_uuid: str,
-    openai_llm_config: Dict[str, Any],
+    openai_llm_config: dict[str, Any],
     openai_oai_key_ref: ObjectReference,
 ) -> ObjectReference:
     kwargs = openai_llm_config["config_list"][0].copy()
@@ -314,7 +311,7 @@ async def openai_oai_ref(
 @pytest_asyncio.fixture()
 async def openai_oai_gpt35_ref(
     user_uuid: str,
-    openai_gpt35_turbo_16k_llm_config: Dict[str, Any],
+    openai_gpt35_turbo_16k_llm_config: dict[str, Any],
     openai_oai_key_gpt35_ref: ObjectReference,
 ) -> ObjectReference:
     return await openai_oai_ref(
@@ -421,11 +418,11 @@ def create_fastapi_app(host: str, port: int) -> FastAPI:
     )
 
     @app.get("/")
-    def read_root() -> Dict[str, str]:
+    def read_root() -> dict[str, str]:
         return {"Hello": "World"}
 
     @app.get("/items/{item_id}")
-    def read_item(item_id: int, q: Optional[str] = None) -> Dict[str, Any]:
+    def read_item(item_id: int, q: Optional[str] = None) -> dict[str, Any]:
         return {"item_id": item_id, "q": q}
 
     @app.post("/items")

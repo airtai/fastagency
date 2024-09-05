@@ -4,6 +4,7 @@ import re
 import shutil
 import sys
 import tempfile
+from collections.abc import Iterator
 from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
@@ -12,13 +13,8 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    Dict,
-    Iterator,
-    List,
     Literal,
     Optional,
-    Set,
-    Tuple,
 )
 
 import requests
@@ -34,8 +30,8 @@ __all__ = ["Client"]
 
 
 @contextmanager
-def add_to_globals(new_globals: Dict[str, Any]) -> Iterator[None]:
-    old_globals: Dict[str, Any] = {}
+def add_to_globals(new_globals: dict[str, Any]) -> Iterator[None]:
+    old_globals: dict[str, Any] = {}
     try:
         for key, value in new_globals.items():
             if key in globals():
@@ -49,22 +45,22 @@ def add_to_globals(new_globals: Dict[str, Any]) -> Iterator[None]:
 
 class Client:
     def __init__(
-        self, servers: List[Dict[str, Any]], title: Optional[str] = None, **kwargs: Any
+        self, servers: list[dict[str, Any]], title: Optional[str] = None, **kwargs: Any
     ) -> None:
         """Proxy class to generate client from OpenAPI schema."""
         self.servers = servers
         self.title = title
         self.kwargs = kwargs
-        self.registered_funcs: List[Callable[..., Any]] = []
-        self.globals: Dict[str, Any] = {}
+        self.registered_funcs: list[Callable[..., Any]] = []
+        self.globals: dict[str, Any] = {}
 
-        self.security: Dict[str, BaseSecurity] = {}
-        self.security_params: Dict[Optional[str], BaseSecurityParameters] = {}
+        self.security: dict[str, BaseSecurity] = {}
+        self.security_params: dict[Optional[str], BaseSecurityParameters] = {}
 
     @staticmethod
     def _get_params(
         path: str, func: Callable[..., Any]
-    ) -> Tuple[Set[str], Set[str], Optional[str], bool]:
+    ) -> tuple[set[str], set[str], Optional[str], bool]:
         sig = inspect.signature(func)
 
         params_names = set(sig.parameters.keys())
@@ -83,7 +79,7 @@ class Client:
 
     def _process_params(
         self, path: str, func: Callable[[Any], Any], **kwargs: Any
-    ) -> Tuple[str, Dict[str, Any], Dict[str, Any]]:
+    ) -> tuple[str, dict[str, Any], dict[str, Any]]:
         q_params, path_params, body, security = Client._get_params(path, func)
 
         expanded_path = path.format(**{p: kwargs[p] for p in path_params})
@@ -153,15 +149,15 @@ class Client:
         description: Optional[str] = None,
         security: Optional[BaseSecurity] = None,
         **kwargs: Any,
-    ) -> Callable[..., Dict[str, Any]]:
-        def decorator(func: Callable[..., Any]) -> Callable[..., Dict[str, Any]]:
+    ) -> Callable[..., dict[str, Any]]:
+        def decorator(func: Callable[..., Any]) -> Callable[..., dict[str, Any]]:
             name = func.__name__
 
             if security is not None:
                 self.security[name] = security
 
             @wraps(func)
-            def wrapper(*args: Any, **kwargs: Any) -> Dict[str, Any]:
+            def wrapper(*args: Any, **kwargs: Any) -> dict[str, Any]:
                 url, params, body_dict = self._process_params(path, func, **kwargs)
 
                 security = self.security.get(name)
@@ -189,16 +185,16 @@ class Client:
 
         return decorator  # type: ignore [return-value]
 
-    def put(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def put(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("put", path, **kwargs)
 
-    def get(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def get(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("get", path, **kwargs)
 
-    def post(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def post(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("post", path, **kwargs)
 
-    def delete(self, path: str, **kwargs: Any) -> Callable[..., Dict[str, Any]]:
+    def delete(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("delete", path, **kwargs)
 
     @classmethod
@@ -214,7 +210,7 @@ class Client:
         input_text: str,
         output_dir: Path,
         disable_timestamp: bool = False,
-        custom_visitors: Optional[List[Path]] = None,
+        custom_visitors: Optional[list[Path]] = None,
     ) -> str:
         if custom_visitors is None:
             custom_visitors = []
