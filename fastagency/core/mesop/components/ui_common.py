@@ -1,9 +1,10 @@
+from typing import Callable
+
 import mesop as me
-from examples.mesop_poc.data_model import State
 
 
-def header():
-    def navigate_home(e: me.ClickEvent):
+def header() -> None:
+    def navigate_home(e: me.ClickEvent) -> None:
         me.navigate("/")
 
     with me.box(
@@ -23,8 +24,9 @@ def header():
             ),
         )
 
-def conversation_completed(reset_conversation):
-    def navigate_home(e: me.ClickEvent):
+
+def conversation_completed(reset_conversation: Callable[[], None]) -> None:
+    def navigate_home(e: me.ClickEvent) -> None:
         reset_conversation()
         me.navigate("/")
 

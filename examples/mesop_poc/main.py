@@ -4,8 +4,8 @@ from examples.mesop_poc.data_model import State
 from fastagency.core.mesop.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
 from fastagency.core.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
 from fastagency.core.mesop.message import message_box
-from examples.mesop_poc.components.ui_common import header, conversation_completed
-from examples.mesop_poc.components.inputs import input_user_feedback, input_prompt
+from fastagency.core.mesop.components.ui_common import header, conversation_completed
+from fastagency.core.mesop.components.inputs import input_user_feedback, input_prompt
 from fastagency.core.mesop.base import MesopMessage, AskingMessage, WorkflowCompleted
 
 SECURITY_POLICY = me.SecurityPolicy(

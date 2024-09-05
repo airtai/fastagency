@@ -1,12 +1,16 @@
+from typing import Callable
+
 import mesop as me
+
 from examples.mesop_poc.data_model import State
 
-def _on_blur(e: me.InputBlurEvent):
+
+def _on_blur(e: me.InputBlurEvent) -> None:
     state = me.state(State)
     setattr(state, e.key, e.value)
 
 
-def input_user_feedback(send_feedback):
+def input_user_feedback(send_feedback: Callable[[me.ClickEvent], None]) -> None:
     with me.box(
         style=me.Style(
             border_radius=16,
@@ -28,14 +32,11 @@ def input_user_feedback(send_feedback):
                     border=me.Border.all(me.BorderSide(style="none")),
                 ),
             )
-        with me.content_button(
-            type="icon", on_click=send_feedback
-        ):
+        with me.content_button(type="icon", on_click=send_feedback):
             me.icon("send")
 
 
-def input_prompt(send_prompt):
-    state = me.state(State)
+def input_prompt(send_prompt: Callable[[me.ClickEvent], None]) -> None:
     with me.box(
         style=me.Style(
             border_radius=16,
@@ -57,7 +58,5 @@ def input_prompt(send_prompt):
                     border=me.Border.all(me.BorderSide(style="none")),
                 ),
             )
-        with me.content_button(
-            type="icon", on_click=send_prompt
-        ):
+        with me.content_button(type="icon", on_click=send_prompt):
             me.icon("send")
