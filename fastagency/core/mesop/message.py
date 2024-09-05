@@ -57,11 +57,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.markdown(message.body)
 
     def visit_text_input(self, message: TextInput) -> str:
-        if message.prompt:
-            text = message.prompt
-        else:
-            text = "Please enter a value"
-
+        text = message.prompt if message.prompt else "Please enter a value"
         if message.suggestions:
             suggestions = ",".join(suggestion for suggestion in message.suggestions)
             text += "\n" + suggestions
@@ -78,10 +74,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         return ""
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
-        if message.prompt:
-            text = message.prompt
-        else:
-            text = "Please enter a value"
+        text = message.prompt if message.prompt else "Please enter a value"
         if message.choices:
             options = ",".join(
                 f"{i+1}. {choice}" for i, choice in enumerate(message.choices)
