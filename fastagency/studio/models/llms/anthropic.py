@@ -1,5 +1,5 @@
 import re
-from typing import Annotated, Any, Dict, Literal, Type
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import AfterValidator, Field, HttpUrl, field_validator
@@ -39,7 +39,7 @@ class AnthropicAPIKey(Model):
 
     @field_validator("api_key")
     @classmethod
-    def validate_api_key(cls: Type["AnthropicAPIKey"], value: Any) -> Any:
+    def validate_api_key(cls: type["AnthropicAPIKey"], value: Any) -> Any:
         if not re.match(r"^sk-ant-api03-[a-zA-Z0-9\-\_]{95}$", value):
             raise ValueError("Invalid Anthropic API Key")
         return value
@@ -90,7 +90,7 @@ class Anthropic(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         my_model: Anthropic = await cls.from_db(model_id)
 
         api_key_model: AnthropicAPIKey = (

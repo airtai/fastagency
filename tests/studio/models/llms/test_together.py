@@ -1,5 +1,4 @@
 import uuid
-from typing import Dict
 
 import pytest
 import together
@@ -48,7 +47,7 @@ class TestTogetherAI:
         # requires that environment variables TOGETHER_API_KEY is set
         client = together.Together()
 
-        expected_together_model_string: Dict[str, str] = {
+        expected_together_model_string: dict[str, str] = {
             model.display_name: model.id
             for model in client.models.list()
             if model.type == "chat"

@@ -1,5 +1,5 @@
 import re
-from typing import Annotated, Any, Dict, List, Literal, Union
+from typing import Annotated, Any, Literal, Union
 
 from autogen.agentchat import ConversableAgent
 from pydantic import Field
@@ -33,7 +33,7 @@ class TeamBaseModel(Model):
         ),
     ] = "ALWAYS"
 
-    def is_termination_msg(self, msg: Dict[str, Any]) -> bool:
+    def is_termination_msg(self, msg: dict[str, Any]) -> bool:
         # print(f"is_termination_msg: {msg=}")
         return (
             "content" in msg
@@ -44,8 +44,8 @@ class TeamBaseModel(Model):
 
 def register_toolbox_functions(
     agent: ConversableAgent,
-    execution_agents: List[ConversableAgent],
-    clients: List[Client],
+    execution_agents: list[ConversableAgent],
+    clients: list[Client],
 ) -> None:
     for client in clients:
         client.register_for_llm(agent)

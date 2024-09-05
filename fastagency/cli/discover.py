@@ -137,7 +137,7 @@ def get_app_name(  # noqa: C901
 
 def get_import_string(
     *, path: Union[Path, None] = None, app_name: Union[str, None] = None
-) -> Tuple[str, FastAgency]:
+) -> tuple[str, FastAgency]:
     if not path:
         path = get_default_path()
     logger.info(f"Using path [blue]{path}[/blue]")

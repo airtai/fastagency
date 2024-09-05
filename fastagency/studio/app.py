@@ -1,15 +1,12 @@
 import json
 import logging
+from collections.abc import Coroutine
 from os import environ
 from typing import (
     Annotated,
     Any,
     Callable,
-    Coroutine,
-    Dict,
-    List,
     Optional,
-    Tuple,
     Union,
 )
 from uuid import UUID
@@ -85,7 +82,7 @@ async def validate_toolbox(toolbox: Toolbox) -> None:
 
 
 @app.post("/models/{type}/{name}/validate")
-async def validate_model(type: str, name: str, model: Dict[str, Any]) -> Dict[str, Any]:
+async def validate_model(type: str, name: str, model: dict[str, Any]) -> dict[str, Any]:
     try:
         validated_model = Registry.get_default().validate(type, name, model)
         if isinstance(validated_model, Toolbox):
@@ -97,8 +94,8 @@ async def validate_model(type: str, name: str, model: Dict[str, Any]) -> Dict[st
 
 @app.post("/user/{user_uuid}/models/secret/{name}/{model_uuid}/validate")
 async def validate_secret_model(
-    user_uuid: UUID, name: str, model_uuid: UUID, model: Dict[str, Any]
-) -> Dict[str, Any]:
+    user_uuid: UUID, name: str, model_uuid: UUID, model: dict[str, Any]
+) -> dict[str, Any]:
     type: str = "secret"
 
     found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
@@ -124,7 +121,7 @@ async def mask(value: str) -> str:
 async def get_all_models(
     user_uuid: str,
     type_name: Optional[str] = None,
-) -> List[Any]:
+) -> list[Any]:
     ret_val_without_mask = await get_all_models_for_user(
         user_uuid=user_uuid, type_name=type_name
     )
@@ -146,9 +143,9 @@ async def add_model(
     type_name: str,
     model_name: str,
     model_uuid: str,
-    model: Dict[str, Any],
+    model: dict[str, Any],
     background_tasks: BackgroundTasks,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     return await add_model_to_user(
         user_uuid=user_uuid,
         type_name=type_name,
@@ -159,7 +156,7 @@ async def add_model(
     )
 
 
-async def create_toolbox_for_new_user(user_uuid: Union[str, UUID]) -> Dict[str, Any]:
+async def create_toolbox_for_new_user(user_uuid: Union[str, UUID]) -> dict[str, Any]:
     await DefaultDB.frontend().get_user(user_uuid=user_uuid)  # type: ignore[arg-type]
 
     domain = environ.get("DOMAIN", "localhost")
@@ -185,7 +182,7 @@ async def create_toolbox_for_new_user(user_uuid: Union[str, UUID]) -> Dict[str, 
 
 
 @app.get("/user/{user_uuid}/setup")
-async def setup_user(user_uuid: str) -> Dict[str, Any]:
+async def setup_user(user_uuid: str) -> dict[str, Any]:
     """Setup user after creating.
 
     This function is called after the user is created.
@@ -200,8 +197,8 @@ async def update_model(
     type_name: str,
     model_name: str,
     model_uuid: str,
-    model: Dict[str, Any],
-) -> Dict[str, Any]:
+    model: dict[str, Any],
+) -> dict[str, Any]:
     registry = Registry.get_default()
     validated_model = registry.validate(type_name, model_name, model)
 
@@ -220,13 +217,13 @@ async def update_model(
 @app.delete("/user/{user_uuid}/models/{type_name}/{model_uuid}")
 async def models_delete(
     user_uuid: str, type_name: str, model_uuid: str
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
     model = await DefaultDB.backend().delete_model(model_uuid=found_model["uuid"])
     return model["json_str"]  # type: ignore
 
 
-def get_azure_llm_client() -> Tuple[AsyncAzureOpenAI, str]:
+def get_azure_llm_client() -> tuple[AsyncAzureOpenAI, str]:
     azure_gpt35_model = environ["AZURE_GPT35_MODEL"]
     api_key = environ["AZURE_OPENAI_API_KEY"]
     azure_endpoint = environ["AZURE_API_ENDPOINT"]
@@ -290,7 +287,7 @@ async def generate_chat_name(
     team_name: str,
     chat_id: int,
     chat_name: str,
-) -> Dict[str, Union[Optional[str], int]]:
+) -> dict[str, Union[Optional[str], int]]:
     return {
         "team_status": "inprogress",
         "team_name": team_name,
@@ -302,12 +299,12 @@ async def generate_chat_name(
 
 class ChatRequest(BaseModel):
     chat_id: int
-    message: List[Dict[str, str]]
+    message: list[dict[str, str]]
     user_id: int
 
 
 @app.post("/user/{user_uuid}/chat/{model_name}/{model_uuid}")
-async def chat(request: ChatRequest) -> Dict[str, Any]:
+async def chat(request: ChatRequest) -> dict[str, Any]:
     message = request.message[0]["content"]
     chat_id = request.chat_id
     user_id = request.user_id
@@ -355,7 +352,7 @@ async def chat(request: ChatRequest) -> Dict[str, Any]:
 
 
 @app.post("/deployment/{deployment_uuid}/chat")
-async def deployment_chat(deployment_uuid: str) -> Dict[str, Any]:
+async def deployment_chat(deployment_uuid: str) -> dict[str, Any]:
     found_model = await DefaultDB.backend().find_model(model_uuid=deployment_uuid)
     team_name = found_model["json_str"]["name"]
     team_uuid = found_model["json_str"]["team"]["uuid"]
@@ -369,7 +366,7 @@ async def deployment_chat(deployment_uuid: str) -> Dict[str, Any]:
 
 
 @app.get("/deployment/{deployment_uuid}/ping")
-async def deployment_ping() -> Dict[str, str]:
+async def deployment_ping() -> dict[str, str]:
     return {
         "status": "ok",
     }
@@ -396,7 +393,7 @@ class DeploymentAuthTokenInfo(BaseModel):
 @app.get("/user/{user_uuid}/deployment/{deployment_uuid}")
 async def get_all_deployment_auth_tokens(
     user_uuid: str, deployment_uuid: str
-) -> List[DeploymentAuthTokenInfo]:
+) -> list[DeploymentAuthTokenInfo]:
     user = await DefaultDB.frontend().get_user(user_uuid=user_uuid)
     deployment = await DefaultDB.backend().find_model(model_uuid=deployment_uuid)
 

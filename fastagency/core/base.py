@@ -4,8 +4,6 @@ from dataclasses import asdict, dataclass, field, fields
 from typing import (
     Any,
     Callable,
-    Dict,
-    List,
     Literal,
     Optional,
     Protocol,
@@ -60,7 +58,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
     @staticmethod
     def _get_message_class(type: Optional[MessageType]) -> "Type[IOMessage]":
         type = type or "text_message"
-        lookup: Dict[MessageType, Type[IOMessage]] = {
+        lookup: dict[MessageType, "Type[IOMessage]"] = {
             "text_message": TextMessage,
             "suggested_function_call": SuggestedFunctionCall,
             "function_call_execution": FunctionCallExecution,
@@ -78,10 +76,10 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
         return cls(**kwargs)
 
     @staticmethod
-    def _get_parameters_names() -> List[str]:
+    def _get_parameters_names() -> list[str]:
         return [field.name for field in fields(IOMessage)]
 
-    def model_dump(self) -> Dict[str, Any]:
+    def model_dump(self) -> dict[str, Any]:
         params_names = IOMessage._get_parameters_names()
         d = asdict(self)
         content = {k: v for k, v in d.items() if k not in params_names}
@@ -113,7 +111,7 @@ class TextMessage(IOMessage):
 class SuggestedFunctionCall(IOMessage):
     function_name: Optional[str] = None
     call_id: Optional[str] = None
-    arguments: Dict[str, Any] = field(default_factory=dict)
+    arguments: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -127,14 +125,14 @@ class FunctionCallExecution(IOMessage):
 @dataclass
 class TextInput(AskingMessage):
     prompt: Optional[str] = None
-    suggestions: List[str] = field(default_factory=list)
+    suggestions: list[str] = field(default_factory=list)
     password: bool = False
 
 
 @dataclass
 class MultipleChoice(AskingMessage):
     prompt: Optional[str] = None
-    choices: List[str] = field(default_factory=list)
+    choices: list[str] = field(default_factory=list)
     default: Optional[str] = None
     single: bool = True
     # todo: add validation
@@ -142,7 +140,7 @@ class MultipleChoice(AskingMessage):
 
 @dataclass
 class SystemMessage(IOMessage):
-    message: Dict[str, Any] = field(default_factory=dict)
+    message: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -215,6 +213,6 @@ class Workflows(Protocol):
     ) -> str: ...
 
     @property
-    def names(self) -> List[str]: ...
+    def names(self) -> list[str]: ...
 
     def get_description(self, name: str) -> str: ...

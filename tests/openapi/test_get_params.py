@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Union
+from typing import Any, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -15,13 +15,13 @@ class Item(BaseModel):
 
 
 class ValidationError(BaseModel):
-    loc: List[Union[str, int]] = Field(..., title="Location")
+    loc: list[Union[str, int]] = Field(..., title="Location")
     msg: str = Field(..., title="Message")
     type: str = Field(..., title="Error Type")
 
 
 class HTTPValidationError(BaseModel):
-    detail: Optional[List[ValidationError]] = Field(None, title="Detail")
+    detail: Optional[list[ValidationError]] = Field(None, title="Detail")
 
 
 app = Client(
@@ -46,7 +46,7 @@ def test_get_params_with_query_params_and_path_params() -> None:
     ) -> Union[Any, HTTPValidationError]:
         pass
 
-    query_params, path_params, body = Client._get_params(
+    query_params, path_params, body, security = Client._get_params(
         "/items/{item_id}/ships/{ship}",
         update_item_put,  # type: ignore [arg-type]
     )
@@ -69,7 +69,10 @@ def test_get_params_with_query_params_only() -> None:
     ) -> Union[Any, HTTPValidationError]:
         pass
 
-    query_params, path_params, body = Client._get_params("/items", update_item_get)  # type: ignore [arg-type]
+    query_params, path_params, body, security = Client._get_params(
+        "/items",
+        update_item_get,  # type: ignore [arg-type]
+    )
     assert query_params == {"q1", "q2"}
     assert path_params == set()
     assert body == "body"
@@ -88,7 +91,7 @@ def test_get_params_with_path_params_only() -> None:
     ) -> Union[Any, HTTPValidationError]:
         pass
 
-    query_params, path_params, body = Client._get_params(
+    query_params, path_params, body, security = Client._get_params(
         "/items/{item_id}/ships/{ship}",
         update_item_post,  # type: ignore [arg-type]
     )
@@ -107,7 +110,10 @@ def test_get_params_with_no_query_params_or_path_params() -> None:
     def delete_items() -> Union[Any, HTTPValidationError]:
         pass
 
-    query_params, path_params, body = Client._get_params("/items", delete_items)  # type: ignore [arg-type]
+    query_params, path_params, body, security = Client._get_params(
+        "/items",
+        delete_items,  # type: ignore [arg-type]
+    )
 
     assert query_params == set()
     assert path_params == set()

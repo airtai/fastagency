@@ -1,5 +1,5 @@
 import re
-from typing import Annotated, Any, Type, Union
+from typing import Annotated, Any, Union
 from uuid import UUID
 
 from pydantic import Field, field_validator
@@ -75,7 +75,7 @@ class Deployment(Model):
 
     @field_validator("fly_app_name")
     @classmethod
-    def validate_fly_app_name(cls: Type["Deployment"], value: Any) -> Any:
+    def validate_fly_app_name(cls: type["Deployment"], value: Any) -> Any:
         if not re.match(r"^[a-zA-Z][a-zA-Z0-9\- ]*$", value):
             raise ValueError(
                 "Fly.io app name must contain only letters, numbers, spaces, dashes and should not start with a numeric literal. Example of a valid name: my-fly-app"
@@ -84,7 +84,7 @@ class Deployment(Model):
 
     @field_validator("repo_name")
     @classmethod
-    def validate_repo_name(cls: Type["Deployment"], value: Any) -> Any:
+    def validate_repo_name(cls: type["Deployment"], value: Any) -> Any:
         if not re.match(r"^[A-Za-z0-9._-]+$", value):
             raise ValueError(
                 "The repository name can only contain ASCII letters, digits, and the characters ., -, and _. Example of a valid name: my-fa-repo"

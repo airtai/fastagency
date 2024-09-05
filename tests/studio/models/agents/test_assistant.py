@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 import autogen
 import pytest
@@ -230,7 +230,7 @@ class TestAssistantAgent:
         user_uuid: str,
         assistant_ref: ObjectReference,
     ) -> None:
-        def is_termination_msg(msg: Dict[str, Any]) -> bool:
+        def is_termination_msg(msg: dict[str, Any]) -> bool:
             return "TERMINATE" in ["content"]
 
         ag_assistant, ag_toolkits = await create_autogen(

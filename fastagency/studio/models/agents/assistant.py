@@ -1,4 +1,4 @@
-from typing import Annotated, Any, List, Tuple
+from typing import Annotated, Any
 from uuid import UUID
 
 import autogen
@@ -21,7 +21,7 @@ class AssistantAgent(AgentBaseModel):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Tuple[autogen.agentchat.AssistantAgent, List[Client]]:
+    ) -> tuple[autogen.agentchat.AssistantAgent, list[Client]]:
         my_model = await cls.from_db(model_id)
 
         llm_model = await my_model.llm.get_data_model().from_db(my_model.llm.uuid)

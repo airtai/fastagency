@@ -36,6 +36,7 @@ class TestGetSchema:
                 "FlyToken",
                 "GitHubToken",
                 "OpenAPIAuth",
+                "OpenAPIAuthToken",
                 "TogetherAIAPIKey",
             },
             "llm": {"Anthropic", "AzureOAI", "OpenAI", "TogetherAI"},
@@ -45,4 +46,5 @@ class TestGetSchema:
             "toolbox": {"Toolbox"},
             "deployment": {"Deployment"},
         }
+        # print(model_names)
         assert model_names == expected, f"{model_names}!={expected}"

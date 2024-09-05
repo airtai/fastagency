@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Dict, Literal, Type
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import AfterValidator, BaseModel, Field, HttpUrl, field_validator
@@ -94,7 +94,7 @@ class AzureOAI(Model):
 
     @field_validator("base_url")
     @classmethod
-    def validate_base_url(cls: Type["AzureOAI"], value: Any) -> Any:
+    def validate_base_url(cls: type["AzureOAI"], value: Any) -> Any:
         if "{" in value or "}" in value:
             raise PydanticCustomError("invalid_base_url", BASE_URL_ERROR_MESSAGE)
         return value
@@ -102,7 +102,7 @@ class AzureOAI(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         my_model = await cls.from_db(model_id)
 
         api_key_model = await my_model.api_key.get_data_model().from_db(

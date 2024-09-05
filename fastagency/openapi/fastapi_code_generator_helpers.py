@@ -1,6 +1,7 @@
+from collections.abc import Iterator
 from contextlib import contextmanager
 from functools import cached_property
-from typing import Iterator, List, Optional, Union
+from typing import Optional, Union
 
 from fastapi_code_generator.parser import (
     Argument,
@@ -35,7 +36,7 @@ def patch_get_parameter_type() -> Iterator[None]:
         self: OpenAPIParser,
         parameters: Union[ReferenceObject, ParameterObject],
         snake_case: bool,
-        path: List[str],
+        path: list[str],
     ) -> Optional[Argument]:
         # get the original argument
         argument = original_get_parameter_type(self, parameters, snake_case, path)

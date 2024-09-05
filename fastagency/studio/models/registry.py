@@ -3,7 +3,6 @@ from typing import (
     Any,
     Callable,
     Dict,
-    List,
     Optional,
     Tuple,
     Type,
@@ -30,14 +29,14 @@ __all__ = [
 class ModelSchema(BaseModel):
     name: Annotated[str, Field(description="The name of the item")]
     json_schema: Annotated[
-        Dict[str, Any], Field(description="The schema for the model")
+        dict[str, Any], Field(description="The schema for the model")
     ]
 
 
 class ModelSchemas(BaseModel):
     name: Annotated[str, Field(description="The name of the type of models")]
     schemas: Annotated[
-        List[ModelSchema],
+        list[ModelSchema],
         Field(
             description="The schemas for all registred models of the particular types"
         ),
@@ -46,7 +45,7 @@ class ModelSchemas(BaseModel):
 
 class Schemas(BaseModel):
     list_of_schemas: Annotated[
-        List[ModelSchemas],
+        list[ModelSchemas],
         Field(description="The list of schemas for all registred models"),
     ]
 
@@ -56,13 +55,13 @@ class Registry:
         """Initialize the registry."""
         self._store: "Dict[str, Dict[str, Tuple[Optional[Type[Model]], Type[ObjectReference]]]]" = {}
 
-    def register(self, type_name: str) -> Callable[[Type[M]], Type[M]]:
+    def register(self, type_name: str) -> Callable[[type[M]], type[M]]:
         if type_name not in self._store:
             self._store[type_name] = {}
 
         type_store = self._store[type_name]
 
-        def _inner(model: Type[M]) -> Type[M]:
+        def _inner(model: type[M]) -> type[M]:
             model_type_name = model.__name__
 
             model_tuple = type_store.get(model_type_name)
@@ -74,7 +73,7 @@ class Registry:
                 )
 
             if existing_ref is None:
-                reference_model: Type[ObjectReference] = create_reference_model(
+                reference_model: type[ObjectReference] = create_reference_model(
                     model, type_name=type_name
                 )
             else:
@@ -89,7 +88,7 @@ class Registry:
 
         return _inner
 
-    def get_model_type(self, type: str, name: str) -> Type[Model]:
+    def get_model_type(self, type: str, name: str) -> type[Model]:
         if type not in self._store:
             raise ValueError(f"No models registered under '{type}'")
 
@@ -103,7 +102,7 @@ class Registry:
 
         return model
 
-    def get_models_refs_by_type(self, type: str) -> List[Type[ObjectReference]]:
+    def get_models_refs_by_type(self, type: str) -> list[type[ObjectReference]]:
         if type not in self._store:
             raise ValueError(f"No models registered under '{type}'")
 
@@ -113,7 +112,7 @@ class Registry:
 
     def create_reference(
         self, type_name: str, model_name: str
-    ) -> Type[ObjectReference]:
+    ) -> type[ObjectReference]:
         # check if the type_name is already registered
         if type_name not in self._store:
             self._store[type_name] = {}
@@ -138,7 +137,7 @@ class Registry:
             cls._default_registry = cls()
         return cls._default_registry
 
-    def get_dongling_references(self) -> List[Type[ObjectReference]]:
+    def get_dongling_references(self) -> list[type[ObjectReference]]:
         """Return a list of all dongling references."""
         return [
             reference
@@ -147,7 +146,7 @@ class Registry:
             if model is None
         ]
 
-    def get_model_schema(self, model: Type[Model]) -> ModelSchema:
+    def get_model_schema(self, model: type[Model]) -> ModelSchema:
         """Return the schema for the given model."""
         return ModelSchema(
             name=model.__name__,
@@ -181,10 +180,10 @@ class Registry:
 
         return Schemas(list_of_schemas=list_of_schemas)
 
-    def validate(self, type: str, name: str, model: Dict[str, Any]) -> Model:
+    def validate(self, type: str, name: str, model: dict[str, Any]) -> Model:
         model_type = self.get_model_type(type, name)
         return model_type(**model)
 
 
-def register(type_name: str) -> Callable[[Type[M]], Type[M]]:
+def register(type_name: str) -> Callable[[type[M]], type[M]]:
     return Registry.get_default().register(type_name)
