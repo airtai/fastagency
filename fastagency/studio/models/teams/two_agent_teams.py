@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Dict, List
+from typing import Annotated, Any
 from uuid import UUID
 
 from autogen import ConversableAgent
@@ -16,9 +16,9 @@ class AutogenTwoAgentTeam:
         self,
         *,
         initial_agent: ConversableAgent,
-        initial_agent_clients: List[Client],
+        initial_agent_clients: list[Client],
         secondary_agent: ConversableAgent,
-        secondary_agent_clients: List[Client],
+        secondary_agent_clients: list[Client],
     ) -> None:
         self.initial_agent = initial_agent
         self.secondary_agent = secondary_agent
@@ -30,7 +30,7 @@ class AutogenTwoAgentTeam:
             secondary_agent, [initial_agent], secondary_agent_clients
         )
 
-    def initiate_chat(self, message: str) -> List[Dict[str, Any]]:
+    def initiate_chat(self, message: str) -> list[dict[str, Any]]:
         return self.initial_agent.initiate_chat(  # type: ignore[no-any-return]
             recipient=self.secondary_agent, message=message
         )

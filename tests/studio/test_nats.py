@@ -3,7 +3,7 @@ import json
 import os
 import uuid
 from datetime import datetime
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable
 from unittest.mock import MagicMock
 
 # from autogen.agentchat import AssistantAgent, UserProxyAgent
@@ -29,7 +29,7 @@ from fastagency.studio.models.llms.azure import AzureOAI, AzureOAIAPIKey
 from fastagency.studio.models.teams.two_agent_teams import TwoAgentTeam
 
 
-def as_dict(model: BaseModel) -> Dict[str, Any]:
+def as_dict(model: BaseModel) -> dict[str, Any]:
     return json.loads(model.model_dump_json())  # type: ignore [no-any-return]
 
 
@@ -37,12 +37,12 @@ class TestAutogen:
     @pytest.mark.azure_oai
     def test_ioconsole(
         self,
-        azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:
         d = {"count": 0}
 
-        def input(prompt: str, d: Dict[str, int] = d) -> str:
+        def input(prompt: str, d: dict[str, int] = d) -> str:
             d["count"] += 1
             if d["count"] == 1:
                 return f"[{datetime.now()}] What's the weather in New York today?"
@@ -93,7 +93,7 @@ class TestAutogen:
     @pytest.mark.asyncio
     async def test_ionats_success(  # noqa: C901
         self,
-        azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:
         user_id = uuid.uuid4()
@@ -106,7 +106,7 @@ class TestAutogen:
 
         d = {"count": 0}
 
-        def input(prompt: str, d: Dict[str, int] = d) -> str:
+        def input(prompt: str, d: dict[str, int] = d) -> str:
             d["count"] += 1
             if d["count"] == 1:
                 return f"[{datetime.now()}] What's the weather in New York today?"
@@ -142,7 +142,7 @@ class TestAutogen:
 
         async def create_team(
             team_id: uuid.UUID, user_id: uuid.UUID
-        ) -> Callable[[str], List[Dict[str, Any]]]:
+        ) -> Callable[[str], list[dict[str, Any]]]:
             weather_man = autogen.agentchat.AssistantAgent(
                 name="weather_man",
                 system_message="You are the weather man. Ask the user to give you the name of a city and then provide the weather forecast for that city.",
@@ -161,8 +161,8 @@ class TestAutogen:
                 get_forecast_for_city_mock(city)
                 return f"The weather in {city} is sunny today."
 
-            def initiate_chat(msg: str) -> List[Dict[str, Any]]:
-                chat_result: List[Dict[str, Any]] = weather_man.initiate_chat(
+            def initiate_chat(msg: str) -> list[dict[str, Any]]:
+                chat_result: list[dict[str, Any]] = weather_man.initiate_chat(
                     recipient=user_proxy,
                     message="Hi! Tell me the city for which you want the weather forecast.",
                 )
@@ -245,7 +245,7 @@ class TestAutogen:
     @pytest.mark.asyncio
     async def test_ionats_error_msg(
         self,
-        azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:
         user_id = uuid.uuid4()
@@ -256,7 +256,7 @@ class TestAutogen:
 
         d = {"count": 0}
 
-        def input(prompt: str, d: Dict[str, int] = d) -> str:
+        def input(prompt: str, d: dict[str, int] = d) -> str:
             d["count"] += 1
             if d["count"] == 1:
                 return f"[{datetime.now()}] What's the weather in New York today?"
@@ -293,7 +293,7 @@ class TestAutogen:
 
         async def create_team(
             team_id: uuid.UUID, user_id: uuid.UUID
-        ) -> Callable[[str], List[Dict[str, Any]]]:
+        ) -> Callable[[str], list[dict[str, Any]]]:
             raise ValueError("Triggering error in test")
 
         monkeypatch.setattr(fastagency.studio.io.ionats, "create_team", create_team)
@@ -426,7 +426,7 @@ class TestAutogen:
 
         d = {"count": 0}
 
-        def input(prompt: str, d: Dict[str, int] = d) -> str:
+        def input(prompt: str, d: dict[str, int] = d) -> str:
             d["count"] += 1
             if d["count"] == 1:
                 return f"[{datetime.now()}] What's the weather in New York today?"

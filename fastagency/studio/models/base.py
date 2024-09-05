@@ -38,7 +38,7 @@ class Model(BaseModel, ABC):
     ) -> Any: ...  # pragma: no cover
 
     @classmethod
-    async def from_db(cls: Type[T], model_id: UUID) -> T:
+    async def from_db(cls: type[T], model_id: UUID) -> T:
         my_model_dict = await DefaultDB.backend().find_model(model_id)
         my_model = cls(**my_model_dict["json_str"])
 
@@ -67,7 +67,7 @@ class ObjectReference(BaseModel):
     name: Annotated[str, Field(description="The name of the data")] = ""
     uuid: Annotated[UUID, Field(description="The unique identifier")]
 
-    _data_class: Optional[Type[Model]] = None
+    _data_class: Optional["Type[Model]"] = None
 
     @model_validator(mode="after")
     def check_type(self) -> "ObjectReference":
@@ -76,7 +76,7 @@ class ObjectReference(BaseModel):
         return self
 
     @classmethod
-    def get_data_model(cls) -> Type[Model]:
+    def get_data_model(cls) -> "Type[Model]":
         """Get the data class for the reference.
 
         This method returns the data class that is associated with the reference class.
@@ -111,11 +111,11 @@ class ObjectReference(BaseModel):
 
 
 def create_reference_model(
-    model_class: Optional[Type[M]] = None,
+    model_class: Optional[type[M]] = None,
     *,
     type_name: str,
     model_name: Optional[str] = None,
-) -> Type[ObjectReference]:
+) -> type[ObjectReference]:
     if model_class is None and model_name is None:
         raise ValueError("Either model_class or model_name should be provided")
     if model_class is not None and model_name is not None:
@@ -156,10 +156,10 @@ def create_reference_model(
 
 
 class ModelTypeFinder(Protocol):
-    def get_model_type(self, type: str, name: str) -> Type[Model]: ...
+    def get_model_type(self, type: str, name: str) -> type[Model]: ...
 
 
-def get_reference_model(model: Type[BaseModel]) -> Type[ObjectReference]:
+def get_reference_model(model: type[BaseModel]) -> type[ObjectReference]:
     if issubclass(model, ObjectReference):
         return model
     elif hasattr(model, "_reference_model"):

@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 import httpx
 import pytest
@@ -10,7 +10,7 @@ from ..conftest import find_free_port
 
 
 def test_azure_gpt35_turbo_16k_llm_config(
-    azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
 ) -> None:
     assert set(azure_gpt35_turbo_16k_llm_config.keys()) == {
         "config_list",
@@ -29,7 +29,7 @@ def test_azure_gpt35_turbo_16k_llm_config(
 
 
 def test_openai_gpt35_turbo_16k_llm_config(
-    openai_gpt35_turbo_16k_llm_config: Dict[str, Any],
+    openai_gpt35_turbo_16k_llm_config: dict[str, Any],
 ) -> None:
     api_key = openai_gpt35_turbo_16k_llm_config["config_list"][0]["api_key"]
     expected = {

@@ -1,7 +1,8 @@
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from datetime import datetime
 from os import environ
-from typing import TYPE_CHECKING, Any, AsyncGenerator, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 from uuid import UUID
 
 from faststream import ContextRepo
@@ -48,7 +49,7 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
         type_name: str,
         model_name: str,
         json_str: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         async with self._get_db_connection() as db:
             created_model = await db.model.create(
                 data={
@@ -61,10 +62,10 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
             )
         return created_model.model_dump()  # type: ignore[no-any-return]
 
-    async def find_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
+    async def find_model(self, model_uuid: Union[str, UUID]) -> dict[str, Any]:
         model_uuid = str(model_uuid)
         async with self._get_db_connection() as db:
-            model: Optional[Dict[str, Any]] = await db.query_first(
+            model: Optional[dict[str, Any]] = await db.query_first(
                 'SELECT * from "Model" where uuid='  # nosec: [B608]
                 + f"'{model_uuid}'"
             )
@@ -74,8 +75,8 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
 
     async def find_many_model(
         self, user_uuid: Union[str, UUID], type_name: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
-        filters: Dict[str, Any] = {"user_uuid": str(user_uuid)}
+    ) -> list[dict[str, Any]]:
+        filters: dict[str, Any] = {"user_uuid": str(user_uuid)}
         if type_name:
             filters["type_name"] = type_name
 
@@ -90,7 +91,7 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
         type_name: str,
         model_name: str,
         json_str: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         async with self._get_db_connection() as db:
             updated_model = await db.model.update(
                 where={"uuid": str(model_uuid)},  # type: ignore[arg-type]
@@ -105,7 +106,7 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
             raise KeyNotFoundError(f"model_uuid {model_uuid} not found")
         return updated_model.model_dump()  # type: ignore[no-any-return,union-attr]
 
-    async def delete_model(self, model_uuid: Union[str, UUID]) -> Dict[str, Any]:
+    async def delete_model(self, model_uuid: Union[str, UUID]) -> dict[str, Any]:
         async with self._get_db_connection() as db:
             deleted_model = await db.model.delete(where={"uuid": str(model_uuid)})
         if deleted_model is None:
@@ -121,7 +122,7 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
         hashed_auth_token: str,
         expiry: str,
         expires_at: datetime,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         async with self._get_db_connection() as db:
             created_auth_token = await db.authtoken.create(  # type: ignore[attr-defined]
                 data={
@@ -138,7 +139,7 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
 
     async def find_many_auth_token(
         self, user_uuid: Union[str, UUID], deployment_uuid: Union[str, UUID]
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         async with self._get_db_connection() as db:
             auth_tokens = await db.authtoken.find_many(
                 where={
@@ -153,7 +154,7 @@ class PrismaBackendDB(BackendDBProtocol, PrismaBaseDB):
         auth_token_uuid: Union[str, UUID],
         deployment_uuid: Union[str, UUID],
         user_uuid: Union[str, UUID],
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         async with self._get_db_connection() as db:
             deleted_auth_token = await db.authtoken.delete(
                 where={  # type: ignore[typeddict-unknown-key]

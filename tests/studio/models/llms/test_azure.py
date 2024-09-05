@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 from pydantic import ValidationError
@@ -186,7 +186,7 @@ class TestAzureOAI:
         self,
         user_uuid: str,
         azure_oai_gpt35_ref: ObjectReference,
-        azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
     ) -> None:
         actual_llm_config = await create_autogen(
             model_ref=azure_oai_gpt35_ref,

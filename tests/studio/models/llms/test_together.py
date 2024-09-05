@@ -1,5 +1,4 @@
 import uuid
-from typing import Dict
 
 import pytest
 import together
@@ -48,7 +47,7 @@ class TestTogetherAI:
         # requires that environment variables TOGETHER_API_KEY is set
         client = together.Together()
 
-        expected_together_model_string: Dict[str, str] = {
+        expected_together_model_string: dict[str, str] = {
             model.display_name: model.id
             for model in client.models.list()
             if model.type == "chat"
@@ -127,7 +126,7 @@ class TestTogetherAI:
                     "type": "string",
                 },
                 "model": {
-                    "default": "Meta Llama 3 70B Reference",
+                    "default": "Meta Llama 3 70B Instruct Reference",
                     "description": "The model to use for the Together API",
                     "title": "Model",
                     "type": "string",
@@ -167,7 +166,10 @@ class TestTogetherAI:
             "title": "TogetherAI",
             "type": "object",
         }
-        assert "Meta Llama 3 70B Reference" in schema["properties"]["model"]["enum"]
+        assert (
+            "Meta Llama 3 70B Instruct Reference"
+            in schema["properties"]["model"]["enum"]
+        )
         schema["properties"]["model"].pop("enum")
         assert schema == expected
 

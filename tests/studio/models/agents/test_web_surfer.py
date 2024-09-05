@@ -1,5 +1,5 @@
 import uuid
-from typing import Any, Dict
+from typing import Any
 
 import autogen.agentchat.contrib.web_surfer
 import pytest
@@ -294,7 +294,7 @@ class TestWebSurferAgent:
         user_uuid: str,
         websurfer_ref: ObjectReference,
     ) -> None:
-        def is_termination_msg(msg: Dict[str, Any]) -> bool:
+        def is_termination_msg(msg: dict[str, Any]) -> bool:
             return "TERMINATE" in ["content"]
 
         ag_assistant, ag_toolkits = await create_autogen(
@@ -440,7 +440,7 @@ class TestBingAPIKey:
     @pytest.mark.db
     async def test_bing_api_key_model_create_autogen(
         self,
-        azure_gpt35_turbo_16k_llm_config: Dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
         user_uuid: str,
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:

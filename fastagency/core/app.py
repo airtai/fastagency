@@ -37,7 +37,7 @@ class FastAgency:
                             f"Starting a new workflow '{name}' with the following description:"
                             + "\n\n"
                             + f"{description}"
-                            + "\n\nPlease enter an initial message:"
+                            + "\n\nPlease enter an initial message"
                         ),
                     )
                 )

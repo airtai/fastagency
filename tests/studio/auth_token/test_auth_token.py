@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from typing import Any, Dict, Union
+from typing import Any, Union
 from uuid import UUID
 
 import pytest
@@ -82,7 +82,7 @@ async def test_create_deployment_token(
 ) -> None:
     deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
@@ -106,7 +106,7 @@ async def test_create_deployment_token_with_wrong_user_uuid(
 ) -> None:
     deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> dict[str, Union[str, UUID]]:
         return {
             "user_uuid": "random_wrong_uuid",
             "uuid": deployment_uuid,
@@ -132,7 +132,7 @@ async def test_create_deployment_auth_token_route(
 ) -> None:
     deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
@@ -160,7 +160,7 @@ async def test_get_all_deployment_auth_tokens(
 ) -> None:
     deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,
@@ -199,7 +199,7 @@ async def test_delete_deployment_auth_token(
 ) -> None:
     deployment_uuid = uuid.uuid4()
 
-    async def mock_find_model(*args: Any, **kwargs: Any) -> Dict[str, Union[str, UUID]]:
+    async def mock_find_model(*args: Any, **kwargs: Any) -> dict[str, Union[str, UUID]]:
         return {
             "user_uuid": user_uuid,
             "uuid": deployment_uuid,

@@ -1,4 +1,4 @@
-from typing import Annotated, List, Optional, Union
+from typing import Annotated, Optional, Union
 from uuid import UUID
 
 from pydantic import Field
@@ -51,8 +51,8 @@ class AgentBaseModel(Model):
         ),
     ] = None
 
-    async def get_clients_from_toolboxes(self, user_id: UUID) -> List[Client]:
-        clients: List[Client] = []
+    async def get_clients_from_toolboxes(self, user_id: UUID) -> list[Client]:
+        clients: list[Client] = []
         for i in range(3):
             toolbox_property = getattr(self, f"toolbox_{i+1}")
             if toolbox_property is None:

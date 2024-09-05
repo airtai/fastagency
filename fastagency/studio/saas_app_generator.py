@@ -6,7 +6,7 @@ import subprocess  # nosec B404
 import tempfile
 from os import environ
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import httpx
 import requests
@@ -15,8 +15,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 def _make_request(
-    url: str, headers: Dict[str, str]
-) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    url: str, headers: dict[str, str]
+) -> Union[dict[str, Any], list[dict[str, Any]]]:
     with httpx.Client() as httpx_client:
         response = httpx_client.get(url, headers=headers)  # type: ignore[arg-type]
         response.raise_for_status()
@@ -108,7 +108,7 @@ class SaasAppGenerator:
         command: str,
         cwd: Optional[str] = None,
         print_output: bool = False,
-        env: Optional[Dict[str, str]] = None,
+        env: Optional[dict[str, str]] = None,
     ) -> None:
         try:
             logging.info(f"Running command: {command}")
@@ -130,7 +130,7 @@ class SaasAppGenerator:
             # logging.error(f"Stderr output:\n{e.stderr}")
             raise RuntimeError(f"Failed to execute command: {command}") from e
 
-    def validate_gh_token(self, env: Dict[str, Any]) -> None:
+    def validate_gh_token(self, env: dict[str, Any]) -> None:
         env["GH_TOKEN"] = self.github_token
 
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -150,7 +150,7 @@ class SaasAppGenerator:
                 logging.error(e)
                 raise InvalidGHTokenError(msg) from e
 
-    def validate_fly_token(self, env: Dict[str, Any]) -> None:
+    def validate_fly_token(self, env: dict[str, Any]) -> None:
         env["FLY_API_TOKEN"] = self.fly_api_token
 
         try:
@@ -210,19 +210,19 @@ class SaasAppGenerator:
         account_and_repo_name = "/".join(url_parts[-2:])
         return account_and_repo_name.strip()
 
-    def _get_github_username_and_email(self) -> Tuple[str, str]:
+    def _get_github_username_and_email(self) -> tuple[str, str]:
         headers = {
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {self.github_token}",
             "X-GitHub-Api-Version": "2022-11-28",
         }
 
-        user_response: Dict[str, Any] = _make_request(
+        user_response: dict[str, Any] = _make_request(
             "https://api.github.com/user", headers
         )  # type: ignore[assignment]
         name = user_response["name"]
 
-        email_response: List[Dict[str, Any]] = _make_request(
+        email_response: list[dict[str, Any]] = _make_request(
             "https://api.github.com/user/emails", headers
         )  # type: ignore[assignment]
         primary_email = next(
@@ -233,7 +233,7 @@ class SaasAppGenerator:
         return name, primary_email
 
     def _set_gh_actions_settings(
-        self, account_and_repo_name: str, cwd: str, env: Dict[str, Any]
+        self, account_and_repo_name: str, cwd: str, env: dict[str, Any]
     ) -> None:
         command = f"""gh api \
 --method PUT \
@@ -245,7 +245,7 @@ class SaasAppGenerator:
         self._run_cli_command(command, cwd=cwd, env=env)
 
     def _initialize_git_and_push(
-        self, temp_dir_path: Path, env: Dict[str, Any]
+        self, temp_dir_path: Path, env: dict[str, Any]
     ) -> None:
         cwd = str(temp_dir_path / SaasAppGenerator.EXTRACTED_TEMPLATE_DIR_NAME)
 
@@ -293,7 +293,7 @@ class SaasAppGenerator:
         command = "git push -u origin main"
         self._run_cli_command(command, cwd=cwd, env=env)
 
-    def _set_github_actions_secrets(self, cwd: str, env: Dict[str, Any]) -> None:
+    def _set_github_actions_secrets(self, cwd: str, env: dict[str, Any]) -> None:
         secrets_env = env.copy()
 
         secrets_env["FLY_API_TOKEN"] = self.fly_api_token

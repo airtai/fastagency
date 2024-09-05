@@ -2,7 +2,8 @@
 search:
   exclude: true
 ---
-- [Features](fastagency.md)
+- Getting Started
+    - [Getting Started](getting-started/index.md)
 - Reference
     - fastagency
         - [FastAgency](api/fastagency/FastAgency.md)
@@ -69,6 +70,14 @@ search:
             - fastapi_code_generator_helpers
                 - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                 - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
+            - security
+                - [APIKeyCookie](api/fastagency/openapi/security/APIKeyCookie.md)
+                - [APIKeyHeader](api/fastagency/openapi/security/APIKeyHeader.md)
+                - [APIKeyQuery](api/fastagency/openapi/security/APIKeyQuery.md)
+                - [BaseSecurity](api/fastagency/openapi/security/BaseSecurity.md)
+                - [BaseSecurityParameters](api/fastagency/openapi/security/BaseSecurityParameters.md)
+            - security_schema_visitor
+                - [custom_visitor](api/fastagency/openapi/security_schema_visitor/custom_visitor.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
@@ -204,6 +213,7 @@ search:
                     - toolbox
                         - [Client](api/fastagency/studio/models/toolboxes/toolbox/Client.md)
                         - [OpenAPIAuth](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuth.md)
+                        - [OpenAPIAuthToken](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuthToken.md)
                         - [Toolbox](api/fastagency/studio/models/toolboxes/toolbox/Toolbox.md)
             - saas_app_generator
                 - [InvalidFlyTokenError](api/fastagency/studio/saas_app_generator/InvalidFlyTokenError.md)

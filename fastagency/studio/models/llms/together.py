@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Dict, Literal
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import AfterValidator, Field, HttpUrl
@@ -34,19 +34,20 @@ together_model_string = {
     "Meta Llama 3 70B Instruct Turbo": "meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
     "Meta Llama 3 70B Instruct Lite": "meta-llama/Meta-Llama-3-70B-Instruct-Lite",
     "Gemma-2 Instruct (9B)": "google/gemma-2-9b-it",
-    "Meta Llama 3 8B Reference": "meta-llama/Llama-3-8b-chat-hf",
+    "Meta Llama 3 8B Instruct Reference": "meta-llama/Llama-3-8b-chat-hf",
     "WizardLM-2 (8x22B)": "microsoft/WizardLM-2-8x22B",
     "Mixtral-8x7B Instruct v0.1": "mistralai/Mixtral-8x7B-Instruct-v0.1",
-    "Meta Llama 3 70B Reference": "meta-llama/Llama-3-70b-chat-hf",
+    "Meta Llama 3 70B Instruct Reference": "meta-llama/Llama-3-70b-chat-hf",
     "DBRX Instruct": "databricks/dbrx-instruct",
     "Nous Hermes 2 - Mixtral 8x7B-DPO ": "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
-    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "Meta Llama 3 8B Instruct Turbo": "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
     "Meta Llama 3 8B Instruct Lite": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
     "Meta Llama 3.1 70B Instruct Turbo": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     "Meta Llama 3.1 8B Instruct": "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
     "Mixtral-8x22B Instruct v0.1": "mistralai/Mixtral-8x22B-Instruct-v0.1",
     "Gryphe MythoMax L2 Lite (13B)": "Gryphe/MythoMax-L2-13b-Lite",
+    "Hermes 3 - Llama-3.1 405B": "NousResearch/Hermes-3-Llama-3.1-405B-Turbo",
+    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
     "WizardLM v1.2 (13B)": "WizardLM/WizardLM-13B-V1.2",
     "Koala (7B)": "togethercomputer/Koala-7B",
@@ -103,7 +104,6 @@ together_model_string = {
     "carson ml318br": "carson/ml318br",
     "Llama-3 70B Instruct Gradient 1048K": "gradientai/Llama-3-70B-Instruct-Gradient-1048k",
     "Meta Llama 3.1 70B Instruct": "meta-llama/Meta-Llama-3.1-70B-Instruct-Reference",
-    "Meta Llama 3.1 70B": "meta-llama/Meta-Llama-3.1-70B-Reference",
 }
 
 TogetherModels: TypeAlias = Literal[tuple(together_model_string.keys())]  # type: ignore[valid-type]
@@ -140,7 +140,7 @@ class TogetherAI(Model):
     model: Annotated[  # type: ignore[valid-type]
         TogetherModels,
         Field(description="The model to use for the Together API"),
-    ] = "Meta Llama 3 70B Reference"
+    ] = "Meta Llama 3 70B Instruct Reference"
 
     api_key: Annotated[
         TogetherAIAPIKeyRef,
@@ -170,7 +170,7 @@ class TogetherAI(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         my_model: TogetherAI = await cls.from_db(model_id)
 
         api_key_model: TogetherAIAPIKey = (

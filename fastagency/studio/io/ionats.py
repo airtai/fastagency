@@ -3,7 +3,7 @@ import os
 import time
 import traceback
 from queue import Queue
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
 from uuid import UUID
 
 from asyncer import asyncify, syncify
@@ -165,7 +165,7 @@ class InitiateModel(BaseModel):
 # patch this is tests
 async def create_team(
     team_id: UUID, user_id: UUID
-) -> Callable[[str], List[Dict[str, Any]]]:
+) -> Callable[[str], list[dict[str, Any]]]:
     team_dict = await DefaultDB.backend().find_model(team_id)
 
     team_model: Union[TwoAgentTeam, MultiAgentTeam]
@@ -203,7 +203,7 @@ async def initiate_handler(
             deployment_id=body.deployment_id,
         )
 
-        def start_chat() -> Optional[List[Dict[str, Any]]]:  # type: ignore [return]
+        def start_chat() -> Optional[list[dict[str, Any]]]:  # type: ignore [return]
             try:
                 terminate_data = TerminateModel()
                 terminate_chat_msg = ServerResponseModel(
