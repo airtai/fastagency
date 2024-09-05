@@ -1,7 +1,7 @@
 import mesop as me
 import json
 from examples.mesop_poc.data_model import State, ConversationMessage
-from examples.mesop_poc.send_prompt import MesopGUIMessageVisitor, send_prompt_to_autogen, send_user_feedback_to_autogen
+from examples.mesop_poc.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
 from examples.mesop_poc.styles import ROOT_BOX_STYLE, STYLESHEETS
 from examples.mesop_poc.components.message import message_box
 from examples.mesop_poc.components.ui_common import header, conversation_completed
@@ -35,14 +35,11 @@ def home_page():
 
 def _handle_message(state: State, message:MesopMessage ):
     messages = state.conversation.messages
-    #level = message.conversation.level
-    #conversationId = message.conversation.id
+    level = message.conversation.level
+    conversationId = message.conversation.id
     io_message = message.io_message
     message_dict = io_message.model_dump()
-    message_string = json.dumps(message_dict)
-    #if messages is None:
-    #    state.conversation.messages = list([message_string])
-    #else:
+    message_string = json.dumps({"level": level, "conversationId": conversationId, "io_message": message_dict})
     messages.append(message_string)
     state.conversation.messages = list(messages)
     if isinstance(io_message, AskingMessage):
@@ -53,7 +50,6 @@ def _handle_message(state: State, message:MesopMessage ):
         state.waitingForFeedback = False
 
 def send_prompt(e: me.ClickEvent):
-    print("send_prompt")
     state = me.state(State)
     me.navigate("/conversation")
     prompt = state.prompt

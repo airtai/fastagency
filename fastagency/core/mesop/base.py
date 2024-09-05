@@ -173,6 +173,15 @@ def run_workflow(wf: AutoGenWorkflows, name: str, initial_message: str) -> Mesop
             )
         )
 
+        io.process_message(
+            IOMessage.create(
+                sender="user",
+                recepient="workflow",
+                type="workflow_completed",
+                result=result,
+            )
+        )
+
     io = MesopIO()
     subconversation = io.create_subconversation()
     thread = threading.Thread(target=conversation_worker, args=(io, subconversation))
