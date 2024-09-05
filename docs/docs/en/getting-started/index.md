@@ -239,21 +239,24 @@ The output will vary based on the interface:
 
 === "Mesop"
     ```console
-
     ╭─ Python module file ─╮
     │                      │
-    │  🐍 main.py          │
+    │  🐍 main_mesop.py    │
     │                      │
     ╰──────────────────────╯
 
 
-    ╭─ Importable FastAgency app ─╮
-    │                             │
-    │  from main import app       │
-    │                             │
-    ╰─────────────────────────────╯
+    ╭─ Importable FastAgency app ──╮
+    │                              │
+    │  from main_mesop import app  │
+    │                              │
+    ╰──────────────────────────────╯
 
-    Mesop app running at: http://127.0.0.1:8000/
+    Running with hot reload:
+
+    Running server on: http://localhost:32123
+    * Serving Flask app 'mesop.server.server'
+    * Debug mode: off
     ```
 
     For Mesop applications, the output will include a URL where you can access your web-based application.
