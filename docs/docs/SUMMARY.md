@@ -21,6 +21,7 @@ search:
                 - [get_default_path](api/fastagency/cli/discover/get_default_path.md)
                 - [get_import_string](api/fastagency/cli/discover/get_import_string.md)
                 - [get_module_data_from_path](api/fastagency/cli/discover/get_module_data_from_path.md)
+                - [import_from_string](api/fastagency/cli/discover/import_from_string.md)
             - exceptions
                 - [FastAgencyCLIError](api/fastagency/cli/exceptions/FastAgencyCLIError.md)
             - logging
@@ -44,17 +45,23 @@ search:
                 - [IOMessage](api/fastagency/core/base/IOMessage.md)
                 - [IOMessageVisitor](api/fastagency/core/base/IOMessageVisitor.md)
                 - [MultipleChoice](api/fastagency/core/base/MultipleChoice.md)
+                - [Runnable](api/fastagency/core/base/Runnable.md)
                 - [SuggestedFunctionCall](api/fastagency/core/base/SuggestedFunctionCall.md)
                 - [SystemMessage](api/fastagency/core/base/SystemMessage.md)
                 - [TextInput](api/fastagency/core/base/TextInput.md)
                 - [TextMessage](api/fastagency/core/base/TextMessage.md)
                 - [WorkflowCompleted](api/fastagency/core/base/WorkflowCompleted.md)
                 - [Workflows](api/fastagency/core/base/Workflows.md)
+                - [run_workflow](api/fastagency/core/base/run_workflow.md)
             - io
                 - console
                     - [ConsoleIO](api/fastagency/core/io/console/ConsoleIO.md)
                     - base
                         - [ConsoleIO](api/fastagency/core/io/console/base/ConsoleIO.md)
+                - mesop
+                    - [Mesop](api/fastagency/core/io/mesop/Mesop.md)
+                    - base
+                        - [Mesop](api/fastagency/core/io/mesop/base/Mesop.md)
             - runtimes
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/core/runtimes/autogen/AutoGenWorkflows.md)
