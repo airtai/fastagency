@@ -264,7 +264,7 @@ class Client:
             raise ValueError("Either openapi_json or openapi_url should be provided")
 
         if openapi_json is None and openapi_url is not None:
-            with requests.get(openapi_url) as response:
+            with requests.get(openapi_url, timeout=10) as response:
                 response.raise_for_status()
                 openapi_json = response.text
 
