@@ -360,11 +360,19 @@ fastagency run
 The output will vary based on the city and the current weather conditions:
 
 ```console
+
  ╭── Python module file ──╮
  │                        │
  │  🐍 sample_weather.py  │
  │                        │
  ╰────────────────────────╯
+
+ ╭─── Importable FastAgency app ────╮
+ │                                  │
+ │  from sample_weather import app  │
+ │                                  │
+ ╰──────────────────────────────────╯
+
 ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
 │                                                                              │
 │ Starting a new workflow 'simple_weather' with the following                  │
@@ -375,7 +383,6 @@ The output will vary based on the city and the current weather conditions:
 │ Please enter an initial message:                                             │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 What is the weather in Zagreb?
-
     ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
     │                                                                              │
     │ What is the weather in Zagreb?                                               │
@@ -392,6 +399,112 @@ What is the weather in Zagreb?
     │                                                                              │
     │   }                                                                          │
     │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ User_Agent -> Weather_Agent [function_call_execution] ──────────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "get_weather__get",                                       │
+    │   "call_id":                                                                 │
+    │ "call_gGl4uAhMvPTXjgrOvkVZwCh3",                                             │
+    │   "retval": "{\"city\": \"Zagreb\",                                          │
+    │ \"temperature\": 18, \"daily_forecasts\": [{\"forecast_date\":               │
+    │ \"2024-09-06\", \"temperature\": 23, \"hourly_forecasts\":                   │
+    │ [{\"forecast_time\": \"00:00:00\", \"temperature\": 19,                      │
+    │ \"description\": \"Patchy rain nearby\"}, {\"forecast_time\":                │
+    │ \"03:00:00\", \"temperature\": 19, \"description\": \"Patchy light           │
+    │ drizzle\"}, {\"forecast_time\": \"06:00:00\", \"temperature\": 18,           │
+    │ \"description\": \"Clear\"}, {\"forecast_time\": \"09:00:00\",               │
+    │ \"temperature\": 24, \"description\": \"Sunny\"}, {\"forecast_time\":        │
+    │ \"12:00:00\", \"temperature\": 30, \"description\": \"Sunny\"},              │
+    │ {\"forecast_time\": \"15:00:00\", \"temperature\": 30,                       │
+    │ \"description\": \"Partly Cloudy\"}, {\"forecast_time\": \"18:00:00\",       │
+    │  \"temperature\": 26, \"description\": \"Patchy rain nearby\"},              │
+    │ {\"forecast_time\": \"21:00:00\", \"temperature\": 21,                       │
+    │ \"description\": \"Patchy rain nearby\"}]}, {\"forecast_date\":              │
+    │ \"2024-09-07\", \"temperature\": 24, \"hourly_forecasts\":                   │
+    │ [{\"forecast_time\": \"00:00:00\", \"temperature\": 19,                      │
+    │ \"description\": \"Partly Cloudy\"}, {\"forecast_time\": \"03:00:00\",       │
+    │  \"temperature\": 18, \"description\": \"Clear\"}, {\"forecast_time\":       │
+    │  \"06:00:00\", \"temperature\": 18, \"description\": \"Clear\"},             │
+    │ {\"forecast_time\": \"09:00:00\", \"temperature\": 25,                       │
+    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"12:00:00\",               │
+    │ \"temperature\": 30, \"description\": \"Sunny\"}, {\"forecast_time\":        │
+    │ \"15:00:00\", \"temperature\": 31, \"description\": \"Sunny\"},              │
+    │ {\"forecast_time\": \"18:00:00\", \"temperature\": 26,                       │
+    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"21:00:00\",               │
+    │ \"temperature\": 22, \"description\": \"Clear\"}]},                          │
+    │ {\"forecast_date\": \"2024-09-08\", \"temperature\": 25,                     │
+    │ \"hourly_forecasts\": [{\"forecast_time\": \"00:00:00\",                     │
+    │ \"temperature\": 20, \"description\": \"Partly Cloudy\"},                    │
+    │ {\"forecast_time\": \"03:00:00\", \"temperature\": 19,                       │
+    │ \"description\": \"Clear\"}, {\"forecast_time\": \"06:00:00\",               │
+    │ \"temperature\": 18, \"description\": \"Clear\"}, {\"forecast_time\":        │
+    │ \"09:00:00\", \"temperature\": 26, \"description\": \"Sunny\"},              │
+    │ {\"forecast_time\": \"12:00:00\", \"temperature\": 31,                       │
+    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"15:00:00\",               │
+    │ \"temperature\": 32, \"description\": \"Sunny\"}, {\"forecast_time\":        │
+    │ \"18:00:00\", \"temperature\": 27, \"description\": \"Sunny\"},              │
+    │ {\"forecast_time\": \"21:00:00\", \"temperature\": 23,                       │
+    │ \"description\": \"Partly Cloudy\"}]}]}\n"                                   │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ The current weather in Zagreb is 18°C. Here are the upcoming weather         │
+    │ forecasts:                                                                   │
+    │                                                                              │
+    │ ### September 6, 2024                                                        │
+    │ - **Day Temperature**: 23°C                                                  │
+    │ -                                                                            │
+    │ **Hourly Forecast**:                                                         │
+    │   - 00:00: 19°C - Patchy rain nearby                                         │
+    │   - 03:00:                                                                   │
+    │ 19°C - Patchy light drizzle                                                  │
+    │   - 06:00: 18°C - Clear                                                      │
+    │   - 09:00: 24°C -                                                            │
+    │ Sunny                                                                        │
+    │   - 12:00: 30°C - Sunny                                                      │
+    │   - 15:00: 30°C - Partly Cloudy                                              │
+    │   -                                                                          │
+    │ 18:00: 26°C - Patchy rain nearby                                             │
+    │   - 21:00: 21°C - Patchy rain nearby                                         │
+    │                                                                              │
+    │                                                                              │
+    │ ### September 7, 2024                                                        │
+    │ - **Day Temperature**: 24°C                                                  │
+    │ - **Hourly                                                                   │
+    │ Forecast**:                                                                  │
+    │   - 00:00: 19°C - Partly Cloudy                                              │
+    │   - 03:00: 18°C - Clear                                                      │
+    │                                                                              │
+    │ - 06:00: 18°C - Clear                                                        │
+    │   - 09:00: 25°C - Sunny                                                      │
+    │   - 12:00: 30°C - Sunny                                                      │
+    │                                                                              │
+    │   - 15:00: 31°C - Sunny                                                      │
+    │   - 18:00: 26°C - Sunny                                                      │
+    │   - 21:00: 22°C -                                                            │
+    │ Clear                                                                        │
+    │                                                                              │
+    │ ### September 8, 2024                                                        │
+    │ - **Day Temperature**: 25°C                                                  │
+    │ - **Hourly                                                                   │
+    │ Forecast**:                                                                  │
+    │   - 00:00: 20°C - Partly Cloudy                                              │
+    │   - 03:00: 19°C - Clear                                                      │
+    │                                                                              │
+    │ - 06:00: 18°C - Clear                                                        │
+    │   - 09:00: 26°C - Sunny                                                      │
+    │   - 12:00: 31°C - Sunny                                                      │
+    │                                                                              │
+    │   - 15:00: 32°C - Sunny                                                      │
+    │   - 18:00: 27°C - Sunny                                                      │
+    │   - 21:00: 23°C -                                                            │
+    │ Partly Cloudy                                                                │
+    │                                                                              │
+    │ If you need more information, feel free to ask!                              │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
