@@ -269,13 +269,22 @@ This tutorial demonstrates how to integrate external REST API calls into `AutoGe
 
 For this tutorial's use case, Airt.ai provides a [weather API](https://weather.tools.fastagency.ai/docs).
 
+#### Install
+
+To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
+
+```console
+pip install "fastagency[autogen,openapi]"
+```
+
 #### Imports
-These imports are similar to the imports section we have already covered, with the only difference being the additional import of the `OpenAPI` Client:
+These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the `OpenAPI` Client and `UserProxyAgent`:
 
 ```python
 import os
 
 from autogen.agentchat import ConversableAgent
+from autogen import UserProxyAgent
 
 from fastagency.core import Chatable
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
