@@ -83,6 +83,7 @@ search:
                         - [send_prompt](api/fastagency/core/io/mesop/main/send_prompt.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/core/io/mesop/message/MesopGUIMessageVisitor.md)
+                        - [darken_hex_color](api/fastagency/core/io/mesop/message/darken_hex_color.md)
                         - [message_box](api/fastagency/core/io/mesop/message/message_box.md)
                     - send_prompt
                         - [send_prompt_to_autogen](api/fastagency/core/io/mesop/send_prompt/send_prompt_to_autogen.md)
