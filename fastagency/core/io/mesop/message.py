@@ -7,6 +7,7 @@ from ...base import (
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
+    SystemMessage,
     TextInput,
     TextMessage,
 )
@@ -56,8 +57,21 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
-            self._header(message, base_color)
+            self._header(message, base_color, title="Text message")
             me.markdown(message.body)
+
+    def visit_system_message(self, message: SystemMessage) -> None:
+        base_color = "#bff"
+        with me.box(
+            style=me.Style(
+                background=base_color,
+                padding=me.Padding.all(16),
+                border_radius=16,
+                margin=me.Margin.symmetric(vertical=16),
+            )
+        ):
+            self._header(message, base_color, title="System Message")
+            me.markdown(json.dumps(message.message, indent=2))
 
     def visit_text_input(self, message: TextInput) -> str:
         text = message.prompt if message.prompt else "Please enter a value"
@@ -74,7 +88,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
-            self._header(message, base_color)
+            self._header(message, base_color, title="Input requested")
             me.markdown(text)
         return ""
 
@@ -94,14 +108,16 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
-            self._header(message, base_color)
+            self._header(message, base_color, title="Input requested")
             me.markdown(text)
         return ""
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         return self.visit(message)
 
-    def _header(self, message: IOMessage, base_color: str) -> None:
+    def _header(
+        self, message: IOMessage, base_color: str, title: Optional[str] = None
+    ) -> None:
         you_want_it_darker = darken_hex_color(base_color, 0.8)
         with me.box(
             style=me.Style(
@@ -111,7 +127,8 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
-            h = f"From: {message.sender}, to:{message.recepient}"
+            h = title if title else message.type
+            h += f" from: {message.sender}, to:{message.recepient}"
             if message.auto_reply:
                 h += " (auto-reply)"
             me.markdown(h)
