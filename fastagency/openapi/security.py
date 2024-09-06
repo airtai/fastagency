@@ -1,6 +1,11 @@
-from typing import Any, ClassVar, Literal, Protocol
+import logging
+from typing import Any, ClassVar, Literal, Optional, Protocol
 
 from pydantic import BaseModel, model_validator
+
+# Get the logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 class BaseSecurity(BaseModel):
@@ -35,16 +40,17 @@ class BaseSecurity(BaseModel):
         return type == cls.type and in_value == cls.in_value
 
     @classmethod
-    def get_security_class(cls, type: str, in_value: str) -> str:
+    def get_security_class(cls, type: str, in_value: str) -> Optional[str]:
         sub_classes = cls.__subclasses__()
 
         for sub_class in sub_classes:
             if sub_class.is_supported(type, in_value):
                 return sub_class.__name__
         else:
-            raise NotImplementedError(
+            logger.error(
                 f"Unsupported type '{type}' and in_value '{in_value}' combination"
             )
+            return None
 
 
 class BaseSecurityParameters(Protocol):
@@ -139,3 +145,29 @@ class APIKeyCookie(BaseSecurity):
 
         def get_security_class(self) -> type[BaseSecurity]:
             return APIKeyCookie
+
+
+class HTTPBearer(BaseSecurity):
+    """HTTP Bearer security class."""
+
+    type: ClassVar[Literal["http"]] = "http"
+    in_value: ClassVar[Literal["bearer"]] = "bearer"
+
+    class Parameters(BaseModel):  # BaseSecurityParameters
+        """HTTP Bearer security parameters class."""
+
+        value: str
+
+        def apply(
+            self,
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
+            security: BaseSecurity,
+        ) -> None:
+            if "headers" not in body_dict:
+                body_dict["headers"] = {}
+
+            body_dict["headers"]["Authorization"] = f"Bearer {self.value}"
+
+        def get_security_class(self) -> type[BaseSecurity]:
+            return HTTPBearer

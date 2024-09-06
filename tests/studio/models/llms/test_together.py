@@ -132,7 +132,7 @@ class TestTogetherAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/TogetherAIAPIKeyRef"}],
+                    "$ref": "#/$defs/TogetherAIAPIKeyRef",
                     "description": "The API Key from Together.ai",
                     "title": "API Key",
                 },
@@ -171,6 +171,7 @@ class TestTogetherAI:
             in schema["properties"]["model"]["enum"]
         )
         schema["properties"]["model"].pop("enum")
+        # print(schema)
         assert schema == expected
 
     @pytest.mark.asyncio

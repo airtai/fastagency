@@ -17,11 +17,17 @@ def custom_visitor(parser: OpenAPIParser, model_path: Path) -> dict[str, object]
     security_classes = []
     security_parameters = {}
     for k, v in security_schemes.items():
+        if "in" not in v:
+            in_value = v["scheme"] if "scheme" in v and v["type"] == "http" else None
+        else:
+            in_value = v["in"]
         security_class = BaseSecurity.get_security_class(
-            type=v["type"], in_value=v["in"]
+            type=v["type"], in_value=in_value
         )
+        if security_class is None:
+            continue
         security_classes.append(security_class)
-        name = v["name"]
+        name = v.get("name", None)
         security_parameters[k] = f'{security_class}(name="{name}")'
 
     return {

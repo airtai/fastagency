@@ -3,7 +3,7 @@ site_name: FastAgency
 site_description: "FastAgency: a repository of open-source AI models"
 site_url: https://docs.fastagency.ai/
 site_author: airt
-copyright: '&copy; 2023 onwards <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
+copyright: '&copy; 2024 onwards <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
 
 docs_dir: docs
 
@@ -157,7 +157,7 @@ extra:
   social:
     # Discord link should be first
     - icon: fontawesome/brands/discord
-      link: https://discord.gg/qFm6aSqq59
+      link: https://discord.gg/kJjSGWrknU
     - icon: fontawesome/brands/github-alt
       link: https://github.com/airtai/fastagency
     - icon: fontawesome/brands/twitter

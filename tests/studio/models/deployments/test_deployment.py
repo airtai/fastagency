@@ -158,17 +158,17 @@ class TestDeployment:
                     "type": "string",
                 },
                 "team": {
-                    "allOf": [{"$ref": "#/$defs/TwoAgentTeamRef"}],
+                    "$ref": "#/$defs/TwoAgentTeamRef",
                     "description": "The team that is used in the deployment",
                     "title": "Team Name",
                 },
                 "gh_token": {
-                    "allOf": [{"$ref": "#/$defs/GitHubTokenRef"}],
+                    "$ref": "#/$defs/GitHubTokenRef",
                     "description": "The GitHub token to use for creating a new repository",
                     "title": "GH Token",
                 },
                 "fly_token": {
-                    "allOf": [{"$ref": "#/$defs/FlyTokenRef"}],
+                    "$ref": "#/$defs/FlyTokenRef",
                     "description": "The Fly.io token to use for deploying the deployment",
                     "title": "Fly Token",
                 },

@@ -56,8 +56,8 @@ mesop = [
 ]
 
 autogen = [
-    "pyautogen[anthropic,together]==0.2.35",
-    "together>=1.2.9,<2",
+    "autogen[anthropic,together]>=0.3.0,<0.4",
+    "together>=1.2.9,<1.3",
 ]
 
 openapi = [
@@ -148,7 +148,7 @@ Homepage = "https://docs.fastagency.ai/latest/"
 Documentation = "https://docs.fastagency.airt.ai/latest/"
 Tracker = "https://github.com/airtai/fastagency/issues"
 Source = "https://github.com/airtai/fastagency"
-Discord = "https://discord.gg/qFm6aSqq59"
+Discord = "https://discord.gg/kJjSGWrknU"
 
 [project.scripts]
 fastagency = "fastagency.__main__:cli"
