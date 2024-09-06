@@ -56,7 +56,7 @@ mesop = [
 ]
 
 autogen = [
-    "autogen[anthropic,together]==0.3.0b4",
+    "autogen[anthropic,together]>=0.3.0,<0.4",
     "together>=1.2.9,<1.3",
 ]
 
