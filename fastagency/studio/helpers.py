@@ -216,3 +216,10 @@ async def create_autogen(
     model = await get_model_by_ref(model_ref)
 
     return await model.create_autogen(model_id=model_id, user_id=user_id, **kwargs)
+
+
+async def check_model_name_uniqueness(user_uuid: str, model_name: str) -> bool:
+    existing_models = await DefaultDB.backend().find_many_model(user_uuid=user_uuid)
+    return not any(
+        model["json_str"].get("name") == model_name for model in existing_models
+    )
