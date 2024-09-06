@@ -108,6 +108,7 @@ search:
                 - [APIKeyQuery](api/fastagency/openapi/security/APIKeyQuery.md)
                 - [BaseSecurity](api/fastagency/openapi/security/BaseSecurity.md)
                 - [BaseSecurityParameters](api/fastagency/openapi/security/BaseSecurityParameters.md)
+                - [HTTPBearer](api/fastagency/openapi/security/HTTPBearer.md)
             - security_schema_visitor
                 - [custom_visitor](api/fastagency/openapi/security_schema_visitor/custom_visitor.md)
         - studio
