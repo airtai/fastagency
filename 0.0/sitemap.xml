@@ -463,6 +463,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/openapi/security/BaseSecurityParameters/"/>
     </url>
     <url>
+        <loc>https://docs.fastagency.ai/latest/api/fastagency/openapi/security/HTTPBearer/</loc>
+        <lastmod>2024-09-06</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://docs.fastagency.ai/latest/api/fastagency/openapi/security/HTTPBearer/"/>
+    </url>
+    <url>
         <loc>https://docs.fastagency.ai/latest/api/fastagency/openapi/security_schema_visitor/custom_visitor/</loc>
         <lastmod>2024-09-06</lastmod>
         <changefreq>daily</changefreq>
