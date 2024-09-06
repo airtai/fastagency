@@ -103,7 +103,7 @@ class TestAnthropic:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/AnthropicAPIKeyRef"}],
+                    "$ref": "#/$defs/AnthropicAPIKeyRef",
                     "description": "The API Key from Anthropic",
                     "title": "API Key",
                 },
@@ -137,6 +137,7 @@ class TestAnthropic:
             "title": "Anthropic",
             "type": "object",
         }
+        # print(schema)
         assert schema == expected
 
     @pytest.mark.asyncio
