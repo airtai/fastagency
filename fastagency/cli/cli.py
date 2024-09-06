@@ -34,7 +34,7 @@ def callback(
 
     Manage your [bold]FastAgency[/bold] projects, run your FastAgency apps, and more.
 
-    Read more in the docs: [link]https://docs.fastagency.ai/latest/[/link].
+    Read more in the docs: [link]https://fastagency.ai/latest/[/link].
     """  # noqa: D415
 
 
