@@ -1,23 +1,26 @@
-import logging
-import mesop as me
 import json
-from fastagency.core.io.mesop.data_model import State
-from fastagency.core.io.mesop.send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
-from fastagency.core.io.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
-from fastagency.core.io.mesop.message import message_box
-from fastagency.core.io.mesop.components.ui_common import header, conversation_completed
-from fastagency.core.io.mesop.components.inputs import input_user_feedback, input_prompt
-from fastagency.core.io.mesop.base import MesopMessage, AskingMessage, WorkflowCompleted
+import logging
+import os
+from collections.abc import Iterator
 
-SECURITY_POLICY = me.SecurityPolicy(
-    allowed_iframe_parents=["https://huggingface.co"]
+import mesop as me
+
+from fastagency.cli.discover import import_from_string
+from fastagency.core.base import AskingMessage, WorkflowCompleted, Workflows
+from fastagency.core.io.mesop.base import MesopMessage
+from fastagency.core.io.mesop.components.inputs import input_prompt, input_user_feedback
+from fastagency.core.io.mesop.components.ui_common import conversation_completed, header
+from fastagency.core.io.mesop.data_model import State
+from fastagency.core.io.mesop.message import message_box
+from fastagency.core.io.mesop.send_prompt import (
+    send_prompt_to_autogen,
+    send_user_feedback_to_autogen,
 )
+from fastagency.core.io.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
 
 # Get the logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-
-logger.handlers = []
 
 # Create a stream handler
 handler = logging.StreamHandler()
@@ -30,24 +33,30 @@ handler.setFormatter(formatter)
 # Add the handler to the logger
 logger.addHandler(handler)
 
-# Log messages
-logger.warning("warning message")
-logger.info("info message")
 
-def get_workflow():
-    # todo: dynamic import
-    from examples.mesop_poc.main import app
-    wf = app.wf[0]
+def get_workflows() -> Workflows:
+    import_string = os.environ.get("IMPORT_STRING", None)
+    if import_string is None:
+        raise ValueError("No import string provided")
+
+    # import app using import string
+    app = import_from_string(import_string)
+
+    # get workflows from the app
+    wf = app.wf
+
     return wf
 
 
-@me.page(
+SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface.co"])
+
+
+@me.page(  # type: ignore[misc]
     path="/",
     stylesheets=STYLESHEETS,
     security_policy=SECURITY_POLICY,
 )
-
-def home_page():
+def home_page() -> None:
     with me.box(style=ROOT_BOX_STYLE):
         header()
         with me.box(
@@ -62,13 +71,16 @@ def home_page():
             )
             input_prompt(send_prompt)
 
-def _handle_message(state: State, message:MesopMessage ):
+
+def _handle_message(state: State, message: MesopMessage) -> None:
     messages = state.conversation.messages
     level = message.conversation.level
-    conversationId = message.conversation.id
+    conversation_id = message.conversation.id
     io_message = message.io_message
     message_dict = io_message.model_dump()
-    message_string = json.dumps({"level": level, "conversationId": conversationId, "io_message": message_dict})
+    message_string = json.dumps(
+        {"level": level, "conversationId": conversation_id, "io_message": message_dict}
+    )
     messages.append(message_string)
     state.conversation.messages = list(messages)
     if isinstance(io_message, AskingMessage):
@@ -78,7 +90,8 @@ def _handle_message(state: State, message:MesopMessage ):
         state.conversation_completed = True
         state.waiting_for_feedback = False
 
-def send_prompt(e: me.ClickEvent):
+
+def send_prompt(e: me.ClickEvent) -> Iterator[None]:
     logger.info(f"send_prompt: {e}")
     state = me.state(State)
     me.navigate("/conversation")
@@ -87,17 +100,22 @@ def send_prompt(e: me.ClickEvent):
     state.conversation_completed = False
     state.waiting_for_feedback = False
     yield
+
     me.scroll_into_view(key="end_of_messages")
     yield
-    responses = send_prompt_to_autogen(prompt)
+
+    wf = get_workflows()
+    name = wf.names[0]
+    responses = send_prompt_to_autogen(prompt=prompt, wf=wf, name=name)
     for message in responses:
         state = me.state(State)
         _handle_message(state, message)
         yield
     yield
 
-@me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)
-def conversation_page():
+
+@me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)  # type: ignore[misc]
+def conversation_page() -> None:
     logger.info("conversation_page")
     state = me.state(State)
     with me.box(style=ROOT_BOX_STYLE):
@@ -113,18 +131,15 @@ def conversation_page():
             if messages:
                 me.box(
                     key="end_of_messages",
-                    style=me.Style(
-                        margin=me.Margin(
-                            bottom="50vh"
-                        )
-                    ),
+                    style=me.Style(margin=me.Margin(bottom="50vh")),
                 )
         if state.waiting_for_feedback:
             input_user_feedback(on_user_feedback)
         if state.conversation_completed:
             conversation_completed(reset_conversation)
 
-def reset_conversation():
+
+def reset_conversation() -> None:
     logger.info("reset_conversation")
     state = me.state(State)
     state.conversation_completed = False
@@ -134,7 +149,8 @@ def reset_conversation():
     state.prompt = ""
     state.feedback = ""
 
-def on_user_feedback(e: me.ClickEvent):
+
+def on_user_feedback(e: me.ClickEvent) -> Iterator[None]:
     logger.info("on_user_feedback 1")
     try:
         state = me.state(State)

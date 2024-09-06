@@ -128,7 +128,7 @@ class TestAzureOAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/AzureOAIAPIKeyRef"}],
+                    "$ref": "#/$defs/AzureOAIAPIKeyRef",
                     "description": "The API Key from Azure OpenAI",
                     "title": "API Key",
                 },
@@ -178,6 +178,7 @@ class TestAzureOAI:
             "title": "AzureOAI",
             "type": "object",
         }
+        # print(schema)
         assert schema == expected
 
     @pytest.mark.asyncio

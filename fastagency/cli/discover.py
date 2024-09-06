@@ -164,3 +164,57 @@ def get_import_string(
     import_string = f"{mod_data.module_import_str}:{use_app_name}"
     logger.info(f"Using import string [b green]{import_string}[/b green]")
     return import_string, app
+
+
+def import_from_string(import_string: str) -> FastAgency:
+    """Import a module and attribute from an import string.
+
+    Import a module and an attribute from a string like 'file_name:app_name'.
+    Checks if the file exists before attempting to import the module.
+
+    Args:
+        import_string (str): The import string in 'module_name:attribute_name' format.
+
+    Returns:
+        Any: The attribute from the module.
+
+    Raises:
+        ImportError: If the import string is not in the correct format or the module or attribute is not found.
+        ValueError: If the import string is not in 'module_name:attribute_name' format.
+        ModuleNotFoundError: If the module is not found.
+        AttributeError: If the attribute is not found in the module.
+
+    """
+    try:
+        # Split the string into module and attribute parts
+        module_name, attribute_name = import_string.split(":")
+
+        # Ensure the module name points to a valid Python file before importing
+        module_path = f"{module_name.replace('.', '/')}.py"
+        if not Path(module_path).is_file():
+            raise ImportError(f"The file for module '{module_name}' does not exist.")
+
+        # Add the current directory to the Python path to allow imports from local files
+        sys.path.append(str(Path.cwd()))
+
+        # Import the module using importlib
+        module = importlib.import_module(module_name)  # nosemgrep
+
+        # Get the attribute (like 'app') from the module
+        attribute = getattr(module, attribute_name)
+        if not isinstance(attribute, FastAgency):
+            raise ImportError(
+                f"The attribute '{attribute_name}' in module '{module_name}' is not a FastAgency app."
+            )
+
+        return attribute
+    except ValueError:
+        raise ImportError(
+            "Import string must be in 'module_name:attribute_name' format."
+        ) from None
+    except ModuleNotFoundError:
+        raise ImportError(f"Module '{module_name}' not found.") from None
+    except AttributeError:
+        raise ImportError(
+            f"Attribute '{attribute_name}' not found in module '{module_name}'."
+        ) from None

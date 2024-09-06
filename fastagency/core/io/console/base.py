@@ -4,7 +4,15 @@ import textwrap
 from dataclasses import dataclass
 from typing import Optional
 
-from ...base import IOMessage, IOMessageVisitor, MultipleChoice, TextInput, TextMessage
+from ...base import (
+    IOMessage,
+    IOMessageVisitor,
+    MultipleChoice,
+    Runnable,
+    TextInput,
+    TextMessage,
+    run_workflow,
+)
 
 
 class ConsoleIO(IOMessageVisitor):  # Chatable
@@ -25,6 +33,18 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         """
         self.super_conversation: Optional[ConsoleIO] = super_conversation
         self.sub_conversations: list[ConsoleIO] = []
+
+    def create(self, app: "Runnable", import_string: str) -> None:
+        pass
+
+    def start(
+        self,
+        app: "Runnable",
+        import_string: str,
+        name: Optional[str] = None,
+        initial_message: Optional[str] = None,
+    ) -> None:
+        run_workflow(app.wf, self, name, initial_message)
 
     @property
     def level(self) -> int:

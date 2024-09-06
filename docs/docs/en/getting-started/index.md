@@ -74,7 +74,7 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [Console](../api/fastagency/core/io/console/ConsoleIO/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Console**: Use the [ConsoleIO](../api/fastagency/core/io/console/ConsoleIO/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
 - **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopIO](../api/fastagency/core/io/mesop/MesopIO/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/), to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
@@ -239,21 +239,24 @@ The output will vary based on the interface:
 
 === "Mesop"
     ```console
-
     ╭─ Python module file ─╮
     │                      │
-    │  🐍 main.py          │
+    │  🐍 main_mesop.py    │
     │                      │
     ╰──────────────────────╯
 
 
-    ╭─ Importable FastAgency app ─╮
-    │                             │
-    │  from main import app       │
-    │                             │
-    ╰─────────────────────────────╯
+    ╭─ Importable FastAgency app ──╮
+    │                              │
+    │  from main_mesop import app  │
+    │                              │
+    ╰──────────────────────────────╯
 
-    Mesop app running at: http://127.0.0.1:8000/
+    Running with hot reload:
+
+    Running server on: http://localhost:32123
+    * Serving Flask app 'mesop.server.server'
+    * Debug mode: off
     ```
 
     For Mesop applications, the output will include a URL where you can access your web-based application.

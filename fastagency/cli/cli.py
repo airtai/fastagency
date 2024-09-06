@@ -47,12 +47,14 @@ def _run_app(
     dev_mode: bool = False,
 ) -> None:
     try:
-        _, fa_app = get_import_string(path=path, app_name=app)
+        import_string, fa_app = get_import_string(path=path, app_name=app)
+
+        fa_app.start(
+            import_string=import_string, name=workflow, initial_message=initial_message
+        )
     except FastAgencyCLIError as e:
         logger.error(str(e))
         raise typer.Exit(code=1) from None
-
-    fa_app.run(name=workflow, initial_message=initial_message)
 
 
 def _get_help_messages(dev_mode: bool = False) -> dict[str, str]:

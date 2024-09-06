@@ -3,9 +3,7 @@
 
 # FastAgency
 
-
 <b>The fastest way to bring multi-agent workflows to production.</b>
-
 
 ---
 
@@ -14,9 +12,11 @@
     <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
+<!--
   <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
       <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
   </a>
+ -->
 
   <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
     <img src="https://static.pepy.tech/personalized-badge/fastagency?period=month&units=international_system&left_color=grey&right_color=green&left_text=downloads/month" alt="Downloads"/>
@@ -53,6 +53,7 @@
   </a>
 </p>
 
+---
 
 Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the [AutoGen](https://microsoft.github.io/autogen/) framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/) in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
 
@@ -62,7 +63,7 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [Console](../api/fastagency/core/io/console/ConsoleIO/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Console**: Use the [ConsoleIO](../api/fastagency/core/io/console/ConsoleIO/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
 - **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopIO](../api/fastagency/core/io/mesop/MesopIO/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/), to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
@@ -76,7 +77,6 @@ pip install "fastagency[autogen]"
 ```
 
 This command installs FastAgency with support for the Console interface and AutoGen framework.
-
 
 ## Write Code
 
@@ -96,6 +96,7 @@ from fastagency import FastAgency
 ```
 
 For Console applications, import `ConsoleIO` to handle command-line input and output.
+
 
 ### Define Workflow
 
@@ -151,6 +152,7 @@ app = FastAgency(wf=wf, io=ConsoleIO())
 
 For Console applications, use `ConsoleIO` to handle user interaction via the command line.
 
+
 ## Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:
@@ -190,6 +192,8 @@ The output will vary based on the interface:
 ```
 
 For Console applications, you will see a command-line prompt where you can enter the initial message and interact with your workflow.
+
+---
 
 ## Future Plans
 
