@@ -1,6 +1,6 @@
 site_name: FastAgency
 # description to improve website indexing
-site_description: "FastAgency: a repository of open-source AI models"
+site_description: The fastest way to bring multi-agent workflows to production.
 site_url: https://fastagency.ai/
 site_author: airt
 copyright: '&copy; 2024 onwards <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
