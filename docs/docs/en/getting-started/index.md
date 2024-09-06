@@ -196,7 +196,7 @@ Next, define your FastAgency application. This ties together your workflow and t
 
     For Mesop applications, use `MesopIO` to enable web-based interactions.
 
-## Run Application
+### Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:
 
@@ -346,7 +346,7 @@ def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str
 
 This code snippet sets up a simple weather agent that calls an external weather API using the registered functions generated from the `openapi.json` URL.
 
-### Define FastAgency Application
+#### Define FastAgency Application
 
 Next, define your FastAgency application.
 
@@ -356,7 +356,7 @@ from fastagency.core.io.console import ConsoleIO
 app = FastAgency(wf=wf, io=ConsoleIO())
 ```
 
-## Run Application
+#### Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:
 
@@ -364,7 +364,7 @@ Once everything is set up, you can run your FastAgency application using the fol
 fastagency run
 ```
 
-### Output
+#### Output
 
 The output will vary based on the city and the current weather conditions:
 
