@@ -4,6 +4,10 @@ search:
 ---
 - Getting Started
     - [Getting Started](getting-started/index.md)
+- Tutorial
+    - [Getting Started](tutorial/index.md)
+    - [Using External REST APIs](tutorial/external-rest-apis/index.md)
+    - [Custom User Interactions](tutorial/custom-user-interactions/index.md)
 - Reference
 {api}
 - Contributing
