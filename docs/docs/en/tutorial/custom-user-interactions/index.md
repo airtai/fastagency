@@ -16,7 +16,7 @@ pip install "fastagency[autogen]"
 
 This section describes how to define functions for the `ConversableAgent` instances representing the student and teacher. We will also explain the differences between `MultipleChoice`, `SystemMessage`, and `TextInput`, which are used for communication between the user and agents.
 
-Let's define three functions which will be avaliable to the agents:
+Let's define three functions which will be available to the agents:
 
 ### Free Textual Tnput
 

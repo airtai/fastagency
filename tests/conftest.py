@@ -37,7 +37,7 @@ from fastagency.studio.models.llms.together import TogetherAI, TogetherAIAPIKey
 from fastagency.studio.models.teams.two_agent_teams import TwoAgentTeam
 from fastagency.studio.models.toolboxes.toolbox import OpenAPIAuth, Toolbox
 
-from .helpers import add_random_sufix, expand_fixture, get_by_tag, tag, tag_list
+from .helpers import add_random_suffix, expand_fixture, get_by_tag, tag, tag_list
 
 F = TypeVar("F", bound=Callable[..., Any])
 
@@ -189,7 +189,7 @@ async def azure_oai_key_ref(
         AzureOAIAPIKey,
         "secret",
         user_uuid=user_uuid,
-        name=add_random_sufix("azure_oai_key"),
+        name=add_random_suffix("azure_oai_key"),
         api_key=api_key,
     )
 
@@ -208,7 +208,7 @@ async def azure_oai_gpt35_ref(
         AzureOAI,
         "llm",
         user_uuid=user_uuid,
-        name=add_random_sufix("azure_oai"),
+        name=add_random_suffix("azure_oai"),
         api_key=azure_oai_key_ref,
         temperature=temperature,
         **kwargs,
@@ -229,7 +229,7 @@ async def azure_oai_gpt4_ref(
         AzureOAI,
         "llm",
         user_uuid=user_uuid,
-        name=add_random_sufix("azure_oai"),
+        name=add_random_suffix("azure_oai"),
         api_key=azure_oai_key_ref,
         temperature=temperature,
         **kwargs,
@@ -250,7 +250,7 @@ async def azure_oai_gpt4o_ref(
         AzureOAI,
         "llm",
         user_uuid=user_uuid,
-        name=add_random_sufix("azure_oai"),
+        name=add_random_suffix("azure_oai"),
         api_key=azure_oai_key_ref,
         temperature=temperature,
         **kwargs,
@@ -266,7 +266,7 @@ async def openai_oai_key_ref(
         OpenAIAPIKey,
         "secret",
         user_uuid=user_uuid,
-        name=add_random_sufix("openai_oai_key"),
+        name=add_random_suffix("openai_oai_key"),
         api_key=api_key,
         model=model,
     )
@@ -300,7 +300,7 @@ async def openai_oai_ref(
         OpenAI,
         "llm",
         user_uuid=user_uuid,
-        name=add_random_sufix("azure_oai"),
+        name=add_random_suffix("azure_oai"),
         api_key=openai_oai_key_ref,
         temperature=temperature,
         **kwargs,
@@ -343,7 +343,7 @@ async def anthropic_key_ref(user_uuid: str) -> ObjectReference:
         AnthropicAPIKey,
         "secret",
         user_uuid=user_uuid,
-        name=add_random_sufix("anthropic_api_key"),
+        name=add_random_suffix("anthropic_api_key"),
         api_key=api_key,
     )
 
@@ -358,7 +358,7 @@ async def anthropic_ref(
         Anthropic,
         "llm",
         user_uuid=user_uuid,
-        name=add_random_sufix("anthropic_api"),
+        name=add_random_suffix("anthropic_api"),
         api_key=anthropic_key_ref,
     )
 
@@ -375,7 +375,7 @@ async def together_ai_key_ref(user_uuid: str) -> ObjectReference:
         TogetherAIAPIKey,
         "secret",
         user_uuid=user_uuid,
-        name=add_random_sufix("togetherai_api_key"),
+        name=add_random_suffix("togetherai_api_key"),
         api_key=api_key,
     )
 
@@ -390,7 +390,7 @@ async def togetherai_ref(
         TogetherAI,
         "llm",
         user_uuid=user_uuid,
-        name=add_random_sufix("togetherai"),
+        name=add_random_suffix("togetherai"),
         api_key=together_ai_key_ref,
         model="Mixtral-8x7B Instruct v0.1",
     )
@@ -576,7 +576,7 @@ async def placeholder_assistant_noapi_ref(
         AssistantAgent,
         "agent",
         user_uuid=user_uuid,
-        name=add_random_sufix("assistant"),
+        name=add_random_suffix("assistant"),
         llm=llm_ref,
     )
 
@@ -589,7 +589,7 @@ async def placeholder_assistant_noapi_ref(
 #         AssistantAgent,
 #         "agent",
 #         user_uuid=user_uuid,
-#         name=add_random_sufix("assistant"),
+#         name=add_random_suffix("assistant"),
 #         llm=openai_oai_gpt4_ref,
 #     )
 
@@ -607,7 +607,7 @@ async def placeholder_assistant_weatherapi_ref(
         AssistantAgent,
         "agent",
         user_uuid=user_uuid,
-        name=add_random_sufix("assistant_weather"),
+        name=add_random_suffix("assistant_weather"),
         llm=llm_ref,
         toolbox_1=weather_toolbox_ref,
         system_message="You are a helpful assistant with access to Weather API. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE'",
@@ -624,7 +624,7 @@ async def bing_api_key_ref(user_uuid: str) -> ObjectReference:
         BingAPIKey,
         "secret",
         user_uuid=user_uuid,
-        name=add_random_sufix("bing_api_key"),
+        name=add_random_suffix("bing_api_key"),
         api_key=api_key,
     )
 
@@ -642,7 +642,7 @@ async def placeholder_websurfer_ref(
         WebSurferAgent,
         "agent",
         user_uuid=user_uuid,
-        name=add_random_sufix("websurfer"),
+        name=add_random_suffix("websurfer"),
         llm=llm_ref,
         summarizer_llm=llm_ref,
         bing_api_key=bing_api_key_ref,
@@ -687,7 +687,7 @@ async def user_proxy_agent_ref(user_uuid: str) -> ObjectReference:
         UserProxyAgent,
         "agent",
         user_uuid=user_uuid,
-        name=add_random_sufix("user_proxy_agent"),
+        name=add_random_suffix("user_proxy_agent"),
         max_consecutive_auto_reply=10,
         human_input_mode="NEVER",
     )
@@ -715,7 +715,7 @@ async def placeholder_team_noapi_ref(
         TwoAgentTeam,
         "team",
         user_uuid=user_uuid,
-        name=add_random_sufix("two_agent_team_noapi"),
+        name=add_random_suffix("two_agent_team_noapi"),
         initial_agent=user_proxy_agent_ref,
         secondary_agent=assistant_ref,
         human_input_mode="NEVER",
@@ -737,7 +737,7 @@ async def placeholder_team_weatherapi_ref(
         TwoAgentTeam,
         "team",
         user_uuid=user_uuid,
-        name=add_random_sufix("two_agent_team_weather"),
+        name=add_random_suffix("two_agent_team_weather"),
         initial_agent=user_proxy_agent_ref,
         secondary_agent=assistant_ref,
         human_input_mode="NEVER",

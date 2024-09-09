@@ -21,7 +21,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         """A console message."""
 
         sender: Optional[str]
-        recepient: Optional[str]
+        recipient: Optional[str]
         heading: Optional[str]
         body: Optional[str]
 
@@ -54,7 +54,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
 
     def _format_message(self, console_msg: ConsoleMessage) -> str:
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
-        title = f"{console_msg.sender} -> {console_msg.recepient} {heading}"[:74]
+        title = f"{console_msg.sender} -> {console_msg.recipient} {heading}"[:74]
 
         s = f"""╭─ {title} {'─' * (74 - len(title))}─╮
 │
@@ -90,7 +90,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         content = message.model_dump()["content"]
         console_msg = self.ConsoleMessage(
             sender=message.sender,
-            recepient=message.recepient,
+            recipient=message.recipient,
             heading=message.type,
             body=json.dumps(content, indent=2),
         )
@@ -99,7 +99,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
     def visit_text_message(self, message: TextMessage) -> None:
         console_msg = self.ConsoleMessage(
             sender=message.sender,
-            recepient=message.recepient,
+            recipient=message.recipient,
             heading=message.type,
             body=message.body,
         )
@@ -113,7 +113,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         )
         console_msg = self.ConsoleMessage(
             sender=message.sender,
-            recepient=message.recepient,
+            recipient=message.recipient,
             heading=message.type,
             body=f"{message.prompt}{suggestions}:",
         )
@@ -128,7 +128,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
         console_msg = self.ConsoleMessage(
             sender=message.sender,
-            recepient=message.recepient,
+            recipient=message.recipient,
             heading=message.type,
             body=f"{message.prompt} (choices: {', '.join(message.choices)}, default: {message.default})",
         )

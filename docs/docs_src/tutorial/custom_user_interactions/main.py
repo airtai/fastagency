@@ -55,7 +55,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
         try:
             msg = TextInput(
                 sender="student",
-                recepient="teacher",
+                recipient="teacher",
                 prompt=message,
                 suggestions=[
                     "1) Mona Lisa",
@@ -73,7 +73,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
         try:
             msg = SystemMessage(
                 sender="function call logger",
-                recepient="system",
+                recipient="system",
                 message={
                     "operation": "storing final answers",
                     "content": message,
@@ -90,7 +90,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
         try:
             msg = MultipleChoice(
                 sender="student",
-                recepient="teacher",
+                recipient="teacher",
                 prompt=message,
                 choices=["A", "B", "C", "D", "F"],
             )

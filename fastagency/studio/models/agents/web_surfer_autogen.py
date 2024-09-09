@@ -176,7 +176,7 @@ class WebSurferChat:
         answer = WebSurferAnswer(
             task=task,
             is_successful=False,
-            short_answer="unexpected error occured",
+            short_answer="unexpected error occurred",
             long_answer=str(e),
             visited_links=[],
         )
@@ -245,7 +245,7 @@ e.g. "I have already answered to that message, please proceed with the task or y
 
     @property
     def error_message(self) -> str:
-        return f"""Please output the JSON-encoded answer only in the following messsage before trying to terminate the chat.
+        return f"""Please output the JSON-encoded answer only in the following message before trying to terminate the chat.
 
 IMPORTANT:
   - NEVER enclose JSON-encoded answer in any other text or formatting including '```json' ... '```' or similar!
