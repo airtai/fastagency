@@ -1,5 +1,5 @@
 import os
-from typing import Annotated
+from typing import Annotated, Any, Dict, Optional
 
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
@@ -23,10 +23,10 @@ llm_config = {
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="exam_practice", description="Student and teacher chat")
-def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
+@wf.register(name="exam_practice", description="Student and teacher chat") # type: ignore[type-var]
+def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Optional[str]:
 
-    def is_termination_msg(msg: str) -> bool:
+    def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 
     student_agent = ConversableAgent(
@@ -49,7 +49,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         is_termination_msg=is_termination_msg,
     )
 
-    def retrieve_exam_questions(message: Annotated[str, "Message for examiner"]) -> str:
+    def retrieve_exam_questions(message: Annotated[str, "Message for examiner"]) -> Optional[str]:
         try:
             msg = TextInput(
                 sender="student",
@@ -76,7 +76,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         except Exception as e:
             return f"write_final_answers() FAILED! {e}"
 
-    def get_final_grade(message: Annotated[str, "Message for examiner"]) -> str:
+    def get_final_grade(message: Annotated[str, "Message for examiner"]) -> Optional[str]:
         try:
             msg = MultipleChoice(
                     sender="student",
@@ -119,7 +119,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         max_turns=10,
     )
 
-    return chat_result.summary
+    return chat_result.summary # type: ignore[no-any-return]
 
 
 

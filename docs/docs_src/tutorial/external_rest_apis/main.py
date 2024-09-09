@@ -51,7 +51,7 @@ def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str
         max_turns=3,
     )
 
-    return chat_result.summary
+    return chat_result.summary # type: ignore[no-any-return]
 
 
 

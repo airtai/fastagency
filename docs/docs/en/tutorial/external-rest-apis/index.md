@@ -18,7 +18,7 @@ pip install "fastagency[autogen,openapi]"
 These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the `OpenAPI` Client and `UserProxyAgent`:
 
 ```python
-{! docs_src/tutorial/external-rest-apis/main.py [ln:1-10] !}
+{! docs_src/tutorial/external_rest_apis/main.py [ln:1-10] !}
 ```
 
 ## Define Workflow
@@ -26,7 +26,7 @@ These imports are similar to the imports section we have already covered, with t
 In this workflow, the only difference is that we create a Python client for the external REST API by passing the URL of the `openapi.json` to the `Client.create` method. Then, we register the generated client with the agent using the methods `register_for_llm` and `register_for_execution`. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/tutorial/external-rest-apis/main.py [ln:12-54] !}
+{! docs_src/tutorial/external_rest_apis/main.py [ln:12-54] !}
 ```
 
 This code snippet sets up a simple weather agent that calls an external weather API using the registered functions generated from the `openapi.json` URL.
@@ -36,7 +36,7 @@ This code snippet sets up a simple weather agent that calls an external weather 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/tutorial/external-rest-apis/main.py [ln:58] !}
+{! docs_src/tutorial/external_rest_apis/main.py [ln:58] !}
 ```
 
 ## Run Application
