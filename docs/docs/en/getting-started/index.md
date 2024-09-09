@@ -631,8 +631,6 @@ fastagency run
 
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/){target="_blank"}, to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
 
-Feel free to customize your workflow and application based on your needs. For more details on configurations and additional features, refer to the [AutoGen documentation](https://autogen-ai.github.io/autogen/){target="_blank"} and [Mesop documentation](https://google.github.io/mesop/){target="_blank"}.
-
 ---
 
 ## Stay in touch
