@@ -125,6 +125,7 @@ class FunctionCallExecution(IOMessage):
     function_name: Optional[str] = None
     call_id: Optional[str] = None
     retval: Any = None
+    body: Optional[str] = None
 
 
 # types of input messages
