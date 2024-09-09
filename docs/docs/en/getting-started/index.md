@@ -11,7 +11,6 @@ search:
   boost: 10
 ---
 
-
 # Getting Started with FastAgency
 
 
@@ -123,15 +122,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 
 === "Console"
     ```python
-    import os
-
-    from autogen.agentchat import ConversableAgent
-
-    from fastagency.core import Chatable
-    from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-    from fastagency.core.io.console import ConsoleIO
-
-    from fastagency import FastAgency
+    {!> docs_src/tutorial/getting_started/main.py [ln:1-8] !}
     ```
 
     For Console applications, import `ConsoleIO` to handle command-line input and output.
@@ -156,39 +147,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
-
-wf = AutoGenWorkflows()
-
-@wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
-    student_agent = ConversableAgent(
-        name="Student_Agent",
-        system_message="You are a student willing to learn.",
-        llm_config=llm_config,
-    )
-    teacher_agent = ConversableAgent(
-        name="Teacher_Agent",
-        system_message="You are a math teacher.",
-        llm_config=llm_config,
-    )
-
-    chat_result = student_agent.initiate_chat(
-        teacher_agent,
-        message=initial_message,
-        summary_method="reflection_with_llm",
-        max_turns=5,
-    )
-
-    return chat_result.summary
+{! docs_src/tutorial/getting_started/main.py [ln:10-43] !}
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
@@ -199,9 +158,7 @@ Next, define your FastAgency application. This ties together your workflow and t
 
 === "Console"
     ```python
-    from fastagency.core.io.console import ConsoleIO
-
-    app = FastAgency(wf=wf, io=ConsoleIO())
+    {!> docs_src/tutorial/getting_started/main.py [ln:7,46,47] !}
     ```
 
     For Console applications, use `ConsoleIO` to handle user interaction via the command line.
@@ -279,6 +236,7 @@ The output will vary based on the interface:
     ```
 
     For Mesop applications, the output will include a URL where you can access your web-based application.
+
 
 
 ## Future Plans
