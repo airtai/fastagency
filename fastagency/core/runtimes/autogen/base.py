@@ -79,8 +79,8 @@ class CurrentMessage:
         if _match("auto_reply", chunk):
             # logger.info("CurrentMessage.process_chunk(): auto_reply detected")
             self.auto_reply = True
-        elif _match("sender_recepient", chunk):
-            # logger.info("CurrentMessage.process_chunk(): sender_recepient detected")
+        elif _match("sender_recipient", chunk):
+            # logger.info("CurrentMessage.process_chunk(): sender_recipient detected")
             self.sender, self.recipient = _findall("sender_recipient", chunk)
         elif _match("suggested_function_call", chunk):
             # logger.info("CurrentMessage.process_chunk(): suggested_function_call detected")
