@@ -52,7 +52,7 @@ dependencies = [
 # public distributions
 
 mesop = [
-    "mesop==0.12.2; python_version >= '3.10'"
+    "mesop==0.12.3; python_version >= '3.10'"
 ]
 
 autogen = [
