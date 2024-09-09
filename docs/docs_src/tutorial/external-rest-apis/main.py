@@ -1,15 +1,13 @@
 import os
 
-from autogen.agentchat import ConversableAgent
 from autogen import UserProxyAgent
-
-from fastagency.core import Chatable
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-from fastagency.core.io.console import ConsoleIO
-from fastagency.openapi.client import Client
+from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency
-
+from fastagency.core import Chatable
+from fastagency.core.io.console import ConsoleIO
+from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.openapi.client import Client
 
 llm_config = {
     "config_list": [
@@ -56,6 +54,5 @@ def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str
     return chat_result.summary
 
 
-from fastagency.core.io.console import ConsoleIO
 
 app = FastAgency(wf=wf, io=ConsoleIO())
