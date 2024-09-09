@@ -44,6 +44,8 @@ _patterns = {
     "stars": "\\x1b\\[32m(\\*+)\\x1b\\[0m\n",
     "function_call_execution": "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
     "response_from_calling_tool": "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
+    "no_human_input_received": "^\\x1b\\[31m\\n>>>>>>>> NO HUMAN INPUT RECEIVED\\.\\x1b\\[0m$",
+    "user_interrupted": "^USER INTERRUPTED\\n$",
     "arguments": "^Arguments: \\n(.*)\\n$",
 }
 
@@ -70,39 +72,56 @@ class CurrentMessage:
     arguments: Optional[dict[str, Any]] = None
     retval: Optional[Any] = None
 
-    def process_chunk(self, chunk: str) -> bool:
+    def process_chunk(self, chunk: str) -> bool:  # noqa: C901
         if _match("end_of_message", chunk):
             return True
 
         if _match("auto_reply", chunk):
+            # logger.info("CurrentMessage.process_chunk(): auto_reply detected")
             self.auto_reply = True
         elif _match("sender_recepient", chunk):
+            # logger.info("CurrentMessage.process_chunk(): sender_recepient detected")
             self.sender, self.recepient = _findall("sender_recepient", chunk)
         elif _match("suggested_function_call", chunk):
+            # logger.info("CurrentMessage.process_chunk(): suggested_function_call detected")
             self.call_id, self.function_name = _findall(
                 "suggested_function_call", chunk
             )
             self.type = "suggested_function_call"
         elif _match("stars", chunk):
+            # logger.info("CurrentMessage.process_chunk(): stars detected")
             pass
         elif _match("function_call_execution", chunk):
+            # logger.info("CurrentMessage.process_chunk(): function_call_execution detected")
             self.function_name = _findall("function_call_execution", chunk)  # type: ignore[assignment]
             self.type = "function_call_execution"
         elif _match("response_from_calling_tool", chunk):
+            # logger.info("CurrentMessage.process_chunk(): response_from_calling_tool detected")
+            self.type = "function_call_execution"
             self.call_id = _findall("response_from_calling_tool", chunk)  # type: ignore[assignment]
+        elif _match("no_human_input_received", chunk):
+            # logger.info("CurrentMessage.process_chunk(): no_human_input_received detected")
+            pass
+        elif _match("user_interrupted", chunk):
+            # logger.info("CurrentMessage.process_chunk(): user_interrupted detected")
+            pass
         else:
             if self.type == "suggested_function_call":
+                # logger.info("CurrentMessage.process_chunk(): parsing arguments")
                 arguments_json: str = _findall("arguments", chunk)  # type: ignore[assignment]
                 self.arguments = json.loads(arguments_json)
             elif self.type == "function_call_execution":
+                # logger.info("CurrentMessage.process_chunk(): parsing retval")
                 self.retval = chunk
             else:
+                # logger.info("CurrentMessage.process_chunk(): parsing body")
                 self.body = chunk if self.body is None else self.body + chunk
 
         return False
 
     def create_message(self) -> IOMessage:
         kwargs = {k: v for k, v in asdict(self).items() if v is not None}
+        # logger.info(f"CurrentMessage.create_message(): {kwargs=}")
         return IOMessage.create(**kwargs)
 
 
@@ -134,6 +153,7 @@ class IOStreamAdapter:  # IOStream
     def print(
         self, *objects: Any, sep: str = " ", end: str = "\n", flush: bool = False
     ) -> None:
+        # logger.info(f"print(): {objects=}, {sep=}, {end=}, {flush=}")
         body = sep.join(map(str, objects)) + end
         ready_to_send = self._process_message_chunk(body)
         if ready_to_send:
@@ -141,6 +161,7 @@ class IOStreamAdapter:  # IOStream
             self.io.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
+        # logger.info(f"input(): {prompt=}, {password=}")
         message = TextInput(
             sender=None, recepient=None, prompt=prompt, password=password
         )
