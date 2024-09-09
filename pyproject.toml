@@ -116,6 +116,7 @@ lint = [
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.9",
     "semgrep==1.85.0",
+    "codespell==2.3.0",
     "pytest-mypy-plugins==3.1.2",
 ]
 
@@ -318,3 +319,7 @@ extend-exclude = """
     | some_other_dir
 )/
 """
+
+[tool.codespell]
+skip = "./venv*,./docs/site/*,./htmlcov"
+# ignore-words = ".codespell-whitelist.txt"

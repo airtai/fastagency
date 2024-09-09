@@ -60,7 +60,7 @@ class MockChatCompletion:
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "api_key,expected",  # noqa: PT006
-    [("whatever", "wha*ever"), ("some_other_key", "som*******_key")],
+    [("whatever", "wha*ever"), ("some_other_key", "some*******_key")],
 )
 async def test_mask(api_key: str, expected: str) -> None:
     assert await mask(api_key) == expected

@@ -8,10 +8,10 @@ from typing import Any, Callable, TypeVar
 import pytest
 import pytest_asyncio
 
-__all__ = ["add_random_sufix", "parametrize_fixtures", "tag", "tag_list"]
+__all__ = ["add_random_suffix", "parametrize_fixtures", "tag", "tag_list"]
 
 
-def add_random_sufix(prefix: str) -> str:
+def add_random_suffix(prefix: str) -> str:
     return f"{prefix}_{random.randint(0, 1_000_000_000):09d}"
 
 
@@ -80,7 +80,7 @@ def parametrize_fixtures(
 
         caller_globals = get_caller_globals()
 
-        var_name = add_random_sufix(f"parametrized_fixtures_{parameter_name}")
+        var_name = add_random_suffix(f"parametrized_fixtures_{parameter_name}")
         caller_globals[var_name] = wrapper
 
         return f

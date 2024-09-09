@@ -375,7 +375,7 @@ In this example, we'll demonstrate how to create custom interaction with the use
 
 This section describes how to define functions for the `ConversableAgent` instances representing the student and teacher. We will also explain the differences between `MultipleChoice`, `SystemMessage`, and `TextInput`, which are used for communication between the user and agents.
 
-Let's define three functions which will be avaliable to the agents:
+Let's define three functions which will be available to the agents:
 
 #### Free Textual Tnput
 
@@ -386,7 +386,7 @@ def retrieve_exam_questions(message: Annotated[str, "Message for examiner"]) -> 
     try:
         msg = TextInput(
             sender="student",
-            recepient="teacher",
+            recipient="teacher",
             prompt=message,
             suggestions=["1) Mona Lisa", "2) Innovations", "3) Florence at the time of Leonardo", "4) The Last Supper", "5) Vitruvian Man"],
         )
@@ -404,7 +404,7 @@ def write_final_answers(message: Annotated[str, "Message for examiner"]) -> str:
     try:
         msg = SystemMessage(
             sender="function call logger",
-            recepient="system",
+            recipient="system",
             message={
                 "operation": "storing final answers",
                 "content": message,
@@ -425,7 +425,7 @@ def get_final_grade(message: Annotated[str, "Message for examiner"]) -> str:
     try:
         msg = MultipleChoice(
             sender="student",
-            recepient="teacher",
+            recipient="teacher",
             prompt=message,
             choices=["A", "B", "C", "D", "F"],
         )
@@ -528,7 +528,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         try:
             msg = TextInput(
                 sender="student",
-                recepient="teacher",
+                recipient="teacher",
                 prompt=message,
                 suggestions=["1) Mona Lisa", "2) Innovations", "3) Florence at the time of Leonardo", "4) The Last Supper", "5) Vitruvian Man"],
             )
@@ -540,7 +540,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         try:
             msg = SystemMessage(
                 sender="function call logger",
-                recepient="system",
+                recipient="system",
                 message={
                     "operation": "storing final answers",
                     "content": message,
@@ -555,7 +555,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         try:
             msg = MultipleChoice(
                     sender="student",
-                    recepient="teacher",
+                    recipient="teacher",
                     prompt=message,
                     choices=["A", "B", "C", "D", "F"],
             )
