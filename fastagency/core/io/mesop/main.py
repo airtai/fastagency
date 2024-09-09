@@ -92,7 +92,6 @@ def _handle_message(state: State, message: MesopMessage) -> None:
 
 
 def send_prompt(e: me.ClickEvent) -> Iterator[None]:
-    logger.info(f"send_prompt: {e}")
     state = me.state(State)
     me.navigate("/conversation")
     prompt = state.prompt
@@ -111,12 +110,14 @@ def send_prompt(e: me.ClickEvent) -> Iterator[None]:
         state = me.state(State)
         _handle_message(state, message)
         yield
+        me.scroll_into_view(key="end_of_messages")
+        yield
+
     yield
 
 
 @me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)  # type: ignore[misc]
 def conversation_page() -> None:
-    logger.info("conversation_page")
     state = me.state(State)
     with me.box(style=ROOT_BOX_STYLE):
         header()
@@ -140,7 +141,6 @@ def conversation_page() -> None:
 
 
 def reset_conversation() -> None:
-    logger.info("reset_conversation")
     state = me.state(State)
     state.conversation_completed = False
     state.conversation.messages = []
@@ -151,29 +151,20 @@ def reset_conversation() -> None:
 
 
 def on_user_feedback(e: me.ClickEvent) -> Iterator[None]:
-    logger.info("on_user_feedback 1")
-    try:
-        state = me.state(State)
-    except Exception as e:
-        logger.info(f"ERROR: {e}")
-        raise
-
+    state = me.state(State)
     feedback = state.feedback
     state.waiting_for_feedback = False
     yield
-    logger.info("on_user_feedback 2")
     state.feedback = ""
     state.waiting_for_feedback = False
     yield
-    logger.info("on_user_feedback 3")
     me.scroll_into_view(key="end_of_messages")
     yield
-    logger.info("on_user_feedback 4")
     responses = send_user_feedback_to_autogen(feedback)
     for message in responses:
         state = me.state(State)
         _handle_message(state, message)
         yield
-        logger.info("on_user_feedback 5")
+        me.scroll_into_view(key="end_of_messages")
+        yield
     yield
-    logger.info("on_user_feedback 6")
