@@ -139,6 +139,8 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
             retval = input(prompt)
             if retval in message.choices:
                 return retval
+            elif retval == "" and message.default:
+                return message.default
             else:
                 print(f"Invalid choice ('{retval}'). Please try again.")  # noqa: T201 `print` found
 

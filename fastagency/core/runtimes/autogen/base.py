@@ -7,9 +7,11 @@ from typing import Any, Callable, Optional
 from autogen.io import IOStream
 
 from ...base import (
+    AskingMessage,
     Chatable,
     IOMessage,
     MessageType,
+    MultipleChoice,
     TextInput,
     Workflow,
     Workflows,
@@ -47,6 +49,7 @@ _patterns = {
     "no_human_input_received": "^\\x1b\\[31m\\n>>>>>>>> NO HUMAN INPUT RECEIVED\\.\\x1b\\[0m$",
     "user_interrupted": "^USER INTERRUPTED\\n$",
     "arguments": "^Arguments: \\n(.*)\\n$",
+    "auto_reply_input": "^Replying as (\\[a-zA-Z0-9_\\]+). Provide feedback to (\\[a-zA-Z0-9_\\]+). Press enter to skip and use auto-reply, or type 'exit' to end the conversation: $",
 }
 
 
@@ -161,11 +164,31 @@ class IOStreamAdapter:  # IOStream
             self.io.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
-        # logger.info(f"input(): {prompt=}, {password=}")
-        message = TextInput(
-            sender=None, recipient=None, prompt=prompt, password=password
-        )
+        logger.info(f"input(): {prompt=}, {password=}")
+        message: AskingMessage
+
+        last_mesaage = self.messages[-1]
+        sender, recipient = None, None
+
+        if _match("auto_reply_input", prompt):
+            logger.info("IOStreamAdapter.input(): auto_reply_input detected")
+            sender, recipient = _findall("auto_reply_input", prompt)  # type: ignore[assignment]
+
+        if last_mesaage.type == "suggested_function_call":
+            message = MultipleChoice(
+                sender=sender,
+                recipient=recipient,
+                prompt="Please approve the suggested function call.",
+                choices=["Approve", "Reject"],
+                default="Approve",
+            )
+            self.io.process_message(message)
+        else:
+            message = TextInput(
+                sender=None, recipient=None, prompt=prompt, password=password
+            )
         retval: str = self.io.process_message(message)  # type: ignore[assignment]
+        retval = "" if retval == "Accept" else retval
         return retval
 
 
