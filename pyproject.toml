@@ -181,7 +181,7 @@ only-include = ["fastagency", "templates"]
 
 [tool.mypy]
 
-files = ["fastagency", "tests"]
+files = ["fastagency", "tests", "docs/docs_src"]
 
 strict = true
 python_version = "3.9"
