@@ -6,6 +6,7 @@ import mesop as me
 
 @dataclass
 class Conversation:
+    title: str = ""
     # messages: list[ConversationMessage] = field(default_factory=list)
     messages: list[str] = field(default_factory=list)
 
@@ -17,4 +18,5 @@ class State:
     prompt: str = ""
     feedback: str = ""
     conversation: Conversation
+    past_conversations: list[Conversation] = field(default_factory=list)
     fastagency: Optional[str] = None

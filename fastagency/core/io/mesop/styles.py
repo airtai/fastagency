@@ -5,6 +5,22 @@ ROOT_BOX_STYLE = me.Style(
     height="100%",
     font_family="Inter",
     display="flex",
+    flex_direction="row",
+)
+
+CHAT_STARTER_STYLE = me.Style(
+    background="#e7f2ff",
+    height="100%",
+    font_family="Inter",
+    display="flex",
+    flex_direction="column",
+)
+
+PAST_CHATS_STYLE = me.Style(
+    background="#e7f2ff",
+    height="100%",
+    font_family="Inter",
+    display="flex",
     flex_direction="column",
 )
 

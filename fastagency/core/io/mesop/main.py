@@ -15,8 +15,13 @@ from fastagency.core.io.mesop.send_prompt import (
     send_prompt_to_autogen,
     send_user_feedback_to_autogen,
 )
-from fastagency.core.io.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
 from fastagency.logging import get_logger
+from fastagency.core.io.mesop.styles import (
+    CHAT_STARTER_STYLE,
+    PAST_CHATS_STYLE,
+    ROOT_BOX_STYLE,
+    STYLESHEETS,
+)
 
 # Get the logger
 logger = get_logger(__name__)
@@ -46,6 +51,28 @@ SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface
 )
 def home_page() -> None:
     with me.box(style=ROOT_BOX_STYLE):
+        _past_conversations_box()
+        _conversation_starter_box()
+
+
+def _past_conversations_box() -> None:
+    state = me.state(State)
+    with me.box(style=PAST_CHATS_STYLE):
+        for conversation in state.past_conversations:
+            with me.box(
+                style=me.Style(
+                    width="min(200px)",
+                    margin=me.Margin.symmetric(horizontal="auto", vertical=36),
+                )
+            ):
+                me.text(
+                    conversation.title,
+                    style=me.Style(font_size=20, margin=me.Margin(bottom=8)),
+                )
+
+
+def _conversation_starter_box() -> None:
+    with me.box(style=CHAT_STARTER_STYLE):
         header()
         with me.box(
             style=me.Style(
@@ -86,6 +113,7 @@ def send_prompt(e: me.ClickEvent) -> Iterator[None]:
     state.prompt = ""
     state.conversation_completed = False
     state.waiting_for_feedback = False
+    state.conversation.title = prompt
     yield
 
     me.scroll_into_view(key="end_of_messages")

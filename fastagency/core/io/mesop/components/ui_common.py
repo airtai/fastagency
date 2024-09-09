@@ -2,6 +2,8 @@ from typing import Callable
 
 import mesop as me
 
+from ..data_model import Conversation, State
+
 
 def header() -> None:
     def navigate_home(e: me.ClickEvent) -> None:
@@ -28,6 +30,13 @@ def header() -> None:
 def conversation_completed(reset_conversation: Callable[[], None]) -> None:
     def navigate_home(e: me.ClickEvent) -> None:
         reset_conversation()
+        state = me.state(State)
+        conversation = state.conversation
+        becommePast = Conversation(
+            title=conversation.title, messages=conversation.messages
+        )
+        state.past_conversations.append(becommePast)
+        state.conversation = Conversation()
         me.navigate("/")
 
     with me.box(
