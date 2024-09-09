@@ -1,20 +1,15 @@
 name: Smokeshow
 
 on:
-  workflow_run:
-    workflows: [Pipeline]
-    types: [completed]
-    ignore-branches:
-      - dev
-
+  push:
+    branches:
+      - main
 
 permissions:
   statuses: write
 
-
 jobs:
   smokeshow:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +22,8 @@ jobs:
       - uses: dawidd6/action-download-artifact@v6  # nosemgrep
         with:
           workflow: pipeline.yaml
-          commit: ${{ github.event.workflow_run.head_sha }}
+          workflow_conclusion: success
+          if_no_artifact_found: fail
 
       - run: smokeshow upload coverage-html
         env:
