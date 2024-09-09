@@ -46,7 +46,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     io.process_message(
         IOMessage.create(
             sender="user",
-            recepient="workflow",
+            recipient="workflow",
             type="system_message",
             message={
                 "heading": "Workflow BEGIN",
@@ -65,7 +65,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     io.process_message(
         IOMessage.create(
             sender="user",
-            recepient="workflow",
+            recipient="workflow",
             type="system_message",
             message={
                 "heading": "Workflow END",

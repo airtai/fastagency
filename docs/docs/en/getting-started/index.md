@@ -68,7 +68,7 @@ search:
 
 ---
 
-Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the [AutoGen](https://autogen-ai.github.io/autogen/){target="_blank"} framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/){target="_blank"} in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
+Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the AutoGen framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/){target="_blank"} in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
 
 With FastAgency, you can create interactive applications using various interfaces such as a console or Mesop.
 
@@ -100,6 +100,23 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
     ```
 
     This command installs FastAgency with support for both the Console and Mesop interfaces, providing a more comprehensive setup.
+
+!!! note "Using older AutoGen version 0.2.x"
+
+    In case you want to use an older version of AutoGen (`pyautogen` instead of `autogen` package ), please use the following pip command:
+
+    === "Console"
+        ```console
+        pip install "fastagency[pyautogen]"
+        ```
+
+        This command installs FastAgency with support for the Console interface and AutoGen framework.
+
+    === "Mesop"
+        ```console
+        pip install "fastagency[pyautogen,mesop]"
+        ```
+
 
 ### Imports
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
@@ -375,7 +392,7 @@ In this example, we'll demonstrate how to create custom interaction with the use
 
 This section describes how to define functions for the `ConversableAgent` instances representing the student and teacher. We will also explain the differences between `MultipleChoice`, `SystemMessage`, and `TextInput`, which are used for communication between the user and agents.
 
-Let's define three functions which will be avaliable to the agents:
+Let's define three functions which will be available to the agents:
 
 #### Free Textual Tnput
 
@@ -386,7 +403,7 @@ def retrieve_exam_questions(message: Annotated[str, "Message for examiner"]) -> 
     try:
         msg = TextInput(
             sender="student",
-            recepient="teacher",
+            recipient="teacher",
             prompt=message,
             suggestions=["1) Mona Lisa", "2) Innovations", "3) Florence at the time of Leonardo", "4) The Last Supper", "5) Vitruvian Man"],
         )
@@ -404,7 +421,7 @@ def write_final_answers(message: Annotated[str, "Message for examiner"]) -> str:
     try:
         msg = SystemMessage(
             sender="function call logger",
-            recepient="system",
+            recipient="system",
             message={
                 "operation": "storing final answers",
                 "content": message,
@@ -425,7 +442,7 @@ def get_final_grade(message: Annotated[str, "Message for examiner"]) -> str:
     try:
         msg = MultipleChoice(
             sender="student",
-            recepient="teacher",
+            recipient="teacher",
             prompt=message,
             choices=["A", "B", "C", "D", "F"],
         )
@@ -528,7 +545,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         try:
             msg = TextInput(
                 sender="student",
-                recepient="teacher",
+                recipient="teacher",
                 prompt=message,
                 suggestions=["1) Mona Lisa", "2) Innovations", "3) Florence at the time of Leonardo", "4) The Last Supper", "5) Vitruvian Man"],
             )
@@ -540,7 +557,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         try:
             msg = SystemMessage(
                 sender="function call logger",
-                recepient="system",
+                recipient="system",
                 message={
                     "operation": "storing final answers",
                     "content": message,
@@ -555,7 +572,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> str:
         try:
             msg = MultipleChoice(
                     sender="student",
-                    recepient="teacher",
+                    recipient="teacher",
                     prompt=message,
                     choices=["A", "B", "C", "D", "F"],
             )
@@ -613,8 +630,6 @@ fastagency run
 ## Future Plans
 
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/){target="_blank"}, to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
-
-Feel free to customize your workflow and application based on your needs. For more details on configurations and additional features, refer to the [AutoGen documentation](https://autogen-ai.github.io/autogen/){target="_blank"} and [Mesop documentation](https://google.github.io/mesop/){target="_blank"}.
 
 ---
 

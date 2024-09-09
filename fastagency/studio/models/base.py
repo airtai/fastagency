@@ -81,8 +81,8 @@ class ObjectReference(BaseModel):
         """Factory method to create a new instance of the class.
 
         This method is used to create a new instance of the class with the given UUID. It
-        is exacly the same as calling `ObjectReference(uuid=uuid)`, but without type
-        cheching failing because of the missing `type` and `name` arguments.
+        is exactly the same as calling `ObjectReference(uuid=uuid)`, but without type
+        checking failing because of the missing `type` and `name` arguments.
 
         Args:
             uuid (UUID): The unique identifier of the object
