@@ -316,7 +316,7 @@ class TestWebSurferAgent:
             # "What is the most expensive NVIDIA GPU on https://www.alternate.de/ and how much it costs?",
             "Compile a list of news headlines under section 'Politika i kriminal' on telegram.hr.",
             # "What is the most newsworthy story today?",
-            # "Given that weather forcast today is warm and sunny, what would be the best way to spend an evening in Zagreb according to the weather forecast?",
+            # "Given that weather forecast today is warm and sunny, what would be the best way to spend an evening in Zagreb according to the weather forecast?",
         ],
     )
     @pytest.mark.skip(reason="This test is not working properly in CI")
@@ -359,7 +359,7 @@ class TestWebSurferAgent:
             for msg in messages
         ), messages
 
-        # exctract final message from web surfer
+        # extract final message from web surfer
         websurfer_replies = []
         for msg in messages:
             try:

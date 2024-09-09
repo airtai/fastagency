@@ -38,7 +38,7 @@ async def ping_handler(body: dict[str, Any], msg: NatsMessage, logger: Logger) -
     )
 
     if "msg" not in body or body["msg"].lower() != "ping":
-        reply_msg = f"Unkown message: {body}, please send 'ping' in body['msg']"
+        reply_msg = f"Unknown message: {body}, please send 'ping' in body['msg']"
     else:
         reply_msg = "pong"
 

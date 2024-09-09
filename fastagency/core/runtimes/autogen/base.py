@@ -39,7 +39,7 @@ logger.addHandler(handler)
 _patterns = {
     "end_of_message": "^\\n--------------------------------------------------------------------------------\\n$",
     "auto_reply": "^\\x1b\\[31m\\n>>>>>>>> USING AUTO REPLY...\\x1b\\[0m\\n$",
-    "sender_recepient": "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
+    "sender_recipient": "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
     "suggested_function_call": "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
     "stars": "\\x1b\\[32m(\\*+)\\x1b\\[0m\n",
     "function_call_execution": "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
@@ -61,7 +61,7 @@ def _findall(key: str, string: str, /) -> tuple[str, ...]:
 @dataclass
 class CurrentMessage:
     sender: Optional[str] = None
-    recepient: Optional[str] = None
+    recipient: Optional[str] = None
     type: MessageType = "text_message"
     auto_reply: bool = False
     body: Optional[str] = None
@@ -76,8 +76,8 @@ class CurrentMessage:
 
         if _match("auto_reply", chunk):
             self.auto_reply = True
-        elif _match("sender_recepient", chunk):
-            self.sender, self.recepient = _findall("sender_recepient", chunk)
+        elif _match("sender_recipient", chunk):
+            self.sender, self.recipient = _findall("sender_recipient", chunk)
         elif _match("suggested_function_call", chunk):
             self.call_id, self.function_name = _findall(
                 "suggested_function_call", chunk
@@ -142,7 +142,7 @@ class IOStreamAdapter:  # IOStream
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         message = TextInput(
-            sender=None, recepient=None, prompt=prompt, password=password
+            sender=None, recipient=None, prompt=prompt, password=password
         )
         retval: str = self.io.process_message(message)  # type: ignore[assignment]
         return retval

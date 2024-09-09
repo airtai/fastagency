@@ -247,13 +247,13 @@ class Client:
 
             return main_name
 
-    def set_globals(self, main: ModuleType, sufix: str) -> None:
+    def set_globals(self, main: ModuleType, suffix: str) -> None:
         xs = {k: v for k, v in main.__dict__.items() if not k.startswith("__")}
         self.globals = {
             k: v
             for k, v in xs.items()
             if hasattr(v, "__module__")
-            and v.__module__ in [f"models_{sufix}", "typing"]
+            and v.__module__ in [f"models_{suffix}", "typing"]
         }
 
     @classmethod
@@ -270,7 +270,7 @@ class Client:
 
         with tempfile.TemporaryDirectory() as temp_dir:
             td = Path(temp_dir)
-            sufix = td.name
+            suffix = td.name
 
             main_name = cls.generate_code(
                 input_text=openapi_json,  # type: ignore [arg-type]
@@ -284,7 +284,7 @@ class Client:
                 sys.path.remove(str(td))
 
             client: Client = main.app  # type: ignore [attr-defined]
-            client.set_globals(main, sufix=sufix)
+            client.set_globals(main, suffix=suffix)
 
             return client
 

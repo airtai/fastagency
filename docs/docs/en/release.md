@@ -16,7 +16,7 @@ hide:
 
 ### Initial release
 
-FastAgency enables developers to quickly build testing or production-grade chat applications based on multi-agent workflow. This initial release supports [AutoGen](https://autogen-ai.github.io/autogen/) runtime for agentic workflows and simple console and [Mesop](https://google.github.io/mesop/) applications.
+FastAgency enables developers to quickly build testing or production-grade chat applications based on multi-agent workflow. This initial release supports AutoGen runtime for agentic workflows and simple console and [Mesop](https://google.github.io/mesop/) applications.
 
 ### New Contributors
 * @davorrunje made their first contribution in https://github.com/airtai/fastagency/pull/2
