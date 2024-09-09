@@ -517,6 +517,12 @@ What is the weather in Zagreb?
     ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
+### Accessing External REST API with security
+
+In previous section, we learned how to integrate external REST APIs into `AutoGen` agents using `FastAgency` and it used a weather API which has no security in it. Not all the external REST APIs are open to public, some are behind a paywall and needs securiyt parameters to access them. This section of documentation helps with creating an agent which accesses an external REST API with security.
+
+Let us build a gif search engine using giphy's APIs. Giphy does not provides an openapi.json so we provide one [here](https://raw.githubusercontent.com/airtai/fastagency/main/examples/openapi/giphy_openapi.json).
+
 ## Function Calling
 
 In this tutorial, we will demonstrate how to implement function calling using `FastAgency` and `AutoGenWorkflows` to create an interactive chatbot experience between a student and teacher. This tutorial will cover creating LLM-powered agents, registering functions to simulate chat-based workflows, and defining the `FastAgency` application.
