@@ -23,7 +23,7 @@ llm_config = {
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="exam_practice", description="Student and teacher chat") # type: ignore[type-var]
+@wf.register(name="exam_practice", description="Student and teacher chat")  # type: ignore[type-var]
 def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Optional[str]:
 
     def is_termination_msg(msg: dict[str, Any]) -> bool:
@@ -32,11 +32,11 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student writing a practice test. Your task is as follows:\n"
-            "  1) Retrieve exam questions by calling a function.\n"
-            "  2) Write a draft of proposed answers and engage in dialogue with your tutor.\n"
-            "  3) Once you are done with the dialogue, register the final answers by calling a function.\n"
-            "  4) Retrieve the final grade by calling a function.\n"
-            "Finally, terminate the chat by saying 'TERMINATE'.",
+        "  1) Retrieve exam questions by calling a function.\n"
+        "  2) Write a draft of proposed answers and engage in dialogue with your tutor.\n"
+        "  3) Once you are done with the dialogue, register the final answers by calling a function.\n"
+        "  4) Retrieve the final grade by calling a function.\n"
+        "Finally, terminate the chat by saying 'TERMINATE'.",
         llm_config=llm_config,
         human_input_mode="NEVER",
         is_termination_msg=is_termination_msg,
@@ -49,13 +49,21 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
         is_termination_msg=is_termination_msg,
     )
 
-    def retrieve_exam_questions(message: Annotated[str, "Message for examiner"]) -> Optional[str]:
+    def retrieve_exam_questions(
+        message: Annotated[str, "Message for examiner"]
+    ) -> Optional[str]:
         try:
             msg = TextInput(
                 sender="student",
                 recepient="teacher",
                 prompt=message,
-                suggestions=["1) Mona Lisa", "2) Innovations", "3) Florence at the time of Leonardo", "4) The Last Supper", "5) Vitruvian Man"],
+                suggestions=[
+                    "1) Mona Lisa",
+                    "2) Innovations",
+                    "3) Florence at the time of Leonardo",
+                    "4) The Last Supper",
+                    "5) Vitruvian Man",
+                ],
             )
             return io.process_message(msg)
         except Exception as e:
@@ -76,13 +84,15 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
         except Exception as e:
             return f"write_final_answers() FAILED! {e}"
 
-    def get_final_grade(message: Annotated[str, "Message for examiner"]) -> Optional[str]:
+    def get_final_grade(
+        message: Annotated[str, "Message for examiner"]
+    ) -> Optional[str]:
         try:
             msg = MultipleChoice(
-                    sender="student",
-                    recepient="teacher",
-                    prompt=message,
-                    choices=["A", "B", "C", "D", "F"],
+                sender="student",
+                recepient="teacher",
+                prompt=message,
+                choices=["A", "B", "C", "D", "F"],
             )
             return io.process_message(msg)
         except Exception as e:
@@ -119,8 +129,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
         max_turns=10,
     )
 
-    return chat_result.summary # type: ignore[no-any-return]
-
+    return chat_result.summary  # type: ignore[no-any-return]
 
 
 app = FastAgency(wf=wf, io=ConsoleIO())

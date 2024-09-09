@@ -23,6 +23,7 @@ WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
 
 wf = AutoGenWorkflows()
 
+
 @wf.register(name="simple_weather", description="Weather chat")
 def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
 
@@ -51,8 +52,7 @@ def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str
         max_turns=3,
     )
 
-    return chat_result.summary # type: ignore[no-any-return]
-
+    return chat_result.summary  # type: ignore[no-any-return]
 
 
 app = FastAgency(wf=wf, io=ConsoleIO())
