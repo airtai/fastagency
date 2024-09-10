@@ -59,15 +59,22 @@ def _past_conversations_box() -> None:
     state = me.state(State)
     with me.box(style=PAST_CHATS_STYLE):
         for conversation in state.past_conversations:
+            _id = conversation.id
+            print("conversation", conversation.title, _id)
+
+            def go_to_conversation(id: str = _id) -> None:
+                # print("navigam ka:", id)
+                me.navigate("/past", query_params={"id": id})
+
             with me.box(
+                on_click=lambda ev: go_to_conversation(),
                 style=me.Style(
                     width="min(200px)",
                     margin=me.Margin.symmetric(horizontal="auto", vertical=36),
-                )
+                ),
             ):
                 me.text(
-                    conversation.title,
-                    style=me.Style(font_size=20, margin=me.Margin(bottom=8)),
+                    text=conversation.title,
                 )
 
 
@@ -154,6 +161,32 @@ def conversation_page() -> None:
             input_user_feedback(on_user_feedback)
         if state.conversation_completed:
             conversation_completed(reset_conversation)
+
+
+@me.page(path="/past", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)  # type: ignore[misc]
+def past_conversation_page() -> None:
+    id = me.query_params.get("id")
+    state = me.state(State)
+    conversations_with_id = list(filter(lambda c: c.id == id, state.past_conversations))
+    conversation = conversations_with_id[0]
+
+    with me.box(style=ROOT_BOX_STYLE):
+        header()
+        messages = conversation.messages
+        with me.box(
+            style=me.Style(
+                overflow_y="auto",
+            )
+        ):
+            for message in messages:
+                message_box(message)
+            if messages:
+                me.box(
+                    key="end_of_messages",
+                    style=me.Style(margin=me.Margin(bottom="50vh")),
+                )
+        with me.box(on_click=me.navigate("/")):
+            me.text(text="back")
 
 
 def reset_conversation() -> None:

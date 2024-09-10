@@ -6,6 +6,7 @@ import mesop as me
 
 @dataclass
 class Conversation:
+    id: str = ""
     title: str = ""
     # messages: list[ConversationMessage] = field(default_factory=list)
     messages: list[str] = field(default_factory=list)

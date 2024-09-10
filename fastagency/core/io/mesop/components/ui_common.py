@@ -1,4 +1,5 @@
 from typing import Callable
+from uuid import uuid4
 
 import mesop as me
 
@@ -29,14 +30,15 @@ def header() -> None:
 
 def conversation_completed(reset_conversation: Callable[[], None]) -> None:
     def navigate_home(e: me.ClickEvent) -> None:
-        reset_conversation()
         state = me.state(State)
         conversation = state.conversation
-        becommePast = Conversation(
-            title=conversation.title, messages=conversation.messages
+        uuid: str = uuid4().hex
+        becomme_past = Conversation(
+            id=uuid, title=conversation.title, messages=conversation.messages
         )
-        state.past_conversations.append(becommePast)
+        state.past_conversations.append(becomme_past)
         state.conversation = Conversation()
+        # reset_conversation()
         me.navigate("/")
 
     with me.box(
