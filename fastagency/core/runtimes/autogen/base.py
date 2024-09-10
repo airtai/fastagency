@@ -121,11 +121,11 @@ class CurrentMessage:
         message: AskingMessage
 
         if _match("auto_reply_input", prompt):
-            logger.info("IOStreamAdapter.input(): auto_reply_input detected")
+            # logger.info("IOStreamAdapter.input(): auto_reply_input detected")
             sender, recipient = _findall("auto_reply_input", prompt)  # type: ignore[assignment]
 
         if last_message.type == "suggested_function_call":
-            logger.info("IOStreamAdapter.input(): suggested_function_call detected")
+            # logger.info("IOStreamAdapter.input(): suggested_function_call detected")
             message = MultipleChoice(
                 sender=sender,
                 recipient=recipient,
@@ -134,7 +134,7 @@ class CurrentMessage:
                 default="Approve",
             )
         else:
-            logger.info("IOStreamAdapter.input(): text_message detected")
+            # logger.info("IOStreamAdapter.input(): text_message detected")
             message = TextInput(
                 sender=None, recipient=None, prompt=prompt, password=password
             )
@@ -198,7 +198,7 @@ class IOStreamAdapter:  # IOStream
         ):
             retval = ""
 
-        logger.info(f"input(): {retval=}")
+        # logger.info(f"input(): {retval=}")
         return retval
 
 

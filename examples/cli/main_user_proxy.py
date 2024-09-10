@@ -6,6 +6,7 @@ from fastagency.core import Chatable
 from fastagency.core.io.console import ConsoleIO
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
 from fastagency.openapi.client import Client
+from fastagency.openapi.security import APIKeyHeader
 
 from fastagency import FastAgency
 
@@ -36,6 +37,9 @@ def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
     )
 
     weather_client = Client.create(openapi_url="https://weather.tools.fastagency.ai/openapi.json")
+    # Set global security params for all methods
+    weather_client.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
+
     weather_client.register_for_llm(weatherman)
     weather_client.register_for_execution(user_proxy)
 
