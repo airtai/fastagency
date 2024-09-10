@@ -9,7 +9,7 @@ from fastagency.core.base import AskingMessage, WorkflowCompleted, Workflows
 from fastagency.core.io.mesop.base import MesopMessage
 from fastagency.core.io.mesop.components.inputs import input_prompt, input_user_feedback
 from fastagency.core.io.mesop.components.ui_common import conversation_completed, header
-from fastagency.core.io.mesop.data_model import State
+from fastagency.core.io.mesop.data_model import Conversation, State
 from fastagency.core.io.mesop.message import message_box
 from fastagency.core.io.mesop.send_prompt import (
     send_prompt_to_autogen,
@@ -50,13 +50,17 @@ SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface
     security_policy=SECURITY_POLICY,
 )
 def home_page() -> None:
+    state = me.state(State)
     with me.box(style=ROOT_BOX_STYLE):
-        _past_conversations_box()
-        _conversation_starter_box()
+        past_conversations_box()
+        if state.in_conversation:
+            conversation_box()
+        else:
+            conversation_starter_box()
 
 
-def _past_conversations_box() -> None:
-    def _go_to_conversation(ev: me.ClickEvent) -> None:
+def past_conversations_box() -> None:
+    def _select_past_conversation(ev: me.ClickEvent) -> None:
         me.navigate("/past", query_params={"id": ev.key})
 
     state = me.state(State)
@@ -64,7 +68,7 @@ def _past_conversations_box() -> None:
         for conversation in state.past_conversations:
             with me.box(
                 key=conversation.id,  # they are GUIDs so should not clash with anything other on the page
-                on_click=_go_to_conversation,
+                on_click=_select_past_conversation,
                 style=me.Style(
                     width="min(200px)",
                     margin=me.Margin.symmetric(horizontal="auto", vertical=36),
@@ -75,7 +79,7 @@ def _past_conversations_box() -> None:
                 )
 
 
-def _conversation_starter_box() -> None:
+def conversation_starter_box() -> None:
     with me.box(style=CHAT_STARTER_STYLE):
         header()
         with me.box(
@@ -92,7 +96,8 @@ def _conversation_starter_box() -> None:
 
 
 def _handle_message(state: State, message: MesopMessage) -> None:
-    messages = state.conversation.messages
+    conversation = state.conversation
+    messages = conversation.messages
     level = message.conversation.level
     conversation_id = message.conversation.id
     io_message = message.io_message
@@ -101,30 +106,29 @@ def _handle_message(state: State, message: MesopMessage) -> None:
         {"level": level, "conversationId": conversation_id, "io_message": message_dict}
     )
     messages.append(message_string)
-    state.conversation.messages = list(messages)
+    conversation.messages = list(messages)
     if isinstance(io_message, AskingMessage):
-        state.waiting_for_feedback = True
-        state.conversation_completed = False
+        conversation.waiting_for_feedback = True
+        conversation.completed = False
     if isinstance(io_message, WorkflowCompleted):
-        state.conversation_completed = True
-        state.waiting_for_feedback = False
+        conversation.completed = True
+        conversation.waiting_for_feedback = False
 
 
 def send_prompt(e: me.ClickEvent) -> Iterator[None]:
-    state = me.state(State)
-    me.navigate("/conversation")
-    prompt = state.prompt
-    state.prompt = ""
-    state.conversation_completed = False
-    state.waiting_for_feedback = False
-    state.conversation.title = prompt
-    yield
-
-    me.scroll_into_view(key="end_of_messages")
-    yield
-
     wf = get_workflows()
     name = wf.names[0]
+
+    state = me.state(State)
+    # me.navigate("/conversation")
+    prompt = state.prompt
+    state.prompt = ""
+    conversation = Conversation(
+        title=prompt, completed=False, waiting_for_feedback=False
+    )
+    state.conversation = conversation
+    state.in_conversation = True
+    yield
     responses = send_prompt_to_autogen(prompt=prompt, wf=wf, name=name)
     for message in responses:
         state = me.state(State)
@@ -132,8 +136,31 @@ def send_prompt(e: me.ClickEvent) -> Iterator[None]:
         yield
         me.scroll_into_view(key="end_of_messages")
         yield
-
     yield
+
+
+def conversation_box() -> None:
+    state = me.state(State)
+    conversation = state.conversation
+    with me.box(style=ROOT_BOX_STYLE):
+        header()
+        messages = conversation.messages
+        with me.box(
+            style=me.Style(
+                overflow_y="auto",
+            )
+        ):
+            for message in messages:
+                message_box(message)
+            if messages:
+                me.box(
+                    key="end_of_messages",
+                    style=me.Style(margin=me.Margin(bottom="50vh")),
+                )
+        if conversation.waiting_for_feedback:
+            input_user_feedback(on_user_feedback)
+        if conversation.completed:
+            conversation_completed(reset_conversation)
 
 
 @me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)  # type: ignore[misc]
@@ -188,21 +215,19 @@ def past_conversation_page() -> None:
 
 def reset_conversation() -> None:
     state = me.state(State)
-    state.conversation_completed = False
-    state.conversation.messages = []
-    state.waiting_for_feedback = False
-    state.autogen = -1
+    state.in_conversation = False
+    # state.conversation_completed = False
+    # state.conversation.messages = []
+    # state.waiting_for_feedback = False
     state.prompt = ""
-    state.feedback = ""
 
 
 def on_user_feedback(e: me.ClickEvent) -> Iterator[None]:
     state = me.state(State)
-    feedback = state.feedback
-    state.waiting_for_feedback = False
-    yield
-    state.feedback = ""
-    state.waiting_for_feedback = False
+    conversation = state.conversation
+    feedback = conversation.feedback
+    conversation.feedback = ""
+    conversation.waiting_for_feedback = False
     yield
     me.scroll_into_view(key="end_of_messages")
     yield

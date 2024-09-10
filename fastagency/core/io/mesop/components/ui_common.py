@@ -29,17 +29,20 @@ def header() -> None:
 
 
 def conversation_completed(reset_conversation: Callable[[], None]) -> None:
-    def navigate_home(e: me.ClickEvent) -> None:
+    def start_new_conversation(e: me.ClickEvent) -> None:
         state = me.state(State)
         conversation = state.conversation
         uuid: str = uuid4().hex
         becomme_past = Conversation(
-            id=uuid, title=conversation.title, messages=conversation.messages
+            id=uuid,
+            title=conversation.title,
+            messages=conversation.messages,
+            completed=True,
+            waiting_for_feedback=False,
         )
         state.past_conversations.append(becomme_past)
-        state.conversation = Conversation()
-        # reset_conversation()
-        me.navigate("/")
+        state.in_conversation = False
+        # me.navigate("/")
 
     with me.box(
         style=me.Style(
@@ -49,5 +52,5 @@ def conversation_completed(reset_conversation: Callable[[], None]) -> None:
     ):
         me.button(
             "Conversation with team has ended, start a new one",
-            on_click=navigate_home,
+            on_click=start_new_conversation,
         )
