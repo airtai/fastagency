@@ -153,7 +153,7 @@ class CurrentMessage:
                 sender=sender,
                 recipient=recipient,
                 prompt="Please approve the suggested function call.",
-                choices=["Approve", "Reject"],
+                choices=["Approve", "Reject", "Exit"],
                 default="Approve",
             )
         else:
@@ -220,6 +220,8 @@ class IOStreamAdapter:  # IOStream
             and retval == "Approve"
         ):
             retval = ""
+        if retval == "Exit":
+            retval = "exit"
 
         # logger.info(f"input(): {retval=}")
         return retval
