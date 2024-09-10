@@ -1,5 +1,4 @@
 from typing import Annotated, Any
-from unittest.mock import MagicMock
 
 import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
@@ -7,6 +6,7 @@ from autogen.agentchat import ConversableAgent, UserProxyAgent
 from fastagency.core import Chatable, IOMessage
 from fastagency.core.io.console import ConsoleIO
 from fastagency.core.runtimes.autogen import AutoGenWorkflows
+from tests.conftest import InputMock
 
 
 @pytest.mark.openai
@@ -73,17 +73,6 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
             },
         )
     )
-
-
-class InputMock:
-    def __init__(self, responses: list[str]) -> None:
-        """Initialize the InputMock."""
-        self.responses = responses
-        self.mock = MagicMock()
-
-    def __call__(self, *args: Any, **kwargs: Any) -> str:
-        self.mock(*args, **kwargs)
-        return self.responses.pop(0)
 
 
 @pytest.mark.openai

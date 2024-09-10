@@ -14,6 +14,7 @@ from typing import (
     Optional,
     TypeVar,
 )
+from unittest.mock import MagicMock
 
 import openai
 import pytest
@@ -691,6 +692,17 @@ async def user_proxy_agent_ref(user_uuid: str) -> ObjectReference:
         max_consecutive_auto_reply=10,
         human_input_mode="NEVER",
     )
+
+
+class InputMock:
+    def __init__(self, responses: list[str]) -> None:
+        """Initialize the InputMock."""
+        self.responses = responses
+        self.mock = MagicMock()
+
+    def __call__(self, *args: Any, **kwargs: Any) -> str:
+        self.mock(*args, **kwargs)
+        return self.responses.pop(0)
 
 
 ################################################################################
