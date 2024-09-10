@@ -15,7 +15,7 @@ keywords = ["autogen", "multi-agent", "LLM", "AI", "autonomous agents"]
 requires-python = ">=3.9"
 
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python",
     "Programming Language :: Python :: Implementation :: CPython",
@@ -150,8 +150,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://fastagency.ai/latest/"
-Documentation = "https://fastagency.airt.ai/latest/"
+Homepage = "https://github.com/airtai/fastagency"
+Documentation = "https://fastagency.ai/latest/"
 Tracker = "https://github.com/airtai/fastagency/issues"
 Source = "https://github.com/airtai/fastagency"
 Discord = "https://discord.gg/kJjSGWrknU"
