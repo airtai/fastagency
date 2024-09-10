@@ -1,6 +1,6 @@
 import random
 import uuid
-from typing import Optional
+from typing import Any, Optional
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -180,6 +180,106 @@ class TestModelRoutes:
         assert actual == expected
 
     @pytest.mark.asyncio
+    async def test_add_model_with_duplicate_name(self, user_uuid: str) -> None:
+        model_uuid = str(uuid.uuid4())
+        name = f"model_name_{model_uuid}"
+        azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name=name)
+        response = client.post(
+            f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{model_uuid}",
+            json=azure_oai_api_key.model_dump(),
+        )
+
+        assert response.status_code == 200
+        expected = {
+            "api_key": "whatever",  # pragma: allowlist secret
+            "name": name,
+        }
+        actual = response.json()
+        assert actual == expected
+
+        response = client.get(f"/user/{user_uuid}/models")
+        assert response.status_code == 200
+
+        existing_name = name
+        new_model_uuid = str(uuid.uuid4())
+        new_azure_oai_api_key = AzureOAIAPIKey(
+            api_key="whatever",  # pragma: allowlist secret
+            name=existing_name,
+        )
+        response = client.post(
+            f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{new_model_uuid}",
+            json=new_azure_oai_api_key.model_dump(),
+        )
+        assert response.status_code == 422
+        expected_error_response: dict[str, list[dict[str, Any]]] = {
+            "detail": [
+                {
+                    "loc": ["name"],
+                    "msg": "Name already exists. Please enter a different name",
+                }
+            ]
+        }
+        actual = response.json()
+        assert actual == expected_error_response
+
+    @pytest.mark.asyncio
+    async def test_update_model_with_duplicate_name(self, user_uuid: str) -> None:
+        models = [
+            {"uuid": str(uuid.uuid4()), "name": f"model_name_{i}"} for i in range(2)
+        ]
+        # Add two models
+        for model in models:
+            model_uuid = model["uuid"]
+            name = model["name"]
+            azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name=name)
+            response = client.post(
+                f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{model_uuid}",
+                json=azure_oai_api_key.model_dump(),
+            )
+            assert response.status_code == 200
+            expected = {
+                "api_key": "whatever",  # pragma: allowlist secret
+                "name": name,
+            }
+            actual = response.json()
+            assert actual == expected
+
+        # update name of the second model
+        new_name = f"updated_{models[1]['name']}"
+        model_uuid = models[1]["uuid"]
+        updated_model = AzureOAIAPIKey(api_key="new_key", name=new_name)
+        response = client.put(
+            f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{model_uuid}",
+            json=updated_model.model_dump(),
+        )
+        assert response.status_code == 200
+        expected = {
+            "api_key": "new_key",  # pragma: allowlist secret
+            "name": new_name,
+        }
+        actual = response.json()
+        assert actual == expected
+
+        # Try to update the second model name with the first model name (should fail)
+        first_model_name = models[0]["name"]
+        updated_model = AzureOAIAPIKey(api_key="new_key", name=first_model_name)
+        response = client.put(
+            f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{model_uuid}",
+            json=updated_model.model_dump(),
+        )
+        assert response.status_code == 422
+        expected_error_response: dict[str, list[dict[str, Any]]] = {
+            "detail": [
+                {
+                    "loc": ["name"],
+                    "msg": "Name already exists. Please enter a different name",
+                }
+            ]
+        }
+        actual = response.json()
+        assert actual == expected_error_response
+
+    @pytest.mark.asyncio
     async def test_add_model_deployment(self, user_uuid: str) -> None:
         team_uuid = str(uuid.uuid4())
         deployment_uuid = str(uuid.uuid4())
@@ -336,7 +436,8 @@ class TestModelRoutes:
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         key_uuid = str(uuid.uuid4())
-        azure_oai_api_key = AzureOAIAPIKey(api_key="who cares", name="whatever")
+        unique_name = f"unique_name_{key_uuid}"
+        azure_oai_api_key = AzureOAIAPIKey(api_key="who cares", name=unique_name)
         type_name = "secret"
         model_name = "AzureOAIAPIKey"
 
@@ -355,7 +456,7 @@ class TestModelRoutes:
         assert response.status_code == 200
         expected = {
             "api_key": "who cares",  # pragma: allowlist secret
-            "name": "whatever",
+            "name": unique_name,
         }
         actual = response.json()
         assert actual == expected
@@ -366,8 +467,9 @@ class TestModelRoutes:
         deployment_uuid = str(uuid.uuid4())
         gh_token_uuid = str(uuid.uuid4())
         fly_token_uuid = str(uuid.uuid4())
+        unique_name = f"unique_name_{deployment_uuid}"
         model = {
-            "name": "name",
+            "name": unique_name,
             "repo_name": "repo_name",
             "fly_app_name": "Test",
             "team": {"uuid": team_uuid, "type": "team", "name": "TwoAgentTeam"},
@@ -418,7 +520,7 @@ class TestModelRoutes:
         # Update deployment
         new_gh_token_uuid = str(uuid.uuid4())
         model = {
-            "name": "name",
+            "name": unique_name,
             "repo_name": "repo_name",
             "fly_app_name": "Test",
             "team": {"uuid": team_uuid, "type": "team", "name": "TwoAgentTeam"},
@@ -439,7 +541,7 @@ class TestModelRoutes:
 
         assert response.status_code == 200
         expected = {
-            "name": "name",
+            "name": unique_name,
             "repo_name": "repo_name",
             "fly_app_name": "Test",
             "team": {
@@ -467,7 +569,8 @@ class TestModelRoutes:
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         key_uuid = str(uuid.uuid4())
-        azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name="whatever")
+        unique_name = f"unique_name_{key_uuid}"
+        azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name=unique_name)
         type_name = "secret"
         model_name = "AzureOAIAPIKey"
 
@@ -483,7 +586,7 @@ class TestModelRoutes:
         assert response.status_code == 200
         expected = {
             "api_key": "whatever",  # pragma: allowlist secret
-            "name": "whatever",
+            "name": unique_name,
         }
         actual = response.json()
         assert actual == expected
