@@ -1152,4 +1152,10 @@
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorial/external-rest-apis/"/>
     </url>
+    <url>
+        <loc>https://fastagency.ai/latest/tutorial/external-rest-apis/security/</loc>
+        <lastmod>2024-09-10</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorial/external-rest-apis/security/"/>
+    </url>
 </urlset>
