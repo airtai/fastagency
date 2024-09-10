@@ -1,11 +1,11 @@
 import json
-import logging
 import re
 from dataclasses import asdict, dataclass
 from typing import Any, Callable, Optional
 
 from autogen.io import IOStream
 
+from ....logging import get_logger
 from ...base import (
     AskingMessage,
     Chatable,
@@ -24,19 +24,9 @@ __all__ = [
 
 
 # Get the logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = get_logger(__name__)
 
-# Create a stream handler
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-
-# Create a formatter and set it for the handler
-formatter = logging.Formatter("[%(levelname)s] %(message)s")
-handler.setFormatter(formatter)
-
-# Add the handler to the logger
-logger.addHandler(handler)
+logger.info("Importing autogen.base.py")
 
 _patterns = {
     "end_of_message": "^\\n--------------------------------------------------------------------------------\\n$",
@@ -49,7 +39,7 @@ _patterns = {
     "no_human_input_received": "^\\x1b\\[31m\\n>>>>>>>> NO HUMAN INPUT RECEIVED\\.\\x1b\\[0m$",
     "user_interrupted": "^USER INTERRUPTED\\n$",
     "arguments": "^Arguments: \\n(.*)\\n$",
-    "auto_reply_input": "^Replying as (\\[a-zA-Z0-9_\\]+). Provide feedback to (\\[a-zA-Z0-9_\\]+). Press enter to skip and use auto-reply, or type 'exit' to end the conversation: $",
+    "auto_reply_input": "^Replying as ([a-zA-Z0-9_]+). Provide feedback to ([a-zA-Z0-9_]+). Press enter to skip and use auto-reply, or type 'exit' to end the conversation: $",
 }
 
 
@@ -76,6 +66,7 @@ class CurrentMessage:
     retval: Optional[Any] = None
 
     def process_chunk(self, chunk: str) -> bool:  # noqa: C901
+        # logger.info(f"CurrentMessage.process_chunk({chunk=}):")
         if _match("end_of_message", chunk):
             return True
 
@@ -122,6 +113,34 @@ class CurrentMessage:
 
         return False
 
+    def process_input(
+        self, prompt: str, password: bool, messages: list[IOMessage]
+    ) -> AskingMessage:
+        last_message = messages[-1]
+        sender, recipient = None, None
+        message: AskingMessage
+
+        if _match("auto_reply_input", prompt):
+            logger.info("IOStreamAdapter.input(): auto_reply_input detected")
+            sender, recipient = _findall("auto_reply_input", prompt)  # type: ignore[assignment]
+
+        if last_message.type == "suggested_function_call":
+            logger.info("IOStreamAdapter.input(): suggested_function_call detected")
+            message = MultipleChoice(
+                sender=sender,
+                recipient=recipient,
+                prompt="Please approve the suggested function call.",
+                choices=["Approve", "Reject"],
+                default="Approve",
+            )
+        else:
+            logger.info("IOStreamAdapter.input(): text_message detected")
+            message = TextInput(
+                sender=None, recipient=None, prompt=prompt, password=password
+            )
+
+        return message
+
     def create_message(self) -> IOMessage:
         kwargs = {k: v for k, v in asdict(self).items() if v is not None}
         # logger.info(f"CurrentMessage.create_message(): {kwargs=}")
@@ -164,31 +183,22 @@ class IOStreamAdapter:  # IOStream
             self.io.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
-        logger.info(f"input(): {prompt=}, {password=}")
-        message: AskingMessage
+        # logger.info(f"input(): {prompt=}, {password=}")
+        message: AskingMessage = self.current_message.process_input(
+            prompt, password, self.messages
+        )
 
-        last_mesaage = self.messages[-1]
-        sender, recipient = None, None
-
-        if _match("auto_reply_input", prompt):
-            logger.info("IOStreamAdapter.input(): auto_reply_input detected")
-            sender, recipient = _findall("auto_reply_input", prompt)  # type: ignore[assignment]
-
-        if last_mesaage.type == "suggested_function_call":
-            message = MultipleChoice(
-                sender=sender,
-                recipient=recipient,
-                prompt="Please approve the suggested function call.",
-                choices=["Approve", "Reject"],
-                default="Approve",
-            )
-            self.io.process_message(message)
-        else:
-            message = TextInput(
-                sender=None, recipient=None, prompt=prompt, password=password
-            )
         retval: str = self.io.process_message(message)  # type: ignore[assignment]
-        retval = "" if retval == "Accept" else retval
+
+        # in case of approving a suggested function call, we need to return an empty string to AutoGen
+        if (
+            message.type == "multiple_choice"
+            and self.messages[-1].type == "suggested_function_call"
+            and retval == "Approve"
+        ):
+            retval = ""
+
+        logger.info(f"input(): {retval=}")
         return retval
 
 

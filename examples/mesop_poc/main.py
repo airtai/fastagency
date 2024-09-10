@@ -8,27 +8,14 @@ from fastagency.core.io.mesop.message import message_box
 from fastagency.core.io.mesop.components.ui_common import header, conversation_completed
 from fastagency.core.io.mesop.components.inputs import input_user_feedback, input_prompt
 from fastagency.core.io.mesop.base import MesopMessage, AskingMessage, WorkflowCompleted
+from fastagency.logging import get_logger
 
 SECURITY_POLICY = me.SecurityPolicy(
     allowed_iframe_parents=["https://huggingface.co"]
 )
 
 # Get the logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-logger.handlers = []
-
-# Create a stream handler
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-
-# Create a formatter and set it for the handler
-formatter = logging.Formatter("[%(levelname)s] %(message)s")
-handler.setFormatter(formatter)
-
-# Add the handler to the logger
-logger.addHandler(handler)
+logger = get_logger(__name__)
 
 # Log messages
 logger.warning("warning message")

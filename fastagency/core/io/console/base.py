@@ -4,6 +4,7 @@ import textwrap
 from dataclasses import dataclass
 from typing import Optional
 
+from ....logging import get_logger
 from ...base import (
     IOMessage,
     IOMessageVisitor,
@@ -13,6 +14,8 @@ from ...base import (
     TextMessage,
     run_workflow,
 )
+
+logger = get_logger(__name__)
 
 
 class ConsoleIO(IOMessageVisitor):  # Chatable
@@ -136,6 +139,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         prompt = self._format_message(console_msg)
         prompt = self._indent(prompt)
         while True:
+            logger.info(f"visit_multiple_choice(): {prompt=}")
             retval = input(prompt)
             if retval in message.choices:
                 return retval
@@ -145,6 +149,7 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
                 print(f"Invalid choice ('{retval}'). Please try again.")  # noqa: T201 `print` found
 
     def process_message(self, message: IOMessage) -> Optional[str]:
+        logger.info(f"process_message(): {message=}")
         return self.visit(message)
 
     # def process_streaming_message(self, message: IOStreamingMessage) -> str | None:
