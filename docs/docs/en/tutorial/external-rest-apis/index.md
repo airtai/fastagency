@@ -6,6 +6,9 @@ This example demonstrates how to integrate external REST API calls into `AutoGen
 
 In this example, we'll use a simple [weather API](https://weather.tools.fastagency.ai/docs){target="_blank"} and its specification available at [https://weather.tools.fastagency.ai/openapi.json](https://weather.tools.fastagency.ai/openapi.json){target="_blank"}.
 
+!!! note
+    The [weather API](https://weather.tools.fastagency.ai/docs){target="_blank"} has two routes: one for the daily weather forecast, which has no security, and another for the hourly forecast, which is secured. We will learn how to access external APIs that are secured in the [next chapter](./security.md){.internal-link}.
+
 ## Install
 
 To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
@@ -52,18 +55,21 @@ fastagency run
 The output will vary based on the city and the current weather conditions:
 
 ```console
+  ╭─ Python package file structure ─╮
+ │                                 │
+ │  📁 tutorial                    │
+ │  ├── 🐍 __init__.py             │
+ │  └── 📁 external_rest_apis      │
+ │      ├── 🐍 __init__.py         │
+ │      └── 🐍 main.py             │
+ │                                 │
+ ╰─────────────────────────────────╯
 
- ╭── Python module file ──╮
- │                        │
- │  🐍 sample_weather.py  │
- │                        │
- ╰────────────────────────╯
-
- ╭─── Importable FastAgency app ────╮
- │                                  │
- │  from sample_weather import app  │
- │                                  │
- ╰──────────────────────────────────╯
+ ╭──────────── Importable FastAgency app ─────────────╮
+ │                                                    │
+ │  from tutorial.external_rest_apis.main import app  │
+ │                                                    │
+ ╰────────────────────────────────────────────────────╯
 
 ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
 │                                                                              │
@@ -74,21 +80,22 @@ The output will vary based on the city and the current weather conditions:
 │                                                                              │
 │ Please enter an initial message:                                             │
 ╰──────────────────────────────────────────────────────────────────────────────╯
-What is the weather in Zagreb?
+Get me daily weather forecast for Chennai city
+
     ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
     │                                                                              │
-    │ What is the weather in Zagreb?                                               │
+    │ Get me daily weather forecast for Chennai city                               │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
     ╭─ Weather_Agent -> User_Agent [suggested_function_call] ──────────────────────╮
     │                                                                              │
     │ {                                                                            │
-    │   "function_name": "get_weather__get",                                       │
+    │   "function_name": "get_daily_weather_daily_get",                            │
     │   "call_id":                                                                 │
-    │ "call_gGl4uAhMvPTXjgrOvkVZwCh3",                                             │
+    │ "call_VZ19VFNcTE9n8BnXa9aiMzFA",                                             │
     │   "arguments": {                                                             │
-    │     "city": "Zagreb"                                                         │
-    │                                                                              │
+    │     "city":                                                                  │
+    │ "Chennai"                                                                    │
     │   }                                                                          │
     │ }                                                                            │
     ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -96,112 +103,29 @@ What is the weather in Zagreb?
     ╭─ User_Agent -> Weather_Agent [function_call_execution] ──────────────────────╮
     │                                                                              │
     │ {                                                                            │
-    │   "function_name": "get_weather__get",                                       │
+    │   "function_name": "get_daily_weather_daily_get",                            │
     │   "call_id":                                                                 │
-    │ "call_gGl4uAhMvPTXjgrOvkVZwCh3",                                             │
-    │   "retval": "{\"city\": \"Zagreb\",                                          │
-    │ \"temperature\": 18, \"daily_forecasts\": [{\"forecast_date\":               │
-    │ \"2024-09-06\", \"temperature\": 23, \"hourly_forecasts\":                   │
-    │ [{\"forecast_time\": \"00:00:00\", \"temperature\": 19,                      │
-    │ \"description\": \"Patchy rain nearby\"}, {\"forecast_time\":                │
-    │ \"03:00:00\", \"temperature\": 19, \"description\": \"Patchy light           │
-    │ drizzle\"}, {\"forecast_time\": \"06:00:00\", \"temperature\": 18,           │
-    │ \"description\": \"Clear\"}, {\"forecast_time\": \"09:00:00\",               │
-    │ \"temperature\": 24, \"description\": \"Sunny\"}, {\"forecast_time\":        │
-    │ \"12:00:00\", \"temperature\": 30, \"description\": \"Sunny\"},              │
-    │ {\"forecast_time\": \"15:00:00\", \"temperature\": 30,                       │
-    │ \"description\": \"Partly Cloudy\"}, {\"forecast_time\": \"18:00:00\",       │
-    │  \"temperature\": 26, \"description\": \"Patchy rain nearby\"},              │
-    │ {\"forecast_time\": \"21:00:00\", \"temperature\": 21,                       │
-    │ \"description\": \"Patchy rain nearby\"}]}, {\"forecast_date\":              │
-    │ \"2024-09-07\", \"temperature\": 24, \"hourly_forecasts\":                   │
-    │ [{\"forecast_time\": \"00:00:00\", \"temperature\": 19,                      │
-    │ \"description\": \"Partly Cloudy\"}, {\"forecast_time\": \"03:00:00\",       │
-    │  \"temperature\": 18, \"description\": \"Clear\"}, {\"forecast_time\":       │
-    │  \"06:00:00\", \"temperature\": 18, \"description\": \"Clear\"},             │
-    │ {\"forecast_time\": \"09:00:00\", \"temperature\": 25,                       │
-    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"12:00:00\",               │
-    │ \"temperature\": 30, \"description\": \"Sunny\"}, {\"forecast_time\":        │
-    │ \"15:00:00\", \"temperature\": 31, \"description\": \"Sunny\"},              │
-    │ {\"forecast_time\": \"18:00:00\", \"temperature\": 26,                       │
-    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"21:00:00\",               │
-    │ \"temperature\": 22, \"description\": \"Clear\"}]},                          │
-    │ {\"forecast_date\": \"2024-09-08\", \"temperature\": 25,                     │
-    │ \"hourly_forecasts\": [{\"forecast_time\": \"00:00:00\",                     │
-    │ \"temperature\": 20, \"description\": \"Partly Cloudy\"},                    │
-    │ {\"forecast_time\": \"03:00:00\", \"temperature\": 19,                       │
-    │ \"description\": \"Clear\"}, {\"forecast_time\": \"06:00:00\",               │
-    │ \"temperature\": 18, \"description\": \"Clear\"}, {\"forecast_time\":        │
-    │ \"09:00:00\", \"temperature\": 26, \"description\": \"Sunny\"},              │
-    │ {\"forecast_time\": \"12:00:00\", \"temperature\": 31,                       │
-    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"15:00:00\",               │
-    │ \"temperature\": 32, \"description\": \"Sunny\"}, {\"forecast_time\":        │
-    │ \"18:00:00\", \"temperature\": 27, \"description\": \"Sunny\"},              │
-    │ {\"forecast_time\": \"21:00:00\", \"temperature\": 23,                       │
-    │ \"description\": \"Partly Cloudy\"}]}]}\n"                                   │
+    │ "call_VZ19VFNcTE9n8BnXa9aiMzFA",                                             │
+    │   "retval": "{\"city\": \"Chennai\",                                         │
+    │ \"temperature\": 31, \"daily_forecasts\": [{\"forecast_date\":               │
+    │ \"2024-09-10\", \"temperature\": 31, \"hourly_forecasts\": null},            │
+    │ {\"forecast_date\": \"2024-09-11\", \"temperature\": 30,                     │
+    │ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-09-12\",             │
+    │ \"temperature\": 30, \"hourly_forecasts\": null}]}\n"                        │
     │ }                                                                            │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
     ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
     │                                                                              │
-    │ The current weather in Zagreb is 18°C. Here are the upcoming weather         │
-    │ forecasts:                                                                   │
+    │ The daily weather forecast for Chennai is as follows:                        │
     │                                                                              │
-    │ ### September 6, 2024                                                        │
-    │ - **Day Temperature**: 23°C                                                  │
-    │ -                                                                            │
-    │ **Hourly Forecast**:                                                         │
-    │   - 00:00: 19°C - Patchy rain nearby                                         │
-    │   - 03:00:                                                                   │
-    │ 19°C - Patchy light drizzle                                                  │
-    │   - 06:00: 18°C - Clear                                                      │
-    │   - 09:00: 24°C -                                                            │
-    │ Sunny                                                                        │
-    │   - 12:00: 30°C - Sunny                                                      │
-    │   - 15:00: 30°C - Partly Cloudy                                              │
-    │   -                                                                          │
-    │ 18:00: 26°C - Patchy rain nearby                                             │
-    │   - 21:00: 21°C - Patchy rain nearby                                         │
+    │ - **September                                                                │
+    │ 10, 2024**: Temperature - 31°C                                               │
+    │ - **September 11, 2024**: Temperature -                                      │
+    │  30°C                                                                        │
+    │ - **September 12, 2024**: Temperature - 30°C                                 │
     │                                                                              │
-    │                                                                              │
-    │ ### September 7, 2024                                                        │
-    │ - **Day Temperature**: 24°C                                                  │
-    │ - **Hourly                                                                   │
-    │ Forecast**:                                                                  │
-    │   - 00:00: 19°C - Partly Cloudy                                              │
-    │   - 03:00: 18°C - Clear                                                      │
-    │                                                                              │
-    │ - 06:00: 18°C - Clear                                                        │
-    │   - 09:00: 25°C - Sunny                                                      │
-    │   - 12:00: 30°C - Sunny                                                      │
-    │                                                                              │
-    │   - 15:00: 31°C - Sunny                                                      │
-    │   - 18:00: 26°C - Sunny                                                      │
-    │   - 21:00: 22°C -                                                            │
-    │ Clear                                                                        │
-    │                                                                              │
-    │ ### September 8, 2024                                                        │
-    │ - **Day Temperature**: 25°C                                                  │
-    │ - **Hourly                                                                   │
-    │ Forecast**:                                                                  │
-    │   - 00:00: 20°C - Partly Cloudy                                              │
-    │   - 03:00: 19°C - Clear                                                      │
-    │                                                                              │
-    │ - 06:00: 18°C - Clear                                                        │
-    │   - 09:00: 26°C - Sunny                                                      │
-    │   - 12:00: 31°C - Sunny                                                      │
-    │                                                                              │
-    │   - 15:00: 32°C - Sunny                                                      │
-    │   - 18:00: 27°C - Sunny                                                      │
-    │   - 21:00: 23°C -                                                            │
-    │ Partly Cloudy                                                                │
-    │                                                                              │
-    │ If you need more information, feel free to ask!                              │
+    │ If you need more                                                             │
+    │ details or forecasts for more days, feel free to ask!                        │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
-
-## Accessing External REST API with security
-
-In previous section, we learned how to integrate external REST APIs into `AutoGen` agents using `FastAgency` and it used a weather API which has no security in it. Not all the external REST APIs are open to public, some are behind a paywall and needs securiyt parameters to access them. This section of documentation helps with creating an agent which accesses an external REST API with security.
-
-Let us build a gif search engine using giphy's APIs. Giphy does not provides an openapi.json so we provide one [here](https://raw.githubusercontent.com/airtai/fastagency/main/examples/openapi/giphy_openapi.json).

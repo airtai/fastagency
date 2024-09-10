@@ -7,6 +7,7 @@ search:
 - Tutorial
     - [Getting Started](tutorial/index.md)
     - [Using External REST APIs](tutorial/external-rest-apis/index.md)
+    - [Using External REST APIs with security](tutorial/external-rest-apis/security.md)
     - [Custom User Interactions](tutorial/custom-user-interactions/index.md)
 - Reference
     - fastagency
