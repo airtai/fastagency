@@ -415,6 +415,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/core/runtimes/autogen/base/IOStreamAdapter/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/logging/get_logger/</loc>
+        <lastmod>2024-09-10</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/logging/get_logger/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/openapi/client/Client/</loc>
         <lastmod>2024-09-10</lastmod>
         <changefreq>daily</changefreq>
