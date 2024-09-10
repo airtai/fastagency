@@ -76,6 +76,12 @@ pip install "fastagency[autogen]"
 
 This command installs FastAgency with support for the Console interface and AutoGen framework.
 
+In case you want to use an older version of AutoGen (`pyautogen` instead of `autogen` package ), please use the following pip command:
+
+```console
+pip install "fastagency[pyautogen]"
+```
+
 ## Write Code
 
 ### Imports
@@ -148,9 +154,6 @@ from fastagency.core.io.console import ConsoleIO
 app = FastAgency(wf=wf, io=ConsoleIO())
 ```
 
-For Console applications, use `ConsoleIO` to handle user interaction via the command line.
-
-
 ## Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:
@@ -188,8 +191,6 @@ The output will vary based on the interface:
 │ initial message:                                                             │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
-
-For Console applications, you will see a command-line prompt where you can enter the initial message and interact with your workflow.
 
 ---
 
