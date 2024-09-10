@@ -130,7 +130,7 @@ class WebSurferAgent(AgentBaseModel):
         agent_name = websurfer_model.name
 
         system_message = (
-            "You are a helpful assistent with access to web surfing capabilities."
+            "You are a helpful assistant with access to web surfing capabilities."
             "Please use 'create_new_task' and 'continue_task_with_additional_instructions' functions to provide answers to other agents."
         )
 

@@ -12,11 +12,9 @@
     <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
-<!--
   <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
       <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
   </a>
- -->
 
   <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
     <img src="https://static.pepy.tech/personalized-badge/fastagency?period=month&units=international_system&left_color=grey&right_color=green&left_text=downloads/month" alt="Downloads"/>
@@ -55,7 +53,7 @@
 
 ---
 
-Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the [AutoGen](https://autogen-ai.github.io/autogen/) framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/) in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
+Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the AutoGen framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/) in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
 
 With FastAgency, you can create interactive applications using various interfaces such as a console or Mesop.
 
@@ -77,6 +75,12 @@ pip install "fastagency[autogen]"
 ```
 
 This command installs FastAgency with support for the Console interface and AutoGen framework.
+
+In case you want to use an older version of AutoGen (`pyautogen` instead of `autogen` package ), please use the following pip command:
+
+```console
+pip install "fastagency[pyautogen]"
+```
 
 ## Write Code
 
@@ -150,9 +154,6 @@ from fastagency.core.io.console import ConsoleIO
 app = FastAgency(wf=wf, io=ConsoleIO())
 ```
 
-For Console applications, use `ConsoleIO` to handle user interaction via the command line.
-
-
 ## Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:
@@ -191,15 +192,11 @@ The output will vary based on the interface:
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
-For Console applications, you will see a command-line prompt where you can enter the initial message and interact with your workflow.
-
 ---
 
 ## Future Plans
 
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/), to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
-
-Feel free to customize your workflow and application based on your needs. For more details on configurations and additional features, refer to the [AutoGen documentation](https://autogen-ai.github.io/autogen/) and [Mesop documentation](https://google.github.io/mesop/).
 
 ---
 

@@ -1,7 +1,8 @@
-from typing import Any
+from typing import Annotated, Any
+from unittest.mock import MagicMock
 
 import pytest
-from autogen.agentchat import ConversableAgent
+from autogen.agentchat import ConversableAgent, UserProxyAgent
 
 from fastagency.core import Chatable, IOMessage
 from fastagency.core.io.console import ConsoleIO
@@ -45,7 +46,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     io.process_message(
         IOMessage.create(
             sender="user",
-            recepient="workflow",
+            recipient="workflow",
             type="system_message",
             message={
                 "heading": "Workflow BEGIN",
@@ -64,7 +65,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     io.process_message(
         IOMessage.create(
             sender="user",
-            recepient="workflow",
+            recipient="workflow",
             type="system_message",
             message={
                 "heading": "Workflow END",
@@ -72,3 +73,71 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
             },
         )
     )
+
+
+class InputMock:
+    def __init__(self, responses: list[str]) -> None:
+        """Initialize the InputMock."""
+        self.responses = responses
+        self.mock = MagicMock()
+
+    def __call__(self, *args: Any, **kwargs: Any) -> str:
+        self.mock(*args, **kwargs)
+        return self.responses.pop(0)
+
+
+@pytest.mark.openai
+class TestAutoGenWorkflowsWithHumanInputAlways:
+    @pytest.fixture
+    def wf(self, openai_gpt4o_mini_llm_config: dict[str, Any]) -> AutoGenWorkflows:
+        wf = AutoGenWorkflows()
+
+        @wf.register(
+            name="test_workflow",
+            description="Test of user proxy with human input mode set to always",
+        )
+        def workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+            user_proxy = UserProxyAgent(
+                name="User_Proxy",
+                human_input_mode="ALWAYS",
+            )
+            assistant = ConversableAgent(
+                name="Teacher_Agent",
+                system_message="You are a math teacher.",
+                llm_config=openai_gpt4o_mini_llm_config,
+            )
+
+            @user_proxy.register_for_execution()  # type: ignore[misc]
+            @assistant.register_for_llm(description="Get weather information")  # type: ignore[misc]
+            def get_weather_info(
+                city: Annotated[
+                    str, "city for which the weather information is requested"
+                ],
+            ) -> str:
+                return "The weather in Zagreb right now is heavy rain."
+
+            chat_result = user_proxy.initiate_chat(
+                assistant,
+                message=initial_message,
+                summary_method="reflection_with_llm",
+                max_turns=5,
+            )
+
+            return chat_result.summary  # type: ignore[no-any-return]
+
+        return wf
+
+    @pytest.mark.parametrize("response", ["", "no"])
+    def test(
+        self, wf: AutoGenWorkflows, response: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr("builtins.input", InputMock([response] * 5))
+
+        result = wf.run(
+            name="test_workflow",
+            session_id="session_id",
+            io=ConsoleIO(),
+            initial_message="What is the weather in Zagreb right now?",
+        )
+
+        assert result is not None

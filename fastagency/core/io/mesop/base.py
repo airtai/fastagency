@@ -180,7 +180,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
         io.process_message(
             IOMessage.create(
                 sender="user",
-                recepient="workflow",
+                recipient="workflow",
                 type="system_message",
                 message={
                     "heading": "Workflow BEGIN",
@@ -197,7 +197,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
         io.process_message(
             IOMessage.create(
                 sender="user",
-                recepient="workflow",
+                recipient="workflow",
                 type="system_message",
                 message={
                     "heading": "Workflow END",
@@ -209,7 +209,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
         io.process_message(
             IOMessage.create(
                 sender="user",
-                recepient="workflow",
+                recipient="workflow",
                 type="workflow_completed",
                 result=result,
             )

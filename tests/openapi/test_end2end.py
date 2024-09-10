@@ -450,13 +450,13 @@ def delete_item_items__item_id__delete(
     """
     pass
 '''
-        sufix = generated_code_path.name
-        expected = expected.replace("tmp61z6vu75", sufix)
+        suffix = generated_code_path.name
+        expected = expected.replace("tmp61z6vu75", suffix)
 
         assert generated_code_path.exists()
         assert generated_code_path.is_dir()
 
-        path = generated_code_path / f"main_{sufix}.py"
+        path = generated_code_path / f"main_{suffix}.py"
         assert path.exists()
 
         with path.open() as f:
@@ -511,9 +511,9 @@ class HTTPValidationError(BaseModel):
 """
         assert generated_code_path.exists()
         assert generated_code_path.is_dir()
-        sufix = generated_code_path.name
+        suffix = generated_code_path.name
 
-        path = generated_code_path / f"models_{sufix}.py"
+        path = generated_code_path / f"models_{suffix}.py"
         assert path.exists()
 
         with path.open() as f:

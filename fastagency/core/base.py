@@ -49,7 +49,7 @@ def _camel_to_snake(name: str) -> str:
 @dataclass
 class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, but it has no abstract methods
     sender: Optional[str] = None
-    recepient: Optional[str] = None
+    recipient: Optional[str] = None
     # streaming: bool = False
     auto_reply: bool = False
 
@@ -274,7 +274,7 @@ def run_workflow(
             initial_message = io.process_message(
                 TextInput(
                     sender="FastAgency",
-                    recepient="user",
+                    recipient="user",
                     prompt=(
                         f"Starting a new workflow '{name}' with the following description:"
                         + "\n\n"
@@ -287,7 +287,7 @@ def run_workflow(
             io.process_message(
                 SystemMessage(
                     sender="FastAgency",
-                    recepient="user",
+                    recipient="user",
                     message={
                         "body": (
                             f"Starting a new workflow '{name}' with the following description:"
@@ -310,7 +310,7 @@ def run_workflow(
         io.process_message(
             WorkflowCompleted(
                 sender="workflow",
-                recepient="user",
+                recipient="user",
                 result=result,
             )
         )

@@ -17,11 +17,9 @@ search:
     <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
-<!--
   <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
       <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
   </a>
- -->
 
   <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
     <img src="https://static.pepy.tech/personalized-badge/fastagency?period=month&units=international_system&left_color=grey&right_color=green&left_text=downloads/month" alt="Downloads"/>
@@ -60,7 +58,7 @@ search:
 
 ---
 
-Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the [AutoGen](https://autogen-ai.github.io/autogen/){target="_blank"} framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/){target="_blank"} in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
+Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the AutoGen framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/){target="_blank"} in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
 
 With FastAgency, you can create interactive applications using various interfaces such as a console or Mesop.
 
@@ -93,20 +91,29 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
     This command installs FastAgency with support for both the Console and Mesop interfaces, providing a more comprehensive setup.
 
+!!! note "Using older AutoGen version 0.2.x"
+
+    In case you want to use an older version of AutoGen (`pyautogen` instead of `autogen` package ), please use the following pip command:
+
+    === "Console"
+        ```console
+        pip install "fastagency[pyautogen]"
+        ```
+
+        This command installs FastAgency with support for the Console interface and AutoGen framework.
+
+    === "Mesop"
+        ```console
+        pip install "fastagency[pyautogen,mesop]"
+        ```
+
+
 ### Imports
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
     ```python
-    import os
-
-    from autogen.agentchat import ConversableAgent
-
-    from fastagency.core import Chatable
-    from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-    from fastagency.core.io.console import ConsoleIO
-
-    from fastagency import FastAgency
+    {!> docs_src/tutorial/getting_started/main.py [ln:1-8] !}
     ```
 
     For Console applications, import `ConsoleIO` to handle command-line input and output.
@@ -131,39 +138,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
-
-wf = AutoGenWorkflows()
-
-@wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
-    student_agent = ConversableAgent(
-        name="Student_Agent",
-        system_message="You are a student willing to learn.",
-        llm_config=llm_config,
-    )
-    teacher_agent = ConversableAgent(
-        name="Teacher_Agent",
-        system_message="You are a math teacher.",
-        llm_config=llm_config,
-    )
-
-    chat_result = student_agent.initiate_chat(
-        teacher_agent,
-        message=initial_message,
-        summary_method="reflection_with_llm",
-        max_turns=5,
-    )
-
-    return chat_result.summary
+{! docs_src/tutorial/getting_started/main.py [ln:10-43] !}
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
@@ -174,9 +149,7 @@ Next, define your FastAgency application. This ties together your workflow and t
 
 === "Console"
     ```python
-    from fastagency.core.io.console import ConsoleIO
-
-    app = FastAgency(wf=wf, io=ConsoleIO())
+    {!> docs_src/tutorial/getting_started/main.py [ln:7,46,47] !}
     ```
 
     For Console applications, use `ConsoleIO` to handle user interaction via the command line.

@@ -38,7 +38,7 @@ class ModelSchemas(BaseModel):
     schemas: Annotated[
         list[ModelSchema],
         Field(
-            description="The schemas for all registred models of the particular types"
+            description="The schemas for all registered models of the particular types"
         ),
     ]
 
@@ -46,7 +46,7 @@ class ModelSchemas(BaseModel):
 class Schemas(BaseModel):
     list_of_schemas: Annotated[
         list[ModelSchemas],
-        Field(description="The list of schemas for all registred models"),
+        Field(description="The list of schemas for all registered models"),
     ]
 
 
