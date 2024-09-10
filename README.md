@@ -55,7 +55,7 @@
 
 ---
 
-Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the [AutoGen](https://autogen-ai.github.io/autogen/) framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/) in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
+Welcome to FastAgency! This guide will walk you through the initial setup and usage of FastAgency, a powerful tool that leverages the AutoGen framework to quickly build applications. FastAgency is designed to be flexible and adaptable, and we plan to extend support to additional agentic frameworks such as [CrewAI](https://www.crewai.com/) in the near future. This will provide even more options for defining workflows and integrating with various AI tools.
 
 With FastAgency, you can create interactive applications using various interfaces such as a console or Mesop.
 
@@ -63,8 +63,8 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [ConsoleIO](../api/fastagency/core/io/console/ConsoleIO/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopIO](../api/fastagency/core/io/mesop/MesopIO/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
+- **Console**: Use the [ConsoleIO](https://fastagency.ai/latest/api/fastagency/core/io/console/ConsoleIO/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopIO](https://fastagency.ai/latest/api/fastagency/core/io/mesop/MesopIO/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/), to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
 
@@ -198,8 +198,6 @@ For Console applications, you will see a command-line prompt where you can enter
 ## Future Plans
 
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/), to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
-
-Feel free to customize your workflow and application based on your needs. For more details on configurations and additional features, refer to the [AutoGen documentation](https://autogen-ai.github.io/autogen/) and [Mesop documentation](https://google.github.io/mesop/).
 
 ---
 

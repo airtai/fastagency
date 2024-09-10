@@ -1,4 +1,4 @@
-"""A repository of open-source AI agents."""
+"""The fastest way to bring multi-agent workflows to production."""
 
 from .__about__ import __version__
 from .core import FastAgency

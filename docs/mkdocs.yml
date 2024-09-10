@@ -1,7 +1,7 @@
 site_name: FastAgency
 # description to improve website indexing
-site_description: "FastAgency: a repository of open-source AI models"
-site_url: https://docs.fastagency.ai/
+site_description: The fastest way to bring multi-agent workflows to production.
+site_url: https://fastagency.ai/
 site_author: airt
 copyright: '&copy; 2024 onwards <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
 
@@ -60,7 +60,7 @@ theme:
     - content.tabs.link          # sync total page tabs
     # - content.tooltips           # (insiders) improved tooltips
     - content.code.copy
-    - content.code.annotate      # code anotations with # (1)
+    - content.code.annotate      # code annotations with # (1)
     # - content.code.select        # (insiders) highlight line under cursor
     - content.action.edit        # add edit btn at every page
 
@@ -153,7 +153,8 @@ extra:
   analytics:
     provider: google
     property: G-HDTMP5FFHP
-  social_image: https://opengraph.githubassets.com/1671805243.560327/airtai/fastagency
+  # social_image: https://opengraph.githubassets.com/1671805243.560327/airtai/fastagency
+  social_image: https://fastagency.ai/latest/assets/img/FA-Main-LOGO-640x320-tinypng.png
   social:
     # Discord link should be first
     - icon: fontawesome/brands/discord

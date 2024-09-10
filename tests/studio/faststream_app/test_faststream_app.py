@@ -91,7 +91,7 @@ async def test_ping_handler_with_wrong_message() -> None:
         assert len(result_set) == 1
         result = json.loads(result_set.pop().result())
         expected_msg = (
-            f"Unkown message: {msg_to_send}, please send 'ping' in body['msg']"
+            f"Unknown message: {msg_to_send}, please send 'ping' in body['msg']"
         )
         assert result["msg"] == expected_msg
         assert "process_id" in result

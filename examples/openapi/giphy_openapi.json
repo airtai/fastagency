@@ -1054,7 +1054,7 @@
         "type": "object"
       },
       "Meta": {
-        "description": "The Meta Object contains basic information regarding the request, whether it was successful, and the response given by the API.  Check `responses` to see a description of types of response codes the API might give you under different cirumstances.",
+        "description": "The Meta Object contains basic information regarding the request, whether it was successful, and the response given by the API.  Check `responses` to see a description of types of response codes the API might give you under different circumstances.",
         "properties": {
           "msg": {
             "description": "HTTP Response Message",

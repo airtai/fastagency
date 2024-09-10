@@ -1,15 +1,8 @@
 ---
-# 0.5 - API
-# 2 - Release
-# 3 - Contributing
-# 5 - Template Page
-# 10 - Default
-hide:
-  - navigation
-
 search:
   boost: 10
 ---
+
 
 # Getting Started with FastAgency
 
@@ -236,33 +229,3 @@ The output will vary based on the interface:
     ```
 
     For Mesop applications, the output will include a URL where you can access your web-based application.
-
-
-
-## Future Plans
-
-We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/){target="_blank"}, to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
-
----
-
-## Stay in touch
-
-Please show your support and stay in touch by:
-
-- giving our [GitHub repository](https://github.com/airtai/fastagency/){target="_blank"} a star, and
-
-- joining our [Discord server](https://discord.gg/kJjSGWrknU){target="_blank"}
-
-Your support helps us to stay in touch with you and encourages us to
-continue developing and improving the framework. Thank you for your
-support!
-
----
-
-## Contributors
-
-Thanks to all of these amazing people who made the project better!
-
-<a href="https://github.com/airtai/fastagency/graphs/contributors" target="_blank">
-  <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
-</a>

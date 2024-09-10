@@ -67,23 +67,15 @@ class MesopIO(IOMessageVisitor):  # Chatable
         env["IMPORT_STRING"] = import_string
         process = subprocess.Popen(  # nosec: B603, B607
             ["mesop", self.main_path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            stdout=sys.stdout,
+            stderr=sys.stderr,
             text=True,
             bufsize=1,
             env=env,
         )
-        try:
-            # Print stdout line by line
-            for line in process.stdout:  # type: ignore[union-attr]
-                print(line, end="")  # noqa: T201 `print` found
-
-            # Print stderr line by line
-            for line in process.stderr:  # type: ignore[union-attr]
-                print(line, end="", file=sys.stderr)  # noqa: T201 `print` found
-
-        finally:
-            process.terminate()
+        result = process.wait()
+        if result != 0:
+            raise RuntimeError("Mesop process failed")
 
     @classmethod
     def register(cls, conversation: "MesopIO") -> None:
@@ -188,7 +180,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
         io.process_message(
             IOMessage.create(
                 sender="user",
-                recepient="workflow",
+                recipient="workflow",
                 type="system_message",
                 message={
                     "heading": "Workflow BEGIN",
@@ -205,7 +197,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
         io.process_message(
             IOMessage.create(
                 sender="user",
-                recepient="workflow",
+                recipient="workflow",
                 type="system_message",
                 message={
                     "heading": "Workflow END",
@@ -217,7 +209,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
         io.process_message(
             IOMessage.create(
                 sender="user",
-                recepient="workflow",
+                recipient="workflow",
                 type="workflow_completed",
                 result=result,
             )

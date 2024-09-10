@@ -7,6 +7,7 @@ from ...base import (
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
+    SystemMessage,
     TextInput,
     TextMessage,
 )
@@ -34,26 +35,43 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         self._conversation_id = conversation_id
 
     def visit_default(self, message: IOMessage) -> None:
+        base_color = "#aff"
         with me.box(
             style=me.Style(
-                background="#aff",
+                background=base_color,
                 padding=me.Padding.all(16),
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
+            self._header(message, base_color)
             me.markdown(message.type)
 
     def visit_text_message(self, message: TextMessage) -> None:
+        base_color = "#fff"
         with me.box(
             style=me.Style(
-                background="#fff",
+                background=base_color,
                 padding=me.Padding.all(16),
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
+            self._header(message, base_color, title="Text message")
             me.markdown(message.body)
+
+    def visit_system_message(self, message: SystemMessage) -> None:
+        base_color = "#bff"
+        with me.box(
+            style=me.Style(
+                background=base_color,
+                padding=me.Padding.all(16),
+                border_radius=16,
+                margin=me.Margin.symmetric(vertical=16),
+            )
+        ):
+            self._header(message, base_color, title="System Message")
+            me.markdown(json.dumps(message.message, indent=2))
 
     def visit_text_input(self, message: TextInput) -> str:
         text = message.prompt if message.prompt else "Please enter a value"
@@ -61,14 +79,16 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             suggestions = ",".join(suggestion for suggestion in message.suggestions)
             text += "\n" + suggestions
 
+        base_color = "#bff"
         with me.box(
             style=me.Style(
-                background="#bff",
+                background=base_color,
                 padding=me.Padding.all(16),
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
+            self._header(message, base_color, title="Input requested")
             me.markdown(text)
         return ""
 
@@ -79,16 +99,64 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 f"{i+1}. {choice}" for i, choice in enumerate(message.choices)
             )
             text += "\n" + options
+        base_color = "#cff"
         with me.box(
             style=me.Style(
-                background="#cff",
+                background=base_color,
                 padding=me.Padding.all(16),
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
+            self._header(message, base_color, title="Input requested")
             me.markdown(text)
         return ""
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         return self.visit(message)
+
+    def _header(
+        self, message: IOMessage, base_color: str, title: Optional[str] = None
+    ) -> None:
+        you_want_it_darker = darken_hex_color(base_color, 0.8)
+        with me.box(
+            style=me.Style(
+                background=you_want_it_darker,
+                padding=me.Padding.all(16),
+                border_radius=16,
+                margin=me.Margin.symmetric(vertical=16),
+            )
+        ):
+            h = title if title else message.type
+            h += f" from: {message.sender}, to:{message.recipient}"
+            if message.auto_reply:
+                h += " (auto-reply)"
+            me.markdown(h)
+
+
+def darken_hex_color(hex_color: str, factor: float = 0.8) -> str:
+    """Darkens a hex color by a given factor.
+
+    Args:
+    hex_color: The hex color code (e.g., '#FF0000').
+    factor: The darkening factor (0.0 to 1.0, where 1.0 is no change and 0.0 is completely dark).
+
+    Returns:
+    The darkened hex color code.
+    """
+    # Remove the '#' prefix if it exists
+    hex_color = hex_color.lstrip("#")
+
+    if len(hex_color) == 3:
+        hex_color = "".join(char * 2 for char in hex_color)
+
+    # Convert hex to RGB values
+    rgb = tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+
+    # Darken each component
+    darkened_rgb = tuple(int(channel * factor) for channel in rgb)
+
+    # Convert back to hex
+    darkened_hex = "#{:02X}{:02X}{:02X}".format(*darkened_rgb)
+
+    return darkened_hex
