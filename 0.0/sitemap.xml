@@ -733,6 +733,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/helpers/add_model_to_user/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/studio/helpers/check_model_name_uniqueness_and_raise/</loc>
+        <lastmod>2024-09-10</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/helpers/check_model_name_uniqueness_and_raise/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/studio/helpers/create_autogen/</loc>
         <lastmod>2024-09-10</lastmod>
         <changefreq>daily</changefreq>
