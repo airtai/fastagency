@@ -119,23 +119,15 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
-    ```python
-    {!> docs_src/tutorial/getting_started/main.py [ln:1-8] !}
+    ```python hl_lines="7"
+    {!> docs_src/getting_started/main_console.py [ln:1-8] !}
     ```
 
     For Console applications, import `ConsoleIO` to handle command-line input and output.
 
 === "Mesop"
-    ```python
-    import os
-
-    from autogen.agentchat import ConversableAgent
-
-    from fastagency.core import Chatable
-    from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-    from fastagency.core.io.mesop import MesopIO
-
-    from fastagency import FastAgency
+    ```python hl_lines="7"
+    {!> docs_src/getting_started/main_mesop.py [ln:1-8] !}
     ```
 
     For Mesop applications, import `MesopIO` to integrate with the Mesop web interface.
@@ -145,7 +137,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/tutorial/getting_started/main.py [ln:10-43] !}
+{! docs_src/getting_started/main_console.py [ln:10-43] !}
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
@@ -155,17 +147,15 @@ This code snippet sets up a simple learning chat between a student and a teacher
 Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
 === "Console"
-    ```python
-    {!> docs_src/tutorial/getting_started/main.py [ln:7,46,47] !}
+    ```python hl_lines="1"
+    {!> docs_src/getting_started/main_console.py [ln:47] !}
     ```
 
     For Console applications, use `ConsoleIO` to handle user interaction via the command line.
 
 === "Mesop"
-    ```python
-    from fastagency.core.io.mesop import MesopIO
-
-    app = FastAgency(wf=wf, io=MesopIO())
+    ```python hl_lines="1"
+    {!> docs_src/getting_started/main_mesop.py [ln:47] !}
     ```
 
     For Mesop applications, use `MesopIO` to enable web-based interactions.

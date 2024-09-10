@@ -4,14 +4,23 @@ search:
 ---
 - Getting Started
     - [Getting Started](getting-started/index.md)
-- Tutorial
-    - [Getting Started](tutorial/index.md)
-    - [Using External REST APIs](tutorial/external-rest-apis/index.md)
-    - [Using External REST APIs with security](tutorial/external-rest-apis/security.md)
-    - [Custom User Interactions](tutorial/custom-user-interactions/index.md)
+- [User guide](user-guide/index.md)
+    - [Basics](user-guide/basics.md)
+    - [Runtimes](user-guide/runtimes/index.md)
+        - [AutoGen](user-guide/runtimes/autogen/index.md)
+            - [Basics](user-guide/runtimes/autogen/basics.md)
+            - [User interaction](user-guide/runtimes/autogen/interactions.md)
+        - [CrewAI](user-guide/runtimes/crewai/basics.md)
+    - [I/O](user-guide/io/index.md)
+        - [Console](user-guide/io/console/basics.md)
+        - [Mesop](user-guide/io/mesop/basics.md)
+        - [FastAPI](user-guide/io/fastapi/basics.md)
+    - [Using API-s](user-guide/apis/index.md)
+        - [Basics](user-guide/apis/basics.md)
+        - [Security](user-guide/apis/security.md)
 - Reference
 {api}
-- Contributing
-    - [Development](getting-started/contributing/CONTRIBUTING.md)
-    - [Documentation](getting-started/contributing/docs.md)
+- [Contributing](contributing/index.md)
+    - [Development](contributing/CONTRIBUTING.md)
+    - [Documentation](contributing/docs.md)
 - [Release Notes](release.md)

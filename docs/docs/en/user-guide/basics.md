@@ -113,7 +113,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 
 === "Console"
     ```python
-    {!> docs_src/tutorial/getting_started/main.py [ln:1-8] !}
+    {!> docs_src/getting_started/main_console.py [ln:1-8] !}
     ```
 
     For Console applications, import `ConsoleIO` to handle command-line input and output.
@@ -138,7 +138,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/tutorial/getting_started/main.py [ln:10-43] !}
+{! docs_src/getting_started/main_console.py [ln:10-43] !}
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
@@ -149,7 +149,7 @@ Next, define your FastAgency application. This ties together your workflow and t
 
 === "Console"
     ```python
-    {!> docs_src/tutorial/getting_started/main.py [ln:7,46,47] !}
+    {!> docs_src/getting_started/main_console.py [ln:7,46,47] !}
     ```
 
     For Console applications, use `ConsoleIO` to handle user interaction via the command line.

@@ -14,7 +14,7 @@ def test_cli_without_security(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", InputMock([INPUT_MESSAGE]))
 
     result = runner.invoke(
-        app, ["run", "docs/docs_src/tutorial/external_rest_apis/main.py"]
+        app, ["run", "docs/docs_src/user_guide/external_rest_apis/main.py"]
     )
     assert INPUT_MESSAGE in result.stdout
     assert "get_daily_weather_daily_get" in result.stdout

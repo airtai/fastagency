@@ -19,7 +19,7 @@ pip install "fastagency[autogen,openapi]"
 The imports are the same as in the [previous chapter](./index.md){.internal-link}, except here we also import `APIKeyHeader` to set the security value in the header:
 
 ```python hl_lines="11"
-{! docs_src/tutorial/external_rest_apis/security.py [ln:1-11] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:1-11] !}
 ```
 
 ## Define Workflow
@@ -29,13 +29,13 @@ In this workflow, we create a Python client for the external REST API by passing
 Additionally, we set the API key for the API using the `set_security_params` method:
 
 ```python hl_lines="2"
-{! docs_src/tutorial/external_rest_apis/security.py [ln:33.5,34.5] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:33.5,34.5] !}
 ```
 
 Here's a simple example of a workflow definition:
 
 ```python hl_lines="22"
-{! docs_src/tutorial/external_rest_apis/security.py [ln:13-65] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:13-65] !}
 ```
 
 This code snippet sets up a simple weather agent that calls an external weather API with security, using the registered functions generated from the `openapi.json` URL.
@@ -45,7 +45,7 @@ This code snippet sets up a simple weather agent that calls an external weather 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/tutorial/external_rest_apis/security.py [ln:68] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:68] !}
 ```
 
 ## Run Application
@@ -53,7 +53,7 @@ Next, define your FastAgency application.
 You can run this chapter's FastAgency application using the following command::
 
 ```console
-fastagency run docs/docs_src/tutorial/external_rest_apis/security.py
+fastagency run docs/docs_src/user_guide/external_rest_apis/security.py
 ```
 
 ## Output
