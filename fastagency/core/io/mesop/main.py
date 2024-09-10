@@ -61,7 +61,14 @@ def home_page() -> None:
 
 def past_conversations_box() -> None:
     def _select_past_conversation(ev: me.ClickEvent) -> None:
-        me.navigate("/past", query_params={"id": ev.key})
+        id = ev.key
+        state = me.state(State)
+        conversations_with_id = list(
+            filter(lambda c: c.id == id, state.past_conversations)
+        )
+        conversation = conversations_with_id[0]
+        state.conversation = conversation
+        state.in_conversation = True
 
     state = me.state(State)
     with me.box(style=PAST_CHATS_STYLE):
@@ -70,8 +77,8 @@ def past_conversations_box() -> None:
                 key=conversation.id,  # they are GUIDs so should not clash with anything other on the page
                 on_click=_select_past_conversation,
                 style=me.Style(
-                    width="min(200px)",
-                    margin=me.Margin.symmetric(horizontal="auto", vertical=36),
+                    padding=me.Padding.all(16),
+                    border_radius=16,
                 ),
             ):
                 me.text(
@@ -142,7 +149,7 @@ def send_prompt(e: me.ClickEvent) -> Iterator[None]:
 def conversation_box() -> None:
     state = me.state(State)
     conversation = state.conversation
-    with me.box(style=ROOT_BOX_STYLE):
+    with me.box(style=CHAT_STARTER_STYLE):
         header()
         messages = conversation.messages
         with me.box(
@@ -160,66 +167,7 @@ def conversation_box() -> None:
         if conversation.waiting_for_feedback:
             input_user_feedback(on_user_feedback)
         if conversation.completed:
-            conversation_completed(reset_conversation)
-
-
-@me.page(path="/conversation", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)  # type: ignore[misc]
-def conversation_page() -> None:
-    state = me.state(State)
-    with me.box(style=ROOT_BOX_STYLE):
-        header()
-        messages = state.conversation.messages
-        with me.box(
-            style=me.Style(
-                overflow_y="auto",
-            )
-        ):
-            for message in messages:
-                message_box(message)
-            if messages:
-                me.box(
-                    key="end_of_messages",
-                    style=me.Style(margin=me.Margin(bottom="50vh")),
-                )
-        if state.waiting_for_feedback:
-            input_user_feedback(on_user_feedback)
-        if state.conversation_completed:
-            conversation_completed(reset_conversation)
-
-
-@me.page(path="/past", stylesheets=STYLESHEETS, security_policy=SECURITY_POLICY)  # type: ignore[misc]
-def past_conversation_page() -> None:
-    id = me.query_params.get("id")
-    state = me.state(State)
-    conversations_with_id = list(filter(lambda c: c.id == id, state.past_conversations))
-    conversation = conversations_with_id[0]
-
-    with me.box(style=ROOT_BOX_STYLE):
-        header()
-        messages = conversation.messages
-        with me.box(
-            style=me.Style(
-                overflow_y="auto",
-            )
-        ):
-            for message in messages:
-                message_box(message)
-            if messages:
-                me.box(
-                    key="end_of_messages",
-                    style=me.Style(margin=me.Margin(bottom="50vh")),
-                )
-        with me.box(on_click=me.navigate("/")):
-            me.text(text="back")
-
-
-def reset_conversation() -> None:
-    state = me.state(State)
-    state.in_conversation = False
-    # state.conversation_completed = False
-    # state.conversation.messages = []
-    # state.waiting_for_feedback = False
-    state.prompt = ""
+            conversation_completed()
 
 
 def on_user_feedback(e: me.ClickEvent) -> Iterator[None]:

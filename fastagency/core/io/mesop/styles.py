@@ -19,6 +19,7 @@ CHAT_STARTER_STYLE = me.Style(
 PAST_CHATS_STYLE = me.Style(
     background="#e7f2ff",
     height="100%",
+    width="min(200px)",
     font_family="Inter",
     display="flex",
     flex_direction="column",

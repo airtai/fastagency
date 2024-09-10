@@ -1,4 +1,3 @@
-from typing import Callable
 from uuid import uuid4
 
 import mesop as me
@@ -28,8 +27,11 @@ def header() -> None:
         )
 
 
-def conversation_completed(reset_conversation: Callable[[], None]) -> None:
-    def start_new_conversation(e: me.ClickEvent) -> None:
+def conversation_completed() -> None:
+    def start_new_conversation(ev: me.ClickEvent) -> None:
+        state.in_conversation = False
+
+    def save_and_start_new_conversation(ev: me.ClickEvent) -> None:
         state = me.state(State)
         conversation = state.conversation
         uuid: str = uuid4().hex
@@ -38,19 +40,26 @@ def conversation_completed(reset_conversation: Callable[[], None]) -> None:
             title=conversation.title,
             messages=conversation.messages,
             completed=True,
+            is_from_the_past=True,
             waiting_for_feedback=False,
         )
         state.past_conversations.append(becomme_past)
         state.in_conversation = False
-        # me.navigate("/")
 
+    state = me.state(State)
     with me.box(
         style=me.Style(
             cursor="pointer",
             padding=me.Padding.all(16),
         ),
     ):
-        me.button(
-            "Conversation with team has ended, start a new one",
-            on_click=start_new_conversation,
-        )
+        if not state.conversation.is_from_the_past:
+            me.button(
+                "Conversation with team has ended, save it and start a new one",
+                on_click=save_and_start_new_conversation,
+            )
+        else:
+            me.button(
+                "Start a new conversation",
+                on_click=start_new_conversation,
+            )

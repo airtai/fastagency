@@ -11,6 +11,7 @@ class Conversation:
     completed: bool = False
     waiting_for_feedback: bool = False
     feedback: str = ""
+    is_from_the_past: bool = False
     # messages: list[ConversationMessage] = field(default_factory=list)
     messages: list[str] = field(default_factory=list)
     fastagency: Optional[str] = None
