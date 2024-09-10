@@ -1,5 +1,4 @@
 import json
-import logging
 import os
 from collections.abc import Iterator
 
@@ -17,21 +16,10 @@ from fastagency.core.io.mesop.send_prompt import (
     send_user_feedback_to_autogen,
 )
 from fastagency.core.io.mesop.styles import ROOT_BOX_STYLE, STYLESHEETS
+from fastagency.logging import get_logger
 
 # Get the logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-# Create a stream handler
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-
-# Create a formatter and set it for the handler
-formatter = logging.Formatter("[%(levelname)s] %(message)s")
-handler.setFormatter(formatter)
-
-# Add the handler to the logger
-logger.addHandler(handler)
+logger = get_logger(__name__)
 
 
 def get_workflows() -> Workflows:
