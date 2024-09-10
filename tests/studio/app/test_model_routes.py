@@ -6,8 +6,9 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from fastagency.studio.app import MODEL_NAME_UNIQUE_ERROR_MESSAGE, app, mask
+from fastagency.studio.app import app, mask
 from fastagency.studio.db.base import DefaultDB
+from fastagency.studio.helpers import MODEL_NAME_UNIQUE_ERROR_MESSAGE
 from fastagency.studio.models.llms.azure import AzureOAIAPIKey
 from fastagency.studio.saas_app_generator import SaasAppGenerator
 

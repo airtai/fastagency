@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.studio.helpers.check_model_name_uniqueness
+::: fastagency.studio.helpers.check_model_name_uniqueness_and_raise

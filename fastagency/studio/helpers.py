@@ -18,6 +18,7 @@ from .models.base import Model, ObjectReference
 from .models.registry import Registry
 
 T = TypeVar("T", bound=Model)
+MODEL_NAME_UNIQUE_ERROR_MESSAGE = "Name already exists. Please enter a different name"
 
 
 async def get_model_by_uuid(model_uuid: Union[str, UUID]) -> Model:
@@ -218,8 +219,18 @@ async def create_autogen(
     return await model.create_autogen(model_id=model_id, user_id=user_id, **kwargs)
 
 
-async def check_model_name_uniqueness(user_uuid: str, model_name: str) -> bool:
+async def check_model_name_uniqueness_and_raise(
+    user_uuid: str, model_name: str
+) -> None:
     existing_models = await DefaultDB.backend().find_many_model(user_uuid=user_uuid)
-    return not any(
-        model["json_str"].get("name") == model_name for model in existing_models
-    )
+
+    if any(model["json_str"].get("name") == model_name for model in existing_models):
+        raise HTTPException(
+            status_code=422,
+            detail=[
+                {
+                    "loc": ("name",),
+                    "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE,
+                }
+            ],
+        )

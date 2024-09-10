@@ -24,7 +24,7 @@ from .db.base import DefaultDB, KeyNotFoundError
 from .db.prisma import fastapi_lifespan
 from .helpers import (
     add_model_to_user,
-    check_model_name_uniqueness,
+    check_model_name_uniqueness_and_raise,
     create_model,
     get_all_models_for_user,
 )
@@ -35,8 +35,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 app = FastAPI(lifespan=fastapi_lifespan)
-
-MODEL_NAME_UNIQUE_ERROR_MESSAGE = "Name already exists. Please enter a different name"
 
 
 @app.middleware("http")
@@ -149,17 +147,7 @@ async def add_model(
     model: dict[str, Any],
     background_tasks: BackgroundTasks,
 ) -> dict[str, Any]:
-    is_unique = await check_model_name_uniqueness(user_uuid, model["name"])
-    if not is_unique:
-        raise HTTPException(
-            status_code=422,
-            detail=[
-                {
-                    "loc": ("name",),
-                    "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE,
-                }
-            ],
-        )
+    await check_model_name_uniqueness_and_raise(user_uuid, model["name"])
 
     return await add_model_to_user(
         user_uuid=user_uuid,
@@ -220,17 +208,7 @@ async def update_model(
     found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
     found_model_name = found_model["json_str"].get("name")
     if model["name"] != found_model_name:
-        is_unique = await check_model_name_uniqueness(user_uuid, model["name"])
-        if not is_unique:
-            raise HTTPException(
-                status_code=422,
-                detail=[
-                    {
-                        "loc": ("name",),
-                        "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE,
-                    }
-                ],
-            )
+        await check_model_name_uniqueness_and_raise(user_uuid, model["name"])
 
     await DefaultDB.backend().update_model(
         model_uuid=found_model["uuid"],

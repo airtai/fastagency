@@ -168,7 +168,7 @@ search:
                 - [ping_handler](api/fastagency/studio/faststream_app/ping_handler.md)
             - helpers
                 - [add_model_to_user](api/fastagency/studio/helpers/add_model_to_user.md)
-                - [check_model_name_uniqueness](api/fastagency/studio/helpers/check_model_name_uniqueness.md)
+                - [check_model_name_uniqueness_and_raise](api/fastagency/studio/helpers/check_model_name_uniqueness_and_raise.md)
                 - [create_autogen](api/fastagency/studio/helpers/create_autogen.md)
                 - [create_model](api/fastagency/studio/helpers/create_model.md)
                 - [create_model_ref](api/fastagency/studio/helpers/create_model_ref.md)
