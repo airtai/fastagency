@@ -6,6 +6,9 @@ This example demonstrates how to integrate external REST API calls into `AutoGen
 
 In this example, we'll use a simple [weather API](https://weather.tools.fastagency.ai/docs){target="_blank"} and its specification available at [https://weather.tools.fastagency.ai/openapi.json](https://weather.tools.fastagency.ai/openapi.json){target="_blank"}.
 
+!!! note
+    The [weather API](https://weather.tools.fastagency.ai/docs){target="_blank"} has two routes: one for the daily weather forecast, which has no security, and another for the hourly forecast, which is secured. We will learn how to access external APIs that are secured in the [next chapter](./security.md){.internal-link}.
+
 ## Install
 
 To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
@@ -41,8 +44,92 @@ Next, define your FastAgency application.
 
 ## Run Application
 
-Once everything is set up, you can run your FastAgency application using the following command:
+You can run this chapter's FastAgency application using the following command:
 
 ```console
-fastagency run
+fastagency run docs/docs_src/tutorial/external_rest_apis/main.py
+```
+
+## Output
+
+The output will vary based on the city and the current weather conditions:
+
+```console
+ ╭─── Python package file structure ───╮
+ │                                     │
+ │  📁 docs                            │
+ │  ├── 🐍 __init__.py                 │
+ │  └── 📁 docs_src                    │
+ │      ├── 🐍 __init__.py             │
+ │      └── 📁 tutorial                │
+ │          ├── 🐍 __init__.py         │
+ │          └── 📁 external_rest_apis  │
+ │              ├── 🐍 __init__.py     │
+ │              └── 🐍 main.py         │
+ │                                     │
+ ╰─────────────────────────────────────╯
+
+ ╭─────────────────── Importable FastAgency app ────────────────────╮
+ │                                                                  │
+ │  from docs.docs_src.tutorial.external_rest_apis.main import app  │
+ │                                                                  │
+ ╰──────────────────────────────────────────────────────────────────╯
+
+╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+│                                                                              │
+│ Starting a new workflow 'simple_weather' with the following                  │
+│ description:                                                                 │
+│                                                                              │
+│ Weather chat                                                                 │
+│                                                                              │
+│ Please enter an initial message:                                             │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Get me daily weather forecast for Chennai city
+
+    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ Get me daily weather forecast for Chennai city                               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Weather_Agent -> User_Agent [suggested_function_call] ──────────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "get_daily_weather_daily_get",                            │
+    │   "call_id":                                                                 │
+    │ "call_VZ19VFNcTE9n8BnXa9aiMzFA",                                             │
+    │   "arguments": {                                                             │
+    │     "city":                                                                  │
+    │ "Chennai"                                                                    │
+    │   }                                                                          │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ User_Agent -> Weather_Agent [function_call_execution] ──────────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "get_daily_weather_daily_get",                            │
+    │   "call_id":                                                                 │
+    │ "call_VZ19VFNcTE9n8BnXa9aiMzFA",                                             │
+    │   "retval": "{\"city\": \"Chennai\",                                         │
+    │ \"temperature\": 31, \"daily_forecasts\": [{\"forecast_date\":               │
+    │ \"2024-09-10\", \"temperature\": 31, \"hourly_forecasts\": null},            │
+    │ {\"forecast_date\": \"2024-09-11\", \"temperature\": 30,                     │
+    │ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-09-12\",             │
+    │ \"temperature\": 30, \"hourly_forecasts\": null}]}\n"                        │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ The daily weather forecast for Chennai is as follows:                        │
+    │                                                                              │
+    │ - **September                                                                │
+    │ 10, 2024**: Temperature - 31°C                                               │
+    │ - **September 11, 2024**: Temperature -                                      │
+    │  30°C                                                                        │
+    │ - **September 12, 2024**: Temperature - 30°C                                 │
+    │                                                                              │
+    │ If you need more                                                             │
+    │ details or forecasts for more days, feel free to ask!                        │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
