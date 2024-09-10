@@ -44,10 +44,10 @@ Next, define your FastAgency application.
 
 ## Run Application
 
-Once everything is set up, you can run your FastAgency application using the following command:
+You can run this chapter's FastAgency application using the following command:
 
 ```console
-fastagency run
+fastagency run docs/docs_src/tutorial/external_rest_apis/main.py
 ```
 
 ## Output
