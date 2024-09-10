@@ -29,28 +29,51 @@ logger = get_logger(__name__)
 logger.info("Importing autogen.base.py")
 
 _patterns = {
-    "end_of_message": "^\\n--------------------------------------------------------------------------------\\n$",
-    "auto_reply": "^\\x1b\\[31m\\n>>>>>>>> USING AUTO REPLY...\\x1b\\[0m\\n$",
-    "sender_recipient": "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
-    "suggested_function_call": "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
-    "stars": "\\x1b\\[32m(\\*+)\\x1b\\[0m\n",
-    "function_call_execution": "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
-    "response_from_calling_tool": "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
-    "no_human_input_received": "^\\x1b\\[31m\\n>>>>>>>> NO HUMAN INPUT RECEIVED\\.\\x1b\\[0m$",
-    "user_interrupted": "^USER INTERRUPTED\\n$",
-    "arguments": "^Arguments: \\n(.*)\\n$",
-    "auto_reply_input": "^Replying as ([a-zA-Z0-9_]+). Provide feedback to ([a-zA-Z0-9_]+). Press enter to skip and use auto-reply, or type 'exit' to end the conversation: $",
+    "end_of_message": (
+        "^\\n--------------------------------------------------------------------------------\\n$",
+    ),
+    "auto_reply": (
+        "^\\x1b\\[31m\\n>>>>>>>> USING AUTO REPLY...\\x1b\\[0m\\n$",
+        "^\\n>>>>>>>> USING AUTO REPLY...\\n$",
+    ),
+    "sender_recipient": (
+        "^\\x1b\\[33m([a-zA-Z0-9_-]+)\\x1b\\[0m \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
+        "^([a-zA-Z0-9_-]+) \\(to ([a-zA-Z0-9_-]+)\\):\\n\\n$",
+    ),
+    "suggested_function_call": (
+        "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
+        "^\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\n$",
+    ),
+    "stars": ("^\\x1b\\[32m(\\*{80}\\*+)\\x1b\\[0m\n$", "^(\\*{80}\\*+)\\n$"),
+    "function_call_execution": (
+        "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
+        "^\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\n$",
+    ),
+    "response_from_calling_tool": (
+        "^\\x1b\\[32m\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
+        "^\\*\\*\\*\\*\\* Response from calling tool \\((call_[a-zA-Z0-9_]+)\\) \\*\\*\\*\\*\\*\\n$",
+    ),
+    "no_human_input_received": (
+        "^\\x1b\\[31m\\n>>>>>>>> NO HUMAN INPUT RECEIVED\\.\\x1b\\[0m$",
+        "^\\n>>>>>>>> NO HUMAN INPUT RECEIVED\\.$",
+    ),
+    "user_interrupted": ("^USER INTERRUPTED\\n$",),
+    "arguments": ("^Arguments: \\n(.*)\\n$",),
+    "auto_reply_input": (
+        "^Replying as ([a-zA-Z0-9_]+). Provide feedback to ([a-zA-Z0-9_]+). Press enter to skip and use auto-reply, or type 'exit' to end the conversation: $",
+    ),
 }
 
 
-def _match(key: str, string: str, /) -> Optional[re.Match[str]]:
-    pattern = _patterns[key]
-    return re.match(pattern, string)
+def _match(key: str, string: str, /) -> bool:
+    return any(re.match(pattern, string) for pattern in _patterns[key])
 
 
 def _findall(key: str, string: str, /) -> tuple[str, ...]:
-    pattern = _patterns[key]
-    return re.findall(pattern, string)[0]  # type: ignore[no-any-return]
+    for pattern in _patterns[key]:
+        if re.match(pattern, string):
+            return re.findall(pattern, string)[0]  # type: ignore[no-any-return]
+    return ()  # type: ignore[no-any-return]
 
 
 @dataclass

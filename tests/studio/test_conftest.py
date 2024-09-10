@@ -39,7 +39,7 @@ def test_openai_gpt35_turbo_16k_llm_config(
                 "api_key": api_key,  # pragma: allowlist secret
             }
         ],
-        "temperature": 0.8,
+        "temperature": 0.0,
     }
     assert openai_gpt35_turbo_16k_llm_config == expected
 

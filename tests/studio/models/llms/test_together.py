@@ -80,7 +80,7 @@ class TestTogetherAI:
             },
             "base_url": "https://api.together.xyz/v1",
             "api_type": "togetherai",
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
         assert model.model_dump() == expected
 
@@ -196,7 +196,7 @@ class TestTogetherAI:
                     "api_type": "togetherai",
                 }
             ],
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
 
         assert actual_llm_config == expected

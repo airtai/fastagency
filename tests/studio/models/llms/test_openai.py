@@ -70,7 +70,7 @@ class TestOpenAI:
             },
             "base_url": "https://api.openai.com/v1",
             "api_type": "openai",
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
         assert model.model_dump() == expected
 
@@ -213,7 +213,7 @@ class TestOpenAI:
                     "api_type": "openai",
                 }
             ],
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
 
         assert actual_llm_config == expected

@@ -47,7 +47,7 @@ class TestAzureOAI:
             "base_url": base_url,
             "api_type": "azure",
             "api_version": "2024-02-01",
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
         assert model.model_dump() == expected
 
