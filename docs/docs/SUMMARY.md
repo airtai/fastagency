@@ -12,6 +12,24 @@ search:
 - Reference
     - fastagency
         - [FastAgency](api/fastagency/FastAgency.md)
+        - api
+            - openapi
+                - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
+                - client
+                    - [OpenAPI](api/fastagency/api/openapi/client/OpenAPI.md)
+                    - [add_to_globals](api/fastagency/api/openapi/client/add_to_globals.md)
+                - fastapi_code_generator_helpers
+                    - [ArgumentWithDescription](api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
+                    - [patch_get_parameter_type](api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
+                - security
+                    - [APIKeyCookie](api/fastagency/api/openapi/security/APIKeyCookie.md)
+                    - [APIKeyHeader](api/fastagency/api/openapi/security/APIKeyHeader.md)
+                    - [APIKeyQuery](api/fastagency/api/openapi/security/APIKeyQuery.md)
+                    - [BaseSecurity](api/fastagency/api/openapi/security/BaseSecurity.md)
+                    - [BaseSecurityParameters](api/fastagency/api/openapi/security/BaseSecurityParameters.md)
+                    - [HTTPBearer](api/fastagency/api/openapi/security/HTTPBearer.md)
+                - security_schema_visitor
+                    - [custom_visitor](api/fastagency/api/openapi/security_schema_visitor/custom_visitor.md)
         - cli
             - cli
                 - [callback](api/fastagency/cli/cli/callback.md)
@@ -103,22 +121,6 @@ search:
                         - [IOStreamAdapter](api/fastagency/core/runtimes/autogen/base/IOStreamAdapter.md)
         - logging
             - [get_logger](api/fastagency/logging/get_logger.md)
-        - openapi
-            - client
-                - [Client](api/fastagency/openapi/client/Client.md)
-                - [add_to_globals](api/fastagency/openapi/client/add_to_globals.md)
-            - fastapi_code_generator_helpers
-                - [ArgumentWithDescription](api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
-                - [patch_get_parameter_type](api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
-            - security
-                - [APIKeyCookie](api/fastagency/openapi/security/APIKeyCookie.md)
-                - [APIKeyHeader](api/fastagency/openapi/security/APIKeyHeader.md)
-                - [APIKeyQuery](api/fastagency/openapi/security/APIKeyQuery.md)
-                - [BaseSecurity](api/fastagency/openapi/security/BaseSecurity.md)
-                - [BaseSecurityParameters](api/fastagency/openapi/security/BaseSecurityParameters.md)
-                - [HTTPBearer](api/fastagency/openapi/security/HTTPBearer.md)
-            - security_schema_visitor
-                - [custom_visitor](api/fastagency/openapi/security_schema_visitor/custom_visitor.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
@@ -253,7 +255,7 @@ search:
                         - [TwoAgentTeam](api/fastagency/studio/models/teams/two_agent_teams/TwoAgentTeam.md)
                 - toolboxes
                     - toolbox
-                        - [Client](api/fastagency/studio/models/toolboxes/toolbox/Client.md)
+                        - [OpenAPI](api/fastagency/studio/models/toolboxes/toolbox/OpenAPI.md)
                         - [OpenAPIAuth](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuth.md)
                         - [OpenAPIAuthToken](api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuthToken.md)
                         - [Toolbox](api/fastagency/studio/models/toolboxes/toolbox/Toolbox.md)

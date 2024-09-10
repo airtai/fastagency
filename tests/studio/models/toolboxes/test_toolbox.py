@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from fastagency.studio.helpers import create_autogen, get_model_by_ref
 from fastagency.studio.models.base import ObjectReference
 from fastagency.studio.models.toolboxes.toolbox import (
-    Client,
+    OpenAPI,
     Toolbox,
 )
 
@@ -37,14 +37,14 @@ class TestToolbox:
         toolbox_ref: ObjectReference,
         user_uuid: str,
     ) -> None:
-        client: Client = await create_autogen(
+        api: OpenAPI = await create_autogen(
             model_ref=toolbox_ref,
             user_uuid=user_uuid,
         )
-        assert client
-        assert isinstance(client, Client)
+        assert api
+        assert isinstance(api, OpenAPI)
 
-        assert len(client.registered_funcs) == 3
+        assert len(api.registered_funcs) == 3
 
         expected = {
             "create_item_items_post": "Create Item",
@@ -54,18 +54,18 @@ class TestToolbox:
 
         actual = {
             x.__name__: x._description  # type: ignore[attr-defined]
-            for x in client.registered_funcs
+            for x in api.registered_funcs
         }
 
         assert actual == expected, actual
 
         # actual = function_infos[0].function()
-        actual = client.registered_funcs[0]()
+        actual = api.registered_funcs[0]()
         expected = {"Hello": "World"}
         assert actual == expected, actual
 
         # actual = function_infos[2].function(item_id=1, q="test")
-        actual = client.registered_funcs[2](item_id=1, q="test")
+        actual = api.registered_funcs[2](item_id=1, q="test")
         expected = {"item_id": 1, "q": "test"}  # type: ignore[dict-item]
         assert actual == expected, actual
 
@@ -76,6 +76,6 @@ class TestToolbox:
             tax: Optional[float] = None
 
         # actual = function_infos[1].function(body=Item(name="item", price=1.0))
-        actual = client.registered_funcs[1](body=Item(name="item", price=1.0))
+        actual = api.registered_funcs[1](body=Item(name="item", price=1.0))
         expected = {"name": "item", "description": None, "price": 1.0, "tax": None}  # type: ignore[dict-item]
         assert actual == expected, actual

@@ -5,7 +5,7 @@ import httpx
 from pydantic import AfterValidator, Field, HttpUrl
 from typing_extensions import TypeAlias
 
-from ....openapi.client import Client
+from ....api.openapi.client import OpenAPI
 from ..base import Model
 from ..registry import Registry
 
@@ -14,7 +14,7 @@ from ..registry import Registry
 URL = Annotated[HttpUrl, AfterValidator(lambda x: str(x).rstrip("/"))]
 
 __all__ = [
-    "Client",
+    "OpenAPI",
     "OpenAPIAuthToken",
     "OpenAPIAuth",
     "Toolbox",
@@ -85,7 +85,7 @@ class Toolbox(Model):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> Client:
+    ) -> OpenAPI:
         my_model = await cls.from_db(model_id)
 
         # Download OpenAPI spec
@@ -94,7 +94,7 @@ class Toolbox(Model):
             response.raise_for_status()
             openapi_spec = response.text
 
-        client = Client.create(openapi_spec)
+        client = OpenAPI.create(openapi_spec)
 
         return client
 

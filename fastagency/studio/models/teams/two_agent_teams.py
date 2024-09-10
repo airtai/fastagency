@@ -5,7 +5,7 @@ from autogen import ConversableAgent
 from pydantic import Field
 
 from ..registry import Registry
-from ..toolboxes.toolbox import Client
+from ..toolboxes.toolbox import OpenAPI
 from .base import TeamBaseModel, agent_type_refs, register_toolbox_functions
 
 __all__ = ["TwoAgentTeam"]
@@ -16,9 +16,9 @@ class AutogenTwoAgentTeam:
         self,
         *,
         initial_agent: ConversableAgent,
-        initial_agent_clients: list[Client],
+        initial_agent_clients: list[OpenAPI],
         secondary_agent: ConversableAgent,
-        secondary_agent_clients: list[Client],
+        secondary_agent_clients: list[OpenAPI],
     ) -> None:
         self.initial_agent = initial_agent
         self.secondary_agent = secondary_agent

@@ -4,7 +4,7 @@ from uuid import UUID
 import autogen
 from pydantic import Field
 
-from ....openapi.client import Client
+from ....api.openapi import OpenAPI
 from ..registry import register
 from .base import AgentBaseModel
 
@@ -21,7 +21,7 @@ class AssistantAgent(AgentBaseModel):
     @classmethod
     async def create_autogen(
         cls, model_id: UUID, user_id: UUID, **kwargs: Any
-    ) -> tuple[autogen.agentchat.AssistantAgent, list[Client]]:
+    ) -> tuple[autogen.agentchat.AssistantAgent, list[OpenAPI]]:
         my_model = await cls.from_db(model_id)
 
         llm_model = await my_model.llm.get_data_model().from_db(my_model.llm.uuid)
