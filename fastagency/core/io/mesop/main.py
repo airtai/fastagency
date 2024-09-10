@@ -56,18 +56,15 @@ def home_page() -> None:
 
 
 def _past_conversations_box() -> None:
+    def _go_to_conversation(ev: me.ClickEvent) -> None:
+        me.navigate("/past", query_params={"id": ev.key})
+
     state = me.state(State)
     with me.box(style=PAST_CHATS_STYLE):
         for conversation in state.past_conversations:
-            _id = conversation.id
-            # print("conversation", conversation.title, _id)
-
-            def go_to_conversation(id: str = _id) -> None:
-                # print("navigam ka:", id)
-                me.navigate("/past", query_params={"id": id})
-
             with me.box(
-                on_click=lambda ev: go_to_conversation(),
+                key=conversation.id,  # they are GUIDs so should not clash with anything other on the page
+                on_click=_go_to_conversation,
                 style=me.Style(
                     width="min(200px)",
                     margin=me.Margin.symmetric(horizontal="auto", vertical=36),
