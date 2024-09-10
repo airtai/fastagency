@@ -24,6 +24,7 @@ from .db.base import DefaultDB, KeyNotFoundError
 from .db.prisma import fastapi_lifespan
 from .helpers import (
     add_model_to_user,
+    check_model_name_uniqueness_and_raise,
     create_model,
     get_all_models_for_user,
 )
@@ -146,6 +147,8 @@ async def add_model(
     model: dict[str, Any],
     background_tasks: BackgroundTasks,
 ) -> dict[str, Any]:
+    await check_model_name_uniqueness_and_raise(user_uuid, model["name"])
+
     return await add_model_to_user(
         user_uuid=user_uuid,
         type_name=type_name,
@@ -203,6 +206,10 @@ async def update_model(
     validated_model = registry.validate(type_name, model_name, model)
 
     found_model = await DefaultDB.backend().find_model(model_uuid=model_uuid)
+    found_model_name = found_model["json_str"].get("name")
+    if model["name"] != found_model_name:
+        await check_model_name_uniqueness_and_raise(user_uuid, model["name"])
+
     await DefaultDB.backend().update_model(
         model_uuid=found_model["uuid"],
         user_uuid=user_uuid,

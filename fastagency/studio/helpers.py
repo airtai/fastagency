@@ -216,3 +216,20 @@ async def create_autogen(
     model = await get_model_by_ref(model_ref)
 
     return await model.create_autogen(model_id=model_id, user_id=user_id, **kwargs)
+
+
+async def check_model_name_uniqueness_and_raise(
+    user_uuid: str, model_name: str
+) -> None:
+    existing_models = await DefaultDB.backend().find_many_model(user_uuid=user_uuid)
+
+    if any(model["json_str"].get("name") == model_name for model in existing_models):
+        raise HTTPException(
+            status_code=422,
+            detail=[
+                {
+                    "loc": ("name",),
+                    "msg": "Name already exists. Please enter a different name",
+                }
+            ],
+        )
