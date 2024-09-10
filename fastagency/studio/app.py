@@ -222,7 +222,15 @@ async def update_model(
     if model["name"] != found_model_name:
         is_unique = await check_model_name_uniqueness(user_uuid, model["name"])
         if not is_unique:
-            raise HTTPException(status_code=422, detail=MODEL_NAME_UNIQUE_ERROR_MESSAGE)
+            raise HTTPException(
+                status_code=422,
+                detail=[
+                    {
+                        "loc": ("name",),
+                        "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE,
+                    }
+                ],
+            )
 
     await DefaultDB.backend().update_model(
         model_uuid=found_model["uuid"],

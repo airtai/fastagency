@@ -1,10 +1,9 @@
 import random
 import uuid
-from typing import Optional
+from typing import Any, Optional
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 from fastagency.studio.app import MODEL_NAME_UNIQUE_ERROR_MESSAGE, app, mask
@@ -204,11 +203,16 @@ class TestModelRoutes:
             api_key="whatever",  # pragma: allowlist secret
             name=existing_name,
         )
-        with pytest.raises(HTTPException, match=MODEL_NAME_UNIQUE_ERROR_MESSAGE):
-            client.post(
-                f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{new_model_uuid}",
-                json=new_azure_oai_api_key.model_dump(),
-            )
+        response = client.post(
+            f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{new_model_uuid}",
+            json=new_azure_oai_api_key.model_dump(),
+        )
+        assert response.status_code == 422
+        expected_error_response: dict[str, list[dict[str, Any]]] = {
+            "detail": [{"loc": ["name"], "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE}]
+        }
+        actual = response.json()
+        assert actual == expected_error_response
 
     @pytest.mark.asyncio
     async def test_update_model_with_duplicate_name(self, user_uuid: str) -> None:
@@ -251,11 +255,16 @@ class TestModelRoutes:
         # Try to update the second model name with the first model name (should fail)
         first_model_name = models[0]["name"]
         updated_model = AzureOAIAPIKey(api_key="new_key", name=first_model_name)
-        with pytest.raises(HTTPException, match=MODEL_NAME_UNIQUE_ERROR_MESSAGE):
-            client.put(
-                f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{model_uuid}",
-                json=updated_model.model_dump(),
-            )
+        response = client.put(
+            f"/user/{user_uuid}/models/secret/AzureOAIAPIKey/{model_uuid}",
+            json=updated_model.model_dump(),
+        )
+        assert response.status_code == 422
+        expected_error_response: dict[str, list[dict[str, Any]]] = {
+            "detail": [{"loc": ["name"], "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE}]
+        }
+        actual = response.json()
+        assert actual == expected_error_response
 
     @pytest.mark.asyncio
     async def test_add_model_deployment(self, user_uuid: str) -> None:
