@@ -101,6 +101,8 @@ search:
                         - [AutoGenWorkflows](api/fastagency/core/runtimes/autogen/base/AutoGenWorkflows.md)
                         - [CurrentMessage](api/fastagency/core/runtimes/autogen/base/CurrentMessage.md)
                         - [IOStreamAdapter](api/fastagency/core/runtimes/autogen/base/IOStreamAdapter.md)
+        - logging
+            - [get_logger](api/fastagency/logging/get_logger.md)
         - openapi
             - client
                 - [Client](api/fastagency/openapi/client/Client.md)

@@ -152,7 +152,7 @@ markdown_extensions:
 extra:
   analytics:
     provider: google
-    property: G-HDTMP5FFHP
+    property: G-X9JHPKFSDN
   # social_image: https://opengraph.githubassets.com/1671805243.560327/airtai/fastagency
   social_image: https://fastagency.ai/latest/assets/img/FA-Main-LOGO-640x320-tinypng.png
   social:

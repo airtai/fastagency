@@ -6,7 +6,77 @@ from autogen.agentchat import ConversableAgent, UserProxyAgent
 from fastagency.core import Chatable, IOMessage
 from fastagency.core.io.console import ConsoleIO
 from fastagency.core.runtimes.autogen import AutoGenWorkflows
+from fastagency.core.runtimes.autogen.base import _findall, _match
 from tests.conftest import InputMock
+
+
+class TestPatternMatching:
+    def test_end_of_message(self) -> None:
+        chunk = "\n--------------------------------------------------------------------------------\n"
+        assert _match("end_of_message", chunk)
+
+    def test_auto_reply(self) -> None:
+        chunk = "\x1b[31m\n>>>>>>>> USING AUTO REPLY...\x1b[0m\n"
+        assert _match("auto_reply", chunk)
+
+    def test_sender_recipient(self) -> None:
+        chunk = "\x1b[33mUser_Proxy\x1b[0m (to Weatherman):\n\n"
+        assert _match("sender_recipient", chunk)
+
+        sender, recipient = _findall("sender_recipient", chunk)
+
+        assert sender == "User_Proxy"
+        assert recipient == "Weatherman"
+
+    def test_suggested_function_call(self) -> None:
+        chunk = "\x1b[32m***** Suggested tool call (call_HNs2kuTywlvatTY5WHzMLfDL): get_daily_weather_daily_get *****\x1b[0m\n"
+        assert _match("suggested_function_call", chunk)
+
+        call_id, function_name = _findall("suggested_function_call", chunk)
+
+        assert call_id == "call_HNs2kuTywlvatTY5WHzMLfDL"
+        assert function_name == "get_daily_weather_daily_get"
+
+    def test_stars(self) -> None:
+        chunk = "\x1b[32m**********************************************************************************************\x1b[0m\n"
+
+        assert _match("stars", chunk)
+
+    def test_function_call_execution(self) -> None:
+        chunk = "\x1b[35m\n>>>>>>>> EXECUTING FUNCTION get_daily_weather_daily_get...\x1b[0m\n"
+        assert _match("function_call_execution", chunk)
+
+    def test_response_from_calling_tool(self) -> None:
+        chunk = "\x1b[32m***** Response from calling tool (call_HNs2kuTywlvatTY5WHzMLfDL) *****\x1b[0m\n"
+        assert _match("response_from_calling_tool", chunk)
+
+        call_id = _findall("response_from_calling_tool", chunk)
+        assert call_id == "call_HNs2kuTywlvatTY5WHzMLfDL"  # type: ignore[comparison-overlap]
+
+    def test_no_human_input_received(self) -> None:
+        chunk = "\x1b[31m\n>>>>>>>> NO HUMAN INPUT RECEIVED.\x1b[0m"
+        assert _match("no_human_input_received", chunk)
+
+    def test_user_interrupted(self) -> None:
+        chunk = "USER INTERRUPTED\n"
+        assert _match("user_interrupted", chunk)
+
+    def test_arguments(self) -> None:
+        chunk = 'Arguments: \n{"city": "Zagreb"}\n'
+        assert _match("arguments", chunk)
+
+        arguments = _findall("arguments", chunk)
+
+        assert arguments == '{"city": "Zagreb"}'  # type: ignore[comparison-overlap]
+
+    def test_auto_reply_input(self) -> None:
+        prompt = "Replying as User_Proxy. Provide feedback to Weatherman. Press enter to skip and use auto-reply, or type 'exit' to end the conversation: "
+
+        assert _match("auto_reply_input", prompt)
+
+        sender, recipient = _findall("auto_reply_input", prompt)
+        assert sender == "User_Proxy"
+        assert recipient == "Weatherman"
 
 
 @pytest.mark.openai
