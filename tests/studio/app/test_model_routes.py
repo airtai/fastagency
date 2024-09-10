@@ -426,7 +426,8 @@ class TestModelRoutes:
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         key_uuid = str(uuid.uuid4())
-        azure_oai_api_key = AzureOAIAPIKey(api_key="who cares", name="whatever")
+        unique_name = f"unique_name_{key_uuid}"
+        azure_oai_api_key = AzureOAIAPIKey(api_key="who cares", name=unique_name)
         type_name = "secret"
         model_name = "AzureOAIAPIKey"
 
@@ -445,7 +446,7 @@ class TestModelRoutes:
         assert response.status_code == 200
         expected = {
             "api_key": "who cares",  # pragma: allowlist secret
-            "name": "whatever",
+            "name": unique_name,
         }
         actual = response.json()
         assert actual == expected
@@ -456,8 +457,9 @@ class TestModelRoutes:
         deployment_uuid = str(uuid.uuid4())
         gh_token_uuid = str(uuid.uuid4())
         fly_token_uuid = str(uuid.uuid4())
+        unique_name = f"unique_name_{deployment_uuid}"
         model = {
-            "name": "name",
+            "name": unique_name,
             "repo_name": "repo_name",
             "fly_app_name": "Test",
             "team": {"uuid": team_uuid, "type": "team", "name": "TwoAgentTeam"},
@@ -508,7 +510,7 @@ class TestModelRoutes:
         # Update deployment
         new_gh_token_uuid = str(uuid.uuid4())
         model = {
-            "name": "name",
+            "name": unique_name,
             "repo_name": "repo_name",
             "fly_app_name": "Test",
             "team": {"uuid": team_uuid, "type": "team", "name": "TwoAgentTeam"},
@@ -529,7 +531,7 @@ class TestModelRoutes:
 
         assert response.status_code == 200
         expected = {
-            "name": "name",
+            "name": unique_name,
             "repo_name": "repo_name",
             "fly_app_name": "Test",
             "team": {
@@ -557,7 +559,8 @@ class TestModelRoutes:
         self, user_uuid: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         key_uuid = str(uuid.uuid4())
-        azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name="whatever")
+        unique_name = f"unique_name_{key_uuid}"
+        azure_oai_api_key = AzureOAIAPIKey(api_key="whatever", name=unique_name)
         type_name = "secret"
         model_name = "AzureOAIAPIKey"
 
@@ -573,7 +576,7 @@ class TestModelRoutes:
         assert response.status_code == 200
         expected = {
             "api_key": "whatever",  # pragma: allowlist secret
-            "name": "whatever",
+            "name": unique_name,
         }
         actual = response.json()
         assert actual == expected
