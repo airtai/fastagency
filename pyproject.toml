@@ -150,8 +150,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://fastagency.ai/latest/"
-Documentation = "https://fastagency.airt.ai/latest/"
+Homepage = "https://github.com/airtai/fastagency"
+Documentation = "https://fastagency.ai/latest/"
 Tracker = "https://github.com/airtai/fastagency/issues"
 Source = "https://github.com/airtai/fastagency"
 Discord = "https://discord.gg/kJjSGWrknU"
