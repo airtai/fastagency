@@ -18,7 +18,6 @@ from .models.base import Model, ObjectReference
 from .models.registry import Registry
 
 T = TypeVar("T", bound=Model)
-MODEL_NAME_UNIQUE_ERROR_MESSAGE = "Name already exists. Please enter a different name"
 
 
 async def get_model_by_uuid(model_uuid: Union[str, UUID]) -> Model:
@@ -230,7 +229,7 @@ async def check_model_name_uniqueness_and_raise(
             detail=[
                 {
                     "loc": ("name",),
-                    "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE,
+                    "msg": "Name already exists. Please enter a different name",
                 }
             ],
         )

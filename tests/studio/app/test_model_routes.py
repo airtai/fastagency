@@ -8,7 +8,6 @@ from fastapi.testclient import TestClient
 
 from fastagency.studio.app import app, mask
 from fastagency.studio.db.base import DefaultDB
-from fastagency.studio.helpers import MODEL_NAME_UNIQUE_ERROR_MESSAGE
 from fastagency.studio.models.llms.azure import AzureOAIAPIKey
 from fastagency.studio.saas_app_generator import SaasAppGenerator
 
@@ -213,7 +212,12 @@ class TestModelRoutes:
         )
         assert response.status_code == 422
         expected_error_response: dict[str, list[dict[str, Any]]] = {
-            "detail": [{"loc": ["name"], "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE}]
+            "detail": [
+                {
+                    "loc": ["name"],
+                    "msg": "Name already exists. Please enter a different name",
+                }
+            ]
         }
         actual = response.json()
         assert actual == expected_error_response
@@ -265,7 +269,12 @@ class TestModelRoutes:
         )
         assert response.status_code == 422
         expected_error_response: dict[str, list[dict[str, Any]]] = {
-            "detail": [{"loc": ["name"], "msg": MODEL_NAME_UNIQUE_ERROR_MESSAGE}]
+            "detail": [
+                {
+                    "loc": ["name"],
+                    "msg": "Name already exists. Please enter a different name",
+                }
+            ]
         }
         actual = response.json()
         assert actual == expected_error_response
