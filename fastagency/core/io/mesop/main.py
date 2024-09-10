@@ -60,7 +60,7 @@ def _past_conversations_box() -> None:
     with me.box(style=PAST_CHATS_STYLE):
         for conversation in state.past_conversations:
             _id = conversation.id
-            print("conversation", conversation.title, _id)
+            # print("conversation", conversation.title, _id)
 
             def go_to_conversation(id: str = _id) -> None:
                 # print("navigam ka:", id)
