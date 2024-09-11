@@ -1,19 +1,10 @@
-from uuid import uuid4
-
 import mesop as me
-
-from ..data_model import Conversation, State
 
 
 def header() -> None:
-    def navigate_home(e: me.ClickEvent) -> None:
-        me.navigate("/")
-
     with me.box(
-        on_click=navigate_home,
         style=me.Style(
-            cursor="pointer",
-            padding=me.Padding.all(16),
+            padding=me.Padding(bottom="24px"),
         ),
     ):
         me.text(
@@ -27,39 +18,29 @@ def header() -> None:
         )
 
 
-def conversation_completed() -> None:
-    def start_new_conversation(ev: me.ClickEvent) -> None:
-        state.in_conversation = False
+def darken_hex_color(hex_color: str, factor: float = 0.8) -> str:
+    """Darkens a hex color by a given factor.
 
-    def save_and_start_new_conversation(ev: me.ClickEvent) -> None:
-        state = me.state(State)
-        conversation = state.conversation
-        uuid: str = uuid4().hex
-        becomme_past = Conversation(
-            id=uuid,
-            title=conversation.title,
-            messages=conversation.messages,
-            completed=True,
-            is_from_the_past=True,
-            waiting_for_feedback=False,
-        )
-        state.past_conversations.append(becomme_past)
-        state.in_conversation = False
+    Args:
+    hex_color: The hex color code (e.g., '#FF0000').
+    factor: The darkening factor (0.0 to 1.0, where 1.0 is no change and 0.0 is completely dark).
 
-    state = me.state(State)
-    with me.box(
-        style=me.Style(
-            cursor="pointer",
-            padding=me.Padding.all(16),
-        ),
-    ):
-        if not state.conversation.is_from_the_past:
-            me.button(
-                "Conversation with team has ended, save it and start a new one",
-                on_click=save_and_start_new_conversation,
-            )
-        else:
-            me.button(
-                "Start a new conversation",
-                on_click=start_new_conversation,
-            )
+    Returns:
+    The darkened hex color code.
+    """
+    # Remove the '#' prefix if it exists
+    hex_color = hex_color.lstrip("#")
+
+    if len(hex_color) == 3:
+        hex_color = "".join(char * 2 for char in hex_color)
+
+    # Convert hex to RGB values
+    rgb = tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))
+
+    # Darken each component
+    darkened_rgb = tuple(int(channel * factor) for channel in rgb)
+
+    # Convert back to hex
+    darkened_hex = "#{:02X}{:02X}{:02X}".format(*darkened_rgb)
+
+    return darkened_hex

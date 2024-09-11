@@ -1,5 +1,7 @@
 import mesop as me
 
+from .components.ui_common import darken_hex_color
+
 ROOT_BOX_STYLE = me.Style(
     background="#e7f2ff",
     height="100%",
@@ -11,13 +13,15 @@ ROOT_BOX_STYLE = me.Style(
 CHAT_STARTER_STYLE = me.Style(
     background="#e7f2ff",
     height="100%",
+    width="max(80%)",
     font_family="Inter",
     display="flex",
     flex_direction="column",
+    padding=me.Padding.all(16),
 )
 
 PAST_CHATS_SHOW_STYLE = me.Style(
-    background="#f7f2ff",
+    background=darken_hex_color("#e7f2ff", 0.95),
     height="100%",
     width="min(300px)",
     font_family="Inter",

@@ -1,6 +1,7 @@
 import json
 import os
 from collections.abc import Iterator
+from uuid import uuid4
 
 import mesop as me
 
@@ -8,7 +9,7 @@ from fastagency.cli.discover import import_from_string
 from fastagency.core.base import AskingMessage, WorkflowCompleted, Workflows
 from fastagency.core.io.mesop.base import MesopMessage
 from fastagency.core.io.mesop.components.inputs import input_prompt, input_user_feedback
-from fastagency.core.io.mesop.components.ui_common import conversation_completed, header
+from fastagency.core.io.mesop.components.ui_common import header
 from fastagency.core.io.mesop.data_model import Conversation, State
 from fastagency.core.io.mesop.message import message_box
 from fastagency.core.io.mesop.send_prompt import (
@@ -85,7 +86,9 @@ def past_conversations_box() -> None:
                 flex_direction="row", width="100%", justify_content="space-between"
             )
         ):
-            with me.content_button(on_click=on_show_hide):
+            with me.content_button(
+                on_click=on_show_hide, disabled=not state.past_conversations
+            ):
                 me.icon("menu")
             with me.content_button(
                 on_click=on_start_new_conversation,
@@ -113,11 +116,11 @@ def conversation_starter_box() -> None:
         with me.box(
             style=me.Style(
                 width="min(680px, 100%)",
-                margin=me.Margin.symmetric(horizontal="auto", vertical=36),
+                # margin=me.Margin.symmetric(horizontal="auto", vertical=36),
             )
         ):
             me.text(
-                "Enter a prompt to chat with Autogen team",
+                "Enter a prompt to chat with FastAgency team",
                 style=me.Style(font_size=20, margin=me.Margin(bottom=24)),
             )
             input_prompt(send_prompt)
@@ -141,6 +144,17 @@ def _handle_message(state: State, message: MesopMessage) -> None:
     if isinstance(io_message, WorkflowCompleted):
         conversation.completed = True
         conversation.waiting_for_feedback = False
+        if not conversation.is_from_the_past:
+            uuid: str = uuid4().hex
+            becomme_past = Conversation(
+                id=uuid,
+                title=conversation.title,
+                messages=conversation.messages,
+                completed=True,
+                is_from_the_past=True,
+                waiting_for_feedback=False,
+            )
+            state.past_conversations.insert(0, becomme_past)
 
 
 def send_prompt(e: me.ClickEvent) -> Iterator[None]:
@@ -187,8 +201,6 @@ def conversation_box() -> None:
                 )
         if conversation.waiting_for_feedback:
             input_user_feedback(on_user_feedback)
-        if conversation.completed:
-            conversation_completed()
 
 
 def on_user_feedback(e: me.ClickEvent) -> Iterator[None]:
