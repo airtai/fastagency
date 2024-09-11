@@ -152,7 +152,7 @@ class TestOpenAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "$ref": "#/$defs/OpenAIAPIKeyRef",
+                    "allOf": [{"$ref": "#/$defs/OpenAIAPIKeyRef"}],
                     "description": "The API Key from OpenAI",
                     "title": "API Key",
                 },
@@ -186,7 +186,7 @@ class TestOpenAI:
             "title": "OpenAI",
             "type": "object",
         }
-        # print(f"{schema=}")
+        # print(schema)
         assert schema == expected
 
     @pytest.mark.asyncio

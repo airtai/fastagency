@@ -128,7 +128,7 @@ class TestAzureOAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "$ref": "#/$defs/AzureOAIAPIKeyRef",
+                    "allOf": [{"$ref": "#/$defs/AzureOAIAPIKeyRef"}],
                     "description": "The API Key from Azure OpenAI",
                     "title": "API Key",
                 },
