@@ -80,9 +80,9 @@ class TestAzureOAI:
                 temperature=model.temperature,
             )
 
-    def test_azure_model_schema(self) -> None:
+    def test_azure_model_schema(self, pydantic_version: float) -> None:
         schema = AzureOAI.model_json_schema()
-        expected = {
+        expected_pydantic_v28 = {
             "$defs": {
                 "AzureOAIAPIKeyRef": {
                     "properties": {
@@ -178,7 +178,106 @@ class TestAzureOAI:
             "title": "AzureOAI",
             "type": "object",
         }
+        expected_pydantic_v29 = {
+            "$defs": {
+                "AzureOAIAPIKeyRef": {
+                    "properties": {
+                        "type": {
+                            "const": "secret",
+                            "default": "secret",
+                            "description": "The name of the type of the data",
+                            "enum": ["secret"],
+                            "title": "Type",
+                            "type": "string",
+                        },
+                        "name": {
+                            "const": "AzureOAIAPIKey",
+                            "default": "AzureOAIAPIKey",
+                            "description": "The name of the data",
+                            "enum": ["AzureOAIAPIKey"],
+                            "title": "Name",
+                            "type": "string",
+                        },
+                        "uuid": {
+                            "description": "The unique identifier",
+                            "format": "uuid",
+                            "title": "UUID",
+                            "type": "string",
+                        },
+                    },
+                    "required": ["uuid"],
+                    "title": "AzureOAIAPIKeyRef",
+                    "type": "object",
+                }
+            },
+            "properties": {
+                "name": {
+                    "description": "The name of the item",
+                    "minLength": 1,
+                    "title": "Name",
+                    "type": "string",
+                },
+                "model": {
+                    "default": "gpt-3.5-turbo",
+                    "description": "The model to use for the Azure OpenAI API, e.g. 'gpt-3.5-turbo'",
+                    "title": "Model",
+                    "type": "string",
+                },
+                "api_key": {
+                    "$ref": "#/$defs/AzureOAIAPIKeyRef",
+                    "description": "The API Key from Azure OpenAI",
+                    "title": "API Key",
+                },
+                "base_url": {
+                    "default": "https://{your-resource-name}.openai.azure.com",
+                    "description": "The base URL of the Azure OpenAI API",
+                    "format": "uri",
+                    "maxLength": 2083,
+                    "minLength": 1,
+                    "title": "Base URL",
+                    "type": "string",
+                },
+                "api_type": {
+                    "const": "azure",
+                    "default": "azure",
+                    "description": "The type of the API, must be 'azure'",
+                    "enum": ["azure"],
+                    "title": "API Type",
+                    "type": "string",
+                },
+                "api_version": {
+                    "default": "2024-02-01",
+                    "description": "The version of the Azure OpenAI API, e.g. '2024-02-01'",
+                    "enum": [
+                        "2023-05-15",
+                        "2023-06-01-preview",
+                        "2023-10-01-preview",
+                        "2024-02-15-preview",
+                        "2024-03-01-preview",
+                        "2024-04-01-preview",
+                        "2024-05-01-preview",
+                        "2024-02-01",
+                    ],
+                    "title": "API Version",
+                    "type": "string",
+                },
+                "temperature": {
+                    "default": 0.8,
+                    "description": "The temperature to use for the model, must be between 0 and 2",
+                    "maximum": 2.0,
+                    "minimum": 0.0,
+                    "title": "Temperature",
+                    "type": "number",
+                },
+            },
+            "required": ["name", "api_key"],
+            "title": "AzureOAI",
+            "type": "object",
+        }
         # print(schema)
+        expected = (
+            expected_pydantic_v28 if pydantic_version < 2.9 else expected_pydantic_v29
+        )
         assert schema == expected
 
     @pytest.mark.asyncio

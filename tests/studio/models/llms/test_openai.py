@@ -83,9 +83,9 @@ class TestOpenAI:
 
         assert set(model_list) == set(OpenAIModels.__args__), OpenAIModels.__args__  # type: ignore[attr-defined]
 
-    def test_openai_schema(self) -> None:
+    def test_openai_schema(self, pydantic_version: float) -> None:
         schema = OpenAI.model_json_schema()
-        expected = {
+        expected_pydantic_v28 = {
             "$defs": {
                 "OpenAIAPIKeyRef": {
                     "properties": {
@@ -186,7 +186,111 @@ class TestOpenAI:
             "title": "OpenAI",
             "type": "object",
         }
+        expected_pydantic_v29 = {
+            "$defs": {
+                "OpenAIAPIKeyRef": {
+                    "properties": {
+                        "type": {
+                            "const": "secret",
+                            "default": "secret",
+                            "description": "The name of the type of the data",
+                            "enum": ["secret"],
+                            "title": "Type",
+                            "type": "string",
+                        },
+                        "name": {
+                            "const": "OpenAIAPIKey",
+                            "default": "OpenAIAPIKey",
+                            "description": "The name of the data",
+                            "enum": ["OpenAIAPIKey"],
+                            "title": "Name",
+                            "type": "string",
+                        },
+                        "uuid": {
+                            "description": "The unique identifier",
+                            "format": "uuid",
+                            "title": "UUID",
+                            "type": "string",
+                        },
+                    },
+                    "required": ["uuid"],
+                    "title": "OpenAIAPIKeyRef",
+                    "type": "object",
+                }
+            },
+            "properties": {
+                "name": {
+                    "description": "The name of the item",
+                    "minLength": 1,
+                    "title": "Name",
+                    "type": "string",
+                },
+                "model": {
+                    "default": "gpt-3.5-turbo",
+                    "description": "The model to use for the OpenAI API, e.g. 'gpt-3.5-turbo'",
+                    "enum": [
+                        "gpt-4o-2024-08-06",
+                        "gpt-4-1106-preview",
+                        "gpt-4-0613",
+                        "gpt-4",
+                        "chatgpt-4o-latest",
+                        "gpt-4-turbo-preview",
+                        "gpt-4-0125-preview",
+                        "gpt-3.5-turbo",
+                        "gpt-3.5-turbo-1106",
+                        "gpt-4o-mini-2024-07-18",
+                        "gpt-3.5-turbo-0125",
+                        "gpt-4o-mini",
+                        "gpt-3.5-turbo-16k",
+                        "gpt-4-turbo-2024-04-09",
+                        "gpt-3.5-turbo-instruct-0914",
+                        "gpt-3.5-turbo-instruct",
+                        "gpt-4o",
+                        "gpt-4o-2024-05-13",
+                        "gpt-4-turbo",
+                    ],
+                    "title": "Model",
+                    "type": "string",
+                },
+                "api_key": {
+                    "$ref": "#/$defs/OpenAIAPIKeyRef",
+                    "description": "The API Key from OpenAI",
+                    "title": "API Key",
+                },
+                "base_url": {
+                    "default": "https://api.openai.com/v1",
+                    "description": "The base URL of the OpenAI API",
+                    "format": "uri",
+                    "maxLength": 2083,
+                    "minLength": 1,
+                    "title": "Base URL",
+                    "type": "string",
+                },
+                "api_type": {
+                    "const": "openai",
+                    "default": "openai",
+                    "description": "The type of the API, must be 'openai'",
+                    "enum": ["openai"],
+                    "title": "API Type",
+                    "type": "string",
+                },
+                "temperature": {
+                    "default": 0.8,
+                    "description": "The temperature to use for the model, must be between 0 and 2",
+                    "maximum": 2.0,
+                    "minimum": 0.0,
+                    "title": "Temperature",
+                    "type": "number",
+                },
+            },
+            "required": ["name", "api_key"],
+            "title": "OpenAI",
+            "type": "object",
+        }
         # print(schema)
+        expected = (
+            expected_pydantic_v28 if pydantic_version < 2.9 else expected_pydantic_v29
+        )
         assert schema == expected
 
     @pytest.mark.asyncio
