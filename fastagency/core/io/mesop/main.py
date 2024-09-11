@@ -5,6 +5,7 @@ from uuid import uuid4
 
 import mesop as me
 
+from fastagency.cli.discover import import_from_string
 from fastagency.core.base import AskingMessage, WorkflowCompleted, Workflows
 from fastagency.core.io.mesop.base import MesopMessage
 from fastagency.core.io.mesop.components.inputs import input_prompt, input_user_feedback
@@ -34,9 +35,7 @@ def get_workflows() -> Workflows:
         raise ValueError("No import string provided")
 
     # import app using import string
-    # app = import_from_string(import_string)
-    # todo workaround for failing import, fixme
-    from examples.cli.main_mesop import app
+    app = import_from_string(import_string)
 
     # get workflows from the app
     wf = app.wf
