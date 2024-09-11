@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.io.mesop.components.ui_common.conversation_completed
+::: fastagency.core.io.mesop.main.past_conversations_box
