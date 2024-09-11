@@ -7,7 +7,9 @@ from fastagency import FastAgency
 from fastagency.core import Chatable
 from fastagency.core.io.console import ConsoleIO
 from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-from fastagency.openapi.client import Client
+
+from fastagency.api.openapi import OpenAPI
+
 
 llm_config = {
     "config_list": [
@@ -16,7 +18,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.8,
+    "temperature": 0.0,
 }
 
 WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
@@ -27,7 +29,7 @@ wf = AutoGenWorkflows()
 @wf.register(name="simple_weather", description="Weather chat")
 def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
 
-    weather_client = Client.create(openapi_url=WEATHER_OPENAPI_URL)
+    weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
 
     user_agent = UserProxyAgent(
         name="User_Agent",
@@ -42,8 +44,8 @@ def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str
         human_input_mode="NEVER",
     )
 
-    weather_client.register_for_llm(weather_agent)
-    weather_client.register_for_execution(user_agent)
+    weather_api.register_for_llm(weather_agent)
+    weather_api.register_for_execution(user_agent)
 
     chat_result = user_agent.initiate_chat(
         weather_agent,

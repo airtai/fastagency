@@ -3,7 +3,7 @@ from typing import Any
 import autogen
 import pytest
 
-from fastagency.openapi.client import Client
+from fastagency.api.openapi import OpenAPI
 from fastagency.studio.helpers import create_autogen
 from fastagency.studio.models.agents.assistant import AssistantAgent
 from fastagency.studio.models.base import ObjectReference
@@ -239,7 +239,7 @@ class TestAssistantAgent:
             is_termination_msg=is_termination_msg,
         )
         assert isinstance(ag_assistant, autogen.agentchat.AssistantAgent)
-        assert isinstance(ag_toolkits[0], Client)
+        assert isinstance(ag_toolkits[0], OpenAPI)
         assert len(ag_toolkits) == 1
         assert ag_assistant._is_termination_msg == is_termination_msg
 
@@ -262,7 +262,7 @@ class TestAssistantAgent:
             human_input_mode="NEVER",
             max_consecutive_auto_reply=10,
         )
-        weather_tool: Client = ag_toolkits[0]
+        weather_tool: OpenAPI = ag_toolkits[0]
         weather_tool.register_for_execution(user_proxy)
         weather_tool.register_for_llm(ag_assistant)
         chat_result = user_proxy.initiate_chat(

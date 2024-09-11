@@ -72,7 +72,7 @@ openapi = [
 
 studio = [
     "faststream[nats]>=0.5.10,<0.6",
-    "pydantic>=2.3,<3",
+    "pydantic>=2.3,<2.9",
     "fastapi==0.114.0",
     "prisma>=0.13.1,<0.15",
     "asyncer==0.0.7",

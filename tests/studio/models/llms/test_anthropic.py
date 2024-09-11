@@ -38,7 +38,7 @@ class TestAnthropic:
             },
             "base_url": "https://api.anthropic.com/v1",
             "api_type": "anthropic",
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
         assert model.model_dump() == expected
 
@@ -103,7 +103,7 @@ class TestAnthropic:
                     "type": "string",
                 },
                 "api_key": {
-                    "$ref": "#/$defs/AnthropicAPIKeyRef",
+                    "allOf": [{"$ref": "#/$defs/AnthropicAPIKeyRef"}],
                     "description": "The API Key from Anthropic",
                     "title": "API Key",
                 },
@@ -163,7 +163,7 @@ class TestAnthropic:
                     "api_type": "anthropic",
                 }
             ],
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
 
         assert actual_llm_config == expected

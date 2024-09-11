@@ -7,7 +7,7 @@ from typing_extensions import TypeAlias
 
 from ..base import Model
 from ..registry import Registry
-from ..toolboxes.toolbox import Client
+from ..toolboxes.toolbox import OpenAPI
 
 __all__ = ["TeamBaseModel", "agent_type_refs"]
 
@@ -45,7 +45,7 @@ class TeamBaseModel(Model):
 def register_toolbox_functions(
     agent: ConversableAgent,
     execution_agents: list[ConversableAgent],
-    clients: list[Client],
+    clients: list[OpenAPI],
 ) -> None:
     for client in clients:
         client.register_for_llm(agent)
