@@ -19,6 +19,78 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/FastAgency/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/OpenAPI/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/OpenAPI/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/client/OpenAPI/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/client/OpenAPI/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/client/add_to_globals/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/client/add_to_globals/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/APIKeyCookie/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/APIKeyCookie/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/APIKeyHeader/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/APIKeyHeader/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/APIKeyQuery/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/APIKeyQuery/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/BaseSecurity/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/BaseSecurity/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/BaseSecurityParameters/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/BaseSecurityParameters/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/HTTPBearer/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/HTTPBearer/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security_schema_visitor/custom_visitor/</loc>
+        <lastmod>2024-09-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security_schema_visitor/custom_visitor/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/cli/cli/callback/</loc>
         <lastmod>2024-09-11</lastmod>
         <changefreq>daily</changefreq>
@@ -419,72 +491,6 @@
         <lastmod>2024-09-11</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/logging/get_logger/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/client/Client/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/client/Client/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/client/add_to_globals/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/client/add_to_globals/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/fastapi_code_generator_helpers/ArgumentWithDescription/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/fastapi_code_generator_helpers/patch_get_parameter_type/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/security/APIKeyCookie/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/security/APIKeyCookie/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/security/APIKeyHeader/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/security/APIKeyHeader/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/security/APIKeyQuery/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/security/APIKeyQuery/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/security/BaseSecurity/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/security/BaseSecurity/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/security/BaseSecurityParameters/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/security/BaseSecurityParameters/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/security/HTTPBearer/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/security/HTTPBearer/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/openapi/security_schema_visitor/custom_visitor/</loc>
-        <lastmod>2024-09-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/openapi/security_schema_visitor/custom_visitor/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/studio/app/ChatRequest/</loc>
@@ -1069,10 +1075,10 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/models/teams/two_agent_teams/TwoAgentTeam/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/studio/models/toolboxes/toolbox/Client/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/studio/models/toolboxes/toolbox/OpenAPI/</loc>
         <lastmod>2024-09-11</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/models/toolboxes/toolbox/Client/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/models/toolboxes/toolbox/OpenAPI/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/studio/models/toolboxes/toolbox/OpenAPIAuth/</loc>
