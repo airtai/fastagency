@@ -132,7 +132,7 @@ class TestTogetherAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "$ref": "#/$defs/TogetherAIAPIKeyRef",
+                    "allOf": [{"$ref": "#/$defs/TogetherAIAPIKeyRef"}],
                     "description": "The API Key from Together.ai",
                     "title": "API Key",
                 },

@@ -395,6 +395,7 @@ async def togetherai_ref(
         name=add_random_suffix("togetherai"),
         api_key=together_ai_key_ref,
         model="Mixtral-8x7B Instruct v0.1",
+        temperature=0.0,
     )
 
 
