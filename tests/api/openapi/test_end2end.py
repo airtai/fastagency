@@ -8,9 +8,11 @@ import fastapi
 import pytest
 from autogen.agentchat import ConversableAgent
 from fastapi import Body, FastAPI, Query
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, __version__
 
 from fastagency.api.openapi import OpenAPI
+
+PYDANTIC_VERSION = float(".".join(__version__.split(".")[:2]))
 
 
 class TestOpenAPIEnd2End:
@@ -86,7 +88,7 @@ class TestOpenAPIEnd2End:
         return fastapi_app.openapi()
 
     def test_openapi_schema(self, openapi_schema: dict[str, Any]) -> None:
-        expected = {
+        expected_pydantic_v28 = {
             "openapi": "3.1.0",
             "info": {
                 "title": "My FastAPI app",
@@ -354,7 +356,272 @@ class TestOpenAPIEnd2End:
                 }
             },
         }
+        expected_pydantic_v29 = {
+            "openapi": "3.1.0",
+            "info": {
+                "title": "My FastAPI app",
+                "description": "Test FastAPI app to check OpenAPI schema generation.",
+                "version": "0.1.0",
+            },
+            "servers": [
+                {
+                    "url": "https://stag.example.com",
+                    "description": "Staging environment",
+                },
+                {
+                    "url": "https://prod.example.com",
+                    "description": "Production environment",
+                },
+            ],
+            "paths": {
+                "/items/{item_id}": {
+                    "get": {
+                        "summary": "Read Item",
+                        "description": "Read an item by ID",
+                        "operationId": "read_item_items__item_id__get",
+                        "parameters": [
+                            {
+                                "name": "item_id",
+                                "in": "path",
+                                "required": True,
+                                "schema": {
+                                    "type": "integer",
+                                    "description": "The ID of the item to get",
+                                    "title": "Item Id",
+                                },
+                                "description": "The ID of the item to get",
+                            },
+                            {
+                                "name": "q",
+                                "in": "query",
+                                "required": False,
+                                "schema": {
+                                    "anyOf": [{"type": "string"}, {"type": "null"}],
+                                    "description": "some extra query parameter",
+                                    "title": "Q",
+                                },
+                                "description": "some extra query parameter",
+                            },
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "Successful Response",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "title": "Response Read Item Items  Item Id  Get",
+                                        }
+                                    }
+                                },
+                            },
+                            "422": {
+                                "description": "Validation Error",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/HTTPValidationError"
+                                        }
+                                    }
+                                },
+                            },
+                        },
+                    },
+                    "put": {
+                        "summary": "Update Item",
+                        "description": "Update an item by ID",
+                        "operationId": "update_item_items__item_id__put",
+                        "parameters": [
+                            {
+                                "name": "item_id",
+                                "in": "path",
+                                "required": True,
+                                "schema": {
+                                    "type": "integer",
+                                    "description": "The ID of the item to update",
+                                    "title": "Item Id",
+                                },
+                                "description": "The ID of the item to update",
+                            }
+                        ],
+                        "requestBody": {
+                            "required": True,
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Item",
+                                        "description": "The item to update",
+                                    }
+                                }
+                            },
+                        },
+                        "responses": {
+                            "200": {
+                                "description": "Successful Response",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "title": "Response Update Item Items  Item Id  Put",
+                                        }
+                                    }
+                                },
+                            },
+                            "422": {
+                                "description": "Validation Error",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/HTTPValidationError"
+                                        }
+                                    }
+                                },
+                            },
+                        },
+                    },
+                    "delete": {
+                        "summary": "Delete Item",
+                        "description": "Delete an item by ID",
+                        "operationId": "delete_item_items__item_id__delete",
+                        "parameters": [
+                            {
+                                "name": "item_id",
+                                "in": "path",
+                                "required": True,
+                                "schema": {
+                                    "type": "integer",
+                                    "description": "The ID of the item to delete",
+                                    "title": "Item Id",
+                                },
+                                "description": "The ID of the item to delete",
+                            }
+                        ],
+                        "responses": {
+                            "200": {
+                                "description": "Successful Response",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "title": "Response Delete Item Items  Item Id  Delete",
+                                        }
+                                    }
+                                },
+                            },
+                            "422": {
+                                "description": "Validation Error",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/HTTPValidationError"
+                                        }
+                                    }
+                                },
+                            },
+                        },
+                    },
+                },
+                "/items/": {
+                    "post": {
+                        "summary": "Create Item",
+                        "operationId": "create_item_items__post",
+                        "requestBody": {
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Item",
+                                        "description": "The item to create",
+                                    }
+                                }
+                            },
+                            "required": True,
+                        },
+                        "responses": {
+                            "200": {
+                                "description": "Successful Response",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "title": "Response Create Item Items  Post",
+                                        }
+                                    }
+                                },
+                            },
+                            "422": {
+                                "description": "Validation Error",
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "$ref": "#/components/schemas/HTTPValidationError"
+                                        }
+                                    }
+                                },
+                            },
+                        },
+                    }
+                },
+            },
+            "components": {
+                "schemas": {
+                    "HTTPValidationError": {
+                        "properties": {
+                            "detail": {
+                                "items": {
+                                    "$ref": "#/components/schemas/ValidationError"
+                                },
+                                "type": "array",
+                                "title": "Detail",
+                            }
+                        },
+                        "type": "object",
+                        "title": "HTTPValidationError",
+                    },
+                    "Item": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "title": "Name",
+                                "description": "The name of the item",
+                            },
+                            "description": {
+                                "anyOf": [{"type": "string"}, {"type": "null"}],
+                                "title": "Description",
+                                "description": "The description of the item",
+                            },
+                            "price": {"type": "number", "title": "Price"},
+                            "tax": {
+                                "anyOf": [{"type": "number"}, {"type": "null"}],
+                                "title": "Tax",
+                            },
+                        },
+                        "type": "object",
+                        "required": ["name", "price"],
+                        "title": "Item",
+                    },
+                    "ValidationError": {
+                        "properties": {
+                            "loc": {
+                                "items": {
+                                    "anyOf": [{"type": "string"}, {"type": "integer"}]
+                                },
+                                "type": "array",
+                                "title": "Location",
+                            },
+                            "msg": {"type": "string", "title": "Message"},
+                            "type": {"type": "string", "title": "Error Type"},
+                        },
+                        "type": "object",
+                        "required": ["loc", "msg", "type"],
+                        "title": "ValidationError",
+                    },
+                }
+            },
+        }
         # print(openapi_schema)
+        expected = (
+            expected_pydantic_v28 if PYDANTIC_VERSION < 2.9 else expected_pydantic_v29
+        )
         assert openapi_schema == expected
 
     @pytest.fixture
@@ -367,7 +634,7 @@ class TestOpenAPIEnd2End:
             yield td
 
     def test_generated_code_main(self, generated_code_path: Path) -> None:
-        expected = '''# generated by fastapi-codegen:
+        expected_pydantic_v28 = '''# generated by fastapi-codegen:
 #   filename:  openapi.json
 
 from __future__ import annotations
@@ -458,6 +725,98 @@ def delete_item_items__item_id__delete(
     """
     pass
 '''
+        expected_pydantic_v29 = '''# generated by fastapi-codegen:
+#   filename:  openapi.json
+
+from __future__ import annotations
+
+from typing import *
+from typing import Optional, Union
+
+from fastagency.api.openapi import OpenAPI
+
+from models_tmp61z6vu75 import (
+    HTTPValidationError,
+    Item,
+    ItemsItemIdDeleteResponse,
+    ItemsItemIdGetResponse,
+    ItemsItemIdPutResponse,
+    ItemsPostResponse,
+)
+
+app = OpenAPI(
+    title='My FastAPI app',
+    description='Test FastAPI app to check OpenAPI schema generation.',
+    version='0.1.0',
+    servers=[
+        {'url': 'https://stag.example.com', 'description': 'Staging environment'},
+        {'url': 'https://prod.example.com', 'description': 'Production environment'},
+    ],
+)
+
+
+@app.post(
+    '/items/',
+    response_model=ItemsPostResponse,
+    responses={'422': {'model': HTTPValidationError}},
+)
+def create_item_items__post(
+    body: Item,
+) -> Union[ItemsPostResponse, HTTPValidationError]:
+    """
+    Create Item
+    """
+    pass
+
+
+@app.get(
+    '/items/{item_id}',
+    response_model=ItemsItemIdGetResponse,
+    description="Read an item by ID",
+    responses={'422': {'model': HTTPValidationError}},
+)
+def read_item_items__item_id__get(
+    item_id: Annotated[int, """The ID of the item to get"""],
+    q: Annotated[Optional[str], """some extra query parameter"""] = None,
+) -> Union[ItemsItemIdGetResponse, HTTPValidationError]:
+    """
+    Read Item
+    """
+    pass
+
+
+@app.put(
+    '/items/{item_id}',
+    response_model=ItemsItemIdPutResponse,
+    description="Update an item by ID",
+    responses={'422': {'model': HTTPValidationError}},
+)
+def update_item_items__item_id__put(
+    item_id: Annotated[int, """The ID of the item to update"""], body: Item = ...
+) -> Union[ItemsItemIdPutResponse, HTTPValidationError]:
+    """
+    Update Item
+    """
+    pass
+
+
+@app.delete(
+    '/items/{item_id}',
+    response_model=ItemsItemIdDeleteResponse,
+    description="Delete an item by ID",
+    responses={'422': {'model': HTTPValidationError}},
+)
+def delete_item_items__item_id__delete(
+    item_id: Annotated[int, """The ID of the item to delete"""]
+) -> Union[ItemsItemIdDeleteResponse, HTTPValidationError]:
+    """
+    Delete Item
+    """
+    pass
+'''
+        expected = (
+            expected_pydantic_v28 if PYDANTIC_VERSION < 2.9 else expected_pydantic_v29
+        )
         suffix = generated_code_path.name
         expected = expected.replace("tmp61z6vu75", suffix)
 
@@ -473,7 +832,7 @@ def delete_item_items__item_id__delete(
             assert main == expected
 
     def test_generated_code_models(self, generated_code_path: Path) -> None:
-        expected = """# generated by fastapi-codegen:
+        expected_pydantic_v28 = """# generated by fastapi-codegen:
 #   filename:  openapi.json
 
 from __future__ import annotations
@@ -525,6 +884,54 @@ class ItemsPostResponse(BaseModel):
 class HTTPValidationError(BaseModel):
     detail: Optional[List[ValidationError]] = Field(None, title='Detail')
 """
+        expected_pydantic_v29 = """# generated by fastapi-codegen:
+#   filename:  openapi.json
+
+from __future__ import annotations
+
+from typing import List, Optional, Union
+
+from pydantic import BaseModel, Field
+
+
+class Item(BaseModel):
+    name: str = Field(..., description='The name of the item', title='Name')
+    description: Optional[str] = Field(
+        None, description='The description of the item', title='Description'
+    )
+    price: float = Field(..., title='Price')
+    tax: Optional[float] = Field(None, title='Tax')
+
+
+class ValidationError(BaseModel):
+    loc: List[Union[str, int]] = Field(..., title='Location')
+    msg: str = Field(..., title='Message')
+    type: str = Field(..., title='Error Type')
+
+
+class ItemsItemIdGetResponse(BaseModel):
+    pass
+
+
+class ItemsItemIdPutResponse(BaseModel):
+    pass
+
+
+class ItemsItemIdDeleteResponse(BaseModel):
+    pass
+
+
+class ItemsPostResponse(BaseModel):
+    pass
+
+
+class HTTPValidationError(BaseModel):
+    detail: Optional[List[ValidationError]] = Field(None, title='Detail')
+"""
+
+        expected = (
+            expected_pydantic_v28 if PYDANTIC_VERSION < 2.9 else expected_pydantic_v29
+        )
         assert generated_code_path.exists()
         assert generated_code_path.is_dir()
         suffix = generated_code_path.name
@@ -563,7 +970,7 @@ class HTTPValidationError(BaseModel):
     def test_register_for_llm(
         self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
     ) -> None:
-        expected_tools = [
+        expected_tools_pydantic_v28 = [
             {
                 "type": "function",
                 "function": {
@@ -685,7 +1092,133 @@ class HTTPValidationError(BaseModel):
                 },
             },
         ]
-
+        expected_tools_pydantic_v29 = [
+            {
+                "type": "function",
+                "function": {
+                    "description": "Create Item",
+                    "name": "create_item_items__post",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "body": {
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the item",
+                                        "title": "Name",
+                                        "type": "string",
+                                    },
+                                    "description": {
+                                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                                        "default": None,
+                                        "description": "The description of the item",
+                                        "title": "Description",
+                                    },
+                                    "price": {"title": "Price", "type": "number"},
+                                    "tax": {
+                                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                                        "default": None,
+                                        "title": "Tax",
+                                    },
+                                },
+                                "required": ["name", "price"],
+                                "title": "Item",
+                                "type": "object",
+                                "description": "body",
+                            }
+                        },
+                        "required": ["body"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "description": "Read an item by ID",
+                    "name": "read_item_items__item_id__get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "item_id": {
+                                "type": "integer",
+                                "description": "The ID of the item to get",
+                            },
+                            "q": {
+                                "anyOf": [{"type": "string"}, {"type": "null"}],
+                                "default": None,
+                                "description": "some extra query parameter",
+                            },
+                        },
+                        "required": ["item_id"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "description": "Update an item by ID",
+                    "name": "update_item_items__item_id__put",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "item_id": {
+                                "type": "integer",
+                                "description": "The ID of the item to update",
+                            },
+                            "body": {
+                                "properties": {
+                                    "name": {
+                                        "description": "The name of the item",
+                                        "title": "Name",
+                                        "type": "string",
+                                    },
+                                    "description": {
+                                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                                        "default": None,
+                                        "description": "The description of the item",
+                                        "title": "Description",
+                                    },
+                                    "price": {"title": "Price", "type": "number"},
+                                    "tax": {
+                                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                                        "default": None,
+                                        "title": "Tax",
+                                    },
+                                },
+                                "required": ["name", "price"],
+                                "title": "Item",
+                                "type": "object",
+                                "default": Ellipsis,
+                                "description": "body",
+                            },
+                        },
+                        "required": ["item_id"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "description": "Delete an item by ID",
+                    "name": "delete_item_items__item_id__delete",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "item_id": {
+                                "type": "integer",
+                                "description": "The ID of the item to delete",
+                            }
+                        },
+                        "required": ["item_id"],
+                    },
+                },
+            },
+        ]
+        expected_tools = (
+            expected_tools_pydantic_v28
+            if PYDANTIC_VERSION < 2.9
+            else expected_tools_pydantic_v29
+        )
         agent = ConversableAgent(
             name="agent", llm_config=azure_gpt35_turbo_16k_llm_config
         )
