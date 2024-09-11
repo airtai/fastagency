@@ -15,21 +15,38 @@ class TestPatternMatching:
         chunk = "\n--------------------------------------------------------------------------------\n"
         assert _match("end_of_message", chunk)
 
-    def test_auto_reply(self) -> None:
-        chunk = "\x1b[31m\n>>>>>>>> USING AUTO REPLY...\x1b[0m\n"
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\x1b[31m\n>>>>>>>> USING AUTO REPLY...\x1b[0m\n",
+            "\n>>>>>>>> USING AUTO REPLY...\n",
+        ],
+    )
+    def test_auto_reply(self, chunk: str) -> None:
         assert _match("auto_reply", chunk)
 
-    def test_sender_recipient(self) -> None:
-        chunk = "\x1b[33mUser_Proxy\x1b[0m (to Weatherman):\n\n"
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\x1b[33mUser_Proxy\x1b[0m (to Weatherman):\n\n",
+            "User_Proxy (to Weatherman):\n\n",
+        ],
+    )
+    def test_sender_recipient(self, chunk: str) -> None:
         assert _match("sender_recipient", chunk)
-
         sender, recipient = _findall("sender_recipient", chunk)
 
         assert sender == "User_Proxy"
         assert recipient == "Weatherman"
 
-    def test_suggested_function_call(self) -> None:
-        chunk = "\x1b[32m***** Suggested tool call (call_HNs2kuTywlvatTY5WHzMLfDL): get_daily_weather_daily_get *****\x1b[0m\n"
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\x1b[32m***** Suggested tool call (call_HNs2kuTywlvatTY5WHzMLfDL): get_daily_weather_daily_get *****\x1b[0m\n",
+            "***** Suggested tool call (call_HNs2kuTywlvatTY5WHzMLfDL): get_daily_weather_daily_get *****\n",
+        ],
+    )
+    def test_suggested_function_call(self, chunk: str) -> None:
         assert _match("suggested_function_call", chunk)
 
         call_id, function_name = _findall("suggested_function_call", chunk)
@@ -37,24 +54,47 @@ class TestPatternMatching:
         assert call_id == "call_HNs2kuTywlvatTY5WHzMLfDL"
         assert function_name == "get_daily_weather_daily_get"
 
-    def test_stars(self) -> None:
-        chunk = "\x1b[32m**********************************************************************************************\x1b[0m\n"
-
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\x1b[32m**********************************************************************************************\x1b[0m\n",
+            "**********************************************************************************************\n",
+        ],
+    )
+    def test_stars(self, chunk: str) -> None:
         assert _match("stars", chunk)
 
-    def test_function_call_execution(self) -> None:
-        chunk = "\x1b[35m\n>>>>>>>> EXECUTING FUNCTION get_daily_weather_daily_get...\x1b[0m\n"
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\x1b[35m\n>>>>>>>> EXECUTING FUNCTION get_daily_weather_daily_get...\x1b[0m\n",
+            "\n>>>>>>>> EXECUTING FUNCTION get_daily_weather_daily_get...\n",
+        ],
+    )
+    def test_function_call_execution(self, chunk: str) -> None:
         assert _match("function_call_execution", chunk)
 
-    def test_response_from_calling_tool(self) -> None:
-        chunk = "\x1b[32m***** Response from calling tool (call_HNs2kuTywlvatTY5WHzMLfDL) *****\x1b[0m\n"
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\x1b[32m***** Response from calling tool (call_HNs2kuTywlvatTY5WHzMLfDL) *****\x1b[0m\n",
+            "***** Response from calling tool (call_HNs2kuTywlvatTY5WHzMLfDL) *****\n",
+        ],
+    )
+    def test_response_from_calling_tool(self, chunk: str) -> None:
         assert _match("response_from_calling_tool", chunk)
 
         call_id = _findall("response_from_calling_tool", chunk)
         assert call_id == "call_HNs2kuTywlvatTY5WHzMLfDL"  # type: ignore[comparison-overlap]
 
-    def test_no_human_input_received(self) -> None:
-        chunk = "\x1b[31m\n>>>>>>>> NO HUMAN INPUT RECEIVED.\x1b[0m"
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\x1b[31m\n>>>>>>>> NO HUMAN INPUT RECEIVED.\x1b[0m",
+            "\n>>>>>>>> NO HUMAN INPUT RECEIVED.",
+        ],
+    )
+    def test_no_human_input_received(self, chunk: str) -> None:
         assert _match("no_human_input_received", chunk)
 
     def test_user_interrupted(self) -> None:
@@ -186,11 +226,11 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
 
         return wf
 
-    @pytest.mark.parametrize("response", ["", "no"])
+    @pytest.mark.parametrize("response", ["", "Reject"])
     def test(
         self, wf: AutoGenWorkflows, response: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        monkeypatch.setattr("builtins.input", InputMock([response] * 5))
+        monkeypatch.setattr("builtins.input", InputMock([response] * 7))
 
         result = wf.run(
             name="test_workflow",

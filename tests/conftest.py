@@ -113,7 +113,7 @@ def azure_model_llm_config(model_env_name: str) -> dict[str, Any]:
 
     llm_config = {
         "config_list": config_list,
-        "temperature": 0.8,
+        "temperature": 0.0,
     }
 
     return llm_config
@@ -150,7 +150,7 @@ def openai_llm_config(model: str) -> dict[str, Any]:
 
     llm_config = {
         "config_list": config_list,
-        "temperature": 0.8,
+        "temperature": 0.0,
     }
 
     return llm_config
@@ -361,6 +361,7 @@ async def anthropic_ref(
         user_uuid=user_uuid,
         name=add_random_suffix("anthropic_api"),
         api_key=anthropic_key_ref,
+        temperature=0.0,
     )
 
 
@@ -394,6 +395,7 @@ async def togetherai_ref(
         name=add_random_suffix("togetherai"),
         api_key=together_ai_key_ref,
         model="Mixtral-8x7B Instruct v0.1",
+        temperature=0.0,
     )
 
 

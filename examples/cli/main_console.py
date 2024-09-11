@@ -15,7 +15,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.8,
+    "temperature": 0.0,
 }
 
 
