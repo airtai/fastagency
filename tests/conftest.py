@@ -361,6 +361,7 @@ async def anthropic_ref(
         user_uuid=user_uuid,
         name=add_random_suffix("anthropic_api"),
         api_key=anthropic_key_ref,
+        temperature=0.0,
     )
 
 

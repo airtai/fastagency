@@ -103,7 +103,7 @@ class TestAnthropic:
                     "type": "string",
                 },
                 "api_key": {
-                    "$ref": "#/$defs/AnthropicAPIKeyRef",
+                    "allOf": [{"$ref": "#/$defs/AnthropicAPIKeyRef"}],
                     "description": "The API Key from Anthropic",
                     "title": "API Key",
                 },
