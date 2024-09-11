@@ -16,10 +16,19 @@ CHAT_STARTER_STYLE = me.Style(
     flex_direction="column",
 )
 
-PAST_CHATS_STYLE = me.Style(
-    background="#e7f2ff",
+PAST_CHATS_SHOW_STYLE = me.Style(
+    background="#f7f2ff",
     height="100%",
-    width="min(200px)",
+    width="min(300px)",
+    font_family="Inter",
+    display="flex",
+    flex_direction="column",
+)
+
+PAST_CHATS_HIDE_STYLE = me.Style(
+    background="#e7f2ff",
+    height="10%",
+    width="min(150px)",
     font_family="Inter",
     display="flex",
     flex_direction="column",

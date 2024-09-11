@@ -23,4 +23,5 @@ class State:
     prompt: str = ""
     conversation: Conversation
     past_conversations: list[Conversation] = field(default_factory=list)
+    hide_past: bool = True
     fastagency: Optional[str] = None

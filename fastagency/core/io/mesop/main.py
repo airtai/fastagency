@@ -18,7 +18,8 @@ from fastagency.core.io.mesop.send_prompt import (
 from fastagency.logging import get_logger
 from fastagency.core.io.mesop.styles import (
     CHAT_STARTER_STYLE,
-    PAST_CHATS_STYLE,
+    PAST_CHATS_HIDE_STYLE,
+    PAST_CHATS_SHOW_STYLE,
     ROOT_BOX_STYLE,
     STYLESHEETS,
 )
@@ -60,7 +61,7 @@ def home_page() -> None:
 
 
 def past_conversations_box() -> None:
-    def _select_past_conversation(ev: me.ClickEvent) -> None:
+    def select_past_conversation(ev: me.ClickEvent) -> None:
         id = ev.key
         state = me.state(State)
         conversations_with_id = list(
@@ -70,20 +71,40 @@ def past_conversations_box() -> None:
         state.conversation = conversation
         state.in_conversation = True
 
+    def on_show_hide(ev: me.ClickEvent) -> None:
+        state.hide_past = not state.hide_past
+
+    def on_start_new_conversation(ev: me.ClickEvent) -> None:
+        state.in_conversation = False
+
     state = me.state(State)
-    with me.box(style=PAST_CHATS_STYLE):
-        for conversation in state.past_conversations:
-            with me.box(
-                key=conversation.id,  # they are GUIDs so should not clash with anything other on the page
-                on_click=_select_past_conversation,
-                style=me.Style(
-                    padding=me.Padding.all(16),
-                    border_radius=16,
-                ),
+    style = PAST_CHATS_HIDE_STYLE if state.hide_past else PAST_CHATS_SHOW_STYLE
+    with me.box(style=style):
+        with me.box(
+            style=me.Style(
+                flex_direction="row", width="100%", justify_content="space-between"
+            )
+        ):
+            with me.content_button(on_click=on_show_hide):
+                me.icon("menu")
+            with me.content_button(
+                on_click=on_start_new_conversation,
+                disabled=not state.conversation.completed,
             ):
-                me.text(
-                    text=conversation.title,
-                )
+                me.icon("rate_review")
+        if not state.hide_past:
+            for conversation in state.past_conversations:
+                with me.box(
+                    key=conversation.id,  # they are GUIDs so should not clash with anything other on the page
+                    on_click=select_past_conversation,
+                    style=me.Style(
+                        padding=me.Padding.all(16),
+                        border_radius=16,
+                    ),
+                ):
+                    me.text(
+                        text=conversation.title,
+                    )
 
 
 def conversation_starter_box() -> None:
