@@ -179,8 +179,11 @@ class TestOpenAPIEnd2End:
                             "content": {
                                 "application/json": {
                                     "schema": {
-                                        "$ref": "#/components/schemas/Item",
+                                        "allOf": [
+                                            {"$ref": "#/components/schemas/Item"}
+                                        ],
                                         "description": "The item to update",
+                                        "title": "Item",
                                     }
                                 }
                             },
@@ -259,7 +262,10 @@ class TestOpenAPIEnd2End:
                             "content": {
                                 "application/json": {
                                     "schema": {
-                                        "$ref": "#/components/schemas/Item",
+                                        "allOf": [
+                                            {"$ref": "#/components/schemas/Item"}
+                                        ],
+                                        "title": "Item",
                                         "description": "The item to create",
                                     }
                                 }
@@ -373,10 +379,11 @@ from fastagency.api.openapi import OpenAPI
 
 from models_tmp61z6vu75 import (
     HTTPValidationError,
-    Item,
     ItemsItemIdDeleteResponse,
     ItemsItemIdGetResponse,
+    ItemsItemIdPutRequest,
     ItemsItemIdPutResponse,
+    ItemsPostRequest,
     ItemsPostResponse,
 )
 
@@ -397,7 +404,7 @@ app = OpenAPI(
     responses={'422': {'model': HTTPValidationError}},
 )
 def create_item_items__post(
-    body: Item,
+    body: ItemsPostRequest,
 ) -> Union[ItemsPostResponse, HTTPValidationError]:
     """
     Create Item
@@ -428,7 +435,8 @@ def read_item_items__item_id__get(
     responses={'422': {'model': HTTPValidationError}},
 )
 def update_item_items__item_id__put(
-    item_id: Annotated[int, """The ID of the item to update"""], body: Item = ...
+    item_id: Annotated[int, """The ID of the item to update"""],
+    body: ItemsItemIdPutRequest = ...,
 ) -> Union[ItemsItemIdPutResponse, HTTPValidationError]:
     """
     Update Item
@@ -494,11 +502,19 @@ class ItemsItemIdGetResponse(BaseModel):
     pass
 
 
+class ItemsItemIdPutRequest(Item):
+    pass
+
+
 class ItemsItemIdPutResponse(BaseModel):
     pass
 
 
 class ItemsItemIdDeleteResponse(BaseModel):
+    pass
+
+
+class ItemsPostRequest(Item):
     pass
 
 
@@ -577,7 +593,7 @@ class HTTPValidationError(BaseModel):
                                     },
                                 },
                                 "required": ["name", "price"],
-                                "title": "Item",
+                                "title": "ItemsPostRequest",
                                 "type": "object",
                                 "description": "body",
                             }
@@ -641,7 +657,7 @@ class HTTPValidationError(BaseModel):
                                     },
                                 },
                                 "required": ["name", "price"],
-                                "title": "Item",
+                                "title": "ItemsItemIdPutRequest",
                                 "type": "object",
                                 "default": Ellipsis,
                                 "description": "body",

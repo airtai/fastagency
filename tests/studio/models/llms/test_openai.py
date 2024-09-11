@@ -70,7 +70,7 @@ class TestOpenAI:
             },
             "base_url": "https://api.openai.com/v1",
             "api_type": "openai",
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
         assert model.model_dump() == expected
 
@@ -152,7 +152,7 @@ class TestOpenAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "$ref": "#/$defs/OpenAIAPIKeyRef",
+                    "allOf": [{"$ref": "#/$defs/OpenAIAPIKeyRef"}],
                     "description": "The API Key from OpenAI",
                     "title": "API Key",
                 },
@@ -186,7 +186,7 @@ class TestOpenAI:
             "title": "OpenAI",
             "type": "object",
         }
-        # print(f"{schema=}")
+        # print(schema)
         assert schema == expected
 
     @pytest.mark.asyncio
@@ -213,7 +213,7 @@ class TestOpenAI:
                     "api_type": "openai",
                 }
             ],
-            "temperature": 0.8,
+            "temperature": 0.0,
         }
 
         assert actual_llm_config == expected

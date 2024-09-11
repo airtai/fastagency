@@ -17,7 +17,7 @@ def test_azure_gpt35_turbo_16k_llm_config(
         "temperature",
     }
     assert isinstance(azure_gpt35_turbo_16k_llm_config["config_list"], list)
-    assert azure_gpt35_turbo_16k_llm_config["temperature"] == 0.8
+    assert azure_gpt35_turbo_16k_llm_config["temperature"] == 0.0
 
     assert (
         azure_gpt35_turbo_16k_llm_config["config_list"][0]["model"]
@@ -39,7 +39,7 @@ def test_openai_gpt35_turbo_16k_llm_config(
                 "api_key": api_key,  # pragma: allowlist secret
             }
         ],
-        "temperature": 0.8,
+        "temperature": 0.0,
     }
     assert openai_gpt35_turbo_16k_llm_config == expected
 
