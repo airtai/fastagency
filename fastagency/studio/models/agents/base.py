@@ -4,7 +4,7 @@ from uuid import UUID
 from pydantic import Field
 from typing_extensions import TypeAlias
 
-from fastagency.openapi.client import Client
+from fastagency.api.openapi import OpenAPI
 
 from ..base import Model
 from ..registry import Registry
@@ -51,8 +51,8 @@ class AgentBaseModel(Model):
         ),
     ] = None
 
-    async def get_clients_from_toolboxes(self, user_id: UUID) -> list[Client]:
-        clients: list[Client] = []
+    async def get_clients_from_toolboxes(self, user_id: UUID) -> list[OpenAPI]:
+        clients: list[OpenAPI] = []
         for i in range(3):
             toolbox_property = getattr(self, f"toolbox_{i+1}")
             if toolbox_property is None:

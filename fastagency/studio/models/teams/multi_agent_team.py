@@ -5,7 +5,7 @@ from autogen import ConversableAgent, GroupChat, GroupChatManager
 from pydantic import Field
 
 from ..registry import Registry
-from ..toolboxes.toolbox import Client
+from ..toolboxes.toolbox import OpenAPI
 from .base import TeamBaseModel, agent_type_refs, register_toolbox_functions
 
 __all__ = ["MultiAgentTeam"]
@@ -16,7 +16,7 @@ registry = Registry.get_default()
 class AutogenMultiAgentTeam:
     def __init__(
         self,
-        agents_and_clients: list[tuple[ConversableAgent, list[Client]]],
+        agents_and_clients: list[tuple[ConversableAgent, list[OpenAPI]]],
     ) -> None:
         self.agents = [agent for agent, _ in agents_and_clients]
         self.clients = [clients for _, clients in agents_and_clients]
@@ -79,7 +79,7 @@ class MultiAgentTeam(TeamBaseModel):
     async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> Any:
         my_model = await cls.from_db(model_id)
 
-        agents_and_clients: list[tuple[ConversableAgent, list[Client]]] = []
+        agents_and_clients: list[tuple[ConversableAgent, list[OpenAPI]]] = []
         for i in range(5):
             agent_property = getattr(my_model, f"agent_{i+1}")
             if agent_property is None:
