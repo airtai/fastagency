@@ -17,7 +17,7 @@ def test_azure_gpt35_turbo_16k_llm_config(
         "temperature",
     }
     assert isinstance(azure_gpt35_turbo_16k_llm_config["config_list"], list)
-    assert azure_gpt35_turbo_16k_llm_config["temperature"] == 0.8
+    assert azure_gpt35_turbo_16k_llm_config["temperature"] == 0.0
 
     assert (
         azure_gpt35_turbo_16k_llm_config["config_list"][0]["model"]
