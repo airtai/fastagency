@@ -21,7 +21,7 @@ CHAT_STARTER_STYLE = me.Style(
 )
 
 PAST_CHATS_SHOW_STYLE = me.Style(
-    background=darken_hex_color("#e7f2ff", 0.95),
+    background=darken_hex_color("#e7f2ff", 0.98),
     height="100%",
     width="min(300px)",
     font_family="Inter",

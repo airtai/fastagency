@@ -84,7 +84,10 @@ def past_conversations_box() -> None:
     with me.box(style=style):
         with me.box(
             style=me.Style(
-                flex_direction="row", width="100%", justify_content="space-between"
+                flex_direction="row",
+                width="100%",
+                padding=me.Padding(top="16px"),
+                justify_content="space-between",
             )
         ):
             with me.content_button(
