@@ -146,6 +146,7 @@ class TestDeployment:
                 },
                 "repo_name": {
                     "description": "The name of the GitHub repository.",
+                    "metadata": {"immutable_after_creation": True},
                     "minLength": 1,
                     "title": "Repo Name",
                     "type": "string",
@@ -153,6 +154,7 @@ class TestDeployment:
                 "fly_app_name": {
                     "description": "The name of the Fly.io application.",
                     "maxLength": 30,
+                    "metadata": {"immutable_after_creation": True},
                     "minLength": 1,
                     "title": "Fly App Name",
                     "type": "string",
@@ -165,11 +167,13 @@ class TestDeployment:
                 "gh_token": {
                     "allOf": [{"$ref": "#/$defs/GitHubTokenRef"}],
                     "description": "The GitHub token to use for creating a new repository",
+                    "metadata": {"immutable_after_creation": True},
                     "title": "GH Token",
                 },
                 "fly_token": {
                     "allOf": [{"$ref": "#/$defs/FlyTokenRef"}],
                     "description": "The Fly.io token to use for deploying the deployment",
+                    "metadata": {"immutable_after_creation": True},
                     "title": "Fly Token",
                 },
             },
