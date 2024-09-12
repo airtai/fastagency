@@ -64,6 +64,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
                     "4) The Last Supper",
                     "5) Vitruvian Man",
                 ],
+                default="1) Mona Lisa"
             )
             return io.process_message(msg)
         except Exception as e:

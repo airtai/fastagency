@@ -7,6 +7,7 @@ import mesop as me
 
 from fastagency.core.base import AskingMessage, WorkflowCompleted
 from fastagency.core.io.mesop.base import MesopMessage
+from fastagency.core.io.mesop.components.inputs import input_user_feedback
 from fastagency.core.io.mesop.send_prompt import send_user_feedback_to_autogen
 
 from ...base import (
@@ -99,6 +100,17 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
     def _has_feedback(self) -> bool:
         return len(self._conversation_message.feedback) > 0
 
+    def _provide_feedback(self, feedback: str) -> Iterator[None]:
+        state = me.state(State)
+        conversation = state.conversation
+        conversation.feedback = ""
+        conversation.waiting_for_feedback = False
+        yield
+        me.scroll_into_view(key="end_of_messages")
+        yield
+        responses = send_user_feedback_to_autogen(feedback)
+        yield from consume_responses(responses)
+
     def visit_default(self, message: IOMessage) -> None:
         base_color = "#aff"
         with me.box(
@@ -139,12 +151,18 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.markdown(json.dumps(message.message, indent=2))
 
     def visit_text_input(self, message: TextInput) -> str:
-        text = message.prompt if message.prompt else "Please enter a value"
-        if message.suggestions:
-            suggestions = ",".join(suggestion for suggestion in message.suggestions)
-            text += "\n" + suggestions
+        def on_input(ev: me.RadioChangeEvent) -> Iterator[None]:
+            state = me.state(State)
+            feedback = state.conversation.feedback
+            self._conversation_message.feedback = [feedback]
+            yield from self._provide_feedback(feedback)
 
         base_color = "#dff"
+        prompt = message.prompt if message.prompt else "Please enter a value"
+        if message.suggestions:
+            suggestions = ",".join(suggestion for suggestion in message.suggestions)
+            prompt += "\n" + suggestions
+
         with me.box(
             style=me.Style(
                 background=base_color,
@@ -154,19 +172,11 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             )
         ):
             self._header(message, base_color, title="Input requested")
-            me.markdown(text)
+            me.markdown(prompt)
+            input_user_feedback(
+                on_input, disabled=self._readonly or self._has_feedback()
+            )
         return ""
-
-    def _provide_feedback(self, feedback: str) -> Iterator[None]:
-        state = me.state(State)
-        conversation = state.conversation
-        conversation.feedback = ""
-        conversation.waiting_for_feedback = False
-        yield
-        me.scroll_into_view(key="end_of_messages")
-        yield
-        responses = send_user_feedback_to_autogen(feedback)
-        yield from consume_responses(responses)
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
         def on_change(ev: me.RadioChangeEvent) -> Iterator[None]:
@@ -174,6 +184,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             self._conversation_message.feedback = [feedback]
             yield from self._provide_feedback(feedback)
 
+        base_color = "#dff"
         prompt = message.prompt if message.prompt else "Please enter a value"
         if message.choices:
             options = map(
@@ -183,7 +194,6 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 ),
                 message.choices,
             )
-        base_color = "#dff"
         if self._has_feedback():
             pre_selected = {"value": self._conversation_message.feedback[0]}
         else:
