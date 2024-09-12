@@ -711,129 +711,13 @@ class HTTPValidationError(BaseModel):
         azure_gpt35_turbo_16k_llm_config: dict[str, Any],
         pydantic_version: float,
     ) -> None:
-        expected_tools_pydantic_v28 = [
-            {
-                "type": "function",
-                "function": {
-                    "description": "Create Item",
-                    "name": "create_item_items__post",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "body": {
-                                "properties": {
-                                    "name": {
-                                        "description": "The name of the item",
-                                        "title": "Name",
-                                        "type": "string",
-                                    },
-                                    "description": {
-                                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                                        "default": None,
-                                        "description": "The description of the item",
-                                        "title": "Description",
-                                    },
-                                    "price": {"title": "Price", "type": "number"},
-                                    "tax": {
-                                        "anyOf": [{"type": "number"}, {"type": "null"}],
-                                        "default": None,
-                                        "title": "Tax",
-                                    },
-                                },
-                                "required": ["name", "price"],
-                                "title": "ItemsPostRequest",
-                                "type": "object",
-                                "description": "body",
-                            }
-                        },
-                        "required": ["body"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "description": "Read an item by ID",
-                    "name": "read_item_items__item_id__get",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "item_id": {
-                                "type": "integer",
-                                "description": "The ID of the item to get",
-                            },
-                            "q": {
-                                "anyOf": [{"type": "string"}, {"type": "null"}],
-                                "default": None,
-                                "description": "some extra query parameter",
-                            },
-                        },
-                        "required": ["item_id"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "description": "Update an item by ID",
-                    "name": "update_item_items__item_id__put",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "item_id": {
-                                "type": "integer",
-                                "description": "The ID of the item to update",
-                            },
-                            "body": {
-                                "properties": {
-                                    "name": {
-                                        "description": "The name of the item",
-                                        "title": "Name",
-                                        "type": "string",
-                                    },
-                                    "description": {
-                                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                                        "default": None,
-                                        "description": "The description of the item",
-                                        "title": "Description",
-                                    },
-                                    "price": {"title": "Price", "type": "number"},
-                                    "tax": {
-                                        "anyOf": [{"type": "number"}, {"type": "null"}],
-                                        "default": None,
-                                        "title": "Tax",
-                                    },
-                                },
-                                "required": ["name", "price"],
-                                "title": "ItemsItemIdPutRequest",
-                                "type": "object",
-                                "default": Ellipsis,
-                                "description": "body",
-                            },
-                        },
-                        "required": ["item_id"],
-                    },
-                },
-            },
-            {
-                "type": "function",
-                "function": {
-                    "description": "Delete an item by ID",
-                    "name": "delete_item_items__item_id__delete",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "item_id": {
-                                "type": "integer",
-                                "description": "The ID of the item to delete",
-                            }
-                        },
-                        "required": ["item_id"],
-                    },
-                },
-            },
-        ]
-        expected_tools_pydantic_v29 = [
+        class JSONEncoder(json.JSONEncoder):
+            def default(self, o: Any) -> Any:
+                if o.__class__.__name__ == "ellipsis":
+                    return "Ellipsis"
+                return super().default(o)
+
+        expected_tools = [
             {
                 "type": "function",
                 "function": {
@@ -955,18 +839,22 @@ class HTTPValidationError(BaseModel):
                 },
             },
         ]
-        expected_tools = (
-            expected_tools_pydantic_v28
-            if pydantic_version < 2.9
-            else expected_tools_pydantic_v29
-        )
         agent = ConversableAgent(
             name="agent", llm_config=azure_gpt35_turbo_16k_llm_config
         )
         client.register_for_llm(agent)
         tools = agent.llm_config["tools"]
         # print(tools)
-        assert tools == expected_tools
+        pydantic28_delta = '{"0": {"function": {"parameters": {"properties": {"body": {"title": "ItemsPostRequest"}}}}}, "2": {"function": {"parameters": {"properties": {"body": {"title": "ItemsItemIdPutRequest"}}}}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected_tools, tools, dump=True)}'")
+            expected_tools = jsondiff.patch(
+                json.dumps(expected_tools, cls=JSONEncoder), pydantic28_delta, load=True
+            )
+
+        assert json.dumps(tools, cls=JSONEncoder) == json.dumps(
+            expected_tools, cls=JSONEncoder
+        )
 
     def test_register_for_execution(
         self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
