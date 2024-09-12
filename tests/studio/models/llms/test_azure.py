@@ -1,5 +1,7 @@
+import json
 from typing import Any
 
+import jsondiff
 import pytest
 from pydantic import ValidationError
 
@@ -80,7 +82,7 @@ class TestAzureOAI:
                 temperature=model.temperature,
             )
 
-    def test_azure_model_schema(self) -> None:
+    def test_azure_model_schema(self, pydantic_version: float) -> None:
         schema = AzureOAI.model_json_schema()
         expected = {
             "$defs": {
@@ -128,7 +130,7 @@ class TestAzureOAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/AzureOAIAPIKeyRef"}],
+                    "$ref": "#/$defs/AzureOAIAPIKeyRef",
                     "description": "The API Key from Azure OpenAI",
                     "title": "API Key",
                 },
@@ -179,6 +181,10 @@ class TestAzureOAI:
             "type": "object",
         }
         # print(schema)
+        pydantic28_delta = '{"properties": {"api_key": {"allOf": [{"$$ref": "#/$defs/AzureOAIAPIKeyRef"}], "$delete": ["$$ref"]}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
+            expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         assert schema == expected
 
     @pytest.mark.asyncio
