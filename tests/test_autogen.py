@@ -190,6 +190,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     )
 
 
+@pytest.mark.openai
 def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
