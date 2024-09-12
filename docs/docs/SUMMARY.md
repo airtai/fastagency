@@ -11,7 +11,6 @@ search:
     - [Custom User Interactions](tutorial/custom-user-interactions/index.md)
 - Reference
     - fastagency
-        - [Chatable](api/fastagency/Chatable.md)
         - [FastAgency](api/fastagency/FastAgency.md)
         - [FunctionCallExecution](api/fastagency/FunctionCallExecution.md)
         - [IOMessage](api/fastagency/IOMessage.md)
@@ -19,6 +18,7 @@ search:
         - [SuggestedFunctionCall](api/fastagency/SuggestedFunctionCall.md)
         - [TextInput](api/fastagency/TextInput.md)
         - [TextMessage](api/fastagency/TextMessage.md)
+        - [UI](api/fastagency/UI.md)
         - [Workflows](api/fastagency/Workflows.md)
         - api
             - openapi
@@ -42,7 +42,6 @@ search:
             - [FastAgency](api/fastagency/app/FastAgency.md)
         - base
             - [AskingMessage](api/fastagency/base/AskingMessage.md)
-            - [Chatable](api/fastagency/base/Chatable.md)
             - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
             - [IOMessage](api/fastagency/base/IOMessage.md)
             - [IOMessageVisitor](api/fastagency/base/IOMessageVisitor.md)
@@ -52,6 +51,7 @@ search:
             - [SystemMessage](api/fastagency/base/SystemMessage.md)
             - [TextInput](api/fastagency/base/TextInput.md)
             - [TextMessage](api/fastagency/base/TextMessage.md)
+            - [UI](api/fastagency/base/UI.md)
             - [WorkflowCompleted](api/fastagency/base/WorkflowCompleted.md)
             - [Workflows](api/fastagency/base/Workflows.md)
             - [run_workflow](api/fastagency/base/run_workflow.md)
@@ -251,7 +251,7 @@ search:
                 - main
                     - [conversation_box](api/fastagency/ui/mesop/main/conversation_box.md)
                     - [conversation_starter_box](api/fastagency/ui/mesop/main/conversation_starter_box.md)
-                    - [get_workflows](api/fastagency/ui/mesop/main/get_workflows.md)
+                    - [get_ui](api/fastagency/ui/mesop/main/get_ui.md)
                     - [home_page](api/fastagency/ui/mesop/main/home_page.md)
                     - [on_user_feedback](api/fastagency/ui/mesop/main/on_user_feedback.md)
                     - [past_conversations_box](api/fastagency/ui/mesop/main/past_conversations_box.md)

@@ -1,6 +1,8 @@
 import re
 import textwrap
 from abc import ABC, abstractmethod
+from collections.abc import Generator, Iterator
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field, fields
 from typing import (
     Any,
@@ -14,7 +16,7 @@ from typing import (
 )
 
 __all__ = [
-    "Chatable",
+    "UI",
     "FunctionCallExecution",
     "IOMessage",
     "MessageType",
@@ -195,8 +197,9 @@ class IOMessageVisitor(ABC):
 
 
 @runtime_checkable
-class Chatable(Protocol):
-    def create(self, app: "Runnable", import_string: str) -> None: ...
+class UI(Protocol):
+    @contextmanager
+    def create(self, app: "Runnable", import_string: str) -> Iterator[None]: ...
 
     def start(
         self,
@@ -212,10 +215,10 @@ class Chatable(Protocol):
     #     self, message: IOStreamingMessage
     # ) -> Optional[str]: ...
 
-    def create_subconversation(self) -> "Chatable": ...
+    def create_subconversation(self) -> "UI": ...
 
 
-Workflow = TypeVar("Workflow", bound=Callable[[Chatable, str, str], str])
+Workflow = TypeVar("Workflow", bound=Callable[[UI, str, str], str])
 
 
 @runtime_checkable
@@ -224,9 +227,7 @@ class Workflows(Protocol):
         self, name: str, description: str
     ) -> Callable[[Workflow], Workflow]: ...
 
-    def run(
-        self, name: str, session_id: str, io: Chatable, initial_message: str
-    ) -> str: ...
+    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str: ...
 
     @property
     def names(self) -> list[str]: ...
@@ -236,7 +237,8 @@ class Workflows(Protocol):
 
 @runtime_checkable
 class Runnable(Protocol):
-    def create(self, import_string: str) -> None: ...
+    @contextmanager
+    def create(self, import_string: str) -> Generator[None, None, None]: ...
 
     def start(
         self,
@@ -249,12 +251,12 @@ class Runnable(Protocol):
     def wf(self) -> Workflows: ...
 
     @property
-    def io(self) -> Chatable: ...
+    def ui(self) -> UI: ...
 
 
 def run_workflow(
     wf: Workflows,
-    io: Chatable,
+    ui: UI,
     name: Optional[str],
     initial_message: Optional[str] = None,
 ) -> None:
@@ -262,7 +264,7 @@ def run_workflow(
 
     Args:
         wf (Workflows): The workflows object to use.
-        io (Chatable): The IO object to use.
+        ui (Chatable): The UI object to use.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
         initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
     """
@@ -271,7 +273,7 @@ def run_workflow(
         description = wf.get_description(name)
 
         if initial_message is None:
-            initial_message = io.process_message(
+            initial_message = ui.process_message(
                 TextInput(
                     sender="FastAgency",
                     recipient="user",
@@ -284,7 +286,7 @@ def run_workflow(
                 )
             )
         else:
-            io.process_message(
+            ui.process_message(
                 SystemMessage(
                     sender="FastAgency",
                     recipient="user",
@@ -303,11 +305,11 @@ def run_workflow(
         result = wf.run(
             name=name,
             session_id="session_id",
-            io=io.create_subconversation(),
+            ui=ui.create_subconversation(),
             initial_message="Hi!" if initial_message is None else initial_message,
         )
 
-        io.process_message(
+        ui.process_message(
             WorkflowCompleted(
                 sender="workflow",
                 recipient="user",

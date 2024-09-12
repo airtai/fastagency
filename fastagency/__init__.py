@@ -3,7 +3,7 @@
 from .__about__ import __version__
 from .app import FastAgency
 from .base import (
-    Chatable,
+    UI,
     FunctionCallExecution,
     IOMessage,
     MessageType,
@@ -16,7 +16,7 @@ from .base import (
 )
 
 __all__ = [
-    "Chatable",
+    "UI",
     "FastAgency",
     "FunctionCallExecution",
     "IOMessage",

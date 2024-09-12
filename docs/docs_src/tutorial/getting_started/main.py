@@ -3,7 +3,7 @@ import os
 from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency
-from fastagency import Chatable
+from fastagency import UI
 from fastagency.ui.console import ConsoleUI
 from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
@@ -21,7 +21,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+def simple_workflow(io: UI, initial_message: str, session_id: str) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
@@ -44,4 +44,4 @@ def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
 
 
 
-app = FastAgency(wf=wf, io=ConsoleUI())
+app = FastAgency(wf=wf, ui=ConsoleUI())

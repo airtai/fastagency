@@ -1,23 +1,18 @@
 import json
-import os
 from collections.abc import Iterator
 from uuid import uuid4
 
 import mesop as me
 
-from fastagency.base import AskingMessage, WorkflowCompleted, Workflows
-from fastagency.cli.discover import import_from_string
-from fastagency.logging import get_logger
-from fastagency.ui.mesop.base import MesopMessage
-from fastagency.ui.mesop.components.inputs import input_prompt, input_user_feedback
-from fastagency.ui.mesop.components.ui_common import header
-from fastagency.ui.mesop.data_model import Conversation, State
-from fastagency.ui.mesop.message import message_box
-from fastagency.ui.mesop.send_prompt import (
-    send_prompt_to_autogen,
-    send_user_feedback_to_autogen,
-)
-from fastagency.ui.mesop.styles import (
+from ...base import AskingMessage, WorkflowCompleted
+from ...logging import get_logger
+from .base import MesopMessage, MesopUI
+from .components.inputs import input_prompt, input_user_feedback
+from .components.ui_common import header
+from .data_model import Conversation, State
+from .message import message_box
+from .send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
+from .styles import (
     CHAT_STARTER_STYLE,
     PAST_CHATS_HIDE_STYLE,
     PAST_CHATS_SHOW_STYLE,
@@ -29,18 +24,8 @@ from fastagency.ui.mesop.styles import (
 logger = get_logger(__name__)
 
 
-def get_workflows() -> Workflows:
-    import_string = os.environ.get("IMPORT_STRING", None)
-    if import_string is None:
-        raise ValueError("No import string provided")
-
-    # import app using import string
-    app = import_from_string(import_string)
-
-    # get workflows from the app
-    wf = app.wf
-
-    return wf
+def get_ui() -> MesopUI:
+    return MesopUI.get_created_instance()
 
 
 SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface.co"])
@@ -161,7 +146,9 @@ def _handle_message(state: State, message: MesopMessage) -> None:
 
 
 def send_prompt(e: me.ClickEvent) -> Iterator[None]:
-    wf = get_workflows()
+    ui = get_ui()
+    wf = ui.app.wf
+
     name = wf.names[0]
 
     state = me.state(State)

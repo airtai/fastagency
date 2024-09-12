@@ -3,7 +3,7 @@ from typing import Annotated, Any
 import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 
-from fastagency import Chatable, IOMessage
+from fastagency import UI, IOMessage
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.base import _findall, _match
 from fastagency.ui.console import ConsoleUI
@@ -126,7 +126,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+    def simple_workflow(ui: UI, initial_message: str, session_id: str) -> str:
         student_agent = ConversableAgent(
             name="Student_Agent",
             system_message="You are a student willing to learn.",
@@ -151,9 +151,9 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
     name = "simple_learning"
 
-    io = ConsoleUI()
+    ui = ConsoleUI()
 
-    io.process_message(
+    ui.process_message(
         IOMessage.create(
             sender="user",
             recipient="workflow",
@@ -168,11 +168,11 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     result = wf.run(
         name=name,
         session_id="session_id",
-        io=io.create_subconversation(),
+        ui=ui.create_subconversation(),
         initial_message=initial_message,
     )
 
-    io.process_message(
+    ui.process_message(
         IOMessage.create(
             sender="user",
             recipient="workflow",
@@ -195,7 +195,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+        def workflow(ui: UI, initial_message: str, session_id: str) -> str:
             user_proxy = UserProxyAgent(
                 name="User_Proxy",
                 human_input_mode="ALWAYS",
@@ -235,7 +235,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
         result = wf.run(
             name="test_workflow",
             session_id="session_id",
-            io=ConsoleUI(),
+            ui=ConsoleUI(),
             initial_message="What is the weather in Zagreb right now?",
         )
 

@@ -22,7 +22,7 @@ from fastagency import FastAgency
 
 wf = AutoGenWorkflows()
 
-app = FastAgency(wf=wf, io=ConsoleUI())
+app = FastAgency(wf=wf, ui=ConsoleUI())
 
 """
     with TemporaryDirectory() as tmp_dir:

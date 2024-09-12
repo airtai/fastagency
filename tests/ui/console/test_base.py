@@ -11,7 +11,7 @@ from fastagency.ui.console import ConsoleUI
 def app() -> Iterator[FastAgency]:
     wf = AutoGenWorkflows()
     console = ConsoleUI()
-    app = FastAgency(wf=wf, io=console)
+    app = FastAgency(wf=wf, ui=console)
 
     try:
         import_string = "main:app"

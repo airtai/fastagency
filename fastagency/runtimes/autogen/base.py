@@ -6,8 +6,8 @@ from typing import Any, Callable, Optional
 from autogen.io import IOStream
 
 from ...base import (
+    UI,
     AskingMessage,
-    Chatable,
     IOMessage,
     MessageType,
     MultipleChoice,
@@ -171,19 +171,19 @@ class CurrentMessage:
 
 
 class IOStreamAdapter:  # IOStream
-    def __init__(self, io: Chatable) -> None:
+    def __init__(self, ui: UI) -> None:
         """Initialize the adapter with a ChatableIO object.
 
         Args:
-            io (ChatableIO): The ChatableIO object to adapt
+            ui (ChatableIO): The ChatableIO object to adapt
 
         """
-        self.io = io
+        self.ui = ui
         self.current_message = CurrentMessage()
 
         self.messages: list[IOMessage] = []
-        if not isinstance(self.io, Chatable):
-            raise ValueError("The io object must be an instance of Chatable.")
+        if not isinstance(self.ui, UI):
+            raise ValueError("The ui object must be an instance of Chatable.")
 
     def _process_message_chunk(self, chunk: str) -> bool:
         if self.current_message.process_chunk(chunk):
@@ -203,7 +203,7 @@ class IOStreamAdapter:  # IOStream
         ready_to_send = self._process_message_chunk(body)
         if ready_to_send:
             message = self.messages[-1]
-            self.io.process_message(message)
+            self.ui.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")
@@ -211,7 +211,7 @@ class IOStreamAdapter:  # IOStream
             prompt, password, self.messages
         )
 
-        retval: str = self.io.process_message(message)  # type: ignore[assignment]
+        retval: str = self.ui.process_message(message)  # type: ignore[assignment]
 
         # in case of approving a suggested function call, we need to return an empty string to AutoGen
         if (
@@ -230,7 +230,7 @@ class IOStreamAdapter:  # IOStream
 class AutoGenWorkflows(Workflows):
     def __init__(self) -> None:
         """Initialize the workflows."""
-        self._workflows: dict[str, tuple[Callable[[Chatable, str, str], str], str]] = {}
+        self._workflows: dict[str, tuple[Callable[[UI, str, str], str], str]] = {}
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
@@ -247,15 +247,13 @@ class AutoGenWorkflows(Workflows):
 
         return decorator
 
-    def run(
-        self, name: str, session_id: str, io: Chatable, initial_message: str
-    ) -> str:
+    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
         workflow, description = self._workflows[name]
 
-        iostream = IOStreamAdapter(io)
+        iostream = IOStreamAdapter(ui)
 
         with IOStream.set_default(iostream):
-            return workflow(io, initial_message, session_id)
+            return workflow(ui, initial_message, session_id)
 
     @property
     def names(self) -> list[str]:
