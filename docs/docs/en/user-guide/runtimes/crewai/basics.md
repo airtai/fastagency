@@ -1,3 +1,0 @@
-# CrewAI
-
-Coming soon...

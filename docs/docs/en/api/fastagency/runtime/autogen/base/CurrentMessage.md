@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.base.IOStreamAdapter
+::: fastagency.runtime.autogen.base.CurrentMessage

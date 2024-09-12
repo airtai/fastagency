@@ -7,8 +7,9 @@ from fastagency import FastAgency
 from fastagency import UI
 from fastagency.ui.console import ConsoleUI
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-from fastagency.api.openapi.client import OpenAPI
-from fastagency.api.openapi.security import APIKeyHeader
+
+from fastagency.api.openapi import OpenAPI
+
 
 llm_config = {
     "config_list": [
@@ -20,24 +21,14 @@ llm_config = {
     "temperature": 0.0,
 }
 
-WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
+openapi_url="https://weather.tools.fastagency.ai/openapi.json"
+
+weather_api = OpenAPI.create(openapi_url=openapi_url)
 
 wf = AutoGenWorkflows()
 
-
-@wf.register(name="simple_weather_with_security", description="Weather chat with security")
-def weather_workflow_with_security(ui: UI, initial_message: str, session_id: str) -> str:
-
-    weather_client = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
-
-    # Set global security params for all methods
-    weather_client.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
-
-    # Set security params for a specific method
-    # weather_client.set_security_params(
-    #     APIKeyHeader.Parameters(value="secure weather key"),
-    #     "get_daily_weather_daily_get",
-    # )
+@wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
+def weather_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str) -> str:
 
     user_agent = UserProxyAgent(
         name="User_Agent",
@@ -52,8 +43,20 @@ def weather_workflow_with_security(ui: UI, initial_message: str, session_id: str
         human_input_mode="NEVER",
     )
 
-    weather_client.register_for_llm(weather_agent)
-    weather_client.register_for_execution(user_agent)
+    wf.register_api(  # type: ignore[attr-defined]
+        api=weather_api,
+        callers=[user_agent],
+        executors=[weather_agent],
+        functions=[
+            {
+                "get_daily_weather_daily_get": {
+                    "name": "get_daily_weather",
+                    "description": "Get the daily weather",
+                }
+            },
+            "get_daily_weather_weekly_get"
+        ]
+    )
 
     chat_result = user_agent.initiate_chat(
         weather_agent,

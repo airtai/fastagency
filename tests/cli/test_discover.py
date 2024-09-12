@@ -17,7 +17,7 @@ def import_fixture() -> Generator[dict[str, Any], None, None]:
     # Create a temporary file for testing
     file_content = """
 from fastagency.ui.console import ConsoleUI
-from fastagency.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency import FastAgency
 
 wf = AutoGenWorkflows()

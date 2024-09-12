@@ -4,8 +4,8 @@ import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 
 from fastagency import UI, IOMessage
-from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.runtimes.autogen.base import _findall, _match
+from fastagency.runtime.autogen import AutoGenWorkflows
+from fastagency.runtime.autogen.base import _findall, _match
 from fastagency.ui.console import ConsoleUI
 from tests.conftest import InputMock
 

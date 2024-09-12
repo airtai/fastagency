@@ -1,4 +1,4 @@
-# Using External REST APIs
+# OpenAPI
 
 FastAgency can automatically create functions properly annotated for use with LLM-s from [OpenAPI](https://swagger.io/specification/) specification.
 

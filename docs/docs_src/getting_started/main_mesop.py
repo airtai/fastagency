@@ -5,7 +5,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import FastAgency
 from fastagency import UI
 from fastagency.ui.mesop import MesopUI
-from fastagency.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.runtime.autogen.base import AutoGenWorkflows
 
 llm_config = {
     "config_list": [

@@ -6,7 +6,7 @@ Whether you're orchestrating complex AI agents or integrating external APIs into
 
 ## Key Features
 
-- [**Multi-Runtime Support**](runtimes/): FastAgency supports multiple agentic [runtimes](runtimes/) to provide maximum flexibility. Currently, it supports **AutoGen** and plans to extend support to [CrewAI](https://www.crewai.com/){target="_blank"}. This ensures that as the AI ecosystem evolves, FastAgency remains a reliable and adaptable framework, capable of leveraging emerging agentic technologies. Developers can easily switch between frameworks, choosing the best one for their project's specific needs.
+- [**Multi-Runtime Support**](runtime/): FastAgency supports multiple agentic [runtimes](runtime/) to provide maximum flexibility. Currently, it supports **AutoGen** and plans to extend support to [CrewAI](https://www.crewai.com/){target="_blank"}. This ensures that as the AI ecosystem evolves, FastAgency remains a reliable and adaptable framework, capable of leveraging emerging agentic technologies. Developers can easily switch between frameworks, choosing the best one for their project's specific needs.
 
 - [**Unified Programming Interface Across UIs**](ui/): FastAgency features a **common programming interface** that enables you to develop your core workflows once and reuse them across various user interfaces without rewriting code. This includes support for both **console-based applications** via `ConsoleUI` and **web-based applications** via `MesopUI`. Whether you need a command-line tool or a fully interactive web app, FastAgency allows you to deploy the same underlying workflows across environments, saving development time and ensuring consistency.
 

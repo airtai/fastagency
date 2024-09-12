@@ -5,18 +5,17 @@ search:
 - Getting Started
     - [Getting Started](getting-started/index.md)
 - [User guide](user-guide/index.md)
-    - [Runtimes](user-guide/runtimes/index.md)
-        - [AutoGen](user-guide/runtimes/autogen/index.md)
-            - [Basics](user-guide/runtimes/autogen/basics.md)
-            - [User interaction](user-guide/runtimes/autogen/interactions.md)
-        - [CrewAI](user-guide/runtimes/crewai/basics.md)
+    - [Runtimes](user-guide/runtime/index.md)
+        - [AutoGen](user-guide/runtime/autogen/index.md)
+            - [User interaction](user-guide/runtime/autogen/interactions.md)
+        - [CrewAI](user-guide/runtime/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
         - [Mesop](user-guide/ui/mesop/basics.md)
         - [FastAPI](user-guide/ui/fastapi/basics.md)
-    - [API-s](user-guide/apis/index.md)
-        - [Basics](user-guide/apis/basics.md)
-        - [Security](user-guide/apis/security.md)
+    - [API-s](user-guide/api/index.md)
+        - [OpenAPI](user-guide/api/openapi/index.md)
+        - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
     - [CLI](user-guide/cli/index.md)
 - Reference
@@ -86,14 +85,14 @@ search:
                 - [setup_logging](api/fastagency/cli/logging/setup_logging.md)
         - logging
             - [get_logger](api/fastagency/logging/get_logger.md)
-        - runtimes
+        - runtime
             - autogen
-                - [AutoGenWorkflows](api/fastagency/runtimes/autogen/AutoGenWorkflows.md)
-                - [IOStreamAdapter](api/fastagency/runtimes/autogen/IOStreamAdapter.md)
+                - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
+                - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
                 - base
-                    - [AutoGenWorkflows](api/fastagency/runtimes/autogen/base/AutoGenWorkflows.md)
-                    - [CurrentMessage](api/fastagency/runtimes/autogen/base/CurrentMessage.md)
-                    - [IOStreamAdapter](api/fastagency/runtimes/autogen/base/IOStreamAdapter.md)
+                    - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
+                    - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
+                    - [IOStreamAdapter](api/fastagency/runtime/autogen/base/IOStreamAdapter.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
