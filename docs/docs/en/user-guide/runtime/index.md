@@ -7,14 +7,14 @@ The **AutoGen** runtime is central to FastAgency’s architecture and provides a
 
 FastAgency seamlessly integrates with AutoGen, helping you transition from development in Jupyter notebooks to fully deployed applications. Whether you're managing conversational agents or orchestrating task automation, the AutoGen runtime in FastAgency helps you streamline the path from prototype to production.
 
-For more information on using AutoGen within FastAgency, visit the [AutoGen section](runtime/autogen/).
+For more information on using AutoGen within FastAgency, visit the [AutoGen section](autogen/).
 
-## [CrewAI (coming soon)](crewai/)
+## [CrewAI (coming soon)](crewai/basics/)
 The **CrewAI** runtime is an upcoming integration designed to further expand FastAgency’s capabilities. CrewAI offers a highly modular approach, providing greater flexibility for building more complex and dynamic workflows where agents need to collaborate autonomously. Its role-based design, combined with autonomous task delegation, makes CrewAI particularly suitable for projects involving a large number of specialized agents working in tandem.
 
 As the AI ecosystem continues to evolve, FastAgency’s support for CrewAI ensures that your workflows remain adaptable and ready for future innovations. This planned integration allows you to harness the advanced features of CrewAI, offering more options for scaling your multi-agent applications.
 
-For future updates and documentation on CrewAI, please visit the [CrewAI section](crewai/).
+For future updates and documentation on CrewAI, please visit the [CrewAI section](crewai/basics/).
 
 ---
 

@@ -61,8 +61,8 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [ConsoleUI](https://fastagency.ai/latest/api/fastagency/io/console/ConsoleUI/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopUI](https://fastagency.ai/latest/api/fastagency/io/mesop/MesopUI/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
+- **Console**: Use the [ConsoleUI](https://fastagency.ai/latest/api/fastagency/ui/console/ConsoleUI/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopUI](https://fastagency.ai/latest/api/fastagency/ui/mesop/MesopUI/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/), to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
 

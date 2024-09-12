@@ -46,7 +46,7 @@ In this step, we create two agents:
 
 - **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
-The workflow is registered using **[AutoGenWorkflows](../../../../api/fastagency/runtime/autogen/AutoGenWorkflows/)**.
+The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtime/autogen/AutoGenWorkflows/)**.
 
 ```python
 {! docs_src/user_guide/runtime/autogen/main.py [ln:27-45] !}
