@@ -2,9 +2,9 @@ import os
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency.core import Chatable
-from fastagency.core.io.mesop import MesopIO
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency import Chatable
+from fastagency.ui.mesop import MesopIO
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
 from fastagency import FastAgency
 

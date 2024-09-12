@@ -2,9 +2,9 @@ import os
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency.core import Chatable
-from fastagency.core.io.console import ConsoleIO
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency import Chatable
+from fastagency.ui.console import ConsoleIO
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
 from fastagency import FastAgency
 

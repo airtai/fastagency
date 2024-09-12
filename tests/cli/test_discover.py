@@ -6,17 +6,18 @@ from typing import Any
 
 import pytest
 
+from fastagency.app import FastAgency
+
 # Import the function we want to test
 from fastagency.cli.discover import get_import_string, import_from_string
-from fastagency.core.app import FastAgency
 
 
 @pytest.fixture(scope="module")
 def import_fixture() -> Generator[dict[str, Any], None, None]:
     # Create a temporary file for testing
     file_content = """
-from fastagency.core.io.console import ConsoleIO
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.io.console import ConsoleIO
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 from fastagency import FastAgency
 
 wf = AutoGenWorkflows()
