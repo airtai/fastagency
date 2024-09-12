@@ -27,27 +27,27 @@ class MesopMessage:
     """A Mesop message."""
 
     io_message: IOMessage
-    conversation: "MesopIO"
+    conversation: "MesopUI"
 
 
-class MesopIO(IOMessageVisitor):  # Chatable
-    def __init__(self, super_conversation: Optional["MesopIO"] = None) -> None:
+class MesopUI(IOMessageVisitor):  # Chatable
+    def __init__(self, super_conversation: Optional["MesopUI"] = None) -> None:
         """Initialize the console IO object.
 
         Args:
             super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
         """
         self.id: str = uuid4().hex
-        self.super_conversation: Optional[MesopIO] = super_conversation
-        self.sub_conversations: list[MesopIO] = []
+        self.super_conversation: Optional[MesopUI] = super_conversation
+        self.sub_conversations: list[MesopUI] = []
         self._in_queue: Optional[Queue[str]] = None
         self._out_queue: Optional[Queue[MesopMessage]] = None
         if super_conversation is None:
             self._in_queue = Queue()
             self._out_queue = Queue()
-        MesopIO.register(self)
+        MesopUI.register(self)
 
-    _registry: ClassVar[dict[str, "MesopIO"]] = {}
+    _registry: ClassVar[dict[str, "MesopUI"]] = {}
 
     @property
     def main_path(self) -> str:
@@ -78,15 +78,15 @@ class MesopIO(IOMessageVisitor):  # Chatable
             raise RuntimeError("Mesop process failed")
 
     @classmethod
-    def register(cls, conversation: "MesopIO") -> None:
+    def register(cls, conversation: "MesopUI") -> None:
         cls._registry[conversation.id] = conversation
 
     @classmethod
-    def get_conversation(cls, id: str) -> "MesopIO":
+    def get_conversation(cls, id: str) -> "MesopUI":
         return cls._registry[id]
 
     @classmethod
-    def unregister(cls, conversation: "MesopIO") -> None:
+    def unregister(cls, conversation: "MesopUI") -> None:
         del cls._registry[conversation.id]
 
     @property
@@ -94,7 +94,7 @@ class MesopIO(IOMessageVisitor):  # Chatable
         return self.super_conversation is not None
 
     @property
-    def root_conversation(self) -> "MesopIO":
+    def root_conversation(self) -> "MesopUI":
         if self.super_conversation is None:
             return self
         else:
@@ -146,8 +146,8 @@ class MesopIO(IOMessageVisitor):  # Chatable
     def process_message(self, message: IOMessage) -> Optional[str]:
         return self.visit(message)
 
-    def create_subconversation(self) -> "MesopIO":
-        sub_conversation = MesopIO(self)
+    def create_subconversation(self) -> "MesopUI":
+        sub_conversation = MesopUI(self)
         self.sub_conversations.append(sub_conversation)
 
         return sub_conversation
@@ -175,8 +175,8 @@ class MesopIO(IOMessageVisitor):  # Chatable
             yield message
 
 
-def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
-    def conversation_worker(io: MesopIO, subconversation: MesopIO) -> None:
+def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
+    def conversation_worker(io: MesopUI, subconversation: MesopUI) -> None:
         io.process_message(
             IOMessage.create(
                 sender="user",
@@ -238,7 +238,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
             )
         )
 
-    io = MesopIO()
+    io = MesopUI()
     subconversation = io.create_subconversation()
     thread = threading.Thread(target=conversation_worker, args=(io, subconversation))
     thread.start()

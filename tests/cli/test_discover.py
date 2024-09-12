@@ -16,13 +16,13 @@ from fastagency.cli.discover import get_import_string, import_from_string
 def import_fixture() -> Generator[dict[str, Any], None, None]:
     # Create a temporary file for testing
     file_content = """
-from fastagency.ui.console import ConsoleIO
+from fastagency.ui.console import ConsoleUI
 from fastagency.runtimes.autogen.base import AutoGenWorkflows
 from fastagency import FastAgency
 
 wf = AutoGenWorkflows()
 
-app = FastAgency(wf=wf, io=ConsoleIO())
+app = FastAgency(wf=wf, io=ConsoleUI())
 
 """
     with TemporaryDirectory() as tmp_dir:

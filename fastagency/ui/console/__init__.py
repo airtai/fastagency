@@ -1,3 +1,3 @@
-from .base import ConsoleIO
+from .base import ConsoleUI
 
-__all__ = ["ConsoleIO"]
+__all__ = ["ConsoleUI"]

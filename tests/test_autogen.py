@@ -6,7 +6,7 @@ from autogen.agentchat import ConversableAgent, UserProxyAgent
 from fastagency import Chatable, IOMessage
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.base import _findall, _match
-from fastagency.ui.console import ConsoleIO
+from fastagency.ui.console import ConsoleUI
 from tests.conftest import InputMock
 
 
@@ -151,7 +151,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
     name = "simple_learning"
 
-    io = ConsoleIO()
+    io = ConsoleUI()
 
     io.process_message(
         IOMessage.create(
@@ -235,7 +235,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
         result = wf.run(
             name="test_workflow",
             session_id="session_id",
-            io=ConsoleIO(),
+            io=ConsoleUI(),
             initial_message="What is the weather in Zagreb right now?",
         )
 

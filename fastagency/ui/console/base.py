@@ -18,7 +18,7 @@ from ...logging import get_logger
 logger = get_logger(__name__)
 
 
-class ConsoleIO(IOMessageVisitor):  # Chatable
+class ConsoleUI(IOMessageVisitor):  # implements Chatable
     @dataclass
     class ConsoleMessage:
         """A console message."""
@@ -28,21 +28,21 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
         heading: Optional[str]
         body: Optional[str]
 
-    def __init__(self, super_conversation: Optional["ConsoleIO"] = None) -> None:
+    def __init__(self, super_conversation: Optional["ConsoleUI"] = None) -> None:
         """Initialize the console IO object.
 
         Args:
             super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
         """
-        self.super_conversation: Optional[ConsoleIO] = super_conversation
-        self.sub_conversations: list[ConsoleIO] = []
+        self.super_conversation: Optional[ConsoleUI] = super_conversation
+        self.sub_conversations: list[ConsoleUI] = []
 
-    def create(self, app: "Runnable", import_string: str) -> None:
+    def create(self, app: Runnable, import_string: str) -> None:
         pass
 
     def start(
         self,
-        app: "Runnable",
+        app: Runnable,
         import_string: str,
         name: Optional[str] = None,
         initial_message: Optional[str] = None,
@@ -155,8 +155,8 @@ class ConsoleIO(IOMessageVisitor):  # Chatable
     # def process_streaming_message(self, message: IOStreamingMessage) -> str | None:
     #     raise NotImplementedError
 
-    def create_subconversation(self) -> "ConsoleIO":
-        sub_conversation = ConsoleIO(self)
+    def create_subconversation(self) -> "ConsoleUI":
+        sub_conversation = ConsoleUI(self)
         self.sub_conversations.append(sub_conversation)
 
         return sub_conversation

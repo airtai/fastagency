@@ -4,13 +4,13 @@ import pytest
 
 from fastagency.app import FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.ui.console import ConsoleIO
+from fastagency.ui.console import ConsoleUI
 
 
 @pytest.fixture
 def app() -> Iterator[FastAgency]:
     wf = AutoGenWorkflows()
-    console = ConsoleIO()
+    console = ConsoleUI()
     app = FastAgency(wf=wf, io=console)
 
     try:
@@ -23,7 +23,7 @@ def app() -> Iterator[FastAgency]:
         pass
 
 
-# class TestConsoleIOInput:
+# class TestConsoleUIInput:
 #     @pytest.skip("Not implemented")  # type: ignore[misc]
 #     def test_user_proxy_auto_reply(self, app: FastAgency) -> None:
 #         raise NotImplementedError

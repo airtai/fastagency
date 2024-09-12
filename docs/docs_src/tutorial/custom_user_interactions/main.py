@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import FastAgency
 from fastagency import Chatable
 from fastagency.base import MultipleChoice, SystemMessage, TextInput
-from fastagency.ui.console import ConsoleIO
+from fastagency.ui.console import ConsoleUI
 from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
 llm_config = {
@@ -132,4 +132,4 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, io=ConsoleIO())
+app = FastAgency(wf=wf, io=ConsoleUI())

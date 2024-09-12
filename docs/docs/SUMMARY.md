@@ -76,6 +76,14 @@ search:
                 - [setup_logging](api/fastagency/cli/logging/setup_logging.md)
         - logging
             - [get_logger](api/fastagency/logging/get_logger.md)
+        - runtimes
+            - autogen
+                - [AutoGenWorkflows](api/fastagency/runtimes/autogen/AutoGenWorkflows.md)
+                - [IOStreamAdapter](api/fastagency/runtimes/autogen/IOStreamAdapter.md)
+                - base
+                    - [AutoGenWorkflows](api/fastagency/runtimes/autogen/base/AutoGenWorkflows.md)
+                    - [CurrentMessage](api/fastagency/runtimes/autogen/base/CurrentMessage.md)
+                    - [IOStreamAdapter](api/fastagency/runtimes/autogen/base/IOStreamAdapter.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
@@ -220,11 +228,15 @@ search:
                 - [SaasAppGenerator](api/fastagency/studio/saas_app_generator/SaasAppGenerator.md)
                 - [main](api/fastagency/studio/saas_app_generator/main.md)
         - ui
-            - mesop
-                - [MesopIO](api/fastagency/ui/mesop/MesopIO.md)
+            - console
+                - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
                 - base
-                    - [MesopIO](api/fastagency/ui/mesop/base/MesopIO.md)
+                    - [ConsoleUI](api/fastagency/ui/console/base/ConsoleUI.md)
+            - mesop
+                - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
+                - base
                     - [MesopMessage](api/fastagency/ui/mesop/base/MesopMessage.md)
+                    - [MesopUI](api/fastagency/ui/mesop/base/MesopUI.md)
                     - [run_workflow](api/fastagency/ui/mesop/base/run_workflow.md)
                 - components
                     - inputs
