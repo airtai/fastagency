@@ -52,4 +52,4 @@ def simple_workflow(io: UI, initial_message: str, session_id: str) -> str:
 
     return chat_result.summary
 
-app = FastAgency(wf=wf, io=ConsoleUI())
+app = FastAgency(wf=wf, ui=ConsoleUI())
