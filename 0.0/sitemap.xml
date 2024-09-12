@@ -13,12 +13,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/release/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/Chatable/</loc>
-        <lastmod>2024-09-12</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/Chatable/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/FastAgency/</loc>
         <lastmod>2024-09-12</lastmod>
         <changefreq>daily</changefreq>
@@ -59,6 +53,12 @@
         <lastmod>2024-09-12</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/TextMessage/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/UI/</loc>
+        <lastmod>2024-09-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/UI/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/Workflows/</loc>
@@ -151,12 +151,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/AskingMessage/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/Chatable/</loc>
-        <lastmod>2024-09-12</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/Chatable/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/base/FunctionCallExecution/</loc>
         <lastmod>2024-09-12</lastmod>
         <changefreq>daily</changefreq>
@@ -209,6 +203,12 @@
         <lastmod>2024-09-12</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/TextMessage/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/base/UI/</loc>
+        <lastmod>2024-09-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/UI/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/base/WorkflowCompleted/</loc>
@@ -1063,10 +1063,10 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/main/conversation_starter_box/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/main/get_workflows/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/main/get_ui/</loc>
         <lastmod>2024-09-12</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/main/get_workflows/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/main/get_ui/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/main/home_page/</loc>
