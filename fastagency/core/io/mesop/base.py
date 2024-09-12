@@ -188,12 +188,35 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
                 },
             )
         )
-        result = wf.run(
-            name=name,
-            session_id="session_id",
-            io=subconversation,  # type: ignore[arg-type]
-            initial_message=initial_message,
-        )
+        try:
+            result = wf.run(
+                name=name,
+                session_id="session_id",
+                io=subconversation,  # type: ignore[arg-type]
+                initial_message=initial_message,
+            )
+        except Exception as ex:
+            io.process_message(
+                IOMessage.create(
+                    sender="user",
+                    recipient="workflow",
+                    type="system_message",
+                    message={
+                        "heading": "Workflow Exception",
+                        "body": f"Ending workflow with exception: {ex}",
+                    },
+                )
+            )
+            io.process_message(
+                IOMessage.create(
+                    sender="user",
+                    recipient="workflow",
+                    type="workflow_completed",
+                    result=None,
+                )
+            )
+            return
+
         io.process_message(
             IOMessage.create(
                 sender="user",

@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.core.io.mesop.main.conversation_page
+::: fastagency.core.io.mesop.main.conversation_starter_box
