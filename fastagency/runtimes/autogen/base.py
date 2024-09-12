@@ -1,7 +1,7 @@
 import json
 import re
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 from autogen.io import IOStream
 
@@ -16,6 +16,11 @@ from ...base import (
     Workflows,
 )
 from ...logging import get_logger
+
+if TYPE_CHECKING:
+    from autogen.agentchat import ConversableAgent
+
+    from fastagency.api.openapi import OpenAPI
 
 __all__ = [
     "AutoGenWorkflows",
@@ -266,3 +271,21 @@ class AutoGenWorkflows(Workflows):
     def get_description(self, name: str) -> str:
         _, description = self._workflows.get(name, (None, "Description not available!"))
         return description
+
+    def register_api(
+        self,
+        api: "OpenAPI",
+        callers: Union["ConversableAgent", list["ConversableAgent"]],
+        executors: Union["ConversableAgent", list["ConversableAgent"]],
+        functions: Optional[Union[str, list[str]]] = None,
+    ) -> None:
+        if not isinstance(callers, list):
+            callers = [callers]
+        if not isinstance(executors, list):
+            executors = [executors]
+
+        for caller in callers:
+            api.register_for_llm(caller, functions=functions)
+
+        for executor in executors:
+            api.register_for_execution(executor, functions=functions)
