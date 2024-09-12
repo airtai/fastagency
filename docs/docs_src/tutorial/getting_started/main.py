@@ -3,9 +3,9 @@ import os
 from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency
-from fastagency.core import Chatable
-from fastagency.core.io.console import ConsoleIO
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency import Chatable
+from fastagency.ui.console import ConsoleUI
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
 llm_config = {
     "config_list": [
@@ -44,4 +44,4 @@ def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
 
 
 
-app = FastAgency(wf=wf, io=ConsoleIO())
+app = FastAgency(wf=wf, io=ConsoleUI())
