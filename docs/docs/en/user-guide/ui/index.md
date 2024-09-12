@@ -14,7 +14,7 @@ The **ConsoleUI** provides a command-line interface for interacting with FastAge
 ### 2. **[MesopUI](./mesop/basics/)**
 The **MesopUI** is a web-based interface that enables users to interact with agents through a browser. This UI is designed for applications that need a more graphical and interactive experience for users.
 
-[Learn more about MesopUI →](./mesop/basics/basics/)
+[Learn more about MesopUI →](./mesop/basics/)
 
 ### 3. **[FastAPI UI (Coming Soon)](./fastapi/basics/)**
 FastAgency will soon introduce **FastAPI UI** support, which will allow you to build multi-agent systems with a FastAPI backend. This will enable seamless integration with RESTful APIs for modern web applications.

@@ -86,4 +86,4 @@ Ensure you have set your OpenAI API key in the environment and that the weather 
 
 This example demonstrates the power of the **AutoGen** runtime within FastAgency, showing how easy it is to integrate LLM-powered agents with real-time API services. By leveraging FastAgency, developers can quickly create interactive, scalable applications that interact with external data sources in real-time.
 
-For more detailed documentation, visit the [AutoGen Reference](../../../../api/fastagency/runtime/autogen/AutoGenWorkflows/).
+For more detailed documentation, visit the [AutoGen Reference](../../../api/fastagency/runtime/autogen/AutoGenWorkflows/).
