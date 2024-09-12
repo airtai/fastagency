@@ -1,5 +1,7 @@
+import json
 import uuid
 
+import jsondiff
 import pytest
 import together
 
@@ -86,87 +88,7 @@ class TestTogetherAI:
 
     def test_togetherai_schema(self, pydantic_version: float) -> None:
         schema = TogetherAI.model_json_schema()
-        expected_pydantic_v28 = {
-            "$defs": {
-                "TogetherAIAPIKeyRef": {
-                    "properties": {
-                        "type": {
-                            "const": "secret",
-                            "default": "secret",
-                            "description": "The name of the type of the data",
-                            "enum": ["secret"],
-                            "title": "Type",
-                            "type": "string",
-                        },
-                        "name": {
-                            "const": "TogetherAIAPIKey",
-                            "default": "TogetherAIAPIKey",
-                            "description": "The name of the data",
-                            "enum": ["TogetherAIAPIKey"],
-                            "title": "Name",
-                            "type": "string",
-                        },
-                        "uuid": {
-                            "description": "The unique identifier",
-                            "format": "uuid",
-                            "title": "UUID",
-                            "type": "string",
-                        },
-                    },
-                    "required": ["uuid"],
-                    "title": "TogetherAIAPIKeyRef",
-                    "type": "object",
-                }
-            },
-            "properties": {
-                "name": {
-                    "description": "The name of the item",
-                    "minLength": 1,
-                    "title": "Name",
-                    "type": "string",
-                },
-                "model": {
-                    "default": "Meta Llama 3 70B Instruct Reference",
-                    "description": "The model to use for the Together API",
-                    "title": "Model",
-                    "type": "string",
-                },
-                "api_key": {
-                    "allOf": [{"$ref": "#/$defs/TogetherAIAPIKeyRef"}],
-                    "description": "The API Key from Together.ai",
-                    "title": "API Key",
-                },
-                "base_url": {
-                    "default": "https://api.together.xyz/v1",
-                    "description": "The base URL of the OpenAI API",
-                    "format": "uri",
-                    "maxLength": 2083,
-                    "minLength": 1,
-                    "title": "Base URL",
-                    "type": "string",
-                },
-                "api_type": {
-                    "const": "togetherai",
-                    "default": "togetherai",
-                    "description": "The type of the API, must be 'togetherai'",
-                    "enum": ["togetherai"],
-                    "title": "API Type",
-                    "type": "string",
-                },
-                "temperature": {
-                    "default": 0.8,
-                    "description": "The temperature to use for the model, must be between 0 and 2",
-                    "maximum": 2.0,
-                    "minimum": 0.0,
-                    "title": "Temperature",
-                    "type": "number",
-                },
-            },
-            "required": ["name", "api_key"],
-            "title": "TogetherAI",
-            "type": "object",
-        }
-        expected_pydantic_v29 = {
+        expected = {
             "$defs": {
                 "TogetherAIAPIKeyRef": {
                     "properties": {
@@ -252,9 +174,10 @@ class TestTogetherAI:
         )
         schema["properties"]["model"].pop("enum")
         # print(schema)
-        expected = (
-            expected_pydantic_v28 if pydantic_version < 2.9 else expected_pydantic_v29
-        )
+        pydantic28_delta = '{"properties": {"api_key": {"allOf": [{"$$ref": "#/$defs/TogetherAIAPIKeyRef"}], "$delete": ["$$ref"]}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
+            expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         assert schema == expected
 
     @pytest.mark.asyncio

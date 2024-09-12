@@ -353,9 +353,9 @@ class TestOpenAPIEnd2End:
         }
         pydantic28_delta = '{"paths": {"/items/{item_id}": {"put": {"requestBody": {"content": {"application/json": {"schema": {"allOf": [{"$$ref": "#/components/schemas/Item"}], "title": "Item", "$delete": ["$$ref"]}}}}}}, "/items/": {"post": {"requestBody": {"content": {"application/json": {"schema": {"allOf": [{"$$ref": "#/components/schemas/Item"}], "title": "Item", "$delete": ["$$ref"]}}}}}}}}'
         if pydantic_version < 2.9:
-            # print(f"pydantic28_delta = {jsondiff.diff(expected, openapi_schema, dump=True)}")
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, openapi_schema, dump=True)}'")
             expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
-
+        # print(openapi_schema)
         assert openapi_schema == expected
 
     @pytest.fixture

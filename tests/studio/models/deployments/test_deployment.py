@@ -1,5 +1,7 @@
+import json
 import uuid
 
+import jsondiff
 import pytest
 from pydantic import ValidationError
 
@@ -47,144 +49,7 @@ class TestDeployment:
 
     def test_deployment_model_schema(self, pydantic_version: float) -> None:
         schema = Deployment.model_json_schema()
-        expected_pydantic_v28 = {
-            "$defs": {
-                "FlyTokenRef": {
-                    "properties": {
-                        "type": {
-                            "const": "secret",
-                            "default": "secret",
-                            "description": "The name of the type of the data",
-                            "enum": ["secret"],
-                            "title": "Type",
-                            "type": "string",
-                        },
-                        "name": {
-                            "const": "FlyToken",
-                            "default": "FlyToken",
-                            "description": "The name of the data",
-                            "enum": ["FlyToken"],
-                            "title": "Name",
-                            "type": "string",
-                        },
-                        "uuid": {
-                            "description": "The unique identifier",
-                            "format": "uuid",
-                            "title": "UUID",
-                            "type": "string",
-                        },
-                    },
-                    "required": ["uuid"],
-                    "title": "FlyTokenRef",
-                    "type": "object",
-                },
-                "GitHubTokenRef": {
-                    "properties": {
-                        "type": {
-                            "const": "secret",
-                            "default": "secret",
-                            "description": "The name of the type of the data",
-                            "enum": ["secret"],
-                            "title": "Type",
-                            "type": "string",
-                        },
-                        "name": {
-                            "const": "GitHubToken",
-                            "default": "GitHubToken",
-                            "description": "The name of the data",
-                            "enum": ["GitHubToken"],
-                            "title": "Name",
-                            "type": "string",
-                        },
-                        "uuid": {
-                            "description": "The unique identifier",
-                            "format": "uuid",
-                            "title": "UUID",
-                            "type": "string",
-                        },
-                    },
-                    "required": ["uuid"],
-                    "title": "GitHubTokenRef",
-                    "type": "object",
-                },
-                "TwoAgentTeamRef": {
-                    "properties": {
-                        "type": {
-                            "const": "team",
-                            "default": "team",
-                            "description": "The name of the type of the data",
-                            "enum": ["team"],
-                            "title": "Type",
-                            "type": "string",
-                        },
-                        "name": {
-                            "const": "TwoAgentTeam",
-                            "default": "TwoAgentTeam",
-                            "description": "The name of the data",
-                            "enum": ["TwoAgentTeam"],
-                            "title": "Name",
-                            "type": "string",
-                        },
-                        "uuid": {
-                            "description": "The unique identifier",
-                            "format": "uuid",
-                            "title": "UUID",
-                            "type": "string",
-                        },
-                    },
-                    "required": ["uuid"],
-                    "title": "TwoAgentTeamRef",
-                    "type": "object",
-                },
-            },
-            "properties": {
-                "name": {
-                    "description": "The application name to use on the website.",
-                    "minLength": 1,
-                    "title": "Name",
-                    "type": "string",
-                },
-                "repo_name": {
-                    "description": "The name of the GitHub repository.",
-                    "minLength": 1,
-                    "title": "Repo Name",
-                    "type": "string",
-                },
-                "fly_app_name": {
-                    "description": "The name of the Fly.io application.",
-                    "maxLength": 30,
-                    "minLength": 1,
-                    "title": "Fly App Name",
-                    "type": "string",
-                },
-                "team": {
-                    "allOf": [{"$ref": "#/$defs/TwoAgentTeamRef"}],
-                    "description": "The team that is used in the deployment",
-                    "title": "Team Name",
-                },
-                "gh_token": {
-                    "allOf": [{"$ref": "#/$defs/GitHubTokenRef"}],
-                    "description": "The GitHub token to use for creating a new repository",
-                    "title": "GH Token",
-                },
-                "fly_token": {
-                    "allOf": [{"$ref": "#/$defs/FlyTokenRef"}],
-                    "description": "The Fly.io token to use for deploying the deployment",
-                    "title": "Fly Token",
-                },
-            },
-            "required": [
-                "name",
-                "repo_name",
-                "fly_app_name",
-                "team",
-                "gh_token",
-                "fly_token",
-            ],
-            "title": "Deployment",
-            "type": "object",
-        }
-        expected_pydantic_v29 = {
+        expected = {
             "$defs": {
                 "FlyTokenRef": {
                     "properties": {
@@ -322,9 +187,10 @@ class TestDeployment:
             "type": "object",
         }
         # print(schema)
-        expected = (
-            expected_pydantic_v28 if pydantic_version < 2.9 else expected_pydantic_v29
-        )
+        pydantic28_delta = '{"properties": {"team": {"allOf": [{"$$ref": "#/$defs/TwoAgentTeamRef"}], "$delete": ["$$ref"]}, "gh_token": {"allOf": [{"$$ref": "#/$defs/GitHubTokenRef"}], "$delete": ["$$ref"]}, "fly_token": {"allOf": [{"$$ref": "#/$defs/FlyTokenRef"}], "$delete": ["$$ref"]}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
+            expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         assert schema == expected
 
     @pytest.mark.parametrize(
