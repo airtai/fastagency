@@ -22,6 +22,7 @@ import pytest_asyncio
 import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
+from pydantic import __version__ as version_of_pydantic
 
 from fastagency.studio.db.base import DefaultDB
 from fastagency.studio.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
@@ -557,6 +558,11 @@ async def weather_toolbox_ref(
     )
 
     return toolbox
+
+
+@pytest.fixture
+def pydantic_version() -> float:
+    return float(".".join(version_of_pydantic.split(".")[:2]))
 
 
 ################################################################################

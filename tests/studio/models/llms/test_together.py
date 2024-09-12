@@ -1,5 +1,7 @@
+import json
 import uuid
 
+import jsondiff
 import pytest
 import together
 
@@ -84,7 +86,7 @@ class TestTogetherAI:
         }
         assert model.model_dump() == expected
 
-    def test_togetherai_schema(self) -> None:
+    def test_togetherai_schema(self, pydantic_version: float) -> None:
         schema = TogetherAI.model_json_schema()
         expected = {
             "$defs": {
@@ -132,7 +134,7 @@ class TestTogetherAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/TogetherAIAPIKeyRef"}],
+                    "$ref": "#/$defs/TogetherAIAPIKeyRef",
                     "description": "The API Key from Together.ai",
                     "title": "API Key",
                 },
@@ -172,6 +174,10 @@ class TestTogetherAI:
         )
         schema["properties"]["model"].pop("enum")
         # print(schema)
+        pydantic28_delta = '{"properties": {"api_key": {"allOf": [{"$$ref": "#/$defs/TogetherAIAPIKeyRef"}], "$delete": ["$$ref"]}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
+            expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         assert schema == expected
 
     @pytest.mark.asyncio
