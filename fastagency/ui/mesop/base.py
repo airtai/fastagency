@@ -1,13 +1,15 @@
-import os
-import subprocess  # nosec: B404
-import sys
 import threading
-from collections.abc import Generator
+from collections.abc import Generator, Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from queue import Queue
+from tempfile import TemporaryDirectory
 from typing import ClassVar, Optional
 from uuid import uuid4
+
+from mesop.bin.bin import FLAGS as MESOP_FLAGS
+from mesop.bin.bin import main as mesop_main
 
 from ...base import (
     AskingMessage,
@@ -20,6 +22,9 @@ from ...base import (
     WorkflowCompleted,
     Workflows,
 )
+from ...logging import get_logger
+
+logger = get_logger(__name__)
 
 
 @dataclass
@@ -30,18 +35,24 @@ class MesopMessage:
     conversation: "MesopUI"
 
 
-class MesopUI(IOMessageVisitor):  # Chatable
-    def __init__(self, super_conversation: Optional["MesopUI"] = None) -> None:
-        """Initialize the console IO object.
+class MesopUI(IOMessageVisitor):  # UI
+    _import_string: Optional[str] = None
+    _main_path: Optional[str] = None
+    _created_instance: Optional["MesopUI"] = None
+    _app: Optional[Runnable] = None
+
+    def __init__(self, super_conversation: "Optional[MesopUI]" = None) -> None:
+        """Initialize the console UI object.
 
         Args:
-            super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
+            super_conversation (Optional[MesopUI], optional): The super conversation. Defaults to None.
         """
         self.id: str = uuid4().hex
         self.super_conversation: Optional[MesopUI] = super_conversation
         self.sub_conversations: list[MesopUI] = []
         self._in_queue: Optional[Queue[str]] = None
         self._out_queue: Optional[Queue[MesopMessage]] = None
+
         if super_conversation is None:
             self._in_queue = Queue()
             self._out_queue = Queue()
@@ -49,12 +60,40 @@ class MesopUI(IOMessageVisitor):  # Chatable
 
     _registry: ClassVar[dict[str, "MesopUI"]] = {}
 
-    @property
-    def main_path(self) -> str:
-        return (Path(__file__).parent / "main.py").absolute().as_posix()
+    @classmethod
+    def get_created_instance(cls) -> "MesopUI":
+        created_instance = cls._created_instance
+        if created_instance is None:
+            raise RuntimeError("MesopUI has not been created yet.")
 
-    def create(self, app: Runnable, import_string: str) -> None:
-        pass
+        return created_instance
+
+    @property
+    def app(self) -> Runnable:
+        app = self._app
+        if app is None:
+            raise RuntimeError("MesopUI has not been created yet.")
+
+        return app
+
+    @contextmanager
+    def create(self, app: Runnable, import_string: str) -> Iterator[None]:
+        logger.info(f"Creating MesopUI with import string: {import_string}")
+        self._app = app
+        self._import_string = import_string
+
+        start_script = """import fastagency.ui.mesop.main"""
+
+        with TemporaryDirectory() as temp_dir:
+            main_path = Path(temp_dir) / "main.py"
+            with main_path.open("w") as f:
+                f.write(start_script)
+
+            MESOP_FLAGS.mark_as_parsed()
+            self._main_path = str(main_path)
+            self._created_instance = self
+
+            yield
 
     def start(
         self,
@@ -63,19 +102,13 @@ class MesopUI(IOMessageVisitor):  # Chatable
         name: Optional[str] = None,
         initial_message: Optional[str] = None,
     ) -> None:
-        env = os.environ.copy()
-        env["IMPORT_STRING"] = import_string
-        process = subprocess.Popen(  # nosec: B603, B607
-            ["mesop", self.main_path],
-            stdout=sys.stdout,
-            stderr=sys.stderr,
-            text=True,
-            bufsize=1,
-            env=env,
+        logger.info(
+            f"Starting MesopUI: import_string={self._import_string}, main_path={self._main_path}"
         )
-        result = process.wait()
-        if result != 0:
-            raise RuntimeError("Mesop process failed")
+
+        self._app = app
+
+        mesop_main(["mesop", self._main_path])
 
     @classmethod
     def register(cls, conversation: "MesopUI") -> None:
@@ -176,8 +209,8 @@ class MesopUI(IOMessageVisitor):  # Chatable
 
 
 def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
-    def conversation_worker(io: MesopUI, subconversation: MesopUI) -> None:
-        io.process_message(
+    def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
+        ui.process_message(
             IOMessage.create(
                 sender="user",
                 recipient="workflow",
@@ -192,11 +225,11 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
             result = wf.run(
                 name=name,
                 session_id="session_id",
-                io=subconversation,  # type: ignore[arg-type]
+                ui=subconversation,  # type: ignore[arg-type]
                 initial_message=initial_message,
             )
         except Exception as ex:
-            io.process_message(
+            ui.process_message(
                 IOMessage.create(
                     sender="user",
                     recipient="workflow",
@@ -207,7 +240,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
                     },
                 )
             )
-            io.process_message(
+            ui.process_message(
                 IOMessage.create(
                     sender="user",
                     recipient="workflow",
@@ -217,7 +250,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
             )
             return
 
-        io.process_message(
+        ui.process_message(
             IOMessage.create(
                 sender="user",
                 recipient="workflow",
@@ -229,7 +262,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
             )
         )
 
-        io.process_message(
+        ui.process_message(
             IOMessage.create(
                 sender="user",
                 recipient="workflow",
@@ -238,9 +271,9 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
             )
         )
 
-    io = MesopUI()
-    subconversation = io.create_subconversation()
-    thread = threading.Thread(target=conversation_worker, args=(io, subconversation))
+    ui = MesopUI()
+    subconversation = ui.create_subconversation()
+    thread = threading.Thread(target=conversation_worker, args=(ui, subconversation))
     thread.start()
 
     return subconversation

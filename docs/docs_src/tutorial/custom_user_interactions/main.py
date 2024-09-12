@@ -5,7 +5,7 @@ from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency
-from fastagency import Chatable
+from fastagency import UI
 from fastagency.base import MultipleChoice, SystemMessage, TextInput
 from fastagency.ui.console import ConsoleUI
 from fastagency.runtimes.autogen.base import AutoGenWorkflows
@@ -24,7 +24,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")  # type: ignore[type-var]
-def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Optional[str]:
+def exam_learning(io: UI, initial_message: str, session_id: str) -> Optional[str]:
 
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -132,4 +132,4 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, io=ConsoleUI())
+app = FastAgency(wf=wf, ui=ConsoleUI())
