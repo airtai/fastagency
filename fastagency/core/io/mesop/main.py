@@ -196,7 +196,7 @@ def conversation_box() -> None:
             )
         ):
             for message in messages:
-                message_box(message)
+                message_box(message, conversation.is_from_the_past)
             if messages:
                 me.box(
                     key="end_of_messages",

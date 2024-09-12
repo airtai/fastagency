@@ -14,26 +14,30 @@ from ...base import (
 from .components.ui_common import darken_hex_color
 
 
-def message_box(message: str) -> None:
+def message_box(message: str, read_only: bool) -> None:
     message_dict = json.loads(message)
     level = message_dict["level"]
     conversation_id = message_dict["conversationId"]
     io_message_dict = message_dict["io_message"]
     io_message = IOMessage.create(**io_message_dict)
-    visitor = MesopGUIMessageVisitor(level, conversation_id)
+    visitor = MesopGUIMessageVisitor(level, conversation_id, read_only)
     visitor.process_message(io_message)
 
 
 class MesopGUIMessageVisitor(IOMessageVisitor):
-    def __init__(self, level: int, conversation_id: str) -> None:
+    def __init__(
+        self, level: int, conversation_id: str, read_only: bool = False
+    ) -> None:
         """Initialize the MesopGUIMessageVisitor object.
 
         Args:
             level (int): The level of the message.
             conversation_id (str): The ID of the conversation.
+            read_only (bool): Input messages are disabled in read only mode
         """
         self._level = level
         self._conversation_id = conversation_id
+        self._readonly = read_only
 
     def visit_default(self, message: IOMessage) -> None:
         base_color = "#aff"
@@ -94,13 +98,18 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         return ""
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
+        def on_change(ev: me.RadioChangeEvent) -> None:
+            # print("odabrao", ev.value)
+            ...
+
         text = message.prompt if message.prompt else "Please enter a value"
         if message.choices:
-            options = ",".join(
-                f"{i+1}. {choice}" for i, choice in enumerate(message.choices)
+            options = map(
+                lambda choice: me.RadioOption(label=choice, value=choice),
+                message.choices,
             )
-            text += "\n" + options
-        base_color = "#cff"
+        base_color = "#dff"
+        pre_selected = message.default if message.default is not None else ""
         with me.box(
             style=me.Style(
                 background=base_color,
@@ -110,7 +119,14 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             )
         ):
             self._header(message, base_color, title="Input requested")
-            me.markdown(text)
+            me.text(text)
+            me.radio(
+                on_change=on_change,
+                disabled=self._readonly,
+                options=options,
+                value=pre_selected,
+                style=me.Style(display="flex", flex_direction="column"),
+            )
         return ""
 
     def process_message(self, message: IOMessage) -> Optional[str]:

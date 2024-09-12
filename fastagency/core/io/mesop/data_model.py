@@ -5,6 +5,12 @@ import mesop as me
 
 
 @dataclass
+class ConversationMessage:
+    io_message: str = ""
+    feedback: list[str] = field(default_factory=list)
+
+
+@dataclass
 class Conversation:
     id: str = ""
     title: str = ""

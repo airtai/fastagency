@@ -188,6 +188,18 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
                 },
             )
         )
+        io.process_message(
+            IOMessage.create(
+                sender="tester",
+                recipient="workflow",
+                type="multiple_choice",
+                prompt="Skoncentriraj se i izaberi",
+                choices=["danas", "sutra", "nikada"],
+                default="nikada",
+                single=True,
+            )
+        )
+
         try:
             result = wf.run(
                 name=name,
@@ -207,6 +219,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopIO:
                     },
                 )
             )
+
             io.process_message(
                 IOMessage.create(
                     sender="user",
