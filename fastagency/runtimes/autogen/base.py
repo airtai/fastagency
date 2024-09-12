@@ -5,7 +5,6 @@ from typing import Any, Callable, Optional
 
 from autogen.io import IOStream
 
-from ....logging import get_logger
 from ...base import (
     AskingMessage,
     Chatable,
@@ -16,6 +15,7 @@ from ...base import (
     Workflow,
     Workflows,
 )
+from ...logging import get_logger
 
 __all__ = [
     "AutoGenWorkflows",

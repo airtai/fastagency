@@ -4,7 +4,6 @@ import textwrap
 from dataclasses import dataclass
 from typing import Optional
 
-from ....logging import get_logger
 from ...base import (
     IOMessage,
     IOMessageVisitor,
@@ -14,6 +13,7 @@ from ...base import (
     TextMessage,
     run_workflow,
 )
+from ...logging import get_logger
 
 logger = get_logger(__name__)
 
