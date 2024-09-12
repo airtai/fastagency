@@ -296,3 +296,6 @@ class OpenAPI:
     def register_for_execution(self, agent: "ConversableAgent") -> None:
         for f in self.registered_funcs:
             agent.register_for_execution()(f)
+
+    def get_functions(self) -> list[str]:
+        return [f.__name__ for f in self.registered_funcs]
