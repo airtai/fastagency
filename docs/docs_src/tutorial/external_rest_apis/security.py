@@ -4,9 +4,9 @@ from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency
-from fastagency.core import Chatable
-from fastagency.core.io.console import ConsoleIO
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency import Chatable
+from fastagency.ui.console import ConsoleUI
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 
@@ -65,4 +65,4 @@ def weather_workflow_with_security(io: Chatable, initial_message: str, session_i
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, io=ConsoleIO())
+app = FastAgency(wf=wf, io=ConsoleUI())
