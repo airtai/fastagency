@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from fastagency.api.openapi import OpenAPI
 
 
@@ -61,3 +63,34 @@ class TestOpenAPI:
         functions2 = client2.get_functions()
         expected2 = ["list_pets", "create_pets", "show_pet_by_id"]
         assert functions2 == expected2, functions2
+
+    def test_get_functions_to_register(self) -> None:
+        json_path = Path(__file__).parent / "templates" / "openapi.json"
+        openapi_json = json_path.read_text()
+        client = OpenAPI.create(openapi_json)
+
+        functions = client._get_functions_to_register(
+            "update_item_items__item_id__ships__ship__put"
+        )
+        expected = ["update_item_items__item_id__ships__ship__put"]
+        assert [f.__name__ for f in functions] == expected
+        with pytest.raises(ValueError) as e:  # noqa: PT011
+            client._get_functions_to_register("func_does_not_exists")
+        assert (
+            str(e.value)
+            == f"Following functions {set(['func_does_not_exists'])} are not valid functions"  # noqa: C405
+        ), str(e.value)
+
+        json2_path = Path(__file__).parent / "templates" / "openapi2.json"
+        openapi2_json = json2_path.read_text()
+        client2 = OpenAPI.create(openapi2_json)
+
+        functions2 = client2._get_functions_to_register("list_pets")
+        expected2 = ["list_pets"]
+        assert [f.__name__ for f in functions2] == expected2
+        with pytest.raises(ValueError) as e:  # noqa: PT011
+            client2._get_functions_to_register("func_does_not_exists")
+        assert (
+            str(e.value)
+            == f"Following functions {set(['func_does_not_exists'])} are not valid functions"  # noqa: C405
+        ), str(e.value)

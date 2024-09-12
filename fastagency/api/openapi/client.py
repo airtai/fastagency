@@ -9,13 +9,7 @@ from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
 from types import ModuleType
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Literal,
-    Optional,
-)
+from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
 
 import requests
 from fastapi_code_generator.__main__ import generate_code
@@ -288,13 +282,43 @@ class OpenAPI:
 
             return client
 
-    def register_for_llm(self, agent: "ConversableAgent") -> None:
+    def _get_functions_to_register(
+        self, functions: Optional[Union[str, list[str]]] = None
+    ) -> list[Callable[..., Any]]:
+        if functions is None:
+            return self.registered_funcs
+        if isinstance(functions, str):
+            functions = [functions]
+
+        funcs_to_register = [
+            f for f in self.registered_funcs if f.__name__ in functions
+        ]
+        if set(functions) != {f.__name__ for f in funcs_to_register}:
+            raise ValueError(
+                f"Following functions {set(functions) - set(f.__name__ for f in funcs_to_register)} are not valid functions"  # noqa: C401
+            )
+
+        return funcs_to_register
+
+    def register_for_llm(
+        self,
+        agent: "ConversableAgent",
+        functions: Optional[Union[str, list[str]]] = None,
+    ) -> None:
+        funcs_to_register = self._get_functions_to_register(functions)
+
         with add_to_globals(self.globals):
-            for f in self.registered_funcs:
+            for f in funcs_to_register:
                 agent.register_for_llm()(f)
 
-    def register_for_execution(self, agent: "ConversableAgent") -> None:
-        for f in self.registered_funcs:
+    def register_for_execution(
+        self,
+        agent: "ConversableAgent",
+        functions: Optional[Union[str, list[str]]] = None,
+    ) -> None:
+        funcs_to_register = self._get_functions_to_register(functions)
+
+        for f in funcs_to_register:
             agent.register_for_execution()(f)
 
     def get_functions(self) -> list[str]:
