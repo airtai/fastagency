@@ -70,7 +70,7 @@ class MesopUI(IOMessageVisitor):  # UI
 
     @property
     def app(self) -> Runnable:
-        app = self._app
+        app = MesopUI._app
         if app is None:
             raise RuntimeError("MesopUI has not been created yet.")
 
@@ -90,8 +90,8 @@ class MesopUI(IOMessageVisitor):  # UI
                 f.write(start_script)
 
             MESOP_FLAGS.mark_as_parsed()
-            self._main_path = str(main_path)
-            self._created_instance = self
+            MesopUI._main_path = str(main_path)
+            MesopUI._created_instance = self
 
             yield
 
@@ -106,7 +106,7 @@ class MesopUI(IOMessageVisitor):  # UI
             f"Starting MesopUI: import_string={self._import_string}, main_path={self._main_path}"
         )
 
-        self._app = app
+        MesopUI._app = app
 
         mesop_main(["mesop", self._main_path])
 
