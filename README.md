@@ -61,8 +61,8 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [ConsoleIO](https://fastagency.ai/latest/api/fastagency/core/io/console/ConsoleIO/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopIO](https://fastagency.ai/latest/api/fastagency/core/io/mesop/MesopIO/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
+- **Console**: Use the [ConsoleUI](https://fastagency.ai/latest/api/fastagency/io/console/ConsoleUI/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopUI](https://fastagency.ai/latest/api/fastagency/io/mesop/MesopUI/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/), to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
 
@@ -92,14 +92,14 @@ import os
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency.core import Chatable
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-from fastagency.core.io.console import ConsoleIO
+from fastagency import UI
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.ui.console import ConsoleUI
 
 from fastagency import FastAgency
 ```
 
-For Console applications, import `ConsoleIO` to handle command-line input and output.
+For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 
 ### Define Workflow
@@ -120,7 +120,7 @@ llm_config = {
 wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+def simple_workflow(ui: UI, initial_message: str, session_id: str) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
@@ -149,9 +149,9 @@ This code snippet sets up a simple learning chat between a student and a teacher
 Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
 ```python
-from fastagency.core.io.console import ConsoleIO
+from fastagency.ui.console import ConsoleUI
 
-app = FastAgency(wf=wf, io=ConsoleIO())
+app = FastAgency(wf=wf, io=ConsoleUI())
 ```
 
 ## Run Application

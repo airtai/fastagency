@@ -34,7 +34,7 @@ class ConsoleUI(IOMessageVisitor):  # implements UI
         """Initialize the console UI object.
 
         Args:
-            super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
+            super_conversation (Optional[UI], optional): The super conversation. Defaults to None.
         """
         self.super_conversation: Optional[ConsoleUI] = super_conversation
         self.sub_conversations: list[ConsoleUI] = []

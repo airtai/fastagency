@@ -4,7 +4,7 @@ from autogen.agentchat import ConversableAgent, UserProxyAgent
 
 from fastagency import UI
 from fastagency.ui.console import ConsoleUI
-from fastagency.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 
@@ -24,7 +24,7 @@ llm_config = {
 wf = AutoGenWorkflows()
 
 @wf.register(name="weatherman_workflow", description="Weatherman chat")
-def simple_workflow(io: UI, initial_message: str, session_id: str) -> str:
+def simple_workflow(ui: UI, initial_message: str, session_id: str) -> str:
 
     user_proxy = UserProxyAgent(
         name="User_Proxy",

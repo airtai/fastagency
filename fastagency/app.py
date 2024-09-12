@@ -13,7 +13,7 @@ class FastAgency:  # Runnable
 
         Args:
             wf (Workflows): The workflows object to use
-            ui (Chatable): The UI object to use
+            ui (UI): The UI object to use
         """
         self._wf = wf
         self._ui = ui

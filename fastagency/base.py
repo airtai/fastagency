@@ -264,7 +264,7 @@ def run_workflow(
 
     Args:
         wf (Workflows): The workflows object to use.
-        ui (Chatable): The UI object to use.
+        ui (UI): The UI object to use.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
         initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
     """
