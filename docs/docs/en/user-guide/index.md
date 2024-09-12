@@ -1,1 +1,24 @@
-# User guide
+# Introduction to FastAgency
+
+**FastAgency** is a open-source framework designed to accelerate the transition from prototype to production for multi-agent AI workflows. If you're a developer currently using the AutoGen framework in Jupyter notebooks, **FastAgency** allows you to seamlessly scale your prototype into fully functional applications. With its robust multi-framework support, unified programming interface, and powerful API integration capabilities, **FastAgency** streamlines the deployment process, saving time and effort while maintaining flexibility and performance.
+
+FastAgency is particularly useful for projects that rely on multiple AI agents to perform complex tasks, allowing developers to quickly deploy these agents in real-world environments. It provides a straightforward way to orchestrate these workflows, whether you're building a console-based solution or a web application.
+
+## Key Features
+
+- [**Multi-Runtime Support**](runtimes/): **FastAgency** is designed with versatility in mind, offering support for multiple agentic [runtimes](runtimes/). Currently, it supports **AutoGen** and plans to extend support to [CrewAI](https://www.crewai.com/){target="_blank"}, giving developers the flexibility to choose or switch between frameworks based on project needs. This multi-framework compatibility ensures that your investment in FastAgency will remain relevant as the ecosystem of agentic AI continues to evolve.
+
+- [**Unified Programming Interface Across UIs**](ui/): FastAgency provides a **common programming interface** that allows you to develop your core workflows once and deploy them across different user interfaces without rewriting significant portions of your code. This includes support for both **console-based applications** (via `ConsoleUI`) and **web-based applications** (via `MesopUI`), ensuring that you can rapidly iterate and deploy your solution across different environments. This saves development time and allows you to focus on refining agent interactions and functionality, rather than UI-specific code adjustments.
+
+- [**Easy Integration of External APIs**](api/): One of the most powerful features of FastAgency is its ability to integrate external APIs seamlessly into your agent workflows. With just a **single line of code**, you can import an API (such as one specified via OpenAPI), and in only two more lines, you can connect the API to your agents. This capability dramatically reduces the complexity of enabling AI agents to interact with external services, making it easy to enhance your workflows with real-time data, external processing, or third-party services. For example, an agent can call weather APIs to provide real-time weather information to users, improving the interactivity and relevance of your application with minimal development overhead.
+
+- [**Tester Class for Continuous Integration**](testing/): FastAgency also provides a **Tester Class**, making it easy to write and execute tests for your multi-agent workflows. This is critical for ensuring the robustness of your application, as it allows you to automatically verify agent behaviors and interactions. The tester class is designed to integrate with **continuous integration (CI)** pipelines, so you can maintain high standards of quality control throughout the development lifecycle. With automated testing in place, you can catch issues early and ensure that your AI-driven workflows behave as expected, even as you scale them into production environments.
+
+- [**Command-Line Interface (CLI) for Orchestration**](cli/): **FastAgency** includes a robust **command-line interface (CLI)** that allows developers to orchestrate and manage multi-agent applications directly from the terminal. With the CLI, you can easily run your workflows, pass parameters, and monitor agent interactions, all from a streamlined command-line environment. This is particularly useful for automating deployments, conducting tests, or integrating your agentic workflows into broader DevOps processes.
+
+## Why FastAgency?
+
+**FastAgency** stands out in its ability to bridge the gap between rapid prototyping and production-ready deployment. By integrating with familiar frameworks like AutoGen and simplifying API integration, it minimizes the overhead traditionally associated with deploying AI agents in real-world applications. Whether you're building interactive command-line tools or fully-featured web apps, **FastAgency** provides the tools to bring your multi-agent systems to life quickly, reliably, and at scale.
+
+Stay up to date with new features and integrations by following our documentation and community updates. FastAgency is continually evolving to support new frameworks, APIs, and deployment strategies to help you stay at the cutting edge of AI-driven development.
+
