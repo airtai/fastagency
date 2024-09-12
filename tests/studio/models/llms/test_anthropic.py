@@ -1,5 +1,7 @@
+import json
 import uuid
 
+import jsondiff
 import pytest
 
 from fastagency.studio.helpers import get_model_by_ref
@@ -49,7 +51,7 @@ class TestAnthropic:
                 name="Hello World!",
             )
 
-    def test_anthropic_model_schema(self) -> None:
+    def test_anthropic_model_schema(self, pydantic_version: float) -> None:
         schema = Anthropic.model_json_schema()
         expected = {
             "$defs": {
@@ -103,7 +105,7 @@ class TestAnthropic:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/AnthropicAPIKeyRef"}],
+                    "$ref": "#/$defs/AnthropicAPIKeyRef",
                     "description": "The API Key from Anthropic",
                     "title": "API Key",
                 },
@@ -138,6 +140,10 @@ class TestAnthropic:
             "type": "object",
         }
         # print(schema)
+        pydantic28_delta = '{"properties": {"api_key": {"allOf": [{"$$ref": "#/$defs/AnthropicAPIKeyRef"}], "$delete": ["$$ref"]}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
+            expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         assert schema == expected
 
     @pytest.mark.asyncio

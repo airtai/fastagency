@@ -1,5 +1,7 @@
+import json
 import uuid
 
+import jsondiff
 import openai
 import pytest
 
@@ -83,7 +85,7 @@ class TestOpenAI:
 
         assert set(model_list) == set(OpenAIModels.__args__), OpenAIModels.__args__  # type: ignore[attr-defined]
 
-    def test_openai_schema(self) -> None:
+    def test_openai_schema(self, pydantic_version: float) -> None:
         schema = OpenAI.model_json_schema()
         expected = {
             "$defs": {
@@ -152,7 +154,7 @@ class TestOpenAI:
                     "type": "string",
                 },
                 "api_key": {
-                    "allOf": [{"$ref": "#/$defs/OpenAIAPIKeyRef"}],
+                    "$ref": "#/$defs/OpenAIAPIKeyRef",
                     "description": "The API Key from OpenAI",
                     "title": "API Key",
                 },
@@ -187,6 +189,10 @@ class TestOpenAI:
             "type": "object",
         }
         # print(schema)
+        pydantic28_delta = '{"properties": {"api_key": {"allOf": [{"$$ref": "#/$defs/OpenAIAPIKeyRef"}], "$delete": ["$$ref"]}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
+            expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         assert schema == expected
 
     @pytest.mark.asyncio

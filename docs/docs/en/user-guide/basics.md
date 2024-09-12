@@ -66,8 +66,8 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [ConsoleIO](../api/fastagency/core/io/console/ConsoleIO.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/){target="_blank"} with [MesopIO](../api/fastagency/core/io/mesop/MesopIO.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
+- **Console**: Use the [ConsoleUI](../api/fastagency/io/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/){target="_blank"} with [MesopUI](../api/fastagency/io/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/){target="_blank"}, to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
 
@@ -116,7 +116,7 @@ Depending on the interface you choose, you'll need to import different modules. 
     {!> docs_src/getting_started/main_console.py [ln:1-8] !}
     ```
 
-    For Console applications, import `ConsoleIO` to handle command-line input and output.
+    For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 === "Mesop"
     ```python
@@ -124,14 +124,14 @@ Depending on the interface you choose, you'll need to import different modules. 
 
     from autogen.agentchat import ConversableAgent
 
-    from fastagency.core import Chatable
-    from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-    from fastagency.core.io.mesop import MesopIO
+    from fastagency import UI
+    from fastagency.runtimes.autogen.base import AutoGenWorkflows
+    from fastagency.ui.mesop import MesopUI
 
     from fastagency import FastAgency
     ```
 
-    For Mesop applications, import `MesopIO` to integrate with the Mesop web interface.
+    For Mesop applications, import `MesopUI` to integrate with the Mesop web interface.
 
 ### Define Workflow
 
@@ -152,16 +152,16 @@ Next, define your FastAgency application. This ties together your workflow and t
     {!> docs_src/getting_started/main_console.py [ln:7,46,47] !}
     ```
 
-    For Console applications, use `ConsoleIO` to handle user interaction via the command line.
+    For Console applications, use `ConsoleUI` to handle user interaction via the command line.
 
 === "Mesop"
     ```python
-    from fastagency.core.io.mesop import MesopIO
+    from fastagency.ui.mesop import MesopUI
 
-    app = FastAgency(wf=wf, io=MesopIO())
+    app = FastAgency(wf=wf, io=MesopUI())
     ```
 
-    For Mesop applications, use `MesopIO` to enable web-based interactions.
+    For Mesop applications, use `MesopUI` to enable web-based interactions.
 
 ### Run Application
 

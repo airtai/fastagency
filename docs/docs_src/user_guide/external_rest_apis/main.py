@@ -4,9 +4,9 @@ from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency
-from fastagency.core import Chatable
-from fastagency.core.io.console import ConsoleIO
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency import UI
+from fastagency.ui.console import ConsoleUI
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
 from fastagency.api.openapi import OpenAPI
 
@@ -27,7 +27,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_weather", description="Weather chat")
-def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+def weather_workflow(ui: UI, initial_message: str, session_id: str) -> str:
 
     weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
 
@@ -57,4 +57,4 @@ def weather_workflow(io: Chatable, initial_message: str, session_id: str) -> str
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, io=ConsoleIO())
+app = FastAgency(wf=wf, ui=ConsoleUI())

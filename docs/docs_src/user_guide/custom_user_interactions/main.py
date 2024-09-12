@@ -5,10 +5,10 @@ from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency
-from fastagency.core import Chatable
-from fastagency.core.base import MultipleChoice, SystemMessage, TextInput
-from fastagency.core.io.console import ConsoleIO
-from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
+from fastagency import UI
+from fastagency.base import MultipleChoice, SystemMessage, TextInput
+from fastagency.ui.console import ConsoleUI
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
 llm_config = {
     "config_list": [
@@ -24,7 +24,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")  # type: ignore[type-var]
-def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Optional[str]:
+def exam_learning(ui: UI, initial_message: str, session_id: str) -> Optional[str]:
 
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -65,7 +65,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
                     "5) Vitruvian Man",
                 ],
             )
-            return io.process_message(msg)
+            return ui.process_message(msg)
         except Exception as e:
             return f"retrieve_exam_questions() FAILED! {e}"
 
@@ -79,7 +79,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
                     "content": message,
                 },
             )
-            io.process_message(msg)
+            ui.process_message(msg)
             return "Final answers stored."
         except Exception as e:
             return f"write_final_answers() FAILED! {e}"
@@ -94,7 +94,7 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
                 prompt=message,
                 choices=["A", "B", "C", "D", "F"],
             )
-            return io.process_message(msg)
+            return ui.process_message(msg)
         except Exception as e:
             return f"get_final_grade() FAILED! {e}"
 
@@ -132,4 +132,4 @@ def exam_learning(io: Chatable, initial_message: str, session_id: str) -> Option
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, io=ConsoleIO())
+app = FastAgency(wf=wf, ui=ConsoleUI())
