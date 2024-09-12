@@ -1,7 +1,13 @@
 import json
+from collections.abc import Iterable, Iterator
 from typing import Optional
+from uuid import uuid4
 
 import mesop as me
+
+from fastagency.core.base import AskingMessage, WorkflowCompleted
+from fastagency.core.io.mesop.base import MesopMessage
+from fastagency.core.io.mesop.send_prompt import send_user_feedback_to_autogen
 
 from ...base import (
     IOMessage,
@@ -12,32 +18,86 @@ from ...base import (
     TextMessage,
 )
 from .components.ui_common import darken_hex_color
+from .data_model import Conversation, ConversationMessage, State
 
 
-def message_box(message: str, read_only: bool) -> None:
-    message_dict = json.loads(message)
-    level = message_dict["level"]
-    conversation_id = message_dict["conversationId"]
-    io_message_dict = message_dict["io_message"]
+def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
+    for message in responses:
+        state = me.state(State)
+        handle_message(state, message)
+        yield
+        me.scroll_into_view(key="end_of_messages")
+        yield
+    yield
+
+
+def message_box(message: ConversationMessage, read_only: bool) -> None:
+    io_message_dict = json.loads(message.io_message_json)
+    level = message.level
+    conversation_id = message.conversation_id
     io_message = IOMessage.create(**io_message_dict)
-    visitor = MesopGUIMessageVisitor(level, conversation_id, read_only)
+    visitor = MesopGUIMessageVisitor(level, conversation_id, message, read_only)
     visitor.process_message(io_message)
+
+
+def handle_message(state: State, message: MesopMessage) -> None:
+    conversation = state.conversation
+    messages = conversation.messages
+    level = message.conversation.level
+    conversation_id = message.conversation.id
+    io_message = message.io_message
+    message_dict = io_message.model_dump()
+    message_json = json.dumps(message_dict)
+    conversation_message = ConversationMessage(
+        level=level,
+        conversation_id=conversation_id,
+        io_message_json=message_json,
+        feedback=[],
+    )
+    messages.append(conversation_message)
+    conversation.messages = list(messages)
+    if isinstance(io_message, AskingMessage):
+        conversation.waiting_for_feedback = True
+        conversation.completed = False
+    if isinstance(io_message, WorkflowCompleted):
+        conversation.completed = True
+        conversation.waiting_for_feedback = False
+        if not conversation.is_from_the_past:
+            uuid: str = uuid4().hex
+            becomme_past = Conversation(
+                id=uuid,
+                title=conversation.title,
+                messages=conversation.messages,
+                completed=True,
+                is_from_the_past=True,
+                waiting_for_feedback=False,
+            )
+            state.past_conversations.insert(0, becomme_past)
 
 
 class MesopGUIMessageVisitor(IOMessageVisitor):
     def __init__(
-        self, level: int, conversation_id: str, read_only: bool = False
+        self,
+        level: int,
+        conversation_id: str,
+        conversation_message: ConversationMessage,
+        read_only: bool = False,
     ) -> None:
         """Initialize the MesopGUIMessageVisitor object.
 
         Args:
             level (int): The level of the message.
             conversation_id (str): The ID of the conversation.
+            conversation_message (ConversationMessage): Conversation message that wraps the visited io_message
             read_only (bool): Input messages are disabled in read only mode
         """
         self._level = level
         self._conversation_id = conversation_id
         self._readonly = read_only
+        self._conversation_message = conversation_message
+
+    def _has_feedback(self) -> bool:
+        return len(self._conversation_message.feedback) > 0
 
     def visit_default(self, message: IOMessage) -> None:
         base_color = "#aff"
@@ -84,7 +144,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             suggestions = ",".join(suggestion for suggestion in message.suggestions)
             text += "\n" + suggestions
 
-        base_color = "#bff"
+        base_color = "#dff"
         with me.box(
             style=me.Style(
                 background=base_color,
@@ -97,19 +157,37 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.markdown(text)
         return ""
 
-    def visit_multiple_choice(self, message: MultipleChoice) -> str:
-        def on_change(ev: me.RadioChangeEvent) -> None:
-            # print("odabrao", ev.value)
-            ...
+    def _provide_feedback(self, feedback: str) -> Iterator[None]:
+        state = me.state(State)
+        conversation = state.conversation
+        conversation.feedback = ""
+        conversation.waiting_for_feedback = False
+        yield
+        me.scroll_into_view(key="end_of_messages")
+        yield
+        responses = send_user_feedback_to_autogen(feedback)
+        yield from consume_responses(responses)
 
-        text = message.prompt if message.prompt else "Please enter a value"
+    def visit_multiple_choice(self, message: MultipleChoice) -> str:
+        def on_change(ev: me.RadioChangeEvent) -> Iterator[None]:
+            feedback = ev.value
+            self._conversation_message.feedback = [feedback]
+            yield from self._provide_feedback(feedback)
+
+        prompt = message.prompt if message.prompt else "Please enter a value"
         if message.choices:
             options = map(
-                lambda choice: me.RadioOption(label=choice, value=choice),
+                lambda choice: me.RadioOption(
+                    label=(choice if choice != message.default else choice + " *"),
+                    value=choice,
+                ),
                 message.choices,
             )
         base_color = "#dff"
-        pre_selected = message.default if message.default is not None else ""
+        if self._has_feedback():
+            pre_selected = {"value": self._conversation_message.feedback[0]}
+        else:
+            pre_selected = {}
         with me.box(
             style=me.Style(
                 background=base_color,
@@ -119,13 +197,13 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             )
         ):
             self._header(message, base_color, title="Input requested")
-            me.text(text)
+            me.text(prompt)
             me.radio(
                 on_change=on_change,
-                disabled=self._readonly,
+                disabled=self._readonly or self._has_feedback(),
                 options=options,
-                value=pre_selected,
                 style=me.Style(display="flex", flex_direction="column"),
+                **pre_selected,
             )
         return ""
 
