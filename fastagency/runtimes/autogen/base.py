@@ -230,7 +230,9 @@ class IOStreamAdapter:  # IOStream
 class AutoGenWorkflows(Workflows):
     def __init__(self) -> None:
         """Initialize the workflows."""
-        self._workflows: dict[str, tuple[Callable[[Chatable, str, str], str], str]] = {}
+        self._workflows: dict[
+            str, tuple[Callable[[Workflows, Chatable, str, str], str], str]
+        ] = {}
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
@@ -255,7 +257,7 @@ class AutoGenWorkflows(Workflows):
         iostream = IOStreamAdapter(io)
 
         with IOStream.set_default(iostream):
-            return workflow(io, initial_message, session_id)
+            return workflow(self, io, initial_message, session_id)
 
     @property
     def names(self) -> list[str]:

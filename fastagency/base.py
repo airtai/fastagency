@@ -215,7 +215,7 @@ class Chatable(Protocol):
     def create_subconversation(self) -> "Chatable": ...
 
 
-Workflow = TypeVar("Workflow", bound=Callable[[Chatable, str, str], str])
+Workflow = TypeVar("Workflow", bound=Callable[["Workflows", Chatable, str, str], str])
 
 
 @runtime_checkable

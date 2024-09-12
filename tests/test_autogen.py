@@ -4,6 +4,7 @@ import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 
 from fastagency import Chatable, IOMessage
+from fastagency.base import Workflows
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.base import _findall, _match
 from fastagency.ui.console import ConsoleUI
@@ -126,7 +127,9 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+    def simple_workflow(
+        wf: Workflows, io: Chatable, initial_message: str, session_id: str
+    ) -> str:
         student_agent = ConversableAgent(
             name="Student_Agent",
             system_message="You are a student willing to learn.",
@@ -195,7 +198,9 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(io: Chatable, initial_message: str, session_id: str) -> str:
+        def workflow(
+            wf: Workflows, io: Chatable, initial_message: str, session_id: str
+        ) -> str:
             user_proxy = UserProxyAgent(
                 name="User_Proxy",
                 human_input_mode="ALWAYS",
