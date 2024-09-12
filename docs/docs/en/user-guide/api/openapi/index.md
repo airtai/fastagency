@@ -7,7 +7,7 @@ This example demonstrates how to integrate external REST API calls into `AutoGen
 In this example, we'll use a simple [weather API](https://weather.tools.fastagency.ai/docs){target="_blank"} and its specification available at [https://weather.tools.fastagency.ai/openapi.json](https://weather.tools.fastagency.ai/openapi.json){target="_blank"}.
 
 !!! note
-    The [weather API](https://weather.tools.fastagency.ai/docs){target="_blank"} has two routes: one for the daily weather forecast, which has no security, and another for the hourly forecast, which is secured. We will learn how to access external APIs that are secured in the [next chapter](./security.md){.internal-link}.
+    The [weather API](https://weather.tools.fastagency.ai/docs){target="_blank"} has two routes: one for the daily weather forecast, which has no security, and another for the hourly forecast, which is secured. We will learn how to access external APIs that are secured in the [next chapter](../security.md){.internal-link}.
 
 ## Install
 
