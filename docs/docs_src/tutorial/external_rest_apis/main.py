@@ -3,10 +3,10 @@ import os
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
-from fastagency import FastAgency
-from fastagency import UI
+from fastagency import FastAgency, Workflows
+from fastagency import Chatable
 from fastagency.ui.console import ConsoleUI
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
 
 from fastagency.api.openapi import OpenAPI
 
@@ -21,14 +21,14 @@ llm_config = {
     "temperature": 0.0,
 }
 
-openapi_url="https://weather.tools.fastagency.ai/openapi.json"
-
-weather_api = OpenAPI.create(openapi_url=openapi_url)
+WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
 
 wf = AutoGenWorkflows()
 
-@wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
-def weather_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str) -> str:
+
+@wf.register(name="simple_weather", description="Weather chat")
+def weather_workflow(wf: Workflows, io: Chatable, initial_message: str, session_id: str) -> str:
+    weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
 
     user_agent = UserProxyAgent(
         name="User_Agent",
@@ -43,20 +43,8 @@ def weather_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session
         human_input_mode="NEVER",
     )
 
-    wf.register_api(  # type: ignore[attr-defined]
-        api=weather_api,
-        callers=[user_agent],
-        executors=[weather_agent],
-        functions=[
-            {
-                "get_daily_weather_daily_get": {
-                    "name": "get_daily_weather",
-                    "description": "Get the daily weather",
-                }
-            },
-            "get_daily_weather_weekly_get"
-        ]
-    )
+    weather_api.register_for_llm(weather_agent)
+    weather_api.register_for_execution(user_agent)
 
     chat_result = user_agent.initiate_chat(
         weather_agent,
@@ -68,4 +56,4 @@ def weather_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(wf=wf, io=ConsoleUI())

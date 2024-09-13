@@ -23,7 +23,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 - **[AutoGenWorkflows](../../../../api/fastagency/runtime/autogen/base/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
-Next, we configure the language model that will power the agents. In this case, we're using **GPT-4o-mini**, and the API key is retrieved from the environment.
+Next, we configure the language model that will power the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
 
 ```python
 {! docs_src/getting_started/main_console.py [ln:9-19] !}
@@ -61,13 +61,13 @@ fastagency run main_console.py
 
 This will launch the console interface, allowing you to input messages as the student and observe how the teacher agent responds.
 
-**Note**: Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o-mini. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+**Note**: Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
 ### Debugging Tips
 If you encounter issues running the application, ensure that:
 - The OpenAI API key is correctly set in your environment variables.
 - All necessary packages are installed, especially the `fastagency[autogen]` dependencies.
-- The API connection to GPT-4o-mini is functional and responds as expected.
+- The API connection to GPT-4o is functional and responds as expected.
 
 ---
 

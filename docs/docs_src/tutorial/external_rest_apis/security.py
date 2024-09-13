@@ -4,12 +4,11 @@ from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
 from fastagency import FastAgency, Workflows
-from fastagency import UI
+from fastagency import Chatable
 from fastagency.ui.console import ConsoleUI
-from fastagency.runtime.autogen.base import AutoGenWorkflows
-
-from fastagency.api.openapi import OpenAPI
-
+from fastagency.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi.security import APIKeyHeader
 
 llm_config = {
     "config_list": [
@@ -26,10 +25,19 @@ WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="simple_weather", description="Weather chat")
-def weather_workflow(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
+@wf.register(name="simple_weather_with_security", description="Weather chat with security")
+def weather_workflow_with_security(wf: Workflows, io: Chatable, initial_message: str, session_id: str) -> str:
 
-    weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
+    weather_client = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
+
+    # Set global security params for all methods
+    weather_client.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
+
+    # Set security params for a specific method
+    # weather_client.set_security_params(
+    #     APIKeyHeader.Parameters(value="secure weather key"),
+    #     "get_daily_weather_daily_get",
+    # )
 
     user_agent = UserProxyAgent(
         name="User_Agent",
@@ -44,11 +52,8 @@ def weather_workflow(wf: Workflows, ui: UI, initial_message: str, session_id: st
         human_input_mode="NEVER",
     )
 
-    wf.register_api(
-        api=weather_api,
-        callers=user_agent,
-        executors=weather_agent,
-    )
+    weather_client.register_for_llm(weather_agent)
+    weather_client.register_for_execution(user_agent)
 
     chat_result = user_agent.initiate_chat(
         weather_agent,
@@ -60,4 +65,4 @@ def weather_workflow(wf: Workflows, ui: UI, initial_message: str, session_id: st
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(wf=wf, io=ConsoleUI())
