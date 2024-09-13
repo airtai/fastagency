@@ -21,18 +21,16 @@ llm_config = {
 }
 
 WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
+weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
+
+# Set global security params for all methods
+weather_api.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
 
 wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_weather_with_security", description="Weather chat with security")
 def weather_workflow_with_security(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
-
-    weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
-
-    # Set global security params for all methods
-    weather_api.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
-
     # Set security params for a specific method
     # weather_api.set_security_params(
     #     APIKeyHeader.Parameters(value="secure weather key"),
