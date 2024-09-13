@@ -4,23 +4,86 @@ https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/
 */
 
 :root {
+    --color-dark-red: #E43F2B;
+    --color-light-red: #F25C49;
+
+    --color-dark-blue: #2A2C31;
+    --color-light-blue: #164EFF;
+    --color-lighter-blue: #64BAFD;
+
+    /* --color-lighter-blue with 70% opacity */
+    --color-light-blue-transparent: #64BAFDB3;
+
+    --color-dark-yellow: #FBAF21; /* or #FEBE09 */
+    --color-light-yellow: #FFF588;
+    --color-lighter-yellow: #FFFBD0;
+
+    --color-white: #ffffff;
+    --color-slate-bg: hsla(var(--md-hue), 7%, 18%, 1);
+
+  }
+
+:root {
     /* Primary color */
-    --md-primary-fg-color: #E43F2B;
-    --md-primary-fg-color--light: #E43F2B;
-    --md-primary-fg-color--dark: #E43F2B;
+    --md-primary-fg-color: var(--color-dark-red);
+    --md-primary-fg-color--light: var(--color-dark-red);
+    --md-primary-fg-color--dark: var(--color-dark-red);
 
     /* Accent color */
-    --md-accent-fg-color: #164DFF;
-    --md-accent-fg-color--transparent: #164DFF1A;
+    --md-accent-fg-color: var(--color-light-blue);
+    --md-accent-fg-color--transparent: var(--color-light-blue)1A;
 
     /* Text color */
-    --md-typeset-color: #ffffff;
+    --md-typeset-color: var(--color-white);
 }
 
 [data-md-color-scheme="default"] {
     /* Footer background color */
-    --md-footer-bg-color: #F25C49;
-    --md-footer-bg-color--dark: #E43F2B;
+    --md-footer-bg-color: var(--color-light-red);
+    --md-footer-bg-color--dark: var(--color-dark-red);
+
+    .highlight .hll {
+        background-color: var(--color-light-yellow);
+        box-shadow: 2px 0 0 0 var(--color-light-blue) inset;
+    }
+
+    .highlight .bp, .highlight .nb, .highlight .no {
+        color: var(--color-light-blue);
+    }
+
+    code.doc-symbol-class {
+        color: var(--color-light-blue);
+        background: var(--color-light-blue-transparent);
+    }
+    code.doc-symbol-attribute {
+        color: var(--color-dark-red);
+    }
+
+    code.doc-symbol-method {
+        color: var(--color-dark-blue);
+    }
+
+    .md-typeset .admonition.note, .md-typeset details.note {
+        border-color: var(--color-light-blue);
+    }
+
+    .md-typeset .note>.admonition-title:before, .md-typeset .note>summary:before {
+        background-color: var(--color-light-blue);
+
+        /* background-color: transparent;
+        background-image: url('/assets/img/logo.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center; */
+    }
+
+    .md-typeset .admonition.note:focus-within, .md-typeset details.note:focus-within {
+        box-shadow: 0 0 0 .2rem var(--color-light-blue-transparent);
+    }
+
+    .md-typeset .note>.admonition-title, .md-typeset .note>summary {
+        background-color: var(--color-light-blue-transparent);
+    }
 
 }
 
@@ -28,10 +91,51 @@ https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/
     --md-default-bg-color: hsla(var(--md-hue), 7%, 18%, 1);
 
     /* Footer background color */
-    --md-footer-bg-color: #F25C49;
-    --md-footer-bg-color--dark: #E43F2B;
+    --md-footer-bg-color: var(--color-light-red);
+    --md-footer-bg-color--dark: var(--color-dark-red);
 
-    --md-typeset-a-color: #E43F2B;
+    --md-typeset-a-color: var(--color-dark-red);
+
+    .highlight .hll {
+        background-color: var(--color-light-yellow);
+        box-shadow: 2px 0 0 0 var(--color-light-blue) inset;
+    }
+
+    .highlight .o, .highlight .ow, .highlight .bp, .highlight .nb, .highlight .no, .highlight .p  {
+        color: var(--color-lighter-blue);
+    }
+
+    .highlight .hll > .n {
+        color: var(--color-light-blue);
+    }
+
+    code.doc-symbol-class {
+        color: var(--color-lighter-blue);
+        background: var(--color-light-blue-transparent);
+    }
+    code.doc-symbol-attribute {
+        color: var(--color-light-red);
+    }
+
+    code.doc-symbol-method {
+        color: var(--color-lighter-blue);
+    }
+
+    .md-typeset .admonition.note, .md-typeset details.note {
+        border-color: var(--color-lighter-blue);
+    }
+
+    .md-typeset .note>.admonition-title:before, .md-typeset .note>summary:before {
+        background-color: var(--color-lighter-blue);
+    }
+
+    .md-typeset .admonition.note:focus-within, .md-typeset details.note:focus-within {
+        box-shadow: 0 0 0 .2rem var(--color-light-blue);
+    }
+
+    .md-typeset .note>.admonition-title, .md-typeset .note>summary {
+        background-color: var(--color-light-blue);
+    }
 }
 
 a.external-link {
@@ -63,6 +167,10 @@ a.internal-link::after {
     padding: 0 .2rem;
 }
 
-.highlight .hll {
-    background-color: #FFF587;
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt {
+    color: var(--color-light-blue);
+}
+
+.highlight .nd, .highlight .ni, .highlight .nl, .highlight .nt {  /* codespell:ignore nd */
+    color: var(--color-lighter-blue);
 }

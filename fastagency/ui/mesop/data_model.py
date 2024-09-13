@@ -10,6 +10,7 @@ class ConversationMessage:
     level: int = 0
     conversation_id: str = ""
     feedback: list[str] = field(default_factory=list)
+    feedback_completed: bool = False
 
 
 @dataclass

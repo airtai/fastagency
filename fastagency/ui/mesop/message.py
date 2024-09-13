@@ -100,6 +100,9 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
     def _has_feedback(self) -> bool:
         return len(self._conversation_message.feedback) > 0
 
+    def _is_completed(self) -> bool:
+        return self._conversation_message.feedback_completed
+
     def _provide_feedback(self, feedback: str) -> Iterator[None]:
         state = me.state(State)
         conversation = state.conversation
@@ -155,7 +158,12 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             state = me.state(State)
             feedback = state.conversation.feedback
             self._conversation_message.feedback = [feedback]
+            self._conversation_message.feedback_completed = True
             yield from self._provide_feedback(feedback)
+
+        def value_if_completed() -> Optional[str]:
+            message = self._conversation_message
+            return message.feedback[0] if message.feedback_completed else None
 
         base_color = "#dff"
         prompt = message.prompt if message.prompt else "Please enter a value"
@@ -174,14 +182,23 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             self._header(message, base_color, title="Input requested")
             me.markdown(prompt)
             input_user_feedback(
-                on_input, disabled=self._readonly or self._has_feedback()
+                on_input,
+                disabled=self._readonly or self._has_feedback(),
+                value=value_if_completed(),
             )
         return ""
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
+        if message.single:
+            return self._visit_single_choice(message)
+        else:
+            return self._visit_many_choices(message)
+
+    def _visit_single_choice(self, message: MultipleChoice) -> str:
         def on_change(ev: me.RadioChangeEvent) -> Iterator[None]:
             feedback = ev.value
             self._conversation_message.feedback = [feedback]
+            self._conversation_message.feedback_completed = True
             yield from self._provide_feedback(feedback)
 
         base_color = "#dff"
@@ -210,11 +227,58 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.text(prompt)
             me.radio(
                 on_change=on_change,
-                disabled=self._readonly or self._has_feedback(),
+                disabled=self._readonly or self._is_completed(),
                 options=options,
                 style=me.Style(display="flex", flex_direction="column"),
                 **pre_selected,
             )
+        return ""
+
+    def _visit_many_choices(self, message: MultipleChoice) -> str:
+        def on_change(ev: me.CheckboxChangeEvent) -> None:
+            message_feedback = self._conversation_message.feedback
+            choice = ev.key
+            yes_no = ev.checked
+            if yes_no:
+                if choice not in message_feedback:
+                    message_feedback.append(choice)
+            else:
+                if choice in message_feedback:
+                    message_feedback.remove(choice)
+
+        def on_click(ev: me.ClickEvent) -> Iterator[None]:
+            message_feedback = self._conversation_message.feedback
+            feedback = ",".join(message_feedback)
+            self._conversation_message.feedback_completed = True
+            yield from self._provide_feedback(feedback)
+
+        def should_be_checked(option: str) -> bool:
+            conversation_message = self._conversation_message
+            return option in conversation_message.feedback
+
+        base_color = "#dff"
+        prompt = message.prompt if message.prompt else "Please enter a value"
+        with me.box(
+            style=me.Style(
+                background=base_color,
+                padding=me.Padding.all(16),
+                border_radius=16,
+                margin=me.Margin.symmetric(vertical=16),
+            )
+        ):
+            self._header(message, base_color, title="Input requested")
+            me.text(prompt)
+            if message.choices:
+                with me.box(style=me.Style(display="flex", flex_direction="column")):
+                    for option in message.choices:
+                        me.checkbox(
+                            label=option,
+                            key=option,
+                            checked=should_be_checked(option),
+                            on_change=on_change,
+                            disabled=self._readonly or self._is_completed(),
+                        )
+            me.button(label="Ok", on_click=on_click)
         return ""
 
     def process_message(self, message: IOMessage) -> Optional[str]:

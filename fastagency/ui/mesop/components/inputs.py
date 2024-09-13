@@ -1,5 +1,5 @@
 from collections.abc import Iterator
-from typing import Callable
+from typing import Callable, Optional
 
 import mesop as me
 
@@ -12,7 +12,9 @@ def _on_blur(e: me.InputBlurEvent) -> None:
 
 
 def input_user_feedback(
-    send_feedback: Callable[[me.ClickEvent], Iterator[None]], disabled: bool = False
+    send_feedback: Callable[[me.ClickEvent], Iterator[None]],
+    disabled: bool = False,
+    value: Optional[str] = None,
 ) -> None:
     def _on_feedback_blur(e: me.InputBlurEvent) -> None:
         state = me.state(State)
@@ -27,17 +29,20 @@ def input_user_feedback(
             width="100%",
         )
     ):
+        optional_value = {"value": value} if value is not None else {}
+
         with me.box(style=me.Style(flex_grow=1)):
             me.native_textarea(
                 placeholder="Provide a feedback to the team",
                 on_blur=_on_feedback_blur,
-                disabled=disabled,
+                readonly=disabled,
                 style=me.Style(
                     padding=me.Padding(top=16, left=16),
                     outline="none",
                     width="100%",
                     border=me.Border.all(me.BorderSide(style="none")),
                 ),
+                **optional_value,
             )
         with me.content_button(
             type="icon",
