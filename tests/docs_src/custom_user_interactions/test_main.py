@@ -10,11 +10,11 @@ INPUT_MESSAGE = "Get me mock english exam questions for 5th grade"
 
 
 @pytest.mark.openai
-def test_cli_with_security(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", InputMock([INPUT_MESSAGE]))
 
     result = runner.invoke(
-        app, ["run", "docs/docs_src/tutorial/custom_user_interactions/main.py"]
+        app, ["run", "docs/docs_src/user_guide/custom_user_interactions/main.py"]
     )
     assert INPUT_MESSAGE in result.stdout
     assert "retrieve_exam_questions" in result.stdout

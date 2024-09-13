@@ -4,14 +4,22 @@ search:
 ---
 - Getting Started
     - [Getting Started](getting-started/index.md)
-- Tutorial
-    - [Getting Started](tutorial/index.md)
-    - [Using External REST APIs](tutorial/external-rest-apis/index.md)
-    - [Using External REST APIs with security](tutorial/external-rest-apis/security.md)
-    - [Custom User Interactions](tutorial/custom-user-interactions/index.md)
+- [User guide](user-guide/index.md)
+    - [Runtimes](user-guide/runtime/index.md)
+        - [AutoGen](user-guide/runtime/autogen/index.md)
+            - [User interaction](user-guide/runtime/autogen/interactions.md)
+        - [CrewAI](user-guide/runtime/crewai/basics.md)
+    - [UI](user-guide/ui/index.md)
+        - [Console](user-guide/ui/console/basics.md)
+        - [Mesop](user-guide/ui/mesop/basics.md)
+        - [FastAPI](user-guide/ui/fastapi/basics.md)
+    - [API-s](user-guide/api/index.md)
+        - [OpenAPI](user-guide/api/openapi/index.md)
+        - [Security](user-guide/api/security.md)
+    - [Testing](user-guide/testing/index.md)
+    - [CLI](user-guide/cli/index.md)
 - Reference
     - fastagency
-        - [Chatable](api/fastagency/Chatable.md)
         - [FastAgency](api/fastagency/FastAgency.md)
         - [FunctionCallExecution](api/fastagency/FunctionCallExecution.md)
         - [IOMessage](api/fastagency/IOMessage.md)
@@ -19,6 +27,7 @@ search:
         - [SuggestedFunctionCall](api/fastagency/SuggestedFunctionCall.md)
         - [TextInput](api/fastagency/TextInput.md)
         - [TextMessage](api/fastagency/TextMessage.md)
+        - [UI](api/fastagency/UI.md)
         - [Workflows](api/fastagency/Workflows.md)
         - api
             - openapi
@@ -42,7 +51,6 @@ search:
             - [FastAgency](api/fastagency/app/FastAgency.md)
         - base
             - [AskingMessage](api/fastagency/base/AskingMessage.md)
-            - [Chatable](api/fastagency/base/Chatable.md)
             - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
             - [IOMessage](api/fastagency/base/IOMessage.md)
             - [IOMessageVisitor](api/fastagency/base/IOMessageVisitor.md)
@@ -52,6 +60,7 @@ search:
             - [SystemMessage](api/fastagency/base/SystemMessage.md)
             - [TextInput](api/fastagency/base/TextInput.md)
             - [TextMessage](api/fastagency/base/TextMessage.md)
+            - [UI](api/fastagency/base/UI.md)
             - [WorkflowCompleted](api/fastagency/base/WorkflowCompleted.md)
             - [Workflows](api/fastagency/base/Workflows.md)
             - [run_workflow](api/fastagency/base/run_workflow.md)
@@ -76,14 +85,14 @@ search:
                 - [setup_logging](api/fastagency/cli/logging/setup_logging.md)
         - logging
             - [get_logger](api/fastagency/logging/get_logger.md)
-        - runtimes
+        - runtime
             - autogen
-                - [AutoGenWorkflows](api/fastagency/runtimes/autogen/AutoGenWorkflows.md)
-                - [IOStreamAdapter](api/fastagency/runtimes/autogen/IOStreamAdapter.md)
+                - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
+                - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
                 - base
-                    - [AutoGenWorkflows](api/fastagency/runtimes/autogen/base/AutoGenWorkflows.md)
-                    - [CurrentMessage](api/fastagency/runtimes/autogen/base/CurrentMessage.md)
-                    - [IOStreamAdapter](api/fastagency/runtimes/autogen/base/IOStreamAdapter.md)
+                    - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
+                    - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
+                    - [IOStreamAdapter](api/fastagency/runtime/autogen/base/IOStreamAdapter.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
@@ -251,7 +260,7 @@ search:
                 - main
                     - [conversation_box](api/fastagency/ui/mesop/main/conversation_box.md)
                     - [conversation_starter_box](api/fastagency/ui/mesop/main/conversation_starter_box.md)
-                    - [get_workflows](api/fastagency/ui/mesop/main/get_workflows.md)
+                    - [get_ui](api/fastagency/ui/mesop/main/get_ui.md)
                     - [home_page](api/fastagency/ui/mesop/main/home_page.md)
                     - [on_user_feedback](api/fastagency/ui/mesop/main/on_user_feedback.md)
                     - [past_conversations_box](api/fastagency/ui/mesop/main/past_conversations_box.md)
@@ -262,7 +271,7 @@ search:
                 - send_prompt
                     - [send_prompt_to_autogen](api/fastagency/ui/mesop/send_prompt/send_prompt_to_autogen.md)
                     - [send_user_feedback_to_autogen](api/fastagency/ui/mesop/send_prompt/send_user_feedback_to_autogen.md)
-- Contributing
-    - [Development](getting-started/contributing/CONTRIBUTING.md)
-    - [Documentation](getting-started/contributing/docs.md)
+- [Contributing](contributing/index.md)
+    - [Development](contributing/CONTRIBUTING.md)
+    - [Documentation](contributing/docs.md)
 - [Release Notes](release.md)

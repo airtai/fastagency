@@ -2,9 +2,9 @@ import os
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency import Chatable
+from fastagency import UI
 from fastagency.ui.mesop import MesopUI
-from fastagency.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.runtime.autogen.base import AutoGenWorkflows
 
 from fastagency import FastAgency
 
@@ -22,7 +22,7 @@ llm_config = {
 wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(wf: AutoGenWorkflows, io: Chatable, initial_message: str, session_id: str) -> str:
+def simple_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
@@ -43,4 +43,4 @@ def simple_workflow(wf: AutoGenWorkflows, io: Chatable, initial_message: str, se
 
     return chat_result.summary
 
-app = FastAgency(wf=wf, io=MesopUI())
+app = FastAgency(wf=wf, ui=MesopUI())

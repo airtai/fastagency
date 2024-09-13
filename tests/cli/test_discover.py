@@ -17,12 +17,12 @@ def import_fixture() -> Generator[dict[str, Any], None, None]:
     # Create a temporary file for testing
     file_content = """
 from fastagency.ui.console import ConsoleUI
-from fastagency.runtimes.autogen.base import AutoGenWorkflows
+from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency import FastAgency
 
 wf = AutoGenWorkflows()
 
-app = FastAgency(wf=wf, io=ConsoleUI())
+app = FastAgency(wf=wf, ui=ConsoleUI())
 
 """
     with TemporaryDirectory() as tmp_dir:

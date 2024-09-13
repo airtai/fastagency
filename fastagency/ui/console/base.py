@@ -1,6 +1,8 @@
 import getpass
 import json
 import textwrap
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import Optional
 
@@ -18,7 +20,7 @@ from ...logging import get_logger
 logger = get_logger(__name__)
 
 
-class ConsoleUI(IOMessageVisitor):  # implements Chatable
+class ConsoleUI(IOMessageVisitor):  # implements UI
     @dataclass
     class ConsoleMessage:
         """A console message."""
@@ -29,16 +31,17 @@ class ConsoleUI(IOMessageVisitor):  # implements Chatable
         body: Optional[str]
 
     def __init__(self, super_conversation: Optional["ConsoleUI"] = None) -> None:
-        """Initialize the console IO object.
+        """Initialize the console UI object.
 
         Args:
-            super_conversation (Optional[Chatable], optional): The super conversation. Defaults to None.
+            super_conversation (Optional[UI], optional): The super conversation. Defaults to None.
         """
         self.super_conversation: Optional[ConsoleUI] = super_conversation
         self.sub_conversations: list[ConsoleUI] = []
 
-    def create(self, app: Runnable, import_string: str) -> None:
-        pass
+    @contextmanager
+    def create(self, app: Runnable, import_string: str) -> Iterator[None]:
+        yield
 
     def start(
         self,
