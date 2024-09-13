@@ -11,7 +11,7 @@ from fastagency import FastAgency
 llm_config = {
     "config_list": [
         {
-            "model": "gpt-4o-mini",
+            "model": "gpt-4o",
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],

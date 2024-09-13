@@ -22,4 +22,4 @@ def openai_llm_config(model: str) -> dict[str, Any]:
 
 openai_gpt4o_llm_config = openai_llm_config("gpt-4o")
 
-openai_gpt4o_mini_llm_config = openai_llm_config("gpt-4o-mini")
+openai_gpt4o_mini_llm_config = openai_llm_config("gpt-4o")

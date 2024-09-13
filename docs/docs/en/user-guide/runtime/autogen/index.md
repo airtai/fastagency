@@ -26,7 +26,7 @@ The example starts by importing the necessary modules from **AutoGen** and **Fas
 ```
 
 #### 2. **Configure the Language Model (LLM)**
-Here, the large language model is configured to use the `gpt-4o-mini` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
+Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
 
 ```python
 {! docs_src/user_guide/runtime/autogen/main.py [ln:12-22] !}
