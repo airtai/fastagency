@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import FastAgency
 from fastagency import UI
 from fastagency.base import MultipleChoice, SystemMessage, TextInput
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 
 llm_config = {
@@ -53,17 +53,18 @@ def exam_learning(ui: UI, initial_message: str, session_id: str) -> str:
         message: Annotated[str, "Message for examiner"]
     ) -> Optional[str]:
         try:
-            msg = TextInput(
+            msg = MultipleChoice(
                 sender="student",
                 recipient="teacher",
                 prompt=message,
-                suggestions=[
+                choices=[
                     "1) Mona Lisa",
                     "2) Innovations",
                     "3) Florence at the time of Leonardo",
                     "4) The Last Supper",
                     "5) Vitruvian Man",
                 ],
+                default="1) Mona Lisa"
             )
             return ui.process_message(msg)
         except Exception as e:
@@ -132,4 +133,4 @@ def exam_learning(ui: UI, initial_message: str, session_id: str) -> str:
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(wf=wf, ui=MesopUI())

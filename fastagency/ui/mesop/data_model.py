@@ -5,6 +5,14 @@ import mesop as me
 
 
 @dataclass
+class ConversationMessage:
+    io_message_json: str = ""
+    level: int = 0
+    conversation_id: str = ""
+    feedback: list[str] = field(default_factory=list)
+
+
+@dataclass
 class Conversation:
     id: str = ""
     title: str = ""
@@ -12,8 +20,7 @@ class Conversation:
     waiting_for_feedback: bool = False
     feedback: str = ""
     is_from_the_past: bool = False
-    # messages: list[ConversationMessage] = field(default_factory=list)
-    messages: list[str] = field(default_factory=list)
+    messages: list[ConversationMessage] = field(default_factory=list)
     fastagency: Optional[str] = None
 
 
@@ -24,4 +31,3 @@ class State:
     conversation: Conversation
     past_conversations: list[Conversation] = field(default_factory=list)
     hide_past: bool = True
-    fastagency: Optional[str] = None

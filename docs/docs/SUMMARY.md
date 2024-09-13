@@ -256,17 +256,19 @@ search:
                         - [header](api/fastagency/ui/mesop/components/ui_common/header.md)
                 - data_model
                     - [Conversation](api/fastagency/ui/mesop/data_model/Conversation.md)
+                    - [ConversationMessage](api/fastagency/ui/mesop/data_model/ConversationMessage.md)
                     - [State](api/fastagency/ui/mesop/data_model/State.md)
                 - main
                     - [conversation_box](api/fastagency/ui/mesop/main/conversation_box.md)
                     - [conversation_starter_box](api/fastagency/ui/mesop/main/conversation_starter_box.md)
                     - [get_ui](api/fastagency/ui/mesop/main/get_ui.md)
                     - [home_page](api/fastagency/ui/mesop/main/home_page.md)
-                    - [on_user_feedback](api/fastagency/ui/mesop/main/on_user_feedback.md)
                     - [past_conversations_box](api/fastagency/ui/mesop/main/past_conversations_box.md)
                     - [send_prompt](api/fastagency/ui/mesop/main/send_prompt.md)
                 - message
                     - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
+                    - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
+                    - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
                     - [message_box](api/fastagency/ui/mesop/message/message_box.md)
                 - send_prompt
                     - [send_prompt_to_autogen](api/fastagency/ui/mesop/send_prompt/send_prompt_to_autogen.md)
