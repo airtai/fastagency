@@ -21,7 +21,7 @@ pip install "fastagency[autogen,openapi]"
 These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the `OpenAPI` Client and `UserProxyAgent`:
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:1-10] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:1-11] !}
 ```
 
 ## Define Workflow
