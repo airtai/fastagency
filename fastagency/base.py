@@ -1,10 +1,11 @@
 import re
 import textwrap
 from abc import ABC, abstractmethod
-from collections.abc import Generator, Iterator
+from collections.abc import Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field, fields
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     Literal,
@@ -12,8 +13,12 @@ from typing import (
     Protocol,
     Type,
     TypeVar,
+    Union,
     runtime_checkable,
 )
+
+if TYPE_CHECKING:
+    from fastagency.api.openapi import OpenAPI
 
 __all__ = [
     "UI",
@@ -221,6 +226,9 @@ class UI(Protocol):
 Workflow = TypeVar("Workflow", bound=Callable[["Workflows", UI, str, str], str])
 
 
+Agent = TypeVar("Agent")
+
+
 @runtime_checkable
 class Workflows(Protocol):
     def register(
@@ -233,6 +241,16 @@ class Workflows(Protocol):
     def names(self) -> list[str]: ...
 
     def get_description(self, name: str) -> str: ...
+
+    def register_api(
+        self,
+        api: "OpenAPI",
+        callers: Union[Agent, Iterable[Agent]],
+        executors: Union[Agent, Iterable[Agent]],
+        functions: Optional[
+            Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
+        ] = None,
+    ) -> None: ...
 
 
 @runtime_checkable

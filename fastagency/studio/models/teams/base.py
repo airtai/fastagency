@@ -48,6 +48,6 @@ def register_toolbox_functions(
     clients: list[OpenAPI],
 ) -> None:
     for client in clients:
-        client.register_for_llm(agent)
+        client._register_for_llm(agent)
         for execution_agent in execution_agents:
-            client.register_for_execution(execution_agent)
+            client._register_for_execution(execution_agent)

@@ -4,6 +4,7 @@ from collections.abc import Iterable, Mapping
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Annotated, Any, Callable, Optional, Union
 
+from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 from pydantic import BaseModel
 
@@ -13,6 +14,7 @@ from ...base import (
     IOMessage,
     MessageType,
     MultipleChoice,
+    SystemMessage,
     TextInput,
     Workflow,
     Workflows,
@@ -20,8 +22,6 @@ from ...base import (
 from ...logging import get_logger
 
 if TYPE_CHECKING:
-    from autogen.agentchat import ConversableAgent
-
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
@@ -179,8 +179,10 @@ class CurrentMessage:
     def create_message(self) -> IOMessage:
         kwargs = {k: v for k, v in asdict(self).items() if v is not None}
         # logger.info(f"CurrentMessage.create_message(): {kwargs=}")
-        if type == "suggested_function_call" and "body" in kwargs:
-            logger.warning(f"CurrentMessage.create_message({type=}): removing body from {kwargs=}")
+        if self.type == "suggested_function_call" and "body" in kwargs:
+            logger.warning(
+                f"CurrentMessage.create_message({self.type=}): removing body from {kwargs=}"
+            )
             kwargs.pop("body")
         return IOMessage.create(**kwargs)
 
@@ -283,8 +285,8 @@ class AutoGenWorkflows(Workflows):
     def register_api(
         self,
         api: "OpenAPI",
-        callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
-        executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        callers: Union[ConversableAgent, Iterable[ConversableAgent]],
+        executors: Union[ConversableAgent, Iterable[ConversableAgent]],
         functions: Optional[
             Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
         ] = None,
@@ -297,10 +299,10 @@ class AutoGenWorkflows(Workflows):
             functions = [functions]
 
         for caller in callers:
-            api.register_for_llm(caller, functions=functions)
+            api._register_for_llm(caller, functions=functions)
 
         for executor in executors:
-            api.register_for_execution(executor, functions=functions)
+            api._register_for_execution(executor, functions=functions)
 
     def register_text_input(  # noqa: C901
         self,
@@ -343,6 +345,7 @@ class AutoGenWorkflows(Workflows):
                 logger.error(f"Error sending text message: {e}")
                 return "Error occurred"
 
+        send_text_message: Callable[..., Optional[str]]
         if prompt is None:
             if suggestions is None:
 
@@ -352,6 +355,7 @@ class AutoGenWorkflows(Workflows):
                 ) -> Optional[str]:
                     return _send_text_message(prompt, suggestions)
             else:
+
                 def send_text_message(
                     prompt: Annotated[
                         str,
@@ -375,14 +379,12 @@ class AutoGenWorkflows(Workflows):
                     return _send_text_message(prompt, suggestions)
 
         for caller in callers:
-            caller.register_for_llm(
-                name=name, description=description
-            )(send_text_message)
+            caller.register_for_llm(name=name, description=description)(
+                send_text_message
+            )
 
         for executor in executors:
-            executor.register_for_execution(
-                name=name
-            )(send_text_message)
+            executor.register_for_execution(name=name)(send_text_message)
 
     def register_multiple_choice(  # noqa: C901
         self,
@@ -421,6 +423,8 @@ class AutoGenWorkflows(Workflows):
             except Exception as e:
                 logger.error(f"Error sending multiple choice message: {e}")
                 return "Error occurred"
+
+        send_multiple_choice: Callable[..., Optional[str]]
 
         if prompt is None:
             if choices is None:
@@ -603,16 +607,14 @@ class AutoGenWorkflows(Workflows):
                             return _send_multiple_choice(
                                 prompt, choices, default, single
                             )
-                        
+
         for caller in callers:
-            caller.register_for_llm(
-                name=name, description=description
-            )(send_multiple_choice)
+            caller.register_for_llm(name=name, description=description)(
+                send_multiple_choice
+            )
 
         for executor in executors:
-            executor.register_for_execution(
-                name=name
-            )(send_multiple_choice)
+            executor.register_for_execution(name=name)(send_multiple_choice)
 
     def register_system_message(
         self,
@@ -622,7 +624,7 @@ class AutoGenWorkflows(Workflows):
         description: Optional[str] = None,
         callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
         executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
-        message: Optional[dict[str, Any]]=None,
+        message: Optional[dict[str, Any]] = None,
     ) -> None:
         if not isinstance(callers, Iterable):
             sender: Optional[str] = callers.name
@@ -638,26 +640,29 @@ class AutoGenWorkflows(Workflows):
 
         def _send_system_message(message: dict[str, Any]) -> Optional[str]:
             try:
-                message = SystemMessage(
+                system_message = SystemMessage(
                     sender=sender,
                     recipient=recipient,
-                    body=message,
+                    message=message,
                 )
-                retval = ui.process_message(message)
+                retval = ui.process_message(system_message)
 
                 return "Success" if retval is None else retval
 
             except Exception as e:
-                logger.error(f"Error sending system message: {e}")
+                logger.warning(f"Error sending system message ({message=}): {e}")
                 return "Error occurred"
 
+        send_system_message: Callable[..., Optional[str]]
+
         if message is None:
-            class SystemMessage(BaseModel):
+
+            class MySystemMessage(BaseModel):
                 type: str
                 content: Optional[dict[str, Any]]
 
             def send_system_message(
-                message: Annotated[SystemMessage, "The system message to send"],
+                message: Annotated[MySystemMessage, "The system message to send"],
             ) -> Optional[str]:
                 return _send_system_message(message.model_dump())
         else:
@@ -666,11 +671,6 @@ class AutoGenWorkflows(Workflows):
                 return _send_system_message(message)
 
         for caller in callers:
-            caller.register_for_llm(
-                name=name, description=description
-            )(send_system_message)
-
-        for executor in executors:
-            executor.register_for_execution(
-                name=name
-            )(send_system_message)
+            caller.register_for_llm(name=name, description=description)(
+                send_system_message
+            )

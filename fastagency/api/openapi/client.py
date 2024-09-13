@@ -326,7 +326,7 @@ class OpenAPI:
 
         return funcs_to_register
 
-    def register_for_llm(
+    def _register_for_llm(
         self,
         agent: "ConversableAgent",
         functions: Optional[
@@ -339,7 +339,7 @@ class OpenAPI:
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
 
-    def register_for_execution(
+    def _register_for_execution(
         self,
         agent: "ConversableAgent",
         functions: Optional[

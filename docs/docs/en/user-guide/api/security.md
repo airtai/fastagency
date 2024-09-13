@@ -35,7 +35,7 @@ Additionally, we set the API key for the API using the `set_security_params` met
 Here's a simple example of a workflow definition:
 
 ```python hl_lines="22"
-{! docs_src/user_guide/external_rest_apis/security.py [ln:13-65] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:13-68] !}
 ```
 
 This code snippet sets up a simple weather agent that calls an external weather API with security, using the registered functions generated from the `openapi.json` URL.
@@ -45,7 +45,7 @@ This code snippet sets up a simple weather agent that calls an external weather 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:68] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:71] !}
 ```
 
 ## Run Application
