@@ -204,7 +204,8 @@ class TestTwoAgentTeamSimpleChat:
 
         assert ag_team
         history = ag_team.initiate_chat("What is 2 + 2?")
-        assert sum(["TERMINATE" in msg["content"] for msg in history.chat_history]) == 1
+        messages = (msg["content"] for msg in history.chat_history)
+        assert sum("TERMINATE" in msg for msg in messages) == 1
 
     @pytest.mark.asyncio
     @parametrize_fixtures("team_ref", get_by_tag("team", "weather"))
