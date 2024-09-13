@@ -49,6 +49,21 @@ def exam_learning(ui: UI, initial_message: str, session_id: str) -> str:
         is_termination_msg=is_termination_msg,
     )
 
+    wf.register_text_input(
+        name="retrieve_exam_questions",
+        description="Get exam questions from examiner",
+        sender=student_agent,
+        executor=teacher_agent,
+        suggestions=[
+            "1) Mona Lisa",
+            "2) Innovations",
+            "3) Florence at the time of Leonardo",
+            "4) The Last Supper",
+            "5) Vitruvian Man",
+        ],
+    )
+
+    )
     def retrieve_exam_questions(
         message: Annotated[str, "Message for examiner"]
     ) -> Optional[str]:
