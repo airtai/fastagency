@@ -63,7 +63,7 @@ def _run_app(
 def _get_help_messages(dev_mode: bool = False) -> dict[str, str]:
     help = f"""Run a [bold]FastAgency[/bold] app in [yellow]{'development' if dev_mode else 'production'}[/yellow] mode. 🚀
 
-This is equivalent to [bold]fastapi run[/bold] but with [bold]reload[/bold] enabled and listening on the [blue]127.0.0.1[/blue] address.
+{'This is similar to the [bold]fastagency run[/bold] command but with [bold]reload[/bold] enabled and listening on the [blue]127.0.0.1[/blue] address.' if dev_mode else 'This is similar to the [bold]fastagency dev[/bold] command, but optimized for production environments.'}
 
 It automatically detects the Python module or package that needs to be imported based on the file or directory path passed.
 
@@ -131,7 +131,7 @@ def run(
     )
 
 
-@app.command(**_get_help_messages(False))  # type: ignore[arg-type]
+@app.command(**_get_help_messages(True))  # type: ignore[arg-type]
 def dev(
     path: Annotated[
         Optional[Path],
