@@ -222,18 +222,6 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
             )
         )
 
-        # io.process_message(
-        #    IOMessage.create(
-        #        sender="tester",
-        #        recipient="workflow",
-        #        type="multiple_choice",
-        #        prompt="Concentrate and choose correct answer. When are you going to write unit tests?",
-        #        choices=["Today", "Tomorrow", "Never", "I already have unit tests"],
-        #        default="Tomorrow",
-        #        single=True,
-        #    )
-        # )
-
         try:
             result = wf.run(
                 name=name,
@@ -291,3 +279,26 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
     thread.start()
 
     return subconversation
+
+
+# ui.process_message(
+#     IOMessage.create(
+#             sender="tester",
+#             recipient="workflow",
+#             type="text_input",
+#             prompt="What is your fvourite fruit",
+#             suggestions=["Pomegratten", "I do not eat fruit"],
+#         )
+# )
+
+# ui.process_message(
+#     IOMessage.create(
+#             sender="tester",
+#             recipient="workflow",
+#             type="multiple_choice",
+#             prompt="Concentrate and choose correct answer. When are you going to write unit tests?",
+#             choices=["Today", "Tomorrow", "Never", "I already have unit tests"],
+#             default="Tomorrow",
+#             single=False,
+#         )
+# )
