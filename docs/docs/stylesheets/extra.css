@@ -162,6 +162,7 @@ a.internal-link::after {
 .highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt {
     color: var(--color-light-blue);
 }
-.highlight .nd, .highlight .ni, .highlight .nl, .highlight .nt {
+
+.highlight .nd, .highlight .ni, .highlight .nl, .highlight .nt {  /* codespell:ignore nd */
     color: var(--color-lighter-blue);
 }
