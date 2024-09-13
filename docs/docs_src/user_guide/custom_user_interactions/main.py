@@ -68,20 +68,20 @@ def exam_learning(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id
     wf.register_system_message(
         ui=ui,
         name="write_final_answers",
-        description="Write a final answers to exam questions to examiner, but only after discussing with the tutor first.",
+        description="Write a final answers to exam questions to examiner, but only after discussing with the tutor first. ",
+            # "Message sent should be in the format: {'operation': 'storing_final_answers', 'answers': 'insert your answers here'}.",
         callers=student_agent,
         executors=teacher_agent,
-        message={"operation": "storing final answers"}
     )
 
-    wf.register_multiple_choice(
-        ui=ui,
-        name="get_final_grade",
-        description="Get the final grade after submitting the answers.",
-        callers=student_agent,
-        executors=teacher_agent,
-        choices=["A", "B", "C", "D", "F"],
-    )
+    # wf.register_multiple_choice(
+    #     ui=ui,
+    #     name="get_final_grade",
+    #     description="Get the final grade after submitting the answers.",
+    #     callers=student_agent,
+    #     executors=teacher_agent,
+    #     choices=["A", "B", "C", "D", "F"],
+    # )
 
     chat_result = teacher_agent.initiate_chat(
         student_agent,

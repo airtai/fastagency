@@ -2,9 +2,10 @@ import json
 import re
 from collections.abc import Iterable, Mapping
 from dataclasses import asdict, dataclass
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from typing import TYPE_CHECKING, Annotated, Any, Callable, Optional, Union
 
 from autogen.io import IOStream
+from pydantic import BaseModel
 
 from ...base import (
     UI,
@@ -178,6 +179,9 @@ class CurrentMessage:
     def create_message(self) -> IOMessage:
         kwargs = {k: v for k, v in asdict(self).items() if v is not None}
         # logger.info(f"CurrentMessage.create_message(): {kwargs=}")
+        if type == "suggested_function_call" and "body" in kwargs:
+            logger.warning(f"CurrentMessage.create_message({type=}): removing body from {kwargs=}")
+            kwargs.pop("body")
         return IOMessage.create(**kwargs)
 
 
@@ -297,3 +301,376 @@ class AutoGenWorkflows(Workflows):
 
         for executor in executors:
             api.register_for_execution(executor, functions=functions)
+
+    def register_text_input(  # noqa: C901
+        self,
+        *,
+        ui: UI,
+        name: str,
+        description: Optional[str] = None,
+        callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        prompt: Optional[str] = None,
+        suggestions: Optional[list[str]] = None,
+    ) -> None:
+        if not isinstance(callers, Iterable):
+            sender: Optional[str] = callers.name
+            callers = [callers]
+        else:
+            sender = None
+
+        if not isinstance(executors, Iterable):
+            recipient: Optional[str] = executors.name
+            executors = [executors]
+        else:
+            recipient = None
+
+        def _send_text_message(prompt: str, suggestions: list[str]) -> Optional[str]:
+            try:
+                # logger.info(f"_send_text_message(): {prompt=}, {suggestions=}")
+                message = TextInput(
+                    sender=sender,
+                    recipient=recipient,
+                    prompt=prompt,
+                    suggestions=suggestions,
+                )
+                # logger.info(f"_send_text_message(): {message=}")
+                retval = ui.process_message(message)
+
+                return "Success" if retval is None else retval
+
+            except Exception as e:
+                logger.error(f"Error sending text message: {e}")
+                return "Error occurred"
+
+        if prompt is None:
+            if suggestions is None:
+
+                def send_text_message(
+                    prompt: Annotated[str, "Prompt displayed to the user"],
+                    suggestions: Annotated[list[str], "A list of suggested answers"],
+                ) -> Optional[str]:
+                    return _send_text_message(prompt, suggestions)
+            else:
+                def send_text_message(
+                    prompt: Annotated[
+                        str,
+                        f"Prompt displayed to the user (suggested answers are: {suggestions})",
+                    ],
+                ) -> Optional[str]:
+                    return _send_text_message(prompt, suggestions)
+        else:
+            if suggestions is None:
+
+                def send_text_message(
+                    suggestions: Annotated[
+                        list[str],
+                        f"A list of suggested answers (prompt is: '{prompt}')",
+                    ],
+                ) -> Optional[str]:
+                    return _send_text_message(prompt, suggestions)
+            else:
+
+                def send_text_message() -> Optional[str]:
+                    return _send_text_message(prompt, suggestions)
+
+        for caller in callers:
+            caller.register_for_llm(
+                name=name, description=description
+            )(send_text_message)
+
+        for executor in executors:
+            executor.register_for_execution(
+                name=name
+            )(send_text_message)
+
+    def register_multiple_choice(  # noqa: C901
+        self,
+        *,
+        ui: UI,
+        name: str,
+        description: Optional[str] = None,
+        callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        prompt: Optional[str] = None,
+        choices: Optional[list[str]] = None,
+        default: Optional[str] = None,
+        single: Optional[bool] = None,
+    ) -> None:
+        if not isinstance(callers, Iterable):
+            callers = [callers]
+        if not isinstance(executors, Iterable):
+            executors = [executors]
+
+        def _send_multiple_choice(
+            prompt: str, choices: list[str], default: str, single: bool
+        ) -> Optional[str]:
+            try:
+                message = MultipleChoice(
+                    sender=callers.name,
+                    recipient=executors.name,
+                    prompt=prompt,
+                    choices=choices,
+                    default=default,
+                    single=single,
+                )
+                retval = ui.process_message(message)
+
+                return default if retval is None or retval == "" else retval
+
+            except Exception as e:
+                logger.error(f"Error sending multiple choice message: {e}")
+                return "Error occurred"
+
+        if prompt is None:
+            if choices is None:
+                if default is None:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                            choices: Annotated[list[str], "A list of choices"],
+                            default: Annotated[str, "The default choice"],
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                            choices: Annotated[list[str], "A list of choices"],
+                            default: Annotated[str, "The default choice"],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                else:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                            choices: Annotated[list[str], "A list of choices"],
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                            choices: Annotated[list[str], "A list of choices"],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+            else:
+                if default is None:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                            default: Annotated[str, "The default choice"],
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                            default: Annotated[str, "The default choice"],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                else:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice(
+                            prompt: Annotated[str, "Prompt displayed to the user"],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+        else:
+            if choices is None:
+                if default is None:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            choices: Annotated[
+                                list[str], f"A list of choices (prompt is: '{prompt}')"
+                            ],
+                            default: Annotated[str, "The default choice"],
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice(
+                            choices: Annotated[
+                                list[str], f"A list of choices (prompt is: '{prompt}')"
+                            ],
+                            default: Annotated[str, "The default choice"],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                else:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            choices: Annotated[
+                                list[str], f"A list of choices (prompt is: '{prompt}')"
+                            ],
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice(
+                            choices: Annotated[
+                                list[str], f"A list of choices (prompt is: '{prompt}')"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+            else:
+                if default is None:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            default: Annotated[str, "The default choice"],
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice(
+                            default: Annotated[str, "The default choice"],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                else:
+                    if single is None:
+
+                        def send_multiple_choice(
+                            single: Annotated[
+                                bool, "Whether the user can select multiple choices"
+                            ],
+                        ) -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                    else:
+
+                        def send_multiple_choice() -> Optional[str]:
+                            return _send_multiple_choice(
+                                prompt, choices, default, single
+                            )
+                        
+        for caller in callers:
+            caller.register_for_llm(
+                name=name, description=description
+            )(send_multiple_choice)
+
+        for executor in executors:
+            executor.register_for_execution(
+                name=name
+            )(send_multiple_choice)
+
+    def register_system_message(
+        self,
+        *,
+        ui: UI,
+        name: str,
+        description: Optional[str] = None,
+        callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        message: Optional[dict[str, Any]]=None,
+    ) -> None:
+        if not isinstance(callers, Iterable):
+            sender: Optional[str] = callers.name
+            callers = [callers]
+        else:
+            sender = None
+
+        if not isinstance(executors, Iterable):
+            recipient: Optional[str] = executors.name
+            executors = [executors]
+        else:
+            recipient = None
+
+        def _send_system_message(message: dict[str, Any]) -> Optional[str]:
+            try:
+                message = SystemMessage(
+                    sender=sender,
+                    recipient=recipient,
+                    body=message,
+                )
+                retval = ui.process_message(message)
+
+                return "Success" if retval is None else retval
+
+            except Exception as e:
+                logger.error(f"Error sending system message: {e}")
+                return "Error occurred"
+
+        if message is None:
+            class SystemMessage(BaseModel):
+                type: str
+                content: Optional[dict[str, Any]]
+
+            def send_system_message(
+                message: Annotated[SystemMessage, "The system message to send"],
+            ) -> Optional[str]:
+                return _send_system_message(message.model_dump())
+        else:
+
+            def send_system_message() -> Optional[str]:
+                return _send_system_message(message)
+
+        for caller in callers:
+            caller.register_for_llm(
+                name=name, description=description
+            )(send_system_message)
+
+        for executor in executors:
+            executor.register_for_execution(
+                name=name
+            )(send_system_message)
