@@ -1,14 +1,13 @@
 import os
-from typing import Annotated, Any, Dict, Optional
+from typing import Annotated, Any, Optional
 
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import FastAgency, Workflows
-from fastagency import UI
-from fastagency.base import MultipleChoice, SystemMessage, TextInput
-from fastagency.ui.mesop import MesopUI
+from fastagency import UI, FastAgency, Workflows
+from fastagency.base import MultipleChoice, SystemMessage
 from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.ui.mesop import MesopUI
 
 llm_config = {
     "config_list": [
@@ -25,7 +24,6 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="exam_practice", description="Student and teacher chat")
 def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
-
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 
@@ -50,7 +48,7 @@ def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) 
     )
 
     def retrieve_exam_questions(
-        message: Annotated[str, "Message for examiner"]
+        message: Annotated[str, "Message for examiner"],
     ) -> Optional[str]:
         try:
             msg = MultipleChoice(
@@ -64,7 +62,7 @@ def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) 
                     "4) The Last Supper",
                     "5) Vitruvian Man",
                 ],
-                default="1) Mona Lisa"
+                default="1) Mona Lisa",
             )
             return ui.process_message(msg)
         except Exception as e:
@@ -86,7 +84,7 @@ def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) 
             return f"write_final_answers() FAILED! {e}"
 
     def get_final_grade(
-        message: Annotated[str, "Message for examiner"]
+        message: Annotated[str, "Message for examiner"],
     ) -> Optional[str]:
         try:
             msg = MultipleChoice(
