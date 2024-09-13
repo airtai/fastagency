@@ -209,7 +209,7 @@ class TestAssistantAgent:
                     "title": "Toolbox",
                 },
                 "system_message": {
-                    "default": "You are a helpful assistant. After you successfully answer all questions and there are no new questions asked after your response (e.g. there is no specific direction or question asked after you give a response), terminate the chat by outputting 'TERMINATE'",
+                    "default": "You are a helpful assistant. After you successfully answer all questions and there are no new questions asked after your response (e.g. there is no specific direction or question asked after you give a response), terminate the chat by outputting 'TERMINATE' (IMPORTANT: use all caps)",
                     "description": "The system message of the agent. This message is used to inform the agent about his role in the conversation",
                     "title": "System Message",
                     "type": "string",

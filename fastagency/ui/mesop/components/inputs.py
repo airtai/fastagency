@@ -12,8 +12,12 @@ def _on_blur(e: me.InputBlurEvent) -> None:
 
 
 def input_user_feedback(
-    send_feedback: Callable[[me.ClickEvent], Iterator[None]],
+    send_feedback: Callable[[me.ClickEvent], Iterator[None]], disabled: bool = False
 ) -> None:
+    def _on_feedback_blur(e: me.InputBlurEvent) -> None:
+        state = me.state(State)
+        state.conversation.feedback = e.value
+
     with me.box(
         style=me.Style(
             border_radius=16,
@@ -26,8 +30,8 @@ def input_user_feedback(
         with me.box(style=me.Style(flex_grow=1)):
             me.native_textarea(
                 placeholder="Provide a feedback to the team",
-                on_blur=_on_blur,
-                key="feedback",
+                on_blur=_on_feedback_blur,
+                disabled=disabled,
                 style=me.Style(
                     padding=me.Padding(top=16, left=16),
                     outline="none",
@@ -35,7 +39,11 @@ def input_user_feedback(
                     border=me.Border.all(me.BorderSide(style="none")),
                 ),
             )
-        with me.content_button(type="icon", on_click=send_feedback):
+        with me.content_button(
+            type="icon",
+            on_click=send_feedback,
+            disabled=disabled,
+        ):
             me.icon("send")
 
 

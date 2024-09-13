@@ -18,7 +18,7 @@ def send_prompt_to_autogen(
 
 def send_user_feedback_to_autogen(user_response: str) -> Iterable[MesopMessage]:
     state = me.state(State)
-    mesop_id = state.fastagency
+    mesop_id = state.conversation.fastagency
     mesop_io = MesopUI.get_conversation(mesop_id)
     mesop_io.respond(user_response)
     return mesop_io.get_message_stream()
