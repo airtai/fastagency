@@ -31,7 +31,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 - **[AutoGenWorkflows](../../../../api/fastagency/runtime/autogen/base/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
-Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o-mini**, and the API key is retrieved from the environment.
+Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
 
 ```python
 {! docs_src/getting_started/main_mesop.py [ln:9-19] !}
@@ -70,10 +70,12 @@ fastagency run main_mesop.py
 
 This will launch a local web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
 
-**Note**: Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o-mini. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+!!! note
+    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
 ### Debugging Tips
 If you encounter issues running the application, ensure that:
+
 - The OpenAI API key is correctly set in your environment variables.
 - All necessary packages are installed, especially the `fastagency[autogen,mesop]` dependencies.
 - The MesopUI web interface is accessible from the browser, and no firewall is blocking the connection.

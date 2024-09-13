@@ -10,11 +10,11 @@ from fastagency.runtime.autogen.base import AutoGenWorkflows
 llm_config = {
     "config_list": [
         {
-            "model": "gpt-4o-mini",
+            "model": "gpt-4o",
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.8,
+    "temperature": 0.0,
 }
 
 wf = AutoGenWorkflows()
