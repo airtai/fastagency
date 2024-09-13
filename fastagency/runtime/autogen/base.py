@@ -1,5 +1,6 @@
 import json
 import re
+from collections.abc import Iterable, Mapping
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
@@ -273,14 +274,18 @@ class AutoGenWorkflows(Workflows):
     def register_api(
         self,
         api: "OpenAPI",
-        callers: Union["ConversableAgent", list["ConversableAgent"]],
-        executors: Union["ConversableAgent", list["ConversableAgent"]],
-        functions: Optional[Union[str, list[str]]] = None,
+        callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        functions: Optional[
+            Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
+        ] = None,
     ) -> None:
-        if not isinstance(callers, list):
+        if not isinstance(callers, Iterable):
             callers = [callers]
-        if not isinstance(executors, list):
+        if not isinstance(executors, Iterable):
             executors = [executors]
+        if isinstance(functions, str):
+            functions = [functions]
 
         for caller in callers:
             api.register_for_llm(caller, functions=functions)
