@@ -120,14 +120,14 @@ Depending on the interface you choose, you'll need to import different modules. 
 
 === "Console"
     ```python hl_lines="7"
-    {!> docs_src/getting_started/main_console.py [ln:1-8] !}
+    {!> docs_src/getting_started/main_console.py [ln:1-7] !}
     ```
 
     For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 === "Mesop"
     ```python hl_lines="7"
-    {!> docs_src/getting_started/main_mesop.py [ln:1-8] !}
+    {!> docs_src/getting_started/main_mesop.py [ln:1-7] !}
     ```
 
     For Mesop applications, import `MesopUI` to integrate with the Mesop web interface.
@@ -137,7 +137,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:10-43] !}
+{! docs_src/getting_started/main_console.py [ln:10-45] !}
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
