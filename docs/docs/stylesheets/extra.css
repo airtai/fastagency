@@ -11,8 +11,8 @@ https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/
     --color-light-blue: #164EFF;
     --color-lighter-blue: #64BAFD;
 
-    /* --color-light-blue with 15% opacity */
-    --color-light-blue-transparent: #164EFF26;
+    /* --color-lighter-blue with 70% opacity */
+    --color-light-blue-transparent: #64BAFDB3;
 
     --color-dark-yellow: #FBAF21; /* or #FEBE09 */
     --color-light-yellow: #FFF588;
@@ -77,6 +77,14 @@ https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/
         background-position: center; */
     }
 
+    .md-typeset .admonition.note:focus-within, .md-typeset details.note:focus-within {
+        box-shadow: 0 0 0 .2rem var(--color-light-blue-transparent);
+    }
+
+    .md-typeset .note>.admonition-title, .md-typeset .note>summary {
+        background-color: var(--color-light-blue-transparent);
+    }
+
 }
 
 [data-md-color-scheme=slate] {
@@ -120,6 +128,14 @@ https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/
     .md-typeset .note>.admonition-title:before, .md-typeset .note>summary:before {
         background-color: var(--color-lighter-blue);
     }
+
+    .md-typeset .admonition.note:focus-within, .md-typeset details.note:focus-within {
+        box-shadow: 0 0 0 .2rem var(--color-light-blue);
+    }
+
+    .md-typeset .note>.admonition-title, .md-typeset .note>summary {
+        background-color: var(--color-light-blue);
+    }
 }
 
 a.external-link {
@@ -149,14 +165,6 @@ a.internal-link::after {
 
 .md-header__button.md-logo {
     padding: 0 .2rem;
-}
-
-.md-typeset .admonition.note:focus-within, .md-typeset details.note:focus-within {
-    box-shadow: 0 0 0 .2rem var(--color-light-blue-transparent);
-}
-
-.md-typeset .note>.admonition-title, .md-typeset .note>summary {
-    background-color: var(--color-light-blue-transparent);
 }
 
 .highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt {
