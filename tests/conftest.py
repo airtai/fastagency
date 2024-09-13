@@ -22,6 +22,7 @@ import pytest_asyncio
 import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
+from pydantic import __version__ as version_of_pydantic
 
 from fastagency.studio.db.base import DefaultDB
 from fastagency.studio.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
@@ -559,6 +560,11 @@ async def weather_toolbox_ref(
     return toolbox
 
 
+@pytest.fixture
+def pydantic_version() -> float:
+    return float(".".join(version_of_pydantic.split(".")[:2]))
+
+
 ################################################################################
 ###
 # Fixtures for Agents
@@ -613,7 +619,7 @@ async def placeholder_assistant_weatherapi_ref(
         name=add_random_suffix("assistant_weather"),
         llm=llm_ref,
         toolbox_1=weather_toolbox_ref,
-        system_message="You are a helpful assistant with access to Weather API. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE'",
+        system_message="You are a helpful assistant with access to Weather API. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE' (all caps)",
     )
 
 

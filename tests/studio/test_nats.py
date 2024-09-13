@@ -347,7 +347,7 @@ class TestAutogen:
         await add_model(
             user_uuid=user_uuid,
             type_name="secret",
-            model_name=api_key_model.__name__,  # type: ignore [attr-defined]
+            model_name=f"{api_key_model.__name__}_test_ionats_e2e",  # type: ignore [attr-defined]
             model_uuid=api_key_model_uuid,
             model=api_key.model_dump(),
             background_tasks=BackgroundTasks(),

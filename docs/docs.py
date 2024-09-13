@@ -28,9 +28,7 @@ BUILD_DIR = BASE_DIR / "site"
 EN_DOCS_DIR = DOCS_DIR / "en"
 EN_INDEX_PATH = EN_DOCS_DIR / "index.md"
 README_PATH = BASE_DIR.parent / "README.md"
-EN_CONTRIBUTING_PATH = (
-    EN_DOCS_DIR / "getting-started" / "contributing" / "CONTRIBUTING.md"
-)
+EN_CONTRIBUTING_PATH = EN_DOCS_DIR / "contributing" / "CONTRIBUTING.md"
 CONTRIBUTING_PATH = BASE_DIR.parent / "CONTRIBUTING.md"
 
 

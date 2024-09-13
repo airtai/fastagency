@@ -1,5 +1,7 @@
+import json
 import uuid
 
+import jsondiff
 import pytest
 from pydantic import ValidationError
 
@@ -45,7 +47,7 @@ class TestDeployment:
 
         assert deployment.team == team
 
-    def test_deployment_model_schema(self) -> None:
+    def test_deployment_model_schema(self, pydantic_version: float) -> None:
         schema = Deployment.model_json_schema()
         expected = {
             "$defs": {
@@ -146,6 +148,7 @@ class TestDeployment:
                 },
                 "repo_name": {
                     "description": "The name of the GitHub repository.",
+                    "metadata": {"immutable_after_creation": True},
                     "minLength": 1,
                     "title": "Repo Name",
                     "type": "string",
@@ -153,23 +156,26 @@ class TestDeployment:
                 "fly_app_name": {
                     "description": "The name of the Fly.io application.",
                     "maxLength": 30,
+                    "metadata": {"immutable_after_creation": True},
                     "minLength": 1,
                     "title": "Fly App Name",
                     "type": "string",
                 },
                 "team": {
-                    "allOf": [{"$ref": "#/$defs/TwoAgentTeamRef"}],
+                    "$ref": "#/$defs/TwoAgentTeamRef",
                     "description": "The team that is used in the deployment",
                     "title": "Team Name",
                 },
                 "gh_token": {
-                    "allOf": [{"$ref": "#/$defs/GitHubTokenRef"}],
+                    "$ref": "#/$defs/GitHubTokenRef",
                     "description": "The GitHub token to use for creating a new repository",
+                    "metadata": {"immutable_after_creation": True},
                     "title": "GH Token",
                 },
                 "fly_token": {
-                    "allOf": [{"$ref": "#/$defs/FlyTokenRef"}],
+                    "$ref": "#/$defs/FlyTokenRef",
                     "description": "The Fly.io token to use for deploying the deployment",
+                    "metadata": {"immutable_after_creation": True},
                     "title": "Fly Token",
                 },
             },
@@ -185,6 +191,10 @@ class TestDeployment:
             "type": "object",
         }
         # print(schema)
+        pydantic28_delta = '{"properties": {"team": {"allOf": [{"$$ref": "#/$defs/TwoAgentTeamRef"}], "$delete": ["$$ref"]}, "gh_token": {"allOf": [{"$$ref": "#/$defs/GitHubTokenRef"}], "$delete": ["$$ref"]}, "fly_token": {"allOf": [{"$$ref": "#/$defs/FlyTokenRef"}], "$delete": ["$$ref"]}}}'
+        if pydantic_version < 2.9:
+            # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
+            expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         assert schema == expected
 
     @pytest.mark.parametrize(

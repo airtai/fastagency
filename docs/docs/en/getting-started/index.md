@@ -73,8 +73,8 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [ConsoleIO](../api/fastagency/core/io/console/ConsoleIO.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/){target="_blank"} with [MesopIO](../api/fastagency/core/io/mesop/MesopIO.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
+- **Console**: Use the [ConsoleUI](../api/fastagency/ui/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/){target="_blank"} with [MesopUI](../api/fastagency/ui/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/){target="_blank"}, to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
 
@@ -119,33 +119,25 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
-    ```python
-    {!> docs_src/tutorial/getting_started/main.py [ln:1-8] !}
+    ```python hl_lines="7"
+    {!> docs_src/getting_started/main_console.py [ln:1-8] !}
     ```
 
-    For Console applications, import `ConsoleIO` to handle command-line input and output.
+    For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 === "Mesop"
-    ```python
-    import os
-
-    from autogen.agentchat import ConversableAgent
-
-    from fastagency.core import Chatable
-    from fastagency.core.runtimes.autogen.base import AutoGenWorkflows
-    from fastagency.core.io.mesop import MesopIO
-
-    from fastagency import FastAgency
+    ```python hl_lines="7"
+    {!> docs_src/getting_started/main_mesop.py [ln:1-8] !}
     ```
 
-    For Mesop applications, import `MesopIO` to integrate with the Mesop web interface.
+    For Mesop applications, import `MesopUI` to integrate with the Mesop web interface.
 
 ### Define Workflow
 
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/tutorial/getting_started/main.py [ln:10-43] !}
+{! docs_src/getting_started/main_console.py [ln:10-43] !}
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
@@ -155,20 +147,18 @@ This code snippet sets up a simple learning chat between a student and a teacher
 Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
 === "Console"
-    ```python
-    {!> docs_src/tutorial/getting_started/main.py [ln:7,46,47] !}
+    ```python hl_lines="1"
+    {!> docs_src/getting_started/main_console.py [ln:47] !}
     ```
 
-    For Console applications, use `ConsoleIO` to handle user interaction via the command line.
+    For Console applications, use `ConsoleUI` to handle user interaction via the command line.
 
 === "Mesop"
-    ```python
-    from fastagency.core.io.mesop import MesopIO
-
-    app = FastAgency(wf=wf, io=MesopIO())
+    ```python hl_lines="1"
+    {!> docs_src/getting_started/main_mesop.py [ln:47] !}
     ```
 
-    For Mesop applications, use `MesopIO` to enable web-based interactions.
+    For Mesop applications, use `MesopUI` to enable web-based interactions.
 
 ### Run Application
 

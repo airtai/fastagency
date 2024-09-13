@@ -34,7 +34,13 @@ class Deployment(Model):
     ]
 
     repo_name: Annotated[
-        str, Field(..., description="The name of the GitHub repository.", min_length=1)
+        str,
+        Field(
+            ...,
+            description="The name of the GitHub repository.",
+            min_length=1,
+            json_schema_extra={"metadata": {"immutable_after_creation": True}},
+        ),
     ]
 
     fly_app_name: Annotated[
@@ -44,6 +50,7 @@ class Deployment(Model):
             description="The name of the Fly.io application.",
             min_length=1,
             max_length=30,
+            json_schema_extra={"metadata": {"immutable_after_creation": True}},
         ),
     ]
 
@@ -59,6 +66,7 @@ class Deployment(Model):
         Field(
             title="GH Token",
             description="The GitHub token to use for creating a new repository",
+            json_schema_extra={"metadata": {"immutable_after_creation": True}},
         ),
     ]
     fly_token: Annotated[
@@ -66,6 +74,7 @@ class Deployment(Model):
         Field(
             title="Fly Token",
             description="The Fly.io token to use for deploying the deployment",
+            json_schema_extra={"metadata": {"immutable_after_creation": True}},
         ),
     ]
 
