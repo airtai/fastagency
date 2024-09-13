@@ -59,12 +59,23 @@ app = FastAgency(wf=wf, ui=MesopUI())
 
 - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
+
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/getting_started/main_mesop.py !}
+```
+</details>
+
+
 ### Running the Application
 
 Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
 
 ```bash
-fastagency run main_mesop.py
+fastagency run
 ```
 
 This will launch a local web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.

@@ -22,15 +22,13 @@ llm_config = {
 }
 
 WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
+weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
 
 wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_weather", description="Weather chat")
 def weather_workflow(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
-
-    weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
-
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent",

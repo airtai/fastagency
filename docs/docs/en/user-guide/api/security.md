@@ -48,12 +48,22 @@ Next, define your FastAgency application.
 {! docs_src/user_guide/external_rest_apis/security.py [ln:69] !}
 ```
 
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/user_guide/external_rest_apis/security.py !}
+```
+</details>
+
+
 ## Run Application
 
 You can run this chapter's FastAgency application using the following command::
 
 ```console
-fastagency run docs/docs_src/user_guide/external_rest_apis/security.py
+fastagency run
 ```
 
 ## Output

@@ -73,10 +73,20 @@ Finally, we create the FastAgency application and launch it using the console in
 {! docs_src/user_guide/runtime/autogen/main.py [ln:71-72] !}
 ```
 
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/user_guide/runtime/autogen/main.py!}
+```
+</details>
+
+
 ### Running the Application
 
 ```bash
-fastagency run main.py
+fastagency run
 ```
 
 Ensure you have set your OpenAI API key in the environment and that the weather API URL is accessible. The command will launch a console interface where users can input their requests and interact with the weather agent.
