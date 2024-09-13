@@ -55,7 +55,6 @@ Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/Cons
 Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
 
 ```bash
-cd docs/docs_src/getting_started
 fastagency run main_console.py
 ```
 

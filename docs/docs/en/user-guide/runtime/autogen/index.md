@@ -76,7 +76,6 @@ Finally, we create the FastAgency application and launch it using the console in
 ### Running the Application
 
 ```bash
-cd docs/docs_src/user_guide/runtime/autogen
 fastagency run main.py
 ```
 
