@@ -12,6 +12,40 @@ hide:
 ---
 
 # Release Notes
+## v0.1.0
+
+### What's Changed
+* Set concurrency in workflows to run one workflow at a time for one branch by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#169](https://github.com/airtai/fastagency/pull/169){.external-link target="_blank"}
+* Unique property name by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#165](https://github.com/airtai/fastagency/pull/165){.external-link target="_blank"}
+* Update GA property id by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#177](https://github.com/airtai/fastagency/pull/177){.external-link target="_blank"}
+* Add user-proxy messages by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#174](https://github.com/airtai/fastagency/pull/174){.external-link target="_blank"}
+* Add docs for using external API with security by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#175](https://github.com/airtai/fastagency/pull/175){.external-link target="_blank"}
+* Makes AutoGen message parsing work with and without colored output by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#178](https://github.com/airtai/fastagency/pull/178){.external-link target="_blank"}
+* Rename OpenAPI related classes by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#180](https://github.com/airtai/fastagency/pull/180){.external-link target="_blank"}
+* Past chats by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#181](https://github.com/airtai/fastagency/pull/181){.external-link target="_blank"}
+* Update tests to support both pydantic v2.8 and v2.9 by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#185](https://github.com/airtai/fastagency/pull/185){.external-link target="_blank"}
+* Refactoring submodules by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#188](https://github.com/airtai/fastagency/pull/188){.external-link target="_blank"}
+* Update test to remove duplicates by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#189](https://github.com/airtai/fastagency/pull/189){.external-link target="_blank"}
+* Mesop app created in the same process by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#193](https://github.com/airtai/fastagency/pull/193){.external-link target="_blank"}
+* Add user guide by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#179](https://github.com/airtai/fastagency/pull/179){.external-link target="_blank"}
+* Add an immutable_after_creation metadata field to the schema by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#184](https://github.com/airtai/fastagency/pull/184){.external-link target="_blank"}
+* Fix broken links in docs by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#196](https://github.com/airtai/fastagency/pull/196){.external-link target="_blank"}
+* Fix broken links by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#197](https://github.com/airtai/fastagency/pull/197){.external-link target="_blank"}
+* Adds multiple choice message handling to MesopUI by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#198](https://github.com/airtai/fastagency/pull/198){.external-link target="_blank"}
+* Fix parsing error in Autogen CurrentMessage by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#201](https://github.com/airtai/fastagency/pull/201){.external-link target="_blank"}
+* Refactor workflow agent api by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#192](https://github.com/airtai/fastagency/pull/192){.external-link target="_blank"}
+* Mesop: multiple choice with checkboxes by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#202](https://github.com/airtai/fastagency/pull/202){.external-link target="_blank"}
+* Update branding colors by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#203](https://github.com/airtai/fastagency/pull/203){.external-link target="_blank"}
+* Bump version to v0.1.0rc0 by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#204](https://github.com/airtai/fastagency/pull/204){.external-link target="_blank"}
+* Raise error when trying to import mesop below py3.11 by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#209](https://github.com/airtai/fastagency/pull/209){.external-link target="_blank"}
+* Fix minor docs issues by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#210](https://github.com/airtai/fastagency/pull/210){.external-link target="_blank"}
+* Update CLI docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#211](https://github.com/airtai/fastagency/pull/211){.external-link target="_blank"}
+
+### New Contributors
+* @airt-release-notes-updater made their first contribution in [#173](https://github.com/airtai/fastagency/pull/173){.external-link target="_blank"}
+
+**Full Changelog**: [#v0.0.1...v0.1.0](https://github.com/airtai/fastagency/compare/v0.0.1...v0.1.0){.external-link target="_blank"}
+
 ## v0.0.1
 
 ### What's Changed
