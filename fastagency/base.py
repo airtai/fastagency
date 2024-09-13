@@ -218,7 +218,7 @@ class UI(Protocol):
     def create_subconversation(self) -> "UI": ...
 
 
-Workflow = TypeVar("Workflow", bound=Callable[[UI, str, str], str])
+Workflow = TypeVar("Workflow", bound=Callable[["Workflows", UI, str, str], str])
 
 
 @runtime_checkable

@@ -3,7 +3,7 @@ import os
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
-from fastagency import FastAgency
+from fastagency import FastAgency, Workflows
 from fastagency import UI
 from fastagency.ui.console import ConsoleUI
 from fastagency.runtime.autogen.base import AutoGenWorkflows
@@ -27,7 +27,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_weather", description="Weather chat")
-def weather_workflow(ui: UI, initial_message: str, session_id: str) -> str:
+def weather_workflow(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
 
     weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
 

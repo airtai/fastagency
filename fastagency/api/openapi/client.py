@@ -4,18 +4,12 @@ import re
 import shutil
 import sys
 import tempfile
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
 from types import ModuleType
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Literal,
-    Optional,
-)
+from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
 
 import requests
 from fastapi_code_generator.__main__ import generate_code
@@ -288,11 +282,74 @@ class OpenAPI:
 
             return client
 
-    def register_for_llm(self, agent: "ConversableAgent") -> None:
-        with add_to_globals(self.globals):
-            for f in self.registered_funcs:
-                agent.register_for_llm()(f)
+    def _get_functions_to_register(
+        self,
+        functions: Optional[
+            Iterable[Union[str, Mapping[str, Mapping[str, str]]]]
+        ] = None,
+    ) -> dict[Callable[..., Any], dict[str, Union[str, None]]]:
+        if functions is None:
+            return {
+                f: {"name": None, "description": None} for f in self.registered_funcs
+            }
 
-    def register_for_execution(self, agent: "ConversableAgent") -> None:
-        for f in self.registered_funcs:
-            agent.register_for_execution()(f)
+        functions_with_name_desc: dict[str, dict[str, Union[str, None]]] = {}
+
+        for f in functions:
+            if isinstance(f, str):
+                functions_with_name_desc[f] = {"name": None, "description": None}
+            elif isinstance(f, dict):
+                functions_with_name_desc.update(
+                    {
+                        k: {
+                            "name": v.get("name", None),
+                            "description": v.get("description", None),
+                        }
+                        for k, v in f.items()
+                    }
+                )
+            else:
+                raise ValueError(f"Invalid type {type(f)} for function {f}")
+
+        funcs_to_register: dict[Callable[..., Any], dict[str, Union[str, None]]] = {
+            f: functions_with_name_desc[f.__name__]
+            for f in self.registered_funcs
+            if f.__name__ in functions_with_name_desc
+        }
+        missing_functions = set(functions_with_name_desc.keys()) - {
+            f.__name__ for f in funcs_to_register
+        }
+        if missing_functions:
+            raise ValueError(
+                f"Following functions {missing_functions} are not valid functions"
+            )
+
+        return funcs_to_register
+
+    def register_for_llm(
+        self,
+        agent: "ConversableAgent",
+        functions: Optional[
+            Iterable[Union[str, Mapping[str, Mapping[str, str]]]]
+        ] = None,
+    ) -> None:
+        funcs_to_register = self._get_functions_to_register(functions)
+
+        with add_to_globals(self.globals):
+            for f, v in funcs_to_register.items():
+                agent.register_for_llm(name=v["name"], description=v["description"])(f)
+
+    def register_for_execution(
+        self,
+        agent: "ConversableAgent",
+        functions: Optional[
+            Iterable[Union[str, Mapping[str, Mapping[str, str]]]]
+        ] = None,
+    ) -> None:
+        funcs_to_register = self._get_functions_to_register(functions)
+
+        for f, v in funcs_to_register.items():
+            agent.register_for_execution(name=v["name"])(f)
+
+    def get_functions(self) -> list[str]:
+        return [f.__name__ for f in self.registered_funcs]

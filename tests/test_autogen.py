@@ -1,9 +1,12 @@
+from pathlib import Path
 from typing import Annotated, Any
 
 import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 
 from fastagency import UI, IOMessage
+from fastagency.api.openapi import OpenAPI
+from fastagency.base import Workflows
 from fastagency.runtime.autogen import AutoGenWorkflows
 from fastagency.runtime.autogen.base import _findall, _match
 from fastagency.ui.console import ConsoleUI
@@ -126,7 +129,9 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(ui: UI, initial_message: str, session_id: str) -> str:
+    def simple_workflow(
+        wf: Workflows, ui: UI, initial_message: str, session_id: str
+    ) -> str:
         student_agent = ConversableAgent(
             name="Student_Agent",
             system_message="You are a student willing to learn.",
@@ -186,6 +191,36 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
 
 @pytest.mark.openai
+def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
+    user_proxy = UserProxyAgent(
+        name="User_Proxy",
+        human_input_mode="ALWAYS",
+        llm_config=openai_gpt4o_mini_llm_config,
+    )
+    assistant = ConversableAgent(
+        name="Teacher_Agent",
+        system_message="You are a math teacher.",
+        llm_config=openai_gpt4o_mini_llm_config,
+    )
+    json_path = Path(__file__).parent / "api" / "openapi" / "templates" / "openapi.json"
+    openapi_json = json_path.read_text()
+    client = OpenAPI.create(openapi_json)
+
+    wf = AutoGenWorkflows()
+    function_to_register = "update_item_items__item_id__ships__ship__put"
+    wf.register_api(
+        api=client,
+        callers=user_proxy,
+        executors=assistant,
+        functions=function_to_register,
+    )
+
+    tools = user_proxy.llm_config["tools"]
+    assert len(tools) == 1
+    assert tools[0]["function"]["name"] == function_to_register
+
+
+@pytest.mark.openai
 class TestAutoGenWorkflowsWithHumanInputAlways:
     @pytest.fixture
     def wf(self, openai_gpt4o_mini_llm_config: dict[str, Any]) -> AutoGenWorkflows:
@@ -195,7 +230,9 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(ui: UI, initial_message: str, session_id: str) -> str:
+        def workflow(
+            wf: Workflows, ui: UI, initial_message: str, session_id: str
+        ) -> str:
             user_proxy = UserProxyAgent(
                 name="User_Proxy",
                 human_input_mode="ALWAYS",

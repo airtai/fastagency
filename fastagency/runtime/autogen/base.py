@@ -1,7 +1,8 @@
 import json
 import re
+from collections.abc import Iterable, Mapping
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
 from autogen.io import IOStream
 
@@ -16,6 +17,11 @@ from ...base import (
     Workflows,
 )
 from ...logging import get_logger
+
+if TYPE_CHECKING:
+    from autogen.agentchat import ConversableAgent
+
+    from fastagency.api.openapi import OpenAPI
 
 __all__ = [
     "AutoGenWorkflows",
@@ -44,7 +50,7 @@ _patterns = {
         "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
         "^\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\n$",
     ),
-    "stars": ("^\\x1b\\[32m(\\*{80}\\*+)\\x1b\\[0m\n$", "^(\\*{80}\\*+)\\n$"),
+    "stars": ("^\\x1b\\[32m(\\*{69}\\*+)\\x1b\\[0m\n$", "^(\\*{69}\\*+)\\n$"),
     "function_call_execution": (
         "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
         "^\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\n$",
@@ -124,9 +130,14 @@ class CurrentMessage:
             pass
         else:
             if self.type == "suggested_function_call":
-                # logger.info("CurrentMessage.process_chunk(): parsing arguments")
-                arguments_json: str = _findall("arguments", chunk)  # type: ignore[assignment]
-                self.arguments = json.loads(arguments_json)
+                if _match("arguments", chunk):
+                    # logger.info("CurrentMessage.process_chunk(): parsing arguments")
+                    arguments_json: str = _findall("arguments", chunk)  # type: ignore[assignment]
+                    self.arguments = json.loads(arguments_json)
+                else:
+                    logger.warning(
+                        f"CurrentMessage.process_chunk(): unexpected chunk: {chunk=}, {self=}"
+                    )
             elif self.type == "function_call_execution":
                 # logger.info("CurrentMessage.process_chunk(): parsing retval")
                 self.retval = chunk
@@ -230,7 +241,9 @@ class IOStreamAdapter:  # IOStream
 class AutoGenWorkflows(Workflows):
     def __init__(self) -> None:
         """Initialize the workflows."""
-        self._workflows: dict[str, tuple[Callable[[UI, str, str], str], str]] = {}
+        self._workflows: dict[
+            str, tuple[Callable[[Workflows, UI, str, str], str], str]
+        ] = {}
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
@@ -253,7 +266,7 @@ class AutoGenWorkflows(Workflows):
         iostream = IOStreamAdapter(ui)
 
         with IOStream.set_default(iostream):
-            return workflow(ui, initial_message, session_id)
+            return workflow(self, ui, initial_message, session_id)
 
     @property
     def names(self) -> list[str]:
@@ -262,3 +275,25 @@ class AutoGenWorkflows(Workflows):
     def get_description(self, name: str) -> str:
         _, description = self._workflows.get(name, (None, "Description not available!"))
         return description
+
+    def register_api(
+        self,
+        api: "OpenAPI",
+        callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        functions: Optional[
+            Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
+        ] = None,
+    ) -> None:
+        if not isinstance(callers, Iterable):
+            callers = [callers]
+        if not isinstance(executors, Iterable):
+            executors = [executors]
+        if isinstance(functions, str):
+            functions = [functions]
+
+        for caller in callers:
+            api.register_for_llm(caller, functions=functions)
+
+        for executor in executors:
+            api.register_for_execution(executor, functions=functions)
