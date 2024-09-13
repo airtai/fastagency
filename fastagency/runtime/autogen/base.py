@@ -4,6 +4,7 @@ from collections.abc import Iterable, Mapping
 from dataclasses import asdict, dataclass
 from typing import TYPE_CHECKING, Any, Callable, Optional, Union
 
+from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 
 from ...base import (
@@ -19,8 +20,6 @@ from ...base import (
 from ...logging import get_logger
 
 if TYPE_CHECKING:
-    from autogen.agentchat import ConversableAgent
-
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
@@ -279,8 +278,8 @@ class AutoGenWorkflows(Workflows):
     def register_api(
         self,
         api: "OpenAPI",
-        callers: Union["ConversableAgent", Iterable["ConversableAgent"]],
-        executors: Union["ConversableAgent", Iterable["ConversableAgent"]],
+        callers: Union[ConversableAgent, Iterable[ConversableAgent]],
+        executors: Union[ConversableAgent, Iterable[ConversableAgent]],
         functions: Optional[
             Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
         ] = None,

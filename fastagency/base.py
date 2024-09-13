@@ -226,7 +226,7 @@ class UI(Protocol):
 Workflow = TypeVar("Workflow", bound=Callable[["Workflows", UI, str, str], str])
 
 
-agent_typevar = TypeVar("agent_typevar")
+Agent = TypeVar("Agent")
 
 
 @runtime_checkable
@@ -245,8 +245,8 @@ class Workflows(Protocol):
     def register_api(
         self,
         api: "OpenAPI",
-        callers: Union[agent_typevar, Iterable[agent_typevar]],
-        executors: Union[agent_typevar, Iterable[agent_typevar]],
+        callers: Union[Agent, Iterable[Agent]],
+        executors: Union[Agent, Iterable[Agent]],
         functions: Optional[
             Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
         ] = None,
