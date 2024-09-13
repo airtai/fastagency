@@ -842,7 +842,7 @@ class HTTPValidationError(BaseModel):
         agent = ConversableAgent(
             name="agent", llm_config=azure_gpt35_turbo_16k_llm_config
         )
-        client.register_for_llm(agent)
+        client._register_for_llm(agent)
         tools = agent.llm_config["tools"]
         # print(tools)
         pydantic28_delta = '{"0": {"function": {"parameters": {"properties": {"body": {"title": "ItemsPostRequest"}}}}}, "2": {"function": {"parameters": {"properties": {"body": {"title": "ItemsItemIdPutRequest"}}}}}}'
@@ -868,7 +868,7 @@ class HTTPValidationError(BaseModel):
         agent = ConversableAgent(
             name="agent", llm_config=azure_gpt35_turbo_16k_llm_config
         )
-        client.register_for_execution(agent)
+        client._register_for_execution(agent)
         function_map = agent.function_map
 
         assert set(function_map.keys()) == expected_keys

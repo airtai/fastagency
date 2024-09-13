@@ -28,13 +28,13 @@ wf = AutoGenWorkflows()
 @wf.register(name="simple_weather_with_security", description="Weather chat with security")
 def weather_workflow_with_security(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
 
-    weather_client = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
+    weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
 
     # Set global security params for all methods
-    weather_client.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
+    weather_api.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
 
     # Set security params for a specific method
-    # weather_client.set_security_params(
+    # weather_api.set_security_params(
     #     APIKeyHeader.Parameters(value="secure weather key"),
     #     "get_daily_weather_daily_get",
     # )
@@ -52,8 +52,11 @@ def weather_workflow_with_security(wf: Workflows, ui: UI, initial_message: str, 
         human_input_mode="NEVER",
     )
 
-    weather_client.register_for_llm(weather_agent)
-    weather_client.register_for_execution(user_agent)
+    wf.register_api(
+        api=weather_api,
+        callers=user_agent,
+        executors=weather_agent,
+    )
 
     chat_result = user_agent.initiate_chat(
         weather_agent,

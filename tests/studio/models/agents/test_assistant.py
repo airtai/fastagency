@@ -263,8 +263,8 @@ class TestAssistantAgent:
             max_consecutive_auto_reply=10,
         )
         weather_tool: OpenAPI = ag_toolkits[0]
-        weather_tool.register_for_execution(user_proxy)
-        weather_tool.register_for_llm(ag_assistant)
+        weather_tool._register_for_execution(user_proxy)
+        weather_tool._register_for_llm(ag_assistant)
         chat_result = user_proxy.initiate_chat(
             ag_assistant, message="What is the weather in New York?"
         )

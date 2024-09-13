@@ -293,7 +293,7 @@ class AutoGenWorkflows(Workflows):
             functions = [functions]
 
         for caller in callers:
-            api.register_for_llm(caller, functions=functions)
+            api._register_for_llm(caller, functions=functions)
 
         for executor in executors:
-            api.register_for_execution(executor, functions=functions)
+            api._register_for_execution(executor, functions=functions)

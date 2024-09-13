@@ -44,8 +44,11 @@ def weather_workflow(wf: Workflows, ui: UI, initial_message: str, session_id: st
         human_input_mode="NEVER",
     )
 
-    weather_api.register_for_llm(weather_agent)
-    weather_api.register_for_execution(user_agent)
+    wf.register_api(
+        api=weather_api,
+        callers=user_agent,
+        executors=weather_agent,
+    )
 
     chat_result = user_agent.initiate_chat(
         weather_agent,
