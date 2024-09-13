@@ -65,6 +65,7 @@ This will launch the console interface, allowing you to input messages as the st
 
 ### Debugging Tips
 If you encounter issues running the application, ensure that:
+
 - The OpenAI API key is correctly set in your environment variables.
 - All necessary packages are installed, especially the `fastagency[autogen]` dependencies.
 - The API connection to GPT-4o is functional and responds as expected.

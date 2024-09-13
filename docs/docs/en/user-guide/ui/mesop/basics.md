@@ -74,6 +74,7 @@ This will launch a local web server, and you will be able to access the MesopUI 
 
 ### Debugging Tips
 If you encounter issues running the application, ensure that:
+
 - The OpenAI API key is correctly set in your environment variables.
 - All necessary packages are installed, especially the `fastagency[autogen,mesop]` dependencies.
 - The MesopUI web interface is accessible from the browser, and no firewall is blocking the connection.
