@@ -1,3 +1,4 @@
+import sys
 import threading
 from collections.abc import Generator, Iterator
 from contextlib import contextmanager
@@ -7,6 +8,12 @@ from queue import Queue
 from tempfile import TemporaryDirectory
 from typing import ClassVar, Optional
 from uuid import uuid4
+
+import typer
+
+if sys.version_info < (3, 11):
+    typer.echo("Error: Mesop requires Python 3.11 or higher", err=True)
+    raise typer.Exit(code=1)
 
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
 from mesop.bin.bin import main as mesop_main
