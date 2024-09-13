@@ -45,7 +45,7 @@ This code snippet sets up a simple weather agent that calls an external weather 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:69] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:68] !}
 ```
 
 ## Complete Application Code
