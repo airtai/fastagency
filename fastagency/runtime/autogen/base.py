@@ -44,7 +44,7 @@ _patterns = {
         "^\\x1b\\[32m\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\x1b\\[0m\\n$",
         "^\\*\\*\\*\\*\\* Suggested tool call \\((call_[a-zA-Z0-9]+)\\): ([a-zA-Z0-9_]+) \\*\\*\\*\\*\\*\\n$",
     ),
-    "stars": ("^\\x1b\\[32m(\\*{80}\\*+)\\x1b\\[0m\n$", "^(\\*{80}\\*+)\\n$"),
+    "stars": ("^\\x1b\\[32m(\\*{69}\\*+)\\x1b\\[0m\n$", "^(\\*{69}\\*+)\\n$"),
     "function_call_execution": (
         "^\\x1b\\[35m\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\x1b\\[0m\\n$",
         "^\\n>>>>>>>> EXECUTING FUNCTION ([a-zA-Z_]+)...\\n$",
@@ -124,9 +124,14 @@ class CurrentMessage:
             pass
         else:
             if self.type == "suggested_function_call":
-                # logger.info("CurrentMessage.process_chunk(): parsing arguments")
-                arguments_json: str = _findall("arguments", chunk)  # type: ignore[assignment]
-                self.arguments = json.loads(arguments_json)
+                if _match("arguments", chunk):
+                    # logger.info("CurrentMessage.process_chunk(): parsing arguments")
+                    arguments_json: str = _findall("arguments", chunk)  # type: ignore[assignment]
+                    self.arguments = json.loads(arguments_json)
+                else:
+                    logger.warning(
+                        f"CurrentMessage.process_chunk(): unexpected chunk: {chunk=}, {self=}"
+                    )
             elif self.type == "function_call_execution":
                 # logger.info("CurrentMessage.process_chunk(): parsing retval")
                 self.retval = chunk
