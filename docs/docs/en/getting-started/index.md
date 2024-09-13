@@ -160,6 +160,23 @@ Next, define your FastAgency application. This ties together your workflow and t
 
     For Mesop applications, use `MesopUI` to enable web-based interactions.
 
+
+## Complete Application Code
+
+<details>
+<summary>Console</summary>
+```python
+{! docs_src/getting_started/main_console.py!}
+```
+</details>
+
+<details>
+<summary>Mesop</summary>
+```python
+{! docs_src/getting_started/main_mesop.py!}
+```
+</details>
+
 ### Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:

@@ -53,12 +53,14 @@ We now register these functions with the workflow, linking the `student_agent` a
 {! docs_src/user_guide/custom_user_interactions/main.py [ln:101.5,102.5,103.5,104.5,105.5,106.5,107.5,108.5,109.5,110.5,111.5,112.5,113.5,114.5,115.5,116.5,117.5,118.5,119.5,120.5,121.5,122.5,123.5] !}
 ```
 
-## Define FastAgency Application
-Finally, we'll define the entire application:
+## Complete Application Code
 
+<details>
+<summary>main.py</summary>
 ```python
 {! docs_src/user_guide/custom_user_interactions/main.py!}
 ```
+</details>
 
 ## Run Application
 

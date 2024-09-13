@@ -50,13 +50,23 @@ Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/Cons
 
 - **Explanation**: Here, we set up the **ConsoleUI** as the user interface for the workflow, which will allow the entire agent interaction to take place within the terminal.
 
+
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/getting_started/main_console.py !}
+```
+</details>
+
+
 ### Running the Application
 
 Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
 
 ```bash
-cd docs/docs_src/getting_started
-fastagency run main_console.py
+fastagency run
 ```
 
 This will launch the console interface, allowing you to input messages as the student and observe how the teacher agent responds.

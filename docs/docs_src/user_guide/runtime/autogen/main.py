@@ -54,7 +54,7 @@ def weather_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session
                     "description": "Get the daily weather",
                 }
             },
-            "get_daily_weather_weekly_get"
+            "get_hourly_weather_hourly_get"
         ]
     )
 

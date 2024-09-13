@@ -9,7 +9,7 @@ In this example, we will create a simple weather chatbot using **AutoGen** in Fa
 Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
 
 ```bash
-pip install "fastagency[autogen]"
+pip install "fastagency[autogen,openapi]"
 ```
 
 This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
@@ -73,11 +73,20 @@ Finally, we create the FastAgency application and launch it using the console in
 {! docs_src/user_guide/runtime/autogen/main.py [ln:71-72] !}
 ```
 
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/user_guide/runtime/autogen/main.py!}
+```
+</details>
+
+
 ### Running the Application
 
 ```bash
-cd docs/docs_src/user_guide/runtime/autogen
-fastagency run main.py
+fastagency run
 ```
 
 Ensure you have set your OpenAI API key in the environment and that the weather API URL is accessible. The command will launch a console interface where users can input their requests and interact with the weather agent.
