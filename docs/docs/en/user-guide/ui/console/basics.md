@@ -61,7 +61,8 @@ fastagency run main_console.py
 
 This will launch the console interface, allowing you to input messages as the student and observe how the teacher agent responds.
 
-**Note**: Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+!!! note
+    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
 ### Debugging Tips
 If you encounter issues running the application, ensure that:
