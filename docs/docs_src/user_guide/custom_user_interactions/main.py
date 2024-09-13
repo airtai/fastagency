@@ -49,11 +49,13 @@ def exam_learning(ui: UI, initial_message: str, session_id: str) -> str:
         is_termination_msg=is_termination_msg,
     )
 
+    # we can define several types of interactions with the UI
     wf.register_text_input(
+        ui=ui,
         name="retrieve_exam_questions",
         description="Get exam questions from examiner",
-        sender=student_agent,
-        executor=teacher_agent,
+        callers=student_agent,
+        executors=teacher_agent,
         suggestions=[
             "1) Mona Lisa",
             "2) Innovations",
@@ -63,78 +65,22 @@ def exam_learning(ui: UI, initial_message: str, session_id: str) -> str:
         ],
     )
 
-    )
-    def retrieve_exam_questions(
-        message: Annotated[str, "Message for examiner"]
-    ) -> Optional[str]:
-        try:
-            msg = TextInput(
-                sender="student",
-                recipient="teacher",
-                prompt=message,
-                suggestions=[
-                    "1) Mona Lisa",
-                    "2) Innovations",
-                    "3) Florence at the time of Leonardo",
-                    "4) The Last Supper",
-                    "5) Vitruvian Man",
-                ],
-            )
-            return ui.process_message(msg)
-        except Exception as e:
-            return f"retrieve_exam_questions() FAILED! {e}"
-
-    def write_final_answers(message: Annotated[str, "Message for examiner"]) -> str:
-        try:
-            msg = SystemMessage(
-                sender="function call logger",
-                recipient="system",
-                message={
-                    "operation": "storing final answers",
-                    "content": message,
-                },
-            )
-            ui.process_message(msg)
-            return "Final answers stored."
-        except Exception as e:
-            return f"write_final_answers() FAILED! {e}"
-
-    def get_final_grade(
-        message: Annotated[str, "Message for examiner"]
-    ) -> Optional[str]:
-        try:
-            msg = MultipleChoice(
-                sender="student",
-                recipient="teacher",
-                prompt=message,
-                choices=["A", "B", "C", "D", "F"],
-            )
-            return ui.process_message(msg)
-        except Exception as e:
-            return f"get_final_grade() FAILED! {e}"
-
-    register_function(
-        retrieve_exam_questions,
-        caller=student_agent,
-        executor=teacher_agent,
-        name="retrieve_exam_questions",
-        description="Get exam questions from examiner",
-    )
-
-    register_function(
-        write_final_answers,
-        caller=student_agent,
-        executor=teacher_agent,
+    wf.register_system_message(
+        ui=ui,
         name="write_final_answers",
         description="Write a final answers to exam questions to examiner, but only after discussing with the tutor first.",
+        callers=student_agent,
+        executors=teacher_agent,
+        message={"operation": "storing final answers"}
     )
 
-    register_function(
-        get_final_grade,
-        caller=student_agent,
-        executor=teacher_agent,
+    wf.register_multiple_choice(
+        ui=ui,
         name="get_final_grade",
         description="Get the final grade after submitting the answers.",
+        callers=student_agent,
+        executors=teacher_agent,
+        choices=["A", "B", "C", "D", "F"],
     )
 
     chat_result = teacher_agent.initiate_chat(
