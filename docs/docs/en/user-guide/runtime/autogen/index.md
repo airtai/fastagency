@@ -9,7 +9,7 @@ In this example, we will create a simple weather chatbot using **AutoGen** in Fa
 Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
 
 ```bash
-pip install "fastagency[autogen]"
+pip install "fastagency[autogen,openapi]"
 ```
 
 This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
