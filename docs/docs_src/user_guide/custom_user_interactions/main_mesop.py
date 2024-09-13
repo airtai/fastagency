@@ -4,10 +4,10 @@ from typing import Annotated, Any, Dict, Optional
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import FastAgency
+from fastagency import FastAgency, Workflows
 from fastagency import UI
 from fastagency.base import MultipleChoice, SystemMessage, TextInput
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 
 llm_config = {
@@ -24,7 +24,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")
-def exam_learning(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str) -> Optional[str]:
+def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
 
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -53,17 +53,18 @@ def exam_learning(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id
         message: Annotated[str, "Message for examiner"]
     ) -> Optional[str]:
         try:
-            msg = TextInput(
+            msg = MultipleChoice(
                 sender="student",
                 recipient="teacher",
                 prompt=message,
-                suggestions=[
+                choices=[
                     "1) Mona Lisa",
                     "2) Innovations",
                     "3) Florence at the time of Leonardo",
                     "4) The Last Supper",
                     "5) Vitruvian Man",
                 ],
+                default="1) Mona Lisa"
             )
             return ui.process_message(msg)
         except Exception as e:
@@ -132,4 +133,4 @@ def exam_learning(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(wf=wf, ui=MesopUI())

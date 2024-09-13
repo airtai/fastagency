@@ -1,17 +1,14 @@
-import json
 from collections.abc import Iterator
-from uuid import uuid4
 
 import mesop as me
 
-from ...base import AskingMessage, WorkflowCompleted
 from ...logging import get_logger
-from .base import MesopMessage, MesopUI
-from .components.inputs import input_prompt, input_user_feedback
+from .base import MesopUI
+from .components.inputs import input_prompt
 from .components.ui_common import header
 from .data_model import Conversation, State
-from .message import message_box
-from .send_prompt import send_prompt_to_autogen, send_user_feedback_to_autogen
+from .message import consume_responses, message_box
+from .send_prompt import send_prompt_to_autogen
 from .styles import (
     CHAT_STARTER_STYLE,
     PAST_CHATS_HIDE_STYLE,
@@ -114,37 +111,6 @@ def conversation_starter_box() -> None:
             input_prompt(send_prompt)
 
 
-def _handle_message(state: State, message: MesopMessage) -> None:
-    conversation = state.conversation
-    messages = conversation.messages
-    level = message.conversation.level
-    conversation_id = message.conversation.id
-    io_message = message.io_message
-    message_dict = io_message.model_dump()
-    message_string = json.dumps(
-        {"level": level, "conversationId": conversation_id, "io_message": message_dict}
-    )
-    messages.append(message_string)
-    conversation.messages = list(messages)
-    if isinstance(io_message, AskingMessage):
-        conversation.waiting_for_feedback = True
-        conversation.completed = False
-    if isinstance(io_message, WorkflowCompleted):
-        conversation.completed = True
-        conversation.waiting_for_feedback = False
-        if not conversation.is_from_the_past:
-            uuid: str = uuid4().hex
-            becomme_past = Conversation(
-                id=uuid,
-                title=conversation.title,
-                messages=conversation.messages,
-                completed=True,
-                is_from_the_past=True,
-                waiting_for_feedback=False,
-            )
-            state.past_conversations.insert(0, becomme_past)
-
-
 def send_prompt(e: me.ClickEvent) -> Iterator[None]:
     ui = get_ui()
     wf = ui.app.wf
@@ -162,13 +128,7 @@ def send_prompt(e: me.ClickEvent) -> Iterator[None]:
     state.in_conversation = True
     yield
     responses = send_prompt_to_autogen(prompt=prompt, wf=wf, name=name)
-    for message in responses:
-        state = me.state(State)
-        _handle_message(state, message)
-        yield
-        me.scroll_into_view(key="end_of_messages")
-        yield
-    yield
+    yield from consume_responses(responses)
 
 
 def conversation_box() -> None:
@@ -183,30 +143,9 @@ def conversation_box() -> None:
             )
         ):
             for message in messages:
-                message_box(message)
+                message_box(message, conversation.is_from_the_past)
             if messages:
                 me.box(
                     key="end_of_messages",
                     style=me.Style(margin=me.Margin(bottom="50vh")),
                 )
-        if conversation.waiting_for_feedback:
-            input_user_feedback(on_user_feedback)
-
-
-def on_user_feedback(e: me.ClickEvent) -> Iterator[None]:
-    state = me.state(State)
-    conversation = state.conversation
-    feedback = conversation.feedback
-    conversation.feedback = ""
-    conversation.waiting_for_feedback = False
-    yield
-    me.scroll_into_view(key="end_of_messages")
-    yield
-    responses = send_user_feedback_to_autogen(feedback)
-    for message in responses:
-        state = me.state(State)
-        _handle_message(state, message)
-        yield
-        me.scroll_into_view(key="end_of_messages")
-        yield
-    yield

@@ -619,7 +619,7 @@ async def placeholder_assistant_weatherapi_ref(
         name=add_random_suffix("assistant_weather"),
         llm=llm_ref,
         toolbox_1=weather_toolbox_ref,
-        system_message="You are a helpful assistant with access to Weather API. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE' (all caps)",
+        system_message="You are a helpful assistant with access to Weather API. After you successfully answer the question asked and there are no new questions, terminate the chat by outputting 'TERMINATE' (in all caps, e.g.'Terminate' will be ignored).",
     )
 
 

@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.main.on_user_feedback
+::: fastagency.ui.mesop.message.consume_responses
