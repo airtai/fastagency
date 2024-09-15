@@ -11,9 +11,11 @@ from fastagency.ui.mesop.components.inputs import input_user_feedback
 from fastagency.ui.mesop.send_prompt import send_user_feedback_to_autogen
 
 from ...base import (
+    FunctionCallExecution,
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
+    SuggestedFunctionCall,
     SystemMessage,
     TextInput,
     TextMessage,
@@ -279,6 +281,42 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                             disabled=self._readonly or self._is_completed(),
                         )
             me.button(label="Ok", on_click=on_click)
+        return ""
+
+    def visit_suggested_function_call(
+        self, message: SuggestedFunctionCall
+    ) -> Optional[str]:
+        base_color = "#8ff"
+        with me.box(
+            style=me.Style(
+                background=base_color,
+                padding=me.Padding.all(16),
+                border_radius=16,
+                margin=me.Margin.symmetric(vertical=16),
+            )
+        ):
+            self._header(message, base_color, title="Suggested Function Call")
+            with me.box():
+                me.text(message.function_name)
+            me.markdown(json.dumps(message.arguments))
+        return ""
+
+    def visit_function_call_execution(
+        self, message: FunctionCallExecution
+    ) -> Optional[str]:
+        base_color = "#7ff"
+        with me.box(
+            style=me.Style(
+                background=base_color,
+                padding=me.Padding.all(16),
+                border_radius=16,
+                margin=me.Margin.symmetric(vertical=16),
+            )
+        ):
+            self._header(message, base_color, title="Function Call Execution")
+            with me.box():
+                me.text(message.function_name)
+            me.markdown(json.dumps(message.retval))
         return ""
 
     def process_message(self, message: IOMessage) -> Optional[str]:
