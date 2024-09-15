@@ -3,12 +3,11 @@ import os
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
-from fastagency import FastAgency, Workflows
-from fastagency import UI
-from fastagency.ui.console import ConsoleUI
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency import UI, FastAgency, Workflows
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
+from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.ui.console import ConsoleUI
 
 llm_config = {
     "config_list": [
@@ -21,24 +20,26 @@ llm_config = {
 }
 
 WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
+weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
+
+# Set global security params for all methods
+weather_api.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
+
+# Set security params for a specific method
+# weather_api.set_security_params(
+#     APIKeyHeader.Parameters(value="secure weather key"),
+#     "get_daily_weather_daily_get",
+# )
 
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="simple_weather_with_security", description="Weather chat with security")
-def weather_workflow_with_security(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
-
-    weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
-
-    # Set global security params for all methods
-    weather_api.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
-
-    # Set security params for a specific method
-    # weather_api.set_security_params(
-    #     APIKeyHeader.Parameters(value="secure weather key"),
-    #     "get_daily_weather_daily_get",
-    # )
-
+@wf.register(
+    name="simple_weather_with_security", description="Weather chat with security"
+)
+def weather_workflow_with_security(
+    wf: Workflows, ui: UI, initial_message: str, session_id: str
+) -> str:
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent",

@@ -22,7 +22,7 @@ This example shows how to create a simple learning chat where a student agent in
 We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.
 
 ```python
-{! docs_src/getting_started/main_mesop.py [ln:1-8] !}
+{! docs_src/getting_started/main_mesop.py [ln:1-7] !}
 ```
 
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
@@ -43,7 +43,7 @@ Next, we configure the language model that powers the agents. In this case, we'r
 Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
 
 ```python
-{! docs_src/getting_started/main_mesop.py [ln:20-44] !}
+{! docs_src/getting_started/main_mesop.py [ln:22-44] !}
 ```
 
 - **Agent Overview**: The **Student Agent** is configured with a system message, "You are a student willing to learn," and will initiate questions during the interaction. The **Teacher Agent**, on the other hand, is set up as a math teacher and will respond to the student's questions.
@@ -59,13 +59,23 @@ app = FastAgency(wf=wf, ui=MesopUI())
 
 - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
+
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/getting_started/main_mesop.py !}
+```
+</details>
+
+
 ### Running the Application
 
 Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
 
 ```bash
-cd docs/docs_src/getting_started
-fastagency run main_mesop.py
+fastagency run
 ```
 
 This will launch a local web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.

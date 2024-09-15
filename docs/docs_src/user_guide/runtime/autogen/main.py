@@ -3,13 +3,10 @@ import os
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
-from fastagency import FastAgency
-from fastagency import UI
-from fastagency.ui.console import ConsoleUI
-from fastagency.runtime.autogen.base import AutoGenWorkflows
-
+from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
-
+from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.ui.console import ConsoleUI
 
 llm_config = {
     "config_list": [
@@ -21,15 +18,17 @@ llm_config = {
     "temperature": 0.0,
 }
 
-openapi_url="https://weather.tools.fastagency.ai/openapi.json"
+openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
 
 weather_api = OpenAPI.create(openapi_url=openapi_url)
 
 wf = AutoGenWorkflows()
 
-@wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
-def weather_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str) -> str:
 
+@wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
+def weather_workflow(
+    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
+) -> str:
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent",
@@ -54,8 +53,8 @@ def weather_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session
                     "description": "Get the daily weather",
                 }
             },
-            "get_daily_weather_weekly_get"
-        ]
+            "get_hourly_weather_hourly_get",
+        ],
     )
 
     chat_result = user_agent.initiate_chat(
