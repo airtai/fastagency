@@ -24,6 +24,11 @@ class AgentBaseModel(Model):
         Field(
             title="LLM",
             description="LLM used by the agent for producing responses",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the LLM the agent will use to generate responses."
+                }
+            },
         ),
     ]
 
@@ -32,6 +37,11 @@ class AgentBaseModel(Model):
         Field(
             title="Toolbox",
             description="Toolbox used by the agent for producing responses",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                }
+            },
         ),
     ] = None
 
@@ -40,6 +50,11 @@ class AgentBaseModel(Model):
         Field(
             title="Toolbox",
             description="Toolbox used by the agent for producing responses",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                }
+            },
         ),
     ] = None
 
@@ -48,6 +63,11 @@ class AgentBaseModel(Model):
         Field(
             title="Toolbox",
             description="Toolbox used by the agent for producing responses",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                }
+            },
         ),
     ] = None
 

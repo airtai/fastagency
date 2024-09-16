@@ -43,6 +43,11 @@ class TwoAgentTeam(TeamBaseModel):
         Field(
             title="Initial Agent",
             description="Agent that starts the conversation",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Select the Initial Agent, the agent responsible for task orchestration. It interacts with users and assigns tasks to Secondary Agent, enhancing the efficiency of complex operations."
+                }
+            },
         ),
     ]
     secondary_agent: Annotated[
@@ -50,6 +55,11 @@ class TwoAgentTeam(TeamBaseModel):
         Field(
             title="Secondary Agent",
             description="Agent that continues the conversation",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Select the Secondary Agent, the agent responsible for collaborating with the Initial Agent in performing specialized tasks. Secondary Agents enhance efficiency by focusing on specific roles, such as data analysis or code execution."
+                }
+            },
         ),
     ]
 

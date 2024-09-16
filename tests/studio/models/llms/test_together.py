@@ -130,12 +130,18 @@ class TestTogetherAI:
                 "model": {
                     "default": "Meta Llama 3 70B Instruct Reference",
                     "description": "The model to use for the Together API",
+                    "metadata": {
+                        "tooltip_message": "Choose the model that the LLM uses to interact with Together AI services."
+                    },
                     "title": "Model",
                     "type": "string",
                 },
                 "api_key": {
                     "$ref": "#/$defs/TogetherAIAPIKeyRef",
                     "description": "The API Key from Together.ai",
+                    "metadata": {
+                        "tooltip_message": "Choose the API key that will be used to authenticate requests to Together AI services."
+                    },
                     "title": "API Key",
                 },
                 "base_url": {
@@ -144,6 +150,9 @@ class TestTogetherAI:
                     "format": "uri",
                     "maxLength": 2083,
                     "minLength": 1,
+                    "metadata": {
+                        "tooltip_message": "The base URL that the LLM uses to interact with Together AI services."
+                    },
                     "title": "Base URL",
                     "type": "string",
                 },
@@ -159,6 +168,9 @@ class TestTogetherAI:
                     "default": 0.8,
                     "description": "The temperature to use for the model, must be between 0 and 2",
                     "maximum": 2.0,
+                    "metadata": {
+                        "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
+                    },
                     "minimum": 0.0,
                     "title": "Temperature",
                     "type": "number",

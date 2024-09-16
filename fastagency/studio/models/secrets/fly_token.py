@@ -16,6 +16,11 @@ class FlyToken(Model):
         Field(
             title="Fly Token",
             description="The Fly.io token to use for deploying the deployment",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The token specified here will be used to authenticate your access to Fly.io services."
+                }
+            },
         ),
     ]
 

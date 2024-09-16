@@ -16,6 +16,11 @@ class GitHubToken(Model):
         Field(
             title="GH Token",
             description="The GitHub token to use for creating a new repository",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The token specified here will be used to authenticate your access to GitHub services."
+                }
+            },
         ),
     ]
 

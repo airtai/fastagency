@@ -115,7 +115,12 @@ class TogetherAIAPIKey(Model):
         str,
         Field(
             title="API Key",
-            description="The API Key from Together.ai",
+            description="The API Key from Together AI",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The API key specified here will be used to authenticate requests to Together AI services."
+                }
+            },
             min_length=64,
             max_length=64,
         ),
@@ -139,16 +144,40 @@ URL = Annotated[HttpUrl, AfterValidator(lambda x: str(x).rstrip("/"))]
 class TogetherAI(Model):
     model: Annotated[  # type: ignore[valid-type]
         TogetherModels,
-        Field(description="The model to use for the Together API"),
+        Field(
+            description="The model to use for the Together API",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the model that the LLM uses to interact with Together AI services."
+                }
+            },
+        ),
     ] = "Meta Llama 3 70B Instruct Reference"
 
     api_key: Annotated[
         TogetherAIAPIKeyRef,
-        Field(title="API Key", description="The API Key from Together.ai"),
+        Field(
+            title="API Key",
+            description="The API Key from Together.ai",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the API key that will be used to authenticate requests to Together AI services."
+                }
+            },
+        ),
     ]
 
     base_url: Annotated[
-        URL, Field(title="Base URL", description="The base URL of the OpenAI API")
+        URL,
+        Field(
+            title="Base URL",
+            description="The base URL of the OpenAI API",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The base URL that the LLM uses to interact with Together AI services."
+                }
+            },
+        ),
     ] = URL(url="https://api.together.xyz/v1")
 
     api_type: Annotated[
@@ -162,6 +191,11 @@ class TogetherAI(Model):
         float,
         Field(
             description="The temperature to use for the model, must be between 0 and 2",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
+                }
+            },
             ge=0.0,
             le=2.0,
         ),

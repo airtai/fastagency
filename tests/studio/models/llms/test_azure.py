@@ -126,12 +126,18 @@ class TestAzureOAI:
                 "model": {
                     "default": "gpt-3.5-turbo",
                     "description": "The model to use for the Azure OpenAI API, e.g. 'gpt-3.5-turbo'",
+                    "metadata": {
+                        "tooltip_message": "The model that the LLM uses to interact with Azure OpenAI services."
+                    },
                     "title": "Model",
                     "type": "string",
                 },
                 "api_key": {
                     "$ref": "#/$defs/AzureOAIAPIKeyRef",
                     "description": "The API Key from Azure OpenAI",
+                    "metadata": {
+                        "tooltip_message": "Choose the API key that will be used to authenticate requests to Azure OpenAI services."
+                    },
                     "title": "API Key",
                 },
                 "base_url": {
@@ -139,6 +145,9 @@ class TestAzureOAI:
                     "description": "The base URL of the Azure OpenAI API",
                     "format": "uri",
                     "maxLength": 2083,
+                    "metadata": {
+                        "tooltip_message": "The base URL that the LLM uses to interact with Azure OpenAI services."
+                    },
                     "minLength": 1,
                     "title": "Base URL",
                     "type": "string",
@@ -164,6 +173,9 @@ class TestAzureOAI:
                         "2024-05-01-preview",
                         "2024-02-01",
                     ],
+                    "metadata": {
+                        "tooltip_message": "The version of the Azure OpenAI API that the LLM uses to interact with Azure OpenAI services."
+                    },
                     "title": "API Version",
                     "type": "string",
                 },
@@ -171,6 +183,9 @@ class TestAzureOAI:
                     "default": 0.8,
                     "description": "The temperature to use for the model, must be between 0 and 2",
                     "maximum": 2.0,
+                    "metadata": {
+                        "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
+                    },
                     "minimum": 0.0,
                     "title": "Temperature",
                     "type": "number",
@@ -185,6 +200,7 @@ class TestAzureOAI:
         if pydantic_version < 2.9:
             # print(f"pydantic28_delta = '{jsondiff.diff(expected, schema, dump=True)}'")
             expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
+
         assert schema == expected
 
     @pytest.mark.asyncio

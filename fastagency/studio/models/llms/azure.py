@@ -28,7 +28,16 @@ AzureApiVersionsLiteral: TypeAlias = Literal[
 @register("secret")
 class AzureOAIAPIKey(Model):
     api_key: Annotated[
-        str, Field(title="API Key", description="The API Key from Azure OpenAI")
+        str,
+        Field(
+            title="API Key",
+            description="The API Key from Azure OpenAI",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The API key specified here will be used to authenticate requests to Azure OpenAI services."
+                }
+            },
+        ),
     ]
 
     @classmethod
@@ -57,17 +66,39 @@ class AzureOAI(Model):
     model: Annotated[
         str,
         Field(
-            description="The model to use for the Azure OpenAI API, e.g. 'gpt-3.5-turbo'"
+            description="The model to use for the Azure OpenAI API, e.g. 'gpt-3.5-turbo'",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The model that the LLM uses to interact with Azure OpenAI services."
+                }
+            },
         ),
     ] = "gpt-3.5-turbo"
 
     api_key: Annotated[
         AzureOAIAPIKeyRef,
-        Field(title="API Key", description="The API Key from Azure OpenAI"),
+        Field(
+            title="API Key",
+            description="The API Key from Azure OpenAI",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the API key that will be used to authenticate requests to Azure OpenAI services."
+                }
+            },
+        ),
     ]
 
     base_url: Annotated[
-        URL, Field(title="Base URL", description="The base URL of the Azure OpenAI API")
+        URL,
+        Field(
+            title="Base URL",
+            description="The base URL of the Azure OpenAI API",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The base URL that the LLM uses to interact with Azure OpenAI services."
+                }
+            },
+        ),
     ] = UrlModel(url="https://{your-resource-name}.openai.azure.com").url
 
     api_type: Annotated[
@@ -80,6 +111,11 @@ class AzureOAI(Model):
         Field(
             title="API Version",
             description="The version of the Azure OpenAI API, e.g. '2024-02-01'",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The version of the Azure OpenAI API that the LLM uses to interact with Azure OpenAI services."
+                }
+            },
         ),
     ] = "2024-02-01"
 
@@ -87,6 +123,11 @@ class AzureOAI(Model):
         float,
         Field(
             description="The temperature to use for the model, must be between 0 and 2",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
+                }
+            },
             ge=0.0,
             le=2.0,
         ),

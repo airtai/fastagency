@@ -16,7 +16,18 @@ from .base import AgentBaseModel, llm_type_refs
 
 @register("secret")
 class BingAPIKey(Model):
-    api_key: Annotated[str, Field(title="API Key", description="The API Key from Bing")]
+    api_key: Annotated[
+        str,
+        Field(
+            title="API Key",
+            description="The API Key from Bing",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The API key specified here will be used to authenticate requests to Bing services."
+                }
+            },
+        ),
+    ]
 
     @classmethod
     async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
@@ -87,14 +98,35 @@ class WebSurferAgent(AgentBaseModel):
         Field(
             title="Summarizer LLM",
             description="This LLM will be used to generated summary of all pages visited",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Select the summarizer LLM, which is used for generating precise and accurate summaries of web pages, while the LLM chosen above is used for handling regular web searches."
+                }
+            },
         ),
     ]
     viewport_size: Annotated[
-        int, Field(description="The viewport size of the browser")
+        int,
+        Field(
+            description="The viewport size of the browser",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Viewport size refers to the visible area of a webpage in the browser. Default is 4096. Modify only if a custom size is needed."
+                }
+            },
+        ),
     ] = 4096
     bing_api_key: Annotated[
         Optional[BingAPIKeyRef],
-        Field(title="Bing API Key", description="The Bing API key for the browser"),
+        Field(
+            title="Bing API Key",
+            description="The Bing API key for the browser",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose a Bing API key to allow the browser to access Bing's search and data services, improving information retrieval."
+                }
+            },
+        ),
     ] = None
 
     @classmethod

@@ -28,6 +28,11 @@ class AnthropicAPIKey(Model):
         Field(
             title="API Key",
             description="The API Key from Anthropic",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The API key specified here will be used to authenticate requests to Anthropic services."
+                }
+            },
         ),
     ]
 
@@ -57,7 +62,12 @@ class Anthropic(Model):
     model: Annotated[  # type: ignore[valid-type]
         AnthropicModels,
         Field(
-            description="The model to use for the Anthropic API, e.g. 'claude-3-5-sonnet-20240620'"
+            description="The model to use for the Anthropic API, e.g. 'claude-3-5-sonnet-20240620'",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the model that the LLM should use to generate responses."
+                }
+            },
         ),
     ] = "claude-3-5-sonnet-20240620"
 
@@ -66,11 +76,25 @@ class Anthropic(Model):
         Field(
             title="API Key",
             description="The API Key from Anthropic",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the API key that will be used to authenticate requests to Anthropic services."
+                }
+            },
         ),
     ]
 
     base_url: Annotated[
-        URL, Field(title="Base URL", description="The base URL of the Anthropic API")
+        URL,
+        Field(
+            title="Base URL",
+            description="The base URL of the Anthropic API",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The base URL that the LLM uses to interact with Anthropic services."
+                }
+            },
+        ),
     ] = URL(url="https://api.anthropic.com/v1")
 
     api_type: Annotated[
@@ -82,6 +106,11 @@ class Anthropic(Model):
         float,
         Field(
             description="The temperature to use for the model, must be between 0 and 2",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
+                }
+            },
             ge=0.0,
             le=2.0,
         ),

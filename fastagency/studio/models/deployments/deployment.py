@@ -29,7 +29,14 @@ class Deployment(Model):
     name: Annotated[
         str,
         Field(
-            ..., description="The application name to use on the website.", min_length=1
+            ...,
+            description="The name of the SaaS application.",
+            min_length=1,
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "The application name to be used in the deployed SaaS application."
+                }
+            },
         ),
     ]
 
@@ -39,7 +46,12 @@ class Deployment(Model):
             ...,
             description="The name of the GitHub repository.",
             min_length=1,
-            json_schema_extra={"metadata": {"immutable_after_creation": True}},
+            json_schema_extra={
+                "metadata": {
+                    "immutable_after_creation": True,
+                    "tooltip_message": "The GitHub repository to be created. If the name contains spaces or special characters, GitHub will adjust it according to its naming rules. A random suffix will be added if the repository name already exists.",
+                }
+            },
         ),
     ]
 
@@ -50,7 +62,12 @@ class Deployment(Model):
             description="The name of the Fly.io application.",
             min_length=1,
             max_length=30,
-            json_schema_extra={"metadata": {"immutable_after_creation": True}},
+            json_schema_extra={
+                "metadata": {
+                    "immutable_after_creation": True,
+                    "tooltip_message": "The Fly.io application. This will be used to create and deploy your React, Node.js, and PostgreSQL apps to Fly.io.",
+                }
+            },
         ),
     ]
 
@@ -59,6 +76,11 @@ class Deployment(Model):
         Field(
             title="Team Name",
             description="The team that is used in the deployment",
+            json_schema_extra={
+                "metadata": {
+                    "tooltip_message": "Choose the team to be used for deployment. User messages are sent to the Initial agent of the chosen team, and the agent's responses are sent back to the user. This field can be updated anytime to switch teams, with changes reflected in real-time in your deployments."
+                }
+            },
         ),
     ]
     gh_token: Annotated[
@@ -66,7 +88,12 @@ class Deployment(Model):
         Field(
             title="GH Token",
             description="The GitHub token to use for creating a new repository",
-            json_schema_extra={"metadata": {"immutable_after_creation": True}},
+            json_schema_extra={
+                "metadata": {
+                    "immutable_after_creation": True,
+                    "tooltip_message": "Choose the GitHub token used for authenticating and managing access to your GitHub account.",
+                }
+            },
         ),
     ]
     fly_token: Annotated[
@@ -74,7 +101,12 @@ class Deployment(Model):
         Field(
             title="Fly Token",
             description="The Fly.io token to use for deploying the deployment",
-            json_schema_extra={"metadata": {"immutable_after_creation": True}},
+            json_schema_extra={
+                "metadata": {
+                    "immutable_after_creation": True,
+                    "tooltip_message": "Choose the Fly.io token used for authenticating and managing access to your Fly.io account.",
+                }
+            },
         ),
     ]
 
