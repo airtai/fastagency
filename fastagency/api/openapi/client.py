@@ -48,7 +48,7 @@ class OpenAPI:
         self.registered_funcs: list[Callable[..., Any]] = []
         self.globals: dict[str, Any] = {}
 
-        self.security: dict[str, BaseSecurity] = {}
+        self.security: dict[str, list[BaseSecurity]] = {}
         self.security_params: dict[Optional[str], BaseSecurityParameters] = {}
 
     @staticmethod
@@ -106,18 +106,23 @@ class OpenAPI:
             if security is None:
                 raise ValueError(f"Security is not set for '{name}'")
 
-            if not security.accept(security_params):
+            for match_security in security:
+                if match_security.accept(security_params):
+                    break
+            else:
                 raise ValueError(
                     f"Security parameters {security_params} do not match security {security}"
                 )
 
         self.security_params[name] = security_params
 
-    def _get_security_params(self, name: str) -> Optional[BaseSecurityParameters]:
+    def _get_security_params(
+        self, name: str
+    ) -> tuple[Optional[BaseSecurityParameters], Optional[BaseSecurity]]:
         # check if security is set for the method
         security = self.security.get(name)
-        if security is None:
-            return None
+        if not security:
+            return None, None
 
         security_params = self.security_params.get(name)
         if security_params is None:
@@ -129,19 +134,22 @@ class OpenAPI:
                 )
 
         # check if security matches security parameters
-        if not security.accept(security_params):
+        for match_security in security:
+            if match_security.accept(security_params):
+                break
+        else:
             raise ValueError(
                 f"Security parameters {security_params} do not match security {security}"
             )
 
-        return security_params
+        return security_params, match_security
 
     def _request(
         self,
         method: Literal["put", "get", "post", "delete"],
         path: str,
         description: Optional[str] = None,
-        security: Optional[BaseSecurity] = None,
+        security: Optional[list[BaseSecurity]] = None,
         **kwargs: Any,
     ) -> Callable[..., dict[str, Any]]:
         def decorator(func: Callable[..., Any]) -> Callable[..., dict[str, Any]]:
@@ -156,13 +164,13 @@ class OpenAPI:
 
                 security = self.security.get(name)
                 if security is not None:
-                    security_params = self._get_security_params(name)
+                    security_params, matched_security = self._get_security_params(name)
                     if security_params is None:
                         raise ValueError(
                             f"Security parameters are not set for '{name}'"
                         )
                     else:
-                        security_params.apply(params, body_dict, security)
+                        security_params.apply(params, body_dict, matched_security)  # type: ignore [arg-type]
 
                 response = getattr(requests, method)(url, params=params, **body_dict)
                 return response.json()  # type: ignore [no-any-return]
