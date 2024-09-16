@@ -117,7 +117,7 @@ lint = [
     "types-Pygments",
     "types-docutils",
     "mypy==1.11.1",
-    "ruff==0.6.3",
+    "ruff==0.6.5",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.9",
     "semgrep==1.86.0",
