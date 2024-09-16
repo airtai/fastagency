@@ -56,6 +56,7 @@ def test_generate_client(secure_fastapi_url: str) -> None:
         with expected_models_gen_path.open() as f:
             expected_models_gen = f.readlines()[4:]
 
+        # print(actual_main_gen_txt)
         assert actual_main_gen_txt == expected_main_gen_txt
         assert actual_models_gen == expected_models_gen
 

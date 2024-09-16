@@ -23,7 +23,9 @@ app = OpenAPI(
     '/items/',
     response_model=Any,
     responses={'422': {'model': HTTPValidationError}},
-    security=APIKeyHeader(name="x-key"),
+    security=[
+        APIKeyHeader(name="x-key"),
+    ],
 )
 def read_items_items__get(
     city: Annotated[str, """city for which forecast is requested"""]
