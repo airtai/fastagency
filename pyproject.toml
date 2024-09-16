@@ -73,7 +73,7 @@ openapi = [
 studio = [
     "faststream[nats]>=0.5.10,<0.6",
     "pydantic>=2.3,<3",
-    "fastapi==0.114.0",
+    "fastapi==0.114.2",
     "prisma>=0.13.1,<0.15",
     "asyncer==0.0.7",
     "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
