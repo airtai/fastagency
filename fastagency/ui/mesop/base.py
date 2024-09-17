@@ -11,8 +11,8 @@ from uuid import uuid4
 
 import typer
 
-if sys.version_info < (3, 11):
-    typer.echo("Error: Mesop requires Python 3.11 or higher", err=True)
+if sys.version_info < (3, 10):
+    typer.echo("Error: Mesop requires Python 3.10 or higher", err=True)
     raise typer.Exit(code=1)
 
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
