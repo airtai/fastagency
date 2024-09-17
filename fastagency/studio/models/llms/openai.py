@@ -2,10 +2,10 @@ import re
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import AfterValidator, Field, HttpUrl, field_validator
+from pydantic import AfterValidator, HttpUrl, field_validator
 from typing_extensions import TypeAlias
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 
 OpenAIModels: TypeAlias = Literal[
@@ -43,6 +43,7 @@ class OpenAIAPIKey(Model):
         Field(
             title="API Key",
             description="The API Key from OpenAI",
+            tooltip_message="The API key specified here will be used to authenticate requests to OpenAI services.",
         ),
     ]
 
@@ -74,7 +75,10 @@ URL = Annotated[HttpUrl, AfterValidator(lambda x: str(x).rstrip("/"))]
 class OpenAI(Model):
     model: Annotated[  # type: ignore[valid-type]
         OpenAIModels,
-        Field(description="The model to use for the OpenAI API, e.g. 'gpt-3.5-turbo'"),
+        Field(
+            description="The model to use for the OpenAI API, e.g. 'gpt-3.5-turbo'",
+            tooltip_message="Choose the model that the LLM uses to interact with OpenAI services.",
+        ),
     ] = "gpt-3.5-turbo"
 
     api_key: Annotated[
@@ -82,11 +86,17 @@ class OpenAI(Model):
         Field(
             title="API Key",
             description="The API Key from OpenAI",
+            tooltip_message="Choose the API key that will be used to authenticate requests to OpenAI services.",
         ),
     ]
 
     base_url: Annotated[
-        URL, Field(title="Base URL", description="The base URL of the OpenAI API")
+        URL,
+        Field(
+            title="Base URL",
+            description="The base URL of the OpenAI API",
+            tooltip_message="The base URL that the LLM uses to interact with OpenAI services.",
+        ),
     ] = URL(url="https://api.openai.com/v1")
 
     api_type: Annotated[
@@ -98,6 +108,7 @@ class OpenAI(Model):
         float,
         Field(
             description="The temperature to use for the model, must be between 0 and 2",
+            tooltip_message="Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2.",
             ge=0.0,
             le=2.0,
         ),

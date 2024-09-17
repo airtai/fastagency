@@ -1,8 +1,18 @@
 from abc import ABC, abstractmethod
-from typing import Annotated, Any, Literal, Optional, Protocol, Type, TypeVar
+from typing import (
+    Annotated,
+    Any,
+    Literal,
+    Optional,
+    Protocol,
+    Type,
+    TypeVar,
+    Union,
+)
 from uuid import UUID
 
-from pydantic import BaseModel, Field, create_model, model_validator
+from pydantic import BaseModel, create_model, model_validator
+from pydantic import Field as PydanticField
 from typing_extensions import TypeAlias
 
 from ..db.base import DefaultDB
@@ -14,6 +24,7 @@ __all__ = [
     "create_reference_model",
     "get_reference_model",
     "Model",
+    "Field",
 ]
 
 
@@ -22,7 +33,9 @@ T = TypeVar("T", bound="Model")
 
 # abstract class
 class Model(BaseModel, ABC):
-    name: Annotated[str, Field(..., description="The name of the item", min_length=1)]
+    name: Annotated[
+        str, PydanticField(..., description="The name of the item", min_length=1)
+    ]
     _reference_model: "Optional[Type[ObjectReference]]" = None
 
     @classmethod
@@ -46,9 +59,11 @@ class Model(BaseModel, ABC):
 
 
 class ObjectReference(BaseModel):
-    type: Annotated[str, Field(description="The name of the type of the data")] = ""
-    name: Annotated[str, Field(description="The name of the data")] = ""
-    uuid: Annotated[UUID, Field(description="The unique identifier")]
+    type: Annotated[
+        str, PydanticField(description="The name of the type of the data")
+    ] = ""
+    name: Annotated[str, PydanticField(description="The name of the data")] = ""
+    uuid: Annotated[UUID, PydanticField(description="The unique identifier")]
 
     _data_class: Optional["Type[Model]"] = None
 
@@ -113,16 +128,21 @@ def create_reference_model(
         f"{model_type_name}Ref",
         type=(
             Annotated[  # type: ignore[valid-type]
-                LiteralType, Field(description="The name of the type of the data")
+                LiteralType,
+                PydanticField(description="The name of the type of the data"),
             ],
             type_name,
         ),
         name=(
-            Annotated[LiteralModelName, Field(description="The name of the data")],
+            Annotated[
+                LiteralModelName, PydanticField(description="The name of the data")
+            ],
             model_type_name,
         ),
         uuid=(
-            Annotated[UUID, Field(description="The unique identifier", title="UUID")],
+            Annotated[
+                UUID, PydanticField(description="The unique identifier", title="UUID")
+            ],
             ...,
         ),
         __base__=ObjectReference,
@@ -148,3 +168,27 @@ def get_reference_model(model: type[BaseModel]) -> type[ObjectReference]:
     elif hasattr(model, "_reference_model"):
         return model._reference_model  # type: ignore[attr-defined,no-any-return]
     raise ValueError(f"Class '{model.__name__}' is not and does not have a reference")
+
+
+def Field(  # noqa: N802
+    default: Any = ...,
+    *,
+    description: Optional[str] = None,
+    tooltip_message: Optional[str] = None,
+    immutable_after_creation: bool = False,
+    **kwargs: Any,
+) -> Any:
+    metadata: dict[str, Union[str, bool]] = {}
+
+    if tooltip_message is not None:
+        metadata["tooltip_message"] = tooltip_message
+    if immutable_after_creation:
+        metadata["immutable_after_creation"] = immutable_after_creation
+
+    # Create json_schema_extra only if we have metadata
+    if metadata:
+        kwargs["json_schema_extra"] = {"metadata": metadata}
+
+    return PydanticField(  # type: ignore[pydantic-field]
+        default, description=description, **kwargs
+    )

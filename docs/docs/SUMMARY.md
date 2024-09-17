@@ -182,6 +182,7 @@ search:
                         - [WebSurferAnswer](api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferAnswer.md)
                         - [WebSurferChat](api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferChat.md)
                 - base
+                    - [Field](api/fastagency/studio/models/base/Field.md)
                     - [Model](api/fastagency/studio/models/base/Model.md)
                     - [ModelTypeFinder](api/fastagency/studio/models/base/ModelTypeFinder.md)
                     - [ObjectReference](api/fastagency/studio/models/base/ObjectReference.md)

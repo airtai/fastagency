@@ -236,24 +236,36 @@ class TestWebSurferAgent:
                         {"$ref": "#/$defs/TogetherAIRef"},
                     ],
                     "description": "LLM used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the LLM the agent will use to generate responses."
+                    },
                     "title": "LLM",
                 },
                 "toolbox_1": {
                     "anyOf": [{"$ref": "#/$defs/ToolboxRef"}, {"type": "null"}],
                     "default": None,
                     "description": "Toolbox used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                    },
                     "title": "Toolbox",
                 },
                 "toolbox_2": {
                     "anyOf": [{"$ref": "#/$defs/ToolboxRef"}, {"type": "null"}],
                     "default": None,
                     "description": "Toolbox used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                    },
                     "title": "Toolbox",
                 },
                 "toolbox_3": {
                     "anyOf": [{"$ref": "#/$defs/ToolboxRef"}, {"type": "null"}],
                     "default": None,
                     "description": "Toolbox used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                    },
                     "title": "Toolbox",
                 },
                 "summarizer_llm": {
@@ -264,11 +276,17 @@ class TestWebSurferAgent:
                         {"$ref": "#/$defs/TogetherAIRef"},
                     ],
                     "description": "This LLM will be used to generated summary of all pages visited",
+                    "metadata": {
+                        "tooltip_message": "Select the summarizer LLM, which is used for generating precise and accurate summaries of web pages, while the LLM chosen above is used for handling regular web searches."
+                    },
                     "title": "Summarizer LLM",
                 },
                 "viewport_size": {
                     "default": 4096,
                     "description": "The viewport size of the browser",
+                    "metadata": {
+                        "tooltip_message": "Viewport size refers to the visible area of a webpage in the browser. Default is 4096. Modify only if a custom size is needed."
+                    },
                     "title": "Viewport Size",
                     "type": "integer",
                 },
@@ -276,6 +294,9 @@ class TestWebSurferAgent:
                     "anyOf": [{"$ref": "#/$defs/BingAPIKeyRef"}, {"type": "null"}],
                     "default": None,
                     "description": "The Bing API key for the browser",
+                    "metadata": {
+                        "tooltip_message": "Choose a Bing API key to allow the browser to access Bing's search and data services, improving information retrieval."
+                    },
                     "title": "Bing API Key",
                 },
             },
