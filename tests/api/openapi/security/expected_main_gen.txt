@@ -8,7 +8,7 @@ from typing import *
 from typing import Any, Union
 
 from fastagency.api.openapi import OpenAPI
-from fastagency.api.openapi.security import APIKeyHeader
+from fastagency.api.openapi.security import APIKeyCookie, APIKeyHeader
 
 from models_gen import HTTPValidationError
 
@@ -23,7 +23,10 @@ app = OpenAPI(
     '/items/',
     response_model=Any,
     responses={'422': {'model': HTTPValidationError}},
-    security=APIKeyHeader(name="x-key"),
+    security=[
+        APIKeyHeader(name="access_token"),
+        APIKeyCookie(name="access_token"),
+    ],
 )
 def read_items_items__get(
     city: Annotated[str, """city for which forecast is requested"""]

@@ -17,6 +17,9 @@
                 "security": [
                     {
                         "APIKeyHeader": []
+                    },
+                    {
+                        "APIKeyCookie": []
                     }
                 ],
                 "parameters": [
@@ -108,7 +111,12 @@
             "APIKeyHeader": {
                 "type": "apiKey",
                 "in": "header",
-                "name": "x-key"
+                "name": "access_token"
+            },
+            "APIKeyCookie": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "access_token"
             }
         }
     }
