@@ -186,9 +186,8 @@ def Field(  # noqa: N802
         metadata["immutable_after_creation"] = immutable_after_creation
 
     # Create json_schema_extra only if we have metadata
-    json_schema_extra = {"metadata": metadata} if metadata else None
-    if json_schema_extra is not None:
-        kwargs["json_schema_extra"] = json_schema_extra
+    if metadata:
+        kwargs["json_schema_extra"] = {"metadata": metadata}
 
     return PydanticField(  # type: ignore[pydantic-field]
         default, description=description, **kwargs
