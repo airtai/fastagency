@@ -7,14 +7,6 @@
     "forwardPorts": [
         "${containerEnv:CONTAINER_PREFIX}-nats-py311-fastagency:9222"
     ],
-    "secrets": {
-        "OPENAI_API_KEY": {
-            "description": "Please add your OpenAI API key here. This key will be used for all OpenAI LLM calls made during development in the codespace."
-        },
-        "TOGETHER_API_KEY": {
-            "description": "Please add your Together API key here. This key will be used for all Together LLM calls made during development in the codespace."
-        }
-    },
     "shutdownAction": "stopCompose",
     "workspaceFolder": "/workspaces/fastagency",
     // "runArgs": [],
