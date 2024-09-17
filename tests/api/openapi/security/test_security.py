@@ -6,7 +6,7 @@ from pathlib import Path
 import requests
 
 from fastagency.api.openapi import OpenAPI
-from fastagency.api.openapi.security import APIKeyHeader
+from fastagency.api.openapi.security import APIKeyCookie, APIKeyHeader
 
 
 def test_secure_app_openapi(secure_fastapi_url: str) -> None:
@@ -82,15 +82,24 @@ def test_import_and_call_generate_client(secure_fastapi_url: str) -> None:
 
         assert generated_client_app.security != {}, generated_client_app.security
 
+        api_key = "super secret key"  # pragma: allowlist secret
+
         # set global security params for all methods
-        # generated_client_app.set_security_params(APIKeyHeader.Parameters(value="super secret key"))
+        # generated_client_app.set_security_params(APIKeyHeader.Parameters(value=api_key))
 
         # or set security params for a specific method
         generated_client_app.set_security_params(
-            APIKeyHeader.Parameters(value="super secret key"),
+            APIKeyHeader.Parameters(value=api_key),
             "read_items_items__get",
         )
-
         # no security params added to the signature of the method
         client_resp = read_items_items__get(city="New York")
-        assert client_resp == {"is_authenticated": True}
+        assert client_resp == {"api_key": api_key}
+
+        # Test with cookie security
+        generated_client_app.set_security_params(
+            APIKeyCookie.Parameters(value=api_key),
+            "read_items_items__get",
+        )
+        client_resp = read_items_items__get(city="New York")
+        assert client_resp == {"api_key": api_key}
