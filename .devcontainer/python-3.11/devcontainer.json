@@ -9,10 +9,10 @@
     ],
     "secrets": {
         "OPENAI_API_KEY": {
-            "description": "Please add your OpenAI API key here. Your key will be used for all OpenAI LLM calls in the workspace."
+            "description": "Please add your OpenAI API key here. This key will be used for all OpenAI LLM calls made during development in the codespace."
         },
         "TOGETHER_API_KEY": {
-            "description": "Please add your Together API key here. Your key will be used for all Together LLM calls in the workspace."
+            "description": "Please add your Together API key here. This key will be used for all Together LLM calls made during development in the codespace."
         }
     },
     "shutdownAction": "stopCompose",
