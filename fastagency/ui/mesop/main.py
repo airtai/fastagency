@@ -45,6 +45,12 @@ def home_page() -> None:
 
 
 def past_conversations_box() -> None:
+    def conversation_display_title(full_name: str, max_length: int) -> str:
+        if len(full_name) <= max_length:
+            return full_name
+        else:
+            return full_name[: max_length - 3] + "..."
+
     def select_past_conversation(ev: me.ClickEvent) -> Iterator[None]:
         id = ev.key
         state = me.state(State)
@@ -96,9 +102,7 @@ def past_conversations_box() -> None:
                         border_radius=16,
                     ),
                 ):
-                    me.text(
-                        text=conversation.title,
-                    )
+                    me.text(text=conversation_display_title(conversation.title, 128))
 
 
 def conversation_starter_box() -> None:
