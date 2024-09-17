@@ -116,6 +116,17 @@ class OpenAPI:
 
         self.security_params[name] = security_params
 
+    def _get_matching_security(
+        self, security: list[BaseSecurity], security_params: BaseSecurityParameters
+    ) -> BaseSecurity:
+        # check if security matches security parameters
+        for match_security in security:
+            if match_security.accept(security_params):
+                return match_security
+        raise ValueError(
+            f"Security parameters {security_params} does not match any given security {security}"
+        )
+
     def _get_security_params(
         self, name: str
     ) -> tuple[Optional[BaseSecurityParameters], Optional[BaseSecurity]]:
@@ -133,14 +144,7 @@ class OpenAPI:
                     f"Security parameters are not set for {name} and there are no default security parameters"
                 )
 
-        # check if security matches security parameters
-        for match_security in security:
-            if match_security.accept(security_params):
-                break
-        else:
-            raise ValueError(
-                f"Security parameters {security_params} do not match security {security}"
-            )
+        match_security = self._get_matching_security(security, security_params)
 
         return security_params, match_security
 
