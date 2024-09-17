@@ -73,9 +73,9 @@ openapi = [
 studio = [
     "faststream[nats]>=0.5.10,<0.6",
     "pydantic>=2.3,<3",
-    "fastapi==0.114.0",
+    "fastapi==0.114.2",
     "prisma>=0.13.1,<0.15",
-    "asyncer==0.0.7",
+    "asyncer==0.0.8",
     "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
     "httpx==0.27.0",
     "python-weather==2.0.3",  # should be removed when we move API to another project
@@ -117,7 +117,7 @@ lint = [
     "types-Pygments",
     "types-docutils",
     "mypy==1.11.1",
-    "ruff==0.6.3",
+    "ruff==0.6.5",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.9",
     "semgrep==1.86.0",
@@ -127,7 +127,7 @@ lint = [
 
 test-core = [
     "coverage[toml]==7.6.1",
-    "pytest==8.3.2",
+    "pytest==8.3.3",
     "pytest-asyncio==0.24.0",
     "dirty-equals==0.8.0",
     "pytest-rerunfailures==14.0",
@@ -138,7 +138,7 @@ testing = [
     "fastagency[submodules]",
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
-    "pydantic-settings==2.4.0",
+    "pydantic-settings==2.5.2",
     "PyYAML==6.0.2",
     "watchfiles==0.24.0",
     "email-validator==2.2.0",
