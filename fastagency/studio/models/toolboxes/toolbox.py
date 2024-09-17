@@ -2,11 +2,11 @@ from typing import Annotated, Any, Optional, Union
 from uuid import UUID
 
 import httpx
-from pydantic import AfterValidator, Field, HttpUrl
+from pydantic import AfterValidator, HttpUrl
 from typing_extensions import TypeAlias
 
 from ....api.openapi.client import OpenAPI
-from ..base import Model
+from ..base import Field, Model
 from ..registry import Registry
 
 # Pydantic adds trailing slash automatically to URLs, so we need to remove it
@@ -27,11 +27,7 @@ class OpenAPIAuthToken(Model):
         str,
         Field(
             description="Authentication token for OpenAPI routes",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The token specified here will be used to authenticate requests to OpenAPI routes."
-                }
-            },
+            tooltip_message="The token specified here will be used to authenticate requests to OpenAPI routes.",
         ),
     ]
 
@@ -77,11 +73,7 @@ class Toolbox(Model):
         Field(
             title="OpenAPI URL",
             description="The URL of OpenAPI specification file",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Enter the URL of the openapi.json file for your hosted OpenAPI docs. For example, if your docs are hosted at 'https://weather.tools.fastagency.ai/docs', enter 'https://weather.tools.fastagency.ai/openapi.json'."
-                }
-            },
+            tooltip_message="Enter the URL of the openapi.json file for your hosted OpenAPI docs. For example, if your docs are hosted at 'https://weather.tools.fastagency.ai/docs', enter 'https://weather.tools.fastagency.ai/openapi.json'.",
         ),
     ]
     openapi_auth: Annotated[
@@ -89,11 +81,7 @@ class Toolbox(Model):
         Field(
             title="OpenAPI Auth",
             description="Authentication information for the API mentioned in the OpenAPI specification",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the authentication method that will be used to authenticate requests to the above OpenAPI routes. Leave this field as it is if the OpenAPI routes do not require authentication."
-                }
-            },
+            tooltip_message="Choose the authentication method that will be used to authenticate requests to the above OpenAPI routes. Leave this field as it is if the OpenAPI routes do not require authentication.",
         ),
     ] = None
 

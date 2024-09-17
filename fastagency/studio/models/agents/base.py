@@ -1,12 +1,11 @@
 from typing import Annotated, Optional, Union
 from uuid import UUID
 
-from pydantic import Field
 from typing_extensions import TypeAlias
 
 from fastagency.api.openapi import OpenAPI
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import Registry
 from ..toolboxes.toolbox import ToolboxRef
 
@@ -24,11 +23,7 @@ class AgentBaseModel(Model):
         Field(
             title="LLM",
             description="LLM used by the agent for producing responses",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the LLM the agent will use to generate responses."
-                }
-            },
+            tooltip_message="Choose the LLM the agent will use to generate responses.",
         ),
     ]
 
@@ -37,11 +32,7 @@ class AgentBaseModel(Model):
         Field(
             title="Toolbox",
             description="Toolbox used by the agent for producing responses",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
-                }
-            },
+            tooltip_message="Choose the toolbox that the agent will use automatically when needed to solve user queries.",
         ),
     ] = None
 
@@ -50,11 +41,7 @@ class AgentBaseModel(Model):
         Field(
             title="Toolbox",
             description="Toolbox used by the agent for producing responses",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
-                }
-            },
+            tooltip_message="Choose the toolbox that the agent will use automatically when needed to solve user queries.",
         ),
     ] = None
 
@@ -63,11 +50,7 @@ class AgentBaseModel(Model):
         Field(
             title="Toolbox",
             description="Toolbox used by the agent for producing responses",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
-                }
-            },
+            tooltip_message="Choose the toolbox that the agent will use automatically when needed to solve user queries.",
         ),
     ] = None
 

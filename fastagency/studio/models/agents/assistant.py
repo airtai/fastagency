@@ -2,9 +2,9 @@ from typing import Annotated, Any
 from uuid import UUID
 
 import autogen
-from pydantic import Field
 
 from ....api.openapi import OpenAPI
+from ..base import Field
 from ..registry import register
 from .base import AgentBaseModel
 
@@ -15,11 +15,7 @@ class AssistantAgent(AgentBaseModel):
         str,
         Field(
             description="The system message of the agent. This message is used to inform the agent about his role in the conversation",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The system message defines the agent's role and influences its responses. For example, telling the agent 'You are an expert in travel advice' will make its responses focus on travel."
-                }
-            },
+            tooltip_message="The system message defines the agent's role and influences its responses. For example, telling the agent 'You are an expert in travel advice' will make its responses focus on travel.",
         ),
     ] = "You are a helpful assistant. After you successfully answer all questions and there are no new questions asked after your response (e.g. there is no specific direction or question asked after you give a response), terminate the chat by outputting 'TERMINATE' (IMPORTANT: use all caps)"
 

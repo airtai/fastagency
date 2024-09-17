@@ -2,10 +2,9 @@ import re
 from typing import Annotated, Any, Literal, Union
 
 from autogen.agentchat import ConversableAgent
-from pydantic import Field
 from typing_extensions import TypeAlias
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import Registry
 from ..toolboxes.toolbox import OpenAPI
 
@@ -22,11 +21,7 @@ class TeamBaseModel(Model):
         str,
         Field(
             description="Whether the message is a termination message or not. If it is a termination message, the chat will terminate.",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The termination message regular expression format. The LLM uses this pattern to decide when to end the chat if the message matches."
-                }
-            },
+            tooltip_message="The termination message regular expression format. The LLM uses this pattern to decide when to end the chat if the message matches.",
         ),
     ] = "TERMINATE"
 
@@ -35,11 +30,7 @@ class TeamBaseModel(Model):
         Field(
             title="Human Input Mode",
             description="Mode for human input",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Select the human input mode to control the level of human involvement. Modes include NEVER (full autonomy), TERMINATE (human input requested upon termination), and ALWAYS (input required after every message)."
-                }
-            },
+            tooltip_message="Select the human input mode to control the level of human involvement. Modes include NEVER (full autonomy), TERMINATE (human input requested upon termination), and ALWAYS (input required after every message).",
         ),
     ] = "ALWAYS"
 

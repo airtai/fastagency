@@ -4,12 +4,11 @@ from uuid import UUID
 from asyncer import syncify
 from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
 from autogen.agentchat import ConversableAgent as AutoGenConversableAgent
-from pydantic import Field
 from typing_extensions import TypeAlias
 
 from fastagency.studio.models.agents.web_surfer_autogen import WebSurferChat
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 from .base import AgentBaseModel, llm_type_refs
 
@@ -21,11 +20,7 @@ class BingAPIKey(Model):
         Field(
             title="API Key",
             description="The API Key from Bing",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The API key specified here will be used to authenticate requests to Bing services."
-                }
-            },
+            tooltip_message="The API key specified here will be used to authenticate requests to Bing services.",
         ),
     ]
 
@@ -98,22 +93,14 @@ class WebSurferAgent(AgentBaseModel):
         Field(
             title="Summarizer LLM",
             description="This LLM will be used to generated summary of all pages visited",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Select the summarizer LLM, which is used for generating precise and accurate summaries of web pages, while the LLM chosen above is used for handling regular web searches."
-                }
-            },
+            tooltip_message="Select the summarizer LLM, which is used for generating precise and accurate summaries of web pages, while the LLM chosen above is used for handling regular web searches.",
         ),
     ]
     viewport_size: Annotated[
         int,
         Field(
             description="The viewport size of the browser",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Viewport size refers to the visible area of a webpage in the browser. Default is 4096. Modify only if a custom size is needed."
-                }
-            },
+            tooltip_message="Viewport size refers to the visible area of a webpage in the browser. Default is 4096. Modify only if a custom size is needed.",
         ),
     ] = 4096
     bing_api_key: Annotated[
@@ -121,11 +108,7 @@ class WebSurferAgent(AgentBaseModel):
         Field(
             title="Bing API Key",
             description="The Bing API key for the browser",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose a Bing API key to allow the browser to access Bing's search and data services, improving information retrieval."
-                }
-            },
+            tooltip_message="Choose a Bing API key to allow the browser to access Bing's search and data services, improving information retrieval.",
         ),
     ] = None
 

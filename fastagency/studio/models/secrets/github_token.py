@@ -1,9 +1,7 @@
 from typing import Annotated, Any
 from uuid import UUID
 
-from pydantic import Field
-
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 
 __all__ = ["GitHubToken"]
@@ -16,11 +14,7 @@ class GitHubToken(Model):
         Field(
             title="GH Token",
             description="The GitHub token to use for creating a new repository",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The token specified here will be used to authenticate your access to GitHub services."
-                }
-            },
+            tooltip_message="The token specified here will be used to authenticate your access to GitHub services.",
         ),
     ]
 

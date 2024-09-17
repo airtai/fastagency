@@ -1,11 +1,11 @@
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import AfterValidator, BaseModel, Field, HttpUrl, field_validator
+from pydantic import AfterValidator, BaseModel, HttpUrl, field_validator
 from pydantic_core import PydanticCustomError
 from typing_extensions import TypeAlias
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 
 __all__ = [
@@ -32,11 +32,7 @@ class AzureOAIAPIKey(Model):
         Field(
             title="API Key",
             description="The API Key from Azure OpenAI",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The API key specified here will be used to authenticate requests to Azure OpenAI services."
-                }
-            },
+            tooltip_message="The API key specified here will be used to authenticate requests to Azure OpenAI services.",
         ),
     ]
 
@@ -67,11 +63,7 @@ class AzureOAI(Model):
         str,
         Field(
             description="The model to use for the Azure OpenAI API, e.g. 'gpt-3.5-turbo'",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The model that the LLM uses to interact with Azure OpenAI services."
-                }
-            },
+            tooltip_message="The model that the LLM uses to interact with Azure OpenAI services.",
         ),
     ] = "gpt-3.5-turbo"
 
@@ -80,11 +72,7 @@ class AzureOAI(Model):
         Field(
             title="API Key",
             description="The API Key from Azure OpenAI",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the API key that will be used to authenticate requests to Azure OpenAI services."
-                }
-            },
+            tooltip_message="Choose the API key that will be used to authenticate requests to Azure OpenAI services.",
         ),
     ]
 
@@ -93,11 +81,7 @@ class AzureOAI(Model):
         Field(
             title="Base URL",
             description="The base URL of the Azure OpenAI API",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The base URL that the LLM uses to interact with Azure OpenAI services."
-                }
-            },
+            tooltip_message="The base URL that the LLM uses to interact with Azure OpenAI services.",
         ),
     ] = UrlModel(url="https://{your-resource-name}.openai.azure.com").url
 
@@ -111,11 +95,7 @@ class AzureOAI(Model):
         Field(
             title="API Version",
             description="The version of the Azure OpenAI API, e.g. '2024-02-01'",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The version of the Azure OpenAI API that the LLM uses to interact with Azure OpenAI services."
-                }
-            },
+            tooltip_message="The version of the Azure OpenAI API that the LLM uses to interact with Azure OpenAI services.",
         ),
     ] = "2024-02-01"
 
@@ -123,11 +103,7 @@ class AzureOAI(Model):
         float,
         Field(
             description="The temperature to use for the model, must be between 0 and 2",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
-                }
-            },
+            tooltip_message="Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2.",
             ge=0.0,
             le=2.0,
         ),

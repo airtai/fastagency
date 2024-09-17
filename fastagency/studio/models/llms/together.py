@@ -1,10 +1,10 @@
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import AfterValidator, Field, HttpUrl
+from pydantic import AfterValidator, HttpUrl
 from typing_extensions import TypeAlias
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 
 __all__ = [
@@ -116,11 +116,7 @@ class TogetherAIAPIKey(Model):
         Field(
             title="API Key",
             description="The API Key from Together AI",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The API key specified here will be used to authenticate requests to Together AI services."
-                }
-            },
+            tooltip_message="The API key specified here will be used to authenticate requests to Together AI services.",
             min_length=64,
             max_length=64,
         ),
@@ -146,11 +142,7 @@ class TogetherAI(Model):
         TogetherModels,
         Field(
             description="The model to use for the Together API",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the model that the LLM uses to interact with Together AI services."
-                }
-            },
+            tooltip_message="Choose the model that the LLM uses to interact with Together AI services.",
         ),
     ] = "Meta Llama 3 70B Instruct Reference"
 
@@ -159,11 +151,7 @@ class TogetherAI(Model):
         Field(
             title="API Key",
             description="The API Key from Together.ai",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Choose the API key that will be used to authenticate requests to Together AI services."
-                }
-            },
+            tooltip_message="Choose the API key that will be used to authenticate requests to Together AI services.",
         ),
     ]
 
@@ -172,11 +160,7 @@ class TogetherAI(Model):
         Field(
             title="Base URL",
             description="The base URL of the OpenAI API",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "The base URL that the LLM uses to interact with Together AI services."
-                }
-            },
+            tooltip_message="The base URL that the LLM uses to interact with Together AI services.",
         ),
     ] = URL(url="https://api.together.xyz/v1")
 
@@ -191,11 +175,7 @@ class TogetherAI(Model):
         float,
         Field(
             description="The temperature to use for the model, must be between 0 and 2",
-            json_schema_extra={
-                "metadata": {
-                    "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
-                }
-            },
+            tooltip_message="Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2.",
             ge=0.0,
             le=2.0,
         ),
