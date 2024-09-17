@@ -1,3 +1,4 @@
+import time
 from collections.abc import Iterator
 
 import mesop as me
@@ -44,7 +45,7 @@ def home_page() -> None:
 
 
 def past_conversations_box() -> None:
-    def select_past_conversation(ev: me.ClickEvent) -> None:
+    def select_past_conversation(ev: me.ClickEvent) -> Iterator[None]:
         id = ev.key
         state = me.state(State)
         conversations_with_id = list(
@@ -53,6 +54,11 @@ def past_conversations_box() -> None:
         conversation = conversations_with_id[0]
         state.conversation = conversation
         state.in_conversation = True
+        yield
+        time.sleep(1)
+        yield
+        me.scroll_into_view(key="conversationtop")
+        yield
 
     def on_show_hide(ev: me.ClickEvent) -> None:
         state.hide_past = not state.hide_past
@@ -142,6 +148,10 @@ def conversation_box() -> None:
                 overflow_y="auto",
             )
         ):
+            me.box(
+                key="conversationtop",
+                style=me.Style(margin=me.Margin(bottom="1vh")),
+            )
             for message in messages:
                 message_box(message, conversation.is_from_the_past)
             if messages:
