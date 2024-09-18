@@ -23,5 +23,3 @@ faststream.log
 tmp.env
 pretend_nats_client.py
 .pnpm-store/
-
-docs/docs_src/user_guide/crypto
