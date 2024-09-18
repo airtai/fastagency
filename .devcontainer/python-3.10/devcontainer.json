@@ -19,9 +19,7 @@
     "shutdownAction": "stopCompose",
     "workspaceFolder": "/workspaces/fastagency",
     // "runArgs": [],
-    "remoteEnv": {
-        "USER": "codespace"
-    },
+    "remoteEnv": {},
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2": {
             "installZsh": true,
