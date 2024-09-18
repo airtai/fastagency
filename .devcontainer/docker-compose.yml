@@ -25,7 +25,7 @@ services:
       - ../nats_server.conf:/etc/nats/server.conf
     command: [ "--config", "/etc/nats/server.conf" ]
     env_file:
-      - ../devcontainer.env
+      - ./devcontainer.env
     networks:
       - fastagency-network
   postgres-fastagency:  # nosemgrep
