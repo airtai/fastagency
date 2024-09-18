@@ -5,7 +5,7 @@ services:
     image: mcr.microsoft.com/devcontainers/python:3.10
     container_name: fastagency-${USER}-python-3.10
     volumes:
-      - ../../:/workspaces/fastagency:cached
+      - ../:/workspaces/fastagency:cached
     command: sleep infinity
     environment:
       - DATABASE_URL=postgresql://admin:password@fastagency-${USER}-postgres-py310:5432/fastagency
