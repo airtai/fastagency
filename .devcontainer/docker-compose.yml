@@ -12,7 +12,7 @@ services:
       - PY_DATABASE_URL=postgresql://admin:password@fastagency-${USER}-postgres-py310:5432/pyfastagency
       - NATS_URL=nats://fastagency-${USER}-nats-py310:4222
     env_file:
-      - ../devcontainer.env
+      - ./devcontainer.env
     networks:
       - fastagency-network
   nats-fastagency:  # nosemgrep
