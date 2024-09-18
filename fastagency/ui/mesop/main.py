@@ -148,9 +148,7 @@ def conversation_box() -> None:
         header()
         messages = conversation.messages
         with me.box(
-            style=me.Style(
-                overflow_y="auto",
-            )
+            style=me.Style(overflow_y="auto", display="flex", flex_direction="column")
         ):
             me.box(
                 key="conversationtop",

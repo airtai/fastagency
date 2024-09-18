@@ -136,6 +136,8 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 background=base_color,
                 padding=me.Padding.all(16),
                 border_radius=16,
+                align_self="flex-end",
+                width="95%",
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
@@ -178,6 +180,8 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 background=base_color,
                 padding=me.Padding.all(16),
                 border_radius=16,
+                align_self="flex-start",
+                width="95%",
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
@@ -222,6 +226,8 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 background=base_color,
                 padding=me.Padding.all(16),
                 border_radius=16,
+                align_self="flex-start",
+                width="95%",
                 margin=me.Margin.symmetric(vertical=16),
             )
         ):
@@ -264,6 +270,8 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             style=me.Style(
                 background=base_color,
                 padding=me.Padding.all(16),
+                align_self="flex-start",
+                width="95%",
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),
             )
@@ -291,6 +299,8 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             style=me.Style(
                 background=base_color,
                 padding=me.Padding.all(16),
+                align_self="flex-end",
+                width="95%",
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),
             )
@@ -309,6 +319,8 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             style=me.Style(
                 background=base_color,
                 padding=me.Padding.all(16),
+                align_self="flex-end",
+                width="95%",
                 border_radius=16,
                 margin=me.Margin.symmetric(vertical=16),
             )
