@@ -15,7 +15,6 @@ You can set up the development environment using one of two methods:
 1. **Using GitHub Codespaces**
 2. **Setting Up Locally**
 
----
 
 ## Using GitHub Codespaces
 
@@ -40,9 +39,8 @@ Follow the steps below to begin contributing using Codespaces.
 - If you choose to configure advanced options, you will have the opportunity to set optional environment secrets needed for development while starting the codespace.
 - For detailed instructions related to advanced options, refer to the <a href="https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#creating-a-codespace-for-a-repository" target="_blank">GitHub Codespaces documentation</a>.
 
-> **Note:** If you create the Codespace using the default options, you may not see an option to set environment variables during setup. However, you can set them later in the terminal after starting the Codespace, as needed. For a list of environment variables, please refer to the section [below](#list-of-optional-api-keys).
+> **Note:** If you create the Codespace using the default options, you may not see an option to set environment variables during setup. However, you can set them later in the terminal after starting the Codespace, as needed. For a list of environment variables, please refer to the section [below](#list-of-optional-environment-variables).
 
----
 
 #### Setting Environment Variables (Optional)
 
@@ -84,7 +82,6 @@ If your contributions involve interacting with external APIs (e.g., OpenAI), you
 - **No manual setup is required on your part.**
 - Once the Codespace is ready, you can start coding immediately.
 
----
 
 ## Setting Up Locally
 
@@ -141,8 +138,6 @@ This will install all the dependencies and your local **FastAgency** in your vir
 ### 6. Setting optional environment variables:
 
 Depending on your contribution, you may need to set a few optional environment variables. Please refer to the [list of optional environment variables](#list-of-optional-environment-variables) for details.
-
----
 
 ## Using Your local **FastAgency**
 
