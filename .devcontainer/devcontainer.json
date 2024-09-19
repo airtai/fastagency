@@ -6,7 +6,7 @@
     ],
     "service": "python-3.10-fastagency",
     "forwardPorts": [
-        "fastagency-${containerEnv:CONTAINER_PREFIX}-nats-py310-fastagency:9222"
+        "fastagency-${containerEnv:CONTAINER_PREFIX}-nats-py310:9222"
     ],
     "secrets": {
         "OPENAI_API_KEY": {

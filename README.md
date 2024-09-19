@@ -5,8 +5,6 @@
 
 <b>The fastest way to bring multi-agent workflows to production.</b>
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/airtai/fastagency?devcontainer_path=.devcontainer%2Fpython-3.10%2Fdevcontainer.json)
-
 ---
 
 <p align="center">
