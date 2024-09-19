@@ -5,7 +5,7 @@ import mesop as me
 
 from ...logging import get_logger
 from .base import MesopUI
-from .components.inputs import input_prompt
+from .components.inputs import input_text
 from .components.ui_common import header
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
@@ -118,10 +118,10 @@ def conversation_starter_box() -> None:
                 "Enter a prompt to chat with FastAgency team",
                 style=me.Style(font_size=20, margin=me.Margin(bottom=24)),
             )
-            input_prompt(send_prompt)
+            input_text(send_prompt, "prompt", disabled=False)
 
 
-def send_prompt(e: me.ClickEvent) -> Iterator[None]:
+def send_prompt(prompt: str) -> Iterator[None]:
     ui = get_ui()
     wf = ui.app.wf
 
@@ -129,8 +129,6 @@ def send_prompt(e: me.ClickEvent) -> Iterator[None]:
 
     state = me.state(State)
     # me.navigate("/conversation")
-    prompt = state.prompt
-    state.prompt = ""
     conversation = Conversation(
         title=prompt, completed=False, waiting_for_feedback=False
     )
