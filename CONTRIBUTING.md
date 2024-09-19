@@ -1,51 +1,5 @@
 > **_NOTE:_**  This is an auto-generated file. Please edit docs/docs/en/contributing/CONTRIBUTING.md instead.
 
-## Cloning the Repository
-
-Follow the steps below to set up the development environment locally.
-
-### 1. Clone the Repository
-
-Clone the FastAgency repository to your local machine:
-
-```bash
-git clone https://github.com/airtai/fastagency.git
-```
-
-### 2: Set Up a Virtual Environment with venv
-
-Create a virtual environment using Python's venv module:
-
-```bash
-python -m venv venv
-```
-
-This command creates a ./venv/ directory containing Python binaries, allowing you to install packages in an isolated environment.
-
-### 3: Activate the Virtual Environment
-
-Activate the new environment:
-
-```bash
-source ./venv/bin/activate
-```
-
-Ensure you have the latest pip version in your virtual environment:
-
-```bash
-python -m pip install --upgrade pip
-```
-
-### 4: Installing Dependencies
-
-After activating the virtual environment as described above, run:
-
-```bash
-pip install -e ".[dev]"
-```
-
-This will install all the dependencies and your local **FastAgency** in your virtual environment.
-
 ## Using Your local **FastAgency**
 
 If you create a Python file that imports and uses **FastAgency**, and run it with the Python from your local environment, it will use your local **FastAgency** source code.

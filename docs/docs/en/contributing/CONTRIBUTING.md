@@ -13,7 +13,7 @@ search:
 You can set up the development environment using one of two methods:
 
 1. **Using GitHub Codespaces**
-2. **Cloning the Repository**
+2. **Setting Up Locally**
 
 ---
 
@@ -37,16 +37,16 @@ Follow the steps below to begin contributing using Codespaces.
 
 #### Advanced Options
 
-- If you choose to configure advanced options, you will have the opportunity to set optional environment secrets needed for development.
+- If you choose to configure advanced options, you will have the opportunity to set optional environment secrets needed for development while starting the codespace.
 - For detailed instructions related to advanced options, refer to the <a href="https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#creating-a-codespace-for-a-repository" target="_blank">GitHub Codespaces documentation</a>.
 
-> **Note:** If you create the Codespace using the default options, you might not see the option to set environment variables during setup. In this case, please refer to our [Environment Variables Guide](link_to_environment_variables_guide) for instructions on setting them after creation.
+> **Note:** If you create the Codespace using the default options, you may not see an option to set environment variables during setup. However, you can set them later in the terminal after starting the Codespace, as needed. For a list of environment variables, please refer to the section [below](#list-of-optional-api-keys).
 
 ---
 
-### 3. Configure Environment Variables (Optional)
+#### Setting Environment Variables (Optional)
 
-If you choose to configure advanced options when creating the Codespace, you might see a section called [Recommended secrets](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#recommended-secrets). These are optional and depend on the parts of the codebase you plan to work on.
+If you choose to configure advanced options when creating the Codespace, you might see a section called <a href="https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#recommended-secrets" target="_blank">Recommended secrets</a>. These are optional and depend on the parts of the codebase you plan to work on.
 
 #### Working with External APIs
 
@@ -59,48 +59,52 @@ If your contributions involve interacting with external APIs (e.g., OpenAI), you
 - While creating the Codespace, find the section for **Recommended secrets** and enter the necessary keys.
 - You can also set the keys as environment variables after starting the Codespace in the terminal.
 
-#### List of Required API Keys
+#### List of Optional environment variables
 
-- For a comprehensive list of environment variables and API keys, please refer to our [Environment Variables Guide](link_to_environment_variables_guide).
+- The table below provides a list of optional environment variables that you may need to set.
 
----
+| Name                  | Description                                                                                                                                               |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `OPENAI_API_KEY`          | Optional; needed if working on OpenAI-related code. Can be set later in the Codespace terminal.                                                           |
+| `TOGETHER_API_KEY`        | Optional; needed if working with Together API-related code. Can be set later in the Codespace terminal.                                                   |
+| `ANTHROPIC_API_KEY`       | Optional; needed if working with Anthropic API-related code. Can be set later in the Codespace terminal.                                                  |
+| `AZURE_OPENAI_API_KEY`    | Optional; required if using Azure's OpenAI services. Also set `AZURE_API_ENDPOINT`, `AZURE_API_VERSION`, and at least one Azure model.                     |
+| `AZURE_API_ENDPOINT`      | Required with `AZURE_OPENAI_API_KEY`, `AZURE_API_VERSION`, and at least one Azure model when using Azure's OpenAI services. Can be set later in the Codespace terminal.             |
+| `AZURE_API_VERSION`       | Required with `AZURE_OPENAI_API_KEY`, `AZURE_API_ENDPOINT`, and at least one Azure model when using Azure's OpenAI services. Can be set later in the Codespace terminal.                 |
+| `AZURE_GPT35_MODEL`       | Required if using Azure's GPT-3.5 model; must also set other Azure-related keys. Can be configured later as an environment variable.                      |
+| `AZURE_GPT4_MODEL`        | Required if using Azure's GPT-4 model; must also set other Azure-related keys. Can be configured later in the Codespace terminal.                         |
+| `AZURE_GPT4o_MODEL`       | Required if using Azure's GPT-4o model; must also set other Azure-related keys. Can be configured later as an environment variable.                       |
+| `BING_API_KEY`            | Optional; used to enhance WebSurfer agent performance with Bing search and data services. Can be set later as an environment variable.                    |
 
-### 4. Wait for Codespace Initialization
+
+### 3. Wait for Codespace Initialization
 
 - After initiating the Codespace, wait for it to set up. This may take a few minutes.
 - The development environment is configured automatically, including the installation of all dependencies.
 - **No manual setup is required on your part.**
-
-### 5. Start Developing
-
 - Once the Codespace is ready, you can start coding immediately.
-- The environment comes with all the tools you need, such as a code editor and terminal access.
-
-### 6. Testing Your Changes
-
-- Run tests directly in the Codespace terminal if needed.
-- Use the provided scripts or commands as outlined in the project's documentation.
-
-### 7. Committing Changes
-
-- After making changes, commit them using Git commands within the Codespace.
-- Push your commits to your forked repository.
 
 ---
 
-## Cloning the Repository
+## Setting Up Locally
 
 Follow the steps below to set up the development environment locally.
 
-### 1. Clone the Repository
+### 1. Fork the Repository
 
-Clone the FastAgency repository to your local machine:
+- Navigate to the <a href="https://github.com/airtai/fastagency" target="_blank">FastAgency GitHub repository</a>.
+- Click on the **Fork** button in the top-right corner to create your own copy of the repository.
+
+
+### 2. Clone the Repository
+
+Clone your forked FastAgency repository to your local machine:
 
 ```bash
 git clone https://github.com/airtai/fastagency.git
 ```
 
-### 2: Set Up a Virtual Environment with venv
+### 3. Set Up a Virtual Environment with venv
 
 Create a virtual environment using Python's venv module:
 
@@ -110,7 +114,7 @@ python -m venv venv
 
 This command creates a ./venv/ directory containing Python binaries, allowing you to install packages in an isolated environment.
 
-### 3: Activate the Virtual Environment
+### 4. Activate the Virtual Environment
 
 Activate the new environment:
 
@@ -124,7 +128,7 @@ Ensure you have the latest pip version in your virtual environment:
 python -m pip install --upgrade pip
 ```
 
-### 4: Installing Dependencies
+### 5. Installing Dependencies
 
 After activating the virtual environment as described above, run:
 
@@ -133,6 +137,12 @@ pip install -e ".[dev]"
 ```
 
 This will install all the dependencies and your local **FastAgency** in your virtual environment.
+
+### 6. Setting optional environment variables:
+
+Depending on your contribution, you may need to set a few optional environment variables. Please refer to the [list of optional environment variables](#list-of-optional-environment-variables) for details.
+
+---
 
 ## Using Your local **FastAgency**
 
