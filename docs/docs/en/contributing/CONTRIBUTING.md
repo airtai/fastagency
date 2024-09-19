@@ -120,11 +120,13 @@ Replace `<your-username>` with your GitHub username.
 
 - Open Visual Studio Code.
 - Open the cloned repository folder in Visual Studio Code.
-- Visual Studio Code automatically detects that this project uses a dev container and prompts you to reopen the project in the container. Alternatively, you can launch the Command Palette by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS).
-- Run the command: Dev Containers: Open Folder in Container.
-- VS Code will build and start the dev container based on the configuration in the .devcontainer folder.
+- Visual Studio Code automatically detects that this project uses a dev container and prompts you to reopen the project in the container via a prompt at the bottom right corner of the editor. Click on the **Reopen in Container** button in this prompt to display the Command Palette, where you can choose a container configuration file from the list of options.
+- Alternatively, you can launch the Command Palette directly by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS) and select **Dev Containers: Rebuild and Reopen in Container**. This will also prompt you to choose a container configuration file from the list of options.
+- Once you select a configuration file, Visual Studio Code will read the container configuration and reopen the project inside the dev container. You can click on the **Show Logs** link in the prompt displayed at the bottom right to see the live logs.
+- The development environment is configured automatically, including the installation of all dependencies.
+- **No manual setup is required on your part.**
+- Once the devcontainer is ready, you can start coding immediately.
 
-> **Note:** The default dev container configuration uses Python 3.10. If you prefer, you can choose between Python 3.9, 3.11, and 3.12 versions. These configurations are available in the `.devcontainer` directory. Click on the desired `.devcontainer` file, and VS Code will automatically prompt you to **"Rebuild the project in the new container"**.
 
 #### 4. Set Optional Environment Variables
 
