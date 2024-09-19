@@ -5,6 +5,10 @@ repos:
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
+        exclude: |
+          (?x)^(
+              ^docs/docs/en/cli/.*
+          )$
       - id: end-of-file-fixer
         exclude: |
           (?x)^(

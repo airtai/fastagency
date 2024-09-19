@@ -16,7 +16,7 @@ def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
 
     # Save main CLI help output to a file
     main_help_file = docs_path / "cli_usage.md"
-    main_help_file.write_text(f"# CLI\n\n```\n{cli_help_output}```")
+    main_help_file.write_text(f"# CLI\n\n```{cli_help_output}```\n")
 
     # Define the subcommands you want to capture help for
     subcommands = ["run", "dev", "version"]
@@ -31,7 +31,7 @@ def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
         file_name = f"cli_{subcommand}_usage.md"
         subcommand_file = docs_path / file_name
         subcommand_file.write_text(
-            f"## {cli_name} {subcommand} Usage\n\n```\n{subcommand_help_output}```"
+            f"## {cli_name} {subcommand} Usage\n\n```{subcommand_help_output}```\n"
         )
         # Uppercase the first letter of the subcommand
         cli_summary += f"\n{indent}- [{subcommand.capitalize()}](cli/{file_name})"
