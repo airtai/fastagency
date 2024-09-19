@@ -86,7 +86,7 @@ Here's how you can use Dev Containers to contribute to our project:
 Before you begin, make sure you have the following installed:
 
 - **Visual Studio Code**: Download and install the latest version from the <a href="https://code.visualstudio.com/" target="_blank">official website</a>.
-- **Dev Containers Extension**: Open VS Code, go to the Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X`), search for "**Dev Containers**" by Microsoft, and install it.
+- **Dev Containers Extension**: Open Visual Studio Code, go to the Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X`), search for "**Dev Containers**" by Microsoft, and install it.
 - **Docker**: Install Docker Desktop for your operating system from the <a href="https://www.docker.com/products/docker-desktop" target="_blank">official website</a>. Docker is required to build and run the dev container.
 
 
