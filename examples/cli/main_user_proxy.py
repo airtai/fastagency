@@ -29,6 +29,7 @@ def simple_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_
     user_proxy = UserProxyAgent(
         name="User_Proxy",
         human_input_mode="ALWAYS",
+        llm_config=llm_config,
     )
     weatherman = ConversableAgent(
         name="Weatherman",
@@ -40,8 +41,11 @@ def simple_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_
     # Set global security params for all methods
     weather_client.set_security_params(APIKeyHeader.Parameters(value="secure weather key"))
 
-    weather_client.register_for_llm(weatherman)
-    weather_client.register_for_execution(user_proxy)
+    wf.register_api(
+        api=weather_client,
+        callers=user_proxy,
+        executors=weatherman,
+    )
 
     chat_result = user_proxy.initiate_chat(
         weatherman,

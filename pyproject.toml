@@ -62,6 +62,8 @@ pyautogen = [
 
 autogen = [
     "autogen[anthropic,together]>=0.3.0,<0.4",
+    # ToDo: Autogen requires flaml but flaml 2.3.0 has issues with its optional dependencies
+    "flaml==2.2.0,<2.3.0",
     "together==1.2.11",
 ]
 
