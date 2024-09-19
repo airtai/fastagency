@@ -13,7 +13,7 @@ search:
 You can set up the development environment using one of two methods:
 
 1. **Using GitHub Codespaces**
-2. **Setting Up Locally**
+2. **Setting Up Locally with Dev Containers**
 
 
 ## Using GitHub Codespaces
@@ -59,7 +59,7 @@ If your contributions involve interacting with external APIs (e.g., OpenAI), you
 
 #### List of Optional environment variables
 
-- The table below provides a list of optional environment variables that you may need to set.
+The table below provides a list of optional environment variables that you may need to set.
 
 | Name                  | Description                                                                                                                                               |
 |--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -83,93 +83,87 @@ If your contributions involve interacting with external APIs (e.g., OpenAI), you
 - Once the Codespace is ready, you can start coding immediately.
 
 
-## Setting Up Locally
+## Setting Up Locally with Dev Containers
 
-Follow the steps below to set up the development environment locally.
+Our project supports development using Visual Studio Code's **Dev Containers** feature. This allows contributors to set up a consistent development environment inside a Docker container.
 
-### 1. Fork the Repository
+Here's how you can use Dev Containers to contribute to our project:
+
+### Prerequisites
+
+Before you begin, make sure you have the following installed:
+
+- **Visual Studio Code**: Download and install the latest version from the <a href="https://code.visualstudio.com/" target="_blank">official website</a>.
+- **Dev Containers Extension**: Open VS Code, go to the Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X`), search for "**Dev Containers**" by Microsoft, and install it.
+- **Docker**: Install Docker Desktop for your operating system from the <a href="https://www.docker.com/products/docker-desktop" target="_blank">official website</a>. Docker is required to build and run the dev container.
+
+
+### Setting up the project
+
+#### 1. Fork the repository
 
 - Navigate to the <a href="https://github.com/airtai/fastagency" target="_blank">FastAgency GitHub repository</a>.
 - Click on the **Fork** button in the top-right corner to create your own copy of the repository.
 
 
-### 2. Clone the Repository
+#### 2. Clone the forked repository
 
-Clone your forked FastAgency repository to your local machine:
-
-```bash
-git clone https://github.com/airtai/fastagency.git
-```
-
-### 3. Set Up a Virtual Environment with venv
-
-Create a virtual environment using Python's venv module:
+Clone your forked **FastAgency** repository to your local machine:
 
 ```bash
-python -m venv venv
+git clone https://github.com/<your-username>/fastagency.git
 ```
 
-This command creates a ./venv/ directory containing Python binaries, allowing you to install packages in an isolated environment.
+Replace `<your-username>` with your GitHub username.
 
-### 4. Activate the Virtual Environment
+#### 3. Open the project in a dev container
 
-Activate the new environment:
+- Open Visual Studio Code.
+- Open the cloned repository folder in Visual Studio Code.
+- Visual Studio Code automatically detects that this project uses a dev container and prompts you to reopen the project in the container. Alternatively, you can launch the Command Palette by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS).
+- Run the command: Dev Containers: Open Folder in Container.
+- VS Code will build and start the dev container based on the configuration in the .devcontainer folder.
 
-```bash
-source ./venv/bin/activate
-```
+> **Note:** The default dev container configuration uses Python 3.10. If you prefer, you can choose between Python 3.9, 3.11, and 3.12 versions. These configurations are available in the `.devcontainer` directory. Click on the desired `.devcontainer` file, and VS Code will automatically prompt you to **"Rebuild the project in the new container"**.
 
-Ensure you have the latest pip version in your virtual environment:
-
-```bash
-python -m pip install --upgrade pip
-```
-
-### 5. Installing Dependencies
-
-After activating the virtual environment as described above, run:
-
-```bash
-pip install -e ".[dev]"
-```
-
-This will install all the dependencies and your local **FastAgency** in your virtual environment.
-
-### 6. Setting optional environment variables:
+#### 4. Set Optional Environment Variables
 
 Depending on your contribution, you may need to set a few optional environment variables. Please refer to the [list of optional environment variables](#list-of-optional-environment-variables) for details.
 
-## Using Your local **FastAgency**
+## Making Changes and Submitting a Pull Request
 
-If you create a Python file that imports and uses **FastAgency**, and run it with the Python from your local environment, it will use your local **FastAgency** source code.
 
-Whenever you update your local **FastAgency** source code, it will automatically use the latest version when you run your Python file again. This is because it is installed with `-e`.
+1.  **Create a New Branch**
+	- From your main branch, create a new branch for your changes or new features.
 
-This way, you don't have to "install" your local version to be able to test every change.
+2.  **Make Your Changes**
+	- Implement the necessary changes or add new features in your branch.
 
-## Running Tests
+3.  **Test Your Changes**
+	- Ensure your changes work as expected by running the project's tests or manually testing the functionality.
 
-### Pytest
+	- To run tests, use:
+		```bash
+		pytest tests
+		```
 
-To run tests with your current **FastAgency** application and Python environment, use:
+	- In the project, you'll find some **pytest marks**:
+		-  `slow`
+		-  `all`
 
-```bash
-pytest tests
-# or
-./scripts/test.sh
-# with coverage output
-./scripts/test-cov.sh
-```
+	- By default, running `pytest` will execute tests **not** marked as `slow`.
+	- To run all tests, including slow ones, use:
+		```bash
+		pytest -m 'all'
+		```
 
-In your project, you'll find some *pytest marks*:
 
-* **slow**
-* **all**
+4.  **Commit and Push Your Changes**
+    - After testing, commit your changes to your branch and push them to your forked repository.
 
-By default, running *pytest* will execute "not slow" tests.
+5.  **Create a Pull Request**
+    - Navigate to your forked repository on GitHub.
+    - Create a new pull request targeting our project's main branch.
+    - Provide a clear title and description for your changes.
 
-To run all tests use:
-
-```bash
-pytest -m 'all'
-```
+Thank you for your contributions! If you have any questions or need assistance, feel free to <a  href="https://github.com/airtai/fastagency/issues" target="_blank">open an issue</a> or reach out to the maintainers.
