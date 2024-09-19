@@ -71,6 +71,7 @@ def past_conversations_box() -> None:
 
     def on_start_new_conversation(ev: me.ClickEvent) -> None:
         state.in_conversation = False
+        state.prompt = ""
 
     state = me.state(State)
     style = PAST_CHATS_HIDE_STYLE if state.hide_past else PAST_CHATS_SHOW_STYLE

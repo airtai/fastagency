@@ -7,7 +7,7 @@ import mesop as me
 
 from fastagency.base import AskingMessage, WorkflowCompleted
 from fastagency.ui.mesop.base import MesopMessage
-from fastagency.ui.mesop.components.inputs import input_user_feedback
+from fastagency.ui.mesop.components.inputs import input_text
 from fastagency.ui.mesop.send_prompt import send_user_feedback_to_autogen
 
 from ...base import (
@@ -158,9 +158,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.markdown(json.dumps(message.message, indent=2))
 
     def visit_text_input(self, message: TextInput) -> str:
-        def on_input(ev: me.RadioChangeEvent) -> Iterator[None]:
-            state = me.state(State)
-            feedback = state.conversation.feedback
+        def on_input(feedback: str) -> Iterator[None]:
             self._conversation_message.feedback = [feedback]
             self._conversation_message.feedback_completed = True
             yield from self._provide_feedback(feedback)
@@ -173,7 +171,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         prompt = message.prompt if message.prompt else "Please enter a value"
         if message.suggestions:
             suggestions = ",".join(suggestion for suggestion in message.suggestions)
-            prompt += "\n" + suggestions
+            prompt += "\n Suggestions: " + suggestions
 
         with me.box(
             style=me.Style(
@@ -187,8 +185,9 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         ):
             self._header(message, base_color, title="Input requested")
             me.markdown(prompt)
-            input_user_feedback(
+            input_text(
                 on_input,
+                "prompt",
                 disabled=self._readonly or self._has_feedback(),
                 value=value_if_completed(),
             )
