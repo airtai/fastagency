@@ -17,10 +17,10 @@ search:
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
-    - [CLI](cli/cli_usage.md)
-        - [Run](cli/cli_run_usage.md)
-        - [Dev](cli/cli_dev_usage.md)
-        - [Version](cli/cli_version_usage.md)
+    - [CLI](cli/fastagency-cli.md)
+        - [Run](cli/fastagency-run.md)
+        - [Dev](cli/fastagency-dev.md)
+        - [Version](cli/fastagency-version.md)
 - Reference
     - fastagency
         - [FastAgency](api/fastagency/FastAgency.md)

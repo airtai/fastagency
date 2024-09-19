@@ -15,20 +15,20 @@ def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
     cli_help_output = _run_command_help([cli_name, "--help"])
 
     # Save main CLI help output to a file
-    main_help_file = docs_path / "cli_usage.md"
+    main_help_file = docs_path / "fastagency-cli.md"
     main_help_file.write_text(f"# CLI\n\n```{cli_help_output}```\n")
 
     # Define the subcommands you want to capture help for
     subcommands = ["run", "dev", "version"]
 
-    cli_summary = "(cli/cli_usage.md)"
+    cli_summary = "(cli/fastagency-cli.md)"
 
     submodule = 2
     indent = " " * 4 * submodule
     # Generate and save documentation for each subcommand
     for subcommand in subcommands:
         subcommand_help_output = _run_command_help([cli_name, subcommand, "--help"])
-        file_name = f"cli_{subcommand}_usage.md"
+        file_name = f"fastagency-{subcommand}.md"
         subcommand_file = docs_path / file_name
         subcommand_file.write_text(
             f"## {cli_name} {subcommand} Usage\n\n```{subcommand_help_output}```\n"
