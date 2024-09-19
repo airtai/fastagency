@@ -10,7 +10,9 @@ from typing import Annotated, Optional
 import mkdocs.commands.build
 import mkdocs.commands.serve
 import typer
-from create_api_docs import create_api_docs
+
+# from create_api_docs import create_api_docs
+from create_cli_docs import create_api_docs
 from expand_markdown import expand_markdown
 from mkdocs.config import load_config
 from update_releases import _find_metablock, update_release_notes
