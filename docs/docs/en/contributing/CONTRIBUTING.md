@@ -25,20 +25,20 @@ Follow the steps below to begin contributing using Codespaces.
 
 ### 1. Fork the Repository
 
-- Navigate to the [FastAgency GitHub repository](https://github.com/airtai/fastagency).
+- Navigate to the <a href="https://github.com/airtai/fastagency" target="_blank">FastAgency GitHub repository</a>.
 - Click on the **Fork** button in the top-right corner to create your own copy of the repository.
 
 ### 2. Open a Codespace
 
 - In your forked repository, navigate to the main page.
 - Ensure you are on the **main** branch.
-- Click the **\< > Code** button, then select the **Codespaces** tab.
+- Click the **< > Code** button, then select the **Codespaces** tab.
 - Click on **Create codespace on main**.
 
 #### Advanced Options
 
 - If you choose to configure advanced options, you will have the opportunity to set optional environment secrets needed for development.
-- For detailed instructions, refer to the [GitHub Codespaces documentation](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#creating-a-codespace-for-a-repository).
+- For detailed instructions related to advanced options, refer to the <a href="https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#creating-a-codespace-for-a-repository" target="_blank">GitHub Codespaces documentation</a>.
 
 > **Note:** If you create the Codespace using the default options, you might not see the option to set environment variables during setup. In this case, please refer to our [Environment Variables Guide](link_to_environment_variables_guide) for instructions on setting them after creation.
 
