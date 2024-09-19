@@ -1,9 +1,7 @@
 from typing import Annotated, Any
 from uuid import UUID
 
-from pydantic import Field
-
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 
 __all__ = ["FlyToken"]
@@ -16,6 +14,7 @@ class FlyToken(Model):
         Field(
             title="Fly Token",
             description="The Fly.io token to use for deploying the deployment",
+            tooltip_message="The token specified here will be used to authenticate your access to Fly.io services.",
         ),
     ]
 

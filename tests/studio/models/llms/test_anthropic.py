@@ -101,12 +101,18 @@ class TestAnthropic:
                         "claude-3-sonnet-20240229",
                         "claude-3-haiku-20240307",
                     ],
+                    "metadata": {
+                        "tooltip_message": "Choose the model that the LLM should use to generate responses."
+                    },
                     "title": "Model",
                     "type": "string",
                 },
                 "api_key": {
                     "$ref": "#/$defs/AnthropicAPIKeyRef",
                     "description": "The API Key from Anthropic",
+                    "metadata": {
+                        "tooltip_message": "Choose the API key that will be used to authenticate requests to Anthropic services."
+                    },
                     "title": "API Key",
                 },
                 "base_url": {
@@ -114,6 +120,9 @@ class TestAnthropic:
                     "description": "The base URL of the Anthropic API",
                     "format": "uri",
                     "maxLength": 2083,
+                    "metadata": {
+                        "tooltip_message": "The base URL that the LLM uses to interact with Anthropic services."
+                    },
                     "minLength": 1,
                     "title": "Base URL",
                     "type": "string",
@@ -129,6 +138,9 @@ class TestAnthropic:
                 "temperature": {
                     "default": 0.8,
                     "description": "The temperature to use for the model, must be between 0 and 2",
+                    "metadata": {
+                        "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
+                    },
                     "maximum": 2.0,
                     "minimum": 0.0,
                     "title": "Temperature",

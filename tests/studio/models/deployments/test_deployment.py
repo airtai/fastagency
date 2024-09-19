@@ -141,14 +141,20 @@ class TestDeployment:
             },
             "properties": {
                 "name": {
-                    "description": "The application name to use on the website.",
+                    "description": "The name of the SaaS application.",
+                    "metadata": {
+                        "tooltip_message": "The application name to be used in the deployed SaaS application."
+                    },
                     "minLength": 1,
                     "title": "Name",
                     "type": "string",
                 },
                 "repo_name": {
                     "description": "The name of the GitHub repository.",
-                    "metadata": {"immutable_after_creation": True},
+                    "metadata": {
+                        "immutable_after_creation": True,
+                        "tooltip_message": "The GitHub repository to be created. If the name contains spaces or special characters, GitHub will adjust it according to its naming rules. A random suffix will be added if the repository name already exists.",
+                    },
                     "minLength": 1,
                     "title": "Repo Name",
                     "type": "string",
@@ -156,7 +162,10 @@ class TestDeployment:
                 "fly_app_name": {
                     "description": "The name of the Fly.io application.",
                     "maxLength": 30,
-                    "metadata": {"immutable_after_creation": True},
+                    "metadata": {
+                        "immutable_after_creation": True,
+                        "tooltip_message": "The Fly.io application. This will be used to create and deploy your React, Node.js, and PostgreSQL apps to Fly.io.",
+                    },
                     "minLength": 1,
                     "title": "Fly App Name",
                     "type": "string",
@@ -164,18 +173,27 @@ class TestDeployment:
                 "team": {
                     "$ref": "#/$defs/TwoAgentTeamRef",
                     "description": "The team that is used in the deployment",
+                    "metadata": {
+                        "tooltip_message": "Choose the team to be used for deployment. User messages are sent to the Initial agent of the chosen team, and the agent's responses are sent back to the user. This field can be updated anytime to switch teams, with changes reflected in real-time in your deployments."
+                    },
                     "title": "Team Name",
                 },
                 "gh_token": {
                     "$ref": "#/$defs/GitHubTokenRef",
                     "description": "The GitHub token to use for creating a new repository",
-                    "metadata": {"immutable_after_creation": True},
+                    "metadata": {
+                        "immutable_after_creation": True,
+                        "tooltip_message": "Choose the GitHub token used for authenticating and managing access to your GitHub account.",
+                    },
                     "title": "GH Token",
                 },
                 "fly_token": {
                     "$ref": "#/$defs/FlyTokenRef",
                     "description": "The Fly.io token to use for deploying the deployment",
-                    "metadata": {"immutable_after_creation": True},
+                    "metadata": {
+                        "immutable_after_creation": True,
+                        "tooltip_message": "Choose the Fly.io token used for authenticating and managing access to your Fly.io account.",
+                    },
                     "title": "Fly Token",
                 },
             },

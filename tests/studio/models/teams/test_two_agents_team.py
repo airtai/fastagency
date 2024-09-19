@@ -148,6 +148,9 @@ class TestTwoAgentTeam:
                 "is_termination_msg_regex": {
                     "default": "TERMINATE",
                     "description": "Whether the message is a termination message or not. If it is a termination message, the chat will terminate.",
+                    "metadata": {
+                        "tooltip_message": "The termination message regular expression format. The LLM uses this pattern to decide when to end the chat if the message matches."
+                    },
                     "title": "Is Termination Msg Regex",
                     "type": "string",
                 },
@@ -155,6 +158,9 @@ class TestTwoAgentTeam:
                     "default": "ALWAYS",
                     "description": "Mode for human input",
                     "enum": ["ALWAYS", "TERMINATE", "NEVER"],
+                    "metadata": {
+                        "tooltip_message": "Select the human input mode to control the level of human involvement. Modes include NEVER (full autonomy), TERMINATE (human input requested upon termination), and ALWAYS (input required after every message)."
+                    },
                     "title": "Human Input Mode",
                     "type": "string",
                 },
@@ -165,6 +171,9 @@ class TestTwoAgentTeam:
                         {"$ref": "#/$defs/WebSurferAgentRef"},
                     ],
                     "description": "Agent that starts the conversation",
+                    "metadata": {
+                        "tooltip_message": "Select the Initial Agent, the agent responsible for task orchestration. It interacts with users and assigns tasks to Secondary Agent, enhancing the efficiency of complex operations."
+                    },
                     "title": "Initial Agent",
                 },
                 "secondary_agent": {
@@ -174,6 +183,9 @@ class TestTwoAgentTeam:
                         {"$ref": "#/$defs/WebSurferAgentRef"},
                     ],
                     "description": "Agent that continues the conversation",
+                    "metadata": {
+                        "tooltip_message": "Select the Secondary Agent, the agent responsible for collaborating with the Initial Agent in performing specialized tasks. Secondary Agents enhance efficiency by focusing on specific roles, such as data analysis or code execution."
+                    },
                     "title": "Secondary Agent",
                 },
             },

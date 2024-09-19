@@ -188,29 +188,44 @@ class TestAssistantAgent:
                         {"$ref": "#/$defs/TogetherAIRef"},
                     ],
                     "description": "LLM used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the LLM the agent will use to generate responses."
+                    },
                     "title": "LLM",
                 },
                 "toolbox_1": {
                     "anyOf": [{"$ref": "#/$defs/ToolboxRef"}, {"type": "null"}],
                     "default": None,
                     "description": "Toolbox used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                    },
                     "title": "Toolbox",
                 },
                 "toolbox_2": {
                     "anyOf": [{"$ref": "#/$defs/ToolboxRef"}, {"type": "null"}],
                     "default": None,
                     "description": "Toolbox used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                    },
                     "title": "Toolbox",
                 },
                 "toolbox_3": {
                     "anyOf": [{"$ref": "#/$defs/ToolboxRef"}, {"type": "null"}],
                     "default": None,
                     "description": "Toolbox used by the agent for producing responses",
+                    "metadata": {
+                        "tooltip_message": "Choose the toolbox that the agent will use automatically when needed to solve user queries."
+                    },
                     "title": "Toolbox",
                 },
                 "system_message": {
                     "default": "You are a helpful assistant. After you successfully answer all questions and there are no new questions asked after your response (e.g. there is no specific direction or question asked after you give a response), terminate the chat by outputting 'TERMINATE' (IMPORTANT: use all caps)",
                     "description": "The system message of the agent. This message is used to inform the agent about his role in the conversation",
+                    "metadata": {
+                        "tooltip_message": "The system message defines the agent's role and influences its responses. For example, telling the agent 'You are an expert in travel advice' will make its responses focus on travel."
+                    },
                     "title": "System Message",
                     "type": "string",
                 },

@@ -2,10 +2,9 @@ from typing import Annotated, Any, Optional
 from uuid import UUID
 
 import autogen
-from pydantic import Field
 
 from ....api.openapi import OpenAPI
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 
 
@@ -14,7 +13,8 @@ class UserProxyAgent(Model):
     max_consecutive_auto_reply: Annotated[
         Optional[int],
         Field(
-            description="The maximum number of consecutive auto-replies the agent can make"
+            description="The maximum number of consecutive auto-replies the agent can make",
+            tooltip_message="Set the maximum number of consecutive auto replies the agent can make before requiring human approval. A higher value gives the agent more autonomy, while leaving it blank prompts permission for each reply. For example, if you set this to 2, the agent will reply twice and then require human approval before replying again.",
         ),
     ] = None
 
