@@ -262,30 +262,40 @@ def _generate_api_docs_for_module(root_path: Path, module_name: str) -> str:
     return api_summary
 
 
+def get_navigation_template(docs_dir: Path) -> str:
+    # read summary template from file
+    navigation_template = (docs_dir / "navigation_template.txt").read_text()
+    return navigation_template
+
+
 def create_api_docs(
     root_path: Path,
     module: str,
-) -> None:
+    navigation_template: str,
+) -> str:
     """Create API documentation for a module.
 
     Args:
         root_path: The root path of the project.
         module: The name of the module.
+        navigation_template: The navigation template for the documentation.
     """
-    api = _generate_api_docs_for_module(root_path, module)
-
     docs_dir = root_path / "docs"
 
-    # read summary template from file
-    navigation_template = (docs_dir / "navigation_template.txt").read_text()
+    api = _generate_api_docs_for_module(root_path, module)
 
-    summary = navigation_template.format(api=api)
+    summary = navigation_template.format(api=api, cli="{cli}")
 
     summary = "\n".join(filter(bool, (x.rstrip() for x in summary.split("\n"))))
 
     (docs_dir / "SUMMARY.md").write_text(summary)
 
+    return summary
+
 
 if __name__ == "__main__":
-    root = Path(__file__).resolve().parent
-    create_api_docs(root, "fastagency")
+    root_path = Path(__file__).resolve().parent
+    docs_dir = root_path / "docs"
+
+    navigation_template = get_navigation_template(docs_dir)
+    create_api_docs(root_path, "fastagency", navigation_template)

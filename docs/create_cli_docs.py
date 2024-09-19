@@ -1,7 +1,7 @@
 import subprocess
 from pathlib import Path
 
-from create_api_docs import _generate_api_docs_for_module
+from create_api_docs import get_navigation_template
 
 
 def _run_command_help(command: list[str]) -> str:
@@ -39,35 +39,36 @@ def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
     return cli_summary
 
 
-def create_api_docs(
+def create_cli_docs(
     root_path: Path,
     module: str,
-) -> None:
-    """Create API documentation and CLI usage documentation for a module.
+    navigation_template: str,
+) -> str:
+    """Create CLI usage documentation for a module.
 
     Args:
         root_path: The root path of the project.
         module: The name of the module.
+        navigation_template: The navigation template for the documentation.
     """
-    # Generate API documentation
-    api = _generate_api_docs_for_module(root_path, module)
-
     docs_dir = root_path / "docs"
 
     # Generate CLI usage documentation
     cli = _generate_cli_docs(module, docs_dir / "en" / "cli")
 
-    # Read summary template from file
-    navigation_template = (docs_dir / "navigation_template.txt").read_text()
-
-    summary = navigation_template.format(api=api, cli=cli)
-    # summary = navigation_template.format(api=api)
+    summary = navigation_template.format(cli=cli, api="{api}")
 
     summary = "\n".join(filter(bool, (x.rstrip() for x in summary.split("\n"))))
 
     (docs_dir / "SUMMARY.md").write_text(summary)
 
+    return summary
+
 
 if __name__ == "__main__":
-    root = Path(__file__).resolve().parent
-    create_api_docs(root, "fastagency")
+    root_path = Path(__file__).resolve().parent
+    docs_dir = root_path / "docs"
+
+    navigation_template = get_navigation_template(docs_dir)
+
+    create_cli_docs(root_path, "fastagency", navigation_template)
