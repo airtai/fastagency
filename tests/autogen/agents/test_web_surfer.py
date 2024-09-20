@@ -1,7 +1,6 @@
 import pytest
 
 from fastagency.runtime.autogen.agents.web_surfer import (
-    WebSurferAnswer,
     WebSurferChat,
 )
 from tests.helpers import get_by_tag, parametrize_fixtures
@@ -9,9 +8,7 @@ from tests.helpers import get_by_tag, parametrize_fixtures
 
 class TestWebSurferChat:
     @parametrize_fixtures("websurfer_chat", get_by_tag("websurfer-chat"))
-    @pytest.mark.db
-    @pytest.mark.asyncio
-    async def test_web_surfer_chat_constructor(
+    def test_web_surfer_chat_constructor(
         self,
         websurfer_chat: WebSurferChat,
     ) -> None:
@@ -28,7 +25,6 @@ class TestWebSurferChat:
             # "Given that weather forecast today is warm and sunny, what would be the best way to spend an evening in Zagreb according to the weather forecast?",
         ],
     )
-    @pytest.mark.db
     @pytest.mark.llm
     @pytest.mark.asyncio
     async def test_web_surfer_chat_simple_task(
@@ -49,7 +45,6 @@ class TestWebSurferChat:
             ),
         ],
     )
-    @pytest.mark.db
     @pytest.mark.llm
     @pytest.mark.asyncio
     @pytest.mark.skip(reason="This test is not working properly in CI")
@@ -66,6 +61,6 @@ class TestWebSurferChat:
             message=follow_up
         )
         print(result)  # noqa: T201
-        assert isinstance(result, WebSurferAnswer)
+        assert isinstance(result, str)
         assert "We have successfully completed the task" in result
         assert "NVIDIA" in result
