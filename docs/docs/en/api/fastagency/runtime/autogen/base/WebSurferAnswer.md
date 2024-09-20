@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.studio.models.agents.web_surfer_autogen.WebSurferAnswer
+::: fastagency.runtime.autogen.base.WebSurferAnswer

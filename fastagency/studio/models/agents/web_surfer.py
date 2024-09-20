@@ -6,7 +6,7 @@ from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
 from autogen.agentchat import ConversableAgent as AutoGenConversableAgent
 from typing_extensions import TypeAlias
 
-from fastagency.studio.models.agents.web_surfer_autogen import WebSurferChat
+from fastagency.runtime.autogen.base import WebSurferChat
 
 from ..base import Field, Model
 from ..registry import register

@@ -1,6 +1,6 @@
 import pytest
 
-from fastagency.studio.models.agents.web_surfer_autogen import (
+from fastagency.runtime.autogen.base import (
     WebSurferAnswer,
     WebSurferChat,
 )

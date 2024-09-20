@@ -89,10 +89,14 @@ search:
             - autogen
                 - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
                 - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
+                - [WebSurferAnswer](api/fastagency/runtime/autogen/WebSurferAnswer.md)
+                - [WebSurferChat](api/fastagency/runtime/autogen/WebSurferChat.md)
                 - base
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
                     - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
                     - [IOStreamAdapter](api/fastagency/runtime/autogen/base/IOStreamAdapter.md)
+                    - [WebSurferAnswer](api/fastagency/runtime/autogen/base/WebSurferAnswer.md)
+                    - [WebSurferChat](api/fastagency/runtime/autogen/base/WebSurferChat.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)
@@ -178,9 +182,6 @@ search:
                         - [BingAPIKey](api/fastagency/studio/models/agents/web_surfer/BingAPIKey.md)
                         - [WebSurferAgent](api/fastagency/studio/models/agents/web_surfer/WebSurferAgent.md)
                         - [WebSurferToolbox](api/fastagency/studio/models/agents/web_surfer/WebSurferToolbox.md)
-                    - web_surfer_autogen
-                        - [WebSurferAnswer](api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferAnswer.md)
-                        - [WebSurferChat](api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferChat.md)
                 - base
                     - [Field](api/fastagency/studio/models/base/Field.md)
                     - [Model](api/fastagency/studio/models/base/Model.md)

@@ -24,13 +24,13 @@ from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from pydantic import __version__ as version_of_pydantic
 
+from fastagency.runtime.autogen.base import WebSurferChat
 from fastagency.studio.db.base import DefaultDB
 from fastagency.studio.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.studio.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.studio.models.agents.assistant import AssistantAgent
 from fastagency.studio.models.agents.user_proxy import UserProxyAgent
 from fastagency.studio.models.agents.web_surfer import BingAPIKey, WebSurferAgent
-from fastagency.studio.models.agents.web_surfer_autogen import WebSurferChat
 from fastagency.studio.models.base import ObjectReference
 from fastagency.studio.models.llms.anthropic import Anthropic, AnthropicAPIKey
 from fastagency.studio.models.llms.azure import AzureOAI, AzureOAIAPIKey
