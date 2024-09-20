@@ -3,21 +3,21 @@ version: '3'
 services:
   python-3.11-fastagency:  # nosemgrep
     image: mcr.microsoft.com/devcontainers/python:3.11
-    container_name: $USER-python-3.11-fastagency
+    container_name: fastagency-${USER}-python-3.11
     volumes:
       - ../../:/workspaces/fastagency:cached
     command: sleep infinity
     environment:
-      - DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagency:5432/fastagency
-      - PY_DATABASE_URL=postgresql://admin:password@${USER}-postgres-py311-fastagency:5432/pyfastagency
-      - NATS_URL=nats://${USER}-nats-py311-fastagency:4222
+      - DATABASE_URL=postgresql://admin:password@fastagency-${USER}-postgres-py311:5432/fastagency
+      - PY_DATABASE_URL=postgresql://admin:password@fastagency-${USER}-postgres-py311:5432/pyfastagency
+      - NATS_URL=nats://fastagency-${USER}-nats-py311:4222
     env_file:
       - ../devcontainer.env
     networks:
       - fastagency-network
   nats-fastagency:  # nosemgrep
     image: nats:latest
-    container_name: $USER-nats-py311-fastagency
+    container_name: fastagency-${USER}-nats-py311
     # ports:
       # - "${PORT_PREFIX}4222:4222"
       # - "${PORT_PREFIX}9222:9222"
@@ -30,7 +30,7 @@ services:
       - fastagency-network
   postgres-fastagency:  # nosemgrep
     image: postgres:latest
-    container_name: $USER-postgres-py311-fastagency
+    container_name: fastagency-${USER}-postgres-py311
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password  # pragma: allowlist secret
@@ -42,4 +42,4 @@ services:
 
 networks:
   fastagency-network:
-    name: "${USER}-fastagency-network"
+    name: fastagency-${USER}-network
