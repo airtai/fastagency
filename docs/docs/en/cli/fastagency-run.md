@@ -1,9 +1,10 @@
-## fastagency run Usage
+```
 
-```                                                                                
- Usage: fastagency run [OPTIONS] [PATH]                                         
-                                                                                
- Run a FastAgency app in production mode. 🚀                                    
+fastagency run [OPTIONS] [PATH]
+
+```
+
+Run a FastAgency app in production mode. 🚀                                    
  This is similar to the fastagency dev command, but optimized for production    
  environments.                                                                  
                                                                                 
@@ -29,8 +30,11 @@
  - api                                                                          
                                                                                 
  Otherwise, it uses the first FastAgency app found in the imported module or    
- package.                                                                       
-                                                                                
+ package.
+
+
+```
+
 ╭─ Arguments ──────────────────────────────────────────────────────────────────╮
 │   path      [PATH]  A path to a Python file or package directory (with       │
 │                     __init__.py files) containing a FastAgency app. If not   │

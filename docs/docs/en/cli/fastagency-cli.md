@@ -3,14 +3,20 @@
 The **FastAgency Command Line Interface (CLI)** enables developers to manage and run FastAgency projects directly from the terminal.
 The CLI simplifies interactions with FastAgency apps, providing options for running, testing, and managing workflows efficiently.
 
-```                                                                                
- Usage: fastagency [OPTIONS] COMMAND [ARGS]...                                  
-                                                                                
- FastAgency CLI - The fastapi command line app. 😎                              
+```
+
+fastagency [OPTIONS] COMMAND [ARGS]...
+
+```
+
+FastAgency CLI - The fastapi command line app. 😎                              
  Manage your FastAgency projects, run your FastAgency apps, and more.           
                                                                                 
- Read more in the docs: https://fastagency.ai/latest/.                          
-                                                                                
+ Read more in the docs: https://fastagency.ai/latest/.
+
+
+```
+
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
 │ --version                     Show the version and exit.                     │
 │ --install-completion          Install completion for the current shell.      │

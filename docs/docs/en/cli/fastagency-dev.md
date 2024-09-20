@@ -1,9 +1,10 @@
-## fastagency dev Usage
+```
 
-```                                                                                
- Usage: fastagency dev [OPTIONS] [PATH]                                         
-                                                                                
- Run a FastAgency app in development mode. 🚀                                   
+fastagency dev [OPTIONS] [PATH]
+
+```
+
+Run a FastAgency app in development mode. 🚀                                   
  This is similar to the fastagency run command but with reload enabled and      
  listening on the 127.0.0.1 address.                                            
                                                                                 
@@ -29,8 +30,11 @@
  - api                                                                          
                                                                                 
  Otherwise, it uses the first FastAgency app found in the imported module or    
- package.                                                                       
-                                                                                
+ package.
+
+
+```
+
 ╭─ Arguments ──────────────────────────────────────────────────────────────────╮
 │   path      [PATH]  A path to a Python file or package directory (with       │
 │                     __init__.py files) containing a FastAgency app. If not   │

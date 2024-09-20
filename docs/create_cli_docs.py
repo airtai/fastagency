@@ -14,13 +14,53 @@ CLI_INTRO = """The **FastAgency Command Line Interface (CLI)** enables developer
 The CLI simplifies interactions with FastAgency apps, providing options for running, testing, and managing workflows efficiently."""
 
 
+def _format_md_file(command_description_and_parameters: str) -> str:
+    command_description_and_parameters = command_description_and_parameters.strip()
+    command = command_description_and_parameters.split("\n")[0]
+    command_description_and_parameters = command_description_and_parameters.replace(
+        command, ""
+    ).strip()
+    command = command.replace("Usage:", "").strip()
+
+    if "╭─ " in command_description_and_parameters:
+        description = command_description_and_parameters.split("╭─ ")[0].strip()
+        parameters = command_description_and_parameters.replace(description, "").strip()
+    else:
+        description = command_description_and_parameters
+        parameters = ""
+
+    formated_content = f"""```
+
+{command}
+
+```
+
+{description}
+
+"""
+    if parameters:
+        formated_content += f"""
+```
+
+{parameters}
+
+```
+"""
+    return formated_content
+
+
 def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
     """Generate CLI usage documentation for the main CLI and subcommands."""
     cli_help_output = _run_command_help([cli_name, "--help"])
 
     # Save main CLI help output to a file
     main_help_file = docs_path / "fastagency-cli.md"
-    main_help_file.write_text(f"# CLI\n\n{CLI_INTRO}\n\n```{cli_help_output}```\n")
+    formated_content = _format_md_file(cli_help_output)
+    main_help_file.write_text(f"""# CLI
+
+{CLI_INTRO}
+
+{formated_content}""")
 
     # Define the subcommands you want to capture help for
     subcommands = ["run", "dev", "version"]
@@ -31,12 +71,15 @@ def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
     indent = " " * 4 * submodule
     # Generate and save documentation for each subcommand
     for subcommand in subcommands:
-        subcommand_help_output = _run_command_help([cli_name, subcommand, "--help"])
+        command_description_and_parameters = _run_command_help(
+            [cli_name, subcommand, "--help"]
+        )
+
+        formated_content = _format_md_file(command_description_and_parameters)
+
         file_name = f"fastagency-{subcommand}.md"
         subcommand_file = docs_path / file_name
-        subcommand_file.write_text(
-            f"## {cli_name} {subcommand} Usage\n\n```{subcommand_help_output}```\n"
-        )
+        subcommand_file.write_text(formated_content)
         # Uppercase the first letter of the subcommand
         cli_summary += f"\n{indent}- [{subcommand.capitalize()}](cli/{file_name})"
 
