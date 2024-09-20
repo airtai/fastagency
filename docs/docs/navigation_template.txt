@@ -17,9 +17,10 @@ search:
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
-    - [CLI]{cli}
+    - [CLI](user-guide/cli/index.md)
 - Reference
 {api}
+{cli}
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)
     - [Documentation](contributing/docs.md)

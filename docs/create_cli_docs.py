@@ -1,93 +1,49 @@
+import re
 import subprocess
 from pathlib import Path
 
 from create_api_docs import get_navigation_template
 
+CLI_REFERENCE_PATH = "cli"
 
-def _run_command_help(command: list[str]) -> str:
+
+def _run_command_generate_docs(output_path: Path) -> str:
     """Run the CLI command with --help and capture the output."""
-    result = subprocess.run(command, capture_output=True, text=True)
-    return result.stdout
+    result = subprocess.run(
+        ["typer", "fastagency.cli", "utils", "docs", "--name", "fastagency"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
 
+    # replace bold tags with markdown bold
+    fix_bold = "\\[bold\\](.*?)\\[/bold\\]"
+    retval = re.sub(fix_bold, r"**\1**", result.stdout[:-1])
 
-CLI_INTRO = """The **FastAgency Command Line Interface (CLI)** enables developers to manage and run FastAgency projects directly from the terminal.
-The CLI simplifies interactions with FastAgency apps, providing options for running, testing, and managing workflows efficiently."""
+    # replace link tags with markdown link
+    fix_link = "\\[link\\](.*?)\\[/link\\]"
+    retval = re.sub(fix_link, r"[\1](\1)", retval)
 
+    # replace color tags with markdown blue (todo: fix me)
+    for color in ["red", "green", "yellow", "blue", "magenta", "cyan", "white"]:
+        fix_color = f"\\[{color}\\](.*?)\\[/{color}\\]"
+        retval = re.sub(fix_color, r"<code>\1</code>", retval)
 
-def _format_md_file(command_description_and_parameters: str) -> str:
-    command_description_and_parameters = command_description_and_parameters.strip()
-    command = command_description_and_parameters.split("\n")[0]
-    command_description_and_parameters = command_description_and_parameters.replace(
-        command, ""
-    ).strip()
-    command = command.replace("Usage:", "").strip()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w") as f:
+        f.write(retval)
 
-    if "╭─ " in command_description_and_parameters:
-        description = command_description_and_parameters.split("╭─ ")[0].strip()
-        parameters = command_description_and_parameters.replace(description, "").strip()
-    else:
-        description = command_description_and_parameters
-        parameters = ""
-
-    formated_content = f"""```
-
-{command}
-
-```
-
-{description}
-
-"""
-    if parameters:
-        formated_content += f"""
-```
-
-{parameters}
-
-```
-"""
-    return formated_content
+    return retval
 
 
 def _generate_cli_docs(
-    cli_name: str, docs_path: Path, cli_dir: str = "user-guide/cli"
+    cli_name: str,
+    docs_path: Path,
+    cli_dir: str = CLI_REFERENCE_PATH,
+    cli_md_name: str = "cli.md",
 ) -> str:
-    """Generate CLI usage documentation for the main CLI and subcommands."""
-    cli_help_output = _run_command_help([cli_name, "--help"])
-
-    docs_path = docs_path / cli_dir
-
-    # Save main CLI help output to a file
-    main_help_file = docs_path / "fastagency-cli.md"
-    formated_content = _format_md_file(cli_help_output)
-    main_help_file.write_text(f"""# CLI
-
-{CLI_INTRO}
-
-{formated_content}""")
-
-    # Define the subcommands you want to capture help for
-    subcommands = ["run", "dev", "version"]
-
-    cli_summary = f"({cli_dir}/fastagency-cli.md)"
-
-    submodule = 2
-    indent = " " * 4 * submodule
-    # Generate and save documentation for each subcommand
-    for subcommand in subcommands:
-        command_description_and_parameters = _run_command_help(
-            [cli_name, subcommand, "--help"]
-        )
-
-        formated_content = _format_md_file(command_description_and_parameters)
-
-        file_name = f"fastagency-{subcommand}.md"
-        subcommand_file = docs_path / file_name
-        subcommand_file.write_text(formated_content)
-        # Uppercase the first letter of the subcommand
-        cli_summary += f"\n{indent}- [{subcommand.capitalize()}]({cli_dir}/{file_name})"
-
-    return cli_summary
+    _run_command_generate_docs(docs_path / cli_dir / cli_md_name)
+    return f"    - [CLI]({cli_dir}/{cli_md_name})"
 
 
 def create_cli_docs(

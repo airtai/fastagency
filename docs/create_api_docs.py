@@ -2,6 +2,7 @@
 
 import itertools
 import shutil
+import textwrap
 from importlib import import_module
 from inspect import getmembers, isclass, isfunction
 from pathlib import Path
@@ -283,6 +284,10 @@ def create_api_docs(
     docs_dir = root_path / "docs"
 
     api = _generate_api_docs_for_module(root_path, module)
+
+    # add [API] to navigation template
+    api = textwrap.indent(api, " " * 4)
+    api = "    - API\n" + api
 
     summary = navigation_template.format(api=api, cli="{cli}")
 
