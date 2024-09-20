@@ -10,13 +10,17 @@ def _run_command_help(command: list[str]) -> str:
     return result.stdout
 
 
+CLI_INTRO = """The **FastAgency Command Line Interface (CLI)** enables developers to manage and run FastAgency projects directly from the terminal.
+The CLI simplifies interactions with FastAgency apps, providing options for running, testing, and managing workflows efficiently."""
+
+
 def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
     """Generate CLI usage documentation for the main CLI and subcommands."""
     cli_help_output = _run_command_help([cli_name, "--help"])
 
     # Save main CLI help output to a file
     main_help_file = docs_path / "fastagency-cli.md"
-    main_help_file.write_text(f"# CLI\n\n```{cli_help_output}```\n")
+    main_help_file.write_text(f"# CLI\n\n{CLI_INTRO}\n\n```{cli_help_output}```\n")
 
     # Define the subcommands you want to capture help for
     subcommands = ["run", "dev", "version"]
