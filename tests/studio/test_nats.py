@@ -339,11 +339,11 @@ class TestAutogen:
         thread_id = uuid.uuid4()
 
         # Add secret, llm, agent, team to database
+        api_key_model_uuid = str(uuid.uuid4())
         api_key = api_key_model(  # type: ignore [operator]
             api_key=os.getenv("AZURE_OPENAI_API_KEY", default="*" * 64),
-            name="api_key_model_name",
+            name=f"api_key_model_name_{api_key_model_uuid}",
         )
-        api_key_model_uuid = str(uuid.uuid4())
         await add_model(
             user_uuid=user_uuid,
             type_name="secret",
