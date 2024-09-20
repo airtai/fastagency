@@ -89,14 +89,14 @@ search:
             - autogen
                 - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
                 - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
-                - [WebSurferAnswer](api/fastagency/runtime/autogen/WebSurferAnswer.md)
-                - [WebSurferChat](api/fastagency/runtime/autogen/WebSurferChat.md)
+                - agents
+                    - web_surfer
+                        - [WebSurferAnswer](api/fastagency/runtime/autogen/agents/web_surfer/WebSurferAnswer.md)
+                        - [WebSurferChat](api/fastagency/runtime/autogen/agents/web_surfer/WebSurferChat.md)
                 - base
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
                     - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
                     - [IOStreamAdapter](api/fastagency/runtime/autogen/base/IOStreamAdapter.md)
-                    - [WebSurferAnswer](api/fastagency/runtime/autogen/base/WebSurferAnswer.md)
-                    - [WebSurferChat](api/fastagency/runtime/autogen/base/WebSurferChat.md)
         - studio
             - app
                 - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)

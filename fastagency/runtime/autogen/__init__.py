@@ -1,3 +1,3 @@
-from .base import AutoGenWorkflows, IOStreamAdapter, WebSurferAnswer, WebSurferChat
+from .base import AutoGenWorkflows, IOStreamAdapter
 
-__all__ = ["IOStreamAdapter", "AutoGenWorkflows", "WebSurferAnswer", "WebSurferChat"]
+__all__ = ["IOStreamAdapter", "AutoGenWorkflows"]

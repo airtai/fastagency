@@ -24,7 +24,7 @@ from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from pydantic import __version__ as version_of_pydantic
 
-from fastagency.runtime.autogen.base import WebSurferChat
+from fastagency.runtime.autogen.agents.web_surfer import WebSurferChat
 from fastagency.studio.db.base import DefaultDB
 from fastagency.studio.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.studio.helpers import create_autogen, create_model_ref, get_model_by_ref
