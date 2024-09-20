@@ -49,9 +49,13 @@ def _format_md_file(command_description_and_parameters: str) -> str:
     return formated_content
 
 
-def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
+def _generate_cli_docs(
+    cli_name: str, docs_path: Path, cli_dir: str = "user-guide/cli"
+) -> str:
     """Generate CLI usage documentation for the main CLI and subcommands."""
     cli_help_output = _run_command_help([cli_name, "--help"])
+
+    docs_path = docs_path / cli_dir
 
     # Save main CLI help output to a file
     main_help_file = docs_path / "fastagency-cli.md"
@@ -65,7 +69,7 @@ def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
     # Define the subcommands you want to capture help for
     subcommands = ["run", "dev", "version"]
 
-    cli_summary = "(cli/fastagency-cli.md)"
+    cli_summary = f"({cli_dir}/fastagency-cli.md)"
 
     submodule = 2
     indent = " " * 4 * submodule
@@ -81,7 +85,7 @@ def _generate_cli_docs(cli_name: str, docs_path: Path) -> str:
         subcommand_file = docs_path / file_name
         subcommand_file.write_text(formated_content)
         # Uppercase the first letter of the subcommand
-        cli_summary += f"\n{indent}- [{subcommand.capitalize()}](cli/{file_name})"
+        cli_summary += f"\n{indent}- [{subcommand.capitalize()}]({cli_dir}/{file_name})"
 
     return cli_summary
 
@@ -101,7 +105,7 @@ def create_cli_docs(
     docs_dir = root_path / "docs"
 
     # Generate CLI usage documentation
-    cli = _generate_cli_docs(module, docs_dir / "en" / "cli")
+    cli = _generate_cli_docs(module, docs_dir / "en")
 
     summary = navigation_template.format(cli=cli, api="{api}")
 
