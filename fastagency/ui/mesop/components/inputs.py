@@ -6,7 +6,7 @@ import mesop as me
 from ..data_model import State
 
 
-def input_text(
+def input_text(  # noqa: C901
     on_input: Callable[[str], Iterator[None]],
     key: str,
     disabled: bool = False,
