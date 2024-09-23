@@ -106,10 +106,6 @@ jobs:
     secrets: inherit  # pragma: allowlist secret
     needs:
       - test-without-llms
-      - test-with-anthropic
-      - test-with-azure_oai
-      - test-with-openai
-      - test-with-togetherai
 
   test-macos-latest:
     if: github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event.pull_request.draft == false
@@ -219,7 +215,13 @@ jobs:
 
   # https://github.com/marketplace/actions/alls-green#why
   check: # This job does nothing and is only used for the branch protection
-    if: github.event.pull_request.draft == false
+    # from: https://github.com/re-actors/alls-green
+    # Important: For this to work properly, it is a must to have the job always
+    # run, otherwise GitHub will make it skipped when any of the dependencies
+    # fail. In some contexts, skipped is interpreted as success which may lead
+    # to undersired, unobvious and even dangerous (as in security breach
+    # "dangerous") side-effects.
+    if: always()
 
     needs:
       - static-analysis
@@ -234,4 +236,6 @@ jobs:
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@release/v1 # nosemgrep
         with:
+          # allowed-failures: docs, linters
+          # allowed-skips: non-voting-flaky-job
           jobs: ${{ toJSON(needs) }}
