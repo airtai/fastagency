@@ -252,8 +252,7 @@ search:
                         - [run_workflow](api/fastagency/ui/mesop/base/run_workflow.md)
                     - components
                         - inputs
-                            - [input_prompt](api/fastagency/ui/mesop/components/inputs/input_prompt.md)
-                            - [input_user_feedback](api/fastagency/ui/mesop/components/inputs/input_user_feedback.md)
+                            - [input_text](api/fastagency/ui/mesop/components/inputs/input_text.md)
                         - ui_common
                             - [darken_hex_color](api/fastagency/ui/mesop/components/ui_common/darken_hex_color.md)
                             - [header](api/fastagency/ui/mesop/components/ui_common/header.md)
