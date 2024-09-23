@@ -273,10 +273,12 @@ class Runnable(Protocol):
 
 
 def run_workflow(
+    *,
     wf: Workflows,
     ui: UI,
     name: Optional[str],
     initial_message: Optional[str] = None,
+    single_run: bool = False,
 ) -> None:
     """Run a workflow.
 
@@ -285,6 +287,7 @@ def run_workflow(
         ui (UI): The UI object to use.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
         initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
+        single_run (bool, optional): If True, the workflow will only be run once. Defaults to False.
     """
     while True:
         name = wf.names[0] if name is None else name
@@ -336,3 +339,6 @@ def run_workflow(
         )
 
         initial_message = None
+
+        if single_run:
+            break

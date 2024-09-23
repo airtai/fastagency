@@ -1,0 +1,2 @@
+class TestConversationMessage:
+    pass
