@@ -6,22 +6,25 @@ from autogen import ConversableAgent, UserProxyAgent
 
 from fastagency.api.openapi.client import OpenAPI
 
+from ...conftest import create_gify_fastapi_app
+
 
 @pytest.fixture
 def openapi_schema() -> dict[str, Any]:
-    return {
+    app = create_gify_fastapi_app(host="127.0.0.1", port=8000)
+
+    return app.openapi()
+
+
+def test_openapi_schema(openapi_schema: dict[str, Any]) -> None:
+    expected_schema = {
         "openapi": "3.1.0",
-        "info": {
-            "title": "My FastAPI app",
-            "description": "Test FastAPI app to check OpenAPI schema generation.",
-            "version": "0.1.0",
-        },
+        "info": {"title": "Gify", "version": "0.1.0"},
         "servers": [
-            {"url": "https://stag.example.com", "description": "Staging environment"},
             {
-                "url": "https://prod.example.com",
-                "description": "Production environment",
-            },
+                "url": "http://127.0.0.1:8000",
+                "description": "Local development server",
+            }
         ],
         "paths": {
             "/gifs/{gifId}": {
@@ -65,7 +68,7 @@ def openapi_schema() -> dict[str, Any]:
             "schemas": {
                 "Gif": {
                     "properties": {
-                        "id": {"type": "string", "title": "Id"},
+                        "id": {"type": "integer", "title": "Id"},
                         "title": {"type": "string", "title": "Title"},
                         "url": {"type": "string", "title": "Url"},
                     },
@@ -103,6 +106,8 @@ def openapi_schema() -> dict[str, Any]:
             }
         },
     }
+
+    assert openapi_schema == expected_schema
 
 
 @pytest.fixture
