@@ -38,11 +38,11 @@ app = OpenAPI(
     , tags={{operation.tags}}
     {% endif %}
     {% if operation.security %}
-    {% for security in operation.security %}
+    , security=[{% for security in operation.security %}
     {% for key, value in security.items() %}
-    , security={{security_parameters[key]}}
+    {{security_parameters[key]}},
     {% endfor %}
-    {% endfor %}
+    {% endfor %}]
     {% endif %}
     )
 def {{operation.function_name}}({{operation.snake_case_arguments}}

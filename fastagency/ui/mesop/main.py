@@ -1,10 +1,11 @@
+import time
 from collections.abc import Iterator
 
 import mesop as me
 
 from ...logging import get_logger
 from .base import MesopUI
-from .components.inputs import input_prompt
+from .components.inputs import input_text
 from .components.ui_common import header
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
@@ -44,7 +45,13 @@ def home_page() -> None:
 
 
 def past_conversations_box() -> None:
-    def select_past_conversation(ev: me.ClickEvent) -> None:
+    def conversation_display_title(full_name: str, max_length: int) -> str:
+        if len(full_name) <= max_length:
+            return full_name
+        else:
+            return full_name[: max_length - 3] + "..."
+
+    def select_past_conversation(ev: me.ClickEvent) -> Iterator[None]:
         id = ev.key
         state = me.state(State)
         conversations_with_id = list(
@@ -53,12 +60,18 @@ def past_conversations_box() -> None:
         conversation = conversations_with_id[0]
         state.conversation = conversation
         state.in_conversation = True
+        yield
+        time.sleep(1)
+        yield
+        me.scroll_into_view(key="conversationtop")
+        yield
 
     def on_show_hide(ev: me.ClickEvent) -> None:
         state.hide_past = not state.hide_past
 
     def on_start_new_conversation(ev: me.ClickEvent) -> None:
         state.in_conversation = False
+        state.prompt = ""
 
     state = me.state(State)
     style = PAST_CHATS_HIDE_STYLE if state.hide_past else PAST_CHATS_SHOW_STYLE
@@ -90,9 +103,7 @@ def past_conversations_box() -> None:
                         border_radius=16,
                     ),
                 ):
-                    me.text(
-                        text=conversation.title,
-                    )
+                    me.text(text=conversation_display_title(conversation.title, 128))
 
 
 def conversation_starter_box() -> None:
@@ -108,10 +119,10 @@ def conversation_starter_box() -> None:
                 "Enter a prompt to chat with FastAgency team",
                 style=me.Style(font_size=20, margin=me.Margin(bottom=24)),
             )
-            input_prompt(send_prompt)
+            input_text(send_prompt, "prompt", disabled=False)
 
 
-def send_prompt(e: me.ClickEvent) -> Iterator[None]:
+def send_prompt(prompt: str) -> Iterator[None]:
     ui = get_ui()
     wf = ui.app.wf
 
@@ -119,8 +130,6 @@ def send_prompt(e: me.ClickEvent) -> Iterator[None]:
 
     state = me.state(State)
     # me.navigate("/conversation")
-    prompt = state.prompt
-    state.prompt = ""
     conversation = Conversation(
         title=prompt, completed=False, waiting_for_feedback=False
     )
@@ -138,10 +147,12 @@ def conversation_box() -> None:
         header()
         messages = conversation.messages
         with me.box(
-            style=me.Style(
-                overflow_y="auto",
-            )
+            style=me.Style(overflow_y="auto", display="flex", flex_direction="column")
         ):
+            me.box(
+                key="conversationtop",
+                style=me.Style(margin=me.Margin(bottom="1vh")),
+            )
             for message in messages:
                 message_box(message, conversation.is_from_the_past)
             if messages:

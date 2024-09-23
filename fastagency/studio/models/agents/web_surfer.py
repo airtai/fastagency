@@ -4,19 +4,25 @@ from uuid import UUID
 from asyncer import syncify
 from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
 from autogen.agentchat import ConversableAgent as AutoGenConversableAgent
-from pydantic import Field
 from typing_extensions import TypeAlias
 
 from fastagency.studio.models.agents.web_surfer_autogen import WebSurferChat
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 from .base import AgentBaseModel, llm_type_refs
 
 
 @register("secret")
 class BingAPIKey(Model):
-    api_key: Annotated[str, Field(title="API Key", description="The API Key from Bing")]
+    api_key: Annotated[
+        str,
+        Field(
+            title="API Key",
+            description="The API Key from Bing",
+            tooltip_message="The API key specified here will be used to authenticate requests to Bing services.",
+        ),
+    ]
 
     @classmethod
     async def create_autogen(cls, model_id: UUID, user_id: UUID, **kwargs: Any) -> str:
@@ -87,14 +93,23 @@ class WebSurferAgent(AgentBaseModel):
         Field(
             title="Summarizer LLM",
             description="This LLM will be used to generated summary of all pages visited",
+            tooltip_message="Select the summarizer LLM, which is used for generating precise and accurate summaries of web pages, while the LLM chosen above is used for handling regular web searches.",
         ),
     ]
     viewport_size: Annotated[
-        int, Field(description="The viewport size of the browser")
+        int,
+        Field(
+            description="The viewport size of the browser",
+            tooltip_message="Viewport size refers to the visible area of a webpage in the browser. Default is 4096. Modify only if a custom size is needed.",
+        ),
     ] = 4096
     bing_api_key: Annotated[
         Optional[BingAPIKeyRef],
-        Field(title="Bing API Key", description="The Bing API key for the browser"),
+        Field(
+            title="Bing API Key",
+            description="The Bing API key for the browser",
+            tooltip_message="Choose a Bing API key to allow the browser to access Bing's search and data services, improving information retrieval.",
+        ),
     ] = None
 
     @classmethod

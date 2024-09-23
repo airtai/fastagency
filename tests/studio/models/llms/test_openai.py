@@ -150,12 +150,18 @@ class TestOpenAI:
                         "gpt-4o-2024-05-13",
                         "gpt-4-turbo",
                     ],
+                    "metadata": {
+                        "tooltip_message": "Choose the model that the LLM uses to interact with OpenAI services."
+                    },
                     "title": "Model",
                     "type": "string",
                 },
                 "api_key": {
                     "$ref": "#/$defs/OpenAIAPIKeyRef",
                     "description": "The API Key from OpenAI",
+                    "metadata": {
+                        "tooltip_message": "Choose the API key that will be used to authenticate requests to OpenAI services."
+                    },
                     "title": "API Key",
                 },
                 "base_url": {
@@ -163,6 +169,9 @@ class TestOpenAI:
                     "description": "The base URL of the OpenAI API",
                     "format": "uri",
                     "maxLength": 2083,
+                    "metadata": {
+                        "tooltip_message": "The base URL that the LLM uses to interact with OpenAI services."
+                    },
                     "minLength": 1,
                     "title": "Base URL",
                     "type": "string",
@@ -180,6 +189,9 @@ class TestOpenAI:
                     "description": "The temperature to use for the model, must be between 0 and 2",
                     "maximum": 2.0,
                     "minimum": 0.0,
+                    "metadata": {
+                        "tooltip_message": "Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2."
+                    },
                     "title": "Temperature",
                     "type": "number",
                 },

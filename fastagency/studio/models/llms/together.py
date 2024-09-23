@@ -1,10 +1,10 @@
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import AfterValidator, Field, HttpUrl
+from pydantic import AfterValidator, HttpUrl
 from typing_extensions import TypeAlias
 
-from ..base import Model
+from ..base import Field, Model
 from ..registry import register
 
 __all__ = [
@@ -35,8 +35,11 @@ together_model_string = {
     "Meta Llama 3 70B Instruct Lite": "meta-llama/Meta-Llama-3-70B-Instruct-Lite",
     "Gemma-2 Instruct (9B)": "google/gemma-2-9b-it",
     "Meta Llama 3 8B Instruct Reference": "meta-llama/Llama-3-8b-chat-hf",
+    "Meta Llama 3.1 70B Instruct Turbo": "albert/meta-llama-3-1-70b-instruct-turbo",
+    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     "WizardLM-2 (8x22B)": "microsoft/WizardLM-2-8x22B",
     "Mixtral-8x7B Instruct v0.1": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
     "Meta Llama 3 70B Instruct Reference": "meta-llama/Llama-3-70b-chat-hf",
     "DBRX Instruct": "databricks/dbrx-instruct",
     "Nous Hermes 2 - Mixtral 8x7B-DPO ": "NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO",
@@ -44,12 +47,10 @@ together_model_string = {
     "Meta Llama 3 8B Instruct Lite": "meta-llama/Meta-Llama-3-8B-Instruct-Lite",
     "Meta Llama 3.1 8B Instruct": "meta-llama/Meta-Llama-3.1-8B-Instruct-Reference",
     "Mixtral-8x22B Instruct v0.1": "mistralai/Mixtral-8x22B-Instruct-v0.1",
-    "Meta Llama 3.1 70B Instruct Turbo": "albert/meta-llama-3-1-70b-instruct-turbo",
     "Gryphe MythoMax L2 Lite (13B)": "Gryphe/MythoMax-L2-13b-Lite",
-    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
     "Hermes 3 - Llama-3.1 405B": "NousResearch/Hermes-3-Llama-3.1-405B-Turbo",
     "LLaMA-2 Chat (7B)": "togethercomputer/llama-2-7b-chat",
+    "LLaVa-Next (Mistral-7B)": "llava-hf/llava-v1.6-mistral-7b-hf",
     "WizardLM v1.2 (13B)": "WizardLM/WizardLM-13B-V1.2",
     "Koala (7B)": "togethercomputer/Koala-7B",
     "Qwen 2 Instruct (1.5B)": "Qwen/Qwen2-1.5B-Instruct",
@@ -115,7 +116,8 @@ class TogetherAIAPIKey(Model):
         str,
         Field(
             title="API Key",
-            description="The API Key from Together.ai",
+            description="The API Key from Together AI",
+            tooltip_message="The API key specified here will be used to authenticate requests to Together AI services.",
             min_length=64,
             max_length=64,
         ),
@@ -139,16 +141,28 @@ URL = Annotated[HttpUrl, AfterValidator(lambda x: str(x).rstrip("/"))]
 class TogetherAI(Model):
     model: Annotated[  # type: ignore[valid-type]
         TogetherModels,
-        Field(description="The model to use for the Together API"),
+        Field(
+            description="The model to use for the Together API",
+            tooltip_message="Choose the model that the LLM uses to interact with Together AI services.",
+        ),
     ] = "Meta Llama 3 70B Instruct Reference"
 
     api_key: Annotated[
         TogetherAIAPIKeyRef,
-        Field(title="API Key", description="The API Key from Together.ai"),
+        Field(
+            title="API Key",
+            description="The API Key from Together.ai",
+            tooltip_message="Choose the API key that will be used to authenticate requests to Together AI services.",
+        ),
     ]
 
     base_url: Annotated[
-        URL, Field(title="Base URL", description="The base URL of the OpenAI API")
+        URL,
+        Field(
+            title="Base URL",
+            description="The base URL of the OpenAI API",
+            tooltip_message="The base URL that the LLM uses to interact with Together AI services.",
+        ),
     ] = URL(url="https://api.together.xyz/v1")
 
     api_type: Annotated[
@@ -162,6 +176,7 @@ class TogetherAI(Model):
         float,
         Field(
             description="The temperature to use for the model, must be between 0 and 2",
+            tooltip_message="Adjust the temperature to change the response style. Lower values lead to more consistent answers, while higher values make the responses more creative. The values must be between 0 and 2.",
             ge=0.0,
             le=2.0,
         ),

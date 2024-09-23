@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.components.inputs.input_user_feedback
+::: fastagency.studio.models.base.Field

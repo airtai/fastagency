@@ -10,7 +10,8 @@ from typing import Annotated, Optional
 import mkdocs.commands.build
 import mkdocs.commands.serve
 import typer
-from create_api_docs import create_api_docs
+from create_api_docs import create_api_docs, get_navigation_template
+from create_cli_docs import create_cli_docs
 from expand_markdown import expand_markdown
 from mkdocs.config import load_config
 from update_releases import _find_metablock, update_release_notes
@@ -240,14 +241,23 @@ def update_contributing():
 
 
 @app.command()
-def build_api_docs():
-    """Build api docs for fastagency."""
-    typer.echo("Updating API docs")
-    create_api_docs(root_path=BASE_DIR, module="fastagency")
+def build_api_and_cli_docs():
+    """Build api and cli docs for fastagency."""
+    typer.echo("Updating API and CLI docs")
+    docs_dir = BASE_DIR / "docs"
+
+    navigation_template = get_navigation_template(docs_dir)
+
+    navigation_template = create_api_docs(
+        root_path=BASE_DIR, module="fastagency", navigation_template=navigation_template
+    )
+    create_cli_docs(
+        root_path=BASE_DIR, module="fastagency", navigation_template=navigation_template
+    )
 
 
 def _build():
-    build_api_docs()
+    build_api_and_cli_docs()
     update_readme()
     update_contributing()
 
