@@ -54,7 +54,7 @@ class TestMessageBox:
         message_box(message=message, read_only=True)
 
         me.markdown.assert_any_call("this is a test message")
-        me.markdown.assert_any_call("Text message from: sender, to:recipient")
+        me.markdown.assert_any_call("Text message: sender -> recipient")
         assert me.markdown.call_count == 2
 
     def test_system_message(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -74,7 +74,7 @@ class TestMessageBox:
 
         message_box(message=message, read_only=True)
 
-        me.markdown.assert_any_call("System Message from: sender, to:recipient")
+        me.markdown.assert_any_call("System Message: sender -> recipient")
         me.markdown.assert_any_call(
             '{\n  "type": "test",\n  "data": "this is a test message"\n}'
         )
@@ -99,9 +99,7 @@ class TestMessageBox:
 
         message_box(message=message, read_only=True)
 
-        me.markdown.assert_any_call(
-            "Suggested Function Call from: sender, to:recipient"
-        )
+        me.markdown.assert_any_call("Suggested Function Call: sender -> recipient")
         me.markdown.assert_any_call('{"arg1": "value1", "arg2": "value2"}')
         assert me.markdown.call_count == 2
 
@@ -124,9 +122,7 @@ class TestMessageBox:
 
         message_box(message=message, read_only=True)
 
-        me.markdown.assert_any_call(
-            "Function Call Execution from: sender, to:recipient"
-        )
+        me.markdown.assert_any_call("Function Call Execution: sender -> recipient")
         me.markdown.assert_any_call('"return_value"')
         assert me.markdown.call_count == 2
 
@@ -148,7 +144,7 @@ class TestMessageBox:
 
         message_box(message=message, read_only=True)
 
-        me.markdown.assert_any_call("Input requested from: sender, to:recipient")
+        me.markdown.assert_any_call("Input requested: sender -> recipient")
         me.markdown.assert_any_call(
             "Who is the president of the United States?\n Suggestions: Donald Trump,Joe Biden"
         )
@@ -173,9 +169,7 @@ class TestMessageBox:
 
         message_box(message=message, read_only=True)
 
-        me.markdown.assert_called_once_with(
-            "Input requested from: sender, to:recipient"
-        )
+        me.markdown.assert_called_once_with("Input requested: sender -> recipient")
         me.radio.assert_called_once()
 
     def test_multiple_choice_multiple(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -197,9 +191,7 @@ class TestMessageBox:
 
         message_box(message=message, read_only=True)
 
-        me.markdown.assert_called_once_with(
-            "Input requested from: sender, to:recipient"
-        )
+        me.markdown.assert_called_once_with("Input requested: sender -> recipient")
         assert me.checkbox.call_count == 7
 
     def test_workflow_completed(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -217,6 +209,6 @@ class TestMessageBox:
 
         message_box(message=message, read_only=True)
 
-        me.markdown.assert_any_call("workflow_completed from: sender, to:recipient")
+        me.markdown.assert_any_call("workflow_completed: sender -> recipient")
         me.markdown.assert_any_call("workflow_completed")
         assert me.markdown.call_count == 2
