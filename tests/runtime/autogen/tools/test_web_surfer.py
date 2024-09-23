@@ -72,7 +72,7 @@ class TestWebSurferTool:
             # "Given that weather forecast today is warm and sunny, what would be the best way to spend an evening in Zagreb according to the weather forecast?",
         ],
     )
-    @pytest.mark.openapi
+    @pytest.mark.openai
     def test_web_surfer_chat_simple_task(
         self, openai_gpt4o_llm_config: dict[str, Any], task: str, answer: str
     ) -> None:
