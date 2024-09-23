@@ -1,4 +1,5 @@
 import json
+import sys
 from unittest.mock import MagicMock
 
 import pytest
@@ -12,10 +13,19 @@ from fastagency.base import (
     TextMessage,
     WorkflowCompleted,
 )
-from fastagency.ui.mesop.data_model import ConversationMessage
-from fastagency.ui.mesop.message import message_box
+
+if sys.version_info >= (3, 10):
+    from fastagency.ui.mesop.data_model import ConversationMessage
+    from fastagency.ui.mesop.message import message_box
+else:
+    ConversationMessage = MagicMock()
+    message_box = MagicMock()
 
 
+@pytest.mark.skipif(
+    sys.version_info < (3, 10),
+    reason="Mesop is not support in Python version 3.9 and below",
+)
 class TestMessageBox:
     def _apply_monkeypatch(self, monkeypatch: pytest.MonkeyPatch) -> MagicMock:
         me = MagicMock()
