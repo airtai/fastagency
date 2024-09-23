@@ -107,7 +107,7 @@ class TestOpenAPI:
         ],
     )
     def test_camel_to_snake_within_braces(self, input: str, expected: str) -> None:
-        result = OpenAPI._camel_to_snake_within_braces(input)
+        result = OpenAPI._convert_camel_case_within_braces_to_snake(input)
 
         assert result == expected, result
 

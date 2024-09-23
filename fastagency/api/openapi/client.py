@@ -54,7 +54,7 @@ class OpenAPI:
         self.security_params: dict[Optional[str], BaseSecurityParameters] = {}
 
     @staticmethod
-    def _camel_to_snake_within_braces(text: str) -> str:
+    def _convert_camel_case_within_braces_to_snake(text: str) -> str:
         # Function to convert camel case to snake case
         def camel_to_snake(match: re.Match[str]) -> str:
             return re.sub(r"(?<!^)(?=[A-Z])", "_", match.group(1)).lower()
@@ -89,7 +89,7 @@ class OpenAPI:
     def _process_params(
         self, path: str, func: Callable[[Any], Any], **kwargs: Any
     ) -> tuple[str, dict[str, Any], dict[str, Any]]:
-        path = OpenAPI._camel_to_snake_within_braces(path)
+        path = OpenAPI._convert_camel_case_within_braces_to_snake(path)
         q_params, path_params, body, security = OpenAPI._get_params(path, func)
 
         expanded_path = path.format(**{p: kwargs[p] for p in path_params})
