@@ -28,7 +28,8 @@ class Conversation:
 @me.stateclass
 class State:
     in_conversation: bool = False  # True when in active conversation, or past one.
-    prompt: str = ""
+    prompt_input: str = ""
+    prompt_output: str = ""
     conversation: Conversation
     past_conversations: list[Conversation] = field(default_factory=list)
     hide_past: bool = True
