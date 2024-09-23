@@ -146,7 +146,7 @@ def test_register_for_llm(
                     "properties": {
                         "gif_id": {"type": "integer", "description": "gif_id"}
                     },
-                    "required": [],
+                    "required": ["gif_id"],
                 },
             },
         }

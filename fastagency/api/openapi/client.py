@@ -342,8 +342,8 @@ class OpenAPI:
 
         return funcs_to_register
 
+    @staticmethod
     def _remove_pydantic_undefined_from_tools(
-        self,
         tools: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
         for tool in tools:
@@ -357,7 +357,8 @@ class OpenAPI:
             ):
                 continue
 
-            for param_value in function["parameters"]["properties"].values():
+            required = function["parameters"].get("required", [])
+            for param_name, param_value in function["parameters"]["properties"].items():
                 if "default" not in param_value:
                     continue
 
@@ -366,6 +367,9 @@ class OpenAPI:
                     and param_value["default"].default is PydanticUndefined
                 ):
                     param_value.pop("default")
+                    # We removed the default value, so we need to add the parameter to the required list
+                    if param_name not in required:
+                        required.append(param_name)
 
         return tools
 
@@ -382,7 +386,7 @@ class OpenAPI:
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
 
-            agent.llm_config["tools"] = self._remove_pydantic_undefined_from_tools(
+            agent.llm_config["tools"] = OpenAPI._remove_pydantic_undefined_from_tools(
                 agent.llm_config["tools"]
             )
 

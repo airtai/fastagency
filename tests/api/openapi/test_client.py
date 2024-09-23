@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+from fastapi.params import Path as FastAPIPath
 
 from fastagency.api.openapi import OpenAPI
 
@@ -107,4 +108,45 @@ class TestOpenAPI:
     def test_camel_to_snake_within_braces(self, input: str, expected: str) -> None:
         result = OpenAPI._camel_to_snake_within_braces(input)
 
+        assert result == expected, result
+
+    def test_remove_pydantic_undefined_from_tools(self) -> None:
+        tools = [
+            {
+                "type": "function",
+                "function": {
+                    "description": "Get GIF by Id.",
+                    "name": "get_gif_by_id_gifs__gif_id__get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "gif_id": {
+                                "type": "integer",
+                                "default": FastAPIPath(),
+                                "description": "gif_id",
+                            }
+                        },
+                        "required": [],
+                    },
+                },
+            }
+        ]
+        result = OpenAPI._remove_pydantic_undefined_from_tools(tools)
+
+        expected = [
+            {
+                "type": "function",
+                "function": {
+                    "description": "Get GIF by Id.",
+                    "name": "get_gif_by_id_gifs__gif_id__get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "gif_id": {"type": "integer", "description": "gif_id"}
+                        },
+                        "required": ["gif_id"],
+                    },
+                },
+            }
+        ]
         assert result == expected, result
