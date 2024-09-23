@@ -468,7 +468,8 @@ def create_gify_fastapi_app(host: str, port: int) -> FastAPI:
     )
 
     @app.get("/gifs", response_model=list[Gif], tags=["gifs"])
-    def get_gifs_for_topic(topic: str = fastapi.Query(..., alias="Topic")) -> list[Gif]:
+    # TODO: API is failing if Query alias contains uppercase letters e.g. alias="Topic"
+    def get_gifs_for_topic(topic: str = fastapi.Query(..., alias="topic")) -> list[Gif]:
         """Get GIFs for a topic."""
         return [
             Gif(id=1, title="Gif 1", url=f"https://gif.example.com/gif1?topic={topic}"),

@@ -32,7 +32,7 @@ def test_openapi_schema(openapi_schema: dict[str, Any]) -> None:
                     "operationId": "get_gifs_for_topic_gifs_get",
                     "parameters": [
                         {
-                            "name": "Topic",
+                            "name": "topic",
                             "in": "query",
                             "required": True,
                             "schema": {"type": "string", "title": "Topic"},
