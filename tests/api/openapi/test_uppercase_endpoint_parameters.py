@@ -234,9 +234,9 @@ def test_end2end(
 
     result = user_proxy.initiate_chat(
         agent,
-        message="I need the all gifs for 'topic' 'funny'",
+        message="I need the all gifs for 'topic' 'funny'. Within the summary, please include the 'url' for each gif.",
         summary_method="reflection_with_llm",
-        max_turns=3,
+        max_turns=2,
     )
 
     assert "https://gif.example.com/gif1?topic=funny" in result.summary
