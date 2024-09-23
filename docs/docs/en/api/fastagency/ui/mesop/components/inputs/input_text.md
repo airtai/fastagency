@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.components.inputs.input_user_feedback
+::: fastagency.ui.mesop.components.inputs.input_text
