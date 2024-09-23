@@ -104,14 +104,18 @@ class MesopUI(IOMessageVisitor):  # UI
 
     def start(
         self,
+        *,
         app: Runnable,
         import_string: str,
         name: Optional[str] = None,
         initial_message: Optional[str] = None,
+        single_run: bool = False,
     ) -> None:
         logger.info(
             f"Starting MesopUI: import_string={self._import_string}, main_path={self._main_path}"
         )
+        if single_run:
+            logger.warning("single_run parameter is currently not supported in MesopUI")
 
         MesopUI._app = app
 

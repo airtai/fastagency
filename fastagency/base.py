@@ -208,10 +208,12 @@ class UI(Protocol):
 
     def start(
         self,
+        *,
         app: "Runnable",
         import_string: str,
         name: Optional[str] = None,
         initial_message: Optional[str] = None,
+        single_run: bool = False,
     ) -> None: ...
 
     def process_message(self, message: IOMessage) -> Optional[str]: ...
@@ -260,9 +262,11 @@ class Runnable(Protocol):
 
     def start(
         self,
+        *,
         import_string: str,
         name: Optional[str] = None,
         initial_message: Optional[str] = None,
+        single_run: bool = False,
     ) -> None: ...
 
     @property
