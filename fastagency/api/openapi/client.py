@@ -11,6 +11,8 @@ from pathlib import Path
 from types import ModuleType
 from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
 
+import fastapi
+from pydantic_core import PydanticUndefined
 import requests
 from fastapi_code_generator.__main__ import generate_code
 
@@ -338,6 +340,14 @@ class OpenAPI:
         with add_to_globals(self.globals):
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
+                # todo: remove defaults equal to Path(PydanticUndefined)
+                # for all params in tools:
+                #     PydanticUndefined
+                #     fastapi.Path(PydanticUndefined)
+                #     default = ...
+                #     if isinstance(default, fastapi.Path) and default.default is PydanticUndefined:
+                #         # pop default
+                #         pass
 
     def _register_for_execution(
         self,
