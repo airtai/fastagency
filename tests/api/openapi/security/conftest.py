@@ -48,7 +48,7 @@ def create_secure_fastapi_app(host: str, port: int) -> FastAPI:
 
 @pytest.fixture(scope="session")
 def secure_fastapi_url() -> Iterator[str]:
-    host = "localhost"
+    host = "127.0.0.1"
     port = find_free_port()
     app = create_secure_fastapi_app(host, port)
 
