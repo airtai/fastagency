@@ -7,7 +7,7 @@ search:
 - [User guide](user-guide/index.md)
     - [Runtimes](user-guide/runtime/index.md)
         - [AutoGen](user-guide/runtime/autogen/index.md)
-            - Agents
+            - Tools
                 - [WebSurfer](user-guide/runtime/autogen/websurfer.md)
             - [User interaction](user-guide/runtime/autogen/interactions.md)
         - [CrewAI](user-guide/runtime/crewai/basics.md)
