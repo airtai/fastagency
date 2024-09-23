@@ -8,7 +8,7 @@ from fastagency.api.openapi.client import OpenAPI
 
 
 @pytest.fixture
-def openapi_schema() -> str:
+def openapi_schema() -> dict[str, Any]:
     return {
         "openapi": "3.1.0",
         "info": {
@@ -107,7 +107,7 @@ def openapi_schema() -> str:
 
 @pytest.fixture
 def api(openapi_schema: dict[str, Any]) -> OpenAPI:
-    print(f"{openapi_schema=}")
+    # print(f"{openapi_schema=}")
     client = OpenAPI.create(json.dumps(openapi_schema))
     return client
 
@@ -117,12 +117,11 @@ def test_register_for_llm(
     azure_gpt35_turbo_16k_llm_config: dict[str, Any],
 ) -> None:
     agent = ConversableAgent(name="agent", llm_config=azure_gpt35_turbo_16k_llm_config)
-    user_proxy = UserProxyAgent(name="user_proxy")
 
     api._register_for_llm(agent)
     tools = agent.llm_config["tools"]
 
-    print(f"{tools=}")
+    # print(f"{tools=}")
 
     # the low-level problem
     class JSONEncoder(json.JSONEncoder):
@@ -130,14 +129,31 @@ def test_register_for_llm(
             if o.__class__.__name__ == "ellipsis":
                 return "Ellipsis"
             return super().default(o)
-    json_str = json.dumps(tools, cls=JSONEncoder)
 
-    # real test
+    json.dumps(tools, cls=JSONEncoder)
+
+
+def test_end2end(
+    gify_fastapi_openapi_url: str,
+    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
+) -> None:
+    api = OpenAPI.create(openapi_url=gify_fastapi_openapi_url)
+
+    agent = ConversableAgent(name="agent", llm_config=azure_gpt35_turbo_16k_llm_config)
+    user_proxy = UserProxyAgent(
+        name="user_proxy",
+        llm_config=azure_gpt35_turbo_16k_llm_config,
+        human_input_mode="NEVER",
+    )
+
+    api._register_for_llm(agent)
     api._register_for_execution(user_proxy)
-    user_proxy.initiate_chat(
+
+    result = user_proxy.initiate_chat(
         agent,
-        message="I need some gif with id 1",
+        message="I need the 'url' for gif with id 1",
         summary_method="reflection_with_llm",
         max_turns=3,
     )
 
+    assert "https://gif.example.com/gif1" in result.summary

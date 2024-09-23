@@ -12,9 +12,9 @@ from types import ModuleType
 from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
 
 import fastapi
-from pydantic_core import PydanticUndefined
 import requests
 from fastapi_code_generator.__main__ import generate_code
+from pydantic_core import PydanticUndefined
 
 from .fastapi_code_generator_helpers import patch_get_parameter_type
 from .security import BaseSecurity, BaseSecurityParameters
@@ -54,6 +54,19 @@ class OpenAPI:
         self.security_params: dict[Optional[str], BaseSecurityParameters] = {}
 
     @staticmethod
+    def camel_to_snake_within_braces(text: str) -> str:
+        # Function to convert camel case to snake case
+        def camel_to_snake(match: re.Match[str]) -> str:
+            return re.sub(r"(?<!^)(?=[A-Z])", "_", match.group(1)).lower()
+
+        # Find all occurrences inside curly braces and apply camel_to_snake
+        result = re.sub(
+            r"\{([a-zA-Z0-9]+)\}", lambda m: "{" + camel_to_snake(m) + "}", text
+        )
+
+        return result
+
+    @staticmethod
     def _get_params(
         path: str, func: Callable[..., Any]
     ) -> tuple[set[str], set[str], Optional[str], bool]:
@@ -76,6 +89,7 @@ class OpenAPI:
     def _process_params(
         self, path: str, func: Callable[[Any], Any], **kwargs: Any
     ) -> tuple[str, dict[str, Any], dict[str, Any]]:
+        path = OpenAPI.camel_to_snake_within_braces(path)
         q_params, path_params, body, security = OpenAPI._get_params(path, func)
 
         expanded_path = path.format(**{p: kwargs[p] for p in path_params})
@@ -328,6 +342,33 @@ class OpenAPI:
 
         return funcs_to_register
 
+    def _remove_pydantic_undefined_from_tools(
+        self,
+        tools: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        for tool in tools:
+            if "function" not in tool:
+                continue
+
+            function = tool["function"]
+            if (
+                "parameters" not in function
+                or "properties" not in function["parameters"]
+            ):
+                continue
+
+            for param_value in function["parameters"]["properties"].values():
+                if "default" not in param_value:
+                    continue
+
+                if (
+                    isinstance(param_value.get("default"), fastapi.params.Path)
+                    and param_value["default"].default is PydanticUndefined
+                ):
+                    param_value.pop("default")
+
+        return tools
+
     def _register_for_llm(
         self,
         agent: "ConversableAgent",
@@ -340,14 +381,10 @@ class OpenAPI:
         with add_to_globals(self.globals):
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
-                # todo: remove defaults equal to Path(PydanticUndefined)
-                # for all params in tools:
-                #     PydanticUndefined
-                #     fastapi.Path(PydanticUndefined)
-                #     default = ...
-                #     if isinstance(default, fastapi.Path) and default.default is PydanticUndefined:
-                #         # pop default
-                #         pass
+
+            agent.llm_config["tools"] = self._remove_pydantic_undefined_from_tools(
+                agent.llm_config["tools"]
+            )
 
     def _register_for_execution(
         self,

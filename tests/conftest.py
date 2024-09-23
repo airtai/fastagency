@@ -16,6 +16,7 @@ from typing import (
 )
 from unittest.mock import MagicMock
 
+import fastapi
 import openai
 import pytest
 import pytest_asyncio
@@ -453,6 +454,27 @@ def create_weather_fastapi_app(host: str, port: int) -> FastAPI:
     return app
 
 
+def create_gify_fastapi_app(host: str, port: int) -> FastAPI:
+    class Gif(BaseModel):
+        id: int
+        title: str
+        url: str
+
+    app = FastAPI(
+        title="Gify",
+        servers=[
+            {"url": f"http://{host}:{port}", "description": "Local development server"}
+        ],
+    )
+
+    @app.get("/gifs/{gifId}", response_model=Gif, tags=["gifs"])
+    def get_gif_by_id(gif_id: int = fastapi.Path(..., alias="gifId")) -> Gif:
+        """Get GIF by Id."""
+        return Gif(id=gif_id, title="Gif 1", url="https://gif.example.com/gif1")
+
+    return app
+
+
 def find_free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("", 0))
@@ -502,6 +524,21 @@ def weather_fastapi_openapi_url() -> Iterator[str]:
     app = create_weather_fastapi_app(host, port)
     openapi_url = f"http://{host}:{port}/openapi.json"
 
+    config = uvicorn.Config(app, host=host, port=port, log_level="info")
+    server = Server(config=config)
+    with server.run_in_thread():
+        time.sleep(1 if system() != "Windows" else 5)  # let the server start
+
+        yield openapi_url
+
+
+@pytest.fixture(scope="session")
+def gify_fastapi_openapi_url() -> Iterator[str]:
+    host = "127.0.0.1"
+    port = find_free_port()
+    app = create_gify_fastapi_app(host, port)
+
+    openapi_url = f"http://{host}:{port}/openapi.json"
     config = uvicorn.Config(app, host=host, port=port, log_level="info")
     server = Server(config=config)
     with server.run_in_thread():
