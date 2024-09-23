@@ -24,6 +24,7 @@ class OpenAPIEnd2End:
 
     @pytest.fixture
     def generated_code_path(self, openapi_schema: dict[str, Any]) -> Iterator[Path]:
+        print(f"{openapi_schema=}")
         with TemporaryDirectory() as temp_dir:
             td = Path(temp_dir)
             OpenAPI.generate_code(
@@ -59,6 +60,7 @@ class OpenAPIEnd2End:
 
     @pytest.fixture
     def client(self, openapi_schema: dict[str, Any]) -> OpenAPI:
+        print(f"{openapi_schema=}")
         client = OpenAPI.create(json.dumps(openapi_schema))
         return client
 
