@@ -7,6 +7,8 @@ search:
 - [User guide](user-guide/index.md)
     - [Runtimes](user-guide/runtime/index.md)
         - [AutoGen](user-guide/runtime/autogen/index.md)
+            - Agents
+                - [WebSurfer](user-guide/runtime/autogen/websurfer.md)
             - [User interaction](user-guide/runtime/autogen/interactions.md)
         - [CrewAI](user-guide/runtime/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
@@ -90,14 +92,16 @@ search:
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
                     - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
-                    - agents
-                        - web_surfer
-                            - [WebSurferAnswer](api/fastagency/runtime/autogen/agents/web_surfer/WebSurferAnswer.md)
-                            - [WebSurferChat](api/fastagency/runtime/autogen/agents/web_surfer/WebSurferChat.md)
                     - base
                         - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
                         - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
                         - [IOStreamAdapter](api/fastagency/runtime/autogen/base/IOStreamAdapter.md)
+                        - [Toolable](api/fastagency/runtime/autogen/base/Toolable.md)
+                    - tools
+                        - [WebSurferTool](api/fastagency/runtime/autogen/tools/WebSurferTool.md)
+                        - web_surfer
+                            - [WebSurferAnswer](api/fastagency/runtime/autogen/tools/web_surfer/WebSurferAnswer.md)
+                            - [WebSurferTool](api/fastagency/runtime/autogen/tools/web_surfer/WebSurferTool.md)
             - studio
                 - app
                     - [ChatRequest](api/fastagency/studio/app/ChatRequest.md)

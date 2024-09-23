@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtime.autogen.agents.web_surfer.WebSurferChat
+::: fastagency.runtime.autogen.tools.web_surfer.WebSurferTool

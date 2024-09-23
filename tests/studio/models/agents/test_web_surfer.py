@@ -6,7 +6,7 @@ import pytest
 from asyncer import asyncify
 from fastapi import BackgroundTasks
 
-from fastagency.runtime.autogen.agents.web_surfer import WebSurferAnswer
+from fastagency.runtime.autogen.tools.web_surfer import WebSurferAnswer
 from fastagency.studio.app import add_model
 from fastagency.studio.helpers import create_autogen, get_model_by_ref
 from fastagency.studio.models.agents.web_surfer import BingAPIKey, WebSurferAgent

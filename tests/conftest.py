@@ -24,7 +24,7 @@ from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from pydantic import __version__ as version_of_pydantic
 
-from fastagency.runtime.autogen.agents.web_surfer import WebSurferChat
+from fastagency.runtime.autogen.tools.web_surfer import WebSurferTool
 from fastagency.studio.db.base import DefaultDB
 from fastagency.studio.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.studio.helpers import create_autogen, create_model_ref, get_model_by_ref
@@ -666,7 +666,7 @@ async def placeholder_websurfer_ref(
 )
 async def placeholder_websurfer_chat(
     user_uuid: str, websurfer_ref: ObjectReference, bing_api_key_ref: ObjectReference
-) -> WebSurferChat:
+) -> WebSurferTool:
     websurfer_model: WebSurferAgent = await get_model_by_ref(websurfer_ref)  # type: ignore [assignment]
     llm_config = await create_autogen(websurfer_model.llm, user_uuid)
     summarizer_llm_config = await create_autogen(
@@ -681,7 +681,7 @@ async def placeholder_websurfer_chat(
 
     viewport_size = websurfer_model.viewport_size
 
-    return WebSurferChat(
+    return WebSurferTool(
         name_prefix=websurfer_model.name,
         llm_config=llm_config,
         summarizer_llm_config=summarizer_llm_config,
