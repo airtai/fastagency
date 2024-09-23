@@ -64,8 +64,6 @@ jobs:
       environment: testing
       use-llms: "anthropic"
     secrets: inherit  # pragma: allowlist secret
-    needs:
-      - test-without-llms
 
   test-with-azure_oai:
     uses: ./.github/workflows/test.yaml
@@ -74,8 +72,6 @@ jobs:
       environment: testing
       use-llms: "azure_oai"
     secrets: inherit  # pragma: allowlist secret
-    needs:
-      - test-without-llms
 
   test-with-openai:
     uses: ./.github/workflows/test.yaml
@@ -84,8 +80,6 @@ jobs:
       environment: testing
       use-llms: "openai"
     secrets: inherit  # pragma: allowlist secret
-    needs:
-      - test-without-llms
 
   test-with-togetherai:
     uses: ./.github/workflows/test.yaml
@@ -94,8 +88,6 @@ jobs:
       environment: testing
       use-llms: "togetherai"
     secrets: inherit  # pragma: allowlist secret
-    needs:
-      - test-without-llms
 
   test-with-llm:
     uses: ./.github/workflows/test.yaml
@@ -104,8 +96,6 @@ jobs:
       environment: testing
       use-llms: "llm"
     secrets: inherit  # pragma: allowlist secret
-    needs:
-      - test-without-llms
 
   test-macos-latest:
     if: github.event.pull_request.draft == false
@@ -155,6 +145,8 @@ jobs:
       - test-with-azure_oai
       - test-with-openai
       - test-with-togetherai
+      - test-windows-latest
+      - test-macos-latest
     runs-on: ubuntu-latest
 
     steps:
