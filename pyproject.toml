@@ -56,7 +56,7 @@ mesop = [
 ]
 
 pyautogen = [
-    "pyautogen[anthropic,together]>=0.2.35,<0.3",
+    "pyautogen[anthropic,together]>=0.2.35,<0.4",
     "together==1.2.11",
 ]
 
