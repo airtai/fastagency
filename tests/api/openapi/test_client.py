@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pytest
 from fastapi.params import Path as FastAPIPath
+from fastapi.params import Query
 
 from fastagency.api.openapi import OpenAPI
 
@@ -115,6 +116,24 @@ class TestOpenAPI:
             {
                 "type": "function",
                 "function": {
+                    "description": "Get GIFs for a topic.",
+                    "name": "get_gifs_for_topic_gifs_get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "topic": {
+                                "type": "string",
+                                "default": Query(),
+                                "description": "topic",
+                            }
+                        },
+                        "required": [],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
                     "description": "Get GIF by Id.",
                     "name": "get_gif_by_id_gifs__gif_id__get",
                     "parameters": {
@@ -129,11 +148,28 @@ class TestOpenAPI:
                         "required": [],
                     },
                 },
-            }
+            },
         ]
         result = OpenAPI._remove_pydantic_undefined_from_tools(tools)
 
         expected = [
+            {
+                "type": "function",
+                "function": {
+                    "description": "Get GIFs for a topic.",
+                    "name": "get_gifs_for_topic_gifs_get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "topic": {
+                                "type": "string",
+                                "description": "topic",
+                            }
+                        },
+                        "required": ["topic"],
+                    },
+                },
+            },
             {
                 "type": "function",
                 "function": {
@@ -147,6 +183,6 @@ class TestOpenAPI:
                         "required": ["gif_id"],
                     },
                 },
-            }
+            },
         ]
         assert result == expected, result

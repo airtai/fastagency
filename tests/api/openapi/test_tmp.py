@@ -21,12 +21,49 @@ def test_openapi_schema(openapi_schema: dict[str, Any]) -> None:
         "openapi": "3.1.0",
         "info": {"title": "Gify", "version": "0.1.0"},
         "servers": [
-            {
-                "url": "http://127.0.0.1:8000",
-                "description": "Local development server",
-            }
+            {"url": "http://127.0.0.1:8000", "description": "Local development server"}
         ],
         "paths": {
+            "/gifs": {
+                "get": {
+                    "tags": ["gifs"],
+                    "summary": "Get Gifs For Topic",
+                    "description": "Get GIFs for a topic.",
+                    "operationId": "get_gifs_for_topic_gifs_get",
+                    "parameters": [
+                        {
+                            "name": "Topic",
+                            "in": "query",
+                            "required": True,
+                            "schema": {"type": "string", "title": "Topic"},
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Successful Response",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {"$ref": "#/components/schemas/Gif"},
+                                        "title": "Response Get Gifs For Topic Gifs Get",
+                                    }
+                                }
+                            },
+                        },
+                        "422": {
+                            "description": "Validation Error",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/HTTPValidationError"
+                                    }
+                                }
+                            },
+                        },
+                    },
+                }
+            },
             "/gifs/{gifId}": {
                 "get": {
                     "tags": ["gifs"],
@@ -62,7 +99,7 @@ def test_openapi_schema(openapi_schema: dict[str, Any]) -> None:
                         },
                     },
                 }
-            }
+            },
         },
         "components": {
             "schemas": {
@@ -139,6 +176,18 @@ def test_register_for_llm(
         {
             "type": "function",
             "function": {
+                "description": "Get GIFs for a topic.",
+                "name": "get_gifs_for_topic_gifs_get",
+                "parameters": {
+                    "type": "object",
+                    "properties": {"topic": {"type": "string", "description": "topic"}},
+                    "required": ["topic"],
+                },
+            },
+        },
+        {
+            "type": "function",
+            "function": {
                 "description": "Get GIF by Id.",
                 "name": "get_gif_by_id_gifs__gif_id__get",
                 "parameters": {
@@ -149,7 +198,7 @@ def test_register_for_llm(
                     "required": ["gif_id"],
                 },
             },
-        }
+        },
     ]
 
     assert json.dumps(tools, cls=JSONEncoder) == json.dumps(

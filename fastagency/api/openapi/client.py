@@ -374,8 +374,9 @@ class OpenAPI:
                 if "default" not in param_value:
                     continue
 
+                default = param_value.get("default")
                 if (
-                    isinstance(param_value.get("default"), fastapi.params.Path)
+                    isinstance(default, (fastapi.params.Path, fastapi.params.Query))
                     and param_value["default"].default is PydanticUndefined
                 ):
                     param_value.pop("default")

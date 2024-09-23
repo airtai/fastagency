@@ -467,6 +467,14 @@ def create_gify_fastapi_app(host: str, port: int) -> FastAPI:
         ],
     )
 
+    @app.get("/gifs", response_model=list[Gif], tags=["gifs"])
+    def get_gifs_for_topic(topic: str = fastapi.Query(..., alias="Topic")) -> list[Gif]:
+        """Get GIFs for a topic."""
+        return [
+            Gif(id=1, title="Gif 1", url="https://gif.example.com/gif1"),
+            Gif(id=2, title="Gif 2", url="https://gif.example.com/gif2"),
+        ]
+
     @app.get("/gifs/{gifId}", response_model=Gif, tags=["gifs"])
     def get_gif_by_id(gif_id: int = fastapi.Path(..., alias="gifId")) -> Gif:
         """Get GIF by Id."""
