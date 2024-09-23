@@ -211,7 +211,7 @@ disallow_any_unimported = false
 fix = true
 line-length = 88
 # target-version = 'py39'
-include = ["fastagency/**/*.py", "fastagency/**/*.pyi", "tests/**/*.py", "docs/**/*.py", "pyproject.toml"]
+include = ["fastagency/**/*.py", "fastagency/**/*.pyi", "tests/**/*.py", "docs/**/*.py", "examples/**/*.py", "pyproject.toml"]
 exclude = ["docs/docs_src", "tests/openapi/security/expected_*.py"]
 
 [tool.ruff.lint]
