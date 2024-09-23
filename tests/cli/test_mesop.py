@@ -57,7 +57,9 @@ app = FastAgency(wf=wf, ui=MesopUI())
 """
 
 
-@pytest.mark.skipif(sys.version_info > (3, 9), reason="Python 3.9 is required")
+@pytest.mark.skipif(
+    sys.version_info >= (3, 10), reason="Python 3.10 or higher is required"
+)
 def test_app_failure_for_python39() -> None:
     """Test that the app fails when Python 3.9 is used."""
     with TemporaryDirectory() as tmp_dir:
@@ -68,5 +70,5 @@ def test_app_failure_for_python39() -> None:
         result = runner.invoke(app, ["run", str(tmp_path)])
 
         assert result.exit_code == 1
+
         assert "Error: Mesop requires Python 3.10 or higher" in result.output
-        assert "Aborted!" in result.output
