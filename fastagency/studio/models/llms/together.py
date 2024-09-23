@@ -36,7 +36,7 @@ together_model_string = {
     "Gemma-2 Instruct (9B)": "google/gemma-2-9b-it",
     "Meta Llama 3 8B Instruct Reference": "meta-llama/Llama-3-8b-chat-hf",
     "Meta Llama 3.1 70B Instruct Turbo": "albert/meta-llama-3-1-70b-instruct-turbo",
-    "Meta Llama 3.1 8B Instruct Turbo": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "Meta Llama 3.1 8B Instruct Turbo": "atlas/llama-3-1-8b-instruct-turbo",
     "WizardLM-2 (8x22B)": "microsoft/WizardLM-2-8x22B",
     "Mixtral-8x7B Instruct v0.1": "mistralai/Mixtral-8x7B-Instruct-v0.1",
     "Meta Llama 3.1 405B Instruct Turbo": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
