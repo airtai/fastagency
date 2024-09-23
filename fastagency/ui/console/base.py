@@ -33,18 +33,14 @@ class ConsoleUI(IOMessageVisitor):  # implements UI
     def __init__(
         self,
         super_conversation: Optional["ConsoleUI"] = None,
-        *,
-        single_run: bool = False,
     ) -> None:
         """Initialize the console UI object.
 
         Args:
             super_conversation (Optional[UI], optional): The super conversation. Defaults to None.
-            single_run (bool, optional): If True, the workflow will only be run once. Defaults to False.
         """
         self.super_conversation: Optional[ConsoleUI] = super_conversation
         self.sub_conversations: list[ConsoleUI] = []
-        self.single_run = single_run
 
     @contextmanager
     def create(self, app: Runnable, import_string: str) -> Iterator[None]:
@@ -52,17 +48,19 @@ class ConsoleUI(IOMessageVisitor):  # implements UI
 
     def start(
         self,
+        *,
         app: Runnable,
         import_string: str,
         name: Optional[str] = None,
         initial_message: Optional[str] = None,
+        single_run: bool = False,
     ) -> None:
         run_workflow(
             wf=app.wf,
             ui=self,
             name=name,
             initial_message=initial_message,
-            single_run=self.single_run,
+            single_run=single_run,
         )
 
     @property

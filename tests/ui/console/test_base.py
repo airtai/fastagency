@@ -16,7 +16,7 @@ def import_string() -> str:
 @pytest.fixture
 def app(import_string: str) -> Iterator[FastAgency]:
     wf = AutoGenWorkflows()
-    console = ConsoleUI(single_run=True)
+    console = ConsoleUI()
     app = FastAgency(wf=wf, ui=console)
 
     @wf.register(name="noop", description="No operation")
@@ -36,6 +36,6 @@ class TestConsoleUIInput:
         self, import_string: str, app: FastAgency, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         monkeypatch.setattr("builtins.input", lambda *args, **kwargs: "whatsapp")
-        app.start(import_string)
+        app.start(import_string, single_run=True)
         assert isinstance(app, FastAgency)
         assert isinstance(app.ui, ConsoleUI)

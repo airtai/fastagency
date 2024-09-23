@@ -45,6 +45,7 @@ def _run_app(
     workflow: Optional[str],
     initial_message: Optional[str],
     dev_mode: bool = False,
+    single_run: bool = False,
 ) -> None:
     try:
         import_string, fa_app = get_import_string(path=path, app_name=app)
@@ -54,6 +55,7 @@ def _run_app(
                 import_string=import_string,
                 name=workflow,
                 initial_message=initial_message,
+                single_run=single_run,
             )
     except FastAgencyCLIError as e:
         logger.error(str(e))
@@ -120,6 +122,12 @@ def run(
             help="The initial message to send to the workflow. If not provided, a default message will be sent.",
         ),
     ] = None,
+    single_run: Annotated[
+        bool,
+        typer.Option(
+            "--single-run", help="If set, only a single workflow will be executed."
+        ),
+    ] = False,
 ) -> None:
     dev_mode = False
     _run_app(
@@ -128,6 +136,7 @@ def run(
         workflow=workflow,
         initial_message=initial_message,
         dev_mode=dev_mode,
+        single_run=single_run,
     )
 
 
@@ -162,6 +171,12 @@ def dev(
             help="The initial message to send to the workflow. If not provided, a default message will be sent.",
         ),
     ] = None,
+    single_run: Annotated[
+        bool,
+        typer.Option(
+            "--single-run", help="If set, only a single workflow will be executed."
+        ),
+    ] = False,
 ) -> None:
     dev_mode = True
     _run_app(
@@ -170,6 +185,7 @@ def dev(
         workflow=workflow,
         initial_message=initial_message,
         dev_mode=dev_mode,
+        single_run=single_run,
     )
 
 
