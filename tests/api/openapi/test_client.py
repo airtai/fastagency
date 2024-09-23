@@ -94,3 +94,17 @@ class TestOpenAPI:
             str(e.value)
             == f"Following functions {set(['func_does_not_exists'])} are not valid functions"  # noqa: C405
         ), str(e.value)
+
+    @pytest.mark.parametrize(
+        ("input", "expected"),
+        [
+            ("/gif/{gifId}", "/gif/{gif_id}"),
+            ("/gif/{GifId}", "/gif/{gif_id}"),
+            ("/Gif/{GifId}", "/Gif/{gif_id}"),
+            ("/Gif/{userId}/gif/{GifId}", "/Gif/{user_id}/gif/{gif_id}"),
+        ],
+    )
+    def test_camel_to_snake_within_braces(self, input: str, expected: str) -> None:
+        result = OpenAPI._camel_to_snake_within_braces(input)
+
+        assert result == expected, result
