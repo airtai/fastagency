@@ -2,9 +2,9 @@ name: Tests
 
 on:
   push:
-    branches-ignore:
+    # branches-ignore:
       # - main
-      - dev
+      # - dev
   workflow_dispatch:
 
 env:
@@ -108,7 +108,7 @@ jobs:
       - test-without-llms
 
   test-macos-latest:
-    if: github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event.pull_request.draft == false
+    if: github.event.pull_request.draft == false
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -128,7 +128,7 @@ jobs:
         run: bash scripts/test.sh -m "not (db or nats or anthropic or azure_oai or openai or togetherai or llm)"
 
   test-windows-latest:
-    if: github.ref != 'refs/heads/dev' && github.ref != 'refs/heads/main' && github.event.pull_request.draft == false
+    if: github.event.pull_request.draft == false
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
