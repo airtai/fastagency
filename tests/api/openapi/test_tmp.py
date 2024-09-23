@@ -130,9 +130,29 @@ def test_register_for_llm(
                 return "Ellipsis"
             return super().default(o)
 
-    json.dumps(tools, cls=JSONEncoder)
+    expected_tools = [
+        {
+            "type": "function",
+            "function": {
+                "description": "Get GIF by Id.",
+                "name": "get_gif_by_id_gifs__gif_id__get",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "gif_id": {"type": "integer", "description": "gif_id"}
+                    },
+                    "required": [],
+                },
+            },
+        }
+    ]
+
+    assert json.dumps(tools, cls=JSONEncoder) == json.dumps(
+        expected_tools, cls=JSONEncoder
+    )
 
 
+@pytest.mark.azure_oai
 def test_end2end(
     gify_fastapi_openapi_url: str,
     azure_gpt35_turbo_16k_llm_config: dict[str, Any],
