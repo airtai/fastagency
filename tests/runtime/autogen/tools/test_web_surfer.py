@@ -53,7 +53,6 @@ class TestWebSurferTool:
             summarizer_llm_config=azure_gpt4o_llm_config,
         )
 
-        # what should I write now?!?
         web_surfer.register(
             caller=assistant_agent,
             executor=user_agent,
