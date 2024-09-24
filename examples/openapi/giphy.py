@@ -1,7 +1,7 @@
-import json
+# import json
 import os
-from pathlib import Path
 
+# from pathlib import Path
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
@@ -11,9 +11,9 @@ from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
-with Path("giphy_openapi.json").open() as f:
-    data = json.load(f)
-    openapi_json = json.dumps(data, indent=2)
+# with Path("giphy_openapi.json").open() as f:
+#     data = json.load(f)
+#     openapi_json = json.dumps(data, indent=2)
 
 llm_config = {
     "config_list": [
@@ -25,7 +25,9 @@ llm_config = {
     "temperature": 0.0,
 }
 
-giphy_api = OpenAPI.create(openapi_json=openapi_json)
+# giphy_api = OpenAPI.create(openapi_json=openapi_json)
+openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
+giphy_api = OpenAPI.create(openapi_url=openapi_url)
 giphy_api_key = os.getenv("GIPHY_API_KEY")
 # print(f"API Key is {giphy_api_key}")
 
