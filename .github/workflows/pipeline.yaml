@@ -112,10 +112,9 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
-      - name: Install Docker
-        run: |
-          brew install docker colima
-          colima start
+
+      - name: Set up Docker
+        uses: crazy-max/ghaction-setup-docker@v3
 
       - name: Verify Docker installation
         run: |
