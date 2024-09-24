@@ -346,7 +346,12 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             )
         ):
             h = title if title else message.type
-            h += f" from: {message.sender}, to:{message.recipient}"
+            if message.sender and message.recipient:
+                h += f": {message.sender} -> {message.recipient}"
+            elif message.sender:
+                h += f": to {message.sender}"
+            elif message.recipient:
+                h += f": from {message.recipient}"
             if message.auto_reply:
                 h += " (auto-reply)"
             me.markdown(h)

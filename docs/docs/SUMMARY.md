@@ -7,7 +7,7 @@ search:
 - [User guide](user-guide/index.md)
     - [Runtimes](user-guide/runtime/index.md)
         - [AutoGen](user-guide/runtime/autogen/index.md)
-            - Tools
+            - Agents
                 - [WebSurfer](user-guide/runtime/autogen/websurfer.md)
             - [User interaction](user-guide/runtime/autogen/interactions.md)
         - [CrewAI](user-guide/runtime/crewai/basics.md)
@@ -92,6 +92,9 @@ search:
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
                     - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
+                    - agent
+                        - websurfer
+                            - [WebSurferAgent](api/fastagency/runtime/autogen/agent/websurfer/WebSurferAgent.md)
                     - base
                         - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
                         - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
