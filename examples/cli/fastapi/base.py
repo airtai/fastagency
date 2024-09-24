@@ -1,4 +1,5 @@
-from typing import Any, Optional, Protocol, runtime_checkable
+from contextlib import contextmanager
+from typing import Any, Iterable, Optional, Protocol, runtime_checkable
 
 from fastagency.base import IOMessage
 
@@ -42,11 +43,19 @@ class FastAPIConversation:  # implements Conversable
 
 
 class Providable(Protocol):
+    @contextmanager
+    def start(self) -> Iterable[None]: ...
+
     async def get_workflows() -> list[dict[str, str]]: ...
     async def start_conversation(workflow_name: str, message: str) -> Conversable: ...
 
 
 class FastAPIProvider:  # implements Providable
+    @contextmanager
+    def start(self) -> Iterable[None]:
+        # start the provider
+        raise NotImplementedError
+     
     async def get_workflows() -> list[dict[str, str]]:
         # get workflows
         raise NotImplementedError
@@ -63,6 +72,11 @@ class FastAPIProvider:  # implements Providable
 
 
 class NatsProvider:  # implements Providable
+    @contextmanager
+    def start(self) -> Iterable[None]:
+        # start the provider
+        raise NotImplementedError
+     
     async def get_workflows() -> list[dict[str, str]]:
         # get workflows
         raise NotImplementedError

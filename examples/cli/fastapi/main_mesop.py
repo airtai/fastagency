@@ -1,11 +1,13 @@
 from fastagency import FastAgency
 from fastagency.ui.mesop import MesopUI
 
+from .base import FastAPIProvider
+
 provider = FastAPIProvider.Client(
-    url="http://localhost:8000",
+    url="http://localhost:8000", dicovery_path="/fastagency/discovery"
 )
 
 app = FastAgency(provider=provider, ui=MesopUI())
 
 # run with the following command:
-# fastagency ui run main_mesop:app
+# fastagency app run main_mesop:app

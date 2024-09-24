@@ -16,10 +16,13 @@ app = FastAPI(lifespan=provider.lifespan())
 
 
 # ... define routes
-@app.get("/workflow/create")
+@app.get("/fastagency/workflow/create")
 def create_workflow():
     return provider.start_workflow("simple_learning", "Hello, teacher!", "session_id")
 
+@app.get("/fastagency/discovery")
+def discovery():
+    ...
 
 # Run with the following command:
 # uvicorn main_fastapi:app --reload
