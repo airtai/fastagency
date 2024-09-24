@@ -92,9 +92,9 @@ search:
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
                     - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
-                    - agent
+                    - agents
                         - websurfer
-                            - [WebSurferAgent](api/fastagency/runtime/autogen/agent/websurfer/WebSurferAgent.md)
+                            - [WebSurferAgent](api/fastagency/runtime/autogen/agents/websurfer/WebSurferAgent.md)
                     - base
                         - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
                         - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
