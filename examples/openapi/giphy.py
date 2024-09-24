@@ -17,11 +17,24 @@ from fastagency.ui.console import ConsoleUI
 #     data = json.load(f)
 #     openapi_json = json.dumps(data, indent=2)
 
+# Use this for the Tutorial
+# llm_config = {
+#     "config_list": [
+#         {
+#             "model": "gpt-4o",
+#             "api_key": os.getenv("OPENAI_API_KEY"),
+#         }
+#     ],
+#     "temperature": 0.0,
+# }
 llm_config = {
     "config_list": [
         {
-            "model": "gpt-4o",
-            "api_key": os.getenv("OPENAI_API_KEY"),
+            "model": os.getenv("AZURE_GPT4_MODEL"),
+            "api_key": os.getenv("AZURE_OPENAI_API_KEY"),
+            "base_url": os.getenv("AZURE_API_ENDPOINT"),
+            "api_type": "azure",
+            "api_version": "2024-02-15-preview",
         }
     ],
     "temperature": 0.0,
@@ -31,12 +44,17 @@ llm_config = {
 openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
 giphy_api = OpenAPI.create(openapi_url=openapi_url)
 giphy_api_key = os.getenv("GIPHY_API_KEY")
-# print(f"API Key is {giphy_api_key}")
 
 giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
 
 
 wf = AutoGenWorkflows()
+
+TERMINATE_MESSAGE = "Write 'TERMINATE' to end the conversation."
+GIPHY_SYSTEM_MESSAGE = f"""You are an agent in charge to communicate with the user and Giphy API.
+Always use 'present_completed_task_or_ask_question' to interact with the user.
+Use 'bitly_gif_url' when presenting a gif to the user.
+{TERMINATE_MESSAGE}"""
 
 
 @wf.register(name="giphy_with_security", description="Giphy chat with security")
@@ -61,16 +79,14 @@ def giphy_workflow_with_security(
 
     user_proxy_agent = UserProxyAgent(
         name="User_Proxy_Agent",
-        system_message="""You are a websurfer agent.""",
+        system_message=f"You are a websurfer agent.{TERMINATE_MESSAGE}",
         llm_config=llm_config,
         human_input_mode="NEVER",
         is_termination_msg=is_termination_msg,
     )
     giphy_agent = ConversableAgent(
         name="Giphy_Agent",
-        system_message="""You are an agent in charge to communicate with the user and Giphy API.
-Always use 'present_completed_task_or_ask_question' to interact with the user.
-Use 'bitly_gif_url' when presenting a gif to the user.""",
+        system_message=GIPHY_SYSTEM_MESSAGE,
         llm_config=llm_config,
         human_input_mode="NEVER",
         is_termination_msg=is_termination_msg,
