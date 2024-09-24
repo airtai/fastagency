@@ -55,7 +55,7 @@ def simple_workflow(
         weatherman,
         message=initial_message,
         summary_method="reflection_with_llm",
-        max_turns=5,
+        max_turns=3,
     )
 
     return chat_result.summary
