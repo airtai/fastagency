@@ -113,13 +113,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
 
-      - name: Set up Docker
-        uses: crazy-max/ghaction-setup-docker@v3
-
-      - name: Verify Docker installation
-        run: |
-          docker --version
-          docker info
       - name: Prisma
         run: prisma generate
       - name: Test
