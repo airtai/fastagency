@@ -64,6 +64,7 @@ $ fastagency dev [OPTIONS] [PATH]
 * `--app TEXT`: The name of the variable that contains the **** app in the imported module or package. If not provided, it is detected automatically.
 * `-w, --workflow TEXT`: The name of the workflow to run. If not provided, the default workflow will be run.
 * `-i, --initial_message TEXT`: The initial message to send to the workflow. If not provided, a default message will be sent.
+* `--single-run`: If set, only a single workflow will be executed.
 * `--help`: Show this message and exit.
 
 ## `fastagency run`
@@ -107,6 +108,7 @@ $ fastagency run [OPTIONS] [PATH]
 * `--app TEXT`: The name of the variable that contains the **** app in the imported module or package. If not provided, it is detected automatically.
 * `-w, --workflow TEXT`: The name of the workflow to run. If not provided, the default workflow will be run.
 * `-i, --initial_message TEXT`: The initial message to send to the workflow. If not provided, a default message will be sent.
+* `--single-run`: If set, only a single workflow will be executed.
 * `--help`: Show this message and exit.
 
 ## `fastagency version`
