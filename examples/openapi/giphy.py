@@ -59,8 +59,8 @@ def giphy_workflow_with_security(
         except Exception as e:  # pragma: no cover
             return f"present_completed_task_or_ask_question() FAILED! {e}"
 
-    websurfer_agent = UserProxyAgent(
-        name="Websurfer_Agent",
+    user_proxy_agent = UserProxyAgent(
+        name="User_Proxy_Agent",
         system_message="""You are a websurfer agent.""",
         llm_config=llm_config,
         human_input_mode="NEVER",
@@ -69,7 +69,8 @@ def giphy_workflow_with_security(
     giphy_agent = ConversableAgent(
         name="Giphy_Agent",
         system_message="""You are an agent in charge to communicate with the user and Giphy API.
-Always use 'present_completed_task_or_ask_question' to interact with the user.""",
+Always use 'present_completed_task_or_ask_question' to interact with the user.
+Use 'bitly_gif_url' when presenting a gif to the user.""",
         llm_config=llm_config,
         human_input_mode="NEVER",
         is_termination_msg=is_termination_msg,
@@ -78,7 +79,7 @@ Always use 'present_completed_task_or_ask_question' to interact with the user.""
     register_function(
         present_completed_task_or_ask_question,
         caller=giphy_agent,
-        executor=websurfer_agent,
+        executor=user_proxy_agent,
         name="present_completed_task_or_ask_question",
         description="""Present completed task or ask question.
 If you are presenting a completed task, last message should be a question: 'Do yo need anything else?'""",
@@ -88,11 +89,11 @@ If you are presenting a completed task, last message should be a question: 'Do y
     wf.register_api(
         api=giphy_api,
         callers=giphy_agent,
-        executors=websurfer_agent,
+        executors=user_proxy_agent,
         functions=functions,
     )
 
-    chat_result = websurfer_agent.initiate_chat(
+    chat_result = user_proxy_agent.initiate_chat(
         giphy_agent,
         message=f"Users initial message: {initial_message}",
         summary_method="reflection_with_llm",
