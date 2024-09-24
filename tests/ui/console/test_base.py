@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from typing import Any
 
 import pytest
 
@@ -8,22 +9,33 @@ from fastagency.ui.console import ConsoleUI
 
 
 @pytest.fixture
-def app() -> Iterator[FastAgency]:
+def import_string() -> str:
+    return "main:app"
+
+
+@pytest.fixture
+def app(import_string: str) -> Iterator[FastAgency]:
     wf = AutoGenWorkflows()
     console = ConsoleUI()
     app = FastAgency(wf=wf, ui=console)
 
+    @wf.register(name="noop", description="No operation")
+    def noop(*args: Any, **kwargs: Any) -> str:
+        return "ok"
+
     try:
-        import_string = "main:app"
-        app.create(import_string)
-        app.start(import_string)
-        yield app
+        with app.create(import_string):
+            yield app
     finally:
         # todo: close the app
         pass
 
 
-# class TestConsoleUIInput:
-#     @pytest.skip("Not implemented")  # type: ignore[misc]
-#     def test_user_proxy_auto_reply(self, app: FastAgency) -> None:
-#         raise NotImplementedError
+class TestConsoleUIInput:
+    def test_app_create_n_start(
+        self, import_string: str, app: FastAgency, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr("builtins.input", lambda *args, **kwargs: "whatsapp")
+        app.start(import_string, single_run=True)
+        assert isinstance(app, FastAgency)
+        assert isinstance(app.ui, ConsoleUI)
