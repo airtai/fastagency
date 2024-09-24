@@ -19,7 +19,6 @@ llm_config = {
 
 wf = AutoGenWorkflows()
 
-
 @wf.register(name="simple_websurfer", description="WebSurfer chat")  # type: ignore[type-var]
 def websurfer_workflow(
     wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
