@@ -1,13 +1,15 @@
 # import json
 import os
+from typing import Annotated, Any, Optional
 
 # from pathlib import Path
-from autogen import UserProxyAgent
+from autogen import UserProxyAgent, register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency, Workflows
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
+from fastagency.base import TextInput
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
@@ -41,32 +43,60 @@ wf = AutoGenWorkflows()
 def giphy_workflow_with_security(
     wf: Workflows, ui: UI, initial_message: str, session_id: str
 ) -> str:
-    user_agent = UserProxyAgent(
-        name="User_Agent",
-        system_message="You are a user agent",
+    def is_termination_msg(msg: dict[str, Any]) -> bool:
+        return msg["content"] is not None and "TERMINATE" in msg["content"]
+
+    def present_completed_task_or_ask_question(
+        message: Annotated[str, "Message for examiner"],
+    ) -> Optional[str]:
+        try:
+            msg = TextInput(
+                sender="giphy_agent",
+                recipient="giphy_agent",
+                prompt=message,
+            )
+            return ui.process_message(msg)
+        except Exception as e:  # pragma: no cover
+            return f"present_completed_task_or_ask_question() FAILED! {e}"
+
+    websurfer_agent = UserProxyAgent(
+        name="Websurfer_Agent",
+        system_message="""You are a websurfer agent.""",
         llm_config=llm_config,
         human_input_mode="NEVER",
+        is_termination_msg=is_termination_msg,
     )
     giphy_agent = ConversableAgent(
         name="Giphy_Agent",
-        system_message="You are a giphy API agent",
+        system_message="""You are an agent in charge to communicate with the user and Giphy API.
+Always use 'present_completed_task_or_ask_question' to interact with the user.""",
         llm_config=llm_config,
         human_input_mode="NEVER",
+        is_termination_msg=is_termination_msg,
+    )
+
+    register_function(
+        present_completed_task_or_ask_question,
+        caller=giphy_agent,
+        executor=websurfer_agent,
+        name="present_completed_task_or_ask_question",
+        description="""Present completed task or ask question.
+If you are presenting a completed task, last message should be a question: 'Do yo need anything else?'""",
     )
 
     functions = ["random_gif", "search_gifs", "trending_gifs"]
     wf.register_api(
         api=giphy_api,
         callers=giphy_agent,
-        executors=user_agent,
+        executors=websurfer_agent,
         functions=functions,
     )
 
-    chat_result = user_agent.initiate_chat(
+    chat_result = websurfer_agent.initiate_chat(
         giphy_agent,
-        message=initial_message,
+        message=f"Users initial message: {initial_message}",
         summary_method="reflection_with_llm",
-        max_turns=3,
+        max_turns=10,
     )
 
     return chat_result.summary  # type: ignore[no-any-return]
