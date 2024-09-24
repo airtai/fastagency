@@ -1,11 +1,10 @@
 import os
 
 from autogen import UserProxyAgent
-from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
 from fastagency.runtime.autogen import AutoGenWorkflows
-from fastagency.runtime.autogen.tools import WebSurferTool
+from fastagency.runtime.autogen.agent.websurfer import WebSurferAgent
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -31,26 +30,16 @@ def websurfer_workflow(
         llm_config=llm_config,
         human_input_mode="NEVER",
     )
-    assistant_agent = ConversableAgent(
+    web_surfer = WebSurferAgent(
         name="Assistant_Agent",
-        system_message="You are a useful assistant",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-    )
-
-    web_surfer = WebSurferTool(
-        name_prefix="Web_Surfer",
         llm_config=llm_config,
         summarizer_llm_config=llm_config,
-    )
-
-    web_surfer.register(
-        caller=assistant_agent,
+        human_input_mode="NEVER",
         executor=user_agent,
     )
 
     chat_result = user_agent.initiate_chat(
-        assistant_agent,
+        web_surfer,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=3,
