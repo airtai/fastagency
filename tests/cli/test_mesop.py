@@ -1,10 +1,21 @@
-import os
+import sys
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+import pytest
+from typer.testing import CliRunner
+
+from fastagency.cli import app
+
+runner = CliRunner()
+
+mesop_test = """import os
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency
+from fastagency import UI, FastAgency, Workflows
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
 
 llm_config = {
     "config_list": [
@@ -16,13 +27,11 @@ llm_config = {
     "temperature": 0.0,
 }
 
-
 wf = AutoGenWorkflows()
-
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
+    wf: Workflows, ui: UI, initial_message: str, session_id: str
 ) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",
@@ -44,5 +53,22 @@ def simple_workflow(
 
     return chat_result.summary
 
+app = FastAgency(wf=wf, ui=MesopUI())
+"""
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+
+@pytest.mark.skipif(
+    sys.version_info >= (3, 10), reason="Python 3.10 or higher is required"
+)
+def test_app_failure_for_python39() -> None:
+    """Test that the app fails when Python 3.9 is used."""
+    with TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir) / "main_mesop.py"
+        with tmp_path.open("w") as f:
+            f.write(mesop_test)
+
+        result = runner.invoke(app, ["run", str(tmp_path)])
+
+        assert result.exit_code == 1
+
+        assert "Error: Mesop requires Python 3.10 or higher" in result.output

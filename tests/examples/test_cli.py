@@ -21,9 +21,8 @@ INPUT_MESSAGE = "Who is Leonardo da Vinci?"
 def test_cli(monkeypatch: pytest.MonkeyPatch, input_message: str, path: str) -> None:
     monkeypatch.setattr("builtins.input", InputMock([input_message] + [""] * 10))
 
-    result = runner.invoke(app, ["run", path], color=True)
+    result = runner.invoke(app, ["run", path, "--single-run"], color=True)
 
-    print(result.stdout)  # noqa: T201
-
+    assert result.exit_code == 0
     assert INPUT_MESSAGE in result.stdout
     assert "workflow_completed" in result.stdout

@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict
+from typing import Any
 
 
 def openai_llm_config(model: str) -> dict[str, Any]:
@@ -19,6 +19,7 @@ def openai_llm_config(model: str) -> dict[str, Any]:
     }
 
     return llm_config
+
 
 openai_gpt4o_llm_config = openai_llm_config("gpt-4o")
 
