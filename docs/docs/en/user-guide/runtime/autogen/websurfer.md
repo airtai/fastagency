@@ -38,11 +38,11 @@ The example starts by importing the necessary modules from **AutoGen** and **Fas
     To create a new web surfing agent, simply import `WebSurferAgent`, which comes with built-in web surfing capabilities, and use it as needed.
 
 === "Enhancing an existing agent"
-    ```python hl_lines="7"
-    {!> docs_src/user_guide/runtime/autogen/websurfer.py [ln:1-9] !}
+    ```python hl_lines="4 8"
+    {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:1-9] !}
     ```
 
-    For Mesop applications, import `MesopUI` to integrate with the Mesop web interface.
+    To enhance existing agents with web surfing capability, import `WebSurferTool` from FastAgency and `ConversableAgent` from AutoGen.
 
 
 #### 2. **Configure the Language Model (LLM)**
@@ -62,42 +62,52 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     - **WebSurferAgent**: This agent functions as a web surfer, with built-in capability to browse the web and fetch real-time data as required.
 
-
-    The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtime/autogen/AutoGenWorkflows.md)**.
-
     ```python hl_lines="18"
     {!> docs_src/user_guide/runtime/autogen/websurfer.py [ln:20-38] !}
     ```
 
     When initiating the `WebSurferAgent`, the executor parameter must be provided. This can be either a single instance of `ConversableAgent` or a `list of ConversableAgent` instances.
 
-    The `WebSurferAgent` relies on the executor agent(s) to execute the web surfing tasks. In this example, the `web_surfer` agent will call the `user_proxy` agent with the necessary instructions when web surfing is required, and the `user_proxy` will execute those instructions.
+    The `WebSurferAgent` relies on the executor agent(s) to execute the web surfing tasks. In this example, the `web_surfer` agent will call the `user_agent` agent with the necessary instructions when web surfing is required, and the `user_agent` will execute those instructions.
 
 === "Enhancing an existing agent"
-    ```python hl_lines="7"
-    {!> docs_src/user_guide/runtime/autogen/websurfer.py [ln:1-9] !}
-    ```
 
-    In this step, we create two agents:
+    In this step, we create two agents and a web surfer tool:
 
     - **UserProxyAgent**: This agent simulates the user interacting with the system.
 
-    - **ConversableAgent**: This agent serves as the websurfer and has access to the `WebSurferTool`, using it whenever real-time web data is needed.
+    - **ConversableAgent**: This is the conversable agent to which we will be adding web surfing capabilities.
 
-    - **WebSurferTool**: An instance of the `WebSurferTool` is registered with the caller as `ConversableAgent` and with the executor as `UserProxyAgent`. This setup allows the `ConversableAgent` to use the `WebSurferTool`, giving it the ability to perform real-time web interactions.
-
-    The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtime/autogen/AutoGenWorkflows/)**.
+    - **WebSurferTool**: The tool that gives the ConversableAgent the ability to browse the web after it has been registered.
 
     ```python
-    {!> docs_src/user_guide/runtime/autogen/websurfer.py [ln:21-51] !}
+    {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:20-45] !}
     ```
+
+    Now, we need to register the WebSurferAgent with a caller and executor. This setup allows the caller to use the WebSurferAgent for performing real-time web interactions.
+
+    ```python  hl_lines="2 3"
+    {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:46-50] !}
+    ```
+
+    The `executor` can be either a single instance of `ConversableAgent` or a `list of ConversableAgent` instances.
+
+    The `caller` relies on the executor agent(s) to execute the web surfing tasks. In this example, the `assistant_agent` agent will call the `user_agent` agent with the necessary instructions when web surfing is required, and the `user_agent` will execute those instructions.
 
 #### 4. **Enable Agent Interaction and Chat**
 Here, the user agent starts a conversation with the websurfer agent, which performs a web search and returns summarized information. The conversation is then summarized using a method provided by the LLM.
 
-```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:40-48] !}
-```
+=== "Using WebSurferAgent"
+
+    ```python
+    {! docs_src/user_guide/runtime/autogen/websurfer.py [ln:39-48] !}
+    ```
+
+=== "Enhancing an existing agent"
+
+    ```python
+    {! docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:51-60] !}
+    ```
 
 #### 5. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the console interface.
@@ -109,18 +119,34 @@ Finally, we create the FastAgency application and launch it using the console in
 ### Complete Application Code
 
 <details>
-<summary>websurfer.py</summary>
+<summary>websurfer_agent.py</summary>
 ```python
 {! docs_src/user_guide/runtime/autogen/websurfer.py!}
+```
+</details>
+
+<details>
+<summary>websurfer_tool.py</summary>
+```python
+{! docs_src/user_guide/runtime/autogen/websurfer_tool.py!}
 ```
 </details>
 
 
 ### Running the Application
 
-```bash
-fastagency run websurfer.py
-```
+
+=== "Using WebSurferAgent"
+
+    ```bash
+    fastagency run websurfer_agent.py
+    ```
+
+=== "Enhancing an existing agent"
+
+    ```bash
+    fastagency run websurfer_tool.py
+    ```
 
 Ensure you have set your OpenAI API key in the environment. The command will launch a console interface where users can input their requests and interact with the websurfer agent.
 
@@ -128,31 +154,62 @@ Ensure you have set your OpenAI API key in the environment. The command will lau
 
 Once you run it, FastAgency automatically detects the appropriate app to execute and runs it. The application will then prompt you with: "Please enter an initial message:".
 
-```console
- ╭─ Python module file ─╮
- │                      │
- │  🐍 websurfer.py     │
- │                      │
- ╰──────────────────────╯
+=== "Using WebSurferAgent"
 
- [INFO] Importing autogen.base.py
+    ```console
+    ╭── Python module file ───╮
+    │                         │
+    │  🐍 websurfer_agent.py  │
+    │                         │
+    ╰─────────────────────────╯
 
- ╭─ Importable FastAgency app ─╮
- │                             │
- │  from websurfer import app  │
- │                             │
- ╰─────────────────────────────╯
+    [INFO] Importing autogen.base.py
 
-╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
-│                                                                              │
-│ Starting a new workflow 'simple_websurfer' with the following                │
-│ description:                                                                 │
-│                                                                              │
-│ WebSurfer chat                                                               │
-│                                                                              │
-│ Please enter an initial message:                                             │
-╰──────────────────────────────────────────────────────────────────────────────╯
-```
+    ╭──── Importable FastAgency app ────╮
+    │                                   │
+    │  from websurfer_agent import app  │
+    │                                   │
+    ╰───────────────────────────────────╯
+
+    ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+    │                                                                              │
+    │ Starting a new workflow 'simple_websurfer' with the following                │
+    │ description:                                                                 │
+    │                                                                              │
+    │ WebSurfer chat                                                               │
+    │                                                                              │
+    │ Please enter an initial message:                                             │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+    ```
+
+=== "Enhancing an existing agent"
+
+    ```console
+    ╭── Python module file ──╮
+    │                        │
+    │  🐍 websurfer_tool.py  │
+    │                        │
+    ╰────────────────────────╯
+
+    [INFO] Importing autogen.base.py
+
+    ╭─── Importable FastAgency app ────╮
+    │                                  │
+    │  from websurfer_tool import app  │
+    │                                  │
+    ╰──────────────────────────────────╯
+
+    ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+    │                                                                              │
+    │ Starting a new workflow 'simple_websurfer' with the following                │
+    │ description:                                                                 │
+    │                                                                              │
+    │ WebSurfer chat                                                               │
+    │                                                                              │
+    │ Please enter an initial message:                                             │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+    ```
+
 
 In the prompt, type **Search for information about Microsoft AutoGen and summarize the results** and press Enter.
 
