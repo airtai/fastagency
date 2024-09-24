@@ -1,6 +1,8 @@
-# WebSurfer agent
+# WebSurfer Tool
 
-Some text about WebSurfer
+The `WebSurferTool` from **FastAgency** lets developers create agents that search, navigate, and gather real-time web data. It supports workflows with live browsing, automatic data retrieval, and tasks requiring current web information, making it easy to add web capabilities to your AI agents.
+
+Let’s see how the `WebSurferTool` works with an example: “Search for information about Microsoft AutoGen and summarize the results,” highlighting its ability to browse and collect data in real time.
 
 ## Installation
 
@@ -12,7 +14,7 @@ pip install "fastagency[autogen]"
 
 This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
 
-## Example: Question answering or something
+## Example: Search for information about Microsoft AutoGen and summarize the results
 
 ### Step-by-Step Breakdown
 
@@ -24,44 +26,39 @@ The example starts by importing the necessary modules from **AutoGen** and **Fas
 ```
 
 #### 2. **Configure the Language Model (LLM)**
-Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
+Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and websurfer agents can interact effectively.
 
 ```python
 {! docs_src/user_guide/runtime/autogen/websurfer.py [ln:11-19] !}
 ```
 
-#### 3. **Set Up the Weather API**
-We define the OpenAPI specification URL for the weather service. This API will later be used by the weather agent to fetch real-time weather data.
-
-```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:21-23] !}
-```
-
-#### 4. **Define the Workflow and Agents**
+#### 3. **Define the Workflow and Agents**
 In this step, we create two agents:
 
 - **UserProxyAgent**: This agent simulates the user interacting with the system.
 
-- **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
+- **ConversableAgent**: This agent serves as the websurfer and has access to the `WebSurferTool`, using it whenever real-time web data is needed.
+
+- **WebSurferTool**: An instance of the `WebSurferTool` is registered with the caller as `ConversableAgent` and with the executor as `UserProxyAgent`. This setup allows the `ConversableAgent` to use the `WebSurferTool`, giving it the ability to perform real-time web interactions.
 
 The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtime/autogen/AutoGenWorkflows/)**.
 
 ```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:28-43] !}
+{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:21-51] !}
 ```
 
-#### 6. **Enable Agent Interaction and Chat**
-Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
+#### 4. **Enable Agent Interaction and Chat**
+Here, the user agent starts a conversation with the websurfer agent, which performs a web search and returns summarized information. The conversation is then summarized using a method provided by the LLM.
 
 ```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:60-67] !}
+{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:52-59] !}
 ```
 
-#### 7. **Create and Run the Application**
+#### 5. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:70] !}
+{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:62] !}
 ```
 
 ## Complete Application Code
@@ -80,7 +77,7 @@ Finally, we create the FastAgency application and launch it using the console in
 fastagency run websurfer.py
 ```
 
-Ensure you have set your OpenAI API key in the environment and that the weather API URL is accessible. The command will launch a console interface where users can input their requests and interact with the weather agent.
+Ensure you have set your OpenAI API key in the environment. The command will launch a console interface where users can input their requests and interact with the websurfer agent.
 
 ---
 

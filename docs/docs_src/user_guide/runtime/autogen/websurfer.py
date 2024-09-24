@@ -21,8 +21,8 @@ llm_config = {
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
-def weather_workflow(
+@wf.register(name="simple_websurfer", description="WebSurfer chat")  # type: ignore[type-var]
+def websurfer_workflow(
     wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
 ) -> str:
     user_agent = UserProxyAgent(
@@ -44,7 +44,6 @@ def weather_workflow(
         summarizer_llm_config=llm_config,
     )
 
-    # what should I write now?!?
     web_surfer.register(
         caller=assistant_agent,
         executor=user_agent,
