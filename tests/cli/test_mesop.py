@@ -71,4 +71,4 @@ def test_app_failure_for_python39() -> None:
 
         assert result.exit_code == 1
 
-        assert "Error: Mesop requires Python 3.10 or higher" in result.output
+        assert "Mesop requires Python 3.10 or higher" in result.output

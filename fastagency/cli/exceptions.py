@@ -1,2 +1,0 @@
-class FastAgencyCLIError(Exception):
-    pass

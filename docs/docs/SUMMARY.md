@@ -82,10 +82,12 @@ search:
                     - [get_import_string](api/fastagency/cli/discover/get_import_string.md)
                     - [get_module_data_from_path](api/fastagency/cli/discover/get_module_data_from_path.md)
                     - [import_from_string](api/fastagency/cli/discover/import_from_string.md)
-                - exceptions
-                    - [FastAgencyCLIError](api/fastagency/cli/exceptions/FastAgencyCLIError.md)
                 - logging
                     - [setup_logging](api/fastagency/cli/logging/setup_logging.md)
+            - exceptions
+                - [FastAgencyCLIError](api/fastagency/exceptions/FastAgencyCLIError.md)
+                - [FastAgencyCLIPythonVersionError](api/fastagency/exceptions/FastAgencyCLIPythonVersionError.md)
+                - [FastAgencyError](api/fastagency/exceptions/FastAgencyError.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
             - runtime

@@ -1,4 +1,3 @@
-import sys
 import threading
 from collections.abc import Generator, Iterator
 from contextlib import contextmanager
@@ -8,12 +7,6 @@ from queue import Queue
 from tempfile import TemporaryDirectory
 from typing import ClassVar, Optional
 from uuid import uuid4
-
-import typer
-
-if sys.version_info < (3, 10):
-    typer.echo("Error: Mesop requires Python 3.10 or higher", err=True)
-    raise typer.Exit(code=1)
 
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
 from mesop.bin.bin import main as mesop_main
@@ -86,8 +79,8 @@ class MesopUI(IOMessageVisitor):  # UI
     @contextmanager
     def create(self, app: Runnable, import_string: str) -> Iterator[None]:
         logger.info(f"Creating MesopUI with import string: {import_string}")
-        self._app = app
-        self._import_string = import_string
+        MesopUI._app = app
+        MesopUI._import_string = import_string
 
         start_script = """import fastagency.ui.mesop.main"""
 
@@ -290,26 +283,3 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
     thread.start()
 
     return subconversation
-
-
-# ui.process_message(
-#     IOMessage.create(
-#             sender="tester",
-#             recipient="workflow",
-#             type="text_input",
-#             prompt="What is your fvourite fruit",
-#             suggestions=["Pomegratten", "I do not eat fruit"],
-#         )
-# )
-
-# ui.process_message(
-#     IOMessage.create(
-#             sender="tester",
-#             recipient="workflow",
-#             type="multiple_choice",
-#             prompt="Concentrate and choose correct answer. When are you going to write unit tests?",
-#             choices=["Today", "Tomorrow", "Never", "I already have unit tests"],
-#             default="Tomorrow",
-#             single=False,
-#         )
-# )
