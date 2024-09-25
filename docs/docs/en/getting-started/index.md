@@ -163,19 +163,23 @@ Next, define your FastAgency application. This ties together your workflow and t
 
 ## Complete Application Code
 
-<details>
-<summary>Console</summary>
-```python
-{! docs_src/getting_started/main_console.py!}
-```
-</details>
+=== "Console"
 
-<details>
-<summary>Mesop</summary>
-```python
-{! docs_src/getting_started/main_mesop.py!}
-```
-</details>
+    <details>
+        <summary>Console</summary>
+        ```python
+        {!> docs_src/getting_started/main_console.py !}
+        ```
+    </details>
+
+=== "Mesop"
+
+    <details>
+        <summary>Mesop</summary>
+        ```python
+        {!> docs_src/getting_started/main_mesop.py !}
+        ```
+    </details>
 
 ### Run Application
 
