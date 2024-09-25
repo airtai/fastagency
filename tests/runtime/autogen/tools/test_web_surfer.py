@@ -31,6 +31,7 @@ class TestWebSurferTool:
                 summarizer_llm_config={},
             )
 
+    @pytest.mark.llm
     def test_web_surfer_chat_register(
         self, azure_gpt4o_llm_config: dict[str, Any]
     ) -> None:

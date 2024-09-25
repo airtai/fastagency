@@ -109,13 +109,9 @@ jobs:
           cache: "pip"
           cache-dependency-path: pyproject.toml
 
-      - name: Set AUTOGEN_USE_DOCKER
-        run: echo "AUTOGEN_USE_DOCKER=False" >> $GITHUB_ENV  # Set environment variable
-
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
-
       - name: Prisma
         run: prisma generate
       - name: Test
