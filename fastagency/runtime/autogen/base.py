@@ -2,7 +2,15 @@ import json
 import re
 from collections.abc import Iterable, Mapping
 from dataclasses import asdict, dataclass
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Optional,
+    Protocol,
+    Union,
+    runtime_checkable,
+)
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
@@ -296,3 +304,13 @@ class AutoGenWorkflows(Workflows):
 
         for executor in executors:
             api._register_for_execution(executor, functions=functions)
+
+
+@runtime_checkable
+class Toolable(Protocol):
+    def register(
+        self,
+        *,
+        caller: ConversableAgent,
+        executor: Union[ConversableAgent, list[ConversableAgent]],
+    ) -> None: ...
