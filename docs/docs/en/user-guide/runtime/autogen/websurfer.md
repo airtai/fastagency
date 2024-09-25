@@ -118,19 +118,23 @@ Finally, we create the FastAgency application and launch it using the console in
 
 ### Complete Application Code
 
-<details>
-<summary>websurfer_agent.py</summary>
-```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py!}
-```
-</details>
+=== "Using WebSurferAgent"
 
-<details>
-<summary>websurfer_tool.py</summary>
-```python
-{! docs_src/user_guide/runtime/autogen/websurfer_tool.py!}
-```
-</details>
+    <details>
+        <summary>websurfer_agent.py</summary>
+        ```python
+        {!> docs_src/user_guide/runtime/autogen/websurfer.py !}
+        ```
+    </details>
+
+=== "Enhancing an existing agent"
+
+    <details>
+        <summary>websurfer_tool.py</summary>
+        ```python
+        {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py !}
+        ```
+    </details>
 
 
 ### Running the Application
