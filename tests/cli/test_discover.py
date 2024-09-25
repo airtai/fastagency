@@ -21,7 +21,7 @@ from fastagency.cli.discover import (
     get_module_data_from_path,
     import_from_string,
 )
-from fastagency.cli.exceptions import FastAgencyCLIError
+from fastagency.exceptions import FastAgencyCLIError
 
 
 @contextmanager
