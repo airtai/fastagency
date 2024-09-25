@@ -343,6 +343,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/IOStreamAdapter/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/agents/websurfer/WebSurferAgent/</loc>
+        <lastmod>2024-09-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/agents/websurfer/WebSurferAgent/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/AutoGenWorkflows/</loc>
         <lastmod>2024-09-25</lastmod>
         <changefreq>daily</changefreq>
@@ -359,6 +365,30 @@
         <lastmod>2024-09-25</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/IOStreamAdapter/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/Toolable/</loc>
+        <lastmod>2024-09-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/Toolable/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/WebSurferTool/</loc>
+        <lastmod>2024-09-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/WebSurferTool/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferAnswer/</loc>
+        <lastmod>2024-09-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferAnswer/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferTool/</loc>
+        <lastmod>2024-09-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferTool/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/studio/app/ChatRequest/</loc>
@@ -761,18 +791,6 @@
         <lastmod>2024-09-25</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/models/agents/web_surfer/WebSurferToolbox/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferAnswer/</loc>
-        <lastmod>2024-09-25</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferAnswer/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferChat/</loc>
-        <lastmod>2024-09-25</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/studio/models/agents/web_surfer_autogen/WebSurferChat/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/studio/models/base/Field/</loc>
@@ -1223,6 +1241,12 @@
         <lastmod>2024-09-25</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtime/autogen/interactions/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/user-guide/runtime/autogen/websurfer/</loc>
+        <lastmod>2024-09-25</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtime/autogen/websurfer/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/user-guide/runtime/crewai/basics/</loc>
