@@ -1,13 +1,14 @@
 import os
-from typing import Annotated, Any, Optional
+from typing import Annotated, Any, Optional, Union
 
 from asyncer import asyncify
 from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
+from autogen.agentchat import ConversableAgent as AutoGenConversableAgent
 from autogen.agentchat.chat import ChatResult
 from autogen.agentchat.contrib.web_surfer import WebSurferAgent as AutoGenWebSurferAgent
 from pydantic import BaseModel, Field, HttpUrl
 
-__all__ = ["WebSurferAnswer", "WebSurferChat"]
+__all__ = ["WebSurferAnswer", "WebSurferTool"]
 
 
 class WebSurferAnswer(BaseModel):
@@ -45,18 +46,19 @@ class WebSurferAnswer(BaseModel):
         )
 
 
-class WebSurferChat:
+class WebSurferTool:  # implements Toolable
     def __init__(
         self,
+        *,
         name_prefix: str,
         llm_config: dict[str, Any],
         summarizer_llm_config: dict[str, Any],
-        viewport_size: int,
-        bing_api_key: Optional[str],
+        viewport_size: int = 4096,
+        bing_api_key: Optional[str] = None,
         max_consecutive_auto_reply: int = 30,
         max_links_to_click: int = 10,
-        websurfer_kwargs: dict[str, Any] = {},  # noqa: B006
-        assistant_kwargs: dict[str, Any] = {},  # noqa: B006
+        websurfer_kwargs: Optional[dict[str, Any]] = None,
+        assistant_kwargs: Optional[dict[str, Any]] = None,
     ):
         """Create a new WebSurferChat instance.
 
@@ -64,14 +66,18 @@ class WebSurferChat:
             name_prefix (str): The name prefix of the inner AutoGen agents
             llm_config (Dict[str, Any]): The LLM configuration
             summarizer_llm_config (Dict[str, Any]): The summarizer LLM configuration
-            viewport_size (int): The viewport size of the browser
-            bing_api_key (Optional[str]): The Bing API key for the browser
+            viewport_size (int, optional): The viewport size. Defaults to 4096.
+            bing_api_key (Optional[str], optional): The Bing API key. Defaults to None.
             max_consecutive_auto_reply (int, optional): The maximum consecutive auto reply. Defaults to 30.
             max_links_to_click (int, optional): The maximum links to click. Defaults to 10.
-            websurfer_kwargs (Dict[str, Any], optional): The keyword arguments for the websurfer. Defaults to {}.
-            assistant_kwargs (Dict[str, Any], optional): The keyword arguments for the assistant. Defaults to {}.
-
+            websurfer_kwargs (Optional[Dict[str, Any]], optional): The WebSurfer kwargs. Defaults to None.
+            assistant_kwargs (Optional[Dict[str, Any]], optional): The Assistant kwargs. Defaults to None.
         """
+        if websurfer_kwargs is None:
+            websurfer_kwargs = {}
+        if assistant_kwargs is None:
+            assistant_kwargs = {}
+
         self.name_prefix = name_prefix
         self.llm_config = llm_config
         self.summarizer_llm_config = summarizer_llm_config
@@ -198,7 +204,21 @@ class WebSurferChat:
 
         return retval
 
-    async def create_new_task(self, task: str) -> str:
+    def create_new_task(
+        self, task: Annotated[str, "a new task for websurfer to perform"]
+    ) -> str:
+        self.task = task
+        try:
+            answer = self._chat_with_websurfer(
+                message=self.initial_message,
+                clear_history=True,
+            )
+        except Exception as e:
+            return self._get_error_from_exception(task, e)
+
+        return self.create_final_reply(task, answer)
+
+    async def a_create_new_task(self, task: str) -> str:
         self.task = task
         try:
             answer = await asyncify(self._chat_with_websurfer)(
@@ -210,9 +230,22 @@ class WebSurferChat:
 
         return self.create_final_reply(task, answer)
 
-    async def continue_task_with_additional_instructions(self, message: str) -> str:
+    async def a_continue_task_with_additional_instructions(self, message: str) -> str:
         try:
             answer = await asyncify(self._chat_with_websurfer)(
+                message=message,
+                clear_history=False,
+            )
+        except Exception as e:
+            return self._get_error_from_exception(message, e)
+
+        return self.create_final_reply(message, answer)
+
+    def continue_task_with_additional_instructions(
+        self, message: Annotated[str, "a followup message to the existing task"]
+    ) -> str:
+        try:
+            answer = self._chat_with_websurfer(
                 message=message,
                 clear_history=False,
             )
@@ -325,3 +358,39 @@ OFTEN MISTAKES:
 - NEVER REPEAT the same instructions to web_surfer! If he does not understand the first time, MOVE ON to the next link!
 - NEVER enclose JSON-encoded answer in any other text or formatting including '```json' ... '```' or similar!
 """
+
+    def register(
+        self,
+        *,
+        caller: AutoGenConversableAgent,
+        executor: Union[AutoGenConversableAgent, list[AutoGenConversableAgent]],
+    ) -> None:
+        @caller.register_for_llm(  # type: ignore[misc]
+            name="create_new_websurfing_task",
+            description="Creates a new task for a websurfer that can include searching or browsing the internet.",
+        )
+        def create_new_task(
+            task: Annotated[str, "a new task for websurfer to perform"],
+        ) -> str:
+            return self.create_new_task(task)
+
+        @caller.register_for_llm(  # type: ignore[misc]
+            name="continue_websurfing_task_with_additional_instructions",
+            description="Continue an existing task for a websurfer with additional instructions.",
+        )
+        def continue_task_with_additional_instructions(
+            message: Annotated[
+                str,
+                "Additional instructions for the task after receiving the initial answer",
+            ],
+        ) -> str:
+            return self.continue_task_with_additional_instructions(message)
+
+        executors = executor if isinstance(executor, list) else [executor]
+        for executor in executors:
+            executor.register_for_execution(name="create_new_websurfing_task")(
+                create_new_task
+            )
+            executor.register_for_execution(
+                name="continue_websurfing_task_with_additional_instructions"
+            )(continue_task_with_additional_instructions)

@@ -5,8 +5,8 @@ from typing import Annotated, Optional
 import typer
 
 from .. import __version__
+from ..exceptions import FastAgencyCLIError, FastAgencyCLIPythonVersionError
 from .discover import get_import_string
-from .exceptions import FastAgencyCLIError
 from .logging import setup_logging
 
 app = typer.Typer(rich_markup_mode="rich")
@@ -57,8 +57,13 @@ def _run_app(
                 initial_message=initial_message,
                 single_run=single_run,
             )
+    except FastAgencyCLIPythonVersionError as e:
+        msg = e.args[0]
+        typer.echo(msg, err=True)
+        raise typer.Exit(code=1)  # noqa: B904
     except FastAgencyCLIError as e:
-        logger.error(str(e))
+        msg = e.args[0]
+        typer.echo(msg, err=True)
         raise typer.Exit(code=1) from None
 
 

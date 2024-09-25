@@ -12,7 +12,7 @@ from rich.syntax import Syntax
 from rich.tree import Tree
 
 from .. import FastAgency
-from .exceptions import FastAgencyCLIError
+from ..exceptions import FastAgencyCLIError
 
 logger = getLogger(__name__)
 

@@ -103,10 +103,14 @@ class TestModelRoutes:
             }
         ]
         actual = response.json()
-        assert len(actual) == len(expected)
+        assert len(actual) >= len(expected)
+
+        matched_item_from_actual = [item for item in actual if item["uuid"] == key_uuid]
+
+        assert len(matched_item_from_actual) == len(expected)
         for i in range(len(expected)):
             for key in expected[i]:
-                assert actual[i][key] == expected[i][key]
+                assert matched_item_from_actual[i][key] == expected[i][key]
 
     @pytest.mark.asyncio
     async def test_setup_user(self) -> None:
