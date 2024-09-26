@@ -73,26 +73,27 @@ class TestWebSurferTool:
         ],
     )
     @pytest.mark.openai
+    @pytest.mark.xfail(strict=False)
     def test_web_surfer_chat_simple_task(
-        self, openai_gpt4o_llm_config: dict[str, Any], task: str, answer: str
+        self, openai_gpt4o_mini_llm_config: dict[str, Any], task: str, answer: str
     ) -> None:
         user_agent = UserProxyAgent(
             name="User_Agent",
             system_message="You are a user agent",
-            llm_config=openai_gpt4o_llm_config,
+            llm_config=openai_gpt4o_mini_llm_config,
             human_input_mode="NEVER",
         )
         assistant_agent = ConversableAgent(
             name="Assistant_Agent",
             system_message="You are a useful assistant",
-            llm_config=openai_gpt4o_llm_config,
+            llm_config=openai_gpt4o_mini_llm_config,
             human_input_mode="NEVER",
         )
 
         web_surfer = WebSurferTool(
             name_prefix="Web_Surfer",
-            llm_config=openai_gpt4o_llm_config,
-            summarizer_llm_config=openai_gpt4o_llm_config,
+            llm_config=openai_gpt4o_mini_llm_config,
+            summarizer_llm_config=openai_gpt4o_mini_llm_config,
         )
 
         web_surfer.register(

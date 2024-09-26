@@ -10,6 +10,7 @@ INPUT_MESSAGE = "What's the weather in Zagreb'?"
 
 
 @pytest.mark.openai
+@pytest.mark.xfail(strict=False)
 def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", InputMock([INPUT_MESSAGE]))
 

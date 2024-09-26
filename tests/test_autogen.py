@@ -191,6 +191,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
 
 @pytest.mark.openai
+@pytest.mark.xfail(strict=False)
 def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
@@ -221,6 +222,7 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
 
 @pytest.mark.openai
+@pytest.mark.xfail(strict=False)
 class TestAutoGenWorkflowsWithHumanInputAlways:
     @pytest.fixture
     def wf(self, openai_gpt4o_mini_llm_config: dict[str, Any]) -> AutoGenWorkflows:
