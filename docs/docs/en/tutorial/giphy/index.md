@@ -67,3 +67,42 @@ You can set the Giphy API key in your terminal as an environment variable:
     ```console
     set GIPHY_API_KEY="your_giphy_api_key"
     ```
+
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/tutorial/giphy/main.py !}
+```
+</details>
+
+
+## Code Walkthrough
+
+Now we will go over each key part of the code, explaining its function and purpose within the FastAgency framework. Understanding these components is crucial for building a dynamic interaction between the user, the **WebSurferAgent**, and the **GiphyAgent**.
+
+### Creating the Giphy API Instance
+The following lines shows hot to initializes the Giphy API by loading the OpenAPI specification from a URL. The OpenAPI spec defines how to interact with the Giphy API, including endpoints, parameters, and security details.
+
+Also, we configure the **Giphy API** with the __*GIPHY_API_KEY*__ using __*set_security_params*__ to authenticate our requests.
+```python
+{! docs_src/tutorial/giphy/main.py [ln:25-29] !}
+```
+
+### Registering the Workflow
+
+Here, we initialize a new workflow using AutoGenWorkflows() and register it under the name ***"giphy_with_security"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both GiphyAgent and WebSurferAgent.
+
+```python
+{! docs_src/tutorial/giphy/main.py [ln:43-49] !}
+```
+
+### Interaction with the user
+This is a core function used by the **GiphyAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
+
+```python
+{! docs_src/tutorial/giphy/main.py [ln:53-64] !}
+```
+
+### Creating the Giphy and WebSurfer Agents

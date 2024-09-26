@@ -43,7 +43,7 @@ Write 'TERMINATE' to end the conversation."""
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="giphy_with_security", description="Giphy chat with security")
+@wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
 def giphy_workflow_with_security(
     wf: Workflows, ui: UI, initial_message: str, session_id: str
 ) -> str:
