@@ -61,4 +61,4 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
-        exclude: package.lock.json|pnpm-lock.yaml
+        exclude: package.lock.json|pnpm-lock.yaml|docs/docs/en/tutorial/giphy/index.md
