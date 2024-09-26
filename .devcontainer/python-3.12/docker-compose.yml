@@ -8,8 +8,6 @@ services:
       - ../../:/workspaces/fastagency:cached
     command: sleep infinity
     environment:
-      - DATABASE_URL=postgresql://admin:password@fastagency-${USER}-postgres-py312:5432/fastagency
-      - PY_DATABASE_URL=postgresql://admin:password@fastagency-${USER}-postgres-py312:5432/pyfastagency
       - NATS_URL=nats://fastagency-${USER}-nats-py312:4222
     env_file:
       - ../devcontainer.env
@@ -26,17 +24,6 @@ services:
     command: [ "--config", "/etc/nats/server.conf" ]
     env_file:
       - ../devcontainer.env
-    networks:
-      - fastagency-network
-  postgres-fastagency:  # nosemgrep
-    image: postgres:latest
-    container_name: fastagency-${USER}-postgres-py312
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password  # pragma: allowlist secret
-      POSTGRES_DB: fastagency
-    # ports:
-    #   - "${PORT_PREFIX}5432:5432"
     networks:
       - fastagency-network
 
