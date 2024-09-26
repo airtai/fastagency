@@ -6,11 +6,3 @@ pip install -e ".[dev]"
 
 # install pre-commit hook if not installed already
 pre-commit install
-
-# run wasp prisma commands
-prisma db push --schema=wasp_schema.prisma
-prisma generate --schema=wasp_schema.prisma --generator=client
-
-# run python prisma commands
-prisma migrate deploy --schema=schema.prisma
-prisma generate --schema=schema.prisma --generator=pyclient

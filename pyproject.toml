@@ -65,6 +65,7 @@ autogen = [
     # ToDo: Autogen requires flaml but flaml 2.3.0 has issues with its optional dependencies
     "flaml==2.2.0,<2.3.0",
     "together==1.2.11",
+    "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
 ]
 
 openapi = [
@@ -73,19 +74,7 @@ openapi = [
     "requests",  # do not pin it
 ]
 
-studio = [
-    "faststream[nats]>=0.5.10,<0.6",
-    "pydantic>=2.3,<3",
-    "fastapi==0.114.2",
-    "prisma>=0.13.1,<0.15",
-    "asyncer==0.0.8",
-    "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
-    "httpx==0.27.2",
-    "python-weather==2.0.3",  # should be removed when we move API to another project
-]
-
 submodules = [
-    "fastagency[studio]",
     "fastagency[mesop]",
     "fastagency[autogen]",
     "fastagency[openapi]",
@@ -263,8 +252,6 @@ testpaths = [
 markers = [
     "slow",
     "all",
-    "db",
-    "nats",
     "anthropic",
     "azure_oai",
     "openai",
