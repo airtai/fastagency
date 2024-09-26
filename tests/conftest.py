@@ -27,6 +27,14 @@ from .helpers import tag
 F = TypeVar("F", bound=Callable[..., Any])
 
 
+# Modify pytest's default behavior to treat "no tests collected" (exit code 5) as a success (exit code 0),
+# useful for CI/CD pipelines to avoid failures when no tests match filters.
+# https://docs.pytest.org/en/stable/reference/exit-codes.html
+def pytest_sessionfinish(session: Any, exitstatus: int) -> None:
+    if exitstatus == 5:
+        pytest.exit("No tests were collected, treating as success.", 0)
+
+
 ################################################################################
 ###
 # Fixtures for LLMs

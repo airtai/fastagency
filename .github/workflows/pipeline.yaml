@@ -57,13 +57,13 @@ jobs:
       use-llms: ""
     secrets: inherit  # pragma: allowlist secret
 
-  # test-with-anthropic:
-  #   uses: ./.github/workflows/test.yaml
-  #   with:
-  #     python-version: "3.9"
-  #     environment: testing
-  #     use-llms: "anthropic"
-  #   secrets: inherit  # pragma: allowlist secret
+  test-with-anthropic:
+    uses: ./.github/workflows/test.yaml
+    with:
+      python-version: "3.9"
+      environment: testing
+      use-llms: "anthropic"
+    secrets: inherit  # pragma: allowlist secret
 
   test-with-azure_oai:
     uses: ./.github/workflows/test.yaml
@@ -81,13 +81,13 @@ jobs:
       use-llms: "openai"
     secrets: inherit  # pragma: allowlist secret
 
-  # test-with-togetherai:
-  #   uses: ./.github/workflows/test.yaml
-  #   with:
-  #     python-version: "3.9"
-  #     environment: testing
-  #     use-llms: "togetherai"
-  #   secrets: inherit  # pragma: allowlist secret
+  test-with-togetherai:
+    uses: ./.github/workflows/test.yaml
+    with:
+      python-version: "3.9"
+      environment: testing
+      use-llms: "togetherai"
+    secrets: inherit  # pragma: allowlist secret
 
   test-with-llm:
     uses: ./.github/workflows/test.yaml
@@ -137,10 +137,10 @@ jobs:
     needs:
       - test-without-llms
       - test-with-llm
-      # - test-with-anthropic
+      - test-with-anthropic
       - test-with-azure_oai
       - test-with-openai
-      # - test-with-togetherai
+      - test-with-togetherai
       - test-windows-latest
       - test-macos-latest
     runs-on: ubuntu-latest
