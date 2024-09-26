@@ -283,3 +283,12 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
     thread.start()
 
     return subconversation
+
+    # needed for uvicorn to recognize the class as a valid ASGI application
+    async def __call__(
+        self,
+        scope: dict[str, Any],
+        receive: Callable[[], Awaitable[dict]],
+        send: Callable[[dict], Awaitable[None]],
+    ) -> None:
+        pass
