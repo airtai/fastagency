@@ -2,9 +2,9 @@ import os
 
 from autogen.agentchat import ConversableAgent
 
+from fastagency.base import UI
+from fastagency.new.base import NatsProvider
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-
-from .base import NatsProvider
 
 llm_config = {
     "config_list": [

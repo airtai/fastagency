@@ -1,7 +1,6 @@
 from fastagency import FastAgency
+from fastagency.new.base import FastAPIProvider
 from fastagency.ui.mesop import MesopUI
-
-from .base import FastAPIProvider
 
 provider = FastAPIProvider.Client(
     url="http://localhost:8000", dicovery_path="/fastagency/discovery"

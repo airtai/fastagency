@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from .base import FastAPIProvider, NatsProvider
+from fastagency.new.base import FastAPIProvider, NatsProvider
 
 nats_provider = NatsProvider.Client(url="nats://localhost:4222")
 
@@ -20,9 +20,10 @@ app = FastAPI(lifespan=provider.lifespan())
 def create_workflow():
     return provider.start_workflow("simple_learning", "Hello, teacher!", "session_id")
 
+
 @app.get("/fastagency/discovery")
-def discovery():
-    ...
+def discovery(): ...
+
 
 # Run with the following command:
 # uvicorn main_fastapi:app --reload
