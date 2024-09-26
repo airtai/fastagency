@@ -62,6 +62,7 @@ class MesopUI(IOMessageVisitor):  # UI
 
     @classmethod
     def get_created_instance(cls) -> "MesopUI":
+        logger.info(f"Getting MesopUI created instance: {cls._created_instance}")
         created_instance = cls._created_instance
         if created_instance is None:
             raise RuntimeError("MesopUI has not been created yet.")
@@ -70,6 +71,7 @@ class MesopUI(IOMessageVisitor):  # UI
 
     @property
     def app(self) -> Runnable:
+        logger.info(f"Getting app: {MesopUI._app}")
         app = MesopUI._app
         if app is None:
             raise RuntimeError("MesopUI has not been created yet.")
@@ -211,6 +213,12 @@ class MesopUI(IOMessageVisitor):  # UI
                 break
             yield message
 
+    def __call__(self, environ, start_response):
+        MesopUI._created_instance = self
+        from .main import me
+
+        return me(environ, start_response)
+
 
 def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
     def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
@@ -284,11 +292,16 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
 
     return subconversation
 
-    # needed for uvicorn to recognize the class as a valid ASGI application
-    async def __call__(
-        self,
-        scope: dict[str, Any],
-        receive: Callable[[], Awaitable[dict]],
-        send: Callable[[dict], Awaitable[None]],
-    ) -> None:
-        pass
+    # # needed for uvicorn to recognize the class as a valid ASGI application
+    # async def __call__(
+    #     self,
+    #     scope: dict[str, Any],
+    #     receive: Callable[[], Awaitable[dict]],
+    #     send: Callable[[dict], Awaitable[None]],
+    # ) -> None:
+    #     MesopUI._created_instance = self
+    #     from .main import me
+
+    #     return await me(scope, receive, send)
+
+
