@@ -12,24 +12,11 @@ from fastagency.runtime.autogen.agents.websurfer import WebSurferAgent
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
-# Use this for the Tutorial
-# llm_config = {
-#     "config_list": [
-#         {
-#             "model": "gpt-4o",
-#             "api_key": os.getenv("OPENAI_API_KEY"),
-#         }
-#     ],
-#     "temperature": 0.0,
-# }
 llm_config = {
     "config_list": [
         {
-            "model": os.getenv("AZURE_GPT4_MODEL"),
-            "api_key": os.getenv("AZURE_OPENAI_API_KEY"),
-            "base_url": os.getenv("AZURE_API_ENDPOINT"),
-            "api_type": "azure",
-            "api_version": "2024-02-15-preview",
+            "model": "gpt-4o",
+            "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
     "temperature": 0.0,
