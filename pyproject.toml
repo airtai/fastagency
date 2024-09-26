@@ -65,7 +65,6 @@ autogen = [
     # ToDo: Autogen requires flaml but flaml 2.3.0 has issues with its optional dependencies
     "flaml==2.2.0,<2.3.0",
     "together==1.2.11",
-    "asyncer==0.0.8",
     "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
 ]
 
