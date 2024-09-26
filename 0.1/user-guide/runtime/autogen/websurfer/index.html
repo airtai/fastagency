@@ -28,7 +28,7 @@
 </code></pre></div> <p>To enhance existing agents with web surfing capability, import <code>WebSurferTool</code> from FastAgency and <code>ConversableAgent</code> from AutoGen.</p> </div> </div> </div> <h4 id=2-configure-the-language-model-llm>2. <strong>Configure the Language Model (LLM)</strong><a class=headerlink href=#2-configure-the-language-model-llm title="Permanent link">#</a></h4> <p>Here, the large language model is configured to use the <code>gpt-4o</code> model, and the API key is retrieved from the environment. This setup ensures that both the user and websurfer agents can interact effectively.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-3-1 name=__codelineno-3-1 href=#__codelineno-3-1></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
 <a id=__codelineno-3-2 name=__codelineno-3-2 href=#__codelineno-3-2></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
 <a id=__codelineno-3-3 name=__codelineno-3-3 href=#__codelineno-3-3></a>        <span class=p>{</span>
-<a id=__codelineno-3-4 name=__codelineno-3-4 href=#__codelineno-3-4></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o&quot;</span><span class=p>,</span>
+<a id=__codelineno-3-4 name=__codelineno-3-4 href=#__codelineno-3-4></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
 <a id=__codelineno-3-5 name=__codelineno-3-5 href=#__codelineno-3-5></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
 <a id=__codelineno-3-6 name=__codelineno-3-6 href=#__codelineno-3-6></a>        <span class=p>}</span>
 <a id=__codelineno-3-7 name=__codelineno-3-7 href=#__codelineno-3-7></a>    <span class=p>],</span>
@@ -111,7 +111,7 @@
 <a id=__codelineno-10-10 name=__codelineno-10-10 href=#__codelineno-10-10></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
 <a id=__codelineno-10-11 name=__codelineno-10-11 href=#__codelineno-10-11></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
 <a id=__codelineno-10-12 name=__codelineno-10-12 href=#__codelineno-10-12></a>        <span class=p>{</span>
-<a id=__codelineno-10-13 name=__codelineno-10-13 href=#__codelineno-10-13></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-13 name=__codelineno-10-13 href=#__codelineno-10-13></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
 <a id=__codelineno-10-14 name=__codelineno-10-14 href=#__codelineno-10-14></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
 <a id=__codelineno-10-15 name=__codelineno-10-15 href=#__codelineno-10-15></a>        <span class=p>}</span>
 <a id=__codelineno-10-16 name=__codelineno-10-16 href=#__codelineno-10-16></a>    <span class=p>],</span>
@@ -162,7 +162,7 @@
 <a id=__codelineno-11-11 name=__codelineno-11-11 href=#__codelineno-11-11></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
 <a id=__codelineno-11-12 name=__codelineno-11-12 href=#__codelineno-11-12></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
 <a id=__codelineno-11-13 name=__codelineno-11-13 href=#__codelineno-11-13></a>        <span class=p>{</span>
-<a id=__codelineno-11-14 name=__codelineno-11-14 href=#__codelineno-11-14></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o&quot;</span><span class=p>,</span>
+<a id=__codelineno-11-14 name=__codelineno-11-14 href=#__codelineno-11-14></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
 <a id=__codelineno-11-15 name=__codelineno-11-15 href=#__codelineno-11-15></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
 <a id=__codelineno-11-16 name=__codelineno-11-16 href=#__codelineno-11-16></a>        <span class=p>}</span>
 <a id=__codelineno-11-17 name=__codelineno-11-17 href=#__codelineno-11-17></a>    <span class=p>],</span>

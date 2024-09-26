@@ -28,7 +28,7 @@
 </span></code></pre></div> <p>For Mesop applications, import <code>MesopUI</code> to integrate with the Mesop web interface.</p> </div> </div> </div> <h3 id=define-workflow>Define Workflow<a class=headerlink href=#define-workflow title="Permanent link">#</a></h3> <p>You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-6-1 name=__codelineno-6-1 href=#__codelineno-6-1></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
 <a id=__codelineno-6-2 name=__codelineno-6-2 href=#__codelineno-6-2></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
 <a id=__codelineno-6-3 name=__codelineno-6-3 href=#__codelineno-6-3></a>        <span class=p>{</span>
-<a id=__codelineno-6-4 name=__codelineno-6-4 href=#__codelineno-6-4></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o&quot;</span><span class=p>,</span>
+<a id=__codelineno-6-4 name=__codelineno-6-4 href=#__codelineno-6-4></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
 <a id=__codelineno-6-5 name=__codelineno-6-5 href=#__codelineno-6-5></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
 <a id=__codelineno-6-6 name=__codelineno-6-6 href=#__codelineno-6-6></a>        <span class=p>}</span>
 <a id=__codelineno-6-7 name=__codelineno-6-7 href=#__codelineno-6-7></a>    <span class=p>],</span>
@@ -74,7 +74,7 @@
 <a id=__codelineno-9-9 name=__codelineno-9-9 href=#__codelineno-9-9></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
 <a id=__codelineno-9-10 name=__codelineno-9-10 href=#__codelineno-9-10></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
 <a id=__codelineno-9-11 name=__codelineno-9-11 href=#__codelineno-9-11></a>        <span class=p>{</span>
-<a id=__codelineno-9-12 name=__codelineno-9-12 href=#__codelineno-9-12></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o&quot;</span><span class=p>,</span>
+<a id=__codelineno-9-12 name=__codelineno-9-12 href=#__codelineno-9-12></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
 <a id=__codelineno-9-13 name=__codelineno-9-13 href=#__codelineno-9-13></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
 <a id=__codelineno-9-14 name=__codelineno-9-14 href=#__codelineno-9-14></a>        <span class=p>}</span>
 <a id=__codelineno-9-15 name=__codelineno-9-15 href=#__codelineno-9-15></a>    <span class=p>],</span>
@@ -121,7 +121,7 @@
 <a id=__codelineno-10-9 name=__codelineno-10-9 href=#__codelineno-10-9></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
 <a id=__codelineno-10-10 name=__codelineno-10-10 href=#__codelineno-10-10></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
 <a id=__codelineno-10-11 name=__codelineno-10-11 href=#__codelineno-10-11></a>        <span class=p>{</span>
-<a id=__codelineno-10-12 name=__codelineno-10-12 href=#__codelineno-10-12></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-12 name=__codelineno-10-12 href=#__codelineno-10-12></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
 <a id=__codelineno-10-13 name=__codelineno-10-13 href=#__codelineno-10-13></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
 <a id=__codelineno-10-14 name=__codelineno-10-14 href=#__codelineno-10-14></a>        <span class=p>}</span>
 <a id=__codelineno-10-15 name=__codelineno-10-15 href=#__codelineno-10-15></a>    <span class=p>],</span>
