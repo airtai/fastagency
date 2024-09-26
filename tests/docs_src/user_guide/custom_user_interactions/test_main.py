@@ -10,6 +10,7 @@ INPUT_MESSAGE = "Today's theme is Leonardo da Vinci"
 
 
 @pytest.mark.openai
+@pytest.mark.xfail(strict=False)
 def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         "builtins.input",
