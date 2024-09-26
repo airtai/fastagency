@@ -1,8 +1,6 @@
-# import json
 import os
 from typing import Annotated, Any, Optional
 
-# from pathlib import Path
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
@@ -13,10 +11,6 @@ from fastagency.base import TextInput
 from fastagency.runtime.autogen.agents.websurfer import WebSurferAgent
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
-
-# with Path("giphy_openapi.json").open() as f:
-#     data = json.load(f)
-#     openapi_json = json.dumps(data, indent=2)
 
 # Use this for the Tutorial
 # llm_config = {
@@ -41,15 +35,11 @@ llm_config = {
     "temperature": 0.0,
 }
 
-# giphy_api = OpenAPI.create(openapi_json=openapi_json)
 openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
 giphy_api = OpenAPI.create(openapi_url=openapi_url)
+
 giphy_api_key = os.getenv("GIPHY_API_KEY")
-
 giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
-
-
-wf = AutoGenWorkflows()
 
 GIPHY_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and Giphy API.
 Always use 'present_completed_task_or_ask_question' to interact with the user.
@@ -62,6 +52,8 @@ Once get the wanted gifs, present them to the user by using 'present_completed_t
 Note: Use 'bitly_gif_url' when presenting a gif to the user.
 
 Write 'TERMINATE' to end the conversation."""
+
+wf = AutoGenWorkflows()
 
 
 @wf.register(name="giphy_with_security", description="Giphy chat with security")
