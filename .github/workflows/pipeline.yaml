@@ -112,8 +112,6 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
-      - name: Prisma
-        run: prisma generate
       - name: Test
         run: bash scripts/test.sh -m "not (db or nats or anthropic or azure_oai or openai or togetherai or llm)"
 
@@ -132,8 +130,6 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
-      - name: Prisma
-        run: prisma generate
       - name: Test
         run: bash scripts/test.sh -m "not (db or nats or anthropic or azure_oai or openai or togetherai or llm)"
 
@@ -201,8 +197,6 @@ jobs:
           key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
       - name: Install Dependencies
         run: pip install .[submodules,docs,testing]
-      - name: Prisma
-        run: prisma generate
       - uses: pre-commit/action@v3.0.1
 
   # https://github.com/marketplace/actions/alls-green#why

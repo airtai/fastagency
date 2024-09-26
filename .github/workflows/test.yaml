@@ -27,27 +27,7 @@ jobs:
         image: diementros/nats:js
         ports:
           - 4222:4222
-      postgres-wasp:
-        image: postgres:13
-        env:
-          POSTGRES_USER: admin
-          POSTGRES_PASSWORD: password  # pragma: allowlist secret
-          POSTGRES_DB: fastagency
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      postgres-py:
-        image: postgres:13
-        env:
-          POSTGRES_USER: admin
-          POSTGRES_PASSWORD: password  # pragma: allowlist secret
-          POSTGRES_DB: pyfastagency
-        ports:
-          - 5433:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     env:
-      DATABASE_URL: postgresql://admin:password@localhost:5432/fastagency  # pragma: allowlist secret
-      PY_DATABASE_URL: postgresql://admin:password@localhost:5433/pyfastagency  # pragma: allowlist secret
       NATS_URL: nats://localhost:4222
 
     steps:
@@ -103,19 +83,12 @@ jobs:
         with:
           path: ${{ env.pythonLocation }}
           key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test-v03
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[docs,testing]
       - name: Install Pydantic v2
         run: pip install --pre "pydantic>=2,<3"
       - run: mkdir coverage
-      - name: Run wasp prisma commands
-        run: prisma db push --schema=wasp_schema.prisma && prisma generate --schema=wasp_schema.prisma
-      - name: Prisma
-        run: prisma migrate deploy && prisma generate
       - name: Test without LLMs
         if: ${{ inputs.use-llms == '' }}
         run: bash scripts/test.sh -vv -m "not (anthropic or azure_oai or openai or togetherai or llm)"
