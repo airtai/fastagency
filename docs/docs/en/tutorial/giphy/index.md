@@ -29,7 +29,7 @@ Before we dive into building our agents, let’s go over the necessary setup. We
 
 To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
 
-```console
+```bash
 pip install "fastagency[autogen,openapi]"
 ```
 
@@ -60,11 +60,11 @@ To securely use the API key in your project, you should store it in an environme
 You can set the Giphy API key in your terminal as an environment variable:
 
 === "Linux/macOS"
-    ```console
+    ```bash
     export GIPHY_API_KEY="your_giphy_api_key"
     ```
 === "Windows"
-    ```console
+    ```bash
     set GIPHY_API_KEY="your_giphy_api_key"
     ```
 
@@ -106,3 +106,65 @@ This is a core function used by the **GiphyAgent** to either present the task re
 ```
 
 ### Creating the Giphy and WebSurfer Agents
+
+- **GiphyAgent**: A ***ConversableAgent*** is created with the name "Giphy_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
+- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user.
+
+```python
+{! docs_src/tutorial/giphy/main.py [ln:66-80] !}
+```
+
+### Registering Functions
+
+The function ***present_completed_task_or_ask_question*** is registered to allow the **GiphyAgent** to ask questions or present completed tasks after receiving data from the **WebSurferAgent**.
+
+```python
+{! docs_src/tutorial/giphy/main.py [ln:82-89] !}
+```
+
+We specify which Giphy API functions can be used by the **GiphyAgent**: *random_gif*, *search_gifs*, and *trending_gifs*. These functions allow the agent to generate GIFs based on user input or trending content.
+```python
+{! docs_src/tutorial/giphy/main.py [ln:91-97] !}
+```
+
+### Initiating the Chat
+
+We initiate the conversation between the user, **WebSurferAgent**, and **GiphyAgent**. The user’s initial message is provided, and the system is configured to handle up to 10 turns of interaction. The conversation is summarized using the ***reflection_with_llm*** method, which uses a language model to summarize the chat.
+
+Once the conversation ends, the summary is returned to the user, wrapping up the session.
+
+```python
+{! docs_src/tutorial/giphy/main.py [ln:99-106] !}
+```
+
+### Starting the Application
+
+The FastAgency app is created, using the registered workflows (***wf***) and a console-based user interface (***ConsoleUI***). This makes the conversation between agents and the user interactive.
+
+```python
+{! docs_src/tutorial/giphy/main.py [ln:109] !}
+```
+
+## Running the Application
+
+Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
+
+```bash
+fastagency run
+```
+
+The command will launch a console interface where users can input their requests and interact with the agents.
+
+!!! note
+    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+
+## Output
+The output will vary based on your initial message.
+
+
+<details>
+<summary>complete output</summary>
+```console
+{! docs_src/tutorial/giphy/logs.txt !}
+```
+</details>

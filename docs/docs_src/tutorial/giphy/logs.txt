@@ -1,0 +1,2030 @@
+
+ ╭─ Python package file structure ──╮
+ │                                  │
+ │  📁 docs                         │
+ │  ├── 🐍 __init__.py              │
+ │  └── 📁 docs_src                 │
+ │      ├── 🐍 __init__.py          │
+ │      └── 📁 tutorial             │
+ │          ├── 🐍 __init__.py      │
+ │          └── 📁 giphy            │
+ │              ├── 🐍 __init__.py  │
+ │              └── 🐍 main.py      │
+ │                                  │
+ ╰──────────────────────────────────╯
+
+/home/vscode/.local/lib/python3.10/site-packages/pydantic/_internal/_config.py:341: UserWarning: Valid config keys have changed in V2:
+* 'keep_untouched' has been renamed to 'ignored_types'
+  warnings.warn(message, UserWarning)
+ [INFO] Importing autogen.base.py
+/home/vscode/.local/lib/python3.10/site-packages/pydantic/main.py:214: UserWarning: A custom validator is returning a value other than `self`.
+Returning anything other than `self` from a top level model validator isn't supported when validating via `__init__`.
+See the `model_validator` docs (https://docs.pydantic.dev/latest/concepts/validators/#model-validators) for more details.
+  warnings.warn(
+
+ ╭───────────── Importable FastAgency app ─────────────╮
+ │                                                     │
+ │  from docs.docs_src.tutorial.giphy.main import app  │
+ │                                                     │
+ ╰─────────────────────────────────────────────────────╯
+
+╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+│                                                                              │
+│ Starting a new workflow 'giphy_and_websurfer' with the following             │
+│ description:                                                                 │
+│                                                                              │
+│ Giphy and Websurfer chat                                                     │
+│                                                                              │
+│ Please enter an initial                                                      │
+│ message:                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Get the latest news from https://www.bbc.com/sport
+
+    ╭─ Giphy_Agent -> Web_Surfer_Agent [text_message] ─────────────────────────────╮
+    │                                                                              │
+    │ Users initial message: Get the latest news from                              │
+    │ https://www.bbc.com/sport                                                    │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_Agent -> Giphy_Agent [suggested_function_call] ──────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "create_new_websurfing_task",                             │
+    │   "call_id":                                                                 │
+    │ "call_oKtK9jVInSeM8NzpfzswzTBZ",                                             │
+    │   "arguments": {                                                             │
+    │     "task": "Get the                                                         │
+    │  latest news from https://www.bbc.com/sport"                                 │
+    │   }                                                                          │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "create_new_websurfing_task",                             │
+    │   "call_id": null,                                                           │
+    │                                                                              │
+    │   "retval": "We are tasked with the following task:\n\nGet the latest        │
+    │  news from https://www.bbc.com/sport\n\nIf no link is provided in the        │
+    │ task, you should search the internet first to find the relevant              │
+    │ information.\n\nThe focus is on the provided url and its subpages, we        │
+    │ do NOT care about the rest of the website i.e. parent pages.\ne.g. If        │
+    │ the url is 'https://www.example.com/products/air-conditioners', we are       │
+    │  interested ONLY in the 'air-conditioners' and its subpages.\n\nAFTER        │
+    │ visiting the home page, create a step-by-step plan BEFORE visiting the       │
+    │  other pages.\nYou can click on MAXIMUM 10 links. Do NOT try to click        │
+    │ all the links on the page, but only the ones which are most relevant         │
+    │ for the task (MAX 10)!\nDo NOT visit the same page multiple times, but       │
+    │  only once!\nIf your co-speaker repeats the same message, inform him         │
+    │ that you have already answered to that message and ask him to proceed        │
+    │ with the task.\ne.g. \"I have already answered to that message, please       │
+    │  proceed with the task or you will be penalized!\"\n\n"                      │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ First, let's visit the provided URL: https://www.bbc.com/sport               │
+    │                                                                              │
+    │ Web                                                                          │
+    │ Surfer, please visit the URL: https://www.bbc.com/sport                      │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "visit_page",                                             │
+    │   "call_id": null,                                                           │
+    │   "retval":                                                                  │
+    │ "Address: https://www.bbc.com/sport\nTitle: BBC Sport - Scores,              │
+    │ Fixtures, News - Live Sport\nViewport position: Showing page 1 of            │
+    │ 7.\n=======================\nBBC Sport \\- Scores, Fixtures, News \\-        │
+    │ Live Sport[BBC Homepage](https://www.bbc.com)* [Skip to                      │
+    │ content](#main-heading)\n* [Accessibility                                    │
+    │ Help](https://www.bbc.co.uk/accessibility/)\n\n* [Your                       │
+    │ account](https://account.bbc.com/account?lang=en-                            │
+    │ GB&ptrt=https://www.bbc.com/sport&userOrigin=SPORT_GNL)\n\n*                 │
+    │ [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*           │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n* [More menu](#global-                 │
+    │ navigation-more-menu)\n[More menu](#global-navigation-more-                  │
+    │ menu)[Search BBC](https://www.bbc.co.uk/search?d=SPORT_GNL)*                 │
+    │ [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*           │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n*                                      │
+    │ [Earth](https://www.bbc.com/future-planet)\n*                                │
+    │ [Video](https://www.bbc.com/video)\n*                                        │
+    │ [Live](https://www.bbc.com/live)\n\n[Close menu](#more-menu-                 │
+    │ button)[BBC Sport](/sport)[Menu](/sport/all-sports)* [Home](/sport)\n*       │
+    │  [Football](/sport/football)\n* [Cricket](/sport/cricket)\n* [Formula        │
+    │ 1](/sport/formula1)\n* [Rugby U](/sport/rugby-union)\n*                      │
+    │ [Tennis](/sport/tennis)\n* [Golf](/sport/golf)\n*                            │
+    │ [Athletics](/sport/athletics)\n*                                             │
+    │ [Cycling](/sport/cycling)\n[More](/sport/all-sports)**A\\-Z Sports***        │
+    │ [American Football](/sport/american-football)\n*                             │
+    │ [Athletics](/sport/athletics)\n* [Basketball](/sport/basketball)\n*          │
+    │ [Boxing](/sport/boxing)\n* [Cricket](/sport/cricket)\n*                      │
+    │ [Cycling](/sport/cycling)\n* [Darts](/sport/darts)\n* [Disability            │
+    │ Sport](/sport/disability-sport)\n* [Football](/sport/football)\n*            │
+    │ [Formula 1](/sport/formula1)\n* [Gaelic Games](/sport/northern-              │
+    │ ireland/gaelic-games)\n* [Golf](/sport/golf)\n*                              │
+    │ [Gymnastics](/sport/gymnastics)\n* [Horse Racing](/sport/horse-              │
+    │ racing)\n* [Mixed Martial Arts](/sport/mixed-martial-arts)\n*                │
+    │ [Motorsport](/sport/motorsport)\n* [Netball](/sport/netball)\n*              │
+    │ [Olympic Sports](/sport/olympics)\n* [Rugby League](/sport/rugby-            │
+    │ league)\n* [Rugby Union](/sport/rugby-union)\n*                              │
+    │ [Snooker](/sport/snooker)\n* [Swimming](/sport/swimming)\n*                  │
+    │ [Tennis](/sport/tennis)\n* [Winter Sports](/sport/winter-sports)\n*          │
+    │ [Full Sports A\\-Z](/sport/all-sports)\n**More from Sport***                 │
+    │ [England](/sport/england)\n* [Scotland](/sport/scotland)\n*                  │
+    │ [Wales](/sport/wales)\n* [Northern Ireland](/sport/northern-                 │
+    │ ireland)\n* [News Feeds](/sport/15890345)\n* [Help \\&                       │
+    │ FAQs](/sport/15561348)\nBBC Sport\n=========\n\n*                            │
+    │ [Live.\u00c2\u00a0Premier League news conferences: Dyche \\- 'Takeover       │
+    │  should bring stability'](/sport/football/live/ce8d2380yyet)All the          │
+    │ latest football news as Premier League managers hold news conferences        │
+    │ plus build\\-up to the Europa League action.\n\n\t+                          │
+    │ Attribution[Football](/sport/football)![Premier League managers](https       │
+    │ ://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/9f71/live/18400030-           │
+    │ 7bfb-11ef-b02d-c5f3b724a1ea.png)\n* ['Twente wanted it more' \\- so          │
+    │ are Man Utd showing any                                                      │
+    │ improvement?](/sport/football/articles/c2lnkd7r2y1o)\n\t+                    │
+    │ Attribution[Man Utd](/sport/football/teams/manchester-united)\n\t+           │
+    │ Posted13 hours ago13h\n\t+ Comments[1084](/sport/football/articles/c2l       │
+    │ nkd7r2y1o#comments)![Manchester United manager Erik ten Hag](https://i       │
+    │ chef.bbci.co.uk/ace/standard/480/cpsprodpb/cc92/live/84be5d30-7b90-          │
+    │ 11ef-8813-712a36c156a0.jpg)\n* [Giroud inspires Los Angeles FC to US         │
+    │ Open Cup](/sport/football/articles/c4g4rr1llzvo)\n\t+ Attribution[US         │
+    │ MLS](/sport/football/us-major-league)\n\t+ Posted6 hours                     │
+    │ ago6h![Olivier Giroud holds up a scarf in celebration which says             │
+    │ 'Lamar Hunt US Open Cup champions 2024', in the colours of LAFC](https       │
+    │ ://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/f0a8/live/f5532ec0-           │
+    │ 7bd3-11ef-8e06-33f61633f6a9.jpg)\n* \n* [Stars set for lucrative meet        │
+    │ organised by Serena Williams'                                                │
+    │ husband](/sport/athletics/articles/ce8d033z430o)\n\t+                        │
+    │ Attribution[Athletics](/sport/athletics)\n\t+ Posted1 hour                   │
+    │ ago1h![Gabby Thomas celebrates with the American flag after winning          │
+    │ 200m gold at the Paris Olympics in August](https://ichef.bbci.co.uk/ac       │
+    │ e/standard/480/cpsprodpb/04c5/live/2c2ea7b0-7bef-11ef-8197-                  │
+    │ 3342e972292b.jpg)\n\n"                                                       │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ ### Step-by-Step Plan                                                        │
+    │                                                                              │
+    │ 1. **Click on the "Live. Premier League news                                 │
+    │ conferences: Dyche - 'Takeover should bring stability'" link** - This        │
+    │ will provide the latest updates on Premier League news conferences.          │
+    │ 2.                                                                           │
+    │  **Click on the "'Twente wanted it more' - so are Man Utd showing any        │
+    │ improvement?" link** - This will give insights into Manchester               │
+    │ United's recent performance.                                                 │
+    │ 3. **Click on the "Giroud inspires Los                                       │
+    │ Angeles FC to US Open Cup" link** - This will provide details on the         │
+    │ latest US Open Cup results.                                                  │
+    │ 4. **Click on the "Stars set for lucrative                                   │
+    │  meet organised by Serena Williams' husband" link** - This will give         │
+    │ information on the upcoming athletics meet.                                  │
+    │                                                                              │
+    │ Web Surfer, please click                                                     │
+    │ on the "Live. Premier League news conferences: Dyche - 'Takeover             │
+    │ should bring stability'" link.                                               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "page_down",                                              │
+    │   "call_id": null,                                                           │
+    │   "retval":                                                                  │
+    │ "Address: https://www.bbc.com/sport\nTitle: BBC Sport - Scores,              │
+    │ Fixtures, News - Live Sport\nViewport position: Showing page 2 of            │
+    │ 7.\n=======================\n* [Heavyweight permutations \\- what next       │
+    │  after Dubois' win?](/sport/boxing/articles/c4gr2gm51zpo)\n\t+               │
+    │ Attribution[Boxing](/sport/boxing)\n\t+ Posted17 hours ago17h![Split         │
+    │ image of Anthony Joshua, Daniel Dubois and Tyson Fury](https://ichef.b       │
+    │ bci.co.uk/ace/standard/480/cpsprodpb/2b63/live/42e81b50-7b5c-11ef-           │
+    │ b02d-c5f3b724a1ea.png)\n* [From Test match to wedding \\- Stone's            │
+    │ Pakistan dash](/sport/cricket/articles/cn7yx3y1rpxo)\n\t+                    │
+    │ Attribution[Cricket](/sport/cricket)\n\t+ Posted7 hours ago7h![Olly St       │
+    │ one](https://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/2543/live/b0f       │
+    │ 0acd0-7bd8-11ef-8e06-33f61633f6a9.jpg)\n* [How many free sports              │
+    │ tickets have Starmer and MPs                                                 │
+    │ received?](/sport/football/articles/ce9j2ky7412o)\n\t+                       │
+    │ Attribution[Football](/sport/football)\n\t+ Posted2 hours ago2h\n\t+         │
+    │ Comments[766](/sport/football/articles/ce9j2ky7412o#comments)![Sir           │
+    │ Keir Starmer at Manchester City v Arsenal in March 2024 before he was        │
+    │ elected Prime Minister](https://ichef.bbci.co.uk/ace/standard/480/cpsp       │
+    │ rodpb/b4bc/live/82feb200-7b73-11ef-b487-93d163dc71aa.jpg)\n* ['I did         │
+    │ not steal her coach' \u00e2\u0080\u0093 Ryan set for Mayer grudge            │
+    │ match](/sport/boxing/articles/c869144vdw3o)\n\t+                             │
+    │ Attribution[Boxing](/sport/boxing)\n\t+ Posted53 minutes                     │
+    │ ago53min![Sandy Ryan and Mikaela Mayer head-to-head](https://ichef.bbc       │
+    │ i.co.uk/ace/standard/480/cpsprodpb/351f/live/767bccc0-7bfa-11ef-             │
+    │ ad1c-8daceb2ac32f.jpg)\n* [Lewandowski strike maintains Barcelona's          │
+    │ perfect start](https://www.bbc.co.ukundefined/)\n\t+ Posted15 hours          │
+    │ ago15h\n\t+                                                                  │
+    │ Comments[0](https://www.bbc.co.ukundefined/#comments)![Robert                │
+    │ Lewandowski celebrates scoring for Barcelona against Getafe](https://i       │
+    │ chef.bbci.co.uk/ace/standard/480/cpsprodpb/bed5/live/50749530-7b81-          │
+    │ 11ef-a920-ffb09a1b0174.jpg)\n* [Ex\\-Bristol flanker El\\-Abd to coach       │
+    │  England defence](/sport/rugby-union/articles/cm28yzpkgeno)\n\t+             │
+    │ Attribution[Rugby Union](/sport/rugby-union)\n\t+ Posted1 hour               │
+    │ ago1h\n\t+ Comments[37](/sport/rugby-                                        │
+    │ union/articles/cm28yzpkgeno#comments)![Joe El-Abd](https://ichef.bbci.       │
+    │ co.uk/ace/standard/480/cpsprodpb/5062/live/0cd28e90-7bfe-11ef-b02d-          │
+    │ c5f3b724a1ea.jpg)\n* [Euro 2024 fuels 14% increase in                        │
+    │ football\\-related                                                           │
+    │ arrests](/sport/football/articles/c4g52zljxjzo)\n\t+                         │
+    │ Attribution[Football](/sport/football)\n\t+ Posted2 hours                    │
+    │ ago2h![Police Officer ](https://ichef.bbci.co.uk/ace/standard/480/cpsp       │
+    │ rodpb/b721/live/167ccd60-7bf0-11ef-8197-3342e972292b.jpg)\n* [Clark          │
+    │ vows to get better after Indiana play\\-off                                  │
+    │ loss](/sport/basketball/articles/c3dv44ezm91o)\n\t+                          │
+    │ Attribution[Basketball](/sport/basketball)\n\t+ Posted6 hours                │
+    │ ago6h![Caitlin Clark ](https://ichef.bbci.co.uk/ace/standard/480/cpspr       │
+    │ odpb/1549/live/48dff8b0-7bcb-11ef-8b78-9ddee087ad2b.jpg)\n* [Ball for        │
+    │ Ohtani's historic 50th home run \\- yours for                                │
+    │ $4\\.5m](/sport/baseball/articles/cq8x5vqw0dwo)The ball that Shohei          │
+    │ Ohtani hit to claim his historic 50th home run of the current MLB            │
+    │ season is now for sale at auction.\n\n\t+                                    │
+    │ Attribution[Baseball](/sport/baseball)\n\t+ Posted15 hours                   │
+    │ ago15h![Shohei Ohtani watches the ball after hitting his historic 50th       │
+    │  home run of 2024](https://ichef.bbci.co.uk/ace/standard/480/cpsprodpb       │
+    │ /6f60/live/e41e6a00-7b85-11ef-b02d-c5f3b724a1ea.png)\n* [Can women's         │
+    │ football become big                                                          │
+    │ business?](/sport/football/articles/c5y9xpg33wyo)\n\t+                       │
+    │ Attribution[Women's Football](/sport/football/womens)\n\t+ Posted1           │
+    │ hour ago1h![Beth Mead celebrates after scoring for Arsenal at Emirates       │
+    │  Stadium](https://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/d502/liv       │
+    │ e/05ff33c0-7bdb-11ef-8e06-33f61633f6a9.jpg)\n* [Warren and Hearn             │
+    │ defend Saudi involvement in                                                  │
+    │ boxing](/sport/boxing/articles/c3vk9gqp4w5o)\n\t+                            │
+    │ Attribution[Boxing](/sport/boxing)\n\t+ Posted19 hours ago19h![Turki         │
+    │ Alalshikh was in the ring as the Saudi Arabian national anthem was           │
+    │ played at Dubois versus Joshua](https://ichef.bbci.co.uk/ace/standard/       │
+    │ 480/cpsprodpb/8325/live/6e0f6ec0-7b50-11ef-9f51-2df4bcb50c71.jpg)\n*         │
+    │ [Holders Liverpool hit five against West                                     │
+    │ Ham](/sport/football/live/c870dv9gx7zt)\n\t+ Attribution[EFL                 │
+    │ Cup](/sport/football/league-cup)\n\t+ Posted16 hours ago16h\n\t+ Comme       │
+    │ nts[1035](/sport/football/live/c870dv9gx7zt#comments)![Liverpool's           │
+    │ players celebrate after scoring against West \n"                             │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ It seems that the link I requested to click on did not work. Let's           │
+    │ proceed with the next step in the plan.                                      │
+    │                                                                              │
+    │ Web Surfer, please click on                                                  │
+    │ the "'Twente wanted it more' - so are Man Utd showing any                    │
+    │ improvement?" link.                                                          │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "visit_page",                                             │
+    │   "call_id": null,                                                           │
+    │   "retval":                                                                  │
+    │ "Address:                                                                    │
+    │ https://www.bbc.com/sport/football/articles/c2lnkd7r2y1o\nTitle: Erik        │
+    │ ten Hag criticises Man Utd's mentality - but is there improvement at         │
+    │ Old Trafford? - BBC Sport\nViewport position: Showing page 1 of              │
+    │ 5.\n=======================\nErik ten Hag criticises Man Utd's               │
+    │ mentality \\- but is there improvement at Old Trafford? \\- BBC              │
+    │ Sport[BBC Homepage](https://www.bbc.com)* [Skip to content](#main-           │
+    │ heading)\n* [Accessibility                                                   │
+    │ Help](https://www.bbc.co.uk/accessibility/)\n\n* [Your                       │
+    │ account](https://account.bbc.com/account?lang=en-GB&ptrt=https://www.b       │
+    │ bc.com/sport/football/articles/c2lnkd7r2y1o&userOrigin=SPORT_GNL)\n\n*       │
+    │  [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*          │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n* [More menu](#global-                 │
+    │ navigation-more-menu)\n[More menu](#global-navigation-more-                  │
+    │ menu)[Search BBC](https://www.bbc.co.uk/search?d=SPORT_GNL)*                 │
+    │ [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*           │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n*                                      │
+    │ [Earth](https://www.bbc.com/future-planet)\n*                                │
+    │ [Video](https://www.bbc.com/video)\n*                                        │
+    │ [Live](https://www.bbc.com/live)\n\n[Close menu](#more-menu-                 │
+    │ button)[BBC Sport](/sport)[Menu](/sport/all-sports)* [Home](/sport)\n*       │
+    │  [Football](/sport/football)\n* [Cricket](/sport/cricket)\n* [Formula        │
+    │ 1](/sport/formula1)\n* [Rugby U](/sport/rugby-union)\n*                      │
+    │ [Tennis](/sport/tennis)\n* [Golf](/sport/golf)\n*                            │
+    │ [Athletics](/sport/athletics)\n*                                             │
+    │ [Cycling](/sport/cycling)\n[More](/sport/all-sports)**A\\-Z Sports***        │
+    │ [American Football](/sport/american-football)\n*                             │
+    │ [Athletics](/sport/athletics)\n* [Basketball](/sport/basketball)\n*          │
+    │ [Boxing](/sport/boxing)\n* [Cricket](/sport/cricket)\n*                      │
+    │ [Cycling](/sport/cycling)\n* [Darts](/sport/darts)\n* [Disability            │
+    │ Sport](/sport/disability-sport)\n* [Football](/sport/football)\n*            │
+    │ [Formula 1](/sport/formula1)\n* [Gaelic Games](/sport/northern-              │
+    │ ireland/gaelic-games)\n* [Golf](/sport/golf)\n*                              │
+    │ [Gymnastics](/sport/gymnastics)\n* [Horse Racing](/sport/horse-              │
+    │ racing)\n* [Mixed Martial Arts](/sport/mixed-martial-arts)\n*                │
+    │ [Motorsport](/sport/motorsport)\n* [Netball](/sport/netball)\n*              │
+    │ [Olympic Sports](/sport/olympics)\n* [Rugby League](/sport/rugby-            │
+    │ league)\n* [Rugby Union](/sport/rugby-union)\n*                              │
+    │ [Snooker](/sport/snooker)\n* [Swimming](/sport/swimming)\n*                  │
+    │ [Tennis](/sport/tennis)\n* [Winter Sports](/sport/winter-sports)\n*          │
+    │ [Full Sports A\\-Z](/sport/all-sports)\n**More from Sport***                 │
+    │ [England](/sport/england)\n* [Scotland](/sport/scotland)\n*                  │
+    │ [Wales](/sport/wales)\n* [Northern Ireland](/sport/northern-                 │
+    │ ireland)\n* [News Feeds](/sport/15890345)\n* [Help \\&                       │
+    │ FAQs](/sport/15561348)\n* [Manchester                                        │
+    │ United](/sport/football/teams/manchester-united)\n* [Scores \\&              │
+    │ Fixtures](/sport/football/teams/manchester-united/scores-fixtures)\n*        │
+    │ [Table](/sport/football/teams/manchester-united/table)\n'Twente wanted       │
+    │  it more' \\- so are Man Utd showing any improvement?\n===============       │
+    │ ===================================================\n\nThis video can        │
+    │ not be played\n\nTo play this video you need to enable JavaScript in         │
+    │ your browser.\n-------------------------------------------------------       │
+    │ ----------\n\nMedia caption, Man Utd 1\\-1 Twente: Twente played the         │
+    │ game of their life\n\n[Simon                                                 │
+    │ Stone](https://www.bbc.co.uk/sport/topics/c8gr7dqlp5pt)Chief football        │
+    │ news reporter* Published26 September 2024, 00:23 BST\n*                      │
+    │ [Comments](#comments)\n**Is it one step forward and two back for Erik        │
+    │ ten Hag and Manchester United?**\n\nAfter bouncing into the summer on        │
+    │ the back of an FA Cup final victory, a show of support for the manager       │
+    │  and more money spent on new signings, there was a distinct air of           │
+    │ optimism around Old Trafford when the new campaign began.\n\nYet just        │
+    │ seven games in, familiar noises are starting to come out of Old              │
+    │ Trafford to explain away below\\-par results.\n\nA smattering of boos        │
+    │ at the final whistle of the Europa League draw with Dutch side Twente        │
+    │ does not suggest a mutinous mood in the stands exists just yet.\n\nBut       │
+    │  to hear manager Ten Hag agreeing with Christian                             │
+    │ Eriksen\u00e2\u0080\u0099s post\\-match assessment of the 1\\-1              │
+    │ outcome \\- that Twente \"wanted it more\" \\- does not bode                 │
+    │ well.\n\n\"It was \n"                                                        │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ Web Surfer, please scroll down to gather more information from the           │
+    │ article.                                                                     │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "page_down",                                              │
+    │   "call_id": null,                                                           │
+    │   "retval":                                                                  │
+    │ "Address:                                                                    │
+    │ https://www.bbc.com/sport/football/articles/c2lnkd7r2y1o\nTitle: Erik        │
+    │ ten Hag criticises Man Utd's mentality - but is there improvement at         │
+    │ Old Trafford? - BBC Sport\nViewport position: Showing page 2 of              │
+    │ 5.\n=======================\nfar from good enough,\" said Eriksen.           │
+    │ \"They looked like they wanted it more \u00e2\u0080\u0093 that can't         │
+    │ be right.\n\n\"We didn't lose but it feels like a loss.\"\n\nIncluding       │
+    │  their penalty shootout defeat to Manchester City in the Community           │
+    │ Shield, Ten Hag's men have won just three of their first eight games         │
+    │ of the campaign \\- fewer at this stage than in either of the                │
+    │ manager's two previous seasons.\n\nThey have drawn twice and lost            │
+    │ three games, yet they have at times showed more defensive solidity. So       │
+    │  are United showing any improvement under the Dutchman?\n\n* [Man Utd        │
+    │ held by Twente in disappointing Europa League                                │
+    │ opener](/sport/football/live/c0m013dnwxjt)\n* [A plane crash,                │
+    │ fireworks disaster \\& car tragedy \\- how Twente shaped Ten                 │
+    │ Hag](/sport/football/articles/c3rlnwg4q1lo)\n\t+ Published1 day ago\n*       │
+    │  [People have to trust me over Rashford \\- Ten                              │
+    │ Hag](/sport/football/articles/cvgl99ykl1vo)\n\t+ Published2 days             │
+    │ ago\n'Ninety\\-nine per cent is not good                                     │
+    │ enough'\n------------------------------------------\n\nOne of United's       │
+    │  three wins came against League One Barnsley in the EFL Cup.\n\nThat         │
+    │ and the Premier League victory at Southampton \u00e2\u0080\u0093 who         │
+    │ have so far accumulated a single point \u00e2\u0080\u0093 are the only       │
+    │  times this season when United have scored more than one goal in a           │
+    │ game.\n\nNo United player has scored more than one goal in the Premier       │
+    │  League. Alejandro Garnacho \u00e2\u0080\u0093 a substitute against          │
+    │ Twente \u00e2\u0080\u0093 is the overall top scorer with four, two of        │
+    │ which came in the 7\\-0 Barnsley victory.\n\nTen Hag is not averse to        │
+    │ quoting expected goals (xG) figures in his news conferences. \n\nHe          │
+    │ will know therefore that United have underperformed their xG in five         │
+    │ of those seven competitive games \\- setting aside the Community             │
+    │ Shield for now. Their chance conversion rate is seven per cent.\n\nAll       │
+    │  of their major attacking players have scored fewer goals than their         │
+    │ xG in the Premier League so far this season.\n\nTwente gobbled up            │
+    │ their chance in Wednesday's game when it came their way, and Ten Hag         │
+    │ accepted the opposition went the extra yard.\n\n\"It was the game of         │
+    │ their life,\" said Ten Hag. \"They fought for every yard and we              │
+    │ didn't. Ninety\\-nine per cent is not enough.\n\n\"Often I think the         │
+    │ mentality from this team is very good. Today I have some criticisms.         │
+    │ It is not only the team that has to look in the mirror; I am part of         │
+    │ it. You know we have some problems scoring goals, but we have to kill        │
+    │ the game.\"\n\n'They should score                                            │
+    │ more'\n------------------------\n\n![Manchester United manager Erik          │
+    │ ten Hag](https://ichef.bbci.co.uk/ace/standard/1024/cpsprodpb/cc92/liv       │
+    │ e/84be5d30-7b90-11ef-8813-712a36c156a0.jpg)Image source, Getty               │
+    │ Images\n\nImage caption, Manchester United have now failed to win            │
+    │ their opening major European match in each of the last four                  │
+    │ seasons\n\nThe new eight\\-game single league first\\-stage format for       │
+    │  the 36\\-team Europa League means that even if they finish 24th,            │
+    │ United would qualify for a play\\-off in February.\n\nHowever,               │
+    │ external criticism is bound to mount if the current form does not            │
+    │ improve quickly.\n\n\"For all the firepower Man United had, even             │
+    │ though they had 19 shots, it didn't feel like it was good enough,\"          │
+    │ said former United and England midfielder Owen                               │
+    │ Hargreaves.\n\n\"Ruthlessness comes from the matchwinners. Man United        │
+    │ have always had those players \u00e2\u0080\u0093 the best of the best.       │
+    │  Think of the firepower they had. Someone needs to step up with a goal       │
+    │  when they need one. They should be creating more and scoring                │
+    │ more.\"\n\nCaptain Bruno Fernandes and \u00c2\u00a336\\.5m new arrival       │
+    │  Joshua Zirkzee came closest to snatching victory for the home side.         │
+    │ But United failed to smother their opponents in the manner of                │
+    │ successful teams in the past.\n\nSir Alex Ferguson's presence on the         │
+    │ pitch before the game to present a plate to his Treble\\-winning             │
+    │ assistant \u00e2\u0080\u0093 and Twente's former title\\-winning             │
+    │ manager \u00e2\u0080\u0093 Steve McClaren was a reminder of what             │
+    │ United used to be.\n\nHargreaves, it should be remembered, was part of       │
+    │  the last United side to win the Champions League in 2008\\.\n\n\"At a       │
+    │  club like this you need to win,\" Hargreaves said. \"The fixtures           │
+    │ coming up are incredibly difficult. They need to rise to the occasion        │
+    │ now and find \n"                                                             │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ Web Surfer, please scroll down further to gather more information from       │
+    │  the article.                                                                │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "page_down",                                              │
+    │   "call_id": null,                                                           │
+    │   "retval":                                                                  │
+    │ "Address:                                                                    │
+    │ https://www.bbc.com/sport/football/articles/c2lnkd7r2y1o\nTitle: Erik        │
+    │ ten Hag criticises Man Utd's mentality - but is there improvement at         │
+    │ Old Trafford? - BBC Sport\nViewport position: Showing page 3 of              │
+    │ 5.\n=======================\nsome solutions.\"\n\nDefensive                  │
+    │ improvement but tough test                                                   │
+    │ ahead\n------------------------------------------\n\nTottenham's visit       │
+    │  to Old Trafford on Sunday at least presents opposition who have             │
+    │ endured a similarly underwhelming start to the season, while next            │
+    │ Thursday's trip to Porto pits United against a side who surprisingly         │
+    │ lost their Europa League opener to Norwegian outfit                          │
+    │ Bodo/Glimt.\n\nAfter that is a very difficult trip to Aston Villa when       │
+    │  United must look to avoid entering a second international break in a        │
+    │ row with mutterings around Ten Hag and his management.\n\nOn the plus        │
+    │ side, United's defence, which looked so shaky last season, has               │
+    │ improved. Their goals\\-per\\-game conceded rate is below one, which         │
+    │ is better than in either of their two previous seasons under Ten Hag,        │
+    │ and that is despite conceding three in that home defeat by Liverpool         │
+    │ on 1 September.\n\nTen Hag continues to state his team are improving         │
+    │ and any issues are short\\-term concerns. But while he doesn't tend to       │
+    │  talk about it, last season's eighth place has not been                      │
+    │ forgotten.\n\nHe still has time on his side but time, as with any            │
+    │ manager, can soon start to drift away if results and consistency             │
+    │ remain elusive.\n\n\"We are very ambitious and when you have ambition,       │
+    │  you have to perform,\" Ten Hag said. \"Especially today, in the             │
+    │ second half, we were too complacent. We didn't bring it over the line        │
+    │ and as a team, you have to do this.\"\n\nRelated                             │
+    │ topics\n--------------\n\n* [Manchester                                      │
+    │ United](/sport/football/teams/manchester-united)\n*                          │
+    │ [Football](/sport/football)\nMore on this                                    │
+    │ story\n------------------\n\n* [Latest Manchester United news,               │
+    │ analysis and fan views](/sport/football/teams/manchester-                    │
+    │ united)![Manchester United bench](https://ichef.bbci.co.uk/ace/standar       │
+    │ d/1024/cpsprodpb/561c/live/2c8292a0-eeda-11ee-b0e1-                          │
+    │ b9dd5ac46984.jpg)\n* [Get Man Utd news                                       │
+    │ notifications](/sport/football/62294536)\n\t+ Published26 July               │
+    │ 2022![Manchester United club badge](https://ichef.bbci.co.uk/ace/stand       │
+    │ ard/2048/cpsprodpb/0F99/production/_126039930_manchesterunitedjustbadg       │
+    │ e2022-23.png)\nComments can not be loaded\n\nTo load Comments you need       │
+    │  to enable JavaScript in your browser\n\nView commentsTop                    │
+    │ stories\n-----------\n\n* [Live.\u00c2\u00a0Premier League news              │
+    │ conferences: Lopetegui \\- 'We have deserved                                 │
+    │ more'](/sport/football/live/ce8d2380yyet)\n* ['Twente wanted it more'        │
+    │ \\- so are Man Utd showing any                                               │
+    │ improvement?](/sport/football/articles/c2lnkd7r2y1o)\n\t+ Published13        │
+    │ hours ago\n* [Giroud inspires Los Angeles FC to US Open                      │
+    │ Cup](/sport/football/articles/c4g4rr1llzvo)\n\t+ Published5 hours            │
+    │ ago\nElsewhere on the BBC\n--------------------\n\n* [Extraordinary          │
+    │ courtroom access to an unfolding trial](/sounds/play/m0023hp5?at_mid=5       │
+    │ 7WgTukvVt&at_campaign=Inside_Murder_Trial&at_medium=display_ad&at_camp       │
+    │ aign_type=owned&at_audience_id=SS&at_product=sounds&at_brand=m00238q2&       │
+    │ at_ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consump       │
+    │ tion&at_link_title=Inside_Murder_Trial&at_bbc_team=BBC)Listen as a           │
+    │ 46\\-year\\-old cold case goes to trial to discover who killed Renee         │
+    │ and Andrew MacRae\n\n![](https://ichef.bbci.co.uk/images/ic/480x270/p0       │
+    │ jq5ly6.jpg)\n* [New comedy\\-drama starring David                            │
+    │ Mitchell](/iplayer/episode/m0022ww3/ludwig-series-1-episode-                 │
+    │ 1?at_mid=nxJsC7L9Ee&at_campaign=Ludwig&at_medium=display_ad&at_campaig       │
+    │ n_type=owned&at_audience_id=SS&at_product=iplayer&at_brand=m0022wvz&at       │
+    │ _ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consumpti       │
+    │ on&at_link_title=Ludwig&at_bbc_team=BBC)Can John 'Ludwig' Taylor crack       │
+    │  the biggest puzzle of his life?\n\n![Ludwig](https://ichef.bbci.co.uk       │
+    │ /ace/standard/480/cpsprodpb/6905/live/2fb5c980-7416-11ef-b02d-               │
+    │ c5f3b724a1ea.jpg)\n* [A brand new four\\-part stand\\-up comedy](/soun       │
+    │ ds/play/m00236xn?at_mid=1OT02pVbTz&at_campaign=Randy_Feltfaces_Destruc       │
+    │ tion_Manual_Earth&at_medium=display_ad&at_campaign_type=owned&at_audie       │
+    │ nce_id=SS&at_product=sounds&at_brand=m00236xp&at_ptr_name=bbc&at_ptr_t       │
+    │ ype=media&at_format=image&at_objective=consumption&at_link_title=Randy       │
+    │ _Feltfaces_Destruction_Manual_Earth&at_bbc_team=BBC)A comedy series          │
+    │ about what we can do to speed up climate change and bring a swift end        │
+    │ to life on Earth\n\n![](https://ichef.bbci.co.uk/images/ic/480x270/p0j       │
+    │ pfxz4.jpg)\n\n"                                                              │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ Web Surfer, please click on the "Giroud inspires Los Angeles FC to US        │
+    │ Open Cup" link.                                                              │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "navigational_web_search",                                │
+    │   "call_id": null,                                                           │
+    │                                                                              │
+    │ "retval": "Address:                                                          │
+    │ https://www.bbc.com/sport/football/articles/c4g4rr1llzvo\nTitle:             │
+    │ Olivier Giroud inspires LAFC to US Open Cup final win against Sporting       │
+    │  Kansas City - BBC Sport\nViewport position: Showing page 1 of               │
+    │ 4.\n=======================\nOlivier Giroud inspires LAFC to US Open         │
+    │ Cup final win against Sporting Kansas City \\- BBC Sport[BBC                 │
+    │ Homepage](https://www.bbc.com)* [Skip to content](#main-heading)\n*          │
+    │ [Accessibility Help](https://www.bbc.co.uk/accessibility/)\n\n* [Your        │
+    │ account](https://account.bbc.com/account?lang=en-GB&ptrt=https://www.b       │
+    │ bc.com/sport/football/articles/c4g4rr1llzvo&userOrigin=SPORT_GNL)\n\n*       │
+    │  [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*          │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n* [More menu](#global-                 │
+    │ navigation-more-menu)\n[More menu](#global-navigation-more-                  │
+    │ menu)[Search BBC](https://www.bbc.co.uk/search?d=SPORT_GNL)*                 │
+    │ [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*           │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n*                                      │
+    │ [Earth](https://www.bbc.com/future-planet)\n*                                │
+    │ [Video](https://www.bbc.com/video)\n*                                        │
+    │ [Live](https://www.bbc.com/live)\n\n[Close menu](#more-menu-                 │
+    │ button)[BBC Sport](/sport)[Menu](/sport/all-sports)* [Home](/sport)\n*       │
+    │  [Football](/sport/football)\n* [Cricket](/sport/cricket)\n* [Formula        │
+    │ 1](/sport/formula1)\n* [Rugby U](/sport/rugby-union)\n*                      │
+    │ [Tennis](/sport/tennis)\n* [Golf](/sport/golf)\n*                            │
+    │ [Athletics](/sport/athletics)\n*                                             │
+    │ [Cycling](/sport/cycling)\n[More](/sport/all-sports)**A\\-Z Sports***        │
+    │ [American Football](/sport/american-football)\n*                             │
+    │ [Athletics](/sport/athletics)\n* [Basketball](/sport/basketball)\n*          │
+    │ [Boxing](/sport/boxing)\n* [Cricket](/sport/cricket)\n*                      │
+    │ [Cycling](/sport/cycling)\n* [Darts](/sport/darts)\n* [Disability            │
+    │ Sport](/sport/disability-sport)\n* [Football](/sport/football)\n*            │
+    │ [Formula 1](/sport/formula1)\n* [Gaelic Games](/sport/northern-              │
+    │ ireland/gaelic-games)\n* [Golf](/sport/golf)\n*                              │
+    │ [Gymnastics](/sport/gymnastics)\n* [Horse Racing](/sport/horse-              │
+    │ racing)\n* [Mixed Martial Arts](/sport/mixed-martial-arts)\n*                │
+    │ [Motorsport](/sport/motorsport)\n* [Netball](/sport/netball)\n*              │
+    │ [Olympic Sports](/sport/olympics)\n* [Rugby League](/sport/rugby-            │
+    │ league)\n* [Rugby Union](/sport/rugby-union)\n*                              │
+    │ [Snooker](/sport/snooker)\n* [Swimming](/sport/swimming)\n*                  │
+    │ [Tennis](/sport/tennis)\n* [Winter Sports](/sport/winter-sports)\n*          │
+    │ [Full Sports A\\-Z](/sport/all-sports)\n**More from Sport***                 │
+    │ [England](/sport/england)\n* [Scotland](/sport/scotland)\n*                  │
+    │ [Wales](/sport/wales)\n* [Northern Ireland](/sport/northern-                 │
+    │ ireland)\n* [News Feeds](/sport/15890345)\n* [Help \\&                       │
+    │ FAQs](/sport/15561348)\n* [United States Major League                        │
+    │ Soccer](/sport/football/)\n* [Scores \\& Fixtures](/sport/football/us-       │
+    │ major-league/scores-fixtures)\n* [Table](/sport/football/us-major-           │
+    │ league/table)\nGiroud inspires Los Angeles FC to US Open                     │
+    │ Cup\n=============================================\n\nThis video can         │
+    │ not be played\n\nTo play this video you need to enable JavaScript in         │
+    │ your browser.\n-------------------------------------------------------       │
+    │ ----------\n\nMedia caption, LAFC\u00e2\u0080\u0099s Olivier Giroud          │
+    │ and hugo Lloris on U.S. Open Cup win\n\nSean KearnsBBC Sport*                │
+    │ Published26 September 2024, 08:14 BST\nUpdated 5 hours ago**Former           │
+    │ Arsenal and Chelsea striker Olivier Giroud scored as Los Angeles FC          │
+    │ beat Sporting Kansas City 3\\-1 to win the US Open Cup.**\n\nThe             │
+    │ 37\\-year\\-old, who joined the west coast club after [leaving AC            │
+    │ Milan at the end of last                                                     │
+    │ season](https://www.bbc.co.uk/sport/football/articles/c51nnzzgr67o),         │
+    │ tapped in from close range to give his side the lead in the 53rd             │
+    │ minute.\n\nKansas City's Erik Thommy equalised to take the game to           │
+    │ extra time, when Mexican defender Omar Campos and Sierra Leonean             │
+    │ forward Kei Kamara scored to seal the win.\n\nFor Giroud, who retired        │
+    │ from France duty in July as the nation's record scorer with 57 goals,        │
+    │ it was important after August's Leagues Cup final defeat by Columbus         │
+    │ Crew. \n\n\"I came here to win trophies and to play that kind of             │
+    │ final,\" said Giroud.\n\n\"I was really sad and disappointed for the         │
+    │ team regarding the Leagues Cup.\n\n\"We've been in a difficult run           │
+    │ these last \n"                                                               │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ Web Surfer, please scroll down to gather more information from the           │
+    │ article.                                                                     │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "page_down",                                              │
+    │   "call_id": null,                                                           │
+    │   "retval":                                                                  │
+    │ "Address:                                                                    │
+    │ https://www.bbc.com/sport/football/articles/c4g4rr1llzvo\nTitle:             │
+    │ Olivier Giroud inspires LAFC to US Open Cup final win against Sporting       │
+    │  Kansas City - BBC Sport\nViewport position: Showing page 2 of               │
+    │ 4.\n=======================\nweeks, but we stuck together, and we            │
+    │ really wanted to win this trophy for the fans, for the club. It does         │
+    │ matter for me, for the boys, and I'm so happy to score in this final         │
+    │ and to help the team.\"\n\nThe victory keeps LAFC's hopes of                 │
+    │ completing a domestic league and cup double alive.\n\nOnly three teams       │
+    │  have done the double, with LA Galaxy doing so in 2005 after Chicago         │
+    │ Fire and DC United achieved the feat. \n\nLAFC sit fourth in the MLS         │
+    │ Western Conference standings and are expected to seal a play\\-off           │
+    │ spot. \n\n![Olivier Giroud holds up a scarf in celebration which says        │
+    │ 'Lamar Hunt US Open Cup champions 2024', in the colours of LAFC](https       │
+    │ ://ichef.bbci.co.uk/ace/standard/1024/cpsprodpb/f0a8/live/f5532ec0-          │
+    │ 7bd3-11ef-8e06-33f61633f6a9.jpg)Image source, Getty Images\n\nImage          │
+    │ caption, Olivier Giroud joined LAFC from AC Milan\n\nRelated                 │
+    │ topics\n--------------\n\n* [United States Major League                      │
+    │ Soccer](/sport/football/us-major-league)\n*                                  │
+    │ [Football](/sport/football)\nMore on this                                    │
+    │ story\n------------------\n\n* [Listen to the latest Football Daily          │
+    │ podcast](/sounds/series/p02nrsln)\n* [Get football news sent straight        │
+    │ to your phone](/sport/articles/cl5q9dk9jl3o)\n\t+ Published6 June![BBC       │
+    │  Sport microphone and phone](https://ichef.bbci.co.uk/ace/standard/815       │
+    │ /cpsprodpb/b2c7/live/922d6170-544c-11ef-aebc-6de4d31bf5cd.jpg)\nTop          │
+    │ stories\n-----------\n\n* [Live.\u00c2\u00a0Premier League news              │
+    │ conferences: Lopetegui \\- 'We have deserved                                 │
+    │ more'](/sport/football/live/ce8d2380yyet)\n* ['Twente wanted it more'        │
+    │ \\- so are Man Utd showing any                                               │
+    │ improvement?](/sport/football/articles/c2lnkd7r2y1o)\n\t+ Published13        │
+    │ hours ago\n* [Giroud inspires Los Angeles FC to US Open                      │
+    │ Cup](/sport/football/articles/c4g4rr1llzvo)\n\t+ Published5 hours            │
+    │ ago\nElsewhere on the BBC\n--------------------\n\n* [Extraordinary          │
+    │ courtroom access to an unfolding trial](/sounds/play/m0023hp5?at_mid=5       │
+    │ 7WgTukvVt&at_campaign=Inside_Murder_Trial&at_medium=display_ad&at_camp       │
+    │ aign_type=owned&at_audience_id=SS&at_product=sounds&at_brand=m00238q2&       │
+    │ at_ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consump       │
+    │ tion&at_link_title=Inside_Murder_Trial&at_bbc_team=BBC)Listen as a           │
+    │ 46\\-year\\-old cold case goes to trial to discover who killed Renee         │
+    │ and Andrew MacRae\n\n![](https://ichef.bbci.co.uk/images/ic/480x270/p0       │
+    │ jq5ly6.jpg)\n* [New comedy\\-drama starring David                            │
+    │ Mitchell](/iplayer/episode/m0022ww3/ludwig-series-1-episode-                 │
+    │ 1?at_mid=nxJsC7L9Ee&at_campaign=Ludwig&at_medium=display_ad&at_campaig       │
+    │ n_type=owned&at_audience_id=SS&at_product=iplayer&at_brand=m0022wvz&at       │
+    │ _ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consumpti       │
+    │ on&at_link_title=Ludwig&at_bbc_team=BBC)Can John 'Ludwig' Taylor crack       │
+    │  the biggest puzzle of his life?\n\n![Ludwig](https://ichef.bbci.co.uk       │
+    │ /ace/standard/480/cpsprodpb/6905/live/2fb5c980-7416-11ef-b02d-               │
+    │ c5f3b724a1ea.jpg)\n* [A brand new four\\-part stand\\-up comedy](/soun       │
+    │ ds/play/m00236xn?at_mid=1OT02pVbTz&at_campaign=Randy_Feltfaces_Destruc       │
+    │ tion_Manual_Earth&at_medium=display_ad&at_campaign_type=owned&at_audie       │
+    │ nce_id=SS&at_product=sounds&at_brand=m00236xp&at_ptr_name=bbc&at_ptr_t       │
+    │ ype=media&at_format=image&at_objective=consumption&at_link_title=Randy       │
+    │ _Feltfaces_Destruction_Manual_Earth&at_bbc_team=BBC)A comedy series          │
+    │ about what we can do to speed up climate change and bring a swift end        │
+    │ to life on Earth\n\n![](https://ichef.bbci.co.uk/images/ic/480x270/p0j       │
+    │ pfxz4.jpg)\n* [As futures hang in the balance, what would you                │
+    │ decide?](/iplayer/episode/m002385t/parole-series-2-1-trust-no-one?seri       │
+    │ esId=m002385s&at_mid=LWZAuEBKTC&at_campaign=Parole_S2&at_medium=displa       │
+    │ y_ad&at_campaign_type=owned&at_audience_id=SS&at_product=iplayer&at_br       │
+    │ and=m001jfsn&at_ptr_name=bbc&at_ptr_type=media&at_format=image&at_obje       │
+    │ ctive=consumption&at_link_title=Parole_S2&at_bbc_team=BBC)An                 │
+    │ eye\\-opening look at Britain's parole boards\n\n![Parole](https://ich       │
+    │ ef.bbci.co.uk/ace/standard/480/cpsprodpb/a22e/live/9bf57460-7b41-11ef-       │
+    │ b282-4535eb84fe4b.jpg)\nElsewhere in Sport\n------------------\n\n*          │
+    │ [From Test match to wedding \\- Stone's Pakistan                             │
+    │ dash](/sport/cricket/articles/cn7yx3y1rpxo)![Olly Stone](https://ichef       │
+    │ .bbci.co.uk/ace/standard/480/cpsprodpb/2543/live/b0f0acd0-7bd8-11ef-         │
+    │ 8e06-33f61633f6a9.jpg)\n\n"                                                  │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ Web Surfer, please click on the "Stars set for lucrative meet                │
+    │ organised by Serena Williams' husband" link.                                 │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "navigational_web_search",                                │
+    │   "call_id": null,                                                           │
+    │                                                                              │
+    │ "retval": "Address:                                                          │
+    │ https://www.bbc.com/sport/athletics/articles/ce8d033z430o\nTitle:            │
+    │ Athlos NYC: Gabby Thomas among stars in action at lucrative women's          │
+    │ track event - BBC Sport\nViewport position: Showing page 1 of                │
+    │ 4.\n=======================\nAthlos NYC: Gabby Thomas among stars in         │
+    │ action at lucrative women's track event \\- BBC Sport[BBC                    │
+    │ Homepage](https://www.bbc.com)* [Skip to content](#main-heading)\n*          │
+    │ [Accessibility Help](https://www.bbc.co.uk/accessibility/)\n\n* [Your        │
+    │ account](https://account.bbc.com/account?lang=en-GB&ptrt=https://www.b       │
+    │ bc.com/sport/athletics/articles/ce8d033z430o&userOrigin=SPORT_GNL)\n\n       │
+    │ * [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*         │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n* [More menu](#global-                 │
+    │ navigation-more-menu)\n[More menu](#global-navigation-more-                  │
+    │ menu)[Search BBC](https://www.bbc.co.uk/search?d=SPORT_GNL)*                 │
+    │ [Home](https://www.bbc.com)\n* [News](https://www.bbc.com/news)\n*           │
+    │ [Sport](https://www.bbc.com/sport)\n*                                        │
+    │ [Business](https://www.bbc.com/business)\n*                                  │
+    │ [Innovation](https://www.bbc.com/innovation)\n*                              │
+    │ [Culture](https://www.bbc.com/culture)\n*                                    │
+    │ [Travel](https://www.bbc.com/travel)\n*                                      │
+    │ [Earth](https://www.bbc.com/future-planet)\n*                                │
+    │ [Video](https://www.bbc.com/video)\n*                                        │
+    │ [Live](https://www.bbc.com/live)\n\n[Close menu](#more-menu-                 │
+    │ button)[BBC Sport](/sport)[Menu](/sport/all-sports)* [Home](/sport)\n*       │
+    │  [Football](/sport/football)\n* [Cricket](/sport/cricket)\n* [Formula        │
+    │ 1](/sport/formula1)\n* [Rugby U](/sport/rugby-union)\n*                      │
+    │ [Tennis](/sport/tennis)\n* [Golf](/sport/golf)\n*                            │
+    │ [Athletics](/sport/athletics)\n*                                             │
+    │ [Cycling](/sport/cycling)\n[More](/sport/all-sports)**A\\-Z Sports***        │
+    │ [American Football](/sport/american-football)\n*                             │
+    │ [Athletics](/sport/athletics)\n* [Basketball](/sport/basketball)\n*          │
+    │ [Boxing](/sport/boxing)\n* [Cricket](/sport/cricket)\n*                      │
+    │ [Cycling](/sport/cycling)\n* [Darts](/sport/darts)\n* [Disability            │
+    │ Sport](/sport/disability-sport)\n* [Football](/sport/football)\n*            │
+    │ [Formula 1](/sport/formula1)\n* [Gaelic Games](/sport/northern-              │
+    │ ireland/gaelic-games)\n* [Golf](/sport/golf)\n*                              │
+    │ [Gymnastics](/sport/gymnastics)\n* [Horse Racing](/sport/horse-              │
+    │ racing)\n* [Mixed Martial Arts](/sport/mixed-martial-arts)\n*                │
+    │ [Motorsport](/sport/motorsport)\n* [Netball](/sport/netball)\n*              │
+    │ [Olympic Sports](/sport/olympics)\n* [Rugby League](/sport/rugby-            │
+    │ league)\n* [Rugby Union](/sport/rugby-union)\n*                              │
+    │ [Snooker](/sport/snooker)\n* [Swimming](/sport/swimming)\n*                  │
+    │ [Tennis](/sport/tennis)\n* [Winter Sports](/sport/winter-sports)\n*          │
+    │ [Full Sports A\\-Z](/sport/all-sports)\n**More from Sport***                 │
+    │ [England](/sport/england)\n* [Scotland](/sport/scotland)\n*                  │
+    │ [Wales](/sport/wales)\n* [Northern Ireland](/sport/northern-                 │
+    │ ireland)\n* [News Feeds](/sport/15890345)\n* [Help \\&                       │
+    │ FAQs](/sport/15561348)\n* [Athletics](/sport/athletics)\n*                   │
+    │ [Results](/sport/athletics/results)\n*                                       │
+    │ [Calendar](/sport/athletics/calendar)\nThomas among stars at lucrative       │
+    │  Athlos NYC                                                                  │
+    │ event\n================================================\n\n![Gabby           │
+    │ Thomas celebrates with the American flag after winning 200m gold at          │
+    │ the Paris Olympics in August](https://ichef.bbci.co.uk/ace/standard/81       │
+    │ 9/cpsprodpb/04c5/live/2c2ea7b0-7bef-11ef-8197-3342e972292b.jpg)Image         │
+    │ source, Getty Images\n\nImage caption, Gabby Thomas won three gold           │
+    │ medals at the Paris Olympics\n\n* Published1 hour ago\n**Many of the         │
+    │ world's top women's track athletes are set to compete for record             │
+    │ prizes when the inaugural Athlos NYC gets under way on                       │
+    │ Thursday.**\n\nAmerican Olympic 200m champion Gabby Thomas and Kenyan        │
+    │ 1,500m world record holder Faith Kipyegon are among the stars in             │
+    │ action at the women's\\-only track invitational.\n\nAlexis Ohanian \\-       │
+    │  Reddit co\\-founder and husband of 23\\-time Grand Slam tennis              │
+    │ champion Serena Williams \\- has launched the event which [boasts a          │
+    │ record $500,000 (\u00c2\u00a3374,000\\) prize pool,                          │
+    │ external](https://athlos.com/) for a women's track meet.\n\nWinners          │
+    │ across six disciplines will receive $60,000                                  │
+    │ (\u00c2\u00a344,900\\).\n\nThe Diamond League, in comparison, offers a       │
+    │  $15,000 (\u00c2\u00a311,200\\) first prize across its 15 series             │
+    │ meetings, rising to $30,000 (\u00c2\u00a322,400\\) for the final.            │
+    │ \n\n\"I asked these women, I was like, 'Hey, so what is your top prize       │
+    │  at the end of a season for winning?' And they said $30,000,\" Ohanian       │
+    │  told Reuters. \n\n\"And I said, 'Great, \n"                                 │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ Web Surfer, please scroll down to gather more information from the           │
+    │ article.                                                                     │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [function_call_ex ─╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "page_down",                                              │
+    │   "call_id": null,                                                           │
+    │   "retval":                                                                  │
+    │ "Address:                                                                    │
+    │ https://www.bbc.com/sport/athletics/articles/ce8d033z430o\nTitle:            │
+    │ Athlos NYC: Gabby Thomas among stars in action at lucrative women's          │
+    │ track event - BBC Sport\nViewport position: Showing page 2 of                │
+    │ 4.\n=======================\nI'm going to double it for one single           │
+    │ race'.\"\n\nThere are two Brits in action with Daryll Neita racing in        │
+    │ the 100m and Katie Snowden competing in the 1500m.\n\nThe Athlos             │
+    │ meeting continues wider investment in the sport and its athletes, with       │
+    │  World Athletics paying Olympic champions [for the first time at the         │
+    │ Paris Games this year.](https://www.bbc.co.uk/sport/athletics/68778225       │
+    │ #:~:text=The%20global%20governing%20body%20said,medallists%20at%20Los%       │
+    │ 20Angeles%202028.)\n\nIn June, American legend Michael Johnson               │
+    │ announced the [launch of a lucrative new athletics league starting in        │
+    │ April                                                                        │
+    │ 2025](https://www.bbc.co.uk/sport/athletics/articles/c722gzx5x2zo)           │
+    │ called Grand Slam track, with a total of $12\\.6m (\u00c2\u00a39\\.9m)       │
+    │  in prize money.\n\nAnd last week, the Diamond League said it would          │
+    │ raise its prize money for the 2025 season.\n\n\"It's a great sign when       │
+    │  there are other people seeing what you're doing and racing to be a          │
+    │ part of it too,\" said Ohanian.\n\nBigger than myself and the race \\-       │
+    │  Thomas\n-----------------------------------------\n\nAthlos NYC sees        │
+    │ 36 athletes competing at the Icahn Stadium across the 100m, 200m,            │
+    │ 400m, 100m hurdles, 800m, and 1500m.\n\nIn addition to prize money,          │
+    │ victors will also receive a crown by New York jewellers Tiffany \\&          │
+    │ Co.\n\nAlongside Thomas and Kipyegon will be Dominican 400m Olympic          │
+    │ champion Marileidy Paulino and American Masai Russell, who won the           │
+    │ 100m hurdles in Paris.\n\n\"This is bigger than myself and it's bigger       │
+    │  than this race,\" said Thomas, who added 4x100m and 4x400m relay            │
+    │ golds to her 200m win in Paris.\n\n\"It's about what we're doing for         │
+    │ women's sports and what this event, in particular, means for women's         │
+    │ sport and for track and field.\"\n\nOhanian founded Athlos NYC               │
+    │ following his investment in Los Angeles\\-based NWSL side Angel City         │
+    │ FC last year, when the club became the [most expensive women's sports        │
+    │ team in the world.](https://www.bbc.co.uk/sport/football/articles/c1e5       │
+    │ 742g3nko)\n\n\"You just look at the follower counts, you look at the         │
+    │ engagement. Women athletes \\- and in this example, with track \\-           │
+    │ just are way more compelling,\" said Ohanian.\n\n\"I have a 'Spidey          │
+    │ sense' for where there are hyper\\-engaged communities of fans and           │
+    │ women's sports has them in droves.\"\n\nRelated                              │
+    │ topics\n--------------\n\n* [Athletics](/sport/athletics)\nTop               │
+    │ stories\n-----------\n\n* [Live.\u00c2\u00a0Premier League news              │
+    │ conferences: Lopetegui \\- 'We have deserved                                 │
+    │ more'](/sport/football/live/ce8d2380yyet)\n* ['Twente wanted it more'        │
+    │ \\- so are Man Utd showing any                                               │
+    │ improvement?](/sport/football/articles/c2lnkd7r2y1o)\n\t+ Published13        │
+    │ hours ago\n* [Giroud inspires Los Angeles FC to US Open                      │
+    │ Cup](/sport/football/articles/c4g4rr1llzvo)\n\t+ Published5 hours            │
+    │ ago\nElsewhere on the BBC\n--------------------\n\n* [Extraordinary          │
+    │ courtroom access to an unfolding trial](/sounds/play/m0023hp5?at_mid=5       │
+    │ 7WgTukvVt&at_campaign=Inside_Murder_Trial&at_medium=display_ad&at_camp       │
+    │ aign_type=owned&at_audience_id=SS&at_product=sounds&at_brand=m00238q2&       │
+    │ at_ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consump       │
+    │ tion&at_link_title=Inside_Murder_Trial&at_bbc_team=BBC)Listen as a           │
+    │ 46\\-year\\-old cold case goes to trial to discover who killed Renee         │
+    │ and Andrew MacRae\n\n![](https://ichef.bbci.co.uk/images/ic/480x270/p0       │
+    │ jq5ly6.jpg)\n* [New comedy\\-drama starring David                            │
+    │ Mitchell](/iplayer/episode/m0022ww3/ludwig-series-1-episode-                 │
+    │ 1?at_mid=nxJsC7L9Ee&at_campaign=Ludwig&at_medium=display_ad&at_campaig       │
+    │ n_type=owned&at_audience_id=SS&at_product=iplayer&at_brand=m0022wvz&at       │
+    │ _ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consumpti       │
+    │ on&at_link_title=Ludwig&at_bbc_team=BBC)Can John 'Ludwig' Taylor crack       │
+    │  the biggest puzzle of his life?\n\n![Ludwig](https://ichef.bbci.co.uk       │
+    │ /ace/standard/480/cpsprodpb/6905/live/2fb5c980-7416-11ef-b02d-               │
+    │ c5f3b724a1ea.jpg)\n* [A brand new four\\-part stand\\-up comedy](/soun       │
+    │ ds/play/m00236xn?at_mid=1OT02pVbTz&at_campaign=Randy_Feltfaces_Destruc       │
+    │ tion_Manual_Earth&at_medium=display_ad&at_campaign_type=owned&at_audie       │
+    │ nce_id=SS&at_product=sounds&at_brand=m00236xp&at_ptr_name=bbc&at_ptr_t       │
+    │ ype=media&at_format=image&at_objective=consumption&at_link_title=Randy       │
+    │ _Feltfaces_Destruction_Manual_Earth&at_bbc_team=BBC)A \n"                    │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ ### Summary of Findings                                                      │
+    │                                                                              │
+    │ 1. **Premier League News Conferences**:                                      │
+    │ Premier League managers held news conferences with a focus on the            │
+    │ stability brought by the takeover.                                           │
+    │ 2. **Manchester United's                                                     │
+    │ Performance**: Erik ten Hag criticized Manchester United's mentality         │
+    │ after a 1-1 draw with Twente, highlighting issues with the team's            │
+    │ performance and mentality.                                                   │
+    │ 3. **US Open Cup**: Olivier Giroud inspired                                  │
+    │  Los Angeles FC to a 3-1 victory over Sporting Kansas City in the US         │
+    │ Open Cup final.                                                              │
+    │ 4. **Athlos NYC Event**: Gabby Thomas and other top                          │
+    │ women's track athletes are set to compete in the inaugural Athlos NYC        │
+    │ event, organized by Alexis Ohanian, with a record prize pool of              │
+    │ $500,000.                                                                    │
+    │                                                                              │
+    │ ### JSON-encoded Summary                                                     │
+    │ ```json                                                                      │
+    │ {                                                                            │
+    │   "task": "Get the                                                           │
+    │ latest news from https://www.bbc.com/sport",                                 │
+    │   "is_successful": true,                                                     │
+    │                                                                              │
+    │   "short_answer": "Latest news includes Premier League news                  │
+    │ conferences, Manchester United's performance critique, LAFC's US Open        │
+    │ Cup win, and the Athlos NYC event.",                                         │
+    │   "long_answer": "The latest news                                            │
+    │  from BBC Sport includes: Premier League managers held news                  │
+    │ conferences focusing on stability brought by the takeover. Erik ten          │
+    │ Hag criticized Manchester United's mentality after a 1-1 draw with           │
+    │ Twente, highlighting issues with the team's performance and mentality.       │
+    │  Olivier Giroud inspired Los Angeles FC to a 3-1 victory over Sporting       │
+    │  Kansas City in the US Open Cup final. Gabby Thomas and other top            │
+    │ women's track athletes are set to compete in the inaugural Athlos NYC        │
+    │ event, organized by Alexis Ohanian, with a record prize pool of              │
+    │ $500,000.",                                                                  │
+    │   "visited_links": [                                                         │
+    │     "https://www.bbc.com/sport",                                             │
+    │                                                                              │
+    │ "https://www.bbc.com/sport/football/articles/c2lnkd7r2y1o",                  │
+    │                                                                              │
+    │ "https://www.bbc.com/sport/football/articles/c4g4rr1llzvo",                  │
+    │                                                                              │
+    │ "https://www.bbc.com/sport/athletics/articles/ce8d033z430o"                  │
+    │   ]                                                                          │
+    │ }                                                                            │
+    │ ```                                                                          │
+    │                                                                              │
+    │                                                                              │
+    │ TERMINATE                                                                    │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_websurfer -> Web_Surfer_inner_assistant [text_message] ────╮
+    │                                                                              │
+    │ Please output the JSON-encoded answer only in the following message          │
+    │ before trying to terminate the chat.                                         │
+    │                                                                              │
+    │ IMPORTANT:                                                                   │
+    │   - NEVER enclose                                                            │
+    │ JSON-encoded answer in any other text or formatting including                │
+    │ '```json' ... '```' or similar!                                              │
+    │   - NEVER write TERMINATE in the same                                        │
+    │ message as the JSON-encoded answer!                                          │
+    │                                                                              │
+    │ EXAMPLE:                                                                     │
+    │                                                                              │
+    │ {"task":"What is the                                                         │
+    │ most popular QLED TV to buy on                                               │
+    │ amazon.com?","is_successful":true,"short_answer":"Amazon Fire TV 55\"        │
+    │ Omni QLED Series 4K UHD smart TV","long_answer":"Amazon has the best         │
+    │ selling page by different categories and there is a category for QLED        │
+    │ TVs under electroincs. The most popular QLED TV is Amazon Fire TV 55\"       │
+    │  Omni QLED Series 4K UHD smart TV, Dolby Vision IQ, Fire TV Ambient          │
+    │ Experience, local dimming, hands-free with Alexa. It is the best             │
+    │ selling QLED TV on                                                           │
+    │ Amazon.","visited_links":["https://www.amazon.com/Best-                      │
+    │ Sellers/","https://www.amazon.com/Best-Sellers-Electronics-QLED-             │
+    │ TVs/"]}                                                                      │
+    │                                                                              │
+    │ NEGATIVE EXAMPLES:                                                           │
+    │                                                                              │
+    │ 1. Do NOT include 'TERMINATE' in the same                                    │
+    │  message as the JSON-encoded answer!                                         │
+    │                                                                              │
+    │ {"task":"What is the most                                                    │
+    │ popular QLED TV to buy on                                                    │
+    │ amazon.com?","is_successful":true,"short_answer":"Amazon Fire TV 55\"        │
+    │ Omni QLED Series 4K UHD smart TV","long_answer":"Amazon has the best         │
+    │ selling page by different categories and there is a category for QLED        │
+    │ TVs under electroincs. The most popular QLED TV is Amazon Fire TV 55\"       │
+    │  Omni QLED Series 4K UHD smart TV, Dolby Vision IQ, Fire TV Ambient          │
+    │ Experience, local dimming, hands-free with Alexa. It is the best             │
+    │ selling QLED TV on                                                           │
+    │ Amazon.","visited_links":["https://www.amazon.com/Best-                      │
+    │ Sellers/","https://www.amazon.com/Best-Sellers-Electronics-QLED-             │
+    │ TVs/"]}                                                                      │
+    │                                                                              │
+    │ TERMINATE                                                                    │
+    │                                                                              │
+    │ 2. Do NOT include triple backticks or similar!                               │
+    │                                                                              │
+    │                                                                              │
+    │ ```json                                                                      │
+    │ {"task":"What is the most popular QLED TV to buy on                          │
+    │ amazon.com?","is_successful":true,"short_answer":"Amazon Fire TV 55\"        │
+    │ Omni QLED Series 4K UHD smart TV","long_answer":"Amazon has the best         │
+    │ selling page by different categories and there is a category for QLED        │
+    │ TVs under electroincs. The most popular QLED TV is Amazon Fire TV 55\"       │
+    │  Omni QLED Series 4K UHD smart TV, Dolby Vision IQ, Fire TV Ambient          │
+    │ Experience, local dimming, hands-free with Alexa. It is the best             │
+    │ selling QLED TV on                                                           │
+    │ Amazon.","visited_links":["https://www.amazon.com/Best-                      │
+    │ Sellers/","https://www.amazon.com/Best-Sellers-Electronics-QLED-             │
+    │ TVs/"]}                                                                      │
+    │ ```                                                                          │
+    │                                                                              │
+    │ THE LAST ERROR MESSAGE:                                                      │
+    │                                                                              │
+    │ 1 validation error for                                                       │
+    │ WebSurferAnswer                                                              │
+    │   Invalid JSON: expected value at line 1 column 1                            │
+    │ [type=json_invalid, input_value='Web Surfer, please scrol...ation from       │
+    │  the article.', input_type=str]                                              │
+    │     For further information visit                                            │
+    │ https://errors.pydantic.dev/2.9/v/json_invalid                               │
+    │                                                                              │
+    │                                                                              │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_inner_assistant -> Web_Surfer_inner_websurfer [text_message] ────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "task": "Get the latest news from https://www.bbc.com/sport",              │
+    │                                                                              │
+    │ "is_successful": true,                                                       │
+    │   "short_answer": "Latest news includes Premier                              │
+    │  League news conferences, Manchester United's performance critique,          │
+    │ LAFC's US Open Cup win, and the Athlos NYC event.",                          │
+    │   "long_answer":                                                             │
+    │ "The latest news from BBC Sport includes: Premier League managers held       │
+    │  news conferences focusing on stability brought by the takeover. Erik        │
+    │ ten Hag criticized Manchester United's mentality after a 1-1 draw with       │
+    │  Twente, highlighting issues with the team's performance and                 │
+    │ mentality. Olivier Giroud inspired Los Angeles FC to a 3-1 victory           │
+    │ over Sporting Kansas City in the US Open Cup final. Gabby Thomas and         │
+    │ other top women's track athletes are set to compete in the inaugural         │
+    │ Athlos NYC event, organized by Alexis Ohanian, with a record prize           │
+    │ pool of $500,000.",                                                          │
+    │   "visited_links": [                                                         │
+    │                                                                              │
+    │ "https://www.bbc.com/sport",                                                 │
+    │                                                                              │
+    │ "https://www.bbc.com/sport/football/articles/c2lnkd7r2y1o",                  │
+    │                                                                              │
+    │ "https://www.bbc.com/sport/football/articles/c4g4rr1llzvo",                  │
+    │                                                                              │
+    │ "https://www.bbc.com/sport/athletics/articles/ce8d033z430o"                  │
+    │   ]                                                                          │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Giphy_Agent -> Web_Surfer_Agent [function_call_execution] ──────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": null,                                                     │
+    │   "call_id":                                                                 │
+    │ "call_oKtK9jVInSeM8NzpfzswzTBZ",                                             │
+    │   "retval": "We have successfully                                            │
+    │ completed the task:\n\nGet the latest news from                              │
+    │ https://www.bbc.com/sport\n\nShort answer: Latest news includes              │
+    │ Premier League news conferences, Manchester United's performance             │
+    │ critique, LAFC's US Open Cup win, and the Athlos NYC                         │
+    │ event.\n\nExplanation: The latest news from BBC Sport includes:              │
+    │ Premier League managers held news conferences focusing on stability          │
+    │ brought by the takeover. Erik ten Hag criticized Manchester United's         │
+    │ mentality after a 1-1 draw with Twente, highlighting issues with the         │
+    │ team's performance and mentality. Olivier Giroud inspired Los Angeles        │
+    │ FC to a 3-1 victory over Sporting Kansas City in the US Open Cup             │
+    │ final. Gabby Thomas and other top women's track athletes are set to          │
+    │ compete in the inaugural Athlos NYC event, organized by Alexis               │
+    │ Ohanian, with a record prize pool of $500,000.\n\nVisited links:\n  -        │
+    │ https://www.bbc.com/sport\n  -                                               │
+    │ https://www.bbc.com/sport/football/articles/c2lnkd7r2y1o\n  -                │
+    │ https://www.bbc.com/sport/football/articles/c4g4rr1llzvo\n  -                │
+    │ https://www.bbc.com/sport/athletics/articles/ce8d033z430o\n\n"               │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_Agent -> Giphy_Agent [text_message] ─────────────────────────────╮
+    │                                                                              │
+    │ Here are the latest news highlights from BBC Sport:                          │
+    │                                                                              │
+    │ 1. **Premier                                                                 │
+    │ League News Conferences**: Managers discussed the stability brought by       │
+    │  recent takeovers.                                                           │
+    │ 2. **Manchester United**: Erik ten Hag criticized                            │
+    │ the team's mentality after a 1-1 draw with Twente.                           │
+    │ 3. **US Open Cup**:                                                          │
+    │  Olivier Giroud led Los Angeles FC to a 3-1 victory over Sporting            │
+    │ Kansas City.                                                                 │
+    │ 4. **Athlos NYC Event**: Top women's track athletes,                         │
+    │ including Gabby Thomas, will compete in an event organized by Alexis         │
+    │ Ohanian, featuring a record prize pool of $500,000.                          │
+    │                                                                              │
+    │ For more details,                                                            │
+    │  you can visit [BBC Sport](https://www.bbc.com/sport).                       │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Giphy_Agent -> Web_Surfer_Agent [text_message] ─────────────────────────────╮
+    │                                                                              │
+    │ Would you like me to generate some GIFs based on this content?               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_Agent -> Giphy_Agent [text_message] ─────────────────────────────╮
+    │                                                                              │
+    │ No, thank you.                                                               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Giphy_Agent -> Web_Surfer_Agent [suggested_function_call] ──────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "present_completed_task_or_ask_question",                 │
+    │                                                                              │
+    │ "call_id": "call_5WoLC7jQ0CwVKkoIQ61VVnAr",                                  │
+    │   "arguments": {                                                             │
+    │                                                                              │
+    │ "message": "Alright! If you need anything else, feel free to ask."           │
+    │   }                                                                          │
+    │                                                                              │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ giphy_agent -> giphy_agent [text_input] ────────────────────────────────────╮
+    │                                                                              │
+    │ Alright! If you need anything else, feel free to ask.:                       │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+  Generate some Manchester United gifs
+
+    ╭─ Web_Surfer_Agent -> Giphy_Agent [function_call_execution] ──────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "present_completed_task_or_ask_question",                 │
+    │                                                                              │
+    │ "call_id": "call_5WoLC7jQ0CwVKkoIQ61VVnAr",                                  │
+    │   "retval": "Generate some                                                   │
+    │  Manchester United gifs\n"                                                   │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Giphy_Agent -> Web_Surfer_Agent [suggested_function_call] ──────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "search_gifs",                                            │
+    │   "call_id":                                                                 │
+    │ "call_WDZcxALFHpQDElyXLjV5ZPMS",                                             │
+    │   "arguments": {                                                             │
+    │     "q": "Manchester                                                         │
+    │  United",                                                                    │
+    │     "limit": 5                                                               │
+    │   }                                                                          │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Web_Surfer_Agent -> Giphy_Agent [function_call_execution] ──────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "search_gifs",                                            │
+    │   "call_id":                                                                 │
+    │ "call_WDZcxALFHpQDElyXLjV5ZPMS",                                             │
+    │   "retval": "{\"data\": [{\"type\":                                          │
+    │ \"gif\", \"id\": \"JnUywhEhFhQUfZu666\", \"url\":                            │
+    │ \"https://giphy.com/gifs/football-club-badge-JnUywhEhFhQUfZu666\",           │
+    │ \"slug\": \"football-club-badge-JnUywhEhFhQUfZu666\",                        │
+    │ \"bitly_gif_url\": \"https://gph.is/g/aj2GMgp\", \"bitly_url\":              │
+    │ \"https://gph.is/g/aj2GMgp\", \"embed_url\":                                 │
+    │ \"https://giphy.com/embed/JnUywhEhFhQUfZu666\", \"username\":                │
+    │ \"CurtainsCool\", \"source\": \"\", \"title\": \"Premier League              │
+    │ Football GIF by Curtains Cool\", \"rating\": \"g\", \"content_url\":         │
+    │ \"\", \"source_tld\": \"\", \"source_post_url\": \"\", \"is_sticker\":       │
+    │  0, \"import_datetime\": \"2023-11-02 17:21:19\",                            │
+    │ \"trending_datetime\": \"0000-00-00 00:00:00\", \"images\":                  │
+    │ {\"original\": {\"height\": \"480\", \"width\": \"480\", \"size\":           │
+    │ \"1327415\", \"url\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu       │
+    │ 666/giphy.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=       │
+    │ v1_gifs_search&rid=giphy.gif&ct=g\", \"mp4_size\": \"370796\",               │
+    │ \"mp4\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy.mp4       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=giphy.mp4&ct=g\", \"webp_size\": \"867622\", \"webp\": \"https:/       │
+    │ /media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy.webp?cid=555fb132zrk3       │
+    │ a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.webp&       │
+    │ ct=g\", \"frames\": \"60\", \"hash\":                                        │
+    │ \"fb205d07da756a2323537126d57b9b25\"}, \"downsized\": {\"height\":           │
+    │ \"480\", \"width\": \"480\", \"size\": \"1327415\", \"url\": \"https:/       │
+    │ /media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\"}, \"downsized_large\": {\"height\": \"480\", \"width\": \"480\",        │
+    │ \"size\": \"1327415\", \"url\": \"https://media4.giphy.com/media/JnUyw       │
+    │ hEhFhQUfZu666/giphy.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=giphy.gif&ct=g\"}, \"downsized_medium\":        │
+    │ {\"height\": \"480\", \"width\": \"480\", \"size\": \"1327415\",             │
+    │ \"url\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy.gif       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=giphy.gif&ct=g\"}, \"downsized_small\": {\"height\": \"400\",          │
+    │ \"width\": \"400\", \"mp4_size\": \"131550\", \"mp4\":                       │
+    │ \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy-downsized-sm       │
+    │ all.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gif       │
+    │ s_search&rid=giphy-downsized-small.mp4&ct=g\"}, \"downsized_still\":         │
+    │ {\"height\": \"480\", \"width\": \"480\", \"size\": \"1327415\",             │
+    │ \"url\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy_s.g       │
+    │ if?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_sea       │
+    │ rch&rid=giphy_s.gif&ct=g\"}, \"fixed_height\": {\"height\": \"200\",         │
+    │ \"width\": \"200\", \"size\": \"314351\", \"url\": \"https://media4.gi       │
+    │ phy.com/media/JnUywhEhFhQUfZu666/200.gif?cid=555fb132zrk3a20z8oih1cn8i       │
+    │ ugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200.gif&ct=g\",                │
+    │ \"mp4_size\": \"117434\", \"mp4\": \"https://media4.giphy.com/media/Jn       │
+    │ UywhEhFhQUfZu666/200.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2nee       │
+    │ cbjmck4&ep=v1_gifs_search&rid=200.mp4&ct=g\", \"webp_size\":                 │
+    │ \"303364\", \"webp\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu       │
+    │ 666/200.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v       │
+    │ 1_gifs_search&rid=200.webp&ct=g\"}, \"fixed_height_downsampled\":            │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"56733\",               │
+    │ \"url\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/200_d.gif       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=200_d.gif&ct=g\", \"webp_size\": \"49748\", \"webp\": \"https://       │
+    │ media4.giphy.com/media/JnUywhEhFhQUfZu666/200_d.webp?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200_d.webp&c       │
+    │ t=g\"}, \"fixed_height_small\": {\"height\": \"100\", \"width\":             │
+    │ \"100\", \"size\": \"119877\", \"url\": \"https://media4.giphy.com/med       │
+    │ ia/JnUywhEhFhQUfZu666/100.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25q       │
+    │ k2neecbjmck4&ep=v1_gifs_search&rid=100.gif&ct=g\", \"mp4_size\":             │
+    │ \"40876\", \"mp4\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu66       │
+    │ 6/100.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_g       │
+    │ ifs_search&rid=100.mp4&ct=g\", \"webp_size\": \"101318\", \"webp\": \"       │
+    │ https://media4.giphy.com/media/JnUywhEhFhQUfZu666/100.webp?cid=555fb13       │
+    │ 2zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100.we       │
+    │ bp&ct=g\"}, \"fixed_height_small_still\": {\"height\": \"100\",              │
+    │ \"width\": \"100\", \"size\": \"7435\", \"url\": \"https://media4.giph       │
+    │ y.com/media/JnUywhEhFhQUfZu666/100_s.gif?cid=555fb132zrk3a20z8oih1cn8i       │
+    │ ugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100_s.gif&ct=g\"},             │
+    │ \"fixed_height_still\": {\"height\": \"200\", \"width\": \"200\",            │
+    │ \"size\": \"19704\", \"url\": \"https://media4.giphy.com/media/JnUywhE       │
+    │ hFhQUfZu666/200_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbj       │
+    │ mck4&ep=v1_gifs_search&rid=200_s.gif&ct=g\"}, \"fixed_width\":               │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"314351\",              │
+    │ \"url\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/200w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=200w.gif&ct=g\", \"mp4_size\": \"117434\", \"mp4\": \"https://med       │
+    │ ia4.giphy.com/media/JnUywhEhFhQUfZu666/200w.mp4?cid=555fb132zrk3a20z8o       │
+    │ ih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200w.mp4&ct=g\",        │
+    │ \"webp_size\": \"263762\", \"webp\": \"https://media4.giphy.com/media/       │
+    │ JnUywhEhFhQUfZu666/200w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=200w.webp&ct=g\"},                         │
+    │ \"fixed_width_downsampled\": {\"height\": \"200\", \"width\": \"200\",       │
+    │  \"size\": \"56733\", \"url\": \"https://media4.giphy.com/media/JnUywh       │
+    │ EhFhQUfZu666/200w_d.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=200w_d.gif&ct=g\", \"webp_size\":               │
+    │ \"49748\", \"webp\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu6       │
+    │ 66/200w_d.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep       │
+    │ =v1_gifs_search&rid=200w_d.webp&ct=g\"}, \"fixed_width_small\":              │
+    │ {\"height\": \"100\", \"width\": \"100\", \"size\": \"119877\",              │
+    │ \"url\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/100w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=100w.gif&ct=g\", \"mp4_size\": \"40876\", \"mp4\": \"https://medi       │
+    │ a4.giphy.com/media/JnUywhEhFhQUfZu666/100w.mp4?cid=555fb132zrk3a20z8oi       │
+    │ h1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100w.mp4&ct=g\",         │
+    │ \"webp_size\": \"101318\", \"webp\": \"https://media4.giphy.com/media/       │
+    │ JnUywhEhFhQUfZu666/100w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=100w.webp&ct=g\"},                         │
+    │ \"fixed_width_small_still\": {\"height\": \"100\", \"width\": \"100\",       │
+    │  \"size\": \"7435\", \"url\": \"https://media4.giphy.com/media/JnUywhE       │
+    │ hFhQUfZu666/100w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecb       │
+    │ jmck4&ep=v1_gifs_search&rid=100w_s.gif&ct=g\"}, \"fixed_width_still\":       │
+    │  {\"height\": \"200\", \"width\": \"200\", \"size\": \"19704\",              │
+    │ \"url\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/200w_s.gi       │
+    │ f?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_sear       │
+    │ ch&rid=200w_s.gif&ct=g\"}, \"looping\": {\"mp4_size\": \"1318104\",          │
+    │ \"mp4\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy-loo       │
+    │ p.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_       │
+    │ search&rid=giphy-loop.mp4&ct=g\"}, \"original_still\": {\"height\":          │
+    │ \"480\", \"width\": \"480\", \"size\": \"80396\", \"url\": \"https://m       │
+    │ edia4.giphy.com/media/JnUywhEhFhQUfZu666/giphy_s.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy_s.gif&       │
+    │ ct=g\"}, \"original_mp4\": {\"height\": \"480\", \"width\": \"480\",         │
+    │ \"mp4_size\": \"370796\", \"mp4\": \"https://media4.giphy.com/media/Jn       │
+    │ UywhEhFhQUfZu666/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\"}, \"preview\":              │
+    │ {\"height\": \"120\", \"width\": \"120\", \"mp4_size\": \"35801\",           │
+    │ \"mp4\": \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy-pre       │
+    │ view.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gi       │
+    │ fs_search&rid=giphy-preview.mp4&ct=g\"}, \"preview_gif\": {\"height\":       │
+    │  \"100\", \"width\": \"100\", \"size\": \"30930\", \"url\":                  │
+    │ \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy-preview.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=giphy-preview.gif&ct=g\"}, \"preview_webp\": {\"height\":               │
+    │ \"100\", \"width\": \"100\", \"size\": \"35284\", \"url\":                   │
+    │ \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy-preview.webp       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=giphy-preview.webp&ct=g\"}, \"hd\": {\"height\": \"1080\",             │
+    │ \"width\": \"1080\", \"mp4_size\": \"1258270\", \"mp4\":                     │
+    │ \"https://media4.giphy.com/media/JnUywhEhFhQUfZu666/giphy-hd.mp4?cid=5       │
+    │ 55fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=       │
+    │ giphy-hd.mp4&ct=g\"}, \"480w_still\": {\"height\": \"480\", \"width\":       │
+    │  \"480\", \"size\": \"1327415\", \"url\": \"https://media4.giphy.com/m       │
+    │ edia/JnUywhEhFhQUfZu666/480w_s.jpg?cid=555fb132zrk3a20z8oih1cn8iugxiuy       │
+    │ nm25qk2neecbjmck4&ep=v1_gifs_search&rid=480w_s.jpg&ct=g\"}}, \"user\":       │
+    │  {\"avatar_url\":                                                            │
+    │ \"https://media3.giphy.com/avatars/CurtainsCool/mWBsd6jEeBUr.png\",          │
+    │ \"banner_image\": \"\", \"banner_url\": \"\", \"profile_url\":               │
+    │ \"https://giphy.com/CurtainsCool/\", \"username\": \"CurtainsCool\",         │
+    │ \"display_name\": \"Curtains Cool\", \"description\": \"Folks call me        │
+    │ Curtains and I like to make cheeky gifs :-) Come say                         │
+    │ hello!\\r\\n\\r\\nLondon, UK.\", \"instagram_url\":                          │
+    │ \"https://instagram.com/curtainscool\", \"website_url\":                     │
+    │ \"https://www.instagram.com/curtainscool/?hl=en\", \"is_verified\":          │
+    │ true}, \"analytics_response_payload\": \"e=ZXZlbnRfdHlwZT1HSUZfU0VBUkN       │
+    │ IJmNpZD01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1ja       │
+    │ zQmZ2lmX2lkPUpuVXl3aEVoRmhRVWZadTY2NiZjdD1n\", \"analytics\":                │
+    │ {\"onload\": {\"url\": \"https://giphy-analytics.giphy.com/v2/pingback       │
+    │ _simple?analytics_response_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmN       │
+    │ pZD01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ       │
+    │ 2lmX2lkPUpuVXl3aEVoRmhRVWZadTY2NiZjdD1n&action_type=SEEN\"},                 │
+    │ \"onclick\": {\"url\": \"https://giphy-analytics.giphy.com/v2/pingback       │
+    │ _simple?analytics_response_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmN       │
+    │ pZD01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ       │
+    │ 2lmX2lkPUpuVXl3aEVoRmhRVWZadTY2NiZjdD1n&action_type=CLICK\"},                │
+    │ \"onsent\": {\"url\": \"https://giphy-analytics.giphy.com/v2/pingback_       │
+    │ simple?analytics_response_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNp       │
+    │ ZD01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2       │
+    │ lmX2lkPUpuVXl3aEVoRmhRVWZadTY2NiZjdD1n&action_type=SENT\"}},                 │
+    │ \"alt_text\": \"\"}, {\"type\": \"gif\", \"id\":                             │
+    │ \"h2kVjzqBFcg640lwMu\", \"url\": \"https://giphy.com/gifs/manutd-mufc-       │
+    │ ggmu-alejandro-h2kVjzqBFcg640lwMu\", \"slug\": \"manutd-mufc-ggmu-           │
+    │ alejandro-h2kVjzqBFcg640lwMu\", \"bitly_gif_url\":                           │
+    │ \"https://gph.is/g/E0KB5Rm\", \"bitly_url\":                                 │
+    │ \"https://gph.is/g/E0KB5Rm\", \"embed_url\":                                 │
+    │ \"https://giphy.com/embed/h2kVjzqBFcg640lwMu\", \"username\":                │
+    │ \"manutd\", \"source\": \"\", \"title\": \"Football Sport GIF by             │
+    │ Manchester United\", \"rating\": \"g\", \"content_url\": \"\",               │
+    │ \"source_tld\": \"\", \"source_post_url\": \"\", \"is_sticker\": 0,          │
+    │ \"import_datetime\": \"2023-10-31 14:26:57\", \"trending_datetime\":         │
+    │ \"2023-11-26 17:25:51\", \"images\": {\"original\": {\"height\":             │
+    │ \"480\", \"width\": \"480\", \"size\": \"5569659\", \"url\": \"https:/       │
+    │ /media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\", \"mp4_size\": \"664183\", \"mp4\": \"https://media1.giphy.com/me       │
+    │ dia/h2kVjzqBFcg640lwMu/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm       │
+    │ 25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\", \"webp_size\":       │
+    │  \"1234226\", \"webp\": \"https://media1.giphy.com/media/h2kVjzqBFcg64       │
+    │ 0lwMu/giphy.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&       │
+    │ ep=v1_gifs_search&rid=giphy.webp&ct=g\", \"frames\": \"99\", \"hash\":       │
+    │  \"b7dfbbe6b5604ec897dddc6c58a523d5\"}, \"downsized\": {\"height\":          │
+    │ \"298\", \"width\": \"298\", \"size\": \"1772830\", \"url\":                 │
+    │ \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-downsized.gi       │
+    │ f?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_sear       │
+    │ ch&rid=giphy-downsized.gif&ct=g\"}, \"downsized_large\": {\"height\":        │
+    │ \"480\", \"width\": \"480\", \"size\": \"5569659\", \"url\": \"https:/       │
+    │ /media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\"}, \"downsized_medium\": {\"height\": \"480\", \"width\": \"480\",       │
+    │  \"size\": \"4327881\", \"url\":                                             │
+    │ \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-downsized-me       │
+    │ dium.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gi       │
+    │ fs_search&rid=giphy-downsized-medium.gif&ct=g\"}, \"downsized_small\":       │
+    │  {\"height\": \"400\", \"width\": \"400\", \"mp4_size\": \"192326\",         │
+    │ \"mp4\": \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-          │
+    │ downsized-small.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmc       │
+    │ k4&ep=v1_gifs_search&rid=giphy-downsized-small.mp4&ct=g\"},                  │
+    │ \"downsized_still\": {\"height\": \"298\", \"width\": \"298\",               │
+    │ \"size\": \"26368\", \"url\":                                                │
+    │ \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-downsized_s.       │
+    │ gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_se       │
+    │ arch&rid=giphy-downsized_s.gif&ct=g\"}, \"fixed_height\": {\"height\":       │
+    │  \"200\", \"width\": \"200\", \"size\": \"1169756\", \"url\": \"https:       │
+    │ //media1.giphy.com/media/h2kVjzqBFcg640lwMu/200.gif?cid=555fb132zrk3a2       │
+    │ 0z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200.gif&ct=g\       │
+    │ ", \"mp4_size\": \"195412\", \"mp4\": \"https://media1.giphy.com/media       │
+    │ /h2kVjzqBFcg640lwMu/200.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2       │
+    │ neecbjmck4&ep=v1_gifs_search&rid=200.mp4&ct=g\", \"webp_size\":              │
+    │ \"408202\", \"webp\": \"https://media1.giphy.com/media/h2kVjzqBFcg640l       │
+    │ wMu/200.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v       │
+    │ 1_gifs_search&rid=200.webp&ct=g\"}, \"fixed_height_downsampled\":            │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"70574\",               │
+    │ \"url\": \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/200_d.gif       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=200_d.gif&ct=g\", \"webp_size\": \"43106\", \"webp\": \"https://       │
+    │ media1.giphy.com/media/h2kVjzqBFcg640lwMu/200_d.webp?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200_d.webp&c       │
+    │ t=g\"}, \"fixed_height_small\": {\"height\": \"100\", \"width\":             │
+    │ \"100\", \"size\": \"413530\", \"url\": \"https://media1.giphy.com/med       │
+    │ ia/h2kVjzqBFcg640lwMu/100.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25q       │
+    │ k2neecbjmck4&ep=v1_gifs_search&rid=100.gif&ct=g\", \"mp4_size\":             │
+    │ \"84937\", \"mp4\": \"https://media1.giphy.com/media/h2kVjzqBFcg640lwM       │
+    │ u/100.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_g       │
+    │ ifs_search&rid=100.mp4&ct=g\", \"webp_size\": \"139868\", \"webp\": \"       │
+    │ https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/100.webp?cid=555fb13       │
+    │ 2zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100.we       │
+    │ bp&ct=g\"}, \"fixed_height_small_still\": {\"height\": \"100\",              │
+    │ \"width\": \"100\", \"size\": \"10699\", \"url\": \"https://media1.gip       │
+    │ hy.com/media/h2kVjzqBFcg640lwMu/100_s.gif?cid=555fb132zrk3a20z8oih1cn8       │
+    │ iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100_s.gif&ct=g\"},            │
+    │ \"fixed_height_still\": {\"height\": \"200\", \"width\": \"200\",            │
+    │ \"size\": \"30449\", \"url\": \"https://media1.giphy.com/media/h2kVjzq       │
+    │ BFcg640lwMu/200_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbj       │
+    │ mck4&ep=v1_gifs_search&rid=200_s.gif&ct=g\"}, \"fixed_width\":               │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"1169756\",             │
+    │ \"url\": \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/200w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=200w.gif&ct=g\", \"mp4_size\": \"195412\", \"mp4\": \"https://med       │
+    │ ia1.giphy.com/media/h2kVjzqBFcg640lwMu/200w.mp4?cid=555fb132zrk3a20z8o       │
+    │ ih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200w.mp4&ct=g\",        │
+    │ \"webp_size\": \"333916\", \"webp\": \"https://media1.giphy.com/media/       │
+    │ h2kVjzqBFcg640lwMu/200w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=200w.webp&ct=g\"},                         │
+    │ \"fixed_width_downsampled\": {\"height\": \"200\", \"width\": \"200\",       │
+    │  \"size\": \"70574\", \"url\": \"https://media1.giphy.com/media/h2kVjz       │
+    │ qBFcg640lwMu/200w_d.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=200w_d.gif&ct=g\", \"webp_size\":               │
+    │ \"43106\", \"webp\": \"https://media1.giphy.com/media/h2kVjzqBFcg640lw       │
+    │ Mu/200w_d.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep       │
+    │ =v1_gifs_search&rid=200w_d.webp&ct=g\"}, \"fixed_width_small\":              │
+    │ {\"height\": \"100\", \"width\": \"100\", \"size\": \"413530\",              │
+    │ \"url\": \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/100w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=100w.gif&ct=g\", \"mp4_size\": \"84937\", \"mp4\": \"https://medi       │
+    │ a1.giphy.com/media/h2kVjzqBFcg640lwMu/100w.mp4?cid=555fb132zrk3a20z8oi       │
+    │ h1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100w.mp4&ct=g\",         │
+    │ \"webp_size\": \"139868\", \"webp\": \"https://media1.giphy.com/media/       │
+    │ h2kVjzqBFcg640lwMu/100w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=100w.webp&ct=g\"},                         │
+    │ \"fixed_width_small_still\": {\"height\": \"100\", \"width\": \"100\",       │
+    │  \"size\": \"10699\", \"url\": \"https://media1.giphy.com/media/h2kVjz       │
+    │ qBFcg640lwMu/100w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=100w_s.gif&ct=g\"},                             │
+    │ \"fixed_width_still\": {\"height\": \"200\", \"width\": \"200\",             │
+    │ \"size\": \"30449\", \"url\": \"https://media1.giphy.com/media/h2kVjzq       │
+    │ BFcg640lwMu/200w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecb       │
+    │ jmck4&ep=v1_gifs_search&rid=200w_s.gif&ct=g\"}, \"looping\":                 │
+    │ {\"mp4_size\": \"1894095\", \"mp4\":                                         │
+    │ \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-loop.mp4?cid       │
+    │ =555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&ri       │
+    │ d=giphy-loop.mp4&ct=g\"}, \"original_still\": {\"height\": \"480\",          │
+    │ \"width\": \"480\", \"size\": \"126771\", \"url\": \"https://media1.gi       │
+    │ phy.com/media/h2kVjzqBFcg640lwMu/giphy_s.gif?cid=555fb132zrk3a20z8oih1       │
+    │ cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy_s.gif&ct=g\"},       │
+    │  \"original_mp4\": {\"height\": \"480\", \"width\": \"480\",                 │
+    │ \"mp4_size\": \"664183\", \"mp4\": \"https://media1.giphy.com/media/h2       │
+    │ kVjzqBFcg640lwMu/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\"}, \"preview\":              │
+    │ {\"height\": \"150\", \"width\": \"150\", \"mp4_size\": \"37281\",           │
+    │ \"mp4\": \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-pre       │
+    │ view.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gi       │
+    │ fs_search&rid=giphy-preview.mp4&ct=g\"}, \"preview_gif\": {\"height\":       │
+    │  \"100\", \"width\": \"100\", \"size\": \"40140\", \"url\":                  │
+    │ \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-preview.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=giphy-preview.gif&ct=g\"}, \"preview_webp\": {\"height\":               │
+    │ \"100\", \"width\": \"100\", \"size\": \"23236\", \"url\":                   │
+    │ \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-preview.webp       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=giphy-preview.webp&ct=g\"}, \"hd\": {\"height\": \"1080\",             │
+    │ \"width\": \"1080\", \"mp4_size\": \"3498809\", \"mp4\":                     │
+    │ \"https://media1.giphy.com/media/h2kVjzqBFcg640lwMu/giphy-hd.mp4?cid=5       │
+    │ 55fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=       │
+    │ giphy-hd.mp4&ct=g\"}, \"480w_still\": {\"height\": \"480\", \"width\":       │
+    │  \"480\", \"size\": \"5569659\", \"url\": \"https://media1.giphy.com/m       │
+    │ edia/h2kVjzqBFcg640lwMu/480w_s.jpg?cid=555fb132zrk3a20z8oih1cn8iugxiuy       │
+    │ nm25qk2neecbjmck4&ep=v1_gifs_search&rid=480w_s.jpg&ct=g\"}}, \"user\":       │
+    │  {\"avatar_url\":                                                            │
+    │ \"https://media3.giphy.com/avatars/manutd/yHEWIu8yn49J.jpg\",                │
+    │ \"banner_image\":                                                            │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"banner_url\":                                                              │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"profile_url\": \"https://giphy.com/manutd/\", \"username\":                │
+    │ \"manutd\", \"display_name\": \"Manchester United\", \"description\":        │
+    │ \"Welcome to the official Manchester United GIPHY page\",                    │
+    │ \"instagram_url\": \"https://instagram.com/manchesterunited\",               │
+    │ \"website_url\": \"https://www.manutd.com\", \"is_verified\": true},         │
+    │ \"analytics_response_payload\": \"e=ZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD       │
+    │ 01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lm       │
+    │ X2lkPWgya1ZqenFCRmNnNjQwbHdNdSZjdD1n\", \"analytics\": {\"onload\":          │
+    │ {\"url\": \"https://giphy-analytics.giphy.com/v2/pingback_simple?analy       │
+    │ tics_response_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEz       │
+    │ MnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPWgya1       │
+    │ ZqenFCRmNnNjQwbHdNdSZjdD1n&action_type=SEEN\"}, \"onclick\": {\"url\":       │
+    │  \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_resp       │
+    │ onse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhM       │
+    │ jB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPWgya1ZqenFCRmN       │
+    │ nNjQwbHdNdSZjdD1n&action_type=CLICK\"}, \"onsent\": {\"url\":                │
+    │ \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_respo       │
+    │ nse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhMj       │
+    │ B6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPWgya1ZqenFCRmNn       │
+    │ NjQwbHdNdSZjdD1n&action_type=SENT\"}}, \"alt_text\": \"\"}, {\"type\":       │
+    │  \"gif\", \"id\": \"wadiWRBqUB46qP9FQJ\", \"url\":                           │
+    │ \"https://giphy.com/gifs/manutd-mufc-ggmu-antony-wadiWRBqUB46qP9FQJ\",       │
+    │  \"slug\": \"manutd-mufc-ggmu-antony-wadiWRBqUB46qP9FQJ\",                   │
+    │ \"bitly_gif_url\": \"https://gph.is/g/4gKpLJr\", \"bitly_url\":              │
+    │ \"https://gph.is/g/4gKpLJr\", \"embed_url\":                                 │
+    │ \"https://giphy.com/embed/wadiWRBqUB46qP9FQJ\", \"username\":                │
+    │ \"manutd\", \"source\": \"\", \"title\": \"Pray Europa League GIF by         │
+    │ Manchester United\", \"rating\": \"g\", \"content_url\": \"\",               │
+    │ \"source_tld\": \"\", \"source_post_url\": \"\", \"is_sticker\": 0,          │
+    │ \"import_datetime\": \"2022-10-06 16:53:06\", \"trending_datetime\":         │
+    │ \"0000-00-00 00:00:00\", \"images\": {\"original\": {\"height\":             │
+    │ \"480\", \"width\": \"480\", \"size\": \"3071046\", \"url\": \"https:/       │
+    │ /media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\", \"mp4_size\": \"370145\", \"mp4\": \"https://media3.giphy.com/me       │
+    │ dia/wadiWRBqUB46qP9FQJ/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm       │
+    │ 25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\", \"webp_size\":       │
+    │  \"693974\", \"webp\": \"https://media3.giphy.com/media/wadiWRBqUB46qP       │
+    │ 9FQJ/giphy.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&e       │
+    │ p=v1_gifs_search&rid=giphy.webp&ct=g\", \"frames\": \"32\", \"hash\":        │
+    │ \"d94db9f126ff994a3755083409b94590\"}, \"downsized\": {\"height\":           │
+    │ \"384\", \"width\": \"384\", \"size\": \"1543359\", \"url\":                 │
+    │ \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-downsized.gi       │
+    │ f?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_sear       │
+    │ ch&rid=giphy-downsized.gif&ct=g\"}, \"downsized_large\": {\"height\":        │
+    │ \"480\", \"width\": \"480\", \"size\": \"3071046\", \"url\": \"https:/       │
+    │ /media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\"}, \"downsized_medium\": {\"height\": \"480\", \"width\": \"480\",       │
+    │  \"size\": \"3071046\", \"url\": \"https://media3.giphy.com/media/wadi       │
+    │ WRBqUB46qP9FQJ/giphy.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2nee       │
+    │ cbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct=g\"}, \"downsized_small\":        │
+    │ {\"height\": \"400\", \"width\": \"400\", \"mp4_size\": \"199562\",          │
+    │ \"mp4\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-          │
+    │ downsized-small.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmc       │
+    │ k4&ep=v1_gifs_search&rid=giphy-downsized-small.mp4&ct=g\"},                  │
+    │ \"downsized_still\": {\"height\": \"384\", \"width\": \"384\",               │
+    │ \"size\": \"57241\", \"url\":                                                │
+    │ \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-downsized_s.       │
+    │ gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_se       │
+    │ arch&rid=giphy-downsized_s.gif&ct=g\"}, \"fixed_height\": {\"height\":       │
+    │  \"200\", \"width\": \"200\", \"size\": \"562526\", \"url\": \"https:/       │
+    │ /media3.giphy.com/media/wadiWRBqUB46qP9FQJ/200.gif?cid=555fb132zrk3a20       │
+    │ z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200.gif&ct=g\"       │
+    │ , \"mp4_size\": \"117042\", \"mp4\": \"https://media3.giphy.com/media/       │
+    │ wadiWRBqUB46qP9FQJ/200.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=200.mp4&ct=g\", \"webp_size\":               │
+    │ \"241614\", \"webp\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9       │
+    │ FQJ/200.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v       │
+    │ 1_gifs_search&rid=200.webp&ct=g\"}, \"fixed_height_downsampled\":            │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"99885\",               │
+    │ \"url\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/200_d.gif       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=200_d.gif&ct=g\", \"webp_size\": \"67236\", \"webp\": \"https://       │
+    │ media3.giphy.com/media/wadiWRBqUB46qP9FQJ/200_d.webp?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200_d.webp&c       │
+    │ t=g\"}, \"fixed_height_small\": {\"height\": \"100\", \"width\":             │
+    │ \"100\", \"size\": \"192772\", \"url\": \"https://media3.giphy.com/med       │
+    │ ia/wadiWRBqUB46qP9FQJ/100.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25q       │
+    │ k2neecbjmck4&ep=v1_gifs_search&rid=100.gif&ct=g\", \"mp4_size\":             │
+    │ \"49749\", \"mp4\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQ       │
+    │ J/100.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_g       │
+    │ ifs_search&rid=100.mp4&ct=g\", \"webp_size\": \"83990\", \"webp\": \"h       │
+    │ ttps://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/100.webp?cid=555fb132       │
+    │ zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100.web       │
+    │ p&ct=g\"}, \"fixed_height_small_still\": {\"height\": \"100\",               │
+    │ \"width\": \"100\", \"size\": \"11326\", \"url\": \"https://media3.gip       │
+    │ hy.com/media/wadiWRBqUB46qP9FQJ/100_s.gif?cid=555fb132zrk3a20z8oih1cn8       │
+    │ iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100_s.gif&ct=g\"},            │
+    │ \"fixed_height_still\": {\"height\": \"200\", \"width\": \"200\",            │
+    │ \"size\": \"34232\", \"url\": \"https://media3.giphy.com/media/wadiWRB       │
+    │ qUB46qP9FQJ/200_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbj       │
+    │ mck4&ep=v1_gifs_search&rid=200_s.gif&ct=g\"}, \"fixed_width\":               │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"562526\",              │
+    │ \"url\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/200w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=200w.gif&ct=g\", \"mp4_size\": \"117042\", \"mp4\": \"https://med       │
+    │ ia3.giphy.com/media/wadiWRBqUB46qP9FQJ/200w.mp4?cid=555fb132zrk3a20z8o       │
+    │ ih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200w.mp4&ct=g\",        │
+    │ \"webp_size\": \"202686\", \"webp\": \"https://media3.giphy.com/media/       │
+    │ wadiWRBqUB46qP9FQJ/200w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=200w.webp&ct=g\"},                         │
+    │ \"fixed_width_downsampled\": {\"height\": \"200\", \"width\": \"200\",       │
+    │  \"size\": \"99885\", \"url\": \"https://media3.giphy.com/media/wadiWR       │
+    │ BqUB46qP9FQJ/200w_d.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=200w_d.gif&ct=g\", \"webp_size\":               │
+    │ \"67236\", \"webp\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9F       │
+    │ QJ/200w_d.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep       │
+    │ =v1_gifs_search&rid=200w_d.webp&ct=g\"}, \"fixed_width_small\":              │
+    │ {\"height\": \"100\", \"width\": \"100\", \"size\": \"192772\",              │
+    │ \"url\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/100w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=100w.gif&ct=g\", \"mp4_size\": \"49749\", \"mp4\": \"https://medi       │
+    │ a3.giphy.com/media/wadiWRBqUB46qP9FQJ/100w.mp4?cid=555fb132zrk3a20z8oi       │
+    │ h1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100w.mp4&ct=g\",         │
+    │ \"webp_size\": \"83990\", \"webp\": \"https://media3.giphy.com/media/w       │
+    │ adiWRBqUB46qP9FQJ/100w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2       │
+    │ neecbjmck4&ep=v1_gifs_search&rid=100w.webp&ct=g\"},                          │
+    │ \"fixed_width_small_still\": {\"height\": \"100\", \"width\": \"100\",       │
+    │  \"size\": \"11326\", \"url\": \"https://media3.giphy.com/media/wadiWR       │
+    │ BqUB46qP9FQJ/100w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=100w_s.gif&ct=g\"},                             │
+    │ \"fixed_width_still\": {\"height\": \"200\", \"width\": \"200\",             │
+    │ \"size\": \"34232\", \"url\": \"https://media3.giphy.com/media/wadiWRB       │
+    │ qUB46qP9FQJ/200w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecb       │
+    │ jmck4&ep=v1_gifs_search&rid=200w_s.gif&ct=g\"}, \"looping\":                 │
+    │ {\"mp4_size\": \"2740409\", \"mp4\":                                         │
+    │ \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-loop.mp4?cid       │
+    │ =555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&ri       │
+    │ d=giphy-loop.mp4&ct=g\"}, \"original_still\": {\"height\": \"480\",          │
+    │ \"width\": \"480\", \"size\": \"153086\", \"url\": \"https://media3.gi       │
+    │ phy.com/media/wadiWRBqUB46qP9FQJ/giphy_s.gif?cid=555fb132zrk3a20z8oih1       │
+    │ cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy_s.gif&ct=g\"},       │
+    │  \"original_mp4\": {\"height\": \"480\", \"width\": \"480\",                 │
+    │ \"mp4_size\": \"370145\", \"mp4\": \"https://media3.giphy.com/media/wa       │
+    │ diWRBqUB46qP9FQJ/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\"}, \"preview\":              │
+    │ {\"height\": \"108\", \"width\": \"108\", \"mp4_size\": \"45768\",           │
+    │ \"mp4\": \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-pre       │
+    │ view.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gi       │
+    │ fs_search&rid=giphy-preview.mp4&ct=g\"}, \"preview_gif\": {\"height\":       │
+    │  \"80\", \"width\": \"80\", \"size\": \"38910\", \"url\":                    │
+    │ \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-preview.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=giphy-preview.gif&ct=g\"}, \"preview_webp\": {\"height\":               │
+    │ \"100\", \"width\": \"100\", \"size\": \"40546\", \"url\":                   │
+    │ \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-preview.webp       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=giphy-preview.webp&ct=g\"}, \"hd\": {\"height\": \"1080\",             │
+    │ \"width\": \"1080\", \"mp4_size\": \"1433058\", \"mp4\":                     │
+    │ \"https://media3.giphy.com/media/wadiWRBqUB46qP9FQJ/giphy-hd.mp4?cid=5       │
+    │ 55fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=       │
+    │ giphy-hd.mp4&ct=g\"}, \"480w_still\": {\"height\": \"480\", \"width\":       │
+    │  \"480\", \"size\": \"3071046\", \"url\": \"https://media3.giphy.com/m       │
+    │ edia/wadiWRBqUB46qP9FQJ/480w_s.jpg?cid=555fb132zrk3a20z8oih1cn8iugxiuy       │
+    │ nm25qk2neecbjmck4&ep=v1_gifs_search&rid=480w_s.jpg&ct=g\"}}, \"user\":       │
+    │  {\"avatar_url\":                                                            │
+    │ \"https://media3.giphy.com/avatars/manutd/yHEWIu8yn49J.jpg\",                │
+    │ \"banner_image\":                                                            │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"banner_url\":                                                              │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"profile_url\": \"https://giphy.com/manutd/\", \"username\":                │
+    │ \"manutd\", \"display_name\": \"Manchester United\", \"description\":        │
+    │ \"Welcome to the official Manchester United GIPHY page\",                    │
+    │ \"instagram_url\": \"https://instagram.com/manchesterunited\",               │
+    │ \"website_url\": \"https://www.manutd.com\", \"is_verified\": true},         │
+    │ \"analytics_response_payload\": \"e=ZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD       │
+    │ 01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lm       │
+    │ X2lkPXdhZGlXUkJxVUI0NnFQOUZRSiZjdD1n\", \"analytics\": {\"onload\":          │
+    │ {\"url\": \"https://giphy-analytics.giphy.com/v2/pingback_simple?analy       │
+    │ tics_response_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEz       │
+    │ MnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPXdhZG       │
+    │ lXUkJxVUI0NnFQOUZRSiZjdD1n&action_type=SEEN\"}, \"onclick\": {\"url\":       │
+    │  \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_resp       │
+    │ onse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhM       │
+    │ jB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPXdhZGlXUkJxVUI       │
+    │ 0NnFQOUZRSiZjdD1n&action_type=CLICK\"}, \"onsent\": {\"url\":                │
+    │ \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_respo       │
+    │ nse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhMj       │
+    │ B6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPXdhZGlXUkJxVUI0       │
+    │ NnFQOUZRSiZjdD1n&action_type=SENT\"}}, \"alt_text\": \"\"}, {\"type\":       │
+    │  \"gif\", \"id\": \"FiFcE8Hxs99VvIB09f\", \"url\":                           │
+    │ \"https://giphy.com/gifs/manutd-mufc-ggmu-antony-FiFcE8Hxs99VvIB09f\",       │
+    │  \"slug\": \"manutd-mufc-ggmu-antony-FiFcE8Hxs99VvIB09f\",                   │
+    │ \"bitly_gif_url\": \"https://gph.is/g/Zx0KBDl\", \"bitly_url\":              │
+    │ \"https://gph.is/g/Zx0KBDl\", \"embed_url\":                                 │
+    │ \"https://giphy.com/embed/FiFcE8Hxs99VvIB09f\", \"username\":                │
+    │ \"manutd\", \"source\": \"\", \"title\": \"Ball Trick GIF by                 │
+    │ Manchester United\", \"rating\": \"g\", \"content_url\": \"\",               │
+    │ \"source_tld\": \"\", \"source_post_url\": \"\", \"is_sticker\": 0,          │
+    │ \"import_datetime\": \"2022-10-20 11:59:51\", \"trending_datetime\":         │
+    │ \"0000-00-00 00:00:00\", \"images\": {\"original\": {\"height\":             │
+    │ \"480\", \"width\": \"480\", \"size\": \"4238431\", \"url\": \"https:/       │
+    │ /media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\", \"mp4_size\": \"996618\", \"mp4\": \"https://media2.giphy.com/me       │
+    │ dia/FiFcE8Hxs99VvIB09f/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm       │
+    │ 25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\", \"webp_size\":       │
+    │  \"1108946\", \"webp\": \"https://media2.giphy.com/media/FiFcE8Hxs99Vv       │
+    │ IB09f/giphy.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&       │
+    │ ep=v1_gifs_search&rid=giphy.webp&ct=g\", \"frames\": \"59\", \"hash\":       │
+    │  \"aefbbbebce0d6937f13e0d5437d6b4cb\"}, \"downsized\": {\"height\":          │
+    │ \"344\", \"width\": \"344\", \"size\": \"1759562\", \"url\":                 │
+    │ \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-downsized.gi       │
+    │ f?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_sear       │
+    │ ch&rid=giphy-downsized.gif&ct=g\"}, \"downsized_large\": {\"height\":        │
+    │ \"480\", \"width\": \"480\", \"size\": \"4238431\", \"url\": \"https:/       │
+    │ /media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\"}, \"downsized_medium\": {\"height\": \"480\", \"width\": \"480\",       │
+    │  \"size\": \"4238431\", \"url\": \"https://media2.giphy.com/media/FiFc       │
+    │ E8Hxs99VvIB09f/giphy.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2nee       │
+    │ cbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct=g\"}, \"downsized_small\":        │
+    │ {\"height\": \"320\", \"width\": \"320\", \"mp4_size\": \"198508\",          │
+    │ \"mp4\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-          │
+    │ downsized-small.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmc       │
+    │ k4&ep=v1_gifs_search&rid=giphy-downsized-small.mp4&ct=g\"},                  │
+    │ \"downsized_still\": {\"height\": \"344\", \"width\": \"344\",               │
+    │ \"size\": \"41280\", \"url\":                                                │
+    │ \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-downsized_s.       │
+    │ gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_se       │
+    │ arch&rid=giphy-downsized_s.gif&ct=g\"}, \"fixed_height\": {\"height\":       │
+    │  \"200\", \"width\": \"200\", \"size\": \"797048\", \"url\": \"https:/       │
+    │ /media2.giphy.com/media/FiFcE8Hxs99VvIB09f/200.gif?cid=555fb132zrk3a20       │
+    │ z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200.gif&ct=g\"       │
+    │ , \"mp4_size\": \"296633\", \"mp4\": \"https://media2.giphy.com/media/       │
+    │ FiFcE8Hxs99VvIB09f/200.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=200.mp4&ct=g\", \"webp_size\":               │
+    │ \"373358\", \"webp\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB       │
+    │ 09f/200.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v       │
+    │ 1_gifs_search&rid=200.webp&ct=g\"}, \"fixed_height_downsampled\":            │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"84384\",               │
+    │ \"url\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/200_d.gif       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=200_d.gif&ct=g\", \"webp_size\": \"58512\", \"webp\": \"https://       │
+    │ media2.giphy.com/media/FiFcE8Hxs99VvIB09f/200_d.webp?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200_d.webp&c       │
+    │ t=g\"}, \"fixed_height_small\": {\"height\": \"100\", \"width\":             │
+    │ \"100\", \"size\": \"279622\", \"url\": \"https://media2.giphy.com/med       │
+    │ ia/FiFcE8Hxs99VvIB09f/100.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25q       │
+    │ k2neecbjmck4&ep=v1_gifs_search&rid=100.gif&ct=g\", \"mp4_size\":             │
+    │ \"115450\", \"mp4\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB0       │
+    │ 9f/100.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_       │
+    │ gifs_search&rid=100.mp4&ct=g\", \"webp_size\": \"124084\", \"webp\": \       │
+    │ "https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/100.webp?cid=555fb1       │
+    │ 32zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100.w       │
+    │ ebp&ct=g\"}, \"fixed_height_small_still\": {\"height\": \"100\",             │
+    │ \"width\": \"100\", \"size\": \"10402\", \"url\": \"https://media2.gip       │
+    │ hy.com/media/FiFcE8Hxs99VvIB09f/100_s.gif?cid=555fb132zrk3a20z8oih1cn8       │
+    │ iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100_s.gif&ct=g\"},            │
+    │ \"fixed_height_still\": {\"height\": \"200\", \"width\": \"200\",            │
+    │ \"size\": \"29875\", \"url\": \"https://media2.giphy.com/media/FiFcE8H       │
+    │ xs99VvIB09f/200_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbj       │
+    │ mck4&ep=v1_gifs_search&rid=200_s.gif&ct=g\"}, \"fixed_width\":               │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"797048\",              │
+    │ \"url\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/200w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=200w.gif&ct=g\", \"mp4_size\": \"296633\", \"mp4\": \"https://med       │
+    │ ia2.giphy.com/media/FiFcE8Hxs99VvIB09f/200w.mp4?cid=555fb132zrk3a20z8o       │
+    │ ih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200w.mp4&ct=g\",        │
+    │ \"webp_size\": \"313350\", \"webp\": \"https://media2.giphy.com/media/       │
+    │ FiFcE8Hxs99VvIB09f/200w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=200w.webp&ct=g\"},                         │
+    │ \"fixed_width_downsampled\": {\"height\": \"200\", \"width\": \"200\",       │
+    │  \"size\": \"84384\", \"url\": \"https://media2.giphy.com/media/FiFcE8       │
+    │ Hxs99VvIB09f/200w_d.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=200w_d.gif&ct=g\", \"webp_size\":               │
+    │ \"58512\", \"webp\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB0       │
+    │ 9f/200w_d.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep       │
+    │ =v1_gifs_search&rid=200w_d.webp&ct=g\"}, \"fixed_width_small\":              │
+    │ {\"height\": \"100\", \"width\": \"100\", \"size\": \"279622\",              │
+    │ \"url\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/100w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=100w.gif&ct=g\", \"mp4_size\": \"115450\", \"mp4\": \"https://med       │
+    │ ia2.giphy.com/media/FiFcE8Hxs99VvIB09f/100w.mp4?cid=555fb132zrk3a20z8o       │
+    │ ih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100w.mp4&ct=g\",        │
+    │ \"webp_size\": \"124084\", \"webp\": \"https://media2.giphy.com/media/       │
+    │ FiFcE8Hxs99VvIB09f/100w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=100w.webp&ct=g\"},                         │
+    │ \"fixed_width_small_still\": {\"height\": \"100\", \"width\": \"100\",       │
+    │  \"size\": \"10402\", \"url\": \"https://media2.giphy.com/media/FiFcE8       │
+    │ Hxs99VvIB09f/100w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=100w_s.gif&ct=g\"},                             │
+    │ \"fixed_width_still\": {\"height\": \"200\", \"width\": \"200\",             │
+    │ \"size\": \"29875\", \"url\": \"https://media2.giphy.com/media/FiFcE8H       │
+    │ xs99VvIB09f/200w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecb       │
+    │ jmck4&ep=v1_gifs_search&rid=200w_s.gif&ct=g\"}, \"looping\":                 │
+    │ {\"mp4_size\": \"3772554\", \"mp4\":                                         │
+    │ \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-loop.mp4?cid       │
+    │ =555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&ri       │
+    │ d=giphy-loop.mp4&ct=g\"}, \"original_still\": {\"height\": \"480\",          │
+    │ \"width\": \"480\", \"size\": \"128399\", \"url\": \"https://media2.gi       │
+    │ phy.com/media/FiFcE8Hxs99VvIB09f/giphy_s.gif?cid=555fb132zrk3a20z8oih1       │
+    │ cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy_s.gif&ct=g\"},       │
+    │  \"original_mp4\": {\"height\": \"480\", \"width\": \"480\",                 │
+    │ \"mp4_size\": \"996618\", \"mp4\": \"https://media2.giphy.com/media/Fi       │
+    │ FcE8Hxs99VvIB09f/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\"}, \"preview\":              │
+    │ {\"height\": \"80\", \"width\": \"80\", \"mp4_size\": \"45477\",             │
+    │ \"mp4\": \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-pre       │
+    │ view.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gi       │
+    │ fs_search&rid=giphy-preview.mp4&ct=g\"}, \"preview_gif\": {\"height\":       │
+    │  \"100\", \"width\": \"100\", \"size\": \"49558\", \"url\":                  │
+    │ \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-preview.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=giphy-preview.gif&ct=g\"}, \"preview_webp\": {\"height\":               │
+    │ \"100\", \"width\": \"100\", \"size\": \"36654\", \"url\":                   │
+    │ \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-preview.webp       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=giphy-preview.webp&ct=g\"}, \"hd\": {\"height\": \"1080\",             │
+    │ \"width\": \"1080\", \"mp4_size\": \"4052005\", \"mp4\":                     │
+    │ \"https://media2.giphy.com/media/FiFcE8Hxs99VvIB09f/giphy-hd.mp4?cid=5       │
+    │ 55fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=       │
+    │ giphy-hd.mp4&ct=g\"}, \"480w_still\": {\"height\": \"480\", \"width\":       │
+    │  \"480\", \"size\": \"4238431\", \"url\": \"https://media2.giphy.com/m       │
+    │ edia/FiFcE8Hxs99VvIB09f/480w_s.jpg?cid=555fb132zrk3a20z8oih1cn8iugxiuy       │
+    │ nm25qk2neecbjmck4&ep=v1_gifs_search&rid=480w_s.jpg&ct=g\"}}, \"user\":       │
+    │  {\"avatar_url\":                                                            │
+    │ \"https://media3.giphy.com/avatars/manutd/yHEWIu8yn49J.jpg\",                │
+    │ \"banner_image\":                                                            │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"banner_url\":                                                              │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"profile_url\": \"https://giphy.com/manutd/\", \"username\":                │
+    │ \"manutd\", \"display_name\": \"Manchester United\", \"description\":        │
+    │ \"Welcome to the official Manchester United GIPHY page\",                    │
+    │ \"instagram_url\": \"https://instagram.com/manchesterunited\",               │
+    │ \"website_url\": \"https://www.manutd.com\", \"is_verified\": true},         │
+    │ \"analytics_response_payload\": \"e=ZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD       │
+    │ 01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lm       │
+    │ X2lkPUZpRmNFOEh4czk5VnZJQjA5ZiZjdD1n\", \"analytics\": {\"onload\":          │
+    │ {\"url\": \"https://giphy-analytics.giphy.com/v2/pingback_simple?analy       │
+    │ tics_response_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEz       │
+    │ MnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPUZpRm       │
+    │ NFOEh4czk5VnZJQjA5ZiZjdD1n&action_type=SEEN\"}, \"onclick\": {\"url\":       │
+    │  \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_resp       │
+    │ onse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhM       │
+    │ jB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPUZpRmNFOEh4czk       │
+    │ 5VnZJQjA5ZiZjdD1n&action_type=CLICK\"}, \"onsent\": {\"url\":                │
+    │ \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_respo       │
+    │ nse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhMj       │
+    │ B6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPUZpRmNFOEh4czk5       │
+    │ VnZJQjA5ZiZjdD1n&action_type=SENT\"}}, \"alt_text\": \"\"}, {\"type\":       │
+    │  \"gif\", \"id\": \"v6RkL37LPep5dA4x6y\", \"url\":                           │
+    │ \"https://giphy.com/gifs/manutd-eth-mufc-ggmu-v6RkL37LPep5dA4x6y\",          │
+    │ \"slug\": \"manutd-eth-mufc-ggmu-v6RkL37LPep5dA4x6y\",                       │
+    │ \"bitly_gif_url\": \"https://gph.is/g/Z2D7pyv\", \"bitly_url\":              │
+    │ \"https://gph.is/g/Z2D7pyv\", \"embed_url\":                                 │
+    │ \"https://giphy.com/embed/v6RkL37LPep5dA4x6y\", \"username\":                │
+    │ \"manutd\", \"source\": \"\", \"title\": \"Writing Down The Boss GIF         │
+    │ by Manchester United\", \"rating\": \"g\", \"content_url\": \"\",            │
+    │ \"source_tld\": \"\", \"source_post_url\": \"\", \"is_sticker\": 0,          │
+    │ \"import_datetime\": \"2023-01-25 11:23:07\", \"trending_datetime\":         │
+    │ \"2023-02-04 15:30:02\", \"images\": {\"original\": {\"height\":             │
+    │ \"480\", \"width\": \"480\", \"size\": \"3047741\", \"url\": \"https:/       │
+    │ /media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\", \"mp4_size\": \"472478\", \"mp4\": \"https://media3.giphy.com/me       │
+    │ dia/v6RkL37LPep5dA4x6y/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm       │
+    │ 25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\", \"webp_size\":       │
+    │  \"892702\", \"webp\": \"https://media3.giphy.com/media/v6RkL37LPep5dA       │
+    │ 4x6y/giphy.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&e       │
+    │ p=v1_gifs_search&rid=giphy.webp&ct=g\", \"frames\": \"46\", \"hash\":        │
+    │ \"4368e90c7708af5fdb2ab2bd8943d042\"}, \"downsized\": {\"height\":           │
+    │ \"384\", \"width\": \"384\", \"size\": \"1735108\", \"url\":                 │
+    │ \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-downsized.gi       │
+    │ f?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_sear       │
+    │ ch&rid=giphy-downsized.gif&ct=g\"}, \"downsized_large\": {\"height\":        │
+    │ \"480\", \"width\": \"480\", \"size\": \"3047741\", \"url\": \"https:/       │
+    │ /media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy.gif?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct       │
+    │ =g\"}, \"downsized_medium\": {\"height\": \"480\", \"width\": \"480\",       │
+    │  \"size\": \"3047741\", \"url\": \"https://media3.giphy.com/media/v6Rk       │
+    │ L37LPep5dA4x6y/giphy.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2nee       │
+    │ cbjmck4&ep=v1_gifs_search&rid=giphy.gif&ct=g\"}, \"downsized_small\":        │
+    │ {\"height\": \"400\", \"width\": \"400\", \"mp4_size\": \"181598\",          │
+    │ \"mp4\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-          │
+    │ downsized-small.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmc       │
+    │ k4&ep=v1_gifs_search&rid=giphy-downsized-small.mp4&ct=g\"},                  │
+    │ \"downsized_still\": {\"height\": \"384\", \"width\": \"384\",               │
+    │ \"size\": \"41947\", \"url\":                                                │
+    │ \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-downsized_s.       │
+    │ gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_se       │
+    │ arch&rid=giphy-downsized_s.gif&ct=g\"}, \"fixed_height\": {\"height\":       │
+    │  \"200\", \"width\": \"200\", \"size\": \"589204\", \"url\": \"https:/       │
+    │ /media3.giphy.com/media/v6RkL37LPep5dA4x6y/200.gif?cid=555fb132zrk3a20       │
+    │ z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200.gif&ct=g\"       │
+    │ , \"mp4_size\": \"122039\", \"mp4\": \"https://media3.giphy.com/media/       │
+    │ v6RkL37LPep5dA4x6y/200.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=200.mp4&ct=g\", \"webp_size\":               │
+    │ \"276910\", \"webp\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4       │
+    │ x6y/200.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v       │
+    │ 1_gifs_search&rid=200.webp&ct=g\"}, \"fixed_height_downsampled\":            │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"74161\",               │
+    │ \"url\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/200_d.gif       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=200_d.gif&ct=g\", \"webp_size\": \"54016\", \"webp\": \"https://       │
+    │ media3.giphy.com/media/v6RkL37LPep5dA4x6y/200_d.webp?cid=555fb132zrk3a       │
+    │ 20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200_d.webp&c       │
+    │ t=g\"}, \"fixed_height_small\": {\"height\": \"100\", \"width\":             │
+    │ \"100\", \"size\": \"201692\", \"url\": \"https://media3.giphy.com/med       │
+    │ ia/v6RkL37LPep5dA4x6y/100.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25q       │
+    │ k2neecbjmck4&ep=v1_gifs_search&rid=100.gif&ct=g\", \"mp4_size\":             │
+    │ \"43451\", \"mp4\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6       │
+    │ y/100.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_g       │
+    │ ifs_search&rid=100.mp4&ct=g\", \"webp_size\": \"82236\", \"webp\": \"h       │
+    │ ttps://media3.giphy.com/media/v6RkL37LPep5dA4x6y/100.webp?cid=555fb132       │
+    │ zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100.web       │
+    │ p&ct=g\"}, \"fixed_height_small_still\": {\"height\": \"100\",               │
+    │ \"width\": \"100\", \"size\": \"10950\", \"url\": \"https://media3.gip       │
+    │ hy.com/media/v6RkL37LPep5dA4x6y/100_s.gif?cid=555fb132zrk3a20z8oih1cn8       │
+    │ iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100_s.gif&ct=g\"},            │
+    │ \"fixed_height_still\": {\"height\": \"200\", \"width\": \"200\",            │
+    │ \"size\": \"33173\", \"url\": \"https://media3.giphy.com/media/v6RkL37       │
+    │ LPep5dA4x6y/200_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbj       │
+    │ mck4&ep=v1_gifs_search&rid=200_s.gif&ct=g\"}, \"fixed_width\":               │
+    │ {\"height\": \"200\", \"width\": \"200\", \"size\": \"589204\",              │
+    │ \"url\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/200w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=200w.gif&ct=g\", \"mp4_size\": \"122039\", \"mp4\": \"https://med       │
+    │ ia3.giphy.com/media/v6RkL37LPep5dA4x6y/200w.mp4?cid=555fb132zrk3a20z8o       │
+    │ ih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=200w.mp4&ct=g\",        │
+    │ \"webp_size\": \"226604\", \"webp\": \"https://media3.giphy.com/media/       │
+    │ v6RkL37LPep5dA4x6y/200w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk       │
+    │ 2neecbjmck4&ep=v1_gifs_search&rid=200w.webp&ct=g\"},                         │
+    │ \"fixed_width_downsampled\": {\"height\": \"200\", \"width\": \"200\",       │
+    │  \"size\": \"74161\", \"url\": \"https://media3.giphy.com/media/v6RkL3       │
+    │ 7LPep5dA4x6y/200w_d.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=200w_d.gif&ct=g\", \"webp_size\":               │
+    │ \"54016\", \"webp\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4x       │
+    │ 6y/200w_d.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep       │
+    │ =v1_gifs_search&rid=200w_d.webp&ct=g\"}, \"fixed_width_small\":              │
+    │ {\"height\": \"100\", \"width\": \"100\", \"size\": \"201692\",              │
+    │ \"url\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/100w.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=100w.gif&ct=g\", \"mp4_size\": \"43451\", \"mp4\": \"https://medi       │
+    │ a3.giphy.com/media/v6RkL37LPep5dA4x6y/100w.mp4?cid=555fb132zrk3a20z8oi       │
+    │ h1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=100w.mp4&ct=g\",         │
+    │ \"webp_size\": \"82236\", \"webp\": \"https://media3.giphy.com/media/v       │
+    │ 6RkL37LPep5dA4x6y/100w.webp?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2       │
+    │ neecbjmck4&ep=v1_gifs_search&rid=100w.webp&ct=g\"},                          │
+    │ \"fixed_width_small_still\": {\"height\": \"100\", \"width\": \"100\",       │
+    │  \"size\": \"10950\", \"url\": \"https://media3.giphy.com/media/v6RkL3       │
+    │ 7LPep5dA4x6y/100w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neec       │
+    │ bjmck4&ep=v1_gifs_search&rid=100w_s.gif&ct=g\"},                             │
+    │ \"fixed_width_still\": {\"height\": \"200\", \"width\": \"200\",             │
+    │ \"size\": \"33173\", \"url\": \"https://media3.giphy.com/media/v6RkL37       │
+    │ LPep5dA4x6y/200w_s.gif?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecb       │
+    │ jmck4&ep=v1_gifs_search&rid=200w_s.gif&ct=g\"}, \"looping\":                 │
+    │ {\"mp4_size\": \"2076092\", \"mp4\":                                         │
+    │ \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-loop.mp4?cid       │
+    │ =555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&ri       │
+    │ d=giphy-loop.mp4&ct=g\"}, \"original_still\": {\"height\": \"480\",          │
+    │ \"width\": \"480\", \"size\": \"144580\", \"url\": \"https://media3.gi       │
+    │ phy.com/media/v6RkL37LPep5dA4x6y/giphy_s.gif?cid=555fb132zrk3a20z8oih1       │
+    │ cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=giphy_s.gif&ct=g\"},       │
+    │  \"original_mp4\": {\"height\": \"480\", \"width\": \"480\",                 │
+    │ \"mp4_size\": \"472478\", \"mp4\": \"https://media3.giphy.com/media/v6       │
+    │ RkL37LPep5dA4x6y/giphy.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2n       │
+    │ eecbjmck4&ep=v1_gifs_search&rid=giphy.mp4&ct=g\"}, \"preview\":              │
+    │ {\"height\": \"150\", \"width\": \"150\", \"mp4_size\": \"48484\",           │
+    │ \"mp4\": \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-pre       │
+    │ view.mp4?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gi       │
+    │ fs_search&rid=giphy-preview.mp4&ct=g\"}, \"preview_gif\": {\"height\":       │
+    │  \"100\", \"width\": \"100\", \"size\": \"40162\", \"url\":                  │
+    │ \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-preview.gif?       │
+    │ cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search       │
+    │ &rid=giphy-preview.gif&ct=g\"}, \"preview_webp\": {\"height\":               │
+    │ \"100\", \"width\": \"100\", \"size\": \"28202\", \"url\":                   │
+    │ \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-preview.webp       │
+    │ ?cid=555fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_searc       │
+    │ h&rid=giphy-preview.webp&ct=g\"}, \"hd\": {\"height\": \"1080\",             │
+    │ \"width\": \"1080\", \"mp4_size\": \"4114250\", \"mp4\":                     │
+    │ \"https://media3.giphy.com/media/v6RkL37LPep5dA4x6y/giphy-hd.mp4?cid=5       │
+    │ 55fb132zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4&ep=v1_gifs_search&rid=       │
+    │ giphy-hd.mp4&ct=g\"}, \"480w_still\": {\"height\": \"480\", \"width\":       │
+    │  \"480\", \"size\": \"3047741\", \"url\": \"https://media3.giphy.com/m       │
+    │ edia/v6RkL37LPep5dA4x6y/480w_s.jpg?cid=555fb132zrk3a20z8oih1cn8iugxiuy       │
+    │ nm25qk2neecbjmck4&ep=v1_gifs_search&rid=480w_s.jpg&ct=g\"}}, \"user\":       │
+    │  {\"avatar_url\":                                                            │
+    │ \"https://media3.giphy.com/avatars/manutd/yHEWIu8yn49J.jpg\",                │
+    │ \"banner_image\":                                                            │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"banner_url\":                                                              │
+    │ \"https://media3.giphy.com/channel_assets/manutd/BnV79mZhBF8P.png\",         │
+    │ \"profile_url\": \"https://giphy.com/manutd/\", \"username\":                │
+    │ \"manutd\", \"display_name\": \"Manchester United\", \"description\":        │
+    │ \"Welcome to the official Manchester United GIPHY page\",                    │
+    │ \"instagram_url\": \"https://instagram.com/manchesterunited\",               │
+    │ \"website_url\": \"https://www.manutd.com\", \"is_verified\": true},         │
+    │ \"analytics_response_payload\": \"e=ZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD       │
+    │ 01NTVmYjEzMnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lm       │
+    │ X2lkPXY2UmtMMzdMUGVwNWRBNHg2eSZjdD1n\", \"analytics\": {\"onload\":          │
+    │ {\"url\": \"https://giphy-analytics.giphy.com/v2/pingback_simple?analy       │
+    │ tics_response_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEz       │
+    │ MnpyazNhMjB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPXY2Um       │
+    │ tMMzdMUGVwNWRBNHg2eSZjdD1n&action_type=SEEN\"}, \"onclick\": {\"url\":       │
+    │  \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_resp       │
+    │ onse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhM       │
+    │ jB6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPXY2UmtMMzdMUGV       │
+    │ wNWRBNHg2eSZjdD1n&action_type=CLICK\"}, \"onsent\": {\"url\":                │
+    │ \"https://giphy-analytics.giphy.com/v2/pingback_simple?analytics_respo       │
+    │ nse_payload=e%3DZXZlbnRfdHlwZT1HSUZfU0VBUkNIJmNpZD01NTVmYjEzMnpyazNhMj       │
+    │ B6OG9paDFjbjhpdWd4aXV5bm0yNXFrMm5lZWNiam1jazQmZ2lmX2lkPXY2UmtMMzdMUGVw       │
+    │ NWRBNHg2eSZjdD1n&action_type=SENT\"}}, \"alt_text\": \"\"}], \"meta\":       │
+    │  {\"status\": 200, \"msg\": \"OK\", \"response_id\":                         │
+    │ \"zrk3a20z8oih1cn8iugxiuynm25qk2neecbjmck4\"}, \"pagination\":               │
+    │ {\"total_count\": 500, \"count\": 5, \"offset\": 0}}\n"                      │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Giphy_Agent -> Web_Surfer_Agent [suggested_function_call] ──────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "function_name": "present_completed_task_or_ask_question",                 │
+    │                                                                              │
+    │ "call_id": "call_20OQCwBlOuTbx2vC1hD9D4BV",                                  │
+    │   "arguments": {                                                             │
+    │                                                                              │
+    │ "message": "Here are some Manchester United GIFs for you:\n\n1.              │
+    │ [Premier League Football GIF by Curtains                                     │
+    │ Cool](https://gph.is/g/aj2GMgp)\n2. [Football Sport GIF by Manchester        │
+    │ United](https://gph.is/g/E0KB5Rm)\n3. [Pray Europa League GIF by             │
+    │ Manchester United](https://gph.is/g/4gKpLJr)\n4. [Ball Trick GIF by          │
+    │ Manchester United](https://gph.is/g/Zx0KBDl)\n5. [Writing Down The           │
+    │ Boss GIF by Manchester United](https://gph.is/g/Z2D7pyv)\n\nDo you           │
+    │ need anything else?"                                                         │
+    │   }                                                                          │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ giphy_agent -> giphy_agent [text_input] ────────────────────────────────────╮
+    │                                                                              │
+    │ Here are some Manchester United GIFs for you:                                │
+    │                                                                              │
+    │ 1. [Premier League                                                           │
+    │ Football GIF by Curtains Cool](https://gph.is/g/aj2GMgp)                     │
+    │ 2. [Football                                                                 │
+    │ Sport GIF by Manchester United](https://gph.is/g/E0KB5Rm)                    │
+    │ 3. [Pray                                                                     │
+    │ Europa League GIF by Manchester United](https://gph.is/g/4gKpLJr)            │
+    │ 4.                                                                           │
+    │ [Ball Trick GIF by Manchester United](https://gph.is/g/Zx0KBDl)              │
+    │ 5.                                                                           │
+    │ [Writing Down The Boss GIF by Manchester                                     │
+    │ United](https://gph.is/g/Z2D7pyv)                                            │
+    │                                                                              │
+    │ Do you need anything else?:                                                  │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
