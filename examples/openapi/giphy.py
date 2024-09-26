@@ -3,13 +3,14 @@ import os
 from typing import Annotated, Any, Optional
 
 # from pathlib import Path
-from autogen import UserProxyAgent, register_function
+from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency, Workflows
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.base import TextInput
+from fastagency.runtime.autogen.agents.websurfer import WebSurferAgent
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
@@ -50,11 +51,17 @@ giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
 
 wf = AutoGenWorkflows()
 
-TERMINATE_MESSAGE = "Write 'TERMINATE' to end the conversation."
-GIPHY_SYSTEM_MESSAGE = f"""You are an agent in charge to communicate with the user and Giphy API.
+GIPHY_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and Giphy API.
 Always use 'present_completed_task_or_ask_question' to interact with the user.
-Use 'bitly_gif_url' when presenting a gif to the user.
-{TERMINATE_MESSAGE}"""
+
+Initially, the Web_Surfer_Agent will provide you with some content from the web.
+You must present this content provided Web_Surfer_Agent to the user by using 'present_completed_task_or_ask_question'.
+Along with the content, ask the user if he wants you to generate some gifs based on the content.
+
+Once get the wanted gifs, present them to the user by using 'present_completed_task_or_ask_question' again.
+Note: Use 'bitly_gif_url' when presenting a gif to the user.
+
+Write 'TERMINATE' to end the conversation."""
 
 
 @wf.register(name="giphy_with_security", description="Giphy chat with security")
@@ -77,13 +84,6 @@ def giphy_workflow_with_security(
         except Exception as e:  # pragma: no cover
             return f"present_completed_task_or_ask_question() FAILED! {e}"
 
-    user_proxy_agent = UserProxyAgent(
-        name="User_Proxy_Agent",
-        system_message=f"You are a websurfer agent.{TERMINATE_MESSAGE}",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-        is_termination_msg=is_termination_msg,
-    )
     giphy_agent = ConversableAgent(
         name="Giphy_Agent",
         system_message=GIPHY_SYSTEM_MESSAGE,
@@ -91,11 +91,19 @@ def giphy_workflow_with_security(
         human_input_mode="NEVER",
         is_termination_msg=is_termination_msg,
     )
+    web_surfer = WebSurferAgent(
+        name="Web_Surfer_Agent",
+        llm_config=llm_config,
+        summarizer_llm_config=llm_config,
+        human_input_mode="NEVER",
+        executor=giphy_agent,
+        is_termination_msg=is_termination_msg,
+    )
 
     register_function(
         present_completed_task_or_ask_question,
         caller=giphy_agent,
-        executor=user_proxy_agent,
+        executor=web_surfer,
         name="present_completed_task_or_ask_question",
         description="""Present completed task or ask question.
 If you are presenting a completed task, last message should be a question: 'Do yo need anything else?'""",
@@ -105,12 +113,12 @@ If you are presenting a completed task, last message should be a question: 'Do y
     wf.register_api(
         api=giphy_api,
         callers=giphy_agent,
-        executors=user_proxy_agent,
+        executors=web_surfer,
         functions=functions,
     )
 
-    chat_result = user_proxy_agent.initiate_chat(
-        giphy_agent,
+    chat_result = giphy_agent.initiate_chat(
+        web_surfer,
         message=f"Users initial message: {initial_message}",
         summary_method="reflection_with_llm",
         max_turns=10,
