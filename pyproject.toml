@@ -253,7 +253,6 @@ testpaths = [
 markers = [
     "slow",
     "all",
-    "nats",
     "anthropic",
     "azure_oai",
     "openai",

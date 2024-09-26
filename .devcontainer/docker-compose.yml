@@ -7,21 +7,6 @@ services:
     volumes:
       - ../:/workspaces/fastagency:cached
     command: sleep infinity
-    environment:
-      - NATS_URL=nats://fastagency-${USER}-nats-py310:4222
-    env_file:
-      - ./devcontainer.env
-    networks:
-      - fastagency-network
-  nats-fastagency:  # nosemgrep
-    image: nats:latest
-    container_name: fastagency-${USER}-nats-py310
-    # ports:
-      # - "${PORT_PREFIX}4222:4222"
-      # - "${PORT_PREFIX}9222:9222"
-    volumes:
-      - ./nats_server.conf:/etc/nats/server.conf
-    command: [ "--config", "/etc/nats/server.conf" ]
     env_file:
       - ./devcontainer.env
     networks:
