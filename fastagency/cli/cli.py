@@ -5,8 +5,8 @@ from typing import Annotated, Optional
 import typer
 
 from .. import __version__
+from ..exceptions import FastAgencyCLIError, FastAgencyCLIPythonVersionError
 from .discover import get_import_string
-from .exceptions import FastAgencyCLIError
 from .logging import setup_logging
 
 app = typer.Typer(rich_markup_mode="rich")
@@ -45,6 +45,7 @@ def _run_app(
     workflow: Optional[str],
     initial_message: Optional[str],
     dev_mode: bool = False,
+    single_run: bool = False,
 ) -> None:
     try:
         import_string, fa_app = get_import_string(path=path, app_name=app)
@@ -54,9 +55,15 @@ def _run_app(
                 import_string=import_string,
                 name=workflow,
                 initial_message=initial_message,
+                single_run=single_run,
             )
+    except FastAgencyCLIPythonVersionError as e:
+        msg = e.args[0]
+        typer.echo(msg, err=True)
+        raise typer.Exit(code=1)  # noqa: B904
     except FastAgencyCLIError as e:
-        logger.error(str(e))
+        msg = e.args[0]
+        typer.echo(msg, err=True)
         raise typer.Exit(code=1) from None
 
 
@@ -120,6 +127,12 @@ def run(
             help="The initial message to send to the workflow. If not provided, a default message will be sent.",
         ),
     ] = None,
+    single_run: Annotated[
+        bool,
+        typer.Option(
+            "--single-run", help="If set, only a single workflow will be executed."
+        ),
+    ] = False,
 ) -> None:
     dev_mode = False
     _run_app(
@@ -128,6 +141,7 @@ def run(
         workflow=workflow,
         initial_message=initial_message,
         dev_mode=dev_mode,
+        single_run=single_run,
     )
 
 
@@ -162,6 +176,12 @@ def dev(
             help="The initial message to send to the workflow. If not provided, a default message will be sent.",
         ),
     ] = None,
+    single_run: Annotated[
+        bool,
+        typer.Option(
+            "--single-run", help="If set, only a single workflow will be executed."
+        ),
+    ] = False,
 ) -> None:
     dev_mode = True
     _run_app(
@@ -170,6 +190,7 @@ def dev(
         workflow=workflow,
         initial_message=initial_message,
         dev_mode=dev_mode,
+        single_run=single_run,
     )
 
 

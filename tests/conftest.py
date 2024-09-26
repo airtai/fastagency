@@ -16,6 +16,7 @@ from typing import (
 )
 from unittest.mock import MagicMock
 
+import fastapi
 import openai
 import pytest
 import pytest_asyncio
@@ -24,13 +25,13 @@ from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from pydantic import __version__ as version_of_pydantic
 
+from fastagency.runtime.autogen.tools.web_surfer import WebSurferTool
 from fastagency.studio.db.base import DefaultDB
 from fastagency.studio.db.inmemory import InMemoryBackendDB, InMemoryFrontendDB
 from fastagency.studio.helpers import create_autogen, create_model_ref, get_model_by_ref
 from fastagency.studio.models.agents.assistant import AssistantAgent
 from fastagency.studio.models.agents.user_proxy import UserProxyAgent
 from fastagency.studio.models.agents.web_surfer import BingAPIKey, WebSurferAgent
-from fastagency.studio.models.agents.web_surfer_autogen import WebSurferChat
 from fastagency.studio.models.base import ObjectReference
 from fastagency.studio.models.llms.anthropic import Anthropic, AnthropicAPIKey
 from fastagency.studio.models.llms.azure import AzureOAI, AzureOAIAPIKey
@@ -453,6 +454,36 @@ def create_weather_fastapi_app(host: str, port: int) -> FastAPI:
     return app
 
 
+def create_gify_fastapi_app(host: str, port: int) -> FastAPI:
+    class Gif(BaseModel):
+        id: int
+        title: str
+        url: str
+
+    app = FastAPI(
+        title="Gify",
+        servers=[
+            {"url": f"http://{host}:{port}", "description": "Local development server"}
+        ],
+    )
+
+    @app.get("/gifs", response_model=list[Gif], tags=["gifs"])
+    # TODO: API is failing if Query alias contains uppercase letters e.g. alias="Topic"
+    def get_gifs_for_topic(topic: str = fastapi.Query(..., alias="topic")) -> list[Gif]:
+        """Get GIFs for a topic."""
+        return [
+            Gif(id=1, title="Gif 1", url=f"https://gif.example.com/gif1?topic={topic}"),
+            Gif(id=2, title="Gif 2", url=f"https://gif.example.com/gif2?topic={topic}"),
+        ]
+
+    @app.get("/gifs/{gifId}", response_model=Gif, tags=["gifs"])
+    def get_gif_by_id(gif_id: int = fastapi.Path(..., alias="gifId")) -> Gif:
+        """Get GIF by Id."""
+        return Gif(id=gif_id, title="Gif 1", url="https://gif.example.com/gif1")
+
+    return app
+
+
 def find_free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("", 0))
@@ -502,6 +533,21 @@ def weather_fastapi_openapi_url() -> Iterator[str]:
     app = create_weather_fastapi_app(host, port)
     openapi_url = f"http://{host}:{port}/openapi.json"
 
+    config = uvicorn.Config(app, host=host, port=port, log_level="info")
+    server = Server(config=config)
+    with server.run_in_thread():
+        time.sleep(1 if system() != "Windows" else 5)  # let the server start
+
+        yield openapi_url
+
+
+@pytest.fixture(scope="session")
+def gify_fastapi_openapi_url() -> Iterator[str]:
+    host = "127.0.0.1"
+    port = find_free_port()
+    app = create_gify_fastapi_app(host, port)
+
+    openapi_url = f"http://{host}:{port}/openapi.json"
     config = uvicorn.Config(app, host=host, port=port, log_level="info")
     server = Server(config=config)
     with server.run_in_thread():
@@ -666,7 +712,7 @@ async def placeholder_websurfer_ref(
 )
 async def placeholder_websurfer_chat(
     user_uuid: str, websurfer_ref: ObjectReference, bing_api_key_ref: ObjectReference
-) -> WebSurferChat:
+) -> WebSurferTool:
     websurfer_model: WebSurferAgent = await get_model_by_ref(websurfer_ref)  # type: ignore [assignment]
     llm_config = await create_autogen(websurfer_model.llm, user_uuid)
     summarizer_llm_config = await create_autogen(
@@ -681,7 +727,7 @@ async def placeholder_websurfer_chat(
 
     viewport_size = websurfer_model.viewport_size
 
-    return WebSurferChat(
+    return WebSurferTool(
         name_prefix=websurfer_model.name,
         llm_config=llm_config,
         summarizer_llm_config=summarizer_llm_config,

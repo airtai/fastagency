@@ -1,6 +1,8 @@
 from pathlib import Path
 
 import pytest
+from fastapi.params import Path as FastAPIPath
+from fastapi.params import Query
 
 from fastagency.api.openapi import OpenAPI
 
@@ -94,3 +96,93 @@ class TestOpenAPI:
             str(e.value)
             == f"Following functions {set(['func_does_not_exists'])} are not valid functions"  # noqa: C405
         ), str(e.value)
+
+    @pytest.mark.parametrize(
+        ("input", "expected"),
+        [
+            ("/gif/{gifId}", "/gif/{gif_id}"),
+            ("/gif/{GifId}", "/gif/{gif_id}"),
+            ("/Gif/{GifId}", "/Gif/{gif_id}"),
+            ("/Gif/{userId}/gif/{GifId}", "/Gif/{user_id}/gif/{gif_id}"),
+        ],
+    )
+    def test_camel_to_snake_within_braces(self, input: str, expected: str) -> None:
+        result = OpenAPI._convert_camel_case_within_braces_to_snake(input)
+
+        assert result == expected, result
+
+    def test_remove_pydantic_undefined_from_tools(self) -> None:
+        tools = [
+            {
+                "type": "function",
+                "function": {
+                    "description": "Get GIFs for a topic.",
+                    "name": "get_gifs_for_topic_gifs_get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "topic": {
+                                "type": "string",
+                                "default": Query(),
+                                "description": "topic",
+                            }
+                        },
+                        "required": [],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "description": "Get GIF by Id.",
+                    "name": "get_gif_by_id_gifs__gif_id__get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "gif_id": {
+                                "type": "integer",
+                                "default": FastAPIPath(),
+                                "description": "gif_id",
+                            }
+                        },
+                        "required": [],
+                    },
+                },
+            },
+        ]
+        result = OpenAPI._remove_pydantic_undefined_from_tools(tools)
+
+        expected = [
+            {
+                "type": "function",
+                "function": {
+                    "description": "Get GIFs for a topic.",
+                    "name": "get_gifs_for_topic_gifs_get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "topic": {
+                                "type": "string",
+                                "description": "topic",
+                            }
+                        },
+                        "required": ["topic"],
+                    },
+                },
+            },
+            {
+                "type": "function",
+                "function": {
+                    "description": "Get GIF by Id.",
+                    "name": "get_gif_by_id_gifs__gif_id__get",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "gif_id": {"type": "integer", "description": "gif_id"}
+                        },
+                        "required": ["gif_id"],
+                    },
+                },
+            },
+        ]
+        assert result == expected, result

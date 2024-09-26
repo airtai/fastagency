@@ -64,7 +64,7 @@ def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) 
                 ],
             )
             return ui.process_message(msg)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             return f"retrieve_exam_questions() FAILED! {e}"
 
     def write_final_answers(message: Annotated[str, "Message for examiner"]) -> str:
@@ -79,7 +79,7 @@ def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) 
             )
             ui.process_message(msg)
             return "Final answers stored."
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             return f"write_final_answers() FAILED! {e}"
 
     def get_final_grade(
@@ -93,7 +93,7 @@ def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) 
                 choices=["A", "B", "C", "D", "F"],
             )
             return ui.process_message(msg)
-        except Exception as e:
+        except Exception as e:  # pragma: no cover
             return f"get_final_grade() FAILED! {e}"
 
     register_function(
