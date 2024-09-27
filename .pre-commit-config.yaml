@@ -65,6 +65,5 @@ repos:
           (?x)^(
               package.lock.json|
               pnpm-lock.yaml|
-              docs/docs/en/tutorial/giphy/index.md|
-              docs/docs_src/tutorial/giphy/logs.txt
+              docs/docs/en/tutorial/giphy/index.md
           )$

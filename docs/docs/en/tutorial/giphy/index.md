@@ -160,11 +160,3 @@ The command will launch a console interface where users can input their requests
 
 ## Output
 The output will vary based on your initial message.
-
-
-<details>
-<summary>complete output</summary>
-```console
-{! docs_src/tutorial/giphy/logs.txt !}
-```
-</details>
