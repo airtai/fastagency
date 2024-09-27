@@ -47,7 +47,7 @@ hide:
 * Polish getting started docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#278](https://github.com/airtai/fastagency/pull/278){.external-link target="_blank"}
 * Move studio files into studio project and clean up deps devcontainers etc by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#279](https://github.com/airtai/fastagency/pull/279){.external-link target="_blank"}
 * Replaces gpt-4o with gpt-40-mini in all OpenAI tests by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#282](https://github.com/airtai/fastagency/pull/282){.external-link target="_blank"}
-* Support runnning Mesop based apps with WSGI servers by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#283](https://github.com/airtai/fastagency/pull/283){.external-link target="_blank"}
+* Support running Mesop based apps with WSGI servers by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#283](https://github.com/airtai/fastagency/pull/283){.external-link target="_blank"}
 * Bump version to 0.2.0rc0 by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#285](https://github.com/airtai/fastagency/pull/285){.external-link target="_blank"}
 * Giphy and Websurfer Tutorial by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#284](https://github.com/airtai/fastagency/pull/284){.external-link target="_blank"}
 
