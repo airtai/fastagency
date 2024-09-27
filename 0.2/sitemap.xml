@@ -589,6 +589,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/getting-started/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/tutorial/giphy/</loc>
+        <lastmod>2024-09-27</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorial/giphy/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/user-guide/</loc>
         <lastmod>2024-09-27</lastmod>
         <changefreq>daily</changefreq>
