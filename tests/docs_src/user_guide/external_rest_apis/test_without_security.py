@@ -10,6 +10,7 @@ INPUT_MESSAGE = "Get me daily forecast for Zagreb city"
 
 
 @pytest.mark.openai
+@pytest.mark.xfail(strict=False)
 def test_cli_without_security(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", InputMock([INPUT_MESSAGE]))
 

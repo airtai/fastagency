@@ -4,9 +4,6 @@
         "./docker-compose.yml"
     ],
     "service": "python-3.12-fastagency",
-    "forwardPorts": [
-        "fastagency-${containerEnv:CONTAINER_PREFIX}-nats-py312:9222"
-    ],
     "secrets": {
         "OPENAI_API_KEY": {
             "description": "This key is optional and only needed if you are working on OpenAI-related code. Leave it blank if not required. You can always set it later as an environment variable in the codespace terminal."
@@ -54,7 +51,7 @@
             // "upgradePackages": "true"
         },
         // "ghcr.io/devcontainers/features/python:1": {},
-        "ghcr.io/devcontainers/features/node:1": {},
+        // "ghcr.io/devcontainers/features/node:1": {},
         // The below configuration with "version" set to "latest" fails in codespace
         // "ghcr.io/devcontainers/features/git:1": {
         //     "version": "latest",

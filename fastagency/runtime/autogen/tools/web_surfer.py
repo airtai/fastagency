@@ -1,7 +1,6 @@
 import os
 from typing import Annotated, Any, Optional, Union
 
-from asyncer import asyncify
 from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
 from autogen.agentchat import ConversableAgent as AutoGenConversableAgent
 from autogen.agentchat.chat import ChatResult
@@ -217,29 +216,6 @@ class WebSurferTool:  # implements Toolable
             return self._get_error_from_exception(task, e)
 
         return self.create_final_reply(task, answer)
-
-    async def a_create_new_task(self, task: str) -> str:
-        self.task = task
-        try:
-            answer = await asyncify(self._chat_with_websurfer)(
-                message=self.initial_message,
-                clear_history=True,
-            )
-        except Exception as e:
-            return self._get_error_from_exception(task, e)
-
-        return self.create_final_reply(task, answer)
-
-    async def a_continue_task_with_additional_instructions(self, message: str) -> str:
-        try:
-            answer = await asyncify(self._chat_with_websurfer)(
-                message=message,
-                clear_history=False,
-            )
-        except Exception as e:
-            return self._get_error_from_exception(message, e)
-
-        return self.create_final_reply(message, answer)
 
     def continue_task_with_additional_instructions(
         self, message: Annotated[str, "a followup message to the existing task"]
