@@ -3,6 +3,7 @@ from typing import Annotated, Any
 
 import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
+from openai import InternalServerError
 
 from fastagency import UI, IOMessage
 from fastagency.api.openapi import OpenAPI
@@ -123,6 +124,7 @@ class TestPatternMatching:
 
 
 @pytest.mark.openai
+@pytest.mark.xfail(strict=False, raises=InternalServerError)
 def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     wf = AutoGenWorkflows()
 
@@ -147,7 +149,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
             teacher_agent,
             message=initial_message,
             summary_method="reflection_with_llm",
-            max_turns=5,
+            max_turns=3,
         )
 
         return chat_result.summary  # type: ignore[no-any-return]
@@ -191,7 +193,6 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
 
 @pytest.mark.openai
-@pytest.mark.xfail(strict=False)
 def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
@@ -222,7 +223,7 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
 
 @pytest.mark.openai
-@pytest.mark.xfail(strict=False)
+@pytest.mark.xfail(strict=False, raises=InternalServerError)
 class TestAutoGenWorkflowsWithHumanInputAlways:
     @pytest.fixture
     def wf(self, openai_gpt4o_mini_llm_config: dict[str, Any]) -> AutoGenWorkflows:

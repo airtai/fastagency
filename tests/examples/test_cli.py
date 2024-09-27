@@ -2,7 +2,9 @@ import pytest
 from typer.testing import CliRunner
 
 from fastagency.cli import app
-from tests.conftest import InputMock
+
+from ..conftest import InputMock
+from ..docs_src.helpers import skip_internal_server_error
 
 runner = CliRunner()
 
@@ -17,6 +19,7 @@ INPUT_MESSAGE = "Who is Leonardo da Vinci?"
         # ("What is the weather in London?", "examples/cli/main_user_proxy.py"),
     ],
 )
+@skip_internal_server_error
 def test_cli(monkeypatch: pytest.MonkeyPatch, input_message: str, path: str) -> None:
     monkeypatch.setattr("builtins.input", InputMock([input_message] + [] * 10))
 

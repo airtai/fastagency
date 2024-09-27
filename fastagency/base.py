@@ -1,7 +1,7 @@
 import re
 import textwrap
 from abc import ABC, abstractmethod
-from collections.abc import Generator, Iterable, Iterator, Mapping
+from collections.abc import Awaitable, Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field, fields
 from typing import (
@@ -223,6 +223,27 @@ class UI(Protocol):
     # ) -> Optional[str]: ...
 
     def create_subconversation(self) -> "UI": ...
+
+
+@runtime_checkable
+class WSGI(Protocol):
+    def handle_wsgi(
+        self,
+        app: "Runnable",
+        environ: dict[str, Any],
+        start_response: Callable[..., Any],
+    ) -> list[bytes]: ...
+
+
+@runtime_checkable
+class ASGI(Protocol):
+    async def handle_asgi(
+        self,
+        app: "Runnable",
+        scope: dict[str, Any],
+        receive: Callable[[dict[str, Any]], Awaitable[None]],
+        send: Callable[[dict[str, Any]], Awaitable[None]],
+    ) -> None: ...
 
 
 Workflow = TypeVar("Workflow", bound=Callable[["Workflows", UI, str, str], str])
