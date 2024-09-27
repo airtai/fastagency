@@ -53,6 +53,7 @@ search:
             - app
                 - [FastAgency](api/fastagency/app/FastAgency.md)
             - base
+                - [ASGI](api/fastagency/base/ASGI.md)
                 - [AskingMessage](api/fastagency/base/AskingMessage.md)
                 - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/base/IOMessage.md)
@@ -64,6 +65,7 @@ search:
                 - [TextInput](api/fastagency/base/TextInput.md)
                 - [TextMessage](api/fastagency/base/TextMessage.md)
                 - [UI](api/fastagency/base/UI.md)
+                - [WSGI](api/fastagency/base/WSGI.md)
                 - [WorkflowCompleted](api/fastagency/base/WorkflowCompleted.md)
                 - [Workflows](api/fastagency/base/Workflows.md)
                 - [run_workflow](api/fastagency/base/run_workflow.md)
@@ -85,9 +87,11 @@ search:
                 - logging
                     - [setup_logging](api/fastagency/cli/logging/setup_logging.md)
             - exceptions
+                - [FastAgencyASGINotImplementedError](api/fastagency/exceptions/FastAgencyASGINotImplementedError.md)
                 - [FastAgencyCLIError](api/fastagency/exceptions/FastAgencyCLIError.md)
                 - [FastAgencyCLIPythonVersionError](api/fastagency/exceptions/FastAgencyCLIPythonVersionError.md)
                 - [FastAgencyError](api/fastagency/exceptions/FastAgencyError.md)
+                - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
             - runtime

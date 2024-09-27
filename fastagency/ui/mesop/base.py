@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from queue import Queue
 from tempfile import TemporaryDirectory
-from typing import ClassVar, Optional
+from typing import Any, Callable, ClassVar, Optional
 from uuid import uuid4
 
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
@@ -213,11 +213,19 @@ class MesopUI(IOMessageVisitor):  # UI
                 break
             yield message
 
-    def __call__(self, environ, start_response):
+    def handle_wsgi(
+        self,
+        app: "Runnable",
+        environ: dict[str, Any],
+        start_response: Callable[..., Any],
+    ) -> list[bytes]:
+        logger.info(f"Starting MesonUI using WSGI interface with app: {app}")
         MesopUI._created_instance = self
+        MesopUI._app = app
+
         from .main import me
 
-        return me(environ, start_response)
+        return me(environ, start_response)  # type: ignore[no-any-return]
 
 
 def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:

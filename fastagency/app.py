@@ -1,10 +1,14 @@
 __all__ = ["FastAgency"]
 
-from collections.abc import Generator
+from collections.abc import Awaitable, Generator
 from contextlib import contextmanager
-from typing import Any, Awaitable, Callable, Optional
+from typing import Any, Callable, Optional, Union
 
-from .base import UI, Workflows
+from .base import ASGI, UI, WSGI, Workflows
+from .exceptions import (
+    FastAgencyASGINotImplementedError,
+    FastAgencyWSGINotImplementedError,
+)
 
 
 class FastAgency:  # Runnable
@@ -50,23 +54,43 @@ class FastAgency:  # Runnable
             single_run=single_run,
         )
 
-    # # needed for uvicorn to recognize the class as a valid ASGI application
-    # async def __call__(
-    #     self,
-    #     scope: dict[str, Any],
-    #     receive: Callable[[], Awaitable[dict]],
-    #     send: Callable[[dict], Awaitable[None]],
-    # ) -> None:
-    #     return await self.ui(scope, receive, send)
+    def __call__(self, *args: Any) -> Union[Awaitable[None], list[bytes]]:
+        if len(args) == 2 and callable(args[1]):
+            # WSGI interface
+            environ, start_response = args
+            return self.handle_wsgi(environ, start_response)
+        elif len(args) == 3 and callable(args[1]) and callable(args[2]):
+            # ASGI interface
+            scope, receive, send = args
+            scope_type = scope.get("type")
+            if scope_type == "http":
+                return self.handle_asgi(scope, receive, send)
+            else:
+                raise NotImplementedError(
+                    f"ASGI scope type '{scope_type}' not supported."
+                )
+        else:
+            raise TypeError(f"Invalid arguments for __call__: {args}")
 
-    def __call__(self, environ, start_response):
-        self.ui.__class__._app = self
-        return self.ui(environ, start_response)
-        # # Define the HTTP response status and headers
-        # status = '200 OK'
-        # headers = [('Content-Type', 'text/plain')]
-        # start_response(status, headers)
+    def handle_wsgi(
+        self, environ: dict[str, Any], start_response: Callable[..., Any]
+    ) -> list[bytes]:
+        if isinstance(self.ui, WSGI):
+            return self.ui.handle_wsgi(self, environ, start_response)
+        else:
+            raise FastAgencyWSGINotImplementedError(
+                "WSGI interface not supported for UI: {self.ui}"
+            )
 
-        # # Return the response body
-        # response_body = b"Hello, this is MyApp!"
-        # return [response_body]
+    async def handle_asgi(
+        self,
+        scope: dict[str, Any],
+        receive: Callable[[dict[str, Any]], Awaitable[None]],
+        send: Callable[[dict[str, Any]], Awaitable[None]],
+    ) -> None:
+        if isinstance(self.ui, ASGI):
+            return await self.ui.handle_asgi(self, scope, receive, send)
+        else:
+            raise FastAgencyASGINotImplementedError(
+                "ASGI interface not supported for UI: {self.ui}"
+            )
