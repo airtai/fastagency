@@ -10,12 +10,13 @@ from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.base import TextInput
 from fastagency.runtime.autogen.agents.websurfer import WebSurferAgent
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
+
 
 llm_config = {
     "config_list": [
         {
-            "model": "gpt-4o",
+            "model": "gpt-4o-mini",
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
@@ -37,7 +38,18 @@ Along with the content, ask the user if he wants you to generate some gifs based
 - Do NOT generate gifs BEFORE you present the web content to the user, otherwise, you will be penalized!
 
 Once get the wanted gifs, present them to the user by using 'present_completed_task_or_ask_question' again.
-Note: Use 'bitly_gif_url' when presenting a gif to the user.
+Note: Use '.gif' files when presenting a gif to the user and format it as a markdown gif -> ![Title](url)
+- Also, make sure to add new lines '\n\n' between headlines and gifs for better readability.
+e.g.:
+'''
+# Here are some gifs for you:
+
+## Title 1
+![Title 1](url1)
+
+## Title 2
+![Title 2](url2)
+'''
 
 Write 'TERMINATE' to end the conversation."""
 
@@ -107,4 +119,4 @@ If you are presenting a completed task, last message should be a question: 'Do y
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(wf=wf, ui=MesopUI())
