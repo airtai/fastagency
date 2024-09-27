@@ -33,8 +33,14 @@ To get started, you need to install FastAgency with OpenAPI submodule. You can d
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-### Giphy API Key Setup
-The **GiphyAgent** requires an API key to interact with Giphy's service. Follow these steps to create your API key:
+### API Key Setup
+**WebSurferAgent** requires an **Bing Web Search** API key and **GiphyAgent** requires an API key to interact with Giphy's service. Follow these steps to create your API keys:
+
+#### Create Bing Web Search API Key
+To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.
+
+!!! note
+    You will need to create **Microsoft Azure** Account.
 
 #### Create a Giphy Account
 **Step 1**: If you don’t have a Giphy account, you’ll need to sign up:
@@ -53,19 +59,21 @@ After creating the app, you’ll be provided with an **API Key**.
 
 - Copy this key and continue with the following steps.
 
-#### Set Up Your API Key in the Environment
+#### Set Up Your API Keys in the Environment
 
-To securely use the API key in your project, you should store it in an environment variable.
+To securely use the API keys in your project, you should store it in an environment variables.
 
-You can set the Giphy API key in your terminal as an environment variable:
+You can set the API keys in your terminal as an environment variable:
 
 === "Linux/macOS"
     ```bash
     export GIPHY_API_KEY="your_giphy_api_key"
+    export BING_API_KEY="your_bing_api_key"
     ```
 === "Windows"
     ```bash
     set GIPHY_API_KEY="your_giphy_api_key"
+    set BING_API_KEY="your_bing_api_key"
     ```
 
 ## Complete Application Code
