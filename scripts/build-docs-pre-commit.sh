@@ -19,7 +19,6 @@ pip install --editable ".[dev]" \
  --retries 1 \
  --no-input \
  --quiet
- prisma generate
 
 # Run on all files,
 # ignoring the paths passed to this script,

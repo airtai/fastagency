@@ -26,10 +26,6 @@ jobs:
           key: ${{ github.ref }}
           path: .cache
       - run: pip install -e ".[dev]"
-      - name: Run wasp prisma commands
-        run: prisma generate --schema=wasp_schema.prisma
-      - name: Prisma
-        run: prisma generate
       - run: ./scripts/build-docs.sh
       - run: echo "VERSION=$(python3 -c 'from importlib.metadata import version; print(".".join(version("fastagency").split(".")[:2]))')" >> $GITHUB_ENV
       - run: echo "IS_RC=$(python3 -c 'from importlib.metadata import version; print("rc" in version("fastagency"))')" >> $GITHUB_ENV
