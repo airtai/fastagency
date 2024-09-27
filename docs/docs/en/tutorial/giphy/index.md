@@ -90,6 +90,8 @@ Also, we configure the **Giphy API** with the __*GIPHY_API_KEY*__ using __*set_s
 {! docs_src/tutorial/giphy/main.py [ln:26-30] !}
 ```
 
+For more information, visit [**API Integration User Guide**](../../user-guide/api){target="_blank"}.
+
 ### Registering the Workflow
 
 Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"giphy_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both GiphyAgent and WebSurferAgent.
@@ -108,7 +110,7 @@ This is a core function used by the **GiphyAgent** to either present the task re
 ### Creating the Giphy and WebSurfer Agents
 
 - **GiphyAgent**: A ***ConversableAgent*** is created with the name "Giphy_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
-- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user.
+- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtime/autogen/websurfer){target="_blank"}.
 
 ```python
 {! docs_src/tutorial/giphy/main.py [ln:79-93] !}
@@ -144,6 +146,8 @@ The FastAgency app is created, using the registered workflows (***wf***) and web
 ```python
 {! docs_src/tutorial/giphy/main.py [ln:122] !}
 ```
+
+For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics){target="_blank"}.
 
 ## Running the Application
 
