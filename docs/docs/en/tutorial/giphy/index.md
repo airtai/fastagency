@@ -30,7 +30,7 @@ Before we dive into building our agents, let’s go over the necessary setup. We
 To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
 
 ```bash
-pip install "fastagency[autogen,openapi]"
+pip install "fastagency[autogen,mesop,openapi]"
 ```
 
 ### Giphy API Key Setup
@@ -87,22 +87,22 @@ The following lines shows hot to initializes the Giphy API by loading the OpenAP
 
 Also, we configure the **Giphy API** with the __*GIPHY_API_KEY*__ using __*set_security_params*__ to authenticate our requests.
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:25-29] !}
+{! docs_src/tutorial/giphy/main.py [ln:26-30] !}
 ```
 
 ### Registering the Workflow
 
-Here, we initialize a new workflow using AutoGenWorkflows() and register it under the name ***"giphy_with_security"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both GiphyAgent and WebSurferAgent.
+Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"giphy_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both GiphyAgent and WebSurferAgent.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:43-49] !}
+{! docs_src/tutorial/giphy/main.py [ln:59-62] !}
 ```
 
 ### Interaction with the user
 This is a core function used by the **GiphyAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:53-64] !}
+{! docs_src/tutorial/giphy/main.py [ln:66-77] !}
 ```
 
 ### Creating the Giphy and WebSurfer Agents
@@ -111,7 +111,7 @@ This is a core function used by the **GiphyAgent** to either present the task re
 - **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:66-80] !}
+{! docs_src/tutorial/giphy/main.py [ln:79-93] !}
 ```
 
 ### Registering Functions
@@ -119,12 +119,12 @@ This is a core function used by the **GiphyAgent** to either present the task re
 The function ***present_completed_task_or_ask_question*** is registered to allow the **GiphyAgent** to ask questions or present completed tasks after receiving data from the **WebSurferAgent**.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:82-89] !}
+{! docs_src/tutorial/giphy/main.py [ln:95-102] !}
 ```
 
 We specify which Giphy API functions can be used by the **GiphyAgent**: *random_gif*, *search_gifs*, and *trending_gifs*. These functions allow the agent to generate GIFs based on user input or trending content.
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:91-97] !}
+{! docs_src/tutorial/giphy/main.py [ln:104-110] !}
 ```
 
 ### Initiating the Chat
@@ -134,15 +134,15 @@ We initiate the conversation between the user, **WebSurferAgent**, and **GiphyAg
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:99-106] !}
+{! docs_src/tutorial/giphy/main.py [ln:112-119] !}
 ```
 
 ### Starting the Application
 
-The FastAgency app is created, using the registered workflows (***wf***) and a console-based user interface (***ConsoleUI***). This makes the conversation between agents and the user interactive.
+The FastAgency app is created, using the registered workflows (***wf***) and web-based user interface (***MesopUI***). This makes the conversation between agents and the user interactive.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:109] !}
+{! docs_src/tutorial/giphy/main.py [ln:122] !}
 ```
 
 ## Running the Application
@@ -153,10 +153,64 @@ Once the workflow is set up, you can run the application using the **FastAgency 
 fastagency run
 ```
 
-The command will launch a console interface where users can input their requests and interact with the agents.
+```console
+ ╭─ Python package file structure ──╮
+ │                                  │
+ │  📁 docs                         │
+ │  ├── 🐍 __init__.py              │
+ │  └── 📁 docs_src                 │
+ │      ├── 🐍 __init__.py          │
+ │      └── 📁 tutorial             │
+ │          ├── 🐍 __init__.py      │
+ │          └── 📁 giphy            │
+ │              ├── 🐍 __init__.py  │
+ │              └── 🐍 main.py      │
+ │                                  │
+ ╰──────────────────────────────────╯
+
+/home/vscode/.local/lib/python3.10/site-packages/pydantic/_internal/_config.py:341: UserWarning: Valid config keys have changed in V2:
+* 'keep_untouched' has been renamed to 'ignored_types'
+  warnings.warn(message, UserWarning)
+ [INFO] Importing autogen.base.py
+/home/vscode/.local/lib/python3.10/site-packages/pydantic/main.py:214: UserWarning: A custom validator is returning a value other than `self`.
+Returning anything other than `self` from a top level model validator isn't supported when validating via `__init__`.
+See the `model_validator` docs (https://docs.pydantic.dev/latest/concepts/validators/#model-validators) for more details.
+  warnings.warn(
+
+ ╭───────────── Importable FastAgency app ─────────────╮
+ │                                                     │
+ │  from docs.docs_src.tutorial.giphy.main import app  │
+ │                                                     │
+ ╰─────────────────────────────────────────────────────╯
+
+ [INFO] Creating MesopUI with import string: docs.docs_src.tutorial.giphy.main:app
+ [INFO] Starting MesopUI: import_string=docs.docs_src.tutorial.giphy.main:app, main_path=/tmp/tmpfi8uxdgv/main.py
+Running with hot reload:
+
+Running server on: http://localhost:32123
+ * Serving Flask app 'mesop.server.server'
+ * Debug mode: off
+```
+
+The command will launch a web interface where users can input their requests and interact with the agents (in this case ***http://localhost:32123***)
 
 !!! note
     Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
-## Output
-The output will vary based on your initial message.
+## Chat Example
+In this scenario, the user instructs the agents to scrape [BBC Sport](https://www.bbc.com/sport) for the latest sports news.
+
+![Initial message](./images/initial_message.png)
+
+Upon receiving the request, **WebSurferAgent** initiates the process by scraping the webpage for relevant updates.
+
+![Scraping 1](./images/scraping1.png)
+
+![Scraping 2](./images/scraping2.png)
+
+Once the scraping is complete, the agents deliver their findings to the user.
+In the final step, the user asks for a few *Premier League* GIFs, which **GiphyAgent** promptly provides.
+
+![Scraped Info](./images/scraped_info.png)
+
+![Gifs](./images/gifs.png)
