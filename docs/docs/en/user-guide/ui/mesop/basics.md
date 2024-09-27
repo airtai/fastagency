@@ -72,13 +72,38 @@ app = FastAgency(wf=wf, ui=MesopUI())
 
 ### Running the Application
 
-Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
+Once the workflow is set up, you can run the application either:
 
-```bash
-fastagency run
-```
+- **locally** using the [FastAgency CLI](../../../cli/), or
 
-This will launch a local web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
+- **publicly** using the WSGI HTTP Server such as [Gunicorn](https://gunicorn.org/).
+
+=== "Local deployment"
+
+    Navigate to the directory where the script is located and run the following command:
+
+    ```bash
+    fastagency run
+    ```
+
+    This will launch a local web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
+
+=== "Public deployment"
+    Assuming that you installed gunicorn first using something like this:
+
+    ```console
+    pip install "fastagency[autogen,mesop]" gunicorn
+    ```
+
+    you can start the Mesop app by navigating to the directory where the script `main.py` is located and running the following command:
+
+    ```bash
+    gunicorn --bind 0.0.0.0:8080 main:app
+    ```
+
+    This will launch a *publicly available* web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
+
+---
 
 !!! note
     Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
