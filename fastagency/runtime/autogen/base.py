@@ -200,8 +200,8 @@ class IOStreamAdapter:  # IOStream
         self.current_message = CurrentMessage()
 
         self.messages: list[IOMessage] = []
-        if not isinstance(self.ui, UI):
-            raise ValueError("The ui object must be an instance of UI.")
+        # if not isinstance(self.ui, UI):
+        #     raise ValueError("The ui object must be an instance of UI.")
 
     def _process_message_chunk(self, chunk: str) -> bool:
         if self.current_message.process_chunk(chunk):

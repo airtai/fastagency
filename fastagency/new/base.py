@@ -1,7 +1,7 @@
-from collections.abc import AsyncIterator, Awaitable, Coroutine
+from collections.abc import AsyncGenerator, AsyncIterator, Awaitable
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
-from typing import Any, AsyncGenerator, Callable, Optional, Protocol
+from typing import Any, Callable, Optional, Protocol
 from uuid import UUID
 
 from pydantic import UUID4

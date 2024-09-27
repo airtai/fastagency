@@ -16,6 +16,7 @@ from typing import (
     Union,
     runtime_checkable,
 )
+from uuid import uuid4
 
 if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
@@ -59,6 +60,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
     recipient: Optional[str] = None
     # streaming: bool = False
     auto_reply: bool = False
+    uuid: str = field(default_factory=lambda: str(uuid4().hex))
 
     @property
     def type(self) -> MessageType:
