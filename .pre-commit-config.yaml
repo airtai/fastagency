@@ -64,6 +64,5 @@ repos:
         exclude: |
           (?x)^(
               package.lock.json|
-              pnpm-lock.yaml|
-              docs/docs/en/tutorial/giphy/index.md
+              pnpm-lock.yaml
           )$
