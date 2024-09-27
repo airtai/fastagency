@@ -38,7 +38,7 @@ def simple_workflow(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
-        max_turns=5,
+        max_turns=3,
     )
 
     return chat_result.summary  # type: ignore[no-any-return]
