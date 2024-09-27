@@ -214,3 +214,15 @@ In the final step, the user asks for a few *Premier League* GIFs, which **GiphyA
 ![Scraped Info](./images/scraped_info.png)
 
 ![Gifs](./images/gifs.png)
+
+## Conclusion
+
+In this tutorial, we walked through how to create a simple chatbot using **FastAgency** that can scrape web content and provide relevant GIFs. By integrating the **WebSurferAgent** and **GiphyAgent**, we built a tool that lets users gather information from the web and request GIFs all in one conversation.
+
+You’ve learned how to:
+
+- Set up and connect external APIs, like Giphy, to your project.
+- Handle API key security.
+- Build an interactive workflow where users can scrape content and get personalized responses.
+- Offer dynamic, engaging conversations with added visuals like GIFs.
+- With these skills, you now have the foundation to expand and add more features to your chatbot, making it even more interactive and useful.
