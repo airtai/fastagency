@@ -47,12 +47,11 @@ PAST_CHATS_INNER_STYLE = me.Style(
     justify_content="space-between",
 )
 
-PAST_CHATS_CONV_STYLE = (
-    me.Style(
-        padding=me.Padding.all(16),
-        border_radius=16,
-    ),
+PAST_CHATS_CONV_STYLE = me.Style(
+    padding=me.Padding.all(16),
+    border_radius=16,
 )
+
 
 CHAT_STARTER_STYLE = me.Style(
     background="#e7f2ff",

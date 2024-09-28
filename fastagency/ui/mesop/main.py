@@ -72,7 +72,7 @@ class MesopHomePageStyles:
 
 @dataclass
 class MesopHomePageParams:
-    header_title: str = "FastAgency - Mesop"
+    # header_title: str = "FastAgency - Mesop"
     conv_starter_text: str = "Enter a prompt to chat with FastAgency team"
 
 
@@ -119,7 +119,7 @@ class MesopHomePage:
             style=self._styles.header,
         ):
             me.text(
-                self._params.header_title,
+                self._ui.app.title,
                 style=self._styles.header_text,
             )
 
