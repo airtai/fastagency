@@ -136,7 +136,6 @@ search:
                     - main
                         - [MesopHomePage](api/fastagency/ui/mesop/main/MesopHomePage.md)
                         - [MesopHomePageParams](api/fastagency/ui/mesop/main/MesopHomePageParams.md)
-                        - [MesopHomePageStyles](api/fastagency/ui/mesop/main/MesopHomePageStyles.md)
                         - [create_home_page](api/fastagency/ui/mesop/main/create_home_page.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
@@ -146,6 +145,8 @@ search:
                     - send_prompt
                         - [send_prompt_to_autogen](api/fastagency/ui/mesop/send_prompt/send_prompt_to_autogen.md)
                         - [send_user_feedback_to_autogen](api/fastagency/ui/mesop/send_prompt/send_user_feedback_to_autogen.md)
+                    - styles
+                        - [MesopHomePageStyles](api/fastagency/ui/mesop/styles/MesopHomePageStyles.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)

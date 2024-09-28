@@ -5,12 +5,8 @@ from uuid import uuid4
 
 import mesop as me
 
-from fastagency.base import AskingMessage, WorkflowCompleted
-from fastagency.ui.mesop.base import MesopMessage
-from fastagency.ui.mesop.components.inputs import input_text
-from fastagency.ui.mesop.send_prompt import send_user_feedback_to_autogen
-
 from ...base import (
+    AskingMessage,
     FunctionCallExecution,
     IOMessage,
     IOMessageVisitor,
@@ -19,9 +15,14 @@ from ...base import (
     SystemMessage,
     TextInput,
     TextMessage,
+    WorkflowCompleted,
 )
+from .base import MesopMessage
 from .components.helpers import darken_hex_color
+from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
+from .send_prompt import send_user_feedback_to_autogen
+from .styles import MesopHomePageStyles
 
 
 def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
@@ -32,15 +33,6 @@ def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
         me.scroll_into_view(key="end_of_messages")
         yield
     yield
-
-
-def message_box(message: ConversationMessage, read_only: bool) -> None:
-    io_message_dict = json.loads(message.io_message_json)
-    level = message.level
-    conversation_id = message.conversation_id
-    io_message = IOMessage.create(**io_message_dict)
-    visitor = MesopGUIMessageVisitor(level, conversation_id, message, read_only)
-    visitor.process_message(io_message)
 
 
 def handle_message(state: State, message: MesopMessage) -> None:
@@ -76,6 +68,17 @@ def handle_message(state: State, message: MesopMessage) -> None:
                 waiting_for_feedback=False,
             )
             state.past_conversations.insert(0, becomme_past)
+
+
+def message_box(
+    message: ConversationMessage, read_only: bool, *, styles: MesopHomePageStyles
+) -> None:
+    io_message_dict = json.loads(message.io_message_json)
+    level = message.level
+    conversation_id = message.conversation_id
+    io_message = IOMessage.create(**io_message_dict)
+    visitor = MesopGUIMessageVisitor(level, conversation_id, message, read_only)
+    visitor.process_message(io_message)
 
 
 class MesopGUIMessageVisitor(IOMessageVisitor):

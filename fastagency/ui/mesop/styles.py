@@ -1,3 +1,5 @@
+from dataclasses import dataclass, field
+
 import mesop as me
 
 from .components.helpers import darken_hex_color
@@ -81,3 +83,21 @@ CONV_MSG_STYLE = me.Style(margin=me.Margin(bottom="50vh"))
 STYLESHEETS = [
     "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
 ]
+
+
+@dataclass
+class MesopHomePageStyles:
+    chat_starter: me.Style = field(default_factory=lambda: CHAT_STARTER_STYLE)
+    conv_list: me.Style = field(default_factory=lambda: CONV_LIST_STYLE)
+    conv_msg: me.Style = field(default_factory=lambda: CONV_MSG_STYLE)
+    conv_top: me.Style = field(default_factory=lambda: CONV_TOP_STYLE)
+    conv_starter: me.Style = field(default_factory=lambda: CONV_STARTER_STYLE)
+    conv_starter_text: me.Style = field(default_factory=lambda: CONV_STARTER_TEXT_STYLE)
+    header: me.Style = field(default_factory=lambda: HEADER_BOX_STYLE)
+    header_text: me.Style = field(default_factory=lambda: HEADER_TEXT_STYLE)
+    past_chats_hide: me.Style = field(default_factory=lambda: PAST_CHATS_HIDE_STYLE)
+    past_chats_show: me.Style = field(default_factory=lambda: PAST_CHATS_SHOW_STYLE)
+    past_chats_inner: me.Style = field(default_factory=lambda: PAST_CHATS_INNER_STYLE)
+    past_chats_conv: me.Style = field(default_factory=lambda: PAST_CHATS_CONV_STYLE)
+    root: me.Style = field(default_factory=lambda: ROOT_BOX_STYLE)
+    stylesheets: list[str] = field(default_factory=lambda: STYLESHEETS)

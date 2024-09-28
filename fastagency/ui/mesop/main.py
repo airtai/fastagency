@@ -1,6 +1,6 @@
 import time
 from collections.abc import Iterator
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Callable, Optional
 
 import mesop as me
@@ -10,22 +10,7 @@ from .components.inputs import input_text
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
-from .styles import (
-    CHAT_STARTER_STYLE,
-    CONV_LIST_STYLE,
-    CONV_MSG_STYLE,
-    CONV_STARTER_STYLE,
-    CONV_STARTER_TEXT_STYLE,
-    CONV_TOP_STYLE,
-    HEADER_BOX_STYLE,
-    HEADER_TEXT_STYLE,
-    PAST_CHATS_CONV_STYLE,
-    PAST_CHATS_HIDE_STYLE,
-    PAST_CHATS_INNER_STYLE,
-    PAST_CHATS_SHOW_STYLE,
-    ROOT_BOX_STYLE,
-    STYLESHEETS,
-)
+from .styles import MesopHomePageStyles
 
 if TYPE_CHECKING:
     from .base import MesopUI
@@ -44,30 +29,12 @@ DEFAULT_SECURITY_POLICY = me.SecurityPolicy(
 def create_home_page(
     ui: "MesopUI",
     *,
-    styles: Optional["MesopHomePageStyles"] = None,
+    styles: Optional[MesopHomePageStyles] = None,
     security_policy: Optional[me.SecurityPolicy] = None,
 ) -> Callable[[], None]:
     mhp = MesopHomePage(ui, security_policy=security_policy)
 
     return mhp.build()
-
-
-@dataclass
-class MesopHomePageStyles:
-    chat_starter: me.Style = field(default_factory=lambda: CHAT_STARTER_STYLE)
-    conv_list: me.Style = field(default_factory=lambda: CONV_LIST_STYLE)
-    conv_msg: me.Style = field(default_factory=lambda: CONV_MSG_STYLE)
-    conv_top: me.Style = field(default_factory=lambda: CONV_TOP_STYLE)
-    conv_starter: me.Style = field(default_factory=lambda: CONV_STARTER_STYLE)
-    conv_starter_text: me.Style = field(default_factory=lambda: CONV_STARTER_TEXT_STYLE)
-    header: me.Style = field(default_factory=lambda: HEADER_BOX_STYLE)
-    header_text: me.Style = field(default_factory=lambda: HEADER_TEXT_STYLE)
-    past_chats_hide: me.Style = field(default_factory=lambda: PAST_CHATS_HIDE_STYLE)
-    past_chats_show: me.Style = field(default_factory=lambda: PAST_CHATS_SHOW_STYLE)
-    past_chats_inner: me.Style = field(default_factory=lambda: PAST_CHATS_INNER_STYLE)
-    past_chats_conv: me.Style = field(default_factory=lambda: PAST_CHATS_CONV_STYLE)
-    root: me.Style = field(default_factory=lambda: ROOT_BOX_STYLE)
-    stylesheets: list[str] = field(default_factory=lambda: STYLESHEETS)
 
 
 @dataclass
@@ -93,7 +60,7 @@ class MesopHomePage:
     def build(self) -> Callable[[], None]:
         @me.page(  # type: ignore[misc]
             path="/",
-            stylesheets=STYLESHEETS,
+            stylesheets=self._styles.stylesheets,
             security_policy=self._security_policy,
         )
         def home_page() -> None:
@@ -225,7 +192,9 @@ class MesopHomePage:
                     style=self._styles.conv_top,
                 )
                 for message in messages:
-                    message_box(message, conversation.is_from_the_past)
+                    message_box(
+                        message, conversation.is_from_the_past, styles=self._styles
+                    )
                 if messages:
                     me.box(
                         key="end_of_messages",
