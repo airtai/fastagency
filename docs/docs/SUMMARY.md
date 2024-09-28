@@ -137,8 +137,8 @@ search:
                     - main
                         - [conversation_box](api/fastagency/ui/mesop/main/conversation_box.md)
                         - [conversation_starter_box](api/fastagency/ui/mesop/main/conversation_starter_box.md)
+                        - [create_home_page](api/fastagency/ui/mesop/main/create_home_page.md)
                         - [get_ui](api/fastagency/ui/mesop/main/get_ui.md)
-                        - [home_page](api/fastagency/ui/mesop/main/home_page.md)
                         - [past_conversations_box](api/fastagency/ui/mesop/main/past_conversations_box.md)
                         - [send_prompt](api/fastagency/ui/mesop/main/send_prompt.md)
                     - message

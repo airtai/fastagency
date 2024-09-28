@@ -9,6 +9,9 @@ from .exceptions import (
     FastAgencyASGINotImplementedError,
     FastAgencyWSGINotImplementedError,
 )
+from .logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class FastAgency:  # Runnable
@@ -19,8 +22,10 @@ class FastAgency:  # Runnable
             wf (Workflows): The workflows object to use
             ui (UI): The UI object to use
         """
+        logger.info(f"Initializing FastAgency {self} with workflows: {wf} and UI: {ui}")
         self._wf = wf
         self._ui = ui
+        logger.info(f"Initialized FastAgency: {self}")
 
     @property
     def wf(self) -> Workflows:

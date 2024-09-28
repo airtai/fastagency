@@ -4,7 +4,7 @@ __all__ = ["get_logger"]
 
 
 def get_logger(
-    name: str, *, level: int = logging.INFO, use_timestamp: bool = False
+    name: str, *, level: int = logging.INFO, use_timestamp: bool = True
 ) -> logging.Logger:
     """Return a logger with the specified name.
 
@@ -25,7 +25,7 @@ def get_logger(
 
         # Create a formatter and set it for the handler
         formatter = logging.Formatter(
-            f"{'(asctime)s' if use_timestamp else ''} [%(levelname)s] %(message)s"
+            f"{'%(asctime)s' if use_timestamp else ''} [%(levelname)s] %(message)s"
         )
         handler.setFormatter(formatter)
 

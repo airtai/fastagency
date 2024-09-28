@@ -1,10 +1,10 @@
 import time
 from collections.abc import Iterator
+from typing import TYPE_CHECKING, Callable
 
 import mesop as me
 
 from ...logging import get_logger
-from .base import MesopUI
 from .components.inputs import input_text
 from .components.ui_common import header
 from .data_model import Conversation, State
@@ -18,32 +18,53 @@ from .styles import (
     STYLESHEETS,
 )
 
+if TYPE_CHECKING:
+    from .base import MesopUI
+
 __all__ = ["me"]
 
 # Get the logger
 logger = get_logger(__name__)
 
 
-def get_ui() -> MesopUI:
+def get_ui() -> "MesopUI":
+    from .base import MesopUI
+
     return MesopUI.get_created_instance()
 
 
 SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface.co"])
 
 
-@me.page(  # type: ignore[misc]
-    path="/",
-    stylesheets=STYLESHEETS,
-    security_policy=SECURITY_POLICY,
-)
-def home_page() -> None:
-    state = me.state(State)
-    with me.box(style=ROOT_BOX_STYLE):
-        past_conversations_box()
-        if state.in_conversation:
-            conversation_box()
-        else:
-            conversation_starter_box()
+def create_home_page() -> Callable[[], None]:
+    @me.page(  # type: ignore[misc]
+        path="/",
+        stylesheets=STYLESHEETS,
+        security_policy=SECURITY_POLICY,
+    )
+    def home_page() -> None:
+        # check if we have access to the MesopUI instance
+        ui = get_ui()
+        if ui is None:
+            logger.error("home_page(): MesopUI instance is None")
+            me.text(text="Error: MesopUI instance is None. Something went wrong.")
+            return
+
+        try:
+            state = me.state(State)
+            with me.box(style=ROOT_BOX_STYLE):
+                past_conversations_box()
+                if state.in_conversation:
+                    conversation_box()
+                else:
+                    conversation_starter_box()
+        except Exception as e:
+            logger.error(f"home_page(): Error rendering home page: {e}")
+            me.text(text="Error: Something went wrong, please check logs for details.")
+
+        return
+
+    return home_page  # type: ignore[no-any-return]
 
 
 def past_conversations_box() -> None:

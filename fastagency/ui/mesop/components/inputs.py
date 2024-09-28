@@ -3,7 +3,11 @@ from typing import Callable, Optional
 
 import mesop as me
 
+from ....logging import get_logger
 from ..data_model import State
+
+# Get the logger
+logger = get_logger(__name__)
 
 
 def input_text(  # noqa: C901

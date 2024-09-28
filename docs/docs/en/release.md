@@ -12,6 +12,48 @@ hide:
 ---
 
 # Release Notes
+## v0.2.0rc0
+
+### What's Changed
+* Update Release Notes for v0.1.0 by @airt-release-notes-updater in [#213](https://github.com/airtai/fastagency/pull/213){.external-link target="_blank"}
+* Update docs by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#214](https://github.com/airtai/fastagency/pull/214){.external-link target="_blank"}
+* Apply formatting to docs_src by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#217](https://github.com/airtai/fastagency/pull/217){.external-link target="_blank"}
+* Suggested function call and function call execution in Mesop by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#216](https://github.com/airtai/fastagency/pull/216){.external-link target="_blank"}
+* Raise mesop typer error for python versions below 3.10 by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#232](https://github.com/airtai/fastagency/pull/232){.external-link target="_blank"}
+* Support multiple security schemes in OpenAPI Client by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#235](https://github.com/airtai/fastagency/pull/235){.external-link target="_blank"}
+* Update package versions by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#237](https://github.com/airtai/fastagency/pull/237){.external-link target="_blank"}
+* Add tooltip to fields by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#233](https://github.com/airtai/fastagency/pull/233){.external-link target="_blank"}
+* Update twitter link and add an example by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#243](https://github.com/airtai/fastagency/pull/243){.external-link target="_blank"}
+* Restrict FLAML version to fix test failure by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#248](https://github.com/airtai/fastagency/pull/248){.external-link target="_blank"}
+* Fix failing example by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#249](https://github.com/airtai/fastagency/pull/249){.external-link target="_blank"}
+* Fix readme example by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#254](https://github.com/airtai/fastagency/pull/254){.external-link target="_blank"}
+* Make devcontainer work in codespace by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#251](https://github.com/airtai/fastagency/pull/251){.external-link target="_blank"}
+* Auto generate cli docs by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#255](https://github.com/airtai/fastagency/pull/255){.external-link target="_blank"}
+* Update packages by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#261](https://github.com/airtai/fastagency/pull/261){.external-link target="_blank"}
+* Mesop UI improvements by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#241](https://github.com/airtai/fastagency/pull/241){.external-link target="_blank"}
+* Add examples directory to linter by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#264](https://github.com/airtai/fastagency/pull/264){.external-link target="_blank"}
+* Fixed Together.ai model string by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#267](https://github.com/airtai/fastagency/pull/267){.external-link target="_blank"}
+* CI simplification by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#268](https://github.com/airtai/fastagency/pull/268){.external-link target="_blank"}
+* Fix CI bug by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#269](https://github.com/airtai/fastagency/pull/269){.external-link target="_blank"}
+* Simplify CI tests by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#270](https://github.com/airtai/fastagency/pull/270){.external-link target="_blank"}
+* Fix Together AI model dict by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#271](https://github.com/airtai/fastagency/pull/271){.external-link target="_blank"}
+* Mesop tests added by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#272](https://github.com/airtai/fastagency/pull/272){.external-link target="_blank"}
+* Fix Mesop tests by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#273](https://github.com/airtai/fastagency/pull/273){.external-link target="_blank"}
+* Added docs_src tests by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#274](https://github.com/airtai/fastagency/pull/274){.external-link target="_blank"}
+* Add some tests by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#275](https://github.com/airtai/fastagency/pull/275){.external-link target="_blank"}
+* Fix OpenAPI client when Path variables contains upper case by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#265](https://github.com/airtai/fastagency/pull/265){.external-link target="_blank"}
+* Add tests by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#277](https://github.com/airtai/fastagency/pull/277){.external-link target="_blank"}
+* Move WebSurfer Autogen code out of the studio module by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#253](https://github.com/airtai/fastagency/pull/253){.external-link target="_blank"}
+* Polish getting started docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#278](https://github.com/airtai/fastagency/pull/278){.external-link target="_blank"}
+* Move studio files into studio project and clean up deps devcontainers etc by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#279](https://github.com/airtai/fastagency/pull/279){.external-link target="_blank"}
+* Replaces gpt-4o with gpt-40-mini in all OpenAI tests by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#282](https://github.com/airtai/fastagency/pull/282){.external-link target="_blank"}
+* Support running Mesop based apps with WSGI servers by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#283](https://github.com/airtai/fastagency/pull/283){.external-link target="_blank"}
+* Bump version to 0.2.0rc0 by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#285](https://github.com/airtai/fastagency/pull/285){.external-link target="_blank"}
+* Giphy and Websurfer Tutorial by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#284](https://github.com/airtai/fastagency/pull/284){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.1.0...v0.2.0rc0](https://github.com/airtai/fastagency/compare/v0.1.0...v0.2.0rc0){.external-link target="_blank"}
+
 ## v0.1.0
 
 ### What's Changed
