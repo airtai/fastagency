@@ -12,10 +12,14 @@ from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
 from .styles import (
     CHAT_STARTER_STYLE,
-    CONVERSATION_STARTER_STYLE,
+    CONV_LIST_STYLE,
+    CONV_MSG_STYLE,
+    CONV_STARTER_STYLE,
+    CONV_STARTER_TEXT_STYLE,
+    CONV_TOP_STYLE,
     HEADER_BOX_STYLE,
     HEADER_TEXT_STYLE,
-    PAST_CHATS_CONVERSATION_STYLE,
+    PAST_CHATS_CONV_STYLE,
     PAST_CHATS_HIDE_STYLE,
     PAST_CHATS_INNER_STYLE,
     PAST_CHATS_SHOW_STYLE,
@@ -51,24 +55,25 @@ def create_home_page(
 @dataclass
 class MesopHomePageStyles:
     chat_starter: me.Style = field(default_factory=lambda: CHAT_STARTER_STYLE)
-    header_box: me.Style = field(default_factory=lambda: HEADER_BOX_STYLE)
+    conv_list: me.Style = field(default_factory=lambda: CONV_LIST_STYLE)
+    conv_msg: me.Style = field(default_factory=lambda: CONV_MSG_STYLE)
+    conv_top: me.Style = field(default_factory=lambda: CONV_TOP_STYLE)
+    conv_starter: me.Style = field(default_factory=lambda: CONV_STARTER_STYLE)
+    conv_starter_text: me.Style = field(default_factory=lambda: CONV_STARTER_TEXT_STYLE)
+    header: me.Style = field(default_factory=lambda: HEADER_BOX_STYLE)
     header_text: me.Style = field(default_factory=lambda: HEADER_TEXT_STYLE)
     past_chats_hide: me.Style = field(default_factory=lambda: PAST_CHATS_HIDE_STYLE)
     past_chats_show: me.Style = field(default_factory=lambda: PAST_CHATS_SHOW_STYLE)
     past_chats_inner: me.Style = field(default_factory=lambda: PAST_CHATS_INNER_STYLE)
-    past_chats_conversation: me.Style = field(
-        default_factory=lambda: PAST_CHATS_CONVERSATION_STYLE
-    )
-    conversation_starter: me.Style = field(
-        default_factory=lambda: CONVERSATION_STARTER_STYLE
-    )
-    root_box: me.Style = field(default_factory=lambda: ROOT_BOX_STYLE)
+    past_chats_conv: me.Style = field(default_factory=lambda: PAST_CHATS_CONV_STYLE)
+    root: me.Style = field(default_factory=lambda: ROOT_BOX_STYLE)
     stylesheets: list[str] = field(default_factory=lambda: STYLESHEETS)
 
 
 @dataclass
 class MesopHomePageParams:
     header_title: str = "FastAgency - Mesop"
+    conv_starter_text: str = "Enter a prompt to chat with FastAgency team"
 
 
 class MesopHomePage:
@@ -99,7 +104,7 @@ class MesopHomePage:
     def home_page(self) -> None:
         try:
             state = me.state(State)
-            with me.box(style=self._styles.root_box):
+            with me.box(style=self._styles.root):
                 self.past_conversations_box()
                 if state.in_conversation:
                     self.conversation_box()
@@ -111,7 +116,7 @@ class MesopHomePage:
 
     def header(self) -> None:
         with me.box(
-            style=self._styles.header_box,
+            style=self._styles.header,
         ):
             me.text(
                 self._params.header_title,
@@ -171,7 +176,7 @@ class MesopHomePage:
                     with me.box(
                         key=conversation.id,  # they are GUIDs so should not clash with anything other on the page
                         on_click=select_past_conversation,
-                        style=self._styles.past_chats_conversation,
+                        style=self._styles.past_chats_conv,
                     ):
                         me.text(
                             text=conversation_display_title(conversation.title, 128)
@@ -181,11 +186,11 @@ class MesopHomePage:
         with me.box(style=self._styles.chat_starter):
             self.header()
             with me.box(
-                style=self._styles.conversation_starter,
+                style=self._styles.conv_starter,
             ):
                 me.text(
-                    "Enter a prompt to chat with FastAgency team",
-                    style=me.Style(font_size=20, margin=me.Margin(bottom=24)),
+                    self._params.conv_starter_text,
+                    style=self._styles.conv_starter_text,
                 )
                 input_text(self.send_prompt, "prompt", disabled=False)
 
@@ -209,22 +214,20 @@ class MesopHomePage:
     def conversation_box(self) -> None:
         state = me.state(State)
         conversation = state.conversation
-        with me.box(style=CHAT_STARTER_STYLE):
+        with me.box(style=self._styles.chat_starter):
             self.header()
             messages = conversation.messages
             with me.box(
-                style=me.Style(
-                    overflow_y="auto", display="flex", flex_direction="column"
-                )
+                style=self._styles.conv_list,
             ):
                 me.box(
                     key="conversationtop",
-                    style=me.Style(margin=me.Margin(bottom="1vh")),
+                    style=self._styles.conv_top,
                 )
                 for message in messages:
                     message_box(message, conversation.is_from_the_past)
                 if messages:
                     me.box(
                         key="end_of_messages",
-                        style=me.Style(margin=me.Margin(bottom="50vh")),
+                        style=self._styles.conv_top,
                     )

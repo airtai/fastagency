@@ -22,16 +22,6 @@ ROOT_BOX_STYLE = me.Style(
     flex_direction="row",
 )
 
-CHAT_STARTER_STYLE = me.Style(
-    background="#e7f2ff",
-    height="100%",
-    width="max(80%)",
-    font_family="Inter",
-    display="flex",
-    flex_direction="column",
-    padding=me.Padding.all(16),
-)
-
 PAST_CHATS_SHOW_STYLE = me.Style(
     background=darken_hex_color("#e7f2ff", 0.98),
     height="100%",
@@ -57,17 +47,37 @@ PAST_CHATS_INNER_STYLE = me.Style(
     justify_content="space-between",
 )
 
-PAST_CHATS_CONVERSATION_STYLE = (
+PAST_CHATS_CONV_STYLE = (
     me.Style(
         padding=me.Padding.all(16),
         border_radius=16,
     ),
 )
 
-CONVERSATION_STARTER_STYLE = me.Style(
+CHAT_STARTER_STYLE = me.Style(
+    background="#e7f2ff",
+    height="100%",
+    width="max(80%)",
+    font_family="Inter",
+    display="flex",
+    flex_direction="column",
+    padding=me.Padding.all(16),
+)
+
+CONV_STARTER_STYLE = me.Style(
     width="min(680px, 100%)",
     # margin=me.Margin.symmetric(horizontal="auto", vertical=36),
 )
+
+CONV_STARTER_TEXT_STYLE = me.Style(font_size=20, margin=me.Margin(bottom=24))
+
+CONV_LIST_STYLE = me.Style(overflow_y="auto", display="flex", flex_direction="column")
+
+CONV_TOP_STYLE = me.Style(
+    margin=me.Margin(bottom="1vh"),
+)
+
+CONV_MSG_STYLE = me.Style(margin=me.Margin(bottom="50vh"))
 
 STYLESHEETS = [
     "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
