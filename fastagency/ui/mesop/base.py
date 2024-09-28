@@ -64,7 +64,7 @@ class MesopUI(IOMessageVisitor):  # UI
             if MesopUI._me is None:
                 from .main import create_home_page, me
 
-                create_home_page()
+                create_home_page(self)
                 MesopUI._me = me
 
         except Exception as e:

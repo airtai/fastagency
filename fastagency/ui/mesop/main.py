@@ -1,6 +1,6 @@
 import time
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING, Callable, Optional
 
 import mesop as me
 
@@ -26,17 +26,26 @@ __all__ = ["me"]
 # Get the logger
 logger = get_logger(__name__)
 
+_ui: Optional["MesopUI"] = None
+
 
 def get_ui() -> "MesopUI":
-    from .base import MesopUI
+    global _ui
 
-    return MesopUI.get_created_instance()
+    if _ui is None:
+        logger.error("get_ui(): MesopUI instance is None")
+        raise ValueError("MesopUI instance is None")
+
+    return _ui
 
 
 SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface.co"])
 
 
-def create_home_page() -> Callable[[], None]:
+def create_home_page(ui: "MesopUI") -> Callable[[], None]:
+    global _ui
+    _ui = ui
+
     @me.page(  # type: ignore[misc]
         path="/",
         stylesheets=STYLESHEETS,
