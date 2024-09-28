@@ -1,6 +1,6 @@
 import time
 from collections.abc import Iterator
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Callable, Optional
 
 import mesop as me
@@ -12,7 +12,12 @@ from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
 from .styles import (
     CHAT_STARTER_STYLE,
+    CONVERSATION_STARTER_STYLE,
+    HEADER_BOX_STYLE,
+    HEADER_TEXT_STYLE,
+    PAST_CHATS_CONVERSATION_STYLE,
     PAST_CHATS_HIDE_STYLE,
+    PAST_CHATS_INNER_STYLE,
     PAST_CHATS_SHOW_STYLE,
     ROOT_BOX_STYLE,
     STYLESHEETS,
@@ -26,20 +31,10 @@ __all__ = ["me"]
 # Get the logger
 logger = get_logger(__name__)
 
-# _ui: Optional["MesopUI"] = None
 
-
-# def get_ui() -> "MesopUI":
-#     global _ui
-
-#     if _ui is None:
-#         logger.error("get_ui(): MesopUI instance is None")
-#         raise ValueError("MesopUI instance is None")
-
-#     return _ui
-
-
-SECURITY_POLICY = me.SecurityPolicy(allowed_iframe_parents=["https://huggingface.co"])
+DEFAULT_SECURITY_POLICY = me.SecurityPolicy(
+    allowed_iframe_parents=["https://fastagency.ai"]
+)
 
 
 def create_home_page(
@@ -55,7 +50,25 @@ def create_home_page(
 
 @dataclass
 class MesopHomePageStyles:
-    pass
+    chat_starter: me.Style = field(default_factory=lambda: CHAT_STARTER_STYLE)
+    header_box: me.Style = field(default_factory=lambda: HEADER_BOX_STYLE)
+    header_text: me.Style = field(default_factory=lambda: HEADER_TEXT_STYLE)
+    past_chats_hide: me.Style = field(default_factory=lambda: PAST_CHATS_HIDE_STYLE)
+    past_chats_show: me.Style = field(default_factory=lambda: PAST_CHATS_SHOW_STYLE)
+    past_chats_inner: me.Style = field(default_factory=lambda: PAST_CHATS_INNER_STYLE)
+    past_chats_conversation: me.Style = field(
+        default_factory=lambda: PAST_CHATS_CONVERSATION_STYLE
+    )
+    conversation_starter: me.Style = field(
+        default_factory=lambda: CONVERSATION_STARTER_STYLE
+    )
+    root_box: me.Style = field(default_factory=lambda: ROOT_BOX_STYLE)
+    stylesheets: list[str] = field(default_factory=lambda: STYLESHEETS)
+
+
+@dataclass
+class MesopHomePageParams:
+    header_title: str = "FastAgency - Mesop"
 
 
 class MesopHomePage:
@@ -63,18 +76,20 @@ class MesopHomePage:
         self,
         ui: "MesopUI",
         *,
+        params: Optional[MesopHomePageParams] = None,
         styles: Optional[MesopHomePageStyles] = None,
         security_policy: Optional[me.SecurityPolicy] = None,
     ) -> None:
         self._ui = ui
+        self._params = params or MesopHomePageParams()
         self._styles = styles or MesopHomePageStyles()
-        self._security_policy = security_policy or SECURITY_POLICY
+        self._security_policy = security_policy or DEFAULT_SECURITY_POLICY
 
     def build(self) -> Callable[[], None]:
         @me.page(  # type: ignore[misc]
             path="/",
             stylesheets=STYLESHEETS,
-            security_policy=SECURITY_POLICY,
+            security_policy=self._security_policy,
         )
         def home_page() -> None:
             self.home_page()
@@ -84,7 +99,7 @@ class MesopHomePage:
     def home_page(self) -> None:
         try:
             state = me.state(State)
-            with me.box(style=ROOT_BOX_STYLE):
+            with me.box(style=self._styles.root_box):
                 self.past_conversations_box()
                 if state.in_conversation:
                     self.conversation_box()
@@ -96,18 +111,11 @@ class MesopHomePage:
 
     def header(self) -> None:
         with me.box(
-            style=me.Style(
-                padding=me.Padding(bottom="24px"),
-            ),
+            style=self._styles.header_box,
         ):
             me.text(
-                "FastAgency - Mesop",
-                style=me.Style(
-                    font_weight=500,
-                    font_size=24,
-                    color="#3D3929",
-                    letter_spacing="0.3px",
-                ),
+                self._params.header_title,
+                style=self._styles.header_text,
             )
 
     def past_conversations_box(self) -> None:
@@ -140,15 +148,14 @@ class MesopHomePage:
             state.prompt = ""
 
         state = me.state(State)
-        style = PAST_CHATS_HIDE_STYLE if state.hide_past else PAST_CHATS_SHOW_STYLE
+        style = (
+            self._styles.past_chats_hide
+            if state.hide_past
+            else self._styles.past_chats_show
+        )
         with me.box(style=style):
             with me.box(
-                style=me.Style(
-                    flex_direction="row",
-                    width="100%",
-                    padding=me.Padding(top="16px"),
-                    justify_content="space-between",
-                )
+                style=self._styles.past_chats_inner,
             ):
                 with me.content_button(
                     on_click=on_show_hide, disabled=not state.past_conversations
@@ -164,23 +171,17 @@ class MesopHomePage:
                     with me.box(
                         key=conversation.id,  # they are GUIDs so should not clash with anything other on the page
                         on_click=select_past_conversation,
-                        style=me.Style(
-                            padding=me.Padding.all(16),
-                            border_radius=16,
-                        ),
+                        style=self._styles.past_chats_conversation,
                     ):
                         me.text(
                             text=conversation_display_title(conversation.title, 128)
                         )
 
     def conversation_starter_box(self) -> None:
-        with me.box(style=CHAT_STARTER_STYLE):
+        with me.box(style=self._styles.chat_starter):
             self.header()
             with me.box(
-                style=me.Style(
-                    width="min(680px, 100%)",
-                    # margin=me.Margin.symmetric(horizontal="auto", vertical=36),
-                )
+                style=self._styles.conversation_starter,
             ):
                 me.text(
                     "Enter a prompt to chat with FastAgency team",

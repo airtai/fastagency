@@ -20,7 +20,7 @@ from ...base import (
     TextInput,
     TextMessage,
 )
-from .components.ui_common import darken_hex_color
+from .components.helpers import darken_hex_color
 from .data_model import Conversation, ConversationMessage, State
 
 

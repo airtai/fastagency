@@ -1,23 +1,3 @@
-import mesop as me
-
-
-def header() -> None:
-    with me.box(
-        style=me.Style(
-            padding=me.Padding(bottom="24px"),
-        ),
-    ):
-        me.text(
-            "FastAgency - Mesop",
-            style=me.Style(
-                font_weight=500,
-                font_size=24,
-                color="#3D3929",
-                letter_spacing="0.3px",
-            ),
-        )
-
-
 def darken_hex_color(hex_color: str, factor: float = 0.8) -> str:
     """Darkens a hex color by a given factor.
 

@@ -125,22 +125,19 @@ search:
                         - [MesopUI](api/fastagency/ui/mesop/base/MesopUI.md)
                         - [run_workflow](api/fastagency/ui/mesop/base/run_workflow.md)
                     - components
+                        - helpers
+                            - [darken_hex_color](api/fastagency/ui/mesop/components/helpers/darken_hex_color.md)
                         - inputs
                             - [input_text](api/fastagency/ui/mesop/components/inputs/input_text.md)
-                        - ui_common
-                            - [darken_hex_color](api/fastagency/ui/mesop/components/ui_common/darken_hex_color.md)
-                            - [header](api/fastagency/ui/mesop/components/ui_common/header.md)
                     - data_model
                         - [Conversation](api/fastagency/ui/mesop/data_model/Conversation.md)
                         - [ConversationMessage](api/fastagency/ui/mesop/data_model/ConversationMessage.md)
                         - [State](api/fastagency/ui/mesop/data_model/State.md)
                     - main
-                        - [conversation_box](api/fastagency/ui/mesop/main/conversation_box.md)
-                        - [conversation_starter_box](api/fastagency/ui/mesop/main/conversation_starter_box.md)
+                        - [MesopHomePage](api/fastagency/ui/mesop/main/MesopHomePage.md)
+                        - [MesopHomePageParams](api/fastagency/ui/mesop/main/MesopHomePageParams.md)
+                        - [MesopHomePageStyles](api/fastagency/ui/mesop/main/MesopHomePageStyles.md)
                         - [create_home_page](api/fastagency/ui/mesop/main/create_home_page.md)
-                        - [get_ui](api/fastagency/ui/mesop/main/get_ui.md)
-                        - [past_conversations_box](api/fastagency/ui/mesop/main/past_conversations_box.md)
-                        - [send_prompt](api/fastagency/ui/mesop/main/send_prompt.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)

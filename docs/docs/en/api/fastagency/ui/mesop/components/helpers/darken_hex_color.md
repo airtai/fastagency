@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.components.ui_common.darken_hex_color
+::: fastagency.ui.mesop.components.helpers.darken_hex_color
