@@ -147,6 +147,8 @@ search:
                         - [send_user_feedback_to_autogen](api/fastagency/ui/mesop/send_prompt/send_user_feedback_to_autogen.md)
                     - styles
                         - [MesopHomePageStyles](api/fastagency/ui/mesop/styles/MesopHomePageStyles.md)
+                        - [MesopMessageStyles](api/fastagency/ui/mesop/styles/MesopMessageStyles.md)
+                        - [MesopMessagesStyles](api/fastagency/ui/mesop/styles/MesopMessagesStyles.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)
