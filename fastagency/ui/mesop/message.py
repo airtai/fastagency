@@ -1,6 +1,6 @@
 import json
 from collections.abc import Iterable, Iterator
-from typing import Optional
+from typing import Any, Optional
 from uuid import uuid4
 
 import mesop as me
@@ -12,6 +12,7 @@ from ...base import (
     IOMessageVisitor,
     MultipleChoice,
     SuggestedFunctionCall,
+    SystemMessage,
     TextInput,
     TextMessage,
     WorkflowCompleted,
@@ -24,6 +25,10 @@ from .send_prompt import send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
 
 logger = get_logger(__name__)
+
+
+def dict_to_markdown(d: dict[str, Any], *, indent: int = 2) -> str:
+    return "\n```\n" + json.dumps(d, indent=2) + "\n```\n"
 
 
 def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
@@ -134,15 +139,19 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
     def visit_default(
         self,
         message: IOMessage,
+        *,
         content: Optional[str] = None,
         style: Optional[MesopMessageStyles] = None,
+        error: Optional[bool] = False,
     ) -> None:
         logger.info(f"visit_default: {message=}")
         style = style or self._styles.message.default
+        title = message.type.replace("_", " ").capitalize()
+        title = "[Error] " + title if error else title
         with me.box(style=style.box or self._styles.message.default.box):
             self._header(
                 message,
-                title=message.type.replace("_", " ").capitalize(),
+                title=title,
                 box_style=style.header_box,
                 md_style=style.header_md,
             )
@@ -152,7 +161,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.markdown(content, style=style.md or self._styles.message.default.md)
 
     def visit_text_message(self, message: TextMessage) -> None:
-        content = message.body
+        content = message.body if message.body else ""
         content = content if content.strip() != "" else "*(empty message)*"
         self.visit_default(
             message,
@@ -160,7 +169,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             style=self._styles.message.text,
         )
 
-    def visit_system_message(self, message: TextMessage) -> None:
+    def visit_system_message(self, message: SystemMessage) -> None:
         content = (
             f"""#### **{message.message['heading']}**
 
@@ -176,18 +185,21 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             style=self._styles.message.system,
         )
 
-    def visit_suggested_function_call(
-        self, message: SuggestedFunctionCall
-    ) -> Optional[str]:
+    def visit_suggested_function_call(self, message: SuggestedFunctionCall) -> None:
+        content = f"""
+**function_name**: `{message.function_name}`<br>
+**call_id**: `{message.call_id}`<br>
+**arguments**:
+{dict_to_markdown(message.arguments)}
+"""
         self.visit_default(
             message,
+            content=content,
             style=self._styles.message.suggested_function_call,
         )
 
-    def visit_function_call_execution(
-        self, message: FunctionCallExecution
-    ) -> Optional[str]:
-        self.visit_default(
+    def visit_function_call_execution(self, message: FunctionCallExecution) -> None:
+        return self.visit_default(
             message,
             style=self._styles.message.function_call_execution,
         )
@@ -325,8 +337,41 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             me.button(label="Ok", on_click=on_click)
         return ""
 
+    def render_error_message(
+        self,
+        e: Exception,
+        message: IOMessage,
+        *,
+        content: Optional[str] = None,
+        style: Optional[MesopMessageStyles] = None,
+    ) -> None:
+        style = self._styles.message.error or self._styles.message.default
+        title = "[Error] " + message.type.replace("_", " ").capitalize()
+
+        with me.box(style=style.box or self._styles.message.default.box):
+            self._header(
+                message,
+                title=title,
+                box_style=style.header_box or self._styles.message.default.header_box,
+                md_style=style.header_md or self._styles.message.default.header_md,
+            )
+
+            content = (
+                "Failed to render message:"
+                + dict_to_markdown(message.model_dump())
+                + f"<br>Error: {e}"
+            )
+
+            logger.info(f"render_error_message: {content=}")
+            me.markdown(content, style=style.md or self._styles.message.default.md)
+
     def process_message(self, message: IOMessage) -> Optional[str]:
-        return self.visit(message)
+        try:
+            return self.visit(message)
+        except Exception as e:
+            logger.warning(f"Failed to render message: {e}")
+            self.render_error_message(e, message)
+            return None
 
     def _header(
         self,
@@ -336,9 +381,6 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         box_style: Optional[me.Style] = None,
         md_style: Optional[me.Style] = None,
     ) -> None:
-        # you_want_it_darker = darken_hex_color(base_color, 0.8)
-        # style = self._styles.message.header_box.copy()
-        # style.background = base_color
         with me.box(style=box_style or self._styles.message.default.header_box):
             h = title if title else message.type
             if message.sender and message.recipient:

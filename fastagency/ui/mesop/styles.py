@@ -125,6 +125,12 @@ MSG_FUNCTION_CALL_EXECUTION_HEADER_BOX_STYLE = me.Style(
     border_radius=8,
 )
 
+MSG_ERROR_HEADER_BOX_STYLE = me.Style(
+    background="#f44336",
+    padding=me.Padding.all(0),
+    border_radius=8,
+)
+
 
 @dataclass
 class MesopMessageStyles:
@@ -145,6 +151,12 @@ class MesopMessagesStyles:
         )
     )
 
+    error: MesopMessageStyles = field(
+        default_factory=lambda: MesopMessageStyles(
+            header_box=MSG_ERROR_HEADER_BOX_STYLE,
+        )
+    )
+
     system: MesopMessageStyles = field(
         default_factory=lambda: MesopMessageStyles(
             header_box=MSG_SYSTEM_HEADER_BOX_STYLE,
@@ -158,6 +170,7 @@ class MesopMessagesStyles:
             header_box=MSG_SUGESTED_FUNCTION_CALL_HEADER_BOX_STYLE,
         )
     )
+
     function_call_execution: MesopMessageStyles = field(
         default_factory=lambda: MesopMessageStyles(
             header_box=MSG_FUNCTION_CALL_EXECUTION_HEADER_BOX_STYLE,
