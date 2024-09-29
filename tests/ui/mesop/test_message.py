@@ -13,6 +13,7 @@ from fastagency.base import (
     TextMessage,
     WorkflowCompleted,
 )
+from fastagency.ui.mesop.styles import MesopHomePageStyles
 
 if sys.version_info >= (3, 10):
     from fastagency.ui.mesop.data_model import ConversationMessage
@@ -20,6 +21,14 @@ if sys.version_info >= (3, 10):
 else:
     ConversationMessage = MagicMock()
     message_box = MagicMock()
+
+
+def assert_called_with_one_of(mock: MagicMock, *args: str) -> None:
+    assert mock.call_count == len(
+        args
+    ), f"Expected {len(args)} calls, got {mock.call_count}"
+    for call in mock.call_args_list:
+        assert call[0][0] in args, f"Parameter '{call[0][0]}' not in {args}"
 
 
 @pytest.mark.skipif(
@@ -51,11 +60,13 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_any_call("this is a test message")
-        me.markdown.assert_any_call("Text message: sender -> recipient")
-        assert me.markdown.call_count == 2
+        assert_called_with_one_of(
+            me.markdown,
+            "this is a test message",
+            "**Text message: sender -> recipient**",
+        )
 
     def test_system_message(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
@@ -72,13 +83,13 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_any_call("System Message: sender -> recipient")
-        me.markdown.assert_any_call(
-            '{\n  "type": "test",\n  "data": "this is a test message"\n}'
+        assert_called_with_one_of(
+            me.markdown,
+            "**System message: sender -> recipient**",
+            "**message**: {'type': 'test', 'data': 'this is a test message'} <br>",
         )
-        assert me.markdown.call_count == 2
 
     def test_suggested_function_call(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
@@ -97,11 +108,25 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_any_call("Suggested Function Call: sender -> recipient")
-        me.markdown.assert_any_call('{"arg1": "value1", "arg2": "value2"}')
-        assert me.markdown.call_count == 2
+        assert_called_with_one_of(
+            me.markdown,
+            "**Suggested function call: sender -> recipient**",
+            """
+**function_name**: `function_name`<br>
+**call_id**: `my_call_id`<br>
+**arguments**:
+
+```
+{
+  "arg1": "value1",
+  "arg2": "value2"
+}
+```
+
+""",
+        )
 
     def test_function_call_execution(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
@@ -120,11 +145,15 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_any_call("Function Call Execution: sender -> recipient")
-        me.markdown.assert_any_call('"return_value"')
-        assert me.markdown.call_count == 2
+        assert_called_with_one_of(
+            me.markdown,
+            "**Function call execution: sender -> recipient**",
+            """**function_name**: function_name <br>
+**call_id**: my_call_id <br>
+**retval**: return_value <br>""",
+        )
 
     def test_text_input(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
@@ -142,13 +171,14 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_any_call("Input requested: sender -> recipient")
-        me.markdown.assert_any_call(
-            "Who is the president of the United States?\n Suggestions: Donald Trump,Joe Biden"
+        assert_called_with_one_of(
+            me.markdown,
+            "**Input requested: sender -> recipient**",
+            """Who is the president of the United States?
+ Suggestions: Donald Trump,Joe Biden""",
         )
-        assert me.markdown.call_count == 2
 
     def test_multiple_choice_single(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
@@ -167,9 +197,13 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_called_once_with("Input requested: sender -> recipient")
+        assert_called_with_one_of(
+            me.markdown,
+            "**Input requested: sender -> recipient**",
+            # "Who is the president of the United States?",
+        )
         me.radio.assert_called_once()
 
     def test_multiple_choice_multiple(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -189,9 +223,13 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_called_once_with("Input requested: sender -> recipient")
+        assert_called_with_one_of(
+            me.markdown,
+            "**Input requested: sender -> recipient**",
+            # "Who are Snow White helpers?",
+        )
         assert me.checkbox.call_count == 7
 
     def test_workflow_completed(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -207,8 +245,8 @@ class TestMessageBox:
             conversation_id="conversation_id",
         )
 
-        message_box(message=message, read_only=True)
+        message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
-        me.markdown.assert_any_call("workflow_completed: sender -> recipient")
-        me.markdown.assert_any_call("workflow_completed")
-        assert me.markdown.call_count == 2
+        assert_called_with_one_of(
+            me.markdown, "Workflow completed: sender -> recipient", "Result: success"
+        )
