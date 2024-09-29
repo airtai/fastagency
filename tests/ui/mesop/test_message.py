@@ -248,5 +248,7 @@ class TestMessageBox:
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
 
         assert_called_with_one_of(
-            me.markdown, "Workflow completed: sender -> recipient", "Result: success"
+            me.markdown,
+            "**Workflow completed: sender -> recipient**",
+            "**result**: success <br>",
         )
