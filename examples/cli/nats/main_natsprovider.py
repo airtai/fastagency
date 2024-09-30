@@ -59,12 +59,20 @@ nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
 
 user: str = "faststream"
 password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
-provider = NatsProvider(wf=wf, nats_url=nats_url, user=user, password=password)
 
+provider = NatsProvider(wf=wf, nats_url=nats_url, user=user, password=password)
 
 app = FastAPI(lifespan=provider.lifespan)
 
 
-@app.get("/start")
+# todo: we need a way to list of workflows (names and descrioptions)
+@app.get("/discover")
 def start_workflow():
+    # todo: you need to produce a message on NATS to actually start it
+
     return {"msg": "Workflow started."}
+
+
+# start the provider with either command
+# uvicorn main_natsprovider:app --reload
+# gunicorn main_natsprovider:app --reload

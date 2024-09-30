@@ -3,11 +3,11 @@
 import asyncio
 import os
 import traceback
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Iterable, Mapping
 from contextlib import asynccontextmanager
 from queue import Queue
-from typing import TYPE_CHECKING, Any, Optional
-from uuid import UUID
+from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from uuid import UUID, uuid4
 
 from asyncer import asyncify, syncify
 from faststream import FastStream, Logger
@@ -18,11 +18,13 @@ from pydantic import BaseModel
 from fastagency.logging import get_logger
 
 from ...base import (
+    Agent,
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
     TextInput,
     TextMessage,
+    Workflow,
     Workflows,
     run_workflow,
 )
@@ -293,3 +295,43 @@ class NatsProvider(IOMessageVisitor):
 
     def create_subconversation(self) -> "NatsProvider":
         return self
+
+    @property
+    def Workflows(self) -> Workflows:  # noqa: N802
+        return NatsWorkflows
+
+
+class NatsWorkflows(Workflows):
+    def register(self, name: str, description: str) -> Callable[[Workflow], Workflow]:
+        raise NotImplementedError("Just ignore this for now")
+
+    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
+        # subscribe to whatever topic you need
+        # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
+        user_id = uuid4()  # todo: fix me later
+        conversation_id = uuid4()
+        raise NotImplementedError("Implement me")
+
+    @property
+    def names(self) -> list[str]:
+        raise NotImplementedError(
+            "Just ignore this for now, should be implemented later"
+        )
+
+    def get_description(self, name: str) -> str:
+        raise NotImplementedError(
+            "Just ignore this for now, should be implemented later"
+        )
+
+    def register_api(
+        self,
+        api: Any,
+        callers: Union[Agent, Iterable[Agent]],
+        executors: Union[Agent, Iterable[Agent]],
+        functions: Optional[
+            Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
+        ] = None,
+    ) -> None:
+        raise NotImplementedError(
+            "Just ignore this for now, will be removed from this protocol"
+        )
