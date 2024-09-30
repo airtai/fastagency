@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import Optional
 
 import mesop as me
 
@@ -131,25 +130,43 @@ MSG_ERROR_HEADER_BOX_STYLE = me.Style(
     border_radius=8,
 )
 
+MSG_TEXT_INPUT_HEADER_BOX_STYLE = me.Style(
+    background="#e6ee9c",
+    padding=me.Padding.all(0),
+    border_radius=8,
+)
+
+MSG_TEXT_INPUT_MD_STYLE = me.Style(
+    background="#e0e0e0",
+    padding=me.Padding.all(16),
+)
+
 
 @dataclass
 class MesopMessageStyles:
-    box: Optional[me.Style] = None
-    md: Optional[me.Style] = None
-    header_box: Optional[me.Style] = None
-    header_md: Optional[me.Style] = None
+    box: me.Style = MSG_DEFAULT_BOX_STYLE
+    md: me.Style = MSG_DEFAULT_MD_STYLE
+    header_box: me.Style = MSG_DEFAULT_HEADER_BOX_STYLE
+    header_md: me.Style = MSG_DEFAULT_HEADER_MD_STYLE
+
+
+TEXT_INPUT_INNER_BOX_STYLE = me.Style(
+    border_radius=8,
+    padding=me.Padding.all(16),
+    background="white",
+    display="flex",
+    width="100%",
+)
+
+
+@dataclass
+class MesopTextInputInnerStyles:
+    box: me.Style = field(default_factory=lambda: TEXT_INPUT_INNER_BOX_STYLE)
 
 
 @dataclass
 class MesopMessagesStyles:
-    default: MesopMessageStyles = field(
-        default_factory=lambda: MesopMessageStyles(
-            header_box=MSG_DEFAULT_HEADER_BOX_STYLE,
-            header_md=MSG_DEFAULT_HEADER_MD_STYLE,
-            box=MSG_DEFAULT_BOX_STYLE,
-            md=MSG_DEFAULT_MD_STYLE,
-        )
-    )
+    default: MesopMessageStyles = field(default_factory=lambda: MesopMessageStyles())
 
     error: MesopMessageStyles = field(
         default_factory=lambda: MesopMessageStyles(
@@ -175,6 +192,16 @@ class MesopMessagesStyles:
         default_factory=lambda: MesopMessageStyles(
             header_box=MSG_FUNCTION_CALL_EXECUTION_HEADER_BOX_STYLE,
         )
+    )
+
+    text_input: MesopMessageStyles = field(
+        default_factory=lambda: MesopMessageStyles(
+            header_box=MSG_TEXT_INPUT_HEADER_BOX_STYLE,
+        )
+    )
+
+    text_input_inner: MesopTextInputInnerStyles = field(
+        default_factory=lambda: MesopTextInputInnerStyles()
     )
 
 

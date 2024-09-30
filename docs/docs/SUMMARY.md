@@ -150,6 +150,7 @@ search:
                         - [MesopHomePageStyles](api/fastagency/ui/mesop/styles/MesopHomePageStyles.md)
                         - [MesopMessageStyles](api/fastagency/ui/mesop/styles/MesopMessageStyles.md)
                         - [MesopMessagesStyles](api/fastagency/ui/mesop/styles/MesopMessagesStyles.md)
+                        - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)

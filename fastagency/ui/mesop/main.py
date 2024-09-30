@@ -159,7 +159,12 @@ class MesopHomePage:
                     self._params.conv_starter_text,
                     style=self._styles.conv_starter_text,
                 )
-                input_text(self.send_prompt, "prompt", disabled=False)
+                input_text(
+                    self.send_prompt,
+                    key="prompt",
+                    disabled=False,
+                    style=self._styles.message.text_input_inner,
+                )
 
     def send_prompt(self, prompt: str) -> Iterator[None]:
         ui = self._ui

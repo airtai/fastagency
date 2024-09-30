@@ -1,6 +1,6 @@
 import json
 from collections.abc import Iterable, Iterator
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 from uuid import uuid4
 
 import mesop as me
@@ -143,6 +143,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         content: Optional[str] = None,
         style: Optional[MesopMessageStyles] = None,
         error: Optional[bool] = False,
+        inner_callback: Optional[Callable[..., None]] = None,
     ) -> None:
         logger.info(f"visit_default: {message=}")
         style = style or self._styles.message.default
@@ -159,6 +160,9 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             content = content or self.message_content_to_markdown(message)
 
             me.markdown(content, style=style.md or self._styles.message.default.md)
+
+            if inner_callback:
+                inner_callback()
 
     def visit_text_message(self, message: TextMessage) -> None:
         content = message.body if message.body else ""
@@ -214,30 +218,24 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             message = self._conversation_message
             return message.feedback[0] if message.feedback_completed else None
 
-        base_color = "#dff"
+        # base_color = "#dff"
         prompt = message.prompt if message.prompt else "Please enter a value"
         if message.suggestions:
             suggestions = ",".join(suggestion for suggestion in message.suggestions)
             prompt += "\n Suggestions: " + suggestions
 
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                align_self="flex-end",
-                width="95%",
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, title="Input requested")
-            me.markdown(prompt)
-            input_text(
+        self.visit_default(
+            message,
+            content=prompt,
+            style=self._styles.message.text_input,
+            inner_callback=lambda: input_text(
                 on_input,
-                "prompt",
+                key="prompt",
                 disabled=self._readonly or self._has_feedback(),
                 value=value_if_completed(),
-            )
+                style=self._styles.message.text_input_inner,
+            ),
+        )
         return ""
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:

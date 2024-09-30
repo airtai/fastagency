@@ -5,6 +5,7 @@ import mesop as me
 
 from ....logging import get_logger
 from ..data_model import State
+from ..styles import MesopTextInputInnerStyles
 
 # Get the logger
 logger = get_logger(__name__)
@@ -12,9 +13,11 @@ logger = get_logger(__name__)
 
 def input_text(  # noqa: C901
     on_input: Callable[[str], Iterator[None]],
+    *,
     key: str,
     disabled: bool = False,
     value: Optional[str] = None,
+    style: MesopTextInputInnerStyles,
 ) -> None:
     def on_click(e: me.ClickEvent) -> Iterator[None]:
         state = me.state(State)
@@ -57,15 +60,16 @@ def input_text(  # noqa: C901
 
     state = me.state(State)
     key_num = f"{key}{len(state.conversation.messages)}"
-    with me.box(
-        style=me.Style(
-            border_radius=16,
-            padding=me.Padding.all(8),
-            background="white",
-            display="flex",
-            width="100%",
-        )
-    ):
+    with me.box(style=style.box):
+        # with me.box(
+        #     style=me.Style(
+        #         border_radius=16,
+        #         padding=me.Padding.all(8),
+        #         background="white",
+        #         display="flex",
+        #         width="100%",
+        #     )
+        # ):
         if disabled:
             in_value = value
             key_num = f"{key}disabled{len(state.conversation.messages)}"
@@ -88,9 +92,10 @@ def input_text(  # noqa: C901
                 },
                 style=me.Style(
                     padding=me.Padding(top=16, left=16),
-                    outline="none",
+                    # outline="none",
                     width="100%",
                     border=me.Border.all(me.BorderSide(style="none")),
+                    background="#e1f5fe",
                 ),
                 value=in_value,
             )
