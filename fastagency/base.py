@@ -130,6 +130,7 @@ class SuggestedFunctionCall(IOMessage):
 
 @dataclass
 class FunctionCallExecution(IOMessage):
+    body: Optional[str] = None
     function_name: Optional[str] = None
     call_id: Optional[str] = None
     retval: Any = None
