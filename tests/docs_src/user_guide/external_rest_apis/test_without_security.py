@@ -2,7 +2,9 @@ import pytest
 from typer.testing import CliRunner
 
 from fastagency.cli import app
-from tests.conftest import InputMock
+
+from ....conftest import InputMock
+from ...helpers import skip_internal_server_error
 
 runner = CliRunner()
 
@@ -10,6 +12,7 @@ INPUT_MESSAGE = "Get me daily forecast for Zagreb city"
 
 
 @pytest.mark.openai
+@skip_internal_server_error
 def test_cli_without_security(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", InputMock([INPUT_MESSAGE]))
 

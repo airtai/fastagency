@@ -8,3 +8,11 @@ class FastAgencyCLIError(FastAgencyError):
 
 class FastAgencyCLIPythonVersionError(FastAgencyCLIError):
     pass
+
+
+class FastAgencyWSGINotImplementedError(FastAgencyError):
+    pass
+
+
+class FastAgencyASGINotImplementedError(FastAgencyError):
+    pass

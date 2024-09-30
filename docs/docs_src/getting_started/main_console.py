@@ -9,7 +9,7 @@ from fastagency.ui.console import ConsoleUI
 llm_config = {
     "config_list": [
         {
-            "model": "gpt-4o",
+            "model": "gpt-4o-mini",
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
@@ -38,7 +38,7 @@ def simple_workflow(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
-        max_turns=5,
+        max_turns=3,
     )
 
     return chat_result.summary  # type: ignore[no-any-return]

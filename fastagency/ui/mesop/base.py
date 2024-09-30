@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from queue import Queue
 from tempfile import TemporaryDirectory
-from typing import ClassVar, Optional
+from typing import Any, Callable, ClassVar, Optional
 from uuid import uuid4
 
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
@@ -62,6 +62,7 @@ class MesopUI(IOMessageVisitor):  # UI
 
     @classmethod
     def get_created_instance(cls) -> "MesopUI":
+        logger.info(f"Getting MesopUI created instance: {cls._created_instance}")
         created_instance = cls._created_instance
         if created_instance is None:
             raise RuntimeError("MesopUI has not been created yet.")
@@ -70,6 +71,7 @@ class MesopUI(IOMessageVisitor):  # UI
 
     @property
     def app(self) -> Runnable:
+        logger.info(f"Getting app: {MesopUI._app}")
         app = MesopUI._app
         if app is None:
             raise RuntimeError("MesopUI has not been created yet.")
@@ -211,6 +213,20 @@ class MesopUI(IOMessageVisitor):  # UI
                 break
             yield message
 
+    def handle_wsgi(
+        self,
+        app: "Runnable",
+        environ: dict[str, Any],
+        start_response: Callable[..., Any],
+    ) -> list[bytes]:
+        logger.info(f"Starting MesonUI using WSGI interface with app: {app}")
+        MesopUI._created_instance = self
+        MesopUI._app = app
+
+        from .main import me
+
+        return me(environ, start_response)  # type: ignore[no-any-return]
+
 
 def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
     def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
@@ -283,3 +299,15 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
     thread.start()
 
     return subconversation
+
+    # # needed for uvicorn to recognize the class as a valid ASGI application
+    # async def __call__(
+    #     self,
+    #     scope: dict[str, Any],
+    #     receive: Callable[[], Awaitable[dict]],
+    #     send: Callable[[dict], Awaitable[None]],
+    # ) -> None:
+    #     MesopUI._created_instance = self
+    #     from .main import me
+
+    #     return await me(scope, receive, send)

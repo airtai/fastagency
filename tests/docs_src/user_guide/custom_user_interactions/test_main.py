@@ -2,7 +2,9 @@ import pytest
 from typer.testing import CliRunner
 
 from fastagency.cli import app
-from tests.conftest import InputMock
+
+from ....conftest import InputMock
+from ...helpers import skip_internal_server_error
 
 runner = CliRunner()
 
@@ -10,6 +12,7 @@ INPUT_MESSAGE = "Today's theme is Leonardo da Vinci"
 
 
 @pytest.mark.openai
+@skip_internal_server_error
 def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(
         "builtins.input",
