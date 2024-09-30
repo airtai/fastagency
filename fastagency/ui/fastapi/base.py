@@ -71,14 +71,14 @@ class InitiateModel(BaseModel):
 logger = get_logger(__name__)
 
 
-class UpdatedNatsProvider(IOMessageVisitor):
+class NatsProvider(IOMessageVisitor):
     def __init__(
         self,
         wf: Workflows,
         nats_url: str,
         user: str,
         password: str,
-        super_conversation: Optional["UpdatedNatsProvider"] = None,
+        super_conversation: Optional["NatsProvider"] = None,
     ) -> None:
         """Provider for NATS."""
         self.wf = wf
@@ -94,8 +94,8 @@ class UpdatedNatsProvider(IOMessageVisitor):
         self._input_request_subject: str
         self._input_receive_subject: str
 
-        self.super_conversation: Optional[UpdatedNatsProvider] = super_conversation
-        self.sub_conversations: list[UpdatedNatsProvider] = []
+        self.super_conversation: Optional[NatsProvider] = super_conversation
+        self.sub_conversations: list[NatsProvider] = []
 
         self.stream = JStream(
             name="FastAgency",
@@ -206,7 +206,7 @@ class UpdatedNatsProvider(IOMessageVisitor):
             syncify(self.broker.publish)(error_msg, self._input_request_subject)  # type: ignore [arg-type]
 
     @asynccontextmanager
-    async def start(self, app: Any) -> AsyncIterator[None]:
+    async def lifespan(self, app: Any) -> AsyncIterator[None]:
         async with self.broker:
             await self.broker.start()
             init_chat_subscriber = self.broker.subscriber(
@@ -296,7 +296,7 @@ class UpdatedNatsProvider(IOMessageVisitor):
         # logger.info(f"process_message(): {message=}")
         return self.visit(message)
 
-    def create_subconversation(self) -> "UpdatedNatsProvider":
+    def create_subconversation(self) -> "NatsProvider":
         # sub_conversation = UpdatedNatsProvider(wf=self.wf, nats_url=self.nats_url, user=self.user, password=self.password, super_conversation=self)
         # sub_conversation._input_receive_subject = self._input_receive_subject
         # sub_conversation._input_request_subject = self._input_request_subject

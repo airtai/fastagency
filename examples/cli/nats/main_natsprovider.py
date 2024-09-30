@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastagency import UI
 from fastagency.logging import get_logger
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-from fastagency.ui.fastapi.base import UpdatedNatsProvider
+from fastagency.ui.fastapi.base import NatsProvider
 
 llm_config = {
     "config_list": [
@@ -32,11 +32,13 @@ def simple_workflow(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
         llm_config=llm_config,
+        # human_input_mode="ALWAYS",
     )
     teacher_agent = ConversableAgent(
         name="Teacher_Agent",
         system_message="You are a math teacher.",
         llm_config=llm_config,
+        # human_input_mode="ALWAYS",
     )
 
     logger.info("Above initiate_chat in simple_workflow")
@@ -53,25 +55,14 @@ def simple_workflow(
     return chat_result.summary
 
 
-# ui=FastAPIUI(nats_params=..., no_workers=10)
-# fa_app = FastAgency(wf=wf, ui=ui)
-
-# app = FastAPI(lifespan=fa_app.lifespan(fa_app))
-
-# # do whatever you want with the app
-# ...
-# def some_route():
-#     web_socket_info = fa_app.run_workflow("simple_learning", "Hello, teacher!", "session_id")
-
-
 nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
 
 user: str = "faststream"
 password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
-provider = UpdatedNatsProvider(wf=wf, nats_url=nats_url, user=user, password=password)
+provider = NatsProvider(wf=wf, nats_url=nats_url, user=user, password=password)
 
 
-app = FastAPI(lifespan=provider.start)
+app = FastAPI(lifespan=provider.lifespan)
 
 
 @app.get("/start")

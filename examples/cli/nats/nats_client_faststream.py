@@ -64,6 +64,10 @@ async def consume_msg_from_autogen(msg: dict, logger: Logger) -> None:
         i = i + 1
     elif i != 0 and isinstance(iomessage, AskingMessage):
         logger.info("i is not 0")
+        # response = InputResponseModel(
+        #     msg="", question_id=iomessage.uuid
+        # )
+        # await broker.publish(response, f"chat.server.messages.{user_id}.{thread_id}")
 
 
 @app.after_startup
