@@ -122,6 +122,7 @@ class TextMessage(IOMessage):
 
 @dataclass
 class SuggestedFunctionCall(IOMessage):
+    body: Optional[str] = None
     function_name: Optional[str] = None
     call_id: Optional[str] = None
     arguments: dict[str, Any] = field(default_factory=dict)
