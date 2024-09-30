@@ -18,7 +18,9 @@ from pydantic import BaseModel
 from fastagency.logging import get_logger
 
 from ...base import (
+    UI,
     Agent,
+    AskingMessage,
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
@@ -46,6 +48,20 @@ class InitiateModel(BaseModel):
 
 
 logger = get_logger(__name__)
+
+JETSTREAM = JStream(
+    name="FastAgency",
+    subjects=[
+        # starts new conversation (can land on any worker)
+        "chat.server.initiate_chat",
+        # server requests input from client; chat.client.messages.<user_uuid>.<chat_uuid>
+        # we create this topic dynamically => client process consuming NATS can fix its worker
+        "chat.client.messages.*.*",
+        # server prints message to client; chat.server.messages.<user_uuid>.<chat_uuid>
+        # we create this topic dynamically and subscribe to it => worker is fixed
+        "chat.server.messages.*.*",
+    ],
+)
 
 
 class NatsProvider(IOMessageVisitor):
@@ -81,20 +97,6 @@ class NatsProvider(IOMessageVisitor):
 
         self.super_conversation: Optional[NatsProvider] = super_conversation
         self.sub_conversations: list[NatsProvider] = []
-
-        self.stream = JStream(
-            name="FastAgency",
-            subjects=[
-                # starts new conversation (can land on any worker)
-                "chat.server.initiate_chat",
-                # server requests input from client; chat.client.messages.<user_uuid>.<chat_uuid>
-                # we create this topic dynamically => client process consuming NATS can fix its worker
-                "chat.client.messages.*.*",
-                # server prints message to client; chat.server.messages.<user_uuid>.<chat_uuid>
-                # we create this topic dynamically and subscribe to it => worker is fixed
-                "chat.server.messages.*.*",
-            ],
-        )
 
         self.create_initiate_subscriber()
 
@@ -133,10 +135,10 @@ class NatsProvider(IOMessageVisitor):
     #     queue="initiate_workers",
     #     deliver_policy=api.DeliverPolicy("all"),
     # )
-    def create_initiate_subscriber(self):
+    def create_initiate_subscriber(self) -> None:
         @self.broker.subscriber(
             "chat.server.initiate_chat",
-            stream=self.stream,
+            stream=JETSTREAM,
             queue="initiate_workers",
             deliver_policy=api.DeliverPolicy("all"),
         )
@@ -168,7 +170,7 @@ class NatsProvider(IOMessageVisitor):
             # dynamically subscribe to the chat server
             subscriber = self.broker.subscriber(
                 subject=self._input_receive_subject,
-                stream=self.stream,
+                stream=JETSTREAM,
                 deliver_policy=api.DeliverPolicy("all"),
             )
             subscriber(self.handle_input)
@@ -296,32 +298,97 @@ class NatsProvider(IOMessageVisitor):
     def create_subconversation(self) -> "NatsProvider":
         return self
 
-    @property
-    def Workflows(self) -> Workflows:  # noqa: N802
-        return NatsWorkflows
+    @classmethod
+    def Workflows(  # noqa: N802
+        cls,
+        nats_url: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+    ) -> Workflows:
+        return NatsWorkflows(nats_url=nats_url, user=user, password=password)
 
 
 class NatsWorkflows(Workflows):
-    def register(self, name: str, description: str) -> Callable[[Workflow], Workflow]:
-        raise NotImplementedError("Just ignore this for now")
+    def __init__(
+        self,
+        nats_url: Optional[str] = None,
+        user: Optional[str] = None,
+        password: Optional[str] = None,
+    ) -> None:
+        """Initialize the nats workflows."""
+        self._workflows: dict[
+            str, tuple[Callable[[Workflows, UI, str, str], str], str]
+        ] = {}
+
+        self.nats_url = nats_url or "nats://localhost:4222"
+        self.user = user
+        self.password = password
+
+        self.broker = NatsBroker(self.nats_url, user=self.user, password=self.password)
+        self.app = FastStream(self.broker)
+        self.subscriber: "AsyncAPISubscriber"
+
+        self._initiate_chat_subject: str = "chat.server.initiate_chat"
+
+        self.is_broker_running: bool = False
+
+    def register(
+        self, name: str, description: str, *, fail_on_redefintion: bool = False
+    ) -> Callable[[Workflow], Workflow]:
+        raise NotImplementedError("Just ignore this for now; @register")
+
+    def setup_subscriber(
+        self, ui: UI, from_server_subject: str, to_server_subject: str
+    ) -> None:
+        @self.broker.subscriber(
+            from_server_subject,
+            stream=JETSTREAM,
+            deliver_policy=api.DeliverPolicy("all"),
+        )
+        async def consume_msg_from_nats(msg: dict[str, Any], logger: Logger) -> None:
+            iomessage = IOMessage.create(**msg)
+            if isinstance(iomessage, AskingMessage):
+                processed_message = ui.process_message(iomessage)
+                await self.broker.publish(processed_message, to_server_subject)
+            else:
+                ui.process_message(iomessage)
 
     def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
         user_id = uuid4()  # todo: fix me later
         conversation_id = uuid4()
-        raise NotImplementedError("Implement me")
+        init_message = InitiateModel(
+            user_id=user_id,
+            conversation_id=conversation_id,
+            msg=initial_message,
+        )
+        _from_server_subject = f"chat.client.messages.{user_id}.{conversation_id}"
+        _to_server_subject = f"chat.server.messages.{user_id}.{conversation_id}"
+
+        self.setup_subscriber(ui, _from_server_subject, _to_server_subject)
+
+        async def start_broker() -> AsyncIterator[None]:
+            async with self.broker:
+                await self.broker.start()
+                logger.info("Broker started")
+                await self.broker.publish(init_message, self._initiate_chat_subject)
+                logger.info("Initiate chat message sent")
+                try:
+                    yield
+                finally:
+                    await self.broker.close()
+
+        if not self.is_broker_running:
+            self.is_broker_running = True
+            asyncio.run(start_broker())
 
     @property
     def names(self) -> list[str]:
-        raise NotImplementedError(
-            "Just ignore this for now, should be implemented later"
-        )
+        return ["simple_learning"]
 
     def get_description(self, name: str) -> str:
-        raise NotImplementedError(
-            "Just ignore this for now, should be implemented later"
-        )
+        return "Student and teacher learning chat"
 
     def register_api(
         self,
@@ -333,5 +400,5 @@ class NatsWorkflows(Workflows):
         ] = None,
     ) -> None:
         raise NotImplementedError(
-            "Just ignore this for now, will be removed from this protocol"
+            "Just ignore this for now, will be removed from this protocol; @register_api"
         )
