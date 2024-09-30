@@ -94,6 +94,8 @@ class NatsProvider(IOMessageVisitor):
             ],
         )
 
+        self.create_initiate_subscriber()
+
     async def handle_input(
         self, body: InputResponseModel, msg: NatsMessage, logger: Logger
     ) -> None:
@@ -129,88 +131,86 @@ class NatsProvider(IOMessageVisitor):
     #     queue="initiate_workers",
     #     deliver_policy=api.DeliverPolicy("all"),
     # )
-    async def initiate_handler(
-        self, body: InitiateModel, msg: NatsMessage, logger: Logger
-    ) -> None:
-        """Initiate the handler.
-
-        1. Subscribes to the chat.server.initiate_chat topic.
-        2. When a message is consumed from the topic, it dynamically subscribes to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
-        3. Starts the chat workflow after successfully subscribing to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
-
-        Args:
-            body (InitiateModel): The body of the message.
-            msg (NatsMessage): The message object.
-            logger (Logger): The logger object (gets injected)
-
-        """
-        await msg.ack()
-
-        logger.info(
-            f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
-        )
-        user_id = str(body.user_id)
-        thread_id = str(body.conversation_id)
-        self._input_request_subject = f"chat.client.messages.{user_id}.{thread_id}"
-        self._input_receive_subject = f"chat.server.messages.{user_id}.{thread_id}"
-
-        # dynamically subscribe to the chat server
-        subscriber = self.broker.subscriber(
-            subject=self._input_receive_subject,
+    def create_initiate_subscriber(self):
+        @self.broker.subscriber(
+            "chat.server.initiate_chat",
             stream=self.stream,
+            queue="initiate_workers",
             deliver_policy=api.DeliverPolicy("all"),
         )
-        subscriber(self.handle_input)
-        self.broker.setup_subscriber(subscriber)
-        await subscriber.start()
+        async def initiate_handler(
+            body: InitiateModel, msg: NatsMessage, logger: Logger
+        ) -> None:
+            """Initiate the handler.
 
-        try:
+            1. Subscribes to the chat.server.initiate_chat topic.
+            2. When a message is consumed from the topic, it dynamically subscribes to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
+            3. Starts the chat workflow after successfully subscribing to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
 
-            async def start_chat() -> None:  # type: ignore [return]
-                try:
-                    logger.info("Above self.wf.run")
-                    await asyncify(run_workflow)(
-                        wf=self.wf,
-                        ui=self,  # type: ignore[arg-type]
-                        name=self.wf.names[0],
-                        initial_message=body.msg,
-                        single_run=False,
-                    )
+            Args:
+                body (InitiateModel): The body of the message.
+                msg (NatsMessage): The message object.
+                logger (Logger): The logger object (gets injected)
 
-                except Exception as e:
-                    await self.send_error_msg(e, logger)
+            """
+            await msg.ack()
 
-            background_tasks = set()
-            task = asyncio.create_task(start_chat())  # type: ignore
-            background_tasks.add(task)
+            logger.info(
+                f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
+            )
+            user_id = str(body.user_id)
+            thread_id = str(body.conversation_id)
+            self._input_request_subject = f"chat.client.messages.{user_id}.{thread_id}"
+            self._input_receive_subject = f"chat.server.messages.{user_id}.{thread_id}"
 
-            def callback(t: asyncio.Task[Any]) -> None:
-                try:
-                    background_tasks.discard(t)
-                    syncify(subscriber.close)()
-                except Exception as e:
-                    logger.error(f"Error in callback: {e}")
-                    logger.error(traceback.format_exc())
+            # dynamically subscribe to the chat server
+            subscriber = self.broker.subscriber(
+                subject=self._input_receive_subject,
+                stream=self.stream,
+                deliver_policy=api.DeliverPolicy("all"),
+            )
+            subscriber(self.handle_input)
+            self.broker.setup_subscriber(subscriber)
+            await subscriber.start()
 
-            task.add_done_callback(callback)
+            try:
 
-        except Exception as e:
-            await self.send_error_msg(e, logger)
+                async def start_chat() -> None:  # type: ignore [return]
+                    try:
+                        logger.info("Above self.wf.run")
+                        await asyncify(run_workflow)(
+                            wf=self.wf,
+                            ui=self,  # type: ignore[arg-type]
+                            name=self.wf.names[0],
+                            initial_message=body.msg,
+                            single_run=False,
+                        )
+
+                    except Exception as e:
+                        await self.send_error_msg(e, logger)
+
+                background_tasks = set()
+                task = asyncio.create_task(start_chat())  # type: ignore
+                background_tasks.add(task)
+
+                def callback(t: asyncio.Task[Any]) -> None:
+                    try:
+                        background_tasks.discard(t)
+                        syncify(subscriber.close)()
+                    except Exception as e:
+                        logger.error(f"Error in callback: {e}")
+                        logger.error(traceback.format_exc())
+
+                task.add_done_callback(callback)
+
+            except Exception as e:
+                await self.send_error_msg(e, logger)
 
     # todo: make it a router
     @asynccontextmanager
     async def lifespan(self, app: Any) -> AsyncIterator[None]:
         async with self.broker:
             await self.broker.start()
-            init_chat_subscriber = self.broker.subscriber(
-                subject="chat.server.initiate_chat",
-                stream=self.stream,
-                queue="initiate_workers",
-                deliver_policy=api.DeliverPolicy("all"),
-            )
-            init_chat_subscriber(self.initiate_handler)
-            self.broker.setup_subscriber(init_chat_subscriber)
-            await init_chat_subscriber.start()
             try:
                 yield
             finally:
