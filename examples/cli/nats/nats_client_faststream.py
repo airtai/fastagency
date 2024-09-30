@@ -74,7 +74,9 @@ async def consume_msg_from_autogen(msg: dict, logger: Logger) -> None:
 async def send_initiate_chat_msg() -> None:
     async def _send_initiate_chat_msg():
         init_message = InitiateModel(
-            user_id=user_id, thread_id=thread_id, msg="Hello, How are you chatbot?"
+            user_id=user_id,
+            conversation_id=thread_id,
+            msg="Hello, How are you chatbot?",
         )
         await broker.publish(init_message, "chat.server.initiate_chat")
         logger.info(

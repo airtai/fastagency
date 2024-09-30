@@ -96,6 +96,14 @@ search:
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
+            - new
+                - base
+                    - [ClientProtocol](api/fastagency/new/base/ClientProtocol.md)
+                    - [Conversation](api/fastagency/new/base/Conversation.md)
+                    - [FastAPIConversationClient](api/fastagency/new/base/FastAPIConversationClient.md)
+                    - [NatsProvider](api/fastagency/new/base/NatsProvider.md)
+                    - [ProviderProtocol](api/fastagency/new/base/ProviderProtocol.md)
+                    - [WorkflowInfo](api/fastagency/new/base/WorkflowInfo.md)
             - runtime
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
@@ -118,6 +126,11 @@ search:
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
                     - base
                         - [ConsoleUI](api/fastagency/ui/console/base/ConsoleUI.md)
+                - fastapi
+                    - base
+                        - [InitiateModel](api/fastagency/ui/fastapi/base/InitiateModel.md)
+                        - [InputResponseModel](api/fastagency/ui/fastapi/base/InputResponseModel.md)
+                        - [NatsProvider](api/fastagency/ui/fastapi/base/NatsProvider.md)
                 - mesop
                     - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
                     - base
