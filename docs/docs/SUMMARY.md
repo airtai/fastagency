@@ -150,6 +150,8 @@ search:
                         - [MesopHomePageStyles](api/fastagency/ui/mesop/styles/MesopHomePageStyles.md)
                         - [MesopMessageStyles](api/fastagency/ui/mesop/styles/MesopMessageStyles.md)
                         - [MesopMessagesStyles](api/fastagency/ui/mesop/styles/MesopMessagesStyles.md)
+                        - [MesopMultipleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopMultipleChoiceInnerStyles.md)
+                        - [MesopSingleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopSingleChoiceInnerStyles.md)
                         - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)

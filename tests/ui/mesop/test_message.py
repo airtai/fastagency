@@ -175,7 +175,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Input requested: sender -> recipient**",
+            "**Text input: sender -> recipient**",
             """Who is the president of the United States?
  Suggestions: Donald Trump,Joe Biden""",
         )
@@ -201,8 +201,8 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Input requested: sender -> recipient**",
-            # "Who is the president of the United States?",
+            "**Multiple choice: sender -> recipient**",
+            "Who is the president of the United States?",
         )
         me.radio.assert_called_once()
 
@@ -227,8 +227,8 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Input requested: sender -> recipient**",
-            # "Who are Snow White helpers?",
+            "**Multiple choice: sender -> recipient**",
+            "Who are Snow White helpers?",
         )
         assert me.checkbox.call_count == 7
 

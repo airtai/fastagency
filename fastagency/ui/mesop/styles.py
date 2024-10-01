@@ -158,10 +158,49 @@ TEXT_INPUT_INNER_BOX_STYLE = me.Style(
     width="100%",
 )
 
+TEXT_INPUT_NATIVE_TEXTAREA_STYLE = me.Style(
+    padding=me.Padding(top=16, left=16),
+    # outline="none",
+    width="100%",
+    border=me.Border.all(me.BorderSide(style="none")),
+    background="#e1f5fe",
+)
+
+SINGLE_CHOICE_RADIO_STYLE = me.Style(
+    display="flex", flex_direction="column", padding=me.Padding.all(16)
+)
+
+MULTIPLE_CHOICE_RADIO_STYLE = me.Style(
+    display="flex",
+    flex_direction="column",
+    padding=me.Padding.all(16),
+)
+
+MULTIPLE_CHOICE_BUTTON_STYLE = me.Style(
+    margin=me.Margin(top=16), border_radius=8, background="#1976d2"
+)
+
+MULTIPLE_CHOICE_CHECKBOX_STYLE = me.Style()
+
 
 @dataclass
 class MesopTextInputInnerStyles:
     box: me.Style = field(default_factory=lambda: TEXT_INPUT_INNER_BOX_STYLE)
+    native_textarea: me.Style = field(
+        default_factory=lambda: TEXT_INPUT_NATIVE_TEXTAREA_STYLE
+    )
+
+
+@dataclass
+class MesopSingleChoiceInnerStyles:
+    radio: me.Style = field(default_factory=lambda: SINGLE_CHOICE_RADIO_STYLE)
+
+
+@dataclass
+class MesopMultipleChoiceInnerStyles:
+    box: me.Style = field(default_factory=lambda: MULTIPLE_CHOICE_RADIO_STYLE)
+    checkbox: me.Style = field(default_factory=lambda: MULTIPLE_CHOICE_CHECKBOX_STYLE)
+    button: me.Style = field(default_factory=lambda: MULTIPLE_CHOICE_BUTTON_STYLE)
 
 
 @dataclass
@@ -202,6 +241,14 @@ class MesopMessagesStyles:
 
     text_input_inner: MesopTextInputInnerStyles = field(
         default_factory=lambda: MesopTextInputInnerStyles()
+    )
+
+    single_choice_inner: MesopSingleChoiceInnerStyles = field(
+        default_factory=lambda: MesopSingleChoiceInnerStyles()
+    )
+
+    multiple_choice_inner: MesopMultipleChoiceInnerStyles = field(
+        default_factory=lambda: MesopMultipleChoiceInnerStyles()
     )
 
 

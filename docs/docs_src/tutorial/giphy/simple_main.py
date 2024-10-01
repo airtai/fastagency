@@ -7,6 +7,7 @@ from autogen import ConversableAgent, UserProxyAgent
 from fastagency import UI, FastAgency, Workflows
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
+from fastagency.base import MultipleChoice
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 

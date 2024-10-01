@@ -251,7 +251,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             self._conversation_message.feedback_completed = True
             yield from self._provide_feedback(feedback)
 
-        base_color = "#dff"
+        # base_color = "#dff"
         prompt = message.prompt if message.prompt else "Please enter a value"
         if message.choices:
             options = (
@@ -265,25 +265,22 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             pre_selected = {"value": self._conversation_message.feedback[0]}
         else:
             pre_selected = {}
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                align_self="flex-end",
-                width="95%",
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, title="Input requested")
-            me.text(prompt)
+
+        def inner_callback() -> None:
             me.radio(
                 on_change=on_change,
                 disabled=self._readonly or self._is_completed(),
                 options=options,
-                style=me.Style(display="flex", flex_direction="column"),
+                style=self._styles.message.single_choice_inner.radio,
                 **pre_selected,
             )
+
+        self.visit_default(
+            message,
+            content=prompt,
+            style=self._styles.message.text_input,
+            inner_callback=inner_callback,
+        )
         return ""
 
     def _visit_many_choices(self, message: MultipleChoice) -> str:
@@ -308,22 +305,13 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             conversation_message = self._conversation_message
             return option in conversation_message.feedback
 
-        base_color = "#dff"
-        prompt = message.prompt if message.prompt else "Please enter a value"
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                align_self="flex-end",
-                width="95%",
-                border_radius=16,
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, title="Input requested")
-            me.text(prompt)
+        prompt = message.prompt if message.prompt else "Please select a value:"
+
+        def inner_callback() -> None:
             if message.choices:
-                with me.box(style=me.Style(display="flex", flex_direction="column")):
+                with me.box(
+                    style=self._styles.message.multiple_choice_inner.box,
+                ):
                     for option in message.choices:
                         me.checkbox(
                             label=option,
@@ -331,8 +319,22 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                             checked=should_be_checked(option),
                             on_change=on_change,
                             disabled=self._readonly or self._is_completed(),
+                            style=self._styles.message.multiple_choice_inner.checkbox,
                         )
-            me.button(label="Ok", on_click=on_click)
+                    me.button(
+                        label="OK",
+                        on_click=on_click,
+                        color="primary",
+                        type="flat",
+                        style=self._styles.message.multiple_choice_inner.button,
+                    )
+
+        self.visit_default(
+            message,
+            content=prompt,
+            style=self._styles.message.text_input,
+            inner_callback=inner_callback,
+        )
         return ""
 
     def render_error_message(
