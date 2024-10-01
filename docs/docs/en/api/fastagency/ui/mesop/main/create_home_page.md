@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.main.home_page
+::: fastagency.ui.mesop.main.create_home_page

@@ -1,16 +1,12 @@
 import json
 from collections.abc import Iterable, Iterator
-from typing import Optional
+from typing import Any, Callable, Optional
 from uuid import uuid4
 
 import mesop as me
 
-from fastagency.base import AskingMessage, WorkflowCompleted
-from fastagency.ui.mesop.base import MesopMessage
-from fastagency.ui.mesop.components.inputs import input_text
-from fastagency.ui.mesop.send_prompt import send_user_feedback_to_autogen
-
 from ...base import (
+    AskingMessage,
     FunctionCallExecution,
     IOMessage,
     IOMessageVisitor,
@@ -19,9 +15,20 @@ from ...base import (
     SystemMessage,
     TextInput,
     TextMessage,
+    WorkflowCompleted,
 )
-from .components.ui_common import darken_hex_color
+from ...logging import get_logger
+from .base import MesopMessage
+from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
+from .send_prompt import send_user_feedback_to_autogen
+from .styles import MesopHomePageStyles, MesopMessageStyles
+
+logger = get_logger(__name__)
+
+
+def dict_to_markdown(d: dict[str, Any], *, indent: int = 2) -> str:
+    return "\n```\n" + json.dumps(d, indent=2) + "\n```\n"
 
 
 def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
@@ -32,15 +39,6 @@ def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
         me.scroll_into_view(key="end_of_messages")
         yield
     yield
-
-
-def message_box(message: ConversationMessage, read_only: bool) -> None:
-    io_message_dict = json.loads(message.io_message_json)
-    level = message.level
-    conversation_id = message.conversation_id
-    io_message = IOMessage.create(**io_message_dict)
-    visitor = MesopGUIMessageVisitor(level, conversation_id, message, read_only)
-    visitor.process_message(io_message)
 
 
 def handle_message(state: State, message: MesopMessage) -> None:
@@ -78,12 +76,24 @@ def handle_message(state: State, message: MesopMessage) -> None:
             state.past_conversations.insert(0, becomme_past)
 
 
+def message_box(
+    message: ConversationMessage, read_only: bool, *, styles: MesopHomePageStyles
+) -> None:
+    io_message_dict = json.loads(message.io_message_json)
+    level = message.level
+    conversation_id = message.conversation_id
+    io_message = IOMessage.create(**io_message_dict)
+    visitor = MesopGUIMessageVisitor(level, conversation_id, message, styles, read_only)
+    visitor.process_message(io_message)
+
+
 class MesopGUIMessageVisitor(IOMessageVisitor):
     def __init__(
         self,
         level: int,
         conversation_id: str,
         conversation_message: ConversationMessage,
+        styles: MesopHomePageStyles,
         read_only: bool = False,
     ) -> None:
         """Initialize the MesopGUIMessageVisitor object.
@@ -92,12 +102,14 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             level (int): The level of the message.
             conversation_id (str): The ID of the conversation.
             conversation_message (ConversationMessage): Conversation message that wraps the visited io_message
+            styles (MesopHomePageStyles): Styles for the message
             read_only (bool): Input messages are disabled in read only mode
         """
         self._level = level
         self._conversation_id = conversation_id
         self._readonly = read_only
         self._conversation_message = conversation_message
+        self._styles = styles
 
     def _has_feedback(self) -> bool:
         return len(self._conversation_message.feedback) > 0
@@ -116,46 +128,85 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         responses = send_user_feedback_to_autogen(feedback)
         yield from consume_responses(responses)
 
-    def visit_default(self, message: IOMessage) -> None:
-        base_color = "#aff"
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                margin=me.Margin.symmetric(vertical=16),
+    def message_content_to_markdown(self, msg: IOMessage) -> str:
+        d = msg.model_dump()
+        d.pop("sender")
+        d.pop("recipient")
+        d.pop("type")
+
+        return "\n".join([f"**{k}**: {v} <br>" for k, v in d["content"].items()])
+
+    def visit_default(
+        self,
+        message: IOMessage,
+        *,
+        content: Optional[str] = None,
+        style: Optional[MesopMessageStyles] = None,
+        error: Optional[bool] = False,
+        inner_callback: Optional[Callable[..., None]] = None,
+    ) -> None:
+        logger.info(f"visit_default: {message=}")
+        style = style or self._styles.message.default
+        title = message.type.replace("_", " ").capitalize()
+        title = "[Error] " + title if error else title
+        with me.box(style=style.box or self._styles.message.default.box):
+            self._header(
+                message,
+                title=title,
+                box_style=style.header_box,
+                md_style=style.header_md,
             )
-        ):
-            self._header(message, base_color)
-            me.markdown(message.type)
+
+            content = content or self.message_content_to_markdown(message)
+
+            me.markdown(content, style=style.md or self._styles.message.default.md)
+
+            if inner_callback:
+                inner_callback()
 
     def visit_text_message(self, message: TextMessage) -> None:
-        base_color = "#fff"
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                align_self="flex-start",
-                width="95%",
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, base_color, title="Text message")
-            me.markdown(message.body)
+        content = message.body if message.body else ""
+        content = content if content.strip() != "" else "*(empty message)*"
+        self.visit_default(
+            message,
+            content=content,
+            style=self._styles.message.text,
+        )
 
     def visit_system_message(self, message: SystemMessage) -> None:
-        base_color = "#bff"
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, base_color, title="System Message")
-            me.markdown(json.dumps(message.message, indent=2))
+        content = (
+            f"""#### **{message.message['heading']}**
+
+{message.message['body']}
+"""
+            if "heading" in message.message and "body" in message.message
+            else None
+        )
+
+        self.visit_default(
+            message,
+            content=content,
+            style=self._styles.message.system,
+        )
+
+    def visit_suggested_function_call(self, message: SuggestedFunctionCall) -> None:
+        content = f"""
+**function_name**: `{message.function_name}`<br>
+**call_id**: `{message.call_id}`<br>
+**arguments**:
+{dict_to_markdown(message.arguments)}
+"""
+        self.visit_default(
+            message,
+            content=content,
+            style=self._styles.message.suggested_function_call,
+        )
+
+    def visit_function_call_execution(self, message: FunctionCallExecution) -> None:
+        return self.visit_default(
+            message,
+            style=self._styles.message.function_call_execution,
+        )
 
     def visit_text_input(self, message: TextInput) -> str:
         def on_input(feedback: str) -> Iterator[None]:
@@ -167,30 +218,24 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             message = self._conversation_message
             return message.feedback[0] if message.feedback_completed else None
 
-        base_color = "#dff"
+        # base_color = "#dff"
         prompt = message.prompt if message.prompt else "Please enter a value"
         if message.suggestions:
             suggestions = ",".join(suggestion for suggestion in message.suggestions)
             prompt += "\n Suggestions: " + suggestions
 
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                align_self="flex-end",
-                width="95%",
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, base_color, title="Input requested")
-            me.markdown(prompt)
-            input_text(
+        self.visit_default(
+            message,
+            content=prompt,
+            style=self._styles.message.text_input,
+            inner_callback=lambda: input_text(
                 on_input,
-                "prompt",
+                key="prompt",
                 disabled=self._readonly or self._has_feedback(),
                 value=value_if_completed(),
-            )
+                style=self._styles.message.text_input_inner,
+            ),
+        )
         return ""
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
@@ -206,7 +251,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             self._conversation_message.feedback_completed = True
             yield from self._provide_feedback(feedback)
 
-        base_color = "#dff"
+        # base_color = "#dff"
         prompt = message.prompt if message.prompt else "Please enter a value"
         if message.choices:
             options = (
@@ -220,25 +265,22 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             pre_selected = {"value": self._conversation_message.feedback[0]}
         else:
             pre_selected = {}
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                align_self="flex-end",
-                width="95%",
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, base_color, title="Input requested")
-            me.text(prompt)
+
+        def inner_callback() -> None:
             me.radio(
                 on_change=on_change,
                 disabled=self._readonly or self._is_completed(),
                 options=options,
-                style=me.Style(display="flex", flex_direction="column"),
+                style=self._styles.message.single_choice_inner.radio,
                 **pre_selected,
             )
+
+        self.visit_default(
+            message,
+            content=prompt,
+            style=self._styles.message.text_input,
+            inner_callback=inner_callback,
+        )
         return ""
 
     def _visit_many_choices(self, message: MultipleChoice) -> str:
@@ -263,22 +305,13 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             conversation_message = self._conversation_message
             return option in conversation_message.feedback
 
-        base_color = "#dff"
-        prompt = message.prompt if message.prompt else "Please enter a value"
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                align_self="flex-end",
-                width="95%",
-                border_radius=16,
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, base_color, title="Input requested")
-            me.text(prompt)
+        prompt = message.prompt if message.prompt else "Please select a value:"
+
+        def inner_callback() -> None:
             if message.choices:
-                with me.box(style=me.Style(display="flex", flex_direction="column")):
+                with me.box(
+                    style=self._styles.message.multiple_choice_inner.box,
+                ):
                     for option in message.choices:
                         me.checkbox(
                             label=option,
@@ -286,65 +319,69 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                             checked=should_be_checked(option),
                             on_change=on_change,
                             disabled=self._readonly or self._is_completed(),
+                            style=self._styles.message.multiple_choice_inner.checkbox,
                         )
-            me.button(label="Ok", on_click=on_click)
+                    me.button(
+                        label="OK",
+                        on_click=on_click,
+                        color="primary",
+                        type="flat",
+                        style=self._styles.message.multiple_choice_inner.button,
+                    )
+
+        self.visit_default(
+            message,
+            content=prompt,
+            style=self._styles.message.text_input,
+            inner_callback=inner_callback,
+        )
         return ""
 
-    def visit_suggested_function_call(
-        self, message: SuggestedFunctionCall
-    ) -> Optional[str]:
-        base_color = "#8ff"
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                align_self="flex-start",
-                width="95%",
-                border_radius=16,
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
-            self._header(message, base_color, title="Suggested Function Call")
-            with me.box():
-                me.text(message.function_name)
-            me.markdown(json.dumps(message.arguments))
-        return ""
+    def render_error_message(
+        self,
+        e: Exception,
+        message: IOMessage,
+        *,
+        content: Optional[str] = None,
+        style: Optional[MesopMessageStyles] = None,
+    ) -> None:
+        style = self._styles.message.error or self._styles.message.default
+        title = "[Error] " + message.type.replace("_", " ").capitalize()
 
-    def visit_function_call_execution(
-        self, message: FunctionCallExecution
-    ) -> Optional[str]:
-        base_color = "#7ff"
-        with me.box(
-            style=me.Style(
-                background=base_color,
-                padding=me.Padding.all(16),
-                align_self="flex-start",
-                width="95%",
-                border_radius=16,
-                margin=me.Margin.symmetric(vertical=16),
+        with me.box(style=style.box or self._styles.message.default.box):
+            self._header(
+                message,
+                title=title,
+                box_style=style.header_box or self._styles.message.default.header_box,
+                md_style=style.header_md or self._styles.message.default.header_md,
             )
-        ):
-            self._header(message, base_color, title="Function Call Execution")
-            with me.box():
-                me.text(message.function_name)
-            me.markdown(json.dumps(message.retval))
-        return ""
+
+            content = (
+                "Failed to render message:"
+                + dict_to_markdown(message.model_dump())
+                + f"<br>Error: {e}"
+            )
+
+            logger.info(f"render_error_message: {content=}")
+            me.markdown(content, style=style.md or self._styles.message.default.md)
 
     def process_message(self, message: IOMessage) -> Optional[str]:
-        return self.visit(message)
+        try:
+            return self.visit(message)
+        except Exception as e:
+            logger.warning(f"Failed to render message: {e}")
+            self.render_error_message(e, message)
+            return None
 
     def _header(
-        self, message: IOMessage, base_color: str, title: Optional[str] = None
+        self,
+        message: IOMessage,
+        *,
+        title: Optional[str] = None,
+        box_style: Optional[me.Style] = None,
+        md_style: Optional[me.Style] = None,
     ) -> None:
-        you_want_it_darker = darken_hex_color(base_color, 0.8)
-        with me.box(
-            style=me.Style(
-                background=you_want_it_darker,
-                padding=me.Padding.all(16),
-                border_radius=16,
-                margin=me.Margin.symmetric(vertical=16),
-            )
-        ):
+        with me.box(style=box_style or self._styles.message.default.header_box):
             h = title if title else message.type
             if message.sender and message.recipient:
                 h += f": {message.sender} -> {message.recipient}"
@@ -354,4 +391,6 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 h += f": from {message.recipient}"
             if message.auto_reply:
                 h += " (auto-reply)"
-            me.markdown(h)
+            h = f"**{h}**"
+            # style=me.Style(padding=me.Padding(top=8, right=16, left=16, bottom=8))
+            me.markdown(h, style=md_style or self._styles.message.default.header_md)
