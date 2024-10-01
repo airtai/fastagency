@@ -407,7 +407,7 @@ class NatsWorkflows(Workflows):
             logger.info("Initiate chat message sent")
 
         @asynccontextmanager
-        async def start_broker() -> AsyncIterator[None]:
+        async def lifespan() -> AsyncIterator[None]:
             async with self.broker:
                 await self.broker.start()
                 logger.debug("Broker started")
@@ -416,29 +416,25 @@ class NatsWorkflows(Workflows):
                 finally:
                     await self.broker.close()
 
+        async def _setup_and_run() -> None:
+            await send_initiate_chat_msg()
+            await self.setup_subscriber(ui, _from_server_subject, _to_server_subject)
+            while True:  # noqa: ASYNC110
+                await asyncio.sleep(0.1)
+
         async def run_lifespan() -> None:
             if not self.is_broker_running:
                 self.is_broker_running = True
-                async with start_broker():
-                    await self.setup_subscriber(
-                        ui, _from_server_subject, _to_server_subject
-                    )
-                    await send_initiate_chat_msg()
-                    while True:  # noqa: ASYNC110
-                        await asyncio.sleep(0.1)
+                async with lifespan():
+                    await _setup_and_run()
             else:
-                await send_initiate_chat_msg()
-                await self.setup_subscriber(
-                    ui, _from_server_subject, _to_server_subject
-                )
-                while True:  # noqa: ASYNC110
-                    await asyncio.sleep(0.1)
+                await _setup_and_run()
 
         try:
             loop = asyncio.get_event_loop()
         except RuntimeError:
             loop = asyncio.new_event_loop()
-            # asyncio.set_event_loop(loop)
+            asyncio.set_event_loop(loop)
 
         loop.run_until_complete(run_lifespan())
 
