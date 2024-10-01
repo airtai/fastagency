@@ -9,7 +9,9 @@ nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
 user: str = "faststream"
 password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 
-wf = NatsProvider.Workflows(nats_url=environ.get("NATS_URL", None), user="faststream")
+wf = NatsProvider.Workflows(
+    nats_url=environ.get("NATS_URL", None), user="faststream", password=password
+)
 
 ui = MesopUI()
 

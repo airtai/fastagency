@@ -346,6 +346,7 @@ class NatsWorkflows(Workflows):
             deliver_policy=api.DeliverPolicy("all"),
         )
         async def consume_msg_from_nats(msg: dict[str, Any], logger: Logger) -> None:
+            logger.debug(f"Received message from topic {from_server_subject}: {msg}")
             iomessage = IOMessage.create(**msg)
             if isinstance(iomessage, AskingMessage):
                 processed_message = ui.process_message(iomessage)
@@ -368,20 +369,29 @@ class NatsWorkflows(Workflows):
 
         self.setup_subscriber(ui, _from_server_subject, _to_server_subject)
 
+        @asynccontextmanager
         async def start_broker() -> AsyncIterator[None]:
             async with self.broker:
                 await self.broker.start()
-                logger.info("Broker started")
+                logger.debug("Broker started")
                 await self.broker.publish(init_message, self._initiate_chat_subject)
-                logger.info("Initiate chat message sent")
+                logger.debug("Initiate chat message sent")
                 try:
                     yield
                 finally:
                     await self.broker.close()
 
+        async def run_lifespan() -> None:
+            async with start_broker():
+                while True:  # noqa: ASYNC110
+                    await asyncio.sleep(0.1)
+
         if not self.is_broker_running:
             self.is_broker_running = True
-            asyncio.run(start_broker())
+            loop = asyncio.new_event_loop()
+            loop.run_until_complete(run_lifespan())
+
+        return "NatsWorkflows.run() completed"
 
     @property
     def names(self) -> list[str]:
