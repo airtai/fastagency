@@ -144,10 +144,10 @@ MSG_TEXT_INPUT_MD_STYLE = me.Style(
 
 @dataclass
 class MesopMessageStyles:
-    box: me.Style = MSG_DEFAULT_BOX_STYLE
-    md: me.Style = MSG_DEFAULT_MD_STYLE
-    header_box: me.Style = MSG_DEFAULT_HEADER_BOX_STYLE
-    header_md: me.Style = MSG_DEFAULT_HEADER_MD_STYLE
+    box: me.Style = field(default_factory=lambda: MSG_DEFAULT_BOX_STYLE)
+    md: me.Style = field(default_factory=lambda: MSG_DEFAULT_MD_STYLE)
+    header_box: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_BOX_STYLE)
+    header_md: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_MD_STYLE)
 
 
 TEXT_INPUT_INNER_BOX_STYLE = me.Style(
