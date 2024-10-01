@@ -75,6 +75,10 @@ _patterns = {
     "auto_reply_input": (
         "^Replying as ([a-zA-Z0-9_]+). Provide feedback to ([a-zA-Z0-9_]+). Press enter to skip and use auto-reply, or type 'exit' to end the conversation: $",
     ),
+    "next_speaker": (
+        "^Next speaker: [a-zA-Z0-9_]+$",
+        "^\\u001b\\[32m\nNext speaker: [a-zA-Z0-9_]+\n\\u001b\\[0m$",
+    ),
 }
 
 
@@ -135,6 +139,9 @@ class CurrentMessage:
         elif _match("user_interrupted", chunk):
             # logger.info("CurrentMessage.process_chunk(): user_interrupted detected")
             pass
+        elif _match("next_speaker", chunk):
+            # logger.info("CurrentMessage.process_chunk(): next_speaker detected")
+            pass
         else:
             if self.type == "suggested_function_call":
                 if _match("arguments", chunk):
@@ -182,10 +189,25 @@ class CurrentMessage:
 
         return message
 
-    def create_message(self) -> IOMessage:
+    def create_message(self) -> list[IOMessage]:
+        retval: list[IOMessage] = []
         kwargs = {k: v for k, v in asdict(self).items() if v is not None}
+        if (
+            kwargs.get("type") in ["suggested_function_call", "function_call_execution"]
+            and "body" in kwargs
+        ):
+            body = kwargs.pop("body")
+            sender = kwargs.get("sender")
+            recipient = kwargs.get("recipient")
+            retval = [
+                IOMessage.create(
+                    body=body, sender=sender, recipient=recipient, type="text_message"
+                )
+            ]
+
+        retval.append(IOMessage.create(**kwargs))
         # logger.info(f"CurrentMessage.create_message(): {kwargs=}")
-        return IOMessage.create(**kwargs)
+        return retval
 
 
 class IOStreamAdapter:  # IOStream
@@ -203,24 +225,25 @@ class IOStreamAdapter:  # IOStream
         if not isinstance(self.ui, UI):
             raise ValueError("The ui object must be an instance of UI.")
 
-    def _process_message_chunk(self, chunk: str) -> bool:
+    def _process_message_chunk(self, chunk: str) -> int:
         if self.current_message.process_chunk(chunk):
-            msg = self.current_message.create_message()
-            self.messages.append(msg)
+            msgs = self.current_message.create_message()
+            for msg in msgs:
+                self.messages.append(msg)
             self.current_message = CurrentMessage()
 
-            return True
+            return len(msgs)
         else:
-            return False
+            return 0
 
     def print(
         self, *objects: Any, sep: str = " ", end: str = "\n", flush: bool = False
     ) -> None:
         # logger.info(f"print(): {objects=}, {sep=}, {end=}, {flush=}")
         body = sep.join(map(str, objects)) + end
-        ready_to_send = self._process_message_chunk(body)
-        if ready_to_send:
-            message = self.messages[-1]
+        num_to_send = self._process_message_chunk(body)
+        for i in range(-num_to_send, 0, 1):
+            message = self.messages[i]
             self.ui.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
