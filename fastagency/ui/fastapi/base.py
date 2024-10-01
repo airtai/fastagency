@@ -375,7 +375,11 @@ class NatsWorkflows(Workflows):
             iomessage = IOMessage.create(**msg)
             if isinstance(iomessage, AskingMessage):
                 processed_message = ui.process_message(iomessage)
-                await self.broker.publish(processed_message, to_server_subject)
+                response = InputResponseModel(
+                    msg=processed_message, question_id=iomessage.uuid
+                )
+                logger.debug(f"Processed response: {response}")
+                await self.broker.publish(response, to_server_subject)
             else:
                 ui.process_message(iomessage)
 
