@@ -17,8 +17,6 @@ from typing import (
     runtime_checkable,
 )
 
-from .logging import get_logger
-
 if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
 
@@ -48,8 +46,6 @@ MessageType = Literal[
     "system_message",
     "workflow_completed",
 ]
-
-logger = get_logger(__name__)
 
 
 def _camel_to_snake(name: str) -> str:
@@ -88,7 +84,6 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
         cls = IOMessage._get_message_class(type)
 
         content = kwargs.pop("content", {})
-
         kwargs.update(content)
 
         return cls(**kwargs)
