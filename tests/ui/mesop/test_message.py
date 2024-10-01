@@ -13,14 +13,15 @@ from fastagency.base import (
     TextMessage,
     WorkflowCompleted,
 )
-from fastagency.ui.mesop.styles import MesopHomePageStyles
 
 if sys.version_info >= (3, 10):
     from fastagency.ui.mesop.data_model import ConversationMessage
     from fastagency.ui.mesop.message import message_box
+    from fastagency.ui.mesop.styles import MesopHomePageStyles
 else:
     ConversationMessage = MagicMock()
     message_box = MagicMock()
+    MesopHomePageStyles = MagicMock()
 
 
 def assert_called_with_one_of(mock: MagicMock, *args: str) -> None:
