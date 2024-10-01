@@ -3,7 +3,7 @@ import os
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency, Workflows
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtime.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
