@@ -133,30 +133,34 @@ search:
                         - [MesopUI](api/fastagency/ui/mesop/base/MesopUI.md)
                         - [run_workflow](api/fastagency/ui/mesop/base/run_workflow.md)
                     - components
+                        - helpers
+                            - [darken_hex_color](api/fastagency/ui/mesop/components/helpers/darken_hex_color.md)
                         - inputs
                             - [input_text](api/fastagency/ui/mesop/components/inputs/input_text.md)
-                        - ui_common
-                            - [darken_hex_color](api/fastagency/ui/mesop/components/ui_common/darken_hex_color.md)
-                            - [header](api/fastagency/ui/mesop/components/ui_common/header.md)
                     - data_model
                         - [Conversation](api/fastagency/ui/mesop/data_model/Conversation.md)
                         - [ConversationMessage](api/fastagency/ui/mesop/data_model/ConversationMessage.md)
                         - [State](api/fastagency/ui/mesop/data_model/State.md)
                     - main
-                        - [conversation_box](api/fastagency/ui/mesop/main/conversation_box.md)
-                        - [conversation_starter_box](api/fastagency/ui/mesop/main/conversation_starter_box.md)
-                        - [get_ui](api/fastagency/ui/mesop/main/get_ui.md)
-                        - [home_page](api/fastagency/ui/mesop/main/home_page.md)
-                        - [past_conversations_box](api/fastagency/ui/mesop/main/past_conversations_box.md)
-                        - [send_prompt](api/fastagency/ui/mesop/main/send_prompt.md)
+                        - [MesopHomePage](api/fastagency/ui/mesop/main/MesopHomePage.md)
+                        - [MesopHomePageParams](api/fastagency/ui/mesop/main/MesopHomePageParams.md)
+                        - [create_home_page](api/fastagency/ui/mesop/main/create_home_page.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
+                        - [dict_to_markdown](api/fastagency/ui/mesop/message/dict_to_markdown.md)
                         - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
                         - [message_box](api/fastagency/ui/mesop/message/message_box.md)
                     - send_prompt
                         - [send_prompt_to_autogen](api/fastagency/ui/mesop/send_prompt/send_prompt_to_autogen.md)
                         - [send_user_feedback_to_autogen](api/fastagency/ui/mesop/send_prompt/send_user_feedback_to_autogen.md)
+                    - styles
+                        - [MesopHomePageStyles](api/fastagency/ui/mesop/styles/MesopHomePageStyles.md)
+                        - [MesopMessageStyles](api/fastagency/ui/mesop/styles/MesopMessageStyles.md)
+                        - [MesopMessagesStyles](api/fastagency/ui/mesop/styles/MesopMessagesStyles.md)
+                        - [MesopMultipleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopMultipleChoiceInnerStyles.md)
+                        - [MesopSingleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopSingleChoiceInnerStyles.md)
+                        - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)

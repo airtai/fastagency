@@ -9,18 +9,58 @@ from .exceptions import (
     FastAgencyASGINotImplementedError,
     FastAgencyWSGINotImplementedError,
 )
+from .logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class FastAgency:  # Runnable
-    def __init__(self, wf: Workflows, ui: UI) -> None:
+    def __init__(
+        self,
+        wf: Workflows,
+        ui: UI,
+        *,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+    ) -> None:
         """Initialize the FastAgency object.
 
         Args:
             wf (Workflows): The workflows object to use
             ui (UI): The UI object to use
+            title (Optional[str], optional): The title of the FastAgency. If None, the default string will be used. Defaults to None.
+            description (Optional[str], optional): The description of the FastAgency. If None, the default string will be used. Defaults to None.
         """
+        self._title = title or "FastAgency application"
+        default_description = "FastAgency application"
+
+        if len(wf.names) == 0:
+            logger.warning(f"No workflows found in {wf}")
+            default_description += " - No workflows found"
+        else:
+            default_description += " - Workflows:"
+            for name in wf.names:
+                default_description += f" - {name}: {wf.get_description(name)}"
+        self._description = description or default_description
+
+        logger.info(f"Initializing FastAgency {self} with workflows: {wf} and UI: {ui}")
         self._wf = wf
         self._ui = ui
+        logger.info(f"Initialized FastAgency: {self}")
+
+    @property
+    def title(self) -> str:
+        """Return the title of the FastAgency."""
+        return self._title
+
+    @property
+    def description(self) -> str:
+        """Return the description of the FastAgency."""
+        return self._description
+
+    def __str__(self) -> str:
+        """Return the string representation of the FastAgency."""
+        return f"<FastAgency title={self._title}>"
 
     @property
     def wf(self) -> Workflows:

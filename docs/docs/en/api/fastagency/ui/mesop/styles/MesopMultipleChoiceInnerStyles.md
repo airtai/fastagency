@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.main.conversation_starter_box
+::: fastagency.ui.mesop.styles.MesopMultipleChoiceInnerStyles

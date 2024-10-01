@@ -40,6 +40,7 @@ class MesopUI(IOMessageVisitor):  # UI
     _main_path: Optional[str] = None
     _created_instance: Optional["MesopUI"] = None
     _app: Optional[Runnable] = None
+    _me: Optional[Callable[..., Any]] = None
 
     def __init__(self, super_conversation: "Optional[MesopUI]" = None) -> None:
         """Initialize the console UI object.
@@ -47,22 +48,34 @@ class MesopUI(IOMessageVisitor):  # UI
         Args:
             super_conversation (Optional[MesopUI], optional): The super conversation. Defaults to None.
         """
-        self.id: str = uuid4().hex
-        self.super_conversation: Optional[MesopUI] = super_conversation
-        self.sub_conversations: list[MesopUI] = []
-        self._in_queue: Optional[Queue[str]] = None
-        self._out_queue: Optional[Queue[MesopMessage]] = None
+        logger.info(f"Initializing MesopUI: {self}")
+        try:
+            self.id: str = uuid4().hex
+            self.super_conversation: Optional[MesopUI] = super_conversation
+            self.sub_conversations: list[MesopUI] = []
+            self._in_queue: Optional[Queue[str]] = None
+            self._out_queue: Optional[Queue[MesopMessage]] = None
 
-        if super_conversation is None:
-            self._in_queue = Queue()
-            self._out_queue = Queue()
-        MesopUI.register(self)
+            if super_conversation is None:
+                self._in_queue = Queue()
+                self._out_queue = Queue()
+            MesopUI.register(self)
+
+            if MesopUI._me is None:
+                from .main import create_home_page, me
+
+                create_home_page(self)
+                MesopUI._me = me
+
+        except Exception as e:
+            logger.error(e, exc_info=True)
+            raise
+        logger.info(f"Initialized MesopUI: {self}")
 
     _registry: ClassVar[dict[str, "MesopUI"]] = {}
 
     @classmethod
     def get_created_instance(cls) -> "MesopUI":
-        logger.info(f"Getting MesopUI created instance: {cls._created_instance}")
         created_instance = cls._created_instance
         if created_instance is None:
             raise RuntimeError("MesopUI has not been created yet.")
@@ -71,9 +84,9 @@ class MesopUI(IOMessageVisitor):  # UI
 
     @property
     def app(self) -> Runnable:
-        logger.info(f"Getting app: {MesopUI._app}")
         app = MesopUI._app
         if app is None:
+            logger.error("MesopUI has not been created yet.")
             raise RuntimeError("MesopUI has not been created yet.")
 
         return app
@@ -219,13 +232,15 @@ class MesopUI(IOMessageVisitor):  # UI
         environ: dict[str, Any],
         start_response: Callable[..., Any],
     ) -> list[bytes]:
-        logger.info(f"Starting MesonUI using WSGI interface with app: {app}")
+        logger.info(f"Starting MesopUI using WSGI interface with app: {app}")
         MesopUI._created_instance = self
         MesopUI._app = app
 
-        from .main import me
+        if MesopUI._me is None:
+            logger.error("MesopUI._me is None")
+            raise RuntimeError("MesopUI._me is None")
 
-        return me(environ, start_response)  # type: ignore[no-any-return]
+        return MesopUI._me(environ, start_response)  # type: ignore[no-any-return]
 
 
 def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:

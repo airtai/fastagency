@@ -298,6 +298,12 @@ class Runnable(Protocol):
     @property
     def ui(self) -> UI: ...
 
+    @property
+    def title(self) -> str: ...
+
+    @property
+    def description(self) -> str: ...
+
 
 def run_workflow(
     *,

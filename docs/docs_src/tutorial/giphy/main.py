@@ -119,4 +119,4 @@ If you are presenting a completed task, last message should be a question: 'Do y
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=MesopUI())
+app = FastAgency(wf=wf, ui=MesopUI(), title="Giphy and Websurfer chat")
