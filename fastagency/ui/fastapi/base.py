@@ -181,13 +181,12 @@ class NatsProvider(IOMessageVisitor):
 
                 async def start_chat() -> None:  # type: ignore [return]
                     try:
-                        logger.info("Above self.wf.run")
                         await asyncify(run_workflow)(
                             wf=self.wf,
                             ui=self,  # type: ignore[arg-type]
                             name=self.wf.names[0],
                             initial_message=body.msg,
-                            single_run=False,
+                            single_run=True,
                         )
 
                     except Exception as e:
@@ -230,8 +229,32 @@ class NatsProvider(IOMessageVisitor):
         logger.debug(f"visit_text_message(): {content=}")
         syncify(self.broker.publish)(content, self._input_request_subject)
 
+    async def wait_for_question_response(
+        self, question_id: str, *, timeout: int = 60
+    ) -> InputResponseModel:
+        """Wait for the question response.
+
+        Args:
+            question_id (str): The question ID.
+            timeout (int, optional): The timeout in seconds. Defaults to 60.
+        """
+        try:
+            # Set a timeout of 60 seconds
+            return await asyncio.wait_for(
+                self._wait_for_question_response(question_id), timeout=timeout
+            )
+        except asyncio.TimeoutError:
+            logger.debug(
+                f"Timeout: User did not send a reply within {timeout} seconds."
+            )
+            return InputResponseModel(
+                msg="User didn't send a reply. Exit the workflow execution.",
+                question_id=question_id,
+                error=True,
+            )
+
     # todo: we need to add timeout and handle it somehow
-    async def wait_for_question_response(self, question_id: str) -> InputResponseModel:
+    async def _wait_for_question_response(self, question_id: str) -> InputResponseModel:
         while True:
             while self.queue.empty():  # noqa: ASYNC110
                 await asyncio.sleep(0.1)
@@ -288,7 +311,6 @@ class NatsProvider(IOMessageVisitor):
         return method(message)
 
     def process_message(self, message: IOMessage) -> Optional[str]:
-        # logger.info(f"process_message(): {message=}")
         try:
             return self.visit(message)
         except Exception as e:
@@ -326,7 +348,6 @@ class NatsWorkflows(Workflows):
 
         self.broker = NatsBroker(self.nats_url, user=self.user, password=self.password)
         self.app = FastStream(self.broker)
-        self.subscriber: "AsyncAPISubscriber"
 
         self._initiate_chat_subject: str = "chat.server.initiate_chat"
 
@@ -337,14 +358,18 @@ class NatsWorkflows(Workflows):
     ) -> Callable[[Workflow], Workflow]:
         raise NotImplementedError("Just ignore this for now; @register")
 
-    def setup_subscriber(
+    async def setup_subscriber(
         self, ui: UI, from_server_subject: str, to_server_subject: str
     ) -> None:
-        @self.broker.subscriber(
-            from_server_subject,
-            stream=JETSTREAM,
-            deliver_policy=api.DeliverPolicy("all"),
+        logger.info(
+            f"Setting up subscriber for {from_server_subject=}, {to_server_subject=}"
         )
+
+        # @self.broker.subscriber(
+        #     from_server_subject,
+        #     stream=JETSTREAM,
+        #     deliver_policy=api.DeliverPolicy("all"),
+        # )
         async def consume_msg_from_nats(msg: dict[str, Any], logger: Logger) -> None:
             logger.debug(f"Received message from topic {from_server_subject}: {msg}")
             iomessage = IOMessage.create(**msg)
@@ -353,6 +378,16 @@ class NatsWorkflows(Workflows):
                 await self.broker.publish(processed_message, to_server_subject)
             else:
                 ui.process_message(iomessage)
+
+        subscriber = self.broker.subscriber(
+            from_server_subject,
+            stream=JETSTREAM,
+            deliver_policy=api.DeliverPolicy("all"),
+        )
+        subscriber(consume_msg_from_nats)
+        self.broker.setup_subscriber(subscriber)
+        await subscriber.start()
+        logger.info(f"Subscriber for {from_server_subject} started")
 
     def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
         # subscribe to whatever topic you need
@@ -367,29 +402,45 @@ class NatsWorkflows(Workflows):
         _from_server_subject = f"chat.client.messages.{user_id}.{conversation_id}"
         _to_server_subject = f"chat.server.messages.{user_id}.{conversation_id}"
 
-        self.setup_subscriber(ui, _from_server_subject, _to_server_subject)
+        async def send_initiate_chat_msg() -> None:
+            await self.broker.publish(init_message, self._initiate_chat_subject)
+            logger.info("Initiate chat message sent")
 
         @asynccontextmanager
         async def start_broker() -> AsyncIterator[None]:
             async with self.broker:
                 await self.broker.start()
                 logger.debug("Broker started")
-                await self.broker.publish(init_message, self._initiate_chat_subject)
-                logger.debug("Initiate chat message sent")
                 try:
                     yield
                 finally:
                     await self.broker.close()
 
         async def run_lifespan() -> None:
-            async with start_broker():
+            if not self.is_broker_running:
+                self.is_broker_running = True
+                async with start_broker():
+                    await self.setup_subscriber(
+                        ui, _from_server_subject, _to_server_subject
+                    )
+                    await send_initiate_chat_msg()
+                    while True:  # noqa: ASYNC110
+                        await asyncio.sleep(0.1)
+            else:
+                await send_initiate_chat_msg()
+                await self.setup_subscriber(
+                    ui, _from_server_subject, _to_server_subject
+                )
                 while True:  # noqa: ASYNC110
                     await asyncio.sleep(0.1)
 
-        if not self.is_broker_running:
-            self.is_broker_running = True
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
             loop = asyncio.new_event_loop()
-            loop.run_until_complete(run_lifespan())
+            # asyncio.set_event_loop(loop)
+
+        loop.run_until_complete(run_lifespan())
 
         return "NatsWorkflows.run() completed"
 
