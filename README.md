@@ -182,6 +182,12 @@ We are actively working on expanding FastAgency’s capabilities. In addition to
 
 ---
 
+## Documentation
+
+You can find detailed documentation on the following link: [fastagency.ai/latest](fastagency.ai/latest).
+
+---
+
 ## Stay in touch
 
 Please show your support and stay in touch by:
