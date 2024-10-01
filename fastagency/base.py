@@ -89,13 +89,6 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
 
         content = kwargs.pop("content", {})
 
-        if cls is not TextMessage:
-            body = kwargs.pop("body", None)
-            if body:
-                logger.warning(
-                    f"Message body '{body}' is ignored for message type '{type}'"
-                )
-
         kwargs.update(content)
 
         return cls(**kwargs)

@@ -122,6 +122,16 @@ class TestPatternMatching:
         assert sender == "User_Proxy"
         assert recipient == "Weatherman"
 
+    @pytest.mark.parametrize(
+        "chunk",
+        [
+            "\u001b[32m\nNext speaker: Claude\n\u001b[0m",
+            "Next speaker: Claude",
+        ],
+    )
+    def test_next_speaker(self, chunk: str) -> None:
+        assert _match("next_speaker", chunk), _match("next_speaker", chunk)
+
 
 @pytest.mark.openai
 @pytest.mark.xfail(strict=False, raises=InternalServerError)
