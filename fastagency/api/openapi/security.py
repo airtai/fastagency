@@ -1,5 +1,5 @@
 import logging
-from typing import Any, ClassVar, Literal, Optional, Protocol
+from typing import Any, ClassVar, Literal, Optional, Protocol, Union
 
 from pydantic import BaseModel, model_validator
 
@@ -12,7 +12,9 @@ class BaseSecurity(BaseModel):
     """Base class for security classes."""
 
     type: ClassVar[Literal["apiKey", "http", "mutualTLS", "oauth2", "openIdConnect"]]
-    in_value: ClassVar[Literal["header", "query", "cookie", "bearer", "basic", "tls"]]
+    in_value: ClassVar[
+        Literal["header", "query", "cookie", "bearer", "basic", "tls", "flow"]
+    ]
     name: str
 
     @model_validator(mode="after")  # type: ignore[misc]
@@ -23,7 +25,7 @@ class BaseSecurity(BaseModel):
         valid_in_values = {
             "apiKey": ["header", "query", "cookie"],
             "http": ["bearer", "basic"],
-            "oauth2": ["bearer"],
+            "oauth2": ["bearer", "flow"],
             "openIdConnect": ["bearer"],
             "mutualTLS": ["tls"],
         }
@@ -36,7 +38,7 @@ class BaseSecurity(BaseModel):
         return isinstance(self, security_params.get_security_class())
 
     @classmethod
-    def is_supported(cls, type: str, in_value: str) -> bool:
+    def is_supported(cls, type: str, in_value: Union[str, dict[str, Any]]) -> bool:
         return type == cls.type and in_value == cls.in_value
 
     @classmethod
@@ -155,6 +157,36 @@ class HTTPBearer(BaseSecurity):
 
     class Parameters(BaseModel):  # BaseSecurityParameters
         """HTTP Bearer security parameters class."""
+
+        value: str
+
+        def apply(
+            self,
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
+            security: BaseSecurity,
+        ) -> None:
+            if "headers" not in body_dict:
+                body_dict["headers"] = {}
+
+            body_dict["headers"]["Authorization"] = f"Bearer {self.value}"
+
+        def get_security_class(self) -> type[BaseSecurity]:
+            return HTTPBearer
+
+
+class OAuth2PasswordBearer(BaseSecurity):
+    """OAuth2 Password Bearer security class."""
+
+    type: ClassVar[Literal["oauth2"]] = "oauth2"
+    in_value: ClassVar[Literal["flow"]] = "flow"
+
+    @classmethod
+    def is_supported(cls, type: str, in_value: Union[str, dict[str, Any]]) -> bool:
+        return type == cls.type and isinstance(in_value, dict)
+
+    class Parameters(BaseModel):  # BaseSecurityParameters
+        """OAuth2 Password Bearer security class."""
 
         value: str
 

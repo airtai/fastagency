@@ -280,7 +280,10 @@ class OpenAPI:
 
     @classmethod
     def create(
-        cls, openapi_json: Optional[str] = None, openapi_url: Optional[str] = None
+        cls,
+        openapi_json: Optional[str] = None,
+        openapi_url: Optional[str] = None,
+        client_source_path: Optional[str] = None,
     ) -> "OpenAPI":
         if openapi_json is None and openapi_url is None:
             raise ValueError("Either openapi_json or openapi_url should be provided")
@@ -290,8 +293,16 @@ class OpenAPI:
                 response.raise_for_status()
                 openapi_json = response.text
 
-        with tempfile.TemporaryDirectory() as temp_dir:
-            td = Path(temp_dir)
+        @contextmanager
+        def optional_temp_path(path: Optional[str]) -> Iterator[Path]:
+            if path is None:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    yield Path(temp_dir)
+            else:
+                yield Path(path)
+
+        with optional_temp_path(client_source_path) as source_dir:
+            td = source_dir
             suffix = td.name
 
             main_name = cls.generate_code(
