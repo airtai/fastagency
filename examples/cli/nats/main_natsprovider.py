@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastagency import UI
 from fastagency.logging import get_logger
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-from fastagency.ui.fastapi.base import NatsProvider
+from fastagency.ui.nats import NatsProvider
 
 llm_config = {
     "config_list": [

@@ -1,8 +1,8 @@
 from os import environ
 
 from fastagency.app import FastAgency
-from fastagency.ui.fastapi.base import NatsProvider
-from fastagency.ui.mesop.base import MesopUI
+from fastagency.ui.mesop import MesopUI
+from fastagency.ui.nats import NatsProvider
 
 nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
 

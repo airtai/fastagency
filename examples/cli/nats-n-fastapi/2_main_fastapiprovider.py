@@ -13,9 +13,16 @@ fastapi_password: str = environ.get("FASTAPI_PASSWORD")  # type: ignore[assignme
 nats_user: str = "faststream"
 nats_password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 
-wf = NatsProvider.Workflows(nats_url=environ.get("NATS_URL", None), user=nats_user, password=nats_password)
+wf = NatsProvider.Workflows(
+    nats_url=environ.get("NATS_URL", None), user=nats_user, password=nats_password
+)
 
-provider = FastAPIProvider(wf=wf, fastapi_url=environ.get("FASTAPI_URL", None), user=fastapi_user, password=fastapi_password)
+provider = FastAPIProvider(
+    wf=wf,
+    fastapi_url=environ.get("FASTAPI_URL", None),
+    user=fastapi_user,
+    password=fastapi_password,
+)
 
 app = FastAPI(lifespans=provider.lifespan)
 

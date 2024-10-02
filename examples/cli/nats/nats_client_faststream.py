@@ -3,12 +3,12 @@ import uuid
 from os import environ
 
 from faststream import FastStream, Logger
-from faststream.nats import JStream, NatsBroker
+from faststream.nats import NatsBroker
 from nats.js import api
 
 from fastagency.base import AskingMessage, IOMessage
 from fastagency.logging import get_logger
-from fastagency.ui.fastapi.base import InitiateModel, InputResponseModel
+from fastagency.ui.nats import JETSTREAM, InitiateModel, InputResponseModel
 
 logger = get_logger(__name__)
 
@@ -18,21 +18,6 @@ nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
 user: str = "faststream"
 password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 broker = NatsBroker(nats_url, user=user, password=password)
-stream = JStream(
-    name="FastAgency",
-    subjects=[
-        # starts new conversation
-        "chat.server.initiate_chat",
-        # server requests input from client; chat.client.messages.<user_uuid>.<chat_uuid>
-        "chat.client.messages.*.*",
-        # server prints message to client; chat.server.messages.<user_uuid>.<chat_uuid>
-        "chat.server.messages.*.*",
-        # "function.server.call",
-        # "function.client.call.*",
-        # "code.server.execute",
-        # "code.client.execute.*",
-    ],
-)
 
 app = FastStream(broker=broker, title=title)
 
@@ -44,7 +29,7 @@ i = 0
 
 @broker.subscriber(
     f"chat.client.messages.{user_id}.{thread_id}",
-    stream=stream,
+    stream=JETSTREAM,
     deliver_policy=api.DeliverPolicy("all"),
 )
 async def consume_msg_from_autogen(msg: dict, logger: Logger) -> None:
