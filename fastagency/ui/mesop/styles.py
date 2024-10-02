@@ -170,6 +170,35 @@ SINGLE_CHOICE_RADIO_STYLE = me.Style(
     display="flex", flex_direction="column", padding=me.Padding.all(16)
 )
 
+SINGLE_CHOICE_BOX_STYLE = me.Style(
+    display="flex",
+    flex_direction="row",
+    padding=me.Padding(left=8, right=8, top=0, bottom=16),
+)
+
+SINGLE_CHOICE_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+)
+
+SINGLE_CHOICE_SELECTED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+    color="#fff",
+)
+
+SINGLE_CHOICE_DISABLED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#64b5f6",
+    color="#fff",
+)
+
 MULTIPLE_CHOICE_RADIO_STYLE = me.Style(
     display="flex",
     flex_direction="column",
@@ -193,7 +222,15 @@ class MesopTextInputInnerStyles:
 
 @dataclass
 class MesopSingleChoiceInnerStyles:
-    radio: me.Style = field(default_factory=lambda: SINGLE_CHOICE_RADIO_STYLE)
+    # radio: me.Style = field(default_factory=lambda: SINGLE_CHOICE_RADIO_STYLE)
+    box: me.Style = field(default_factory=lambda: SINGLE_CHOICE_BOX_STYLE)
+    button: me.Style = field(default_factory=lambda: SINGLE_CHOICE_BUTTON_STYLE)
+    disabled_button: me.Style = field(
+        default_factory=lambda: SINGLE_CHOICE_DISABLED_BUTTON_STYLE
+    )
+    selected_button: me.Style = field(
+        default_factory=lambda: SINGLE_CHOICE_SELECTED_BUTTON_STYLE
+    )
 
 
 @dataclass
