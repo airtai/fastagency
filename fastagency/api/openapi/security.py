@@ -49,10 +49,9 @@ class BaseSecurity(BaseModel):
             if sub_class.is_supported(type, in_value):
                 return sub_class.__name__
         else:
-            logger.error(
+            raise ValueError(
                 f"Unsupported type '{type}' and in_value '{in_value}' combination"
             )
-            return None
 
 
 class BaseSecurityParameters(Protocol):
