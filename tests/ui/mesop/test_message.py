@@ -1,5 +1,6 @@
 import json
 import sys
+from typing import Union
 from unittest.mock import MagicMock
 
 import pytest
@@ -24,12 +25,15 @@ else:
     MesopHomePageStyles = MagicMock()
 
 
-def assert_called_with_one_of(mock: MagicMock, *args: str) -> None:
+def assert_called_with_one_of(
+    mock: MagicMock, *args: str, key: Union[int, str] = 0
+) -> None:
     assert mock.call_count == len(
         args
     ), f"Expected {len(args)} calls, got {mock.call_count}"
     for call in mock.call_args_list:
-        assert call[0][0] in args, f"Parameter '{call[0][0]}' not in {args}"
+        i = 0 if isinstance(key, int) else 1
+        assert call[i][key] in args, f"Parameter '{call[i][key]}' not in {args}"
 
 
 @pytest.mark.skipif(
@@ -205,7 +209,12 @@ class TestMessageBox:
             "**Multiple choice: sender -> recipient**",
             "Who is the president of the United States?",
         )
-        me.radio.assert_called_once()
+        assert_called_with_one_of(
+            me.button,
+            "Donald Trump",
+            "Joe Biden",
+            key="label",
+        )
 
     def test_multiple_choice_multiple(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)

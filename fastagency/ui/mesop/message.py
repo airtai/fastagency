@@ -137,7 +137,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
         return "\n".join([f"**{k}**: {v} <br>" for k, v in d["content"].items()])
 
-    def render_content(self, content: str, style) -> None:
+    def render_content(self, content: str, style: me.Style) -> None:
         me.markdown(content, style=style)
 
     def visit_default(
