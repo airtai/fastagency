@@ -1,10 +1,11 @@
 ## IONats part
 
-from collections.abc import Iterable, Mapping
+from collections.abc import AsyncIterator, Iterable, Mapping
+from contextlib import asynccontextmanager
 from typing import Any, Callable, Optional, Union
 
-from faststream import FastStream
-from faststream.nats import NatsBroker
+import uvicorn
+from fastapi import FastAPI
 
 from fastagency.logging import get_logger
 
@@ -25,7 +26,8 @@ class FastAPIProvider(IOMessageVisitor):
         self,
         wf: Workflows,
         *,
-        fastapi_url: Optional[str] = None,
+        host: str = "localhost",
+        port: int = 8000,
         user: Optional[str] = None,
         password: Optional[str] = None,
         super_conversation: Optional["FastAPIProvider"] = None,
@@ -34,15 +36,20 @@ class FastAPIProvider(IOMessageVisitor):
 
         Args:
             wf (Workflows): The workflow object.
-            fastapi_url (Optional[str], optional): The fastapi url. Defaults to None.
+            host (str, optional): The host. Defaults to "localhost".
+            port (int, optional): The port. Defaults to 8000.
             user (Optional[str], optional): The user. Defaults to None.
             password (Optional[str], optional): The password. Defaults to None.
             super_conversation (Optional["FastAPIProvider"], optional): The super conversation. Defaults to None.
         """
         self.wf = wf
 
+        self.host = host
+        self.port = port
         self.user = user
         self.password = password
+
+        self.app = FastAPI()
 
     def visit(self, message: IOMessage) -> Optional[str]:
         method_name = f"visit_{message.type}"
@@ -56,23 +63,38 @@ class FastAPIProvider(IOMessageVisitor):
             logger.error(f"Error in process_message: {e}", stack_info=True)
             raise
 
+    @asynccontextmanager
+    async def lifespan(self, app: Any) -> AsyncIterator[None]:
+        config = uvicorn.Config(
+            self.app, host=self.host, port=self.port, log_level="info"
+        )
+        server = uvicorn.Server(config)
+
+        await server.startup()
+        try:
+            yield
+        finally:
+            await server.shutdown()
+
     def create_subconversation(self) -> "FastAPIProvider":
         return self
 
     @classmethod
     def Workflows(  # noqa: N802
         cls,
-        nats_url: Optional[str] = None,
+        host: str = "localhost",
+        port: int = 8000,
         user: Optional[str] = None,
         password: Optional[str] = None,
     ) -> Workflows:
-        return FastAPIWorkflows(nats_url=nats_url, user=user, password=password)
+        return FastAPIWorkflows(host=host, port=port, user=user, password=password)
 
 
 class FastAPIWorkflows(Workflows):
     def __init__(
         self,
-        nats_url: Optional[str] = None,
+        host: str = "localhost",
+        port: int = 8000,
         user: Optional[str] = None,
         password: Optional[str] = None,
     ) -> None:
@@ -81,14 +103,8 @@ class FastAPIWorkflows(Workflows):
             str, tuple[Callable[[Workflows, UI, str, str], str], str]
         ] = {}
 
-        self.nats_url = nats_url or "nats://localhost:4222"
         self.user = user
         self.password = password
-
-        self.broker = NatsBroker(self.nats_url, user=self.user, password=self.password)
-        self.app = FastStream(self.broker)
-
-        self._initiate_chat_subject: str = "chat.server.initiate_chat"
 
         self.is_broker_running: bool = False
 
@@ -98,7 +114,7 @@ class FastAPIWorkflows(Workflows):
         raise NotImplementedError("Just ignore this for now; @register")
 
     def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
-        raise NotImplementedError("Just ignore this for now; @run")
+        raise NotImplementedError("Need to implement this; @run")
 
     @property
     def names(self) -> list[str]:
