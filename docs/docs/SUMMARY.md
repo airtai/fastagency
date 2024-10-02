@@ -57,6 +57,7 @@ search:
             - base
                 - [ASGI](api/fastagency/base/ASGI.md)
                 - [AskingMessage](api/fastagency/base/AskingMessage.md)
+                - [Error](api/fastagency/base/Error.md)
                 - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/base/IOMessage.md)
                 - [IOMessageVisitor](api/fastagency/base/IOMessageVisitor.md)
@@ -94,6 +95,8 @@ search:
                 - [FastAgencyCLIPythonVersionError](api/fastagency/exceptions/FastAgencyCLIPythonVersionError.md)
                 - [FastAgencyError](api/fastagency/exceptions/FastAgencyError.md)
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
+            - helpers
+                - [check_imports](api/fastagency/helpers/check_imports.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
             - runtime
