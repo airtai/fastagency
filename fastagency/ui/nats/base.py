@@ -360,7 +360,11 @@ class NatsWorkflows(Workflows):
 
         async def consume_msg_from_nats(msg: dict[str, Any], logger: Logger) -> None:
             logger.debug(f"Received message from topic {from_server_subject}: {msg}")
-            iomessage = IOMessage.create(**msg)
+            iomessage = (
+                IOMessage.create(**{"type": "error", "long": msg["msg"]})
+                if msg.get("error")
+                else IOMessage.create(**msg)
+            )
             if isinstance(iomessage, AskingMessage):
                 processed_message = ui.process_message(iomessage)
                 response = InputResponseModel(
