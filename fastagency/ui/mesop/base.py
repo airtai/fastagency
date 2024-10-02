@@ -265,48 +265,47 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
                 initial_message=initial_message,
             )
 
-        except Exception as ex:
             ui.process_message(
                 IOMessage.create(
                     sender="user",
                     recipient="workflow",
                     type="system_message",
                     message={
-                        "heading": "Workflow Exception",
-                        "body": f"Ending workflow with exception: {ex}",
+                        "heading": "Workflow END",
+                        "body": f"Ending workflow with result: {result}",
                     },
                 )
             )
+
             ui.process_message(
                 IOMessage.create(
                     sender="user",
                     recipient="workflow",
                     type="workflow_completed",
-                    result=None,
+                    result=result,
+                )
+            )
+
+        except Exception as ex:
+            ui.process_message(
+                IOMessage.create(
+                    sender="system",
+                    recipient="user",
+                    type="error",
+                    short=f"Exception raised: `{type(ex)}`",
+                    long=str(ex.args[0]),
+                )
+            )
+
+            ui.process_message(
+                IOMessage.create(
+                    sender="user",
+                    recipient="workflow",
+                    type="workflow_completed",
+                    result="Exception raised",
                 )
             )
             return
-
-        ui.process_message(
-            IOMessage.create(
-                sender="user",
-                recipient="workflow",
-                type="system_message",
-                message={
-                    "heading": "Workflow END",
-                    "body": f"Ending workflow with result: {result}",
-                },
-            )
-        )
-
-        ui.process_message(
-            IOMessage.create(
-                sender="user",
-                recipient="workflow",
-                type="workflow_completed",
-                result=result,
-            )
-        )
 
     ui = MesopUI()
     subconversation = ui.create_subconversation()

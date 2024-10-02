@@ -7,6 +7,7 @@ import mesop as me
 
 from ...base import (
     AskingMessage,
+    Error,
     FunctionCallExecution,
     IOMessage,
     IOMessageVisitor,
@@ -137,7 +138,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
         return "\n".join([f"**{k}**: {v} <br>" for k, v in d["content"].items()])
 
-    def render_content(self, content: str, style: me.Style) -> None:
+    def _render_content(self, content: str, style: me.Style) -> None:
         me.markdown(content, style=style)
 
     def visit_default(
@@ -164,7 +165,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             content = content or self.message_content_to_markdown(message)
 
             # me.markdown(content, style=style.md or self._styles.message.default.md)
-            self.render_content(content, style.md or self._styles.message.default.md)
+            self._render_content(content, style.md or self._styles.message.default.md)
 
             if inner_callback:
                 inner_callback()
@@ -176,6 +177,14 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             message,
             content=content,
             style=self._styles.message.text,
+        )
+
+    def visit_error(self, message: Error) -> None:
+        self.visit_default(
+            message,
+            content=f"### {message.short}\n{message.long}",
+            style=self._styles.message.error,
+            # error=True,
         )
 
     def visit_system_message(self, message: SystemMessage) -> None:
@@ -369,7 +378,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
             logger.info(f"render_error_message: {content=}")
             # me.markdown(content, style=style.md or self._styles.message.default.md)
-            self.render_content(content, style.md or self._styles.message.default.md)
+            self._render_content(content, style.md or self._styles.message.default.md)
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         try:

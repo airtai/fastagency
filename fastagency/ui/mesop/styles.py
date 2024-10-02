@@ -130,6 +130,11 @@ MSG_ERROR_HEADER_BOX_STYLE = me.Style(
     border_radius=8,
 )
 
+MSG_ERROR_HEADER_MD_STYLE = me.Style(
+    padding=me.Padding(top=8, right=16, left=16, bottom=8),
+    color="#fff",
+)
+
 MSG_TEXT_INPUT_HEADER_BOX_STYLE = me.Style(
     background="#e6ee9c",
     padding=me.Padding.all(0),
@@ -247,6 +252,7 @@ class MesopMessagesStyles:
     error: MesopMessageStyles = field(
         default_factory=lambda: MesopMessageStyles(
             header_box=MSG_ERROR_HEADER_BOX_STYLE,
+            header_md=MSG_ERROR_HEADER_MD_STYLE,
         )
     )
 
