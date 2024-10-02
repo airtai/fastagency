@@ -46,6 +46,7 @@ MessageType = Literal[
     "multiple_choice",
     "system_message",
     "workflow_completed",
+    "error",
 ]
 
 
@@ -78,6 +79,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
             "multiple_choice": MultipleChoice,
             "system_message": SystemMessage,
             "workflow_completed": WorkflowCompleted,
+            "error": Error,
         }
         return lookup[type]
 
@@ -163,6 +165,12 @@ class WorkflowCompleted(IOMessage):
     result: Optional[str] = None
 
 
+@dataclass
+class Error(IOMessage):
+    short: Optional[str] = None
+    long: Optional[str] = None
+
+
 class IOMessageVisitor(ABC):
     def visit(self, message: IOMessage) -> Optional[str]:
         method_name = f"visit_{message.type}"
@@ -195,6 +203,9 @@ class IOMessageVisitor(ABC):
         return self.visit_default(message)
 
     def visit_workflow_completed(self, message: WorkflowCompleted) -> Optional[str]:
+        return self.visit_default(message)
+
+    def visit_error(self, message: Error) -> Optional[str]:
         return self.visit_default(message)
 
 
