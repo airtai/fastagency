@@ -94,6 +94,8 @@ search:
                 - [FastAgencyCLIPythonVersionError](api/fastagency/exceptions/FastAgencyCLIPythonVersionError.md)
                 - [FastAgencyError](api/fastagency/exceptions/FastAgencyError.md)
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
+            - helpers
+                - [check_imports](api/fastagency/helpers/check_imports.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
             - runtime
