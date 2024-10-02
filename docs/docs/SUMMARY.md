@@ -57,6 +57,7 @@ search:
             - base
                 - [ASGI](api/fastagency/base/ASGI.md)
                 - [AskingMessage](api/fastagency/base/AskingMessage.md)
+                - [Error](api/fastagency/base/Error.md)
                 - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/base/IOMessage.md)
                 - [IOMessageVisitor](api/fastagency/base/IOMessageVisitor.md)
