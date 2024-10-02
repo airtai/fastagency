@@ -113,7 +113,7 @@ class NatsProvider(IOMessageVisitor):
         logger.info(
             f"Received message in subject '{self._input_receive_subject}': {body}"
         )
-
+        await msg.ack()
         self.queue.put(msg)
 
     async def send_error_msg(self, e: Exception, logger: Logger) -> None:
@@ -129,12 +129,6 @@ class NatsProvider(IOMessageVisitor):
         error_msg = InputResponseModel(msg=str(e), error=True, question_id=None)
         await self.broker.publish(error_msg, self._input_request_subject)
 
-    # @broker.subscriber(
-    #     "chat.server.initiate_chat",
-    #     stream=stream,
-    #     queue="initiate_workers",
-    #     deliver_policy=api.DeliverPolicy("all"),
-    # )
     def create_initiate_subscriber(self) -> None:
         @self.broker.subscriber(
             "chat.server.initiate_chat",
@@ -278,7 +272,6 @@ class NatsProvider(IOMessageVisitor):
 
         logger.debug("Got the response")
         self.queue.task_done()
-        await msg.ack()
         return input_response
 
     def visit_text_input(self, message: TextInput) -> str:
@@ -365,11 +358,6 @@ class NatsWorkflows(Workflows):
             f"Setting up subscriber for {from_server_subject=}, {to_server_subject=}"
         )
 
-        # @self.broker.subscriber(
-        #     from_server_subject,
-        #     stream=JETSTREAM,
-        #     deliver_policy=api.DeliverPolicy("all"),
-        # )
         async def consume_msg_from_nats(msg: dict[str, Any], logger: Logger) -> None:
             logger.debug(f"Received message from topic {from_server_subject}: {msg}")
             iomessage = IOMessage.create(**msg)
