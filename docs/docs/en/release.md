@@ -12,6 +12,16 @@ hide:
 ---
 
 # Release Notes
+## v0.2.1
+
+### What's Changed
+
+* Replace radio buttons with clickable buttons in Mesop UI, add Error message type for errors in running workflows and 
+add exceptions with proper messages for missing imports by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#302](https://github.com/airtai/fastagency/pull/302){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.2.0...v0.2.1](https://github.com/airtai/fastagency/compare/v0.2.0...v0.2.1){.external-link target="_blank"}
+
 ## v0.2.0
 
 ### What's Changed
