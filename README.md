@@ -61,25 +61,19 @@ With FastAgency, you can create interactive applications using various interface
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [ConsoleUI](https://fastagency.ai/latest/api/fastagency/ui/console/ConsoleUI/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopUI](https://fastagency.ai/latest/api/fastagency/ui/mesop/MesopUI/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
+- **Console**: Use the [ConsoleUI](https://fastagency.ai/0.2/api/fastagency/ui/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Mesop**: Utilize [Mesop](https://google.github.io/mesop/) with [MesopUI](https://fastagency.ai/0.2/api/fastagency/ui/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 We are also working on adding support for other frameworks, such as [CrewAI](https://www.crewai.com/), to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
 
-## Install
+## Quick start
 
-To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
+### Install
 
-```console
-pip install "fastagency[autogen]"
-```
-
-This command installs FastAgency with support for the Console interface and AutoGen framework.
-
-In case you want to use an older version of AutoGen (`pyautogen` instead of `autogen` package ), please use the following pip command:
+To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. This command installs FastAgency with support for the [Mesop](https://google.github.io/mesop/) interface and AutoGen framework.
 
 ```console
-pip install "fastagency[pyautogen]"
+pip install "fastagency[autogen,mesop]"
 ```
 
 ## Write Code
@@ -92,14 +86,10 @@ import os
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI
+from fastagency import UI, FastAgency, Workflows
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-from fastagency.ui.console import ConsoleUI
-
-from fastagency import FastAgency
+from fastagency.ui.mesop import MesopUI
 ```
-
-For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 
 ### Define Workflow
@@ -119,8 +109,11 @@ llm_config = {
 
 wf = AutoGenWorkflows()
 
+
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str) -> str:
+def simple_workflow(
+    wf: Workflows, ui: UI, initial_message: str, session_id: str
+) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
@@ -136,7 +129,7 @@ def simple_workflow(wf: AutoGenWorkflows, ui: UI, initial_message: str, session_
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
-        max_turns=5,
+        max_turns=3,
     )
 
     return chat_result.summary
@@ -149,54 +142,49 @@ This code snippet sets up a simple learning chat between a student and a teacher
 Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
 ```python
-from fastagency.ui.console import ConsoleUI
-
-app = FastAgency(wf=wf, io=ConsoleUI())
+app = FastAgency(wf=wf, ui=MesopUI(), title="Learning Chat")
 ```
 
 ## Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:
 
-```console
-fastagency run
-```
+  ```
+  fastagency run
+  ```
+
+  However, the preferred way of running Mesop application is a Python WSGI HTTP Server such as [Gunicorn](https://gunicorn.org/). First,
+  you need to install it using package manager such as `pip`:
+  ```
+  pip install gunicorn
+  ```
+  and then you can run it with:
+  ```
+  gunicorn main:app
+  ```
 
 ### Output
 
-The output will vary based on the interface:
+  ```console
+  [2024-10-01 16:18:59 +0000] [20390] [INFO] Starting gunicorn 23.0.0
+  [2024-10-01 16:18:59 +0000] [20390] [INFO] Listening at: http://127.0.0.1:8000 (20390)
+  [2024-10-01 16:18:59 +0000] [20390] [INFO] Using worker: sync
+  [2024-10-01 16:18:59 +0000] [20391] [INFO] Booting worker with pid: 20391
+  ```
 
-```console
-╭─ Python module file ─╮
-│                      │
-│  🐍 main.py          │
-│                      │
-╰──────────────────────╯
+  ![Initial message](https://fastagency.ai/0.2/getting-started/images/chat.png?v1)
 
 
-╭─ Importable FastAgency app ─╮
-│                             │
-│  from main import app       │
-│                             │
-╰─────────────────────────────╯
-
-╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
-│                                                                              │
-│ Starting a new workflow 'simple_learning' with the following                 │
-│ description:                                                                 │
-│                                                                              │
-│ Student and teacher learning chat                                            │
-│                                                                              │
-│ Please enter an                                                              │
-│ initial message:                                                             │
-╰──────────────────────────────────────────────────────────────────────────────╯
-```
-
----
 
 ## Future Plans
 
 We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, such as [CrewAI](https://www.crewai.com/), to provide more flexibility and options for building applications. This will allow you to define workflows using a variety of frameworks and leverage their unique features and functionalities.
+
+---
+
+## Documentation
+
+You can find detailed documentation on the following link: [fastagency.ai/latest](fastagency.ai/latest).
 
 ---
 
@@ -218,6 +206,6 @@ support!
 
 Thanks to all of these amazing people who made the project better!
 
-<a href="https://github.com/airtai/fastagency/graphs/contributors">
+<a href="https://github.com/airtai/fastagency/graphs/contributors" target="_blank">
   <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
 </a>

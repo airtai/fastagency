@@ -166,7 +166,7 @@ Next, define your FastAgency application. This ties together your workflow and t
 === "Console"
 
     <details>
-        <summary>Console</summary>
+        <summary>main.py</summary>
         ```python
         {!> docs_src/getting_started/main_console.py !}
         ```
@@ -175,7 +175,7 @@ Next, define your FastAgency application. This ties together your workflow and t
 === "Mesop"
 
     <details>
-        <summary>Mesop</summary>
+        <summary>main.py</summary>
         ```python
         {!> docs_src/getting_started/main_mesop.py !}
         ```
@@ -185,9 +185,27 @@ Next, define your FastAgency application. This ties together your workflow and t
 
 Once everything is set up, you can run your FastAgency application using the following command:
 
-```console
-fastagency run
-```
+=== "Console"
+
+    ```console
+    fastagency run
+    ```
+
+=== "Mesop"
+
+    ```
+    fastagency run
+    ```
+
+    However, the preferred way of running Mesop application is a Python WSGI HTTP Server such as [Gunicorn](https://gunicorn.org/). First,
+    you need to install it using package manager such as `pip`:
+    ```
+    pip install gunicorn
+    ```
+    and then you can run it with:
+    ```
+    gunicorn main:app
+    ```
 
 ### Output
 
@@ -224,27 +242,13 @@ The output will vary based on the interface:
 
 === "Mesop"
     ```console
-    ╭─ Python module file ─╮
-    │                      │
-    │  🐍 main_mesop.py    │
-    │                      │
-    ╰──────────────────────╯
-
-
-    ╭─ Importable FastAgency app ──╮
-    │                              │
-    │  from main_mesop import app  │
-    │                              │
-    ╰──────────────────────────────╯
-
-    Running with hot reload:
-
-    Running server on: http://localhost:32123
-    * Serving Flask app 'mesop.server.server'
-    * Debug mode: off
+    [2024-10-01 16:18:59 +0000] [20390] [INFO] Starting gunicorn 23.0.0
+    [2024-10-01 16:18:59 +0000] [20390] [INFO] Listening at: http://127.0.0.1:8000 (20390)
+    [2024-10-01 16:18:59 +0000] [20390] [INFO] Using worker: sync
+    [2024-10-01 16:18:59 +0000] [20391] [INFO] Booting worker with pid: 20391
     ```
 
-    For Mesop applications, the output will include a URL where you can access your web-based application.
+    ![Initial message](./images/chat.png)
 
 
 

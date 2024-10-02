@@ -1,38 +1,35 @@
 import os
-from typing import Annotated, Any, Optional
+from typing import Any
 
-from autogen import register_function
 from autogen import ConversableAgent, UserProxyAgent
 
 from fastagency import UI, FastAgency, Workflows
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
-from fastagency.base import MultipleChoice
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
-
+open_api_key = os.getenv("OPENAI_API_KEY")
 llm_config = {
     "config_list": [
         {
             "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
+            "api_key": open_api_key,
         }
     ],
     "temperature": 0.0,
 }
 
-openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
-giphy_api = OpenAPI.create(openapi_url=openapi_url)
-
 giphy_api_key = os.getenv("GIPHY_API_KEY")
+openapi_url="https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
+giphy_api = OpenAPI.create(openapi_url=openapi_url)
 giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
+
 
 wf = AutoGenWorkflows()
 
-
-@wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
-def giphy_workflow_with_security(
+@wf.register(name="giphy_chat", description="Giphy chat")
+def giphy_workflow(
     wf: Workflows, ui: UI, initial_message: str, session_id: str
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
@@ -44,13 +41,18 @@ def giphy_workflow_with_security(
         is_termination_msg=is_termination_msg,
     )
 
+    system_message="""You are a helper agent that communicates with the user and
+        Giphy API. When using API calls, always limit the response size to 5 items.
+        When finished, write 'TERMINATE' to end the conversation."""
+
     giphy_agent = ConversableAgent(
         name="Giphy_Agent",
-        system_message="You are a helper agent that communicates with the user and Giphy API. When using API, always limit the response size to 5 items. Write 'TERMINATE' to end the conversation.",
+        system_message=system_message,
         llm_config=llm_config,
         human_input_mode="NEVER",
         is_termination_msg=is_termination_msg,
     )
+
     wf.register_api(
         api=giphy_api,
         callers=giphy_agent,
