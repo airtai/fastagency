@@ -21,6 +21,7 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from pydantic import __version__ as version_of_pydantic
+from pytest import FixtureRequest
 
 from .helpers import tag
 
@@ -248,10 +249,10 @@ class Server(uvicorn.Server):  # type: ignore [misc]
 
 
 @pytest.fixture(scope="session")
-def fastapi_openapi_url() -> Iterator[str]:
+def fastapi_openapi_url(request: FixtureRequest) -> Iterator[str]:
     host = "127.0.0.1"
     port = find_free_port()
-    app = create_fastapi_app(host, port)
+    app = request.param(host, port)
     openapi_url = f"http://{host}:{port}/openapi.json"
 
     config = uvicorn.Config(app, host=host, port=port, log_level="info")
@@ -269,21 +270,6 @@ def weather_fastapi_openapi_url() -> Iterator[str]:
     app = create_weather_fastapi_app(host, port)
     openapi_url = f"http://{host}:{port}/openapi.json"
 
-    config = uvicorn.Config(app, host=host, port=port, log_level="info")
-    server = Server(config=config)
-    with server.run_in_thread():
-        time.sleep(1 if system() != "Windows" else 5)  # let the server start
-
-        yield openapi_url
-
-
-@pytest.fixture(scope="session")
-def gify_fastapi_openapi_url() -> Iterator[str]:
-    host = "127.0.0.1"
-    port = find_free_port()
-    app = create_gify_fastapi_app(host, port)
-
-    openapi_url = f"http://{host}:{port}/openapi.json"
     config = uvicorn.Config(app, host=host, port=port, log_level="info")
     server = Server(config=config)
     with server.run_in_thread():
