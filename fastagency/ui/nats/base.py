@@ -224,16 +224,16 @@ class NatsProvider(IOMessageVisitor):
         syncify(self.broker.publish)(content, self._input_request_subject)
 
     async def wait_for_question_response(
-        self, question_id: str, *, timeout: int = 60
+        self, question_id: str, *, timeout: int = 180
     ) -> InputResponseModel:
         """Wait for the question response.
 
         Args:
             question_id (str): The question ID.
-            timeout (int, optional): The timeout in seconds. Defaults to 60.
+            timeout (int, optional): The timeout in seconds. Defaults to 180.
         """
         try:
-            # Set a timeout of 60 seconds
+            # Set a timeout of 180 seconds
             return await asyncio.wait_for(
                 self._wait_for_question_response(question_id), timeout=timeout
             )
