@@ -3,7 +3,6 @@ import inspect
 import re
 import shutil
 import sys
-import tempfile
 from collections.abc import Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from functools import wraps
@@ -15,6 +14,8 @@ import fastapi
 import requests
 from fastapi_code_generator.__main__ import generate_code
 from pydantic_core import PydanticUndefined
+
+from fastagency.helpers import optional_temp_path
 
 from .fastapi_code_generator_helpers import patch_get_parameter_type
 from .security import BaseSecurity, BaseSecurityParameters
@@ -292,14 +293,6 @@ class OpenAPI:
             with requests.get(openapi_url, timeout=10) as response:
                 response.raise_for_status()
                 openapi_json = response.text
-
-        @contextmanager
-        def optional_temp_path(path: Optional[str]) -> Iterator[Path]:
-            if path is None:
-                with tempfile.TemporaryDirectory() as temp_dir:
-                    yield Path(temp_dir)
-            else:
-                yield Path(path)
 
         with optional_temp_path(client_source_path) as source_dir:
             td = source_dir
