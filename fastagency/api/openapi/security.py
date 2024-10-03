@@ -190,7 +190,7 @@ class OAuth2PasswordBearer(BaseSecurity):
         bearer_token: Optional[str] = None
 
         @model_validator(mode="before")
-        def check_credentials(cls, values: dict[str, Any]) -> Any:
+        def check_credentials(cls, values: dict[str, Any]) -> Any:  # noqa
             username = values.get("username")
             password = values.get("password")
             bearer_token = values.get("bearer_token")
