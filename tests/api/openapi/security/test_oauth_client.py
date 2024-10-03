@@ -4,9 +4,10 @@ from typing import Annotated, Any
 import pytest
 import requests
 from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer as FastAPIOAuth2PasswordBearer
 
 from fastagency.api.openapi import OpenAPI
+from fastagency.api.openapi.security import OAuth2PasswordBearer
 
 
 def create_oauth2_fastapi_app(host: str, port: int) -> FastAPI:
@@ -17,7 +18,7 @@ def create_oauth2_fastapi_app(host: str, port: int) -> FastAPI:
         ],
     )
 
-    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+    oauth2_scheme = FastAPIOAuth2PasswordBearer(tokenUrl="token")
 
     @app.post("/low", summary="Low Level")
     async def post_oauth(
@@ -36,7 +37,7 @@ def openapi_oauth2_schema() -> dict[str, Any]:
         "openapi": "3.1.0",
         "info": {"title": "OAuth2", "version": "0.1.0"},
         "servers": [
-            {"url": "http://host:port", "description": "Local development server"}
+            {"url": "http://127.0.0.1:43465", "description": "Local development server"}
         ],
         "paths": {
             "/low": {
@@ -138,5 +139,24 @@ def test_oauth2_fastapi_app(
     assert openapi_oauth2_schema == openapi_json
 
 
-def test_generate_oauth2_client(openapi_oauth2_schema: dict[str, Any]) -> None:
-    OpenAPI.create(openapi_json=json.dumps(openapi_oauth2_schema))
+@pytest.mark.parametrize(
+    "fastapi_openapi_url",
+    [(create_oauth2_fastapi_app)],
+    indirect=["fastapi_openapi_url"],
+)
+def test_generate_oauth2_client(fastapi_openapi_url: str) -> None:
+    api_client = OpenAPI.create(openapi_url=fastapi_openapi_url)
+    api_client.set_security_params(
+        OAuth2PasswordBearer.Parameters(bearer_token="token123")
+    )
+
+    expected = ["post_oauth_low_post"]
+
+    functions = list(api_client._get_functions_to_register())
+    assert [f.__name__ for f in functions] == expected
+
+    post_oauth_f = functions[0]
+
+    response = post_oauth_f(message="message")
+
+    assert response == {"message": "message"}

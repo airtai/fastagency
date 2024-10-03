@@ -12,9 +12,7 @@ class BaseSecurity(BaseModel):
     """Base class for security classes."""
 
     type: ClassVar[Literal["apiKey", "http", "mutualTLS", "oauth2", "openIdConnect"]]
-    in_value: ClassVar[
-        Literal["header", "query", "cookie", "bearer", "basic", "tls", "flow"]
-    ]
+    in_value: ClassVar[Literal["header", "query", "cookie", "bearer", "basic", "tls"]]
     name: str
 
     @model_validator(mode="after")  # type: ignore[misc]
@@ -25,7 +23,7 @@ class BaseSecurity(BaseModel):
         valid_in_values = {
             "apiKey": ["header", "query", "cookie"],
             "http": ["bearer", "basic"],
-            "oauth2": ["bearer", "flow"],
+            "oauth2": ["bearer"],
             "openIdConnect": ["bearer"],
             "mutualTLS": ["tls"],
         }
@@ -178,7 +176,7 @@ class OAuth2PasswordBearer(BaseSecurity):
     """OAuth2 Password Bearer security class."""
 
     type: ClassVar[Literal["oauth2"]] = "oauth2"
-    in_value: ClassVar[Literal["flow"]] = "flow"
+    in_value: ClassVar[Literal["bearer"]] = "bearer"
 
     @classmethod
     def is_supported(cls, type: str, in_value: Union[str, dict[str, Any]]) -> bool:
@@ -187,7 +185,23 @@ class OAuth2PasswordBearer(BaseSecurity):
     class Parameters(BaseModel):  # BaseSecurityParameters
         """OAuth2 Password Bearer security class."""
 
-        value: str
+        username: Optional[str] = None
+        password: Optional[str] = None
+        bearer_token: Optional[str] = None
+
+        @model_validator(mode="before")
+        def check_credentials(self, values: dict[str, Any]) -> Any:
+            username = values.get("username")
+            password = values.get("password")
+            bearer_token = values.get("bearer_token")
+
+            if not bearer_token and (not username or not password):
+                # If bearer_token is not provided, both username and password must be defined
+                raise ValueError(
+                    "Both username and password are required if bearer_token is not provided."
+                )
+
+            return values
 
         def apply(
             self,
@@ -195,10 +209,14 @@ class OAuth2PasswordBearer(BaseSecurity):
             body_dict: dict[str, Any],
             security: BaseSecurity,
         ) -> None:
+            if not self.bearer_token:
+                # request token from the tokenUrl with username and password
+                raise NotImplementedError()
+
             if "headers" not in body_dict:
                 body_dict["headers"] = {}
 
-            body_dict["headers"]["Authorization"] = f"Bearer {self.value}"
+            body_dict["headers"]["Authorization"] = f"Bearer {self.bearer_token}"
 
         def get_security_class(self) -> type[BaseSecurity]:
-            return HTTPBearer
+            return OAuth2PasswordBearer
