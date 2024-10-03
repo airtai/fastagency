@@ -26,14 +26,12 @@ def extract_json_objects(
     decoder = decoder or JSONDecoder()
     pos = 0
     while True:
+        # print(f"matching: {text[pos:]}")
         match = text.find("{", pos)
         if match == -1:
             yield text[pos:]  # return the remaining text
             break
-        # move past space characters if needed
-        while text[pos] == " ":
-            pos += 1
-        yield text[pos:match]  # modification for the non-JSON parts
+        yield text[pos:match].rstrip(" ")  # modification for the non-JSON parts
         try:
             result, index = decoder.raw_decode(text[match:])
             yield result
@@ -42,6 +40,7 @@ def extract_json_objects(
             while text[pos] == " ":
                 pos += 1
         except ValueError:
+            yield text[match]
             pos = match + 1
 
 
