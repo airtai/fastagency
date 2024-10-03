@@ -12,6 +12,16 @@ hide:
 ---
 
 # Release Notes
+## v0.2.2
+
+### What's Changed
+
+* Detect JSON in output and use code block for it and make long outputs scrollable by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#306](https://github.com/airtai/fastagency/pull/306){.external-link target="_blank"}
+* Fix: unable to parse OpenAPI spec by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#303](https://github.com/airtai/fastagency/pull/303){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.2.1...v0.2.2](https://github.com/airtai/fastagency/compare/v0.2.1...v0.2.2){.external-link target="_blank"}
+
 ## v0.2.1
 
 ### What's Changed
