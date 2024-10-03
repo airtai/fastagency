@@ -100,6 +100,7 @@ search:
                 - [check_imports](api/fastagency/helpers/check_imports.md)
                 - [extract_json_objects](api/fastagency/helpers/extract_json_objects.md)
                 - [jsonify_string](api/fastagency/helpers/jsonify_string.md)
+                - [optional_temp_path](api/fastagency/helpers/optional_temp_path.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
             - runtime
