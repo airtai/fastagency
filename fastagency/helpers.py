@@ -37,7 +37,7 @@ def extract_json_objects(
             yield result
             pos = match + index
             # move past space characters if needed
-            while text[pos] == " ":
+            while pos < len(text) and text[pos] == " ":
                 pos += 1
         except ValueError:
             yield text[match]

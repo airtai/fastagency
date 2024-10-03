@@ -195,7 +195,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 {message.message['body']}
 """
             if "heading" in message.message and "body" in message.message
-            else json.dumps(message, indent=2)
+            else json.dumps(message.message, indent=2)
         )
 
         self.visit_default(
