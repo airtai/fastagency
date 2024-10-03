@@ -130,6 +130,11 @@ MSG_ERROR_HEADER_BOX_STYLE = me.Style(
     border_radius=8,
 )
 
+MSG_ERROR_HEADER_MD_STYLE = me.Style(
+    padding=me.Padding(top=8, right=16, left=16, bottom=8),
+    color="#fff",
+)
+
 MSG_TEXT_INPUT_HEADER_BOX_STYLE = me.Style(
     background="#e6ee9c",
     padding=me.Padding.all(0),
@@ -141,6 +146,29 @@ MSG_TEXT_INPUT_MD_STYLE = me.Style(
     padding=me.Padding.all(16),
 )
 
+MSG_DEFAULT_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+)
+
+MSG_DEFAULT_SELECTED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+    color="#fff",
+)
+
+MSG_DEFAULT_DISABLED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#64b5f6",
+    color="#fff",
+)
+
 
 @dataclass
 class MesopMessageStyles:
@@ -148,6 +176,13 @@ class MesopMessageStyles:
     md: me.Style = field(default_factory=lambda: MSG_DEFAULT_MD_STYLE)
     header_box: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_BOX_STYLE)
     header_md: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_MD_STYLE)
+    button: me.Style = field(default_factory=lambda: MSG_DEFAULT_BUTTON_STYLE)
+    disabled_button: me.Style = field(
+        default_factory=lambda: MSG_DEFAULT_DISABLED_BUTTON_STYLE
+    )
+    selected_button: me.Style = field(
+        default_factory=lambda: MSG_DEFAULT_SELECTED_BUTTON_STYLE
+    )
 
 
 TEXT_INPUT_INNER_BOX_STYLE = me.Style(
@@ -168,6 +203,35 @@ TEXT_INPUT_NATIVE_TEXTAREA_STYLE = me.Style(
 
 SINGLE_CHOICE_RADIO_STYLE = me.Style(
     display="flex", flex_direction="column", padding=me.Padding.all(16)
+)
+
+SINGLE_CHOICE_BOX_STYLE = me.Style(
+    display="flex",
+    flex_direction="row",
+    padding=me.Padding(left=8, right=8, top=0, bottom=16),
+)
+
+SINGLE_CHOICE_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+)
+
+SINGLE_CHOICE_SELECTED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+    color="#fff",
+)
+
+SINGLE_CHOICE_DISABLED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#64b5f6",
+    color="#fff",
 )
 
 MULTIPLE_CHOICE_RADIO_STYLE = me.Style(
@@ -193,7 +257,15 @@ class MesopTextInputInnerStyles:
 
 @dataclass
 class MesopSingleChoiceInnerStyles:
-    radio: me.Style = field(default_factory=lambda: SINGLE_CHOICE_RADIO_STYLE)
+    # radio: me.Style = field(default_factory=lambda: SINGLE_CHOICE_RADIO_STYLE)
+    box: me.Style = field(default_factory=lambda: SINGLE_CHOICE_BOX_STYLE)
+    button: me.Style = field(default_factory=lambda: SINGLE_CHOICE_BUTTON_STYLE)
+    disabled_button: me.Style = field(
+        default_factory=lambda: SINGLE_CHOICE_DISABLED_BUTTON_STYLE
+    )
+    selected_button: me.Style = field(
+        default_factory=lambda: SINGLE_CHOICE_SELECTED_BUTTON_STYLE
+    )
 
 
 @dataclass
@@ -210,6 +282,7 @@ class MesopMessagesStyles:
     error: MesopMessageStyles = field(
         default_factory=lambda: MesopMessageStyles(
             header_box=MSG_ERROR_HEADER_BOX_STYLE,
+            header_md=MSG_ERROR_HEADER_MD_STYLE,
         )
     )
 
