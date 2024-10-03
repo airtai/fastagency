@@ -133,6 +133,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/HTTPBearer/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/OAuth2PasswordBearer/</loc>
+        <lastmod>2024-10-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/OAuth2PasswordBearer/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security_schema_visitor/custom_visitor/</loc>
         <lastmod>2024-10-03</lastmod>
         <changefreq>daily</changefreq>
@@ -371,6 +377,12 @@
         <lastmod>2024-10-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/helpers/jsonify_string/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/helpers/optional_temp_path/</loc>
+        <lastmod>2024-10-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/helpers/optional_temp_path/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/logging/get_logger/</loc>
