@@ -5,12 +5,23 @@ from fastagency.ui.fastapi import FastAPIProvider
 from fastagency.ui.mesop import MesopUI
 
 nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
+nats_url = nats_url.replace("nats://", "ws://")  # nosemgrep
+nats_url = nats_url.replace("4222", "9222")
 
-user: str = "fastapi"
-password: str = environ.get("FASTAPI_PASSWORD")  # type: ignore[assignment]
+nats_user: str = "faststream"
+nats_password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
+
+fastapi_url = "http://localhost:8008"
+fastapi_user: str = "fastapi"
+fastapi_password: str = environ.get("FASTAPI_PASSWORD")  # type: ignore[assignment]
 
 wf = FastAPIProvider.Workflows(
-    fastapi_url=environ.get("FASTAPI_URL", None), user=user, password=password
+    fastapi_url=fastapi_url,
+    fastapi_user=fastapi_user,
+    fastapi_password=fastapi_password,
+    nats_url=nats_url,
+    nats_user=nats_user,
+    nats_password=nats_password,
 )
 
 ui = MesopUI()
