@@ -1,12 +1,15 @@
 import json
 from collections.abc import Iterable, Iterator
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 from uuid import uuid4
 
 import mesop as me
 
+from fastagency.helpers import jsonify_string
+
 from ...base import (
     AskingMessage,
+    Error,
     FunctionCallExecution,
     IOMessage,
     IOMessageVisitor,
@@ -25,10 +28,6 @@ from .send_prompt import send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
 
 logger = get_logger(__name__)
-
-
-def dict_to_markdown(d: dict[str, Any], *, indent: int = 2) -> str:
-    return "\n```\n" + json.dumps(d, indent=2) + "\n```\n"
 
 
 def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
@@ -118,6 +117,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         return self._conversation_message.feedback_completed
 
     def _provide_feedback(self, feedback: str) -> Iterator[None]:
+        logger.info(f"_provide_feedback({feedback=})")
         state = me.state(State)
         conversation = state.conversation
         conversation.feedback = ""
@@ -135,6 +135,10 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         d.pop("type")
 
         return "\n".join([f"**{k}**: {v} <br>" for k, v in d["content"].items()])
+
+    def _render_content(self, content: str, msg_md_style: me.Style) -> None:
+        content = jsonify_string(content)
+        me.markdown(content, style=msg_md_style)
 
     def visit_default(
         self,
@@ -159,7 +163,11 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
             content = content or self.message_content_to_markdown(message)
 
-            me.markdown(content, style=style.md or self._styles.message.default.md)
+            # me.markdown(content, style=style.md or self._styles.message.default.md)
+            self._render_content(
+                content,
+                style.md or self._styles.message.default.md,
+            )
 
             if inner_callback:
                 inner_callback()
@@ -173,6 +181,13 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             style=self._styles.message.text,
         )
 
+    def visit_error(self, message: Error) -> None:
+        self.visit_default(
+            message,
+            content=f"### {message.short}\n{message.long}",
+            style=self._styles.message.error,
+        )
+
     def visit_system_message(self, message: SystemMessage) -> None:
         content = (
             f"""#### **{message.message['heading']}**
@@ -180,7 +195,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 {message.message['body']}
 """
             if "heading" in message.message and "body" in message.message
-            else None
+            else json.dumps(message.message, indent=2)
         )
 
         self.visit_default(
@@ -193,9 +208,9 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         content = f"""
 **function_name**: `{message.function_name}`<br>
 **call_id**: `{message.call_id}`<br>
-**arguments**:
-{dict_to_markdown(message.arguments)}
+**arguments**: {json.dumps(message.arguments)}
 """
+        logger.warning(f"visit_suggested_function_call: {content=}")
         self.visit_default(
             message,
             content=content,
@@ -245,35 +260,35 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             return self._visit_many_choices(message)
 
     def _visit_single_choice(self, message: MultipleChoice) -> str:
-        def on_change(ev: me.RadioChangeEvent) -> Iterator[None]:
-            feedback = ev.value
-            self._conversation_message.feedback = [feedback]
+        def on_click(ev: me.ClickEvent) -> Iterator[None]:
             self._conversation_message.feedback_completed = True
-            yield from self._provide_feedback(feedback)
+            self._conversation_message.feedback = [ev.key]
+            yield from self._provide_feedback(ev.key)
 
-        # base_color = "#dff"
         prompt = message.prompt if message.prompt else "Please enter a value"
-        if message.choices:
-            options = (
-                me.RadioOption(
-                    label=(choice if choice != message.default else choice + " *"),
-                    value=choice,
-                )
-                for choice in message.choices
-            )
-        if self._has_feedback():
-            pre_selected = {"value": self._conversation_message.feedback[0]}
-        else:
-            pre_selected = {}
 
         def inner_callback() -> None:
-            me.radio(
-                on_change=on_change,
-                disabled=self._readonly or self._is_completed(),
-                options=options,
-                style=self._styles.message.single_choice_inner.radio,
-                **pre_selected,
-            )
+            with me.box(
+                style=self._styles.message.single_choice_inner.box,
+            ):
+                for choice in message.choices:
+                    disabled = self._readonly or self._is_completed()
+                    selected = choice in self._conversation_message.feedback
+                    if selected:
+                        style = self._styles.message.single_choice_inner.selected_button
+                    elif disabled:
+                        style = self._styles.message.single_choice_inner.disabled_button
+                    else:
+                        style = self._styles.message.single_choice_inner.button
+                    me.button(
+                        label=choice,
+                        on_click=on_click,
+                        color="primary",
+                        type="flat",
+                        key=choice,
+                        disabled=disabled,
+                        style=style,
+                    )
 
         self.visit_default(
             message,
@@ -358,12 +373,14 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
             content = (
                 "Failed to render message:"
-                + dict_to_markdown(message.model_dump())
+                + json.dumps(message.model_dump(), indent=2)
                 + f"<br>Error: {e}"
             )
 
-            logger.info(f"render_error_message: {content=}")
-            me.markdown(content, style=style.md or self._styles.message.default.md)
+            logger.warning(f"render_error_message: {content=}")
+            logger.warning(e, exc_info=True)
+            # me.markdown(content, style=style.md or self._styles.message.default.md)
+            self._render_content(content, style.md or self._styles.message.default.md)
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         try:
