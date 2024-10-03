@@ -1,7 +1,10 @@
 import importlib
 import json
+import tempfile
 from collections.abc import Iterator
+from contextlib import contextmanager
 from json import JSONDecoder
+from pathlib import Path
 from typing import Optional
 
 __all__ = ["check_imports"]
@@ -54,3 +57,12 @@ def jsonify_string(line: str) -> str:
     # (don't make that a list comprehension, quite un-readable)
 
     return "".join(line_parts)
+
+
+@contextmanager
+def optional_temp_path(path: Optional[str] = None) -> Iterator[Path]:
+    if path is None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            yield Path(temp_dir)
+    else:
+        yield Path(path)

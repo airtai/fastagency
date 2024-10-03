@@ -207,11 +207,14 @@ def test_register_for_llm(
 
 
 @pytest.mark.azure_oai
+@pytest.mark.parametrize(
+    "fastapi_openapi_url", [(create_gify_fastapi_app)], indirect=["fastapi_openapi_url"]
+)
 def test_end2end(
-    gify_fastapi_openapi_url: str,
+    fastapi_openapi_url: str,
     azure_gpt35_turbo_16k_llm_config: dict[str, Any],
 ) -> None:
-    api = OpenAPI.create(openapi_url=gify_fastapi_openapi_url)
+    api = OpenAPI.create(openapi_url=fastapi_openapi_url)
 
     agent = ConversableAgent(name="agent", llm_config=azure_gpt35_turbo_16k_llm_config)
     user_proxy = UserProxyAgent(
