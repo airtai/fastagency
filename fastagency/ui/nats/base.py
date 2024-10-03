@@ -298,11 +298,6 @@ class NatsProvider(IOMessageVisitor):
         logger.info(input_response)
         return input_response.msg
 
-    def visit(self, message: IOMessage) -> Optional[str]:
-        method_name = f"visit_{message.type}"
-        method = getattr(self, method_name, self.visit_default)
-        return method(message)
-
     def process_message(self, message: IOMessage) -> Optional[str]:
         try:
             return self.visit(message)

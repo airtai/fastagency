@@ -93,11 +93,6 @@ class FastAPIProvider(IOMessageVisitor):
     def visit_default(self, message: IOMessage) -> Optional[str]:
         raise NotImplementedError(f"visit_{message.type}")
 
-    def visit(self, message: IOMessage) -> Optional[str]:
-        method_name = f"visit_{message.type}"
-        method = getattr(self, method_name, self.visit_default)
-        return method(message)
-
     def process_message(self, message: IOMessage) -> Optional[str]:
         try:
             return self.visit(message)
