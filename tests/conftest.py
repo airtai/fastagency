@@ -263,21 +263,6 @@ def fastapi_openapi_url(request: FixtureRequest) -> Iterator[str]:
         yield openapi_url
 
 
-@pytest.fixture(scope="session")
-def weather_fastapi_openapi_url() -> Iterator[str]:
-    host = "127.0.0.1"
-    port = find_free_port()
-    app = create_weather_fastapi_app(host, port)
-    openapi_url = f"http://{host}:{port}/openapi.json"
-
-    config = uvicorn.Config(app, host=host, port=port, log_level="info")
-    server = Server(config=config)
-    with server.run_in_thread():
-        time.sleep(1 if system() != "Windows" else 5)  # let the server start
-
-        yield openapi_url
-
-
 @pytest.fixture
 def pydantic_version() -> float:
     return float(".".join(version_of_pydantic.split(".")[:2]))
