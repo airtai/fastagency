@@ -19,12 +19,13 @@ wf = NatsProvider.Workflows(
 
 provider = FastAPIProvider(
     wf=wf,
-    fastapi_url=environ.get("FASTAPI_URL", None),
     user=fastapi_user,
     password=fastapi_password,
 )
 
-app = FastAPI(lifespans=provider.lifespan)
+# app = FastAPI(lifespan=provider.lifespan)
+app = FastAPI()
+app.include_router(provider.router)
 
 # todo (both here and in nats provider)
 # - route for initiating a chat

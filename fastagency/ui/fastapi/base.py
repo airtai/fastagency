@@ -1,11 +1,12 @@
 ## IONats part
 
-from collections.abc import AsyncIterator, Iterable, Mapping
-from contextlib import asynccontextmanager
+from collections.abc import Iterable, Mapping
 from typing import Any, Callable, Optional, Union
+from uuid import UUID, uuid4
 
-import uvicorn
-from fastapi import FastAPI
+import nats
+from fastapi import APIRouter
+from pydantic import BaseModel
 
 from fastagency.logging import get_logger
 
@@ -17,6 +18,7 @@ from ...base import (
     Workflow,
     Workflows,
 )
+from ..nats import InitiateModel, NatsWorkflows
 
 logger = get_logger(__name__)
 
@@ -24,10 +26,8 @@ logger = get_logger(__name__)
 class FastAPIProvider(IOMessageVisitor):
     def __init__(
         self,
-        wf: Workflows,
+        wf: NatsWorkflows,
         *,
-        host: str = "localhost",
-        port: int = 8000,
         user: Optional[str] = None,
         password: Optional[str] = None,
         super_conversation: Optional["FastAPIProvider"] = None,
@@ -36,20 +36,62 @@ class FastAPIProvider(IOMessageVisitor):
 
         Args:
             wf (Workflows): The workflow object.
-            host (str, optional): The host. Defaults to "localhost".
-            port (int, optional): The port. Defaults to 8000.
             user (Optional[str], optional): The user. Defaults to None.
             password (Optional[str], optional): The password. Defaults to None.
             super_conversation (Optional["FastAPIProvider"], optional): The super conversation. Defaults to None.
         """
         self.wf = wf
 
-        self.host = host
-        self.port = port
         self.user = user
         self.password = password
 
-        self.app = FastAPI()
+        self.router = self.setup_routes()
+
+    def setup_routes(self) -> APIRouter:
+        router = APIRouter()
+
+        class WorkflowInfo(BaseModel):
+            name: str
+            description: str
+
+        @router.post("/initiate_chat")
+        async def initiate_chat(
+            workflow_name: str,
+            # user_id: UUID,
+            # conversation_id: UUID,
+            msg: str,
+        ) -> InitiateModel:
+            user_id: UUID = uuid4()
+            conversation_id: UUID = uuid4()
+            init_msg = InitiateModel(
+                user_id=user_id,
+                conversation_id=conversation_id,
+                msg=msg,
+            )
+
+            nc = await nats.connect(
+                self.wf.nats_url, user=self.wf.user, password=self.wf.password
+            )
+            await nc.publish(
+                "chat.server.initiate_chat",
+                init_msg.model_dump_json().encode(),
+            )
+
+            return init_msg
+
+        @router.get("/discover")
+        async def discover() -> list[WorkflowInfo]:
+            names = self.wf.names
+            descriptions = [self.wf.get_description(name) for name in names]
+            return [
+                WorkflowInfo(name=name, description=description)
+                for name, description in zip(names, descriptions)
+            ]
+
+        return router
+
+    def visit_default(self, message: IOMessage) -> Optional[str]:
+        raise NotImplementedError(f"visit_{message.type}")
 
     def visit(self, message: IOMessage) -> Optional[str]:
         method_name = f"visit_{message.type}"
@@ -62,19 +104,6 @@ class FastAPIProvider(IOMessageVisitor):
         except Exception as e:
             logger.error(f"Error in process_message: {e}", stack_info=True)
             raise
-
-    @asynccontextmanager
-    async def lifespan(self, app: Any) -> AsyncIterator[None]:
-        config = uvicorn.Config(
-            self.app, host=self.host, port=self.port, log_level="info"
-        )
-        server = uvicorn.Server(config)
-
-        await server.startup()
-        try:
-            yield
-        finally:
-            await server.shutdown()
 
     def create_subconversation(self) -> "FastAPIProvider":
         return self
