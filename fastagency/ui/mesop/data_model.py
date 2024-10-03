@@ -11,7 +11,6 @@ class ConversationMessage:
     conversation_id: str = ""
     feedback: list[str] = field(default_factory=list)
     feedback_completed: bool = False
-    collapsed: Optional[bool] = None
 
 
 @dataclass

@@ -97,6 +97,8 @@ search:
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
             - helpers
                 - [check_imports](api/fastagency/helpers/check_imports.md)
+                - [extract_json_objects](api/fastagency/helpers/extract_json_objects.md)
+                - [jsonify_string](api/fastagency/helpers/jsonify_string.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
             - runtime
@@ -143,7 +145,6 @@ search:
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
-                        - [dict_to_markdown](api/fastagency/ui/mesop/message/dict_to_markdown.md)
                         - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
                         - [message_box](api/fastagency/ui/mesop/message/message_box.md)
                     - send_prompt

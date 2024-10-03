@@ -146,6 +146,29 @@ MSG_TEXT_INPUT_MD_STYLE = me.Style(
     padding=me.Padding.all(16),
 )
 
+MSG_DEFAULT_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+)
+
+MSG_DEFAULT_SELECTED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#1976d2",
+    color="#fff",
+)
+
+MSG_DEFAULT_DISABLED_BUTTON_STYLE = me.Style(
+    margin=me.Margin.symmetric(horizontal=8),
+    padding=me.Padding.all(16),
+    border_radius=8,
+    background="#64b5f6",
+    color="#fff",
+)
+
 
 @dataclass
 class MesopMessageStyles:
@@ -153,6 +176,13 @@ class MesopMessageStyles:
     md: me.Style = field(default_factory=lambda: MSG_DEFAULT_MD_STYLE)
     header_box: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_BOX_STYLE)
     header_md: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_MD_STYLE)
+    button: me.Style = field(default_factory=lambda: MSG_DEFAULT_BUTTON_STYLE)
+    disabled_button: me.Style = field(
+        default_factory=lambda: MSG_DEFAULT_DISABLED_BUTTON_STYLE
+    )
+    selected_button: me.Style = field(
+        default_factory=lambda: MSG_DEFAULT_SELECTED_BUTTON_STYLE
+    )
 
 
 TEXT_INPUT_INNER_BOX_STYLE = me.Style(

@@ -93,7 +93,7 @@ class TestMessageBox:
         assert_called_with_one_of(
             me.markdown,
             "**System message: sender -> recipient**",
-            "**message**: {'type': 'test', 'data': 'this is a test message'} <br>",
+            '\n```\n{\n    "type": "test",\n    "data": "this is a test message"\n}\n```\n',
         )
 
     def test_suggested_function_call(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -122,11 +122,10 @@ class TestMessageBox:
 **function_name**: `function_name`<br>
 **call_id**: `my_call_id`<br>
 **arguments**:
-
 ```
 {
-  "arg1": "value1",
-  "arg2": "value2"
+    "arg1": "value1",
+    "arg2": "value2"
 }
 ```
 
