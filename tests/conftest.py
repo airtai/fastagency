@@ -21,7 +21,6 @@ import uvicorn
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from pydantic import __version__ as version_of_pydantic
-from pytest import FixtureRequest
 
 from .helpers import tag
 
@@ -249,7 +248,7 @@ class Server(uvicorn.Server):  # type: ignore [misc]
 
 
 @pytest.fixture(scope="session")
-def fastapi_openapi_url(request: FixtureRequest) -> Iterator[str]:
+def fastapi_openapi_url(request: pytest.FixtureRequest) -> Iterator[str]:
     host = "127.0.0.1"
     port = find_free_port()
     app = request.param(host, port)
