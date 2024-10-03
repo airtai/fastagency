@@ -50,6 +50,7 @@ search:
                         - [BaseSecurity](api/fastagency/api/openapi/security/BaseSecurity.md)
                         - [BaseSecurityParameters](api/fastagency/api/openapi/security/BaseSecurityParameters.md)
                         - [HTTPBearer](api/fastagency/api/openapi/security/HTTPBearer.md)
+                        - [OAuth2PasswordBearer](api/fastagency/api/openapi/security/OAuth2PasswordBearer.md)
                     - security_schema_visitor
                         - [custom_visitor](api/fastagency/api/openapi/security_schema_visitor/custom_visitor.md)
             - app
