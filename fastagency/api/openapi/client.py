@@ -286,7 +286,7 @@ class OpenAPI:
         openapi_url: Optional[str] = None,
         client_source_path: Optional[str] = None,
     ) -> "OpenAPI":
-        if openapi_json is None and openapi_url is None:
+        if (openapi_json is None) == (openapi_url is None):
             raise ValueError("Either openapi_json or openapi_url should be provided")
 
         if openapi_json is None and openapi_url is not None:
@@ -294,8 +294,7 @@ class OpenAPI:
                 response.raise_for_status()
                 openapi_json = response.text
 
-        with optional_temp_path(client_source_path) as source_dir:
-            td = source_dir
+        with optional_temp_path(client_source_path) as td:
             suffix = td.name
 
             main_name = cls.generate_code(
