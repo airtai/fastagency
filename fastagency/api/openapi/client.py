@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
 
 import fastapi
 import requests
+from datamodel_code_generator import DataModelType
 from fastapi_code_generator.__main__ import generate_code
 from pydantic_core import PydanticUndefined
 
@@ -248,6 +249,7 @@ class OpenAPI:
                 template_dir=cls._get_template_dir(),
                 disable_timestamp=disable_timestamp,
                 custom_visitors=custom_visitors,
+                output_model_type=DataModelType.PydanticV2BaseModel,
             )
             # Use unique file name for main.py
             main_name = f"main_{output_dir.name}"
@@ -268,15 +270,6 @@ class OpenAPI:
             models_name = f"models_{output_dir.name}"
             models_path = output_dir / f"{models_name}.py"
             shutil.move(output_dir / "models.py", models_path)
-
-            # Replace constr(regex= with constr(pattern=
-            # TODO: Remove this when fastapi-code-generator supports pattern
-            with models_path.open("r") as f:
-                models_py_code = f.read()
-            models_py_code = models_py_code.replace("constr(regex=", "constr(pattern=")
-
-            with models_path.open("w") as f:
-                f.write(models_py_code)
 
             return main_name
 
