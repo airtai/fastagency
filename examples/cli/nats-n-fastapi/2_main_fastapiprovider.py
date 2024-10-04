@@ -28,8 +28,8 @@ app = FastAPI()
 app.include_router(provider.router)
 
 # todo (both here and in nats provider)
-# - route for initiating a chat
-# - route for listing workflows with their descriptions
+# - route for initiating a chat - DONE
+# - route for listing workflows with their descriptions - DONE
 
 # start the provider with the following command
 # uvicorn main_mesop:app --reload
