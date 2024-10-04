@@ -255,18 +255,28 @@ class OpenAPI:
             shutil.move(output_dir / "main.py", main_path)
 
             # Change "from models import" to "from models_unique_name import"
-            with open(main_path) as f:  # noqa: PTH123
+            with main_path.open("r") as f:
                 main_py_code = f.read()
             main_py_code = main_py_code.replace(
                 "from .models import", f"from models_{output_dir.name} import"
             )
-            with open(main_path, "w") as f:  # noqa: PTH123
+
+            with main_path.open("w") as f:
                 f.write(main_py_code)
 
             # Use unique file name for models.py
             models_name = f"models_{output_dir.name}"
             models_path = output_dir / f"{models_name}.py"
             shutil.move(output_dir / "models.py", models_path)
+
+            # Replace constr(regex= with constr(pattern=
+            # TODO: Remove this when fastapi-code-generator supports pattern
+            with models_path.open("r") as f:
+                models_py_code = f.read()
+            models_py_code = models_py_code.replace("constr(regex=", "constr(pattern=")
+
+            with models_path.open("w") as f:
+                f.write(models_py_code)
 
             return main_name
 
