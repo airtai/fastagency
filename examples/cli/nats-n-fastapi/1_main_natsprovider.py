@@ -66,4 +66,4 @@ app = FastAPI(lifespan=provider.lifespan)
 
 
 # start the provider with either command
-# uvicorn main_natsprovider:app --reload
+# uvicorn 1_main_natsprovider:app --reload

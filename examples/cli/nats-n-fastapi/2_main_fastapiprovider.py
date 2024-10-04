@@ -32,4 +32,4 @@ app.include_router(provider.router)
 # - route for listing workflows with their descriptions - DONE
 
 # start the provider with the following command
-# uvicorn main_mesop:app --reload
+# uvicorn 2_main_fastapiprovider:app --host 0.0.0.0 --port 8008 --reload
