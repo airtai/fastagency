@@ -8,6 +8,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, Callable, ClassVar, Optional
 from uuid import uuid4
 
+import mesop as me
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
 from mesop.bin.bin import main as mesop_main
 
@@ -23,6 +24,7 @@ from ...base import (
     Workflows,
 )
 from ...logging import get_logger
+from .styles import MesopHomePageStyles
 
 logger = get_logger(__name__)
 
@@ -42,11 +44,19 @@ class MesopUI(IOMessageVisitor):  # UI
     _app: Optional[Runnable] = None
     _me: Optional[Callable[..., Any]] = None
 
-    def __init__(self, super_conversation: "Optional[MesopUI]" = None) -> None:
+    def __init__(
+        self,
+        super_conversation: "Optional[MesopUI]" = None,
+        *,
+        security_policy: Optional[me.SecurityPolicy] = None,
+        styles: Optional[MesopHomePageStyles] = None,
+    ) -> None:
         """Initialize the console UI object.
 
         Args:
             super_conversation (Optional[MesopUI], optional): The super conversation. Defaults to None.
+            security_policy (Optional[me.SecurityPolicy], optional): The security policy. Defaults to None.
+            styles (Optional[MesopHomePageStyles], optional): The styles. Defaults to None.
         """
         logger.info(f"Initializing MesopUI: {self}")
         try:
@@ -64,7 +74,7 @@ class MesopUI(IOMessageVisitor):  # UI
             if MesopUI._me is None:
                 from .main import create_home_page, me
 
-                create_home_page(self)
+                create_home_page(self, security_policy=security_policy, styles=styles)
                 MesopUI._me = me
 
         except Exception as e:

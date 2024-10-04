@@ -32,7 +32,7 @@ def create_home_page(
     styles: Optional[MesopHomePageStyles] = None,
     security_policy: Optional[me.SecurityPolicy] = None,
 ) -> Callable[[], None]:
-    mhp = MesopHomePage(ui, security_policy=security_policy)
+    mhp = MesopHomePage(ui, styles=styles, security_policy=security_policy)
 
     return mhp.build()
 
