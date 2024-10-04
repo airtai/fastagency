@@ -60,7 +60,7 @@ def jsonify_string(line: str) -> str:
 
 
 @contextmanager
-def optional_temp_path(path: Optional[str]) -> Iterator[Path]:
+def optional_temp_path(path: Optional[str] = None) -> Iterator[Path]:
     if path is None:
         with tempfile.TemporaryDirectory() as temp_dir:
             yield Path(temp_dir)

@@ -1,4 +1,6 @@
-from fastagency.helpers import jsonify_string
+from pathlib import Path
+
+from fastagency.helpers import jsonify_string, optional_temp_path
 
 
 def test_hello() -> None:
@@ -34,3 +36,12 @@ def test_bad_suggested_function_call() -> None:
 """
     actual = jsonify_string(content)
     assert actual == expected, actual
+
+
+def test_optional_temp_path() -> None:
+    with optional_temp_path() as temp_path:
+        assert temp_path.exists()
+    assert not temp_path.exists()
+
+    with optional_temp_path(path="defined_path") as temp_path:
+        assert temp_path == Path("defined_path")
