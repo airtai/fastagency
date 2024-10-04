@@ -128,14 +128,6 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         responses = send_user_feedback_to_autogen(feedback)
         yield from consume_responses(responses)
 
-    def message_content_to_markdown(self, msg: IOMessage) -> str:
-        d = msg.model_dump()
-        d.pop("sender")
-        d.pop("recipient")
-        d.pop("type")
-
-        return "\n".join([f"**{k}**: {v} <br>" for k, v in d["content"].items()])
-
     def _render_content(self, content: str, msg_md_style: me.Style) -> None:
         content = jsonify_string(content)
         me.markdown(content, style=msg_md_style)
@@ -148,8 +140,9 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         style: Optional[MesopMessageStyles] = None,
         error: Optional[bool] = False,
         inner_callback: Optional[Callable[..., None]] = None,
+        scrollable: Optional[bool] = False,
     ) -> None:
-        logger.info(f"visit_default: {message=}")
+        # logger.info(f"visit_default: {message=}")
         style = style or self._styles.message.default
         title = message.type.replace("_", " ").capitalize()
         title = "[Error] " + title if error else title
@@ -161,12 +154,14 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
                 md_style=style.header_md,
             )
 
-            content = content or self.message_content_to_markdown(message)
+            content = content or json.dumps(message.model_dump()["content"])
 
-            # me.markdown(content, style=style.md or self._styles.message.default.md)
             self._render_content(
                 content,
-                style.md or self._styles.message.default.md,
+                msg_md_style=style.scrollable_md
+                or self._styles.message.default.scrollable_md
+                if scrollable
+                else style.md or self._styles.message.default.md,
             )
 
             if inner_callback:
@@ -186,6 +181,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             message,
             content=f"### {message.short}\n{message.long}",
             style=self._styles.message.error,
+            scrollable=True,
         )
 
     def visit_system_message(self, message: SystemMessage) -> None:
@@ -195,32 +191,36 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 {message.message['body']}
 """
             if "heading" in message.message and "body" in message.message
-            else json.dumps(message.message, indent=2)
+            else json.dumps(message.message)
         )
 
         self.visit_default(
             message,
             content=content,
             style=self._styles.message.system,
+            scrollable=True,
         )
 
     def visit_suggested_function_call(self, message: SuggestedFunctionCall) -> None:
-        content = f"""
-**function_name**: `{message.function_name}`<br>
+        content = f"""**function_name**: `{message.function_name}`<br>
 **call_id**: `{message.call_id}`<br>
-**arguments**: {json.dumps(message.arguments)}
-"""
-        logger.warning(f"visit_suggested_function_call: {content=}")
+**arguments**: {json.dumps(message.arguments)}"""
         self.visit_default(
             message,
             content=content,
             style=self._styles.message.suggested_function_call,
+            scrollable=True,
         )
 
     def visit_function_call_execution(self, message: FunctionCallExecution) -> None:
+        content = f"""**function_name**: `{message.function_name}`<br>
+**call_id**: `{message.call_id}`<br>
+**retval**: {message.retval}"""
         return self.visit_default(
             message,
+            content=content,
             style=self._styles.message.function_call_execution,
+            scrollable=True,
         )
 
     def visit_text_input(self, message: TextInput) -> str:
