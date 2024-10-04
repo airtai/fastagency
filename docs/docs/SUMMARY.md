@@ -50,6 +50,7 @@ search:
                         - [BaseSecurity](api/fastagency/api/openapi/security/BaseSecurity.md)
                         - [BaseSecurityParameters](api/fastagency/api/openapi/security/BaseSecurityParameters.md)
                         - [HTTPBearer](api/fastagency/api/openapi/security/HTTPBearer.md)
+                        - [OAuth2PasswordBearer](api/fastagency/api/openapi/security/OAuth2PasswordBearer.md)
                     - security_schema_visitor
                         - [custom_visitor](api/fastagency/api/openapi/security_schema_visitor/custom_visitor.md)
             - app
@@ -97,6 +98,9 @@ search:
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
             - helpers
                 - [check_imports](api/fastagency/helpers/check_imports.md)
+                - [extract_json_objects](api/fastagency/helpers/extract_json_objects.md)
+                - [jsonify_string](api/fastagency/helpers/jsonify_string.md)
+                - [optional_temp_path](api/fastagency/helpers/optional_temp_path.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
             - new
@@ -156,7 +160,6 @@ search:
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
-                        - [dict_to_markdown](api/fastagency/ui/mesop/message/dict_to_markdown.md)
                         - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
                         - [message_box](api/fastagency/ui/mesop/message/message_box.md)
                     - send_prompt

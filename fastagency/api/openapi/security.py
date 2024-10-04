@@ -1,5 +1,5 @@
 import logging
-from typing import Any, ClassVar, Literal, Optional, Protocol
+from typing import Any, ClassVar, Literal, Optional, Protocol, Union
 
 from pydantic import BaseModel, model_validator
 
@@ -36,7 +36,7 @@ class BaseSecurity(BaseModel):
         return isinstance(self, security_params.get_security_class())
 
     @classmethod
-    def is_supported(cls, type: str, in_value: str) -> bool:
+    def is_supported(cls, type: str, in_value: Union[str, dict[str, Any]]) -> bool:
         return type == cls.type and in_value == cls.in_value
 
     @classmethod
@@ -50,7 +50,9 @@ class BaseSecurity(BaseModel):
             logger.error(
                 f"Unsupported type '{type}' and in_value '{in_value}' combination"
             )
-            return None
+            raise ValueError(
+                f"Unsupported type '{type}' and in_value '{in_value}' combination"
+            )
 
 
 class BaseSecurityParameters(Protocol):
@@ -171,3 +173,53 @@ class HTTPBearer(BaseSecurity):
 
         def get_security_class(self) -> type[BaseSecurity]:
             return HTTPBearer
+
+
+class OAuth2PasswordBearer(BaseSecurity):
+    """OAuth2 Password Bearer security class."""
+
+    type: ClassVar[Literal["oauth2"]] = "oauth2"
+    in_value: ClassVar[Literal["bearer"]] = "bearer"
+
+    @classmethod
+    def is_supported(cls, type: str, in_value: Union[str, dict[str, Any]]) -> bool:
+        return type == cls.type and isinstance(in_value, dict)
+
+    class Parameters(BaseModel):  # BaseSecurityParameters
+        """OAuth2 Password Bearer security class."""
+
+        username: Optional[str] = None
+        password: Optional[str] = None
+        bearer_token: Optional[str] = None
+
+        @model_validator(mode="before")
+        def check_credentials(cls, values: dict[str, Any]) -> Any:  # noqa
+            username = values.get("username")
+            password = values.get("password")
+            bearer_token = values.get("bearer_token")
+
+            if not bearer_token and (not username or not password):
+                # If bearer_token is not provided, both username and password must be defined
+                raise ValueError(
+                    "Both username and password are required if bearer_token is not provided."
+                )
+
+            return values
+
+        def apply(
+            self,
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
+            security: BaseSecurity,
+        ) -> None:
+            if not self.bearer_token:
+                # request token from the tokenUrl with username and password
+                raise NotImplementedError()
+
+            if "headers" not in body_dict:
+                body_dict["headers"] = {}
+
+            body_dict["headers"]["Authorization"] = f"Bearer {self.bearer_token}"
+
+        def get_security_class(self) -> type[BaseSecurity]:
+            return OAuth2PasswordBearer

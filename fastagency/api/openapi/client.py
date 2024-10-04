@@ -3,7 +3,6 @@ import inspect
 import re
 import shutil
 import sys
-import tempfile
 from collections.abc import Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from functools import wraps
@@ -15,6 +14,8 @@ import fastapi
 import requests
 from fastapi_code_generator.__main__ import generate_code
 from pydantic_core import PydanticUndefined
+
+from fastagency.helpers import optional_temp_path
 
 from .fastapi_code_generator_helpers import patch_get_parameter_type
 from .security import BaseSecurity, BaseSecurityParameters
@@ -280,9 +281,12 @@ class OpenAPI:
 
     @classmethod
     def create(
-        cls, openapi_json: Optional[str] = None, openapi_url: Optional[str] = None
+        cls,
+        openapi_json: Optional[str] = None,
+        openapi_url: Optional[str] = None,
+        client_source_path: Optional[str] = None,
     ) -> "OpenAPI":
-        if openapi_json is None and openapi_url is None:
+        if (openapi_json is None) == (openapi_url is None):
             raise ValueError("Either openapi_json or openapi_url should be provided")
 
         if openapi_json is None and openapi_url is not None:
@@ -290,8 +294,7 @@ class OpenAPI:
                 response.raise_for_status()
                 openapi_json = response.text
 
-        with tempfile.TemporaryDirectory() as temp_dir:
-            td = Path(temp_dir)
+        with optional_temp_path(client_source_path) as td:
             suffix = td.name
 
             main_name = cls.generate_code(

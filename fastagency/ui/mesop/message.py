@@ -1,9 +1,11 @@
 import json
 from collections.abc import Iterable, Iterator
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 from uuid import uuid4
 
 import mesop as me
+
+from fastagency.helpers import jsonify_string
 
 from ...base import (
     AskingMessage,
@@ -26,10 +28,6 @@ from .send_prompt import send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
 
 logger = get_logger(__name__)
-
-
-def dict_to_markdown(d: dict[str, Any], *, indent: int = 2) -> str:
-    return "\n```\n" + json.dumps(d, indent=2) + "\n```\n"
 
 
 def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
@@ -138,8 +136,9 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
         return "\n".join([f"**{k}**: {v} <br>" for k, v in d["content"].items()])
 
-    def _render_content(self, content: str, style: me.Style) -> None:
-        me.markdown(content, style=style)
+    def _render_content(self, content: str, msg_md_style: me.Style) -> None:
+        content = jsonify_string(content)
+        me.markdown(content, style=msg_md_style)
 
     def visit_default(
         self,
@@ -165,7 +164,10 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             content = content or self.message_content_to_markdown(message)
 
             # me.markdown(content, style=style.md or self._styles.message.default.md)
-            self._render_content(content, style.md or self._styles.message.default.md)
+            self._render_content(
+                content,
+                style.md or self._styles.message.default.md,
+            )
 
             if inner_callback:
                 inner_callback()
@@ -184,7 +186,6 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             message,
             content=f"### {message.short}\n{message.long}",
             style=self._styles.message.error,
-            # error=True,
         )
 
     def visit_system_message(self, message: SystemMessage) -> None:
@@ -194,7 +195,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 {message.message['body']}
 """
             if "heading" in message.message and "body" in message.message
-            else None
+            else json.dumps(message.message, indent=2)
         )
 
         self.visit_default(
@@ -207,9 +208,9 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         content = f"""
 **function_name**: `{message.function_name}`<br>
 **call_id**: `{message.call_id}`<br>
-**arguments**:
-{dict_to_markdown(message.arguments)}
+**arguments**: {json.dumps(message.arguments)}
 """
+        logger.warning(f"visit_suggested_function_call: {content=}")
         self.visit_default(
             message,
             content=content,
@@ -372,11 +373,12 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
             content = (
                 "Failed to render message:"
-                + dict_to_markdown(message.model_dump())
+                + json.dumps(message.model_dump(), indent=2)
                 + f"<br>Error: {e}"
             )
 
-            logger.info(f"render_error_message: {content=}")
+            logger.warning(f"render_error_message: {content=}")
+            logger.warning(e, exc_info=True)
             # me.markdown(content, style=style.md or self._styles.message.default.md)
             self._render_content(content, style.md or self._styles.message.default.md)
 
