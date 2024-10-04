@@ -388,6 +388,7 @@ from models_tmp61z6vu75 import (
     ItemsItemIdPutResponse,
     ItemsPostRequest,
     ItemsPostResponse,
+    Q,
 )
 
 app = OpenAPI(
@@ -423,7 +424,7 @@ def create_item_items__post(
 )
 def read_item_items__item_id__get(
     item_id: Annotated[int, """The ID of the item to get"""],
-    q: Annotated[Optional[str], """some extra query parameter"""] = None,
+    q: Annotated[Optional[Q], """some extra query parameter"""] = None,
 ) -> Union[ItemsItemIdGetResponse, HTTPValidationError]:
     """
     Read Item
@@ -478,6 +479,7 @@ from models_tmp61z6vu75 import (
     ItemsItemIdGetResponse,
     ItemsItemIdPutResponse,
     ItemsPostResponse,
+    Q,
 )
 
 app = OpenAPI(
@@ -513,7 +515,7 @@ def create_item_items__post(
 )
 def read_item_items__item_id__get(
     item_id: Annotated[int, """The ID of the item to get"""],
-    q: Annotated[Optional[str], """some extra query parameter"""] = None,
+    q: Annotated[Optional[Q], """some extra query parameter"""] = None,
 ) -> Union[ItemsItemIdGetResponse, HTTPValidationError]:
     """
     Read Item
@@ -564,7 +566,6 @@ def delete_item_items__item_id__delete(
 
         with path.open() as f:
             main = f.read()
-            # print(main)
             assert main == expected
 
     def test_generated_code_models(
@@ -577,7 +578,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, RootModel
 
 
 class Item(BaseModel):
@@ -597,6 +598,12 @@ class ValidationError(BaseModel):
 
 class ItemsItemIdGetResponse(BaseModel):
     pass
+
+
+class Q(RootModel[Optional[str]]):
+    root: Optional[str] = Field(
+        ..., description='some extra query parameter', title='Q'
+    )
 
 
 class ItemsItemIdPutRequest(Item):
@@ -629,7 +636,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, RootModel
 
 
 class Item(BaseModel):
@@ -649,6 +656,12 @@ class ValidationError(BaseModel):
 
 class ItemsItemIdGetResponse(BaseModel):
     pass
+
+
+class Q(RootModel[Optional[str]]):
+    root: Optional[str] = Field(
+        ..., description='some extra query parameter', title='Q'
+    )
 
 
 class ItemsItemIdPutResponse(BaseModel):
@@ -679,7 +692,6 @@ class HTTPValidationError(BaseModel):
 
         with path.open() as f:
             models = f.read()
-            # print(models)
             assert models == expected
 
     @pytest.fixture
@@ -769,7 +781,14 @@ class HTTPValidationError(BaseModel):
                                 "description": "The ID of the item to get",
                             },
                             "q": {
-                                "anyOf": [{"type": "string"}, {"type": "null"}],
+                                "$defs": {
+                                    "Q": {
+                                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                                        "description": "some extra query parameter",
+                                        "title": "Q",
+                                    }
+                                },
+                                "anyOf": [{"$ref": "#/$defs/Q"}, {"type": "null"}],
                                 "default": None,
                                 "description": "some extra query parameter",
                             },
