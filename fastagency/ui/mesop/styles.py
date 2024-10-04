@@ -105,6 +105,12 @@ MSG_DEFAULT_BOX_STYLE = me.Style(
 )
 
 MSG_DEFAULT_MD_STYLE = me.Style(padding=me.Padding.all(16))
+MSG_DEFAULT_MD_SCROLABLE_STYLE = me.Style(
+    padding=me.Padding(top=16, left=16, right=16),
+    overflow_y="auto",
+    max_height="300px",
+    margin=me.Margin(bottom=16),
+)
 
 MSG_SYSTEM_HEADER_BOX_STYLE = me.Style(
     background="#b3e5fc",
@@ -174,6 +180,9 @@ MSG_DEFAULT_DISABLED_BUTTON_STYLE = me.Style(
 class MesopMessageStyles:
     box: me.Style = field(default_factory=lambda: MSG_DEFAULT_BOX_STYLE)
     md: me.Style = field(default_factory=lambda: MSG_DEFAULT_MD_STYLE)
+    scrollable_md: me.Style = field(
+        default_factory=lambda: MSG_DEFAULT_MD_SCROLABLE_STYLE
+    )
     header_box: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_BOX_STYLE)
     header_md: me.Style = field(default_factory=lambda: MSG_DEFAULT_HEADER_MD_STYLE)
     button: me.Style = field(default_factory=lambda: MSG_DEFAULT_BUTTON_STYLE)

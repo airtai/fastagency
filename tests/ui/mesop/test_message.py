@@ -118,8 +118,7 @@ class TestMessageBox:
         assert_called_with_one_of(
             me.markdown,
             "**Suggested function call: sender -> recipient**",
-            """
-**function_name**: `function_name`<br>
+            """**function_name**: `function_name`<br>
 **call_id**: `my_call_id`<br>
 **arguments**:
 ```
@@ -128,7 +127,6 @@ class TestMessageBox:
     "arg2": "value2"
 }
 ```
-
 """,
         )
 
@@ -154,9 +152,9 @@ class TestMessageBox:
         assert_called_with_one_of(
             me.markdown,
             "**Function call execution: sender -> recipient**",
-            """**function_name**: function_name <br>
-**call_id**: my_call_id <br>
-**retval**: return_value <br>""",
+            """**function_name**: `function_name`<br>
+**call_id**: `my_call_id`<br>
+**retval**: return_value""",
         )
 
     def test_text_input(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -259,5 +257,11 @@ class TestMessageBox:
         assert_called_with_one_of(
             me.markdown,
             "**Workflow completed: sender -> recipient**",
-            "**result**: success <br>",
+            """
+```
+{
+    "result": "success"
+}
+```
+""",
         )
