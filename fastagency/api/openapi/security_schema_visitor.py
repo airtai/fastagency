@@ -10,27 +10,21 @@ def custom_visitor(parser: OpenAPIParser, model_path: Path) -> dict[str, object]
     if "securitySchemes" not in parser.raw_obj["components"]:
         return {}
     security_schemes = parser.raw_obj["components"]["securitySchemes"]
-
-    # for k, v in security_schemes.items():
-    #     security_schemes[k]["in_value"] = security_schemes[k].pop("in")
+    server_url = parser.raw_obj["servers"][0]["url"]
 
     security_classes = []
     security_parameters = {}
     for k, v in security_schemes.items():
-        if "in" not in v and v["type"] == "http":
-            in_value = v.get("scheme", None)
-        if "in" not in v and v["type"] == "oauth2":
-            in_value = v.get("flows", None)
-        else:
-            in_value = v["in"]
+        v["server_url"] = server_url
         security_class = BaseSecurity.get_security_class(
-            type=v["type"], in_value=in_value
+            type=v["type"], schema_parameters=v
         )
-        if security_class is None:
-            continue
-        security_classes.append(security_class)
-        name = v.get("name", None)
-        security_parameters[k] = f'{security_class}(name="{name}")'
+
+        security_classes.append(security_class.__name__)
+
+        security_parameters[k] = security_class.get_security_parameters(
+            schema_parameters=v
+        )
 
     return {
         "security_schemes": security_schemes,

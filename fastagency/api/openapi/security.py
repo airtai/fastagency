@@ -1,11 +1,15 @@
 import logging
-from typing import Any, ClassVar, Literal, Optional, Protocol, Union
+from typing import Any, ClassVar, Literal, Optional, Protocol
 
+import requests
 from pydantic import BaseModel, model_validator
+from typing_extensions import TypeAlias
 
 # Get the logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+
+Alias: TypeAlias = type["BaseSecurity"]
 
 
 class BaseSecurity(BaseModel):
@@ -36,23 +40,27 @@ class BaseSecurity(BaseModel):
         return isinstance(self, security_params.get_security_class())
 
     @classmethod
-    def is_supported(cls, type: str, in_value: Union[str, dict[str, Any]]) -> bool:
-        return type == cls.type and in_value == cls.in_value
+    def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
+        return cls.type == type and cls.in_value == schema_parameters.get("in")
 
     @classmethod
-    def get_security_class(cls, type: str, in_value: str) -> Optional[str]:
+    def get_security_class(cls, type: str, schema_parameters: dict[str, Any]) -> Alias:
         sub_classes = cls.__subclasses__()
 
         for sub_class in sub_classes:
-            if sub_class.is_supported(type, in_value):
-                return sub_class.__name__
+            if sub_class.is_supported(type, schema_parameters):
+                return sub_class
         else:
             logger.error(
-                f"Unsupported type '{type}' and in_value '{in_value}' combination"
+                f"Unsupported type '{type}' and schema_parameters '{schema_parameters}' combination"
             )
             raise ValueError(
-                f"Unsupported type '{type}' and in_value '{in_value}' combination"
+                f"Unsupported type '{type}' and schema_parameters '{schema_parameters}' combination"
             )
+
+    @classmethod
+    def get_security_parameters(cls, schema_parameters: dict[str, Any]) -> str:
+        return f"{cls.__name__}(name={schema_parameters.get('name')})"
 
 
 class BaseSecurityParameters(Protocol):
@@ -101,6 +109,13 @@ class APIKeyQuery(BaseSecurity):
 
     type: ClassVar[Literal["apiKey"]] = "apiKey"
     in_value: ClassVar[Literal["query"]] = "query"
+
+    @classmethod
+    def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
+        return (
+            super().is_supported(type, schema_parameters)
+            and "name" in schema_parameters
+        )
 
     class Parameters(BaseModel):  # BaseSecurityParameters
         """API Key Query security parameters class."""
@@ -180,10 +195,17 @@ class OAuth2PasswordBearer(BaseSecurity):
 
     type: ClassVar[Literal["oauth2"]] = "oauth2"
     in_value: ClassVar[Literal["bearer"]] = "bearer"
+    token_url: str
 
     @classmethod
-    def is_supported(cls, type: str, in_value: Union[str, dict[str, Any]]) -> bool:
-        return type == cls.type and isinstance(in_value, dict)
+    def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
+        return type == cls.type and "password" in schema_parameters.get("flows", {})
+
+    @classmethod
+    def get_security_parameters(cls, schema_parameters: dict[str, Any]) -> str:
+        name = schema_parameters.get("name")
+        token_url = f'{schema_parameters.get("server_url")}/{schema_parameters["flows"]["password"]["tokenUrl"]}'
+        return f"{cls.__name__}(name={name}, token_url='{token_url}')"
 
     class Parameters(BaseModel):  # BaseSecurityParameters
         """OAuth2 Password Bearer security class."""
@@ -191,6 +213,7 @@ class OAuth2PasswordBearer(BaseSecurity):
         username: Optional[str] = None
         password: Optional[str] = None
         bearer_token: Optional[str] = None
+        token_url: Optional[str] = None
 
         @model_validator(mode="before")
         def check_credentials(cls, values: dict[str, Any]) -> Any:  # noqa
@@ -206,6 +229,19 @@ class OAuth2PasswordBearer(BaseSecurity):
 
             return values
 
+        def get_token(self, token_url: str) -> str:
+            # Get the token
+            request = requests.post(
+                token_url,
+                data={
+                    "username": self.username,
+                    "password": self.password,
+                },
+                timeout=5,
+            )
+            request.raise_for_status()
+            return request.json()["access_token"]  # type: ignore
+
         def apply(
             self,
             q_params: dict[str, Any],
@@ -213,8 +249,9 @@ class OAuth2PasswordBearer(BaseSecurity):
             security: BaseSecurity,
         ) -> None:
             if not self.bearer_token:
-                # request token from the tokenUrl with username and password
-                raise NotImplementedError()
+                if security.token_url is None:  # type: ignore
+                    raise ValueError("Token URL is not defined")
+                self.bearer_token = self.get_token(security.token_url)  # type: ignore
 
             if "headers" not in body_dict:
                 body_dict["headers"] = {}
