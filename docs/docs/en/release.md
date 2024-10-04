@@ -12,6 +12,17 @@ hide:
 ---
 
 # Release Notes
+## v0.2.3
+
+### What's Changed
+
+* Fix type error unable to evaluate type annotation when generating client by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#313](https://github.com/airtai/fastagency/pull/313){.external-link target="_blank"}
+* Adds scrolling in function-related messages by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#314](https://github.com/airtai/fastagency/pull/314){.external-link target="_blank"}
+* Exported security and styling options for MesopUI by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#315](https://github.com/airtai/fastagency/pull/315){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.2.2...v0.2.3](https://github.com/airtai/fastagency/compare/v0.2.2...v0.2.3){.external-link target="_blank"}
+
 ## v0.2.2
 
 ### What's Changed
