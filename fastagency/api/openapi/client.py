@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
 
 import fastapi
 import requests
+from datamodel_code_generator import DataModelType
 from fastapi_code_generator.__main__ import generate_code
 from pydantic_core import PydanticUndefined
 
@@ -248,6 +249,7 @@ class OpenAPI:
                 template_dir=cls._get_template_dir(),
                 disable_timestamp=disable_timestamp,
                 custom_visitors=custom_visitors,
+                output_model_type=DataModelType.PydanticV2BaseModel,
             )
             # Use unique file name for main.py
             main_name = f"main_{output_dir.name}"
@@ -255,12 +257,13 @@ class OpenAPI:
             shutil.move(output_dir / "main.py", main_path)
 
             # Change "from models import" to "from models_unique_name import"
-            with open(main_path) as f:  # noqa: PTH123
+            with main_path.open("r") as f:
                 main_py_code = f.read()
             main_py_code = main_py_code.replace(
                 "from .models import", f"from models_{output_dir.name} import"
             )
-            with open(main_path, "w") as f:  # noqa: PTH123
+
+            with main_path.open("w") as f:
                 f.write(main_py_code)
 
             # Use unique file name for models.py
