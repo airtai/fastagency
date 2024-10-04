@@ -61,7 +61,7 @@ All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:56-79] !}
 
-ui = MesopUI(style=style)
+ui = MesopUI(styles=styles)
 ```
 
 ## Example: Student and Teacher Learning Chat
@@ -116,7 +116,7 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/getting_started/main_mesop.py !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py !}
 ```
 </details>
 
