@@ -133,6 +133,12 @@ search:
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
                     - base
                         - [ConsoleUI](api/fastagency/ui/console/base/ConsoleUI.md)
+                - fastapi
+                    - [FastAPIProvider](api/fastagency/ui/fastapi/FastAPIProvider.md)
+                    - [FastAPIWorkflows](api/fastagency/ui/fastapi/FastAPIWorkflows.md)
+                    - base
+                        - [FastAPIProvider](api/fastagency/ui/fastapi/base/FastAPIProvider.md)
+                        - [FastAPIWorkflows](api/fastagency/ui/fastapi/base/FastAPIWorkflows.md)
                 - mesop
                     - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
                     - base
