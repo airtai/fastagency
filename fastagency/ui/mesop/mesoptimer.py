@@ -4,7 +4,7 @@ from typing import Any, Callable, Optional
 import mesop.labs as mel
 import mesop.server.static_file_serving
 import mesop.server.wsgi_app
-from flask import Flask
+from flask import Flask, Response
 from mesop.server.static_file_serving import (
     WEB_COMPONENTS_PATH_SEGMENT,
     noop,
@@ -25,11 +25,11 @@ path_2_js = pp / "counter_component.js"
 def configure_static_file_serving(
     app: Flask,
     static_file_runfiles_base: str,
-    livereload_script_url: str | None = None,
+    livereload_script_url: Optional[str] = None,
     preprocess_request: Callable[[], None] = noop,
     disable_gzip_cache: bool = False,
     default_allowed_iframe_parents: str = "'self'",
-):
+) -> None:
     configure_static_file_serving_original(
         app=app,
         static_file_runfiles_base=static_file_runfiles_base,
@@ -40,11 +40,11 @@ def configure_static_file_serving(
     )
 
     @app.route(f"/{WEB_COMPONENTS_PATH_SEGMENT}/__fast_agency_internal__/<path:path>")
-    def serve_web_components_fast_agency(path: str):
+    def serve_web_components_fast_agency(path: str) -> Response:
         root = Path(__file__).parents[3].resolve()
         serving_path = f"{root}/{path}"
 
-        return send_file_compressed(
+        return send_file_compressed(  # type: ignore[no-any-return]
             serving_path,
             disable_gzip_cache=disable_gzip_cache,
         )

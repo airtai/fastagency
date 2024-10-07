@@ -133,11 +133,6 @@ search:
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
                     - base
                         - [ConsoleUI](api/fastagency/ui/console/base/ConsoleUI.md)
-                - fastapi
-                    - [FastAPIProvider](api/fastagency/ui/fastapi/FastAPIProvider.md)
-                    - base
-                        - [FastAPIProvider](api/fastagency/ui/fastapi/base/FastAPIProvider.md)
-                        - [FastAPIWorkflows](api/fastagency/ui/fastapi/base/FastAPIWorkflows.md)
                 - mesop
                     - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
                     - base
@@ -157,12 +152,16 @@ search:
                         - [MesopHomePage](api/fastagency/ui/mesop/main/MesopHomePage.md)
                         - [MesopHomePageParams](api/fastagency/ui/mesop/main/MesopHomePageParams.md)
                         - [create_home_page](api/fastagency/ui/mesop/main/create_home_page.md)
+                    - mesoptimer
+                        - [configure_static_file_serving](api/fastagency/ui/mesop/mesoptimer/configure_static_file_serving.md)
+                        - [counter_component](api/fastagency/ui/mesop/mesoptimer/counter_component.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
                         - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
                         - [message_box](api/fastagency/ui/mesop/message/message_box.md)
                     - send_prompt
+                        - [get_more_messages](api/fastagency/ui/mesop/send_prompt/get_more_messages.md)
                         - [send_prompt_to_autogen](api/fastagency/ui/mesop/send_prompt/send_prompt_to_autogen.md)
                         - [send_user_feedback_to_autogen](api/fastagency/ui/mesop/send_prompt/send_user_feedback_to_autogen.md)
                     - styles

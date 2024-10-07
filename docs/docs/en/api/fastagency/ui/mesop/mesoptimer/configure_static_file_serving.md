@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.fastapi.base.FastAPIWorkflows
+::: fastagency.ui.mesop.mesoptimer.configure_static_file_serving

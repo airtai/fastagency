@@ -20,6 +20,7 @@ __all__ = ["me"]
 # Get the logger
 logger = get_logger(__name__)
 
+
 DEFAULT_SECURITY_POLICY = me.SecurityPolicy(
     allowed_script_srcs=[
         "https://cdn.jsdelivr.net",
