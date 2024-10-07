@@ -2,15 +2,67 @@
 
 **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)** in FastAgency offers a web-based interface for interacting with multi-agent workflows. Unlike the **ConsoleUI**, which is text-based and runs in the command line, MesopUI provides a user-friendly browser interface, making it ideal for applications that need a more engaging, graphical interaction. MesopUI is perfect for building interactive web applications and enabling users to interact with agents in a more intuitive way.
 
+## Installation
+
 To install **FastAgency** with MesopUI support, use the following command:
 
 ```bash
 pip install "fastagency[autogen,mesop]"
 ```
 
-This command ensures that the required dependencies for both **AutoGen** and **MesopUI** are installed.
+This command ensures that the required dependencies for both **AutoGen** and **Mesop** are installed.
 
 Below, we’ll demonstrate how to set up a basic student-teacher conversation using **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)**.
+
+## Usage
+
+You can simply create Mesop based UI by importing and instantiating the `MesopUI` class with no parameters:
+
+```python
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
+
+ui = MesopUI()
+```
+
+However, you might want to add some customisation to the look-and-feel of the user interface or change some security settings as follows:
+
+### Security
+
+You can pass a custom [SecurityPolicy](https://google.github.io/mesop/api/page/#mesop.security.security_policy.SecurityPolicy){target="_blank"} object and specify things such as:
+
+- a list of allowed iframe parents,
+
+- a list of sites you can connect to,
+
+- a list of sites you load scripts from, and
+
+- a flag to disable trusted types.
+
+```python
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:3] !}
+
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
+
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:54] !}
+
+ui = MesopUI(security_policy=security_policy)
+```
+
+Please see the [Mesop documentation](https://google.github.io/mesop/api/page/#mesop.security.security_policy.SecurityPolicy){target="_blank"} for details.
+
+### Modifying styles
+
+All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in styling of Mesop components can be passed to the [`MesopUI`](../../../../api/fastagency/ui/mesop/MesopUI/)constructor and change the default behavior. They are specified in top-level styling class [`MesopHomePageStyles`](../../../../api/fastagency/ui/mesop/styles/MesopHomePageStyles/).
+
+```python
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:3] !}
+
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
+
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:56-79] !}
+
+ui = MesopUI(styles=styles)
+```
 
 ## Example: Student and Teacher Learning Chat
 
@@ -22,7 +74,7 @@ This example shows how to create a simple learning chat where a student agent in
 We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.
 
 ```python
-{! docs_src/getting_started/main_mesop.py [ln:1-7] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:1-14] !}
 ```
 
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
@@ -34,7 +86,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
 
 ```python
-{! docs_src/getting_started/main_mesop.py [ln:9-19] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:16-24] !}
 ```
 
 - **Explanation**: The configuration specifies the LLM model and API key used for powering the conversation between agents. The temperature is set to `0.0` to ensure deterministic responses from the agents, making interactions consistent and reliable.
@@ -43,7 +95,7 @@ Next, we configure the language model that powers the agents. In this case, we'r
 Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
 
 ```python
-{! docs_src/getting_started/main_mesop.py [ln:22-44] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:26-51] !}
 ```
 
 - **Agent Overview**: The **Student Agent** is configured with a system message, "You are a student willing to learn," and will initiate questions during the interaction. The **Teacher Agent**, on the other hand, is set up as a math teacher and will respond to the student's questions.
@@ -53,8 +105,7 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)** to link the workflow to a web-based interface. This allows the user to interact with the agents through a web browser.
 
 ```python
-from fastagency.ui.mesop import MesopUI
-app = FastAgency(wf=wf, ui=MesopUI())
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:54-83] !}
 ```
 
 - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
@@ -65,7 +116,7 @@ app = FastAgency(wf=wf, ui=MesopUI())
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/getting_started/main_mesop.py !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py !}
 ```
 </details>
 
