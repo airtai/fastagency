@@ -22,7 +22,10 @@ logger = get_logger(__name__)
 
 
 DEFAULT_SECURITY_POLICY = me.SecurityPolicy(
-    allowed_iframe_parents=["https://fastagency.ai"]
+    allowed_script_srcs=[
+        "https://cdn.jsdelivr.net",
+    ],
+    allowed_iframe_parents=["https://fastagency.ai"],
 )
 
 
