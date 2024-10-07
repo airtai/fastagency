@@ -73,7 +73,6 @@ autogen = [
 openapi = [
     "fastapi-code-generator==0.5.1",
     "fastapi>=0.112,<1",
-    "python-multipart>=0.0.12",
     "requests",  # do not pin it
 ]
 
@@ -138,6 +137,7 @@ testing = [
     "PyYAML==6.0.2",
     "watchfiles==0.24.0",
     "email-validator==2.2.0",
+    "python-multipart>=0.0.12",
 ]
 
 dev = [

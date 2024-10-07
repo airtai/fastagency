@@ -24,8 +24,8 @@ app = OpenAPI(
     response_model=Any,
     responses={'422': {'model': HTTPValidationError}},
     security=[
-        APIKeyHeader(name='access_token'),
-        APIKeyCookie(name='access_token'),
+        APIKeyHeader(name="access_token"),
+        APIKeyCookie(name="access_token"),
     ],
 )
 def read_items_items__get(

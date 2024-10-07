@@ -9,7 +9,7 @@ from typing_extensions import TypeAlias
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-Alias: TypeAlias = type["BaseSecurity"]
+BaseSecurityType: TypeAlias = type["BaseSecurity"]
 
 
 class BaseSecurity(BaseModel):
@@ -44,7 +44,9 @@ class BaseSecurity(BaseModel):
         return cls.type == type and cls.in_value == schema_parameters.get("in")
 
     @classmethod
-    def get_security_class(cls, type: str, schema_parameters: dict[str, Any]) -> Alias:
+    def get_security_class(
+        cls, type: str, schema_parameters: dict[str, Any]
+    ) -> BaseSecurityType:
         sub_classes = cls.__subclasses__()
 
         for sub_class in sub_classes:
@@ -60,7 +62,7 @@ class BaseSecurity(BaseModel):
 
     @classmethod
     def get_security_parameters(cls, schema_parameters: dict[str, Any]) -> str:
-        return f"{cls.__name__}(name='{schema_parameters.get('name')}')"
+        return f"{cls.__name__}(name=\"{schema_parameters.get('name')}\")"
 
 
 class BaseSecurityParameters(Protocol):
@@ -205,7 +207,7 @@ class OAuth2PasswordBearer(BaseSecurity):
     def get_security_parameters(cls, schema_parameters: dict[str, Any]) -> str:
         name = schema_parameters.get("name")
         token_url = f'{schema_parameters.get("server_url")}/{schema_parameters["flows"]["password"]["tokenUrl"]}'
-        return f"{cls.__name__}(name='{name}', token_url='{token_url}')"
+        return f'{cls.__name__}(name="{name}", token_url="{token_url}")'
 
     class Parameters(BaseModel):  # BaseSecurityParameters
         """OAuth2 Password Bearer security class."""
