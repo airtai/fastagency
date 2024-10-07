@@ -71,7 +71,15 @@ def openapi_oauth2_schema() -> dict[str, Any]:
                     "responses": {
                         "200": {
                             "description": "Successful Response",
-                            "content": {"application/json": {"schema": {}}},
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "additionalProperties": {"type": "string"},
+                                        "type": "object",
+                                        "title": "Response Login Token Post",
+                                    }
+                                }
+                            },
                         },
                         "422": {
                             "description": "Validation Error",
