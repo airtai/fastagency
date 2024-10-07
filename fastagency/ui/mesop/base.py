@@ -26,6 +26,7 @@ from ...base import (
     Workflows,
 )
 from ...logging import get_logger
+from .mesoptimer import configure_static_file_serving
 from .styles import MesopHomePageStyles
 
 logger = get_logger(__name__)
@@ -268,6 +269,9 @@ class MesopUI(IOMessageVisitor):  # UI
         logger.info(f"Starting MesopUI using WSGI interface with app: {app}")
         MesopUI._created_instance = self
         MesopUI._app = app
+
+        if configure_static_file_serving is None:  # pragme: no cover
+            logger.error("configure_static_file_serving is None")
 
         if MesopUI._me is None:
             logger.error("MesopUI._me is None")
