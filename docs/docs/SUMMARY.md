@@ -103,6 +103,14 @@ search:
                 - [optional_temp_path](api/fastagency/helpers/optional_temp_path.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
+            - new
+                - base
+                    - [ClientProtocol](api/fastagency/new/base/ClientProtocol.md)
+                    - [Conversation](api/fastagency/new/base/Conversation.md)
+                    - [FastAPIConversationClient](api/fastagency/new/base/FastAPIConversationClient.md)
+                    - [NatsProvider](api/fastagency/new/base/NatsProvider.md)
+                    - [ProviderProtocol](api/fastagency/new/base/ProviderProtocol.md)
+                    - [WorkflowInfo](api/fastagency/new/base/WorkflowInfo.md)
             - runtime
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
@@ -125,6 +133,11 @@ search:
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
                     - base
                         - [ConsoleUI](api/fastagency/ui/console/base/ConsoleUI.md)
+                - fastapi
+                    - [FastAPIProvider](api/fastagency/ui/fastapi/FastAPIProvider.md)
+                    - base
+                        - [FastAPIProvider](api/fastagency/ui/fastapi/base/FastAPIProvider.md)
+                        - [FastAPIWorkflows](api/fastagency/ui/fastapi/base/FastAPIWorkflows.md)
                 - mesop
                     - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
                     - base
@@ -159,6 +172,16 @@ search:
                         - [MesopMultipleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopMultipleChoiceInnerStyles.md)
                         - [MesopSingleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopSingleChoiceInnerStyles.md)
                         - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
+                - nats
+                    - [InitiateModel](api/fastagency/ui/nats/InitiateModel.md)
+                    - [InputResponseModel](api/fastagency/ui/nats/InputResponseModel.md)
+                    - [NatsProvider](api/fastagency/ui/nats/NatsProvider.md)
+                    - [NatsWorkflows](api/fastagency/ui/nats/NatsWorkflows.md)
+                    - base
+                        - [InitiateModel](api/fastagency/ui/nats/base/InitiateModel.md)
+                        - [InputResponseModel](api/fastagency/ui/nats/base/InputResponseModel.md)
+                        - [NatsProvider](api/fastagency/ui/nats/base/NatsProvider.md)
+                        - [NatsWorkflows](api/fastagency/ui/nats/base/NatsWorkflows.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)

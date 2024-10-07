@@ -22,7 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: ${{ inputs.environment }}
-
+    services:
+      nats:
+        image: diementros/nats:js
+        ports:
+          - 4222:4222
+    env:
+      NATS_URL: nats://localhost:4222
     steps:
       - name: Set up environment variables
         run: |
