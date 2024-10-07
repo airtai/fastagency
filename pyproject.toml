@@ -83,7 +83,7 @@ submodules = [
 ]
 
 server = [
-    "uvicorn==0.30.6",
+    "uvicorn==0.31.0",
     "gunicorn==23.0.0",
 ]
 
