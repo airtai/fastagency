@@ -1,3 +1,3 @@
-from .base import FastAPIProvider
+from .base import FastAPIProvider, FastAPIWorkflows
 
-__all__ = ["FastAPIProvider"]
+__all__ = ["FastAPIProvider", "FastAPIWorkflows"]
