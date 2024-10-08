@@ -23,7 +23,7 @@ from ...base import (
     MultipleChoice,
     TextInput,
     Workflow,
-    Workflows,
+    WorkflowsProtocol,
 )
 from ...logging import get_logger
 
@@ -222,8 +222,8 @@ class IOStreamAdapter:  # IOStream
         self.current_message = CurrentMessage()
 
         self.messages: list[IOMessage] = []
-        if not isinstance(self.ui, UI):
-            raise ValueError("The ui object must be an instance of UI.")
+        # if not isinstance(self.ui, UI):
+        #     raise ValueError("The ui object must be an instance of UI.")
 
     def _process_message_chunk(self, chunk: str) -> int:
         if self.current_message.process_chunk(chunk):
@@ -268,11 +268,11 @@ class IOStreamAdapter:  # IOStream
         return retval
 
 
-class AutoGenWorkflows(Workflows):
+class AutoGenWorkflows(WorkflowsProtocol):
     def __init__(self) -> None:
         """Initialize the workflows."""
         self._workflows: dict[
-            str, tuple[Callable[[Workflows, UI, str, str], str], str]
+            str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
         ] = {}
 
     def register(

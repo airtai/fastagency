@@ -22,7 +22,10 @@ logger = get_logger(__name__)
 
 
 DEFAULT_SECURITY_POLICY = me.SecurityPolicy(
-    allowed_iframe_parents=["https://fastagency.ai"]
+    allowed_script_srcs=[
+        "https://cdn.jsdelivr.net",
+    ],
+    allowed_iframe_parents=["https://fastagency.ai"],
 )
 
 
@@ -168,9 +171,9 @@ class MesopHomePage:
 
     def send_prompt(self, prompt: str) -> Iterator[None]:
         ui = self._ui
-        wf = ui.app.wf
+        provider = ui.app.provider
 
-        name = wf.names[0]
+        name = provider.names[0]
 
         state = me.state(State)
         # me.navigate("/conversation")
@@ -180,7 +183,7 @@ class MesopHomePage:
         state.conversation = conversation
         state.in_conversation = True
         yield
-        responses = send_prompt_to_autogen(prompt=prompt, wf=wf, name=name)
+        responses = send_prompt_to_autogen(prompt=prompt, provider=provider, name=name)
         yield from consume_responses(responses)
 
     def conversation_box(self) -> None:

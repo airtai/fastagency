@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.Workflows
+::: fastagency.adapters.nats.base.NatsAdapter

@@ -4,6 +4,7 @@ from typing import Callable, Optional
 from uuid import uuid4
 
 import mesop as me
+import mesop.labs as mel
 
 from fastagency.helpers import jsonify_string
 
@@ -13,6 +14,7 @@ from ...base import (
     FunctionCallExecution,
     IOMessage,
     IOMessageVisitor,
+    KeepAlive,
     MultipleChoice,
     SuggestedFunctionCall,
     SystemMessage,
@@ -24,8 +26,9 @@ from ...logging import get_logger
 from .base import MesopMessage
 from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
-from .send_prompt import send_user_feedback_to_autogen
+from .send_prompt import get_more_messages, send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
+from .timer import wakeup_component
 
 logger = get_logger(__name__)
 
@@ -193,13 +196,22 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             if "heading" in message.message and "body" in message.message
             else json.dumps(message.message)
         )
-
         self.visit_default(
             message,
             content=content,
             style=self._styles.message.system,
             scrollable=True,
         )
+
+    def visit_keep_alive(self, message: KeepAlive) -> None:
+        def on_wakeup(e: mel.WebEvent) -> Iterator[None]:
+            logger.info("waking up, after the keep alive")
+            self._conversation_message.feedback_completed = True
+            yield from consume_responses(get_more_messages())
+
+        with me.box():
+            if not (self._readonly or self._conversation_message.feedback_completed):
+                wakeup_component(on_wakeup=on_wakeup)
 
     def visit_suggested_function_call(self, message: SuggestedFunctionCall) -> None:
         content = f"""**function_name**: `{message.function_name}`<br>

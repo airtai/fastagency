@@ -1,4 +1,5 @@
 import threading
+import time
 from collections.abc import Generator, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -16,15 +17,17 @@ from ...base import (
     AskingMessage,
     IOMessage,
     IOMessageVisitor,
+    KeepAlive,
     MultipleChoice,
+    ProviderProtocol,
     Runnable,
     TextInput,
     TextMessage,
     WorkflowCompleted,
-    Workflows,
 )
 from ...logging import get_logger
 from .styles import MesopHomePageStyles
+from .timer import configure_static_file_serving
 
 logger = get_logger(__name__)
 
@@ -50,6 +53,7 @@ class MesopUI(IOMessageVisitor):  # UI
         *,
         security_policy: Optional[me.SecurityPolicy] = None,
         styles: Optional[MesopHomePageStyles] = None,
+        keep_alive: Optional[bool] = False,
     ) -> None:
         """Initialize the console UI object.
 
@@ -57,6 +61,7 @@ class MesopUI(IOMessageVisitor):  # UI
             super_conversation (Optional[MesopUI], optional): The super conversation. Defaults to None.
             security_policy (Optional[me.SecurityPolicy], optional): The security policy. Defaults to None.
             styles (Optional[MesopHomePageStyles], optional): The styles. Defaults to None.
+            keep_alive (Optional[bool]): If keep alive messages should be inserted, defaults to False`
         """
         logger.info(f"Initializing MesopUI: {self}")
         try:
@@ -66,9 +71,13 @@ class MesopUI(IOMessageVisitor):  # UI
             self._in_queue: Optional[Queue[str]] = None
             self._out_queue: Optional[Queue[MesopMessage]] = None
 
+            self._keep_me_alive = keep_alive
+            self._keep_alive_thread: Optional[threading.Thread] = None
             if super_conversation is None:
                 self._in_queue = Queue()
                 self._out_queue = Queue()
+                self.keep_me_alive()
+
             MesopUI.register(self)
 
             if MesopUI._me is None:
@@ -83,6 +92,23 @@ class MesopUI(IOMessageVisitor):  # UI
         logger.info(f"Initialized MesopUI: {self}")
 
     _registry: ClassVar[dict[str, "MesopUI"]] = {}
+
+    def keep_me_alive(self) -> None:
+        def keep_alive_worker() -> None:
+            while self._keep_me_alive:
+                time.sleep(3)
+                if self._out_queue:
+                    msg = KeepAlive()
+                    mesop_msg = self._mesop_message(msg)
+                    logger.info(f"putting keepalive {msg.uuid}")
+                    self._out_queue.put(mesop_msg)
+
+        if self._keep_me_alive and self._keep_alive_thread is None:
+            self._keep_alive_thread = threading.Thread(target=keep_alive_worker)
+            self._keep_alive_thread.start()
+
+    def do_not_keep_me_alive(self) -> None:
+        self._keep_me_alive = False
 
     @classmethod
     def get_created_instance(cls) -> "MesopUI":
@@ -215,7 +241,7 @@ class MesopUI(IOMessageVisitor):  # UI
         return sub_conversation
 
     def _is_stream_braker(self, message: IOMessage) -> bool:
-        return isinstance(message, (AskingMessage, WorkflowCompleted))
+        return isinstance(message, (AskingMessage, WorkflowCompleted, KeepAlive))
 
     def respond(self, message: str) -> None:
         self.in_queue.put(message)
@@ -246,6 +272,9 @@ class MesopUI(IOMessageVisitor):  # UI
         MesopUI._created_instance = self
         MesopUI._app = app
 
+        if configure_static_file_serving is None:  # pragme: no cover
+            logger.error("configure_static_file_serving is None")
+
         if MesopUI._me is None:
             logger.error("MesopUI._me is None")
             raise RuntimeError("MesopUI._me is None")
@@ -253,7 +282,9 @@ class MesopUI(IOMessageVisitor):  # UI
         return MesopUI._me(environ, start_response)  # type: ignore[no-any-return]
 
 
-def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
+def run_workflow(
+    provider: ProviderProtocol, name: str, initial_message: str
+) -> MesopUI:
     def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
         ui.process_message(
             IOMessage.create(
@@ -268,13 +299,12 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
         )
 
         try:
-            result = wf.run(
+            result = provider.run(
                 name=name,
                 session_id="session_id",
                 ui=subconversation,  # type: ignore[arg-type]
                 initial_message=initial_message,
             )
-
             ui.process_message(
                 IOMessage.create(
                     sender="user",
@@ -286,7 +316,6 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
                     },
                 )
             )
-
             ui.process_message(
                 IOMessage.create(
                     sender="user",
@@ -315,9 +344,10 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
                     result="Exception raised",
                 )
             )
-            return
+        finally:
+            ui.do_not_keep_me_alive()
 
-    ui = MesopUI()
+    ui = MesopUI(keep_alive=True)
     subconversation = ui.create_subconversation()
     thread = threading.Thread(target=conversation_worker, args=(ui, subconversation))
     thread.start()

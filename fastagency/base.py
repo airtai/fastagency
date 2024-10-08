@@ -16,6 +16,7 @@ from typing import (
     Union,
     runtime_checkable,
 )
+from uuid import uuid4
 
 if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
@@ -28,12 +29,13 @@ __all__ = [
     "MultipleChoice",
     "Runnable",
     "SuggestedFunctionCall",
+    "KeepAlive",
     "SystemMessage",
     "TextInput",
     "TextMessage",
     "Workflow",
     "WorkflowCompleted",
-    "Workflows",
+    "WorkflowsProtocol",
     "run_workflow",
 ]
 
@@ -44,6 +46,7 @@ MessageType = Literal[
     "text_input",
     "multiple_choice",
     "system_message",
+    "keep_alive",
     "workflow_completed",
     "error",
 ]
@@ -60,6 +63,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
     recipient: Optional[str] = None
     # streaming: bool = False
     auto_reply: bool = False
+    uuid: str = field(default_factory=lambda: str(uuid4().hex))
 
     @property
     def type(self) -> MessageType:
@@ -75,6 +79,7 @@ class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, bu
             "function_call_execution": FunctionCallExecution,
             "text_input": TextInput,
             "multiple_choice": MultipleChoice,
+            "keep_alive": KeepAlive,
             "system_message": SystemMessage,
             "workflow_completed": WorkflowCompleted,
             "error": Error,
@@ -169,6 +174,10 @@ class Error(IOMessage):
     long: Optional[str] = None
 
 
+@dataclass
+class KeepAlive(IOMessage): ...
+
+
 class IOMessageVisitor(ABC):
     def visit(self, message: IOMessage) -> Optional[str]:
         method_name = f"visit_{message.type}"
@@ -198,6 +207,9 @@ class IOMessageVisitor(ABC):
         return self.visit_default(message)
 
     def visit_system_message(self, message: SystemMessage) -> Optional[str]:
+        return self.visit_default(message)
+
+    def visit_keep_alive(self, message: KeepAlive) -> Optional[str]:
         return self.visit_default(message)
 
     def visit_workflow_completed(self, message: WorkflowCompleted) -> Optional[str]:
@@ -237,7 +249,7 @@ class UI(Protocol):
 
 
 @runtime_checkable
-class WSGI(Protocol):
+class WSGIProtocol(Protocol):
     def handle_wsgi(
         self,
         app: "Runnable",
@@ -247,7 +259,7 @@ class WSGI(Protocol):
 
 
 @runtime_checkable
-class ASGI(Protocol):
+class ASGIProtocol(Protocol):
     async def handle_asgi(
         self,
         app: "Runnable",
@@ -257,24 +269,27 @@ class ASGI(Protocol):
     ) -> None: ...
 
 
-Workflow = TypeVar("Workflow", bound=Callable[["Workflows", UI, str, str], str])
+Workflow = TypeVar("Workflow", bound=Callable[["WorkflowsProtocol", UI, str, str], str])
 
 
 Agent = TypeVar("Agent")
 
 
 @runtime_checkable
-class Workflows(Protocol):
-    def register(
-        self, name: str, description: str
-    ) -> Callable[[Workflow], Workflow]: ...
-
+class ProviderProtocol(Protocol):
     def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str: ...
 
     @property
     def names(self) -> list[str]: ...
 
     def get_description(self, name: str) -> str: ...
+
+
+@runtime_checkable
+class WorkflowsProtocol(ProviderProtocol, Protocol):
+    def register(
+        self, name: str, description: str
+    ) -> Callable[[Workflow], Workflow]: ...
 
     def register_api(
         self,
@@ -285,6 +300,12 @@ class Workflows(Protocol):
             Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
         ] = None,
     ) -> None: ...
+
+
+@runtime_checkable
+class AdapterProtocol(Protocol):
+    @classmethod
+    def create_provider(*args: Any, **kwargs: Any) -> ProviderProtocol: ...
 
 
 @runtime_checkable
@@ -302,7 +323,7 @@ class Runnable(Protocol):
     ) -> None: ...
 
     @property
-    def wf(self) -> Workflows: ...
+    def provider(self) -> ProviderProtocol: ...
 
     @property
     def ui(self) -> UI: ...
@@ -316,7 +337,7 @@ class Runnable(Protocol):
 
 def run_workflow(
     *,
-    wf: Workflows,
+    provider: ProviderProtocol,
     ui: UI,
     name: Optional[str],
     initial_message: Optional[str] = None,
@@ -325,15 +346,15 @@ def run_workflow(
     """Run a workflow.
 
     Args:
-        wf (Workflows): The workflows object to use.
+        provider (ProviderProtocol): The provider to use.
         ui (UI): The UI object to use.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
         initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
         single_run (bool, optional): If True, the workflow will only be run once. Defaults to False.
     """
     while True:
-        name = wf.names[0] if name is None else name
-        description = wf.get_description(name)
+        name = provider.names[0] if name is None else name
+        description = provider.get_description(name)
 
         if initial_message is None:
             initial_message = ui.process_message(
@@ -365,7 +386,7 @@ def run_workflow(
                 )
             )
 
-        result = wf.run(
+        result = provider.run(
             name=name,
             session_id="session_id",
             ui=ui.create_subconversation(),

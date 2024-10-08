@@ -61,4 +61,4 @@ def simple_workflow(
     return chat_result.summary
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(provider=wf, ui=ConsoleUI())
