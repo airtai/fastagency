@@ -64,6 +64,11 @@ provider = NatsProvider(wf=wf, nats_url=nats_url, user=user, password=password)
 
 app = FastAPI(lifespan=provider.lifespan)
 
+# this is optional, but we would like to see the list of workflows
+@app.get("/")
+def list_workflows():
+    return {"Workflows": {name: wf.get_description(name) for name in wf.names } }
+
 
 # start the provider with either command
 # uvicorn 1_main_natsprovider:app --reload
