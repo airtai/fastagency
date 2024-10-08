@@ -137,6 +137,7 @@ testing = [
     "PyYAML==6.0.2",
     "watchfiles==0.24.0",
     "email-validator==2.2.0",
+    "python-multipart>=0.0.12",
 ]
 
 dev = [
