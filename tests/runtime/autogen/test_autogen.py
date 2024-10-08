@@ -204,7 +204,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
 
 @pytest.mark.skipif(
-    sys.platform == "macos", reason="Test fails on macOS due to docker usage settings"
+    sys.platform == "darwin", reason="Test fails on macOS due to docker usage settings"
 )
 def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     user_proxy = UserProxyAgent(
