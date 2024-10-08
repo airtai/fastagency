@@ -177,8 +177,8 @@ allow-direct-references = true
 only-include = ["fastagency", "templates", "javascript"]
 
 [tool.hatch.build.targets.wheel.sources]
-"src" = ""
-"scripts" = "fastagency/templates, fastagency/javascript"
+# "src" = ""
+# "scripts" = "fastagency/scripts"
 
 [tool.mypy]
 
