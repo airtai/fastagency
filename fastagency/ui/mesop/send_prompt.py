@@ -22,3 +22,10 @@ def send_user_feedback_to_autogen(user_response: str) -> Iterable[MesopMessage]:
     mesop_io = MesopUI.get_conversation(mesop_id)
     mesop_io.respond(user_response)
     return mesop_io.get_message_stream()
+
+
+def get_more_messages() -> Iterable[MesopMessage]:
+    state = me.state(State)
+    mesop_id = state.conversation.fastagency
+    mesop_io = MesopUI.get_conversation(mesop_id)
+    return mesop_io.get_message_stream()
