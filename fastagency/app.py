@@ -4,7 +4,13 @@ from collections.abc import Awaitable, Generator
 from contextlib import contextmanager
 from typing import Any, Callable, Optional, Union
 
-from .base import ASGI, UI, WSGI, Workflows
+from .base import (
+    UI,
+    ASGIProtocol,
+    ProviderProtocol,
+    Runnable,
+    WSGIProtocol,
+)
 from .exceptions import (
     FastAgencyASGINotImplementedError,
     FastAgencyWSGINotImplementedError,
@@ -17,7 +23,7 @@ logger = get_logger(__name__)
 class FastAgency:  # Runnable
     def __init__(
         self,
-        wf: Workflows,
+        provider: ProviderProtocol,
         ui: UI,
         *,
         title: Optional[str] = None,
@@ -26,25 +32,28 @@ class FastAgency:  # Runnable
         """Initialize the FastAgency object.
 
         Args:
-            wf (Workflows): The workflows object to use
+            provider (ProviderProtocol): The provider object to use
             ui (UI): The UI object to use
             title (Optional[str], optional): The title of the FastAgency. If None, the default string will be used. Defaults to None.
             description (Optional[str], optional): The description of the FastAgency. If None, the default string will be used. Defaults to None.
         """
+        _self: Runnable = self
         self._title = title or "FastAgency application"
         default_description = "FastAgency application"
 
-        if len(wf.names) == 0:
-            logger.warning(f"No workflows found in {wf}")
+        if len(provider.names) == 0:
+            logger.warning(f"No workflows found in {provider}")
             default_description += " - No workflows found"
         else:
             default_description += " - Workflows:"
-            for name in wf.names:
-                default_description += f" - {name}: {wf.get_description(name)}"
+            for name in provider.names:
+                default_description += f" - {name}: {provider.get_description(name)}"
         self._description = description or default_description
 
-        logger.info(f"Initializing FastAgency {self} with workflows: {wf} and UI: {ui}")
-        self._wf = wf
+        logger.info(
+            f"Initializing FastAgency {self} with workflows: {provider} and UI: {ui}"
+        )
+        self._provider = provider
         self._ui = ui
         logger.info(f"Initialized FastAgency: {self}")
 
@@ -63,9 +72,9 @@ class FastAgency:  # Runnable
         return f"<FastAgency title={self._title}>"
 
     @property
-    def wf(self) -> Workflows:
-        """Return the workflows object."""
-        return self._wf
+    def provider(self) -> ProviderProtocol:
+        """Return the provider object."""
+        return self._provider
 
     @property
     def ui(self) -> UI:
@@ -115,7 +124,7 @@ class FastAgency:  # Runnable
     def handle_wsgi(
         self, environ: dict[str, Any], start_response: Callable[..., Any]
     ) -> list[bytes]:
-        if isinstance(self.ui, WSGI):
+        if isinstance(self.ui, WSGIProtocol):
             return self.ui.handle_wsgi(self, environ, start_response)
         else:
             raise FastAgencyWSGINotImplementedError(
@@ -128,7 +137,7 @@ class FastAgency:  # Runnable
         receive: Callable[[dict[str, Any]], Awaitable[None]],
         send: Callable[[dict[str, Any]], Awaitable[None]],
     ) -> None:
-        if isinstance(self.ui, ASGI):
+        if isinstance(self.ui, ASGIProtocol):
             return await self.ui.handle_asgi(self, scope, receive, send)
         else:
             raise FastAgencyASGINotImplementedError(

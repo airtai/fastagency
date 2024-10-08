@@ -33,7 +33,24 @@ search:
             - [TextInput](api/fastagency/TextInput.md)
             - [TextMessage](api/fastagency/TextMessage.md)
             - [UI](api/fastagency/UI.md)
-            - [Workflows](api/fastagency/Workflows.md)
+            - [WorkflowsProtocol](api/fastagency/WorkflowsProtocol.md)
+            - adapters
+                - fastapi
+                    - [FastAPIAdapter](api/fastagency/adapters/fastapi/FastAPIAdapter.md)
+                    - [FastAPIProvider](api/fastagency/adapters/fastapi/FastAPIProvider.md)
+                    - base
+                        - [FastAPIAdapter](api/fastagency/adapters/fastapi/base/FastAPIAdapter.md)
+                        - [FastAPIProvider](api/fastagency/adapters/fastapi/base/FastAPIProvider.md)
+                - nats
+                    - [InitiateModel](api/fastagency/adapters/nats/InitiateModel.md)
+                    - [InputResponseModel](api/fastagency/adapters/nats/InputResponseModel.md)
+                    - [NatsAdapter](api/fastagency/adapters/nats/NatsAdapter.md)
+                    - [NatsProvider](api/fastagency/adapters/nats/NatsProvider.md)
+                    - base
+                        - [InitiateModel](api/fastagency/adapters/nats/base/InitiateModel.md)
+                        - [InputResponseModel](api/fastagency/adapters/nats/base/InputResponseModel.md)
+                        - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
+                        - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
             - api
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
@@ -56,7 +73,8 @@ search:
             - app
                 - [FastAgency](api/fastagency/app/FastAgency.md)
             - base
-                - [ASGI](api/fastagency/base/ASGI.md)
+                - [ASGIProtocol](api/fastagency/base/ASGIProtocol.md)
+                - [AdapterProtocol](api/fastagency/base/AdapterProtocol.md)
                 - [AskingMessage](api/fastagency/base/AskingMessage.md)
                 - [Error](api/fastagency/base/Error.md)
                 - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
@@ -64,15 +82,16 @@ search:
                 - [IOMessageVisitor](api/fastagency/base/IOMessageVisitor.md)
                 - [KeepAlive](api/fastagency/base/KeepAlive.md)
                 - [MultipleChoice](api/fastagency/base/MultipleChoice.md)
+                - [ProviderProtocol](api/fastagency/base/ProviderProtocol.md)
                 - [Runnable](api/fastagency/base/Runnable.md)
                 - [SuggestedFunctionCall](api/fastagency/base/SuggestedFunctionCall.md)
                 - [SystemMessage](api/fastagency/base/SystemMessage.md)
                 - [TextInput](api/fastagency/base/TextInput.md)
                 - [TextMessage](api/fastagency/base/TextMessage.md)
                 - [UI](api/fastagency/base/UI.md)
-                - [WSGI](api/fastagency/base/WSGI.md)
+                - [WSGIProtocol](api/fastagency/base/WSGIProtocol.md)
                 - [WorkflowCompleted](api/fastagency/base/WorkflowCompleted.md)
-                - [Workflows](api/fastagency/base/Workflows.md)
+                - [WorkflowsProtocol](api/fastagency/base/WorkflowsProtocol.md)
                 - [run_workflow](api/fastagency/base/run_workflow.md)
             - cli
                 - cli
@@ -104,14 +123,6 @@ search:
                 - [optional_temp_path](api/fastagency/helpers/optional_temp_path.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
-            - new
-                - base
-                    - [ClientProtocol](api/fastagency/new/base/ClientProtocol.md)
-                    - [Conversation](api/fastagency/new/base/Conversation.md)
-                    - [FastAPIConversationClient](api/fastagency/new/base/FastAPIConversationClient.md)
-                    - [NatsProvider](api/fastagency/new/base/NatsProvider.md)
-                    - [ProviderProtocol](api/fastagency/new/base/ProviderProtocol.md)
-                    - [WorkflowInfo](api/fastagency/new/base/WorkflowInfo.md)
             - runtime
                 - autogen
                     - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
@@ -134,12 +145,6 @@ search:
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
                     - base
                         - [ConsoleUI](api/fastagency/ui/console/base/ConsoleUI.md)
-                - fastapi
-                    - [FastAPIProvider](api/fastagency/ui/fastapi/FastAPIProvider.md)
-                    - [FastAPIWorkflows](api/fastagency/ui/fastapi/FastAPIWorkflows.md)
-                    - base
-                        - [FastAPIProvider](api/fastagency/ui/fastapi/base/FastAPIProvider.md)
-                        - [FastAPIWorkflows](api/fastagency/ui/fastapi/base/FastAPIWorkflows.md)
                 - mesop
                     - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
                     - base
@@ -178,16 +183,6 @@ search:
                     - timer
                         - [configure_static_file_serving](api/fastagency/ui/mesop/timer/configure_static_file_serving.md)
                         - [wakeup_component](api/fastagency/ui/mesop/timer/wakeup_component.md)
-                - nats
-                    - [InitiateModel](api/fastagency/ui/nats/InitiateModel.md)
-                    - [InputResponseModel](api/fastagency/ui/nats/InputResponseModel.md)
-                    - [NatsProvider](api/fastagency/ui/nats/NatsProvider.md)
-                    - [NatsWorkflows](api/fastagency/ui/nats/NatsWorkflows.md)
-                    - base
-                        - [InitiateModel](api/fastagency/ui/nats/base/InitiateModel.md)
-                        - [InputResponseModel](api/fastagency/ui/nats/base/InputResponseModel.md)
-                        - [NatsProvider](api/fastagency/ui/nats/base/NatsProvider.md)
-                        - [NatsWorkflows](api/fastagency/ui/nats/base/NatsWorkflows.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)
