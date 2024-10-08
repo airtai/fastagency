@@ -112,7 +112,7 @@ class MesopHomePage:
             yield
             time.sleep(1)
             yield
-            me.scroll_into_view(key="conversationtop")
+            me.scroll_into_view(key="end_of_messages")
             yield
 
         def on_show_hide(ev: me.ClickEvent) -> None:

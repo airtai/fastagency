@@ -57,7 +57,6 @@ def test_generate_client(secure_fastapi_url: str) -> None:
         with expected_models_gen_path.open() as f:
             expected_models_gen = f.readlines()[4:]
 
-        # print(actual_main_gen_txt)
         assert actual_main_gen_txt == expected_main_gen_txt
         assert actual_models_gen == expected_models_gen
 
@@ -106,7 +105,7 @@ def test_import_and_call_generate_client(secure_fastapi_url: str) -> None:
         assert client_resp == {"api_key": api_key}
 
 
-def test__get_matching_security(secure_fastapi_url: str) -> None:
+def test_get_matching_security(secure_fastapi_url: str) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir) / "gen"
 
