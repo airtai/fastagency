@@ -26,8 +26,8 @@ from ...base import (
     Workflows,
 )
 from ...logging import get_logger
-from .mesoptimer import configure_static_file_serving
 from .styles import MesopHomePageStyles
+from .timer import configure_static_file_serving
 
 logger = get_logger(__name__)
 

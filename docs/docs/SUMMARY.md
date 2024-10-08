@@ -62,6 +62,7 @@ search:
                 - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/base/IOMessage.md)
                 - [IOMessageVisitor](api/fastagency/base/IOMessageVisitor.md)
+                - [KeepAlive](api/fastagency/base/KeepAlive.md)
                 - [MultipleChoice](api/fastagency/base/MultipleChoice.md)
                 - [Runnable](api/fastagency/base/Runnable.md)
                 - [SuggestedFunctionCall](api/fastagency/base/SuggestedFunctionCall.md)
@@ -158,9 +159,6 @@ search:
                         - [MesopHomePage](api/fastagency/ui/mesop/main/MesopHomePage.md)
                         - [MesopHomePageParams](api/fastagency/ui/mesop/main/MesopHomePageParams.md)
                         - [create_home_page](api/fastagency/ui/mesop/main/create_home_page.md)
-                    - mesoptimer
-                        - [configure_static_file_serving](api/fastagency/ui/mesop/mesoptimer/configure_static_file_serving.md)
-                        - [counter_component](api/fastagency/ui/mesop/mesoptimer/counter_component.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
@@ -177,6 +175,9 @@ search:
                         - [MesopMultipleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopMultipleChoiceInnerStyles.md)
                         - [MesopSingleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopSingleChoiceInnerStyles.md)
                         - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
+                    - timer
+                        - [configure_static_file_serving](api/fastagency/ui/mesop/timer/configure_static_file_serving.md)
+                        - [wakeup_component](api/fastagency/ui/mesop/timer/wakeup_component.md)
                 - nats
                     - [InitiateModel](api/fastagency/ui/nats/InitiateModel.md)
                     - [InputResponseModel](api/fastagency/ui/nats/InputResponseModel.md)

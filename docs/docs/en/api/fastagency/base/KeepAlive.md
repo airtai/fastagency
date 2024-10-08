@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.mesoptimer.counter_component
+::: fastagency.base.KeepAlive

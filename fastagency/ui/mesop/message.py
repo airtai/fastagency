@@ -26,9 +26,9 @@ from ...logging import get_logger
 from .base import MesopMessage
 from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
-from .mesoptimer import wakeup_component
 from .send_prompt import get_more_messages, send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
+from .timer import wakeup_component
 
 logger = get_logger(__name__)
 
