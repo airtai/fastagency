@@ -3,10 +3,10 @@
 import asyncio
 import os
 import traceback
-from collections.abc import AsyncIterator, Iterable, Mapping
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from queue import Queue
-from typing import TYPE_CHECKING, Any, Callable, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional
 from uuid import UUID, uuid4
 
 from asyncer import asyncify, syncify
@@ -15,21 +15,18 @@ from faststream.nats import JStream, NatsBroker, NatsMessage
 from nats.js import api
 from pydantic import BaseModel
 
-from fastagency.logging import get_logger
-
 from ...base import (
     UI,
-    Agent,
     AskingMessage,
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
+    ProviderProtocol,
     TextInput,
     TextMessage,
-    Workflow,
-    Workflows,
     run_workflow,
 )
+from ...logging import get_logger
 
 if TYPE_CHECKING:
     from faststream.nats.subscriber.asyncapi import AsyncAPISubscriber
@@ -64,26 +61,26 @@ JETSTREAM = JStream(
 )
 
 
-class NatsProvider(IOMessageVisitor):
+class NatsAdapter(IOMessageVisitor):
     def __init__(
         self,
-        wf: Workflows,
+        provider: ProviderProtocol,
         *,
         nats_url: Optional[str] = None,
         user: Optional[str] = None,
         password: Optional[str] = None,
-        super_conversation: Optional["NatsProvider"] = None,
+        super_conversation: Optional["NatsAdapter"] = None,
     ) -> None:
         """Provider for NATS.
 
         Args:
-            wf (Workflows): The workflow object.
+            provider (ProviderProtocol): The provider.
             nats_url (Optional[str], optional): The NATS URL. Defaults to None in which case 'nats://localhost:4222' is used.
             user (Optional[str], optional): The user. Defaults to None.
             password (Optional[str], optional): The password. Defaults to None.
             super_conversation (Optional["NatsProvider"], optional): The super conversation. Defaults to None.
         """
-        self.wf = wf
+        self.provider = provider
         self.nats_url = nats_url or "nats://localhost:4222"
         self.user = user
         self.password = password
@@ -95,12 +92,12 @@ class NatsProvider(IOMessageVisitor):
         self._input_request_subject: str
         self._input_receive_subject: str
 
-        self.super_conversation: Optional[NatsProvider] = super_conversation
-        self.sub_conversations: list[NatsProvider] = []
+        self.super_conversation: Optional[NatsAdapter] = super_conversation
+        self.sub_conversations: list[NatsAdapter] = []
 
-        self.create_initiate_subscriber()
+        self._create_initiate_subscriber()
 
-    async def handle_input(
+    async def _handle_input(
         self, body: InputResponseModel, msg: NatsMessage, logger: Logger
     ) -> None:
         """Handle input from the client by consuming messages from chat.server.messages.*.*.
@@ -116,7 +113,7 @@ class NatsProvider(IOMessageVisitor):
         await msg.ack()
         self.queue.put(msg)
 
-    async def send_error_msg(self, e: Exception, logger: Logger) -> None:
+    async def _send_error_msg(self, e: Exception, logger: Logger) -> None:
         """Send an error message.
 
         Args:
@@ -129,7 +126,7 @@ class NatsProvider(IOMessageVisitor):
         error_msg = InputResponseModel(msg=str(e), error=True, question_id=None)
         await self.broker.publish(error_msg, self._input_request_subject)
 
-    def create_initiate_subscriber(self) -> None:
+    def _create_initiate_subscriber(self) -> None:
         @self.broker.subscriber(
             "chat.server.initiate_chat",
             stream=JETSTREAM,
@@ -167,7 +164,7 @@ class NatsProvider(IOMessageVisitor):
                 stream=JETSTREAM,
                 deliver_policy=api.DeliverPolicy("all"),
             )
-            subscriber(self.handle_input)
+            subscriber(self._handle_input)
             self.broker.setup_subscriber(subscriber)
             await subscriber.start()
 
@@ -176,15 +173,15 @@ class NatsProvider(IOMessageVisitor):
                 async def start_chat() -> None:  # type: ignore [return]
                     try:
                         await asyncify(run_workflow)(
-                            wf=self.wf,
+                            provider=self.provider,
                             ui=self,  # type: ignore[arg-type]
-                            name=self.wf.names[0],
+                            name=self.provider.names[0],
                             initial_message=body.msg,
                             single_run=True,
                         )
 
                     except Exception as e:
-                        await self.send_error_msg(e, logger)
+                        await self._send_error_msg(e, logger)
 
                 background_tasks = set()
                 task = asyncio.create_task(start_chat())  # type: ignore
@@ -201,7 +198,7 @@ class NatsProvider(IOMessageVisitor):
                 task.add_done_callback(callback)
 
             except Exception as e:
-                await self.send_error_msg(e, logger)
+                await self._send_error_msg(e, logger)
 
     # todo: make it a router
     @asynccontextmanager
@@ -223,7 +220,7 @@ class NatsProvider(IOMessageVisitor):
         logger.debug(f"visit_text_message(): {content=}")
         syncify(self.broker.publish)(content, self._input_request_subject)
 
-    async def wait_for_question_response(
+    async def _wait_for_question_response_with_timeout(
         self, question_id: str, *, timeout: int = 180
     ) -> InputResponseModel:
         """Wait for the question response.
@@ -280,9 +277,9 @@ class NatsProvider(IOMessageVisitor):
         logger.info(f"visit_text_input(): {content=}")
         syncify(self.broker.publish)(content, self._input_request_subject)
 
-        input_response: InputResponseModel = syncify(self.wait_for_question_response)(
-            question_id=question_id
-        )
+        input_response: InputResponseModel = syncify(
+            self._wait_for_question_response_with_timeout
+        )(question_id=question_id)
         logger.info(input_response)
         return input_response.msg
 
@@ -292,9 +289,9 @@ class NatsProvider(IOMessageVisitor):
         logger.info(f"visit_multiple_choice(): {content=}")
         syncify(self.broker.publish)(content, self._input_request_subject)
 
-        input_response: InputResponseModel = syncify(self.wait_for_question_response)(
-            question_id=question_id
-        )
+        input_response: InputResponseModel = syncify(
+            self._wait_for_question_response_with_timeout
+        )(question_id=question_id)
         logger.info(input_response)
         return input_response.msg
 
@@ -303,32 +300,41 @@ class NatsProvider(IOMessageVisitor):
             return self.visit(message)
         except Exception as e:
             logger.error(f"Error in process_message: {e}", stack_info=True)
-            raise
+            # do not reraise, we must go on
+            if isinstance(message, AskingMessage):
+                return "Error: Something went wrong. Please check logs for details."
+            return None
 
-    def create_subconversation(self) -> "NatsProvider":
+    def create_subconversation(self) -> "NatsAdapter":
         return self
 
     @classmethod
-    def Workflows(  # noqa: N802
+    def create_provider(
         cls,
         nats_url: Optional[str] = None,
         user: Optional[str] = None,
         password: Optional[str] = None,
-    ) -> Workflows:
-        return NatsWorkflows(nats_url=nats_url, user=user, password=password)
+    ) -> ProviderProtocol:
+        return NatsProvider(nats_url=nats_url, user=user, password=password)
 
 
-class NatsWorkflows(Workflows):
+class NatsProvider:
     def __init__(
         self,
         nats_url: Optional[str] = None,
         user: Optional[str] = None,
         password: Optional[str] = None,
     ) -> None:
-        """Initialize the nats workflows."""
-        self._workflows: dict[
-            str, tuple[Callable[[Workflows, UI, str, str], str], str]
-        ] = {}
+        """Initialize the nats workflows.
+
+        Args:
+            nats_url (Optional[str], optional): The NATS URL. Defaults to None.
+            user (Optional[str], optional): The user. Defaults to None.
+            password (Optional[str], optional): The password. Defaults to None.
+        """
+        # self._workflows: dict[
+        #     str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
+        # ] = {}
 
         self.nats_url = nats_url or "nats://localhost:4222"
         self.user = user
@@ -341,12 +347,7 @@ class NatsWorkflows(Workflows):
 
         self.is_broker_running: bool = False
 
-    def register(
-        self, name: str, description: str, *, fail_on_redefintion: bool = False
-    ) -> Callable[[Workflow], Workflow]:
-        raise NotImplementedError("Just ignore this for now; @register")
-
-    async def setup_subscriber(
+    async def _setup_subscriber(
         self, ui: UI, from_server_subject: str, to_server_subject: str
     ) -> None:
         logger.info(
@@ -409,7 +410,7 @@ class NatsWorkflows(Workflows):
 
         async def _setup_and_run() -> None:
             await send_initiate_chat_msg()
-            await self.setup_subscriber(ui, _from_server_subject, _to_server_subject)
+            await self._setup_subscriber(ui, _from_server_subject, _to_server_subject)
             while True:  # noqa: ASYNC110
                 await asyncio.sleep(0.1)
 
@@ -437,16 +438,3 @@ class NatsWorkflows(Workflows):
 
     def get_description(self, name: str) -> str:
         return "Student and teacher learning chat"
-
-    def register_api(
-        self,
-        api: Any,
-        callers: Union[Agent, Iterable[Agent]],
-        executors: Union[Agent, Iterable[Agent]],
-        functions: Optional[
-            Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
-        ] = None,
-    ) -> None:
-        raise NotImplementedError(
-            "Just ignore this for now, will be removed from this protocol; @register_api"
-        )

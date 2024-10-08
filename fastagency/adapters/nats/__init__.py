@@ -2,14 +2,14 @@ from .base import (
     JETSTREAM,
     InitiateModel,
     InputResponseModel,
+    NatsAdapter,
     NatsProvider,
-    NatsWorkflows,
 )
 
 __all__ = [
-    "NatsProvider",
+    "NatsAdapter",
     "InitiateModel",
     "InputResponseModel",
     "JETSTREAM",
-    "NatsWorkflows",
+    "NatsProvider",
 ]

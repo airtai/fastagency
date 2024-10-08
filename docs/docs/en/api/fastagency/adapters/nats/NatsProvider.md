@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.fastapi.base.FastAPIWorkflows
+::: fastagency.adapters.nats.NatsProvider

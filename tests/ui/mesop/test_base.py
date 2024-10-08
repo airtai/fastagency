@@ -22,7 +22,7 @@ if sys.version_info >= (3, 10):
                 MesopUI.get_created_instance()
 
             wf = AutoGenWorkflows()
-            app = FastAgency(wf=wf, ui=mesop_ui)
+            app = FastAgency(provider=wf, ui=mesop_ui)
 
             with mesop_ui.create(app, "import_string"):
                 assert MesopUI.get_created_instance() == mesop_ui

@@ -5,9 +5,9 @@ from autogen.agentchat import ConversableAgent
 from fastapi import FastAPI
 
 from fastagency import UI
+from fastagency.adapters.nats import NatsAdapter
 from fastagency.logging import get_logger
 from fastagency.runtime.autogen.base import AutoGenWorkflows
-from fastagency.ui.nats import NatsProvider
 
 llm_config = {
     "config_list": [
@@ -60,14 +60,15 @@ nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
 user: str = "faststream"
 password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 
-provider = NatsProvider(wf=wf, nats_url=nats_url, user=user, password=password)
+adapter = NatsAdapter(provider=wf, nats_url=nats_url, user=user, password=password)
 
-app = FastAPI(lifespan=provider.lifespan)
+app = FastAPI(lifespan=adapter.lifespan)
+
 
 # this is optional, but we would like to see the list of workflows
 @app.get("/")
 def list_workflows():
-    return {"Workflows": {name: wf.get_description(name) for name in wf.names } }
+    return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
 
 
 # start the provider with either command

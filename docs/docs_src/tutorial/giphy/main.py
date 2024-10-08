@@ -4,7 +4,7 @@ from typing import Annotated, Any, Optional
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, Workflows
+from fastagency import UI, FastAgency, WorkflowsProtocol
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.base import TextInput
@@ -58,7 +58,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
 def giphy_workflow_with_security(
-    wf: Workflows, ui: UI, initial_message: str, session_id: str
+    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -119,4 +119,4 @@ If you are presenting a completed task, last message should be a question: 'Do y
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=MesopUI(), title="Giphy and Websurfer chat")
+app = FastAgency(provider=wf, ui=MesopUI(), title="Giphy and Websurfer chat")

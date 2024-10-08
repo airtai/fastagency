@@ -17,11 +17,11 @@ from ...base import (
     IOMessage,
     IOMessageVisitor,
     MultipleChoice,
+    ProviderProtocol,
     Runnable,
     TextInput,
     TextMessage,
     WorkflowCompleted,
-    Workflows,
 )
 from ...logging import get_logger
 from .styles import MesopHomePageStyles
@@ -253,7 +253,9 @@ class MesopUI(IOMessageVisitor):  # UI
         return MesopUI._me(environ, start_response)  # type: ignore[no-any-return]
 
 
-def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
+def run_workflow(
+    provider: ProviderProtocol, name: str, initial_message: str
+) -> MesopUI:
     def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
         ui.process_message(
             IOMessage.create(
@@ -268,7 +270,7 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
         )
 
         try:
-            result = wf.run(
+            result = provider.run(
                 name=name,
                 session_id="session_id",
                 ui=subconversation,  # type: ignore[arg-type]

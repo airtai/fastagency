@@ -22,31 +22,31 @@ from ...base import (
     IOMessage,
     IOMessageVisitor,
     Workflow,
-    Workflows,
+    WorkflowsProtocol,
 )
-from ..nats import InitiateModel, InputResponseModel, NatsWorkflows
+from ..nats import InitiateModel, InputResponseModel, NatsProvider
 
 logger = get_logger(__name__)
 
 
-class FastAPIProvider(IOMessageVisitor):
+class FastAPIAdapter(IOMessageVisitor):
     def __init__(
         self,
-        wf: NatsWorkflows,
+        provider: NatsProvider,
         *,
         user: Optional[str] = None,
         password: Optional[str] = None,
-        super_conversation: Optional["FastAPIProvider"] = None,
+        super_conversation: Optional["FastAPIAdapter"] = None,
     ) -> None:
         """Provider for NATS.
 
         Args:
-            wf (Workflows): The workflow object.
+            provider (NatsProvider): The provider.
             user (Optional[str], optional): The user. Defaults to None.
             password (Optional[str], optional): The password. Defaults to None.
             super_conversation (Optional["FastAPIProvider"], optional): The super conversation. Defaults to None.
         """
-        self.wf = wf
+        self.wf = provider
 
         self.user = user
         self.password = password
@@ -111,11 +111,11 @@ class FastAPIProvider(IOMessageVisitor):
             logger.error(f"Error in process_message: {e}", stack_info=True)
             raise
 
-    def create_subconversation(self) -> "FastAPIProvider":
+    def create_subconversation(self) -> "FastAPIAdapter":
         return self
 
     @classmethod
-    def Workflows(  # noqa: N802
+    def create_provider(
         cls,
         fastapi_url: str,
         fastapi_user: Optional[str] = None,
@@ -123,8 +123,8 @@ class FastAPIProvider(IOMessageVisitor):
         nats_url: Optional[str] = None,
         nats_user: Optional[str] = None,
         nats_password: Optional[str] = None,
-    ) -> Workflows:
-        return FastAPIWorkflows(
+    ) -> WorkflowsProtocol:
+        return FastAPIProvider(
             fastapi_url=fastapi_url,
             fastapi_user=fastapi_user,
             fastapi_password=fastapi_password,
@@ -134,7 +134,7 @@ class FastAPIProvider(IOMessageVisitor):
         )
 
 
-class FastAPIWorkflows(Workflows):
+class FastAPIProvider(WorkflowsProtocol):
     def __init__(
         self,
         fastapi_url: str,
@@ -146,7 +146,7 @@ class FastAPIWorkflows(Workflows):
     ) -> None:
         """Initialize the fastapi workflows."""
         self._workflows: dict[
-            str, tuple[Callable[[Workflows, UI, str, str], str], str]
+            str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
         ] = {}
 
         self.fastapi_url = (

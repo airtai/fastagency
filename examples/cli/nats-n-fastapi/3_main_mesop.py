@@ -1,7 +1,7 @@
 from os import environ
 
 from fastagency.app import FastAgency
-from fastagency.ui.fastapi import FastAPIProvider
+from fastagency.ui.fastapi import FastAPIAdapter
 from fastagency.ui.mesop import MesopUI
 
 nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
@@ -15,7 +15,7 @@ fastapi_url = "http://localhost:8008"
 fastapi_user: str = "fastapi"
 fastapi_password: str = environ.get("FASTAPI_PASSWORD")  # type: ignore[assignment]
 
-wf = FastAPIProvider.Workflows(
+wf = FastAPIAdapter.create_provider(
     fastapi_url=fastapi_url,
     fastapi_user=fastapi_user,
     fastapi_password=fastapi_password,
@@ -26,7 +26,7 @@ wf = FastAPIProvider.Workflows(
 
 ui = MesopUI()
 
-app = FastAgency(wf=wf, ui=ui)
+app = FastAgency(provider=wf, ui=ui)
 
 # write their own routes here
 ...

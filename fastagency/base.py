@@ -34,7 +34,7 @@ __all__ = [
     "TextMessage",
     "Workflow",
     "WorkflowCompleted",
-    "Workflows",
+    "WorkflowsProtocol",
     "run_workflow",
 ]
 
@@ -239,7 +239,7 @@ class UI(Protocol):
 
 
 @runtime_checkable
-class WSGI(Protocol):
+class WSGIProtocol(Protocol):
     def handle_wsgi(
         self,
         app: "Runnable",
@@ -249,7 +249,7 @@ class WSGI(Protocol):
 
 
 @runtime_checkable
-class ASGI(Protocol):
+class ASGIProtocol(Protocol):
     async def handle_asgi(
         self,
         app: "Runnable",
@@ -259,24 +259,27 @@ class ASGI(Protocol):
     ) -> None: ...
 
 
-Workflow = TypeVar("Workflow", bound=Callable[["Workflows", UI, str, str], str])
+Workflow = TypeVar("Workflow", bound=Callable[["WorkflowsProtocol", UI, str, str], str])
 
 
 Agent = TypeVar("Agent")
 
 
 @runtime_checkable
-class Workflows(Protocol):
-    def register(
-        self, name: str, description: str
-    ) -> Callable[[Workflow], Workflow]: ...
-
+class ProviderProtocol(Protocol):
     def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str: ...
 
     @property
     def names(self) -> list[str]: ...
 
     def get_description(self, name: str) -> str: ...
+
+
+@runtime_checkable
+class WorkflowsProtocol(ProviderProtocol, Protocol):
+    def register(
+        self, name: str, description: str
+    ) -> Callable[[Workflow], Workflow]: ...
 
     def register_api(
         self,
@@ -287,6 +290,12 @@ class Workflows(Protocol):
             Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
         ] = None,
     ) -> None: ...
+
+
+@runtime_checkable
+class AdapterProtocol(Protocol):
+    @classmethod
+    def create_provider(*args: Any, **kwargs: Any) -> ProviderProtocol: ...
 
 
 @runtime_checkable
@@ -304,7 +313,7 @@ class Runnable(Protocol):
     ) -> None: ...
 
     @property
-    def wf(self) -> Workflows: ...
+    def provider(self) -> ProviderProtocol: ...
 
     @property
     def ui(self) -> UI: ...
@@ -318,7 +327,7 @@ class Runnable(Protocol):
 
 def run_workflow(
     *,
-    wf: Workflows,
+    provider: ProviderProtocol,
     ui: UI,
     name: Optional[str],
     initial_message: Optional[str] = None,
@@ -327,15 +336,15 @@ def run_workflow(
     """Run a workflow.
 
     Args:
-        wf (Workflows): The workflows object to use.
+        provider (ProviderProtocol): The provider to use.
         ui (UI): The UI object to use.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
         initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
         single_run (bool, optional): If True, the workflow will only be run once. Defaults to False.
     """
     while True:
-        name = wf.names[0] if name is None else name
-        description = wf.get_description(name)
+        name = provider.names[0] if name is None else name
+        description = provider.get_description(name)
 
         if initial_message is None:
             initial_message = ui.process_message(
@@ -367,7 +376,7 @@ def run_workflow(
                 )
             )
 
-        result = wf.run(
+        result = provider.run(
             name=name,
             session_id="session_id",
             ui=ui.create_subconversation(),

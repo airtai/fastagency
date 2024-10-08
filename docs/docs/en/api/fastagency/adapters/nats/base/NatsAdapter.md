@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.nats.InitiateModel
+::: fastagency.adapters.nats.base.NatsAdapter

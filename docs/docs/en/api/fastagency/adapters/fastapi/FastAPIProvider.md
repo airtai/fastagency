@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.fastapi.FastAPIWorkflows
+::: fastagency.adapters.fastapi.FastAPIProvider
