@@ -14,12 +14,9 @@ from mesop.server.static_file_serving import (
     configure_static_file_serving as configure_static_file_serving_original,
 )
 
-pp = Path(__file__).parent
-# os.path.dirname(__file__)
-path_2_js = pp / "counter_component.js"
-# path_2_js = os.path.join(pp, "counter_component.js")
-# path_2_js = os.path.join(".", "counter_component.js")
-# print("dir je:", pp, "u totalu:", path_2_js)
+from ...logging import get_logger
+
+logger = get_logger(__name__)
 
 
 def configure_static_file_serving(
@@ -30,6 +27,8 @@ def configure_static_file_serving(
     disable_gzip_cache: bool = False,
     default_allowed_iframe_parents: str = "'self'",
 ) -> None:
+    logger.info("Configuring static file serving with patched method")
+
     configure_static_file_serving_original(
         app=app,
         static_file_runfiles_base=static_file_runfiles_base,
@@ -41,6 +40,8 @@ def configure_static_file_serving(
 
     @app.route(f"/{WEB_COMPONENTS_PATH_SEGMENT}/__fast_agency_internal__/<path:path>")
     def serve_web_components_fast_agency(path: str) -> Response:
+        logger.info(f"Serve web components fast agency: {path}")
+
         root = Path(__file__).parents[3].resolve()
         serving_path = f"{root}/{path}"
 
@@ -50,11 +51,11 @@ def configure_static_file_serving(
         )
 
 
+logger.info("Patching static file serving in Mesop")
 mesop.server.wsgi_app.configure_static_file_serving = configure_static_file_serving
 
 
-# @mel.web_component(path=path_2_js)
-@mel.web_component(path="__fast_agency_internal__/javascript/counter_component.js")  # type: ignore[misc]
+@mel.web_component(path="/__fast_agency_internal__/javascript/counter_component.js")  # type: ignore[misc]
 def counter_component(
     *,
     value: int,
