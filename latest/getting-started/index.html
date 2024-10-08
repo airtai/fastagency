@@ -16,14 +16,14 @@
 <a id=__codelineno-4-3 name=__codelineno-4-3 href=#__codelineno-4-3></a><span class=kn>from</span> <span class=nn>autogen.agentchat</span> <span class=kn>import</span> <span class=n>ConversableAgent</span>
 <a id=__codelineno-4-4 name=__codelineno-4-4 href=#__codelineno-4-4></a>
 <a id=__codelineno-4-5 name=__codelineno-4-5 href=#__codelineno-4-5></a><span class=kn>from</span> <span class=nn>fastagency</span> <span class=kn>import</span> <span class=n>UI</span><span class=p>,</span> <span class=n>FastAgency</span><span class=p>,</span> <span class=n>WorkflowsProtocol</span>
-<a id=__codelineno-4-6 name=__codelineno-4-6 href=#__codelineno-4-6></a><span class=kn>from</span> <span class=nn>fastagency.runtime.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
+<a id=__codelineno-4-6 name=__codelineno-4-6 href=#__codelineno-4-6></a><span class=kn>from</span> <span class=nn>fastagency.runtimes.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
 <a id=__codelineno-4-7 name=__codelineno-4-7 href=#__codelineno-4-7></a><span class=hll><span class=kn>from</span> <span class=nn>fastagency.ui.console</span> <span class=kn>import</span> <span class=n>ConsoleUI</span>
 </span></code></pre></div> <p>For Console applications, import <code>ConsoleUI</code> to handle command-line input and output.</p> </div> <div class=tabbed-block> <div class=highlight><pre><span></span><code><a id=__codelineno-5-1 name=__codelineno-5-1 href=#__codelineno-5-1></a><span class=kn>import</span> <span class=nn>os</span>
 <a id=__codelineno-5-2 name=__codelineno-5-2 href=#__codelineno-5-2></a>
 <a id=__codelineno-5-3 name=__codelineno-5-3 href=#__codelineno-5-3></a><span class=kn>from</span> <span class=nn>autogen.agentchat</span> <span class=kn>import</span> <span class=n>ConversableAgent</span>
 <a id=__codelineno-5-4 name=__codelineno-5-4 href=#__codelineno-5-4></a>
 <a id=__codelineno-5-5 name=__codelineno-5-5 href=#__codelineno-5-5></a><span class=kn>from</span> <span class=nn>fastagency</span> <span class=kn>import</span> <span class=n>UI</span><span class=p>,</span> <span class=n>FastAgency</span><span class=p>,</span> <span class=n>WorkflowsProtocol</span>
-<a id=__codelineno-5-6 name=__codelineno-5-6 href=#__codelineno-5-6></a><span class=kn>from</span> <span class=nn>fastagency.runtime.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
+<a id=__codelineno-5-6 name=__codelineno-5-6 href=#__codelineno-5-6></a><span class=kn>from</span> <span class=nn>fastagency.runtimes.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
 <a id=__codelineno-5-7 name=__codelineno-5-7 href=#__codelineno-5-7></a><span class=hll><span class=kn>from</span> <span class=nn>fastagency.ui.mesop</span> <span class=kn>import</span> <span class=n>MesopUI</span>
 </span></code></pre></div> <p>For Mesop applications, import <code>MesopUI</code> to integrate with the Mesop web interface.</p> </div> </div> </div> <h3 id=define-workflow>Define Workflow<a class=headerlink href=#define-workflow title="Permanent link">#</a></h3> <p>You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-6-1 name=__codelineno-6-1 href=#__codelineno-6-1></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
 <a id=__codelineno-6-2 name=__codelineno-6-2 href=#__codelineno-6-2></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
@@ -68,7 +68,7 @@
 <a id=__codelineno-9-3 name=__codelineno-9-3 href=#__codelineno-9-3></a><span class=kn>from</span> <span class=nn>autogen.agentchat</span> <span class=kn>import</span> <span class=n>ConversableAgent</span>
 <a id=__codelineno-9-4 name=__codelineno-9-4 href=#__codelineno-9-4></a>
 <a id=__codelineno-9-5 name=__codelineno-9-5 href=#__codelineno-9-5></a><span class=kn>from</span> <span class=nn>fastagency</span> <span class=kn>import</span> <span class=n>UI</span><span class=p>,</span> <span class=n>FastAgency</span><span class=p>,</span> <span class=n>WorkflowsProtocol</span>
-<a id=__codelineno-9-6 name=__codelineno-9-6 href=#__codelineno-9-6></a><span class=kn>from</span> <span class=nn>fastagency.runtime.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
+<a id=__codelineno-9-6 name=__codelineno-9-6 href=#__codelineno-9-6></a><span class=kn>from</span> <span class=nn>fastagency.runtimes.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
 <a id=__codelineno-9-7 name=__codelineno-9-7 href=#__codelineno-9-7></a><span class=kn>from</span> <span class=nn>fastagency.ui.console</span> <span class=kn>import</span> <span class=n>ConsoleUI</span>
 <a id=__codelineno-9-8 name=__codelineno-9-8 href=#__codelineno-9-8></a>
 <a id=__codelineno-9-9 name=__codelineno-9-9 href=#__codelineno-9-9></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
@@ -115,7 +115,7 @@
 <a id=__codelineno-10-3 name=__codelineno-10-3 href=#__codelineno-10-3></a><span class=kn>from</span> <span class=nn>autogen.agentchat</span> <span class=kn>import</span> <span class=n>ConversableAgent</span>
 <a id=__codelineno-10-4 name=__codelineno-10-4 href=#__codelineno-10-4></a>
 <a id=__codelineno-10-5 name=__codelineno-10-5 href=#__codelineno-10-5></a><span class=kn>from</span> <span class=nn>fastagency</span> <span class=kn>import</span> <span class=n>UI</span><span class=p>,</span> <span class=n>FastAgency</span><span class=p>,</span> <span class=n>WorkflowsProtocol</span>
-<a id=__codelineno-10-6 name=__codelineno-10-6 href=#__codelineno-10-6></a><span class=kn>from</span> <span class=nn>fastagency.runtime.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
+<a id=__codelineno-10-6 name=__codelineno-10-6 href=#__codelineno-10-6></a><span class=kn>from</span> <span class=nn>fastagency.runtimes.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
 <a id=__codelineno-10-7 name=__codelineno-10-7 href=#__codelineno-10-7></a><span class=kn>from</span> <span class=nn>fastagency.ui.mesop</span> <span class=kn>import</span> <span class=n>MesopUI</span>
 <a id=__codelineno-10-8 name=__codelineno-10-8 href=#__codelineno-10-8></a>
 <a id=__codelineno-10-9 name=__codelineno-10-9 href=#__codelineno-10-9></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>

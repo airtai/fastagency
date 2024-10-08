@@ -235,48 +235,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/AdapterProtocol/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/AskingMessage/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/AskingMessage/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/Error/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/Error/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/FunctionCallExecution/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/FunctionCallExecution/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/IOMessage/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/IOMessage/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/IOMessageVisitor/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/IOMessageVisitor/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/KeepAlive/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/KeepAlive/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/MultipleChoice/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/MultipleChoice/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/base/ProviderProtocol/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
@@ -289,30 +247,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/Runnable/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/SuggestedFunctionCall/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/SuggestedFunctionCall/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/SystemMessage/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/SystemMessage/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/TextInput/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/TextInput/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/TextMessage/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/TextMessage/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/base/UI/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
@@ -323,12 +257,6 @@
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/WSGIProtocol/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/WorkflowCompleted/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/WorkflowCompleted/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/base/WorkflowsProtocol/</loc>
@@ -481,64 +409,148 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/logging/get_logger/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/AutoGenWorkflows/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/AskingMessage/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/AutoGenWorkflows/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/AskingMessage/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/IOStreamAdapter/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/Error/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/IOStreamAdapter/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/Error/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/agents/websurfer/WebSurferAgent/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/FunctionCallExecution/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/agents/websurfer/WebSurferAgent/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/FunctionCallExecution/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/AutoGenWorkflows/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/IOMessage/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/AutoGenWorkflows/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/IOMessage/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/CurrentMessage/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/KeepAlive/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/CurrentMessage/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/KeepAlive/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/IOStreamAdapter/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/MessageProcessorMixin/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/IOStreamAdapter/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/MessageProcessorMixin/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/Toolable/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/MessageProcessorProtocol/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/base/Toolable/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/MessageProcessorProtocol/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/WebSurferTool/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/MultipleChoice/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/WebSurferTool/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/MultipleChoice/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferAnswer/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/SuggestedFunctionCall/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferAnswer/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/SuggestedFunctionCall/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferTool/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/SystemMessage/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtime/autogen/tools/web_surfer/WebSurferTool/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/SystemMessage/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/TextInput/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/TextInput/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/TextMessage/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/TextMessage/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/WorkflowCompleted/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/WorkflowCompleted/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/WorkflowStarted/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/WorkflowStarted/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/AutoGenWorkflows/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/AutoGenWorkflows/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/IOStreamAdapter/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/IOStreamAdapter/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/CurrentMessage/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/CurrentMessage/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/IOStreamAdapter/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/IOStreamAdapter/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/Toolable/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/autogen/Toolable/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/WebSurferTool/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/WebSurferTool/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/console/ConsoleUI/</loc>
@@ -547,34 +559,16 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/console/ConsoleUI/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/ui/console/base/ConsoleUI/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/console/console/ConsoleUI/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/console/base/ConsoleUI/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/console/console/ConsoleUI/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/MesopUI/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/MesopUI/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/base/MesopMessage/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/base/MesopMessage/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/base/MesopUI/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/base/MesopUI/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/base/run_workflow/</loc>
-        <lastmod>2024-10-08</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/base/run_workflow/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/components/helpers/darken_hex_color/</loc>
@@ -623,6 +617,24 @@
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/main/create_home_page/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/MesopMessage/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/MesopMessage/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/MesopUI/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/MesopUI/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/run_workflow/</loc>
+        <lastmod>2024-10-08</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/run_workflow/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/message/MesopGUIMessageVisitor/</loc>
@@ -787,34 +799,34 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/cli/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/user-guide/runtime/</loc>
+        <loc>https://fastagency.ai/latest/user-guide/runtimes/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtime/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtimes/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/user-guide/runtime/autogen/</loc>
+        <loc>https://fastagency.ai/latest/user-guide/runtimes/autogen/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtime/autogen/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtimes/autogen/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/user-guide/runtime/autogen/interactions/</loc>
+        <loc>https://fastagency.ai/latest/user-guide/runtimes/autogen/interactions/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtime/autogen/interactions/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtimes/autogen/interactions/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/user-guide/runtime/autogen/websurfer/</loc>
+        <loc>https://fastagency.ai/latest/user-guide/runtimes/autogen/websurfer/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtime/autogen/websurfer/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtimes/autogen/websurfer/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/user-guide/runtime/crewai/basics/</loc>
+        <loc>https://fastagency.ai/latest/user-guide/runtimes/crewai/basics/</loc>
         <lastmod>2024-10-08</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtime/crewai/basics/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtimes/crewai/basics/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/user-guide/testing/</loc>
