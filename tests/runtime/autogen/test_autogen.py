@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -202,12 +203,13 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     )
 
 
-# @pytest.mark.openai
+@pytest.mark.skipif(
+    sys.platform == "macos", reason="Test fails on macOS due to docker usage settings"
+)
 def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
         human_input_mode="ALWAYS",
-        llm_config=openai_gpt4o_mini_llm_config,
     )
     assistant = ConversableAgent(
         name="Teacher_Agent",
