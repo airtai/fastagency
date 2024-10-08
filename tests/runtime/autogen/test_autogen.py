@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -202,19 +203,23 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     )
 
 
-@pytest.mark.openai
+@pytest.mark.skipif(
+    sys.platform == "darwin", reason="Test fails on macOS due to docker usage settings"
+)
 def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
         human_input_mode="ALWAYS",
-        llm_config=openai_gpt4o_mini_llm_config,
     )
     assistant = ConversableAgent(
         name="Teacher_Agent",
         system_message="You are a math teacher.",
         llm_config=openai_gpt4o_mini_llm_config,
     )
-    json_path = Path(__file__).parent / "api" / "openapi" / "templates" / "openapi.json"
+    json_path = (
+        Path(__file__).parents[2] / "api" / "openapi" / "templates" / "openapi.json"
+    )
+    assert json_path.exists()
     openapi_json = json_path.read_text()
     client = OpenAPI.create(openapi_json)
 
@@ -222,12 +227,12 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     function_to_register = "update_item_items__item_id__ships__ship__put"
     wf.register_api(
         api=client,
-        callers=user_proxy,
-        executors=assistant,
+        callers=assistant,
+        executors=user_proxy,
         functions=function_to_register,
     )
 
-    tools = user_proxy.llm_config["tools"]
+    tools = assistant.llm_config["tools"]
     assert len(tools) == 1
     assert tools[0]["function"]["name"] == function_to_register
 
