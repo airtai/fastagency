@@ -183,7 +183,7 @@ class MesopHomePage:
         state.conversation = conversation
         state.in_conversation = True
         yield
-        responses = send_prompt_to_autogen(prompt=prompt, provider=provider, name=name)
+        responses = send_prompt_to_autogen(provider=provider, name=name)
         yield from consume_responses(responses)
 
     def conversation_box(self) -> None:

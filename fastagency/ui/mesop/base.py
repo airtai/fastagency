@@ -152,7 +152,6 @@ class MesopUI(IOMessageVisitor):  # UI
         app: Runnable,
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
         single_run: bool = False,
     ) -> None:
         logger.info(
@@ -283,7 +282,7 @@ class MesopUI(IOMessageVisitor):  # UI
 
 
 def run_workflow(
-    provider: ProviderProtocol, name: str, initial_message: str
+    provider: ProviderProtocol, name: str
 ) -> MesopUI:
     def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
         ui.process_message(
@@ -293,7 +292,7 @@ def run_workflow(
                 type="system_message",
                 message={
                     "heading": "Workflow BEGIN",
-                    "body": f"Starting workflow with initial_message: {initial_message}",
+                    "body": f"Starting workflow: {name}",
                 },
             )
         )
@@ -303,7 +302,6 @@ def run_workflow(
                 name=name,
                 session_id="session_id",
                 ui=subconversation,  # type: ignore[arg-type]
-                initial_message=initial_message,
             )
             ui.process_message(
                 IOMessage.create(

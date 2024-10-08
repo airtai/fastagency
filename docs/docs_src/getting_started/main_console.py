@@ -1,4 +1,6 @@
 import os
+from typing import Optional
+from uuid import UUID
 
 from autogen.agentchat import ConversableAgent
 
@@ -21,7 +23,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    wf: WorkflowsProtocol, ui: UI, session_id: Optional[UUID] = None
 ) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",

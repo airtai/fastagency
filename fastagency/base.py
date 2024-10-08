@@ -164,6 +164,10 @@ class SystemMessage(IOMessage):
 
 
 @dataclass
+class WorkflowStarted(IOMessage):
+    result: Optional[str] = None
+
+@dataclass
 class WorkflowCompleted(IOMessage):
     result: Optional[str] = None
 
@@ -235,7 +239,6 @@ class UI(Protocol):
         app: "Runnable",
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
         single_run: bool = False,
     ) -> None: ...
 
@@ -318,7 +321,6 @@ class Runnable(Protocol):
         *,
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
         single_run: bool = False,
     ) -> None: ...
 
@@ -340,7 +342,6 @@ def run_workflow(
     provider: ProviderProtocol,
     ui: UI,
     name: Optional[str],
-    initial_message: Optional[str] = None,
     single_run: bool = False,
 ) -> None:
     """Run a workflow.
@@ -349,48 +350,28 @@ def run_workflow(
         provider (ProviderProtocol): The provider to use.
         ui (UI): The UI object to use.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
-        initial_message (Optional[str], optional): The initial message to send to the workflow. If not provided, a default message will be sent. Defaults to None.
         single_run (bool, optional): If True, the workflow will only be run once. Defaults to False.
     """
     while True:
         name = provider.names[0] if name is None else name
         description = provider.get_description(name)
 
-        if initial_message is None:
-            initial_message = ui.process_message(
-                TextInput(
-                    sender="FastAgency",
-                    recipient="user",
-                    prompt=(
-                        f"Starting a new workflow '{name}' with the following description:"
-                        + "\n\n"
-                        + f"{description}"
-                        + "\n\nPlease enter an initial message"
-                    ),
-                )
+        ui.process_message(
+            SystemMessage(
+                sender="FastAgency",
+                recipient="user",
+                message={
+                    "body": (
+                        f"Starting a new workflow '{name}' with the following description:" + "\n\n" + description
+                    )
+                },
             )
-        else:
-            ui.process_message(
-                SystemMessage(
-                    sender="FastAgency",
-                    recipient="user",
-                    message={
-                        "body": (
-                            f"Starting a new workflow '{name}' with the following description:"
-                            + "\n\n"
-                            + textwrap.indent(description, prefix=" " * 2)
-                            + "\n\nand using the following initial message:"
-                            + textwrap.indent(initial_message, prefix=" " * 2)
-                        )
-                    },
-                )
-            )
+        )
 
         result = provider.run(
             name=name,
             session_id="session_id",
             ui=ui.create_subconversation(),
-            initial_message="Hi!" if initial_message is None else initial_message,
         )
 
         ui.process_message(
@@ -400,8 +381,6 @@ def run_workflow(
                 result=result,
             )
         )
-
-        initial_message = None
 
         if single_run:
             break

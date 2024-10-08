@@ -58,7 +58,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
 def giphy_workflow_with_security(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]

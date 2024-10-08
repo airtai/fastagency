@@ -290,13 +290,13 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         return decorator
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
+    def run(self, name: str, session_id: Optional[UUID] = None, ui: UI) -> str:
         workflow, description = self._workflows[name]
 
         iostream = IOStreamAdapter(ui)
 
         with IOStream.set_default(iostream):
-            return workflow(self, ui, initial_message, session_id)
+            return workflow(self, ui, session_id)
 
     @property
     def names(self) -> list[str]:

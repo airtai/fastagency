@@ -52,14 +52,12 @@ class ConsoleUI(IOMessageVisitor):  # implements UI
         app: Runnable,
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
         single_run: bool = False,
     ) -> None:
         run_workflow(
             provider=app.provider,
             ui=self,
             name=name,
-            initial_message=initial_message,
             single_run=single_run,
         )
 

@@ -26,7 +26,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
+    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: Optional[UUID] = None
 ) -> str:
     student_agent = ConversableAgent(
         name="Student_Agent",

@@ -91,7 +91,6 @@ class FastAgency:  # Runnable
         self,
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
         single_run: bool = False,
     ) -> None:
         """Start the FastAgency."""
@@ -99,7 +98,6 @@ class FastAgency:  # Runnable
             app=self,
             import_string=import_string,
             name=name,
-            initial_message=initial_message,
             single_run=single_run,
         )
 

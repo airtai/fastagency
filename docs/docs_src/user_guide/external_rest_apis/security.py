@@ -38,7 +38,7 @@ wf = AutoGenWorkflows()
     name="simple_weather_with_security", description="Weather chat with security"
 )
 def weather_workflow_with_security(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
 ) -> str:
     user_agent = UserProxyAgent(
         name="User_Agent",

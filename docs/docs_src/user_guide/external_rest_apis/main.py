@@ -26,7 +26,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_weather", description="Weather chat")
 def weather_workflow(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
 ) -> str:
     user_agent = UserProxyAgent(
         name="User_Agent",

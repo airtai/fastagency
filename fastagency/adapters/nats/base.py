@@ -176,7 +176,6 @@ class NatsAdapter(IOMessageVisitor):
                             provider=self.provider,
                             ui=self,  # type: ignore[arg-type]
                             name=self.provider.names[0],
-                            initial_message=body.msg,
                             single_run=True,
                         )
 
@@ -381,7 +380,7 @@ class NatsProvider:
         await subscriber.start()
         logger.info(f"Subscriber for {from_server_subject} started")
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
+    def run(self, name: str, session_id: Optional[UUID] = None, ui: UI) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
         user_id = uuid4()  # todo: fix me later
@@ -389,7 +388,6 @@ class NatsProvider:
         init_message = InitiateModel(
             user_id=user_id,
             conversation_id=conversation_id,
-            msg=initial_message,
         )
         _from_server_subject = f"chat.client.messages.{user_id}.{conversation_id}"
         _to_server_subject = f"chat.server.messages.{user_id}.{conversation_id}"

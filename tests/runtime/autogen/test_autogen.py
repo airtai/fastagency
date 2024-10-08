@@ -143,7 +143,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
         name="simple_learning", description="Student and teacher learning chat"
     )
     def simple_workflow(
-        wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+        wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
     ) -> str:
         student_agent = ConversableAgent(
             name="Student_Agent",
@@ -249,7 +249,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             description="Test of user proxy with human input mode set to always",
         )
         def workflow(
-            wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+            wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
         ) -> str:
             user_proxy = UserProxyAgent(
                 name="User_Proxy",

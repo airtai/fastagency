@@ -173,11 +173,10 @@ class FastAPIProvider(WorkflowsProtocol):
         raise NotImplementedError("Just ignore this for now; @register")
 
     def _send_initiate_chat_msg(
-        self, workflow_name: str, initial_message: str
+        self, workflow_name: str
     ) -> dict[str, str]:
         payload = {
             "workflow_name": workflow_name,
-            "msg": initial_message,
         }
         resp = requests.post(
             f"{self.fastapi_url}/initiate_chat", json=payload, timeout=5
@@ -254,8 +253,8 @@ class FastAPIProvider(WorkflowsProtocol):
                 else:
                     ui.process_message(iomessage)
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
-        resp_json = self._send_initiate_chat_msg(name, initial_message)
+    def run(self, name: str, session_id: Optional[UUID] = None, ui: UI) -> str:
+        resp_json = self._send_initiate_chat_msg(name)
         user_id = resp_json["user_id"]
         conversation_id = resp_json["conversation_id"]
 

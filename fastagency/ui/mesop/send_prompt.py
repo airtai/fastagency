@@ -8,9 +8,9 @@ from .data_model import State
 
 
 def send_prompt_to_autogen(
-    prompt: str, provider: ProviderProtocol, name: str
+    provider: ProviderProtocol, name: str
 ) -> Iterable[MesopMessage]:
-    mesop_io = run_workflow(provider, name=name, initial_message=prompt)
+    mesop_io = run_workflow(provider, name=name)
     state = me.state(State)
     state.conversation.fastagency = mesop_io.id
     return mesop_io.get_message_stream()

@@ -43,7 +43,6 @@ def _run_app(
     path: Optional[Path],
     app: Optional[str],
     workflow: Optional[str],
-    initial_message: Optional[str],
     dev_mode: bool = False,
     single_run: bool = False,
 ) -> None:
@@ -54,7 +53,6 @@ def _run_app(
             fa_app.start(
                 import_string=import_string,
                 name=workflow,
-                initial_message=initial_message,
                 single_run=single_run,
             )
     except FastAgencyCLIPythonVersionError as e:
@@ -119,14 +117,6 @@ def run(
             help="The name of the workflow to run. If not provided, the default workflow will be run.",
         ),
     ] = None,
-    initial_message: Annotated[
-        Optional[str],
-        typer.Option(
-            "--initial_message",
-            "-i",
-            help="The initial message to send to the workflow. If not provided, a default message will be sent.",
-        ),
-    ] = None,
     single_run: Annotated[
         bool,
         typer.Option(
@@ -139,7 +129,6 @@ def run(
         path=path,
         app=app,
         workflow=workflow,
-        initial_message=initial_message,
         dev_mode=dev_mode,
         single_run=single_run,
     )
@@ -168,14 +157,6 @@ def dev(
             help="The name of the workflow to run. If not provided, the default workflow will be run.",
         ),
     ] = None,
-    initial_message: Annotated[
-        Optional[str],
-        typer.Option(
-            "--initial_message",
-            "-i",
-            help="The initial message to send to the workflow. If not provided, a default message will be sent.",
-        ),
-    ] = None,
     single_run: Annotated[
         bool,
         typer.Option(
@@ -188,7 +169,6 @@ def dev(
         path=path,
         app=app,
         workflow=workflow,
-        initial_message=initial_message,
         dev_mode=dev_mode,
         single_run=single_run,
     )
