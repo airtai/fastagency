@@ -344,6 +344,9 @@ class MessageProcessorMixin(ABC):
     def visit_keep_alive(self, message: KeepAlive) -> Optional[str]:
         return self.visit_default(message)
 
+    def visit_workflow_started(self, message: WorkflowStarted) -> Optional[str]:
+        return self.visit_default(message)
+
     def visit_workflow_completed(self, message: WorkflowCompleted) -> Optional[str]:
         return self.visit_default(message)
 
