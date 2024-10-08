@@ -223,7 +223,6 @@ class FastAPIProvider(WorkflowsProtocol):
         async with websockets.connect(self.nats_url) as websocket:
             connect_message = await self._create_connect_message()
             await websocket.send(connect_message)
-            logger.info(f"Sent authentication message: {connect_message.strip()}")
 
             message = f"SUB {from_server_subject} 1\r\n"
             await websocket.send(message)
