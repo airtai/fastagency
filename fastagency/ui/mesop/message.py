@@ -26,7 +26,7 @@ from ...logging import get_logger
 from .base import MesopMessage
 from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
-from .mesoptimer import counter_component
+from .mesoptimer import wakeup_component
 from .send_prompt import get_more_messages, send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
 
@@ -204,15 +204,16 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         )
 
     def visit_keep_alive(self, message: KeepAlive) -> None:
-        def on_timer_off(e: mel.WebEvent) -> Iterator[None]:
+        def on_wakeup(e: mel.WebEvent) -> Iterator[None]:
+            logger.info("waking up, after the keep alive")
             yield from consume_responses(get_more_messages())
 
-        with me.box(style=me.Style(margin=me.Margin.all(15))):
-            me.text(text="hellooou")
-            counter_component(
-                value=17,
-                on_decrement=on_timer_off,
-            )
+        logger.info("visiting keep alive")
+        if not self._readonly:
+            logger.info("setting up wake up")
+            with me.box(style=me.Style(margin=me.Margin.all(15))):
+                me.text(text="hellooou")
+                wakeup_component(on_wakeup=on_wakeup)
 
     def visit_suggested_function_call(self, message: SuggestedFunctionCall) -> None:
         content = f"""**function_name**: `{message.function_name}`<br>

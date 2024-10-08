@@ -101,6 +101,7 @@ class MesopUI(IOMessageVisitor):  # UI
             while self._keep_me_alive:
                 time.sleep(3)
                 if self._out_queue:
+                    print("sending keep alive")
                     self._out_queue.put(mesop_msg)
 
         if self._keep_me_alive and self._keep_alive_thread is None:

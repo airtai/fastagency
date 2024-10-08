@@ -55,20 +55,17 @@ logger.info("Patching static file serving in Mesop")
 mesop.server.wsgi_app.configure_static_file_serving = configure_static_file_serving
 
 
-@mel.web_component(path="/__fast_agency_internal__/javascript/counter_component.js")  # type: ignore[misc]
-def counter_component(
+@mel.web_component(path="/__fast_agency_internal__/javascript/wakeup_component.js")  # type: ignore[misc]
+def wakeup_component(
     *,
-    value: int,
-    on_decrement: Callable[[mel.WebEvent], Any],
+    on_wakeup: Callable[[mel.WebEvent], Any],
     key: Optional[str] = None,
 ) -> Any:
     return mel.insert_web_component(
-        name="quickstart-counter-component",
+        name="wakeup-component",
         key=key,
         events={
-            "decrementEvent": on_decrement,
+            "wakeupEvent": on_wakeup,
         },
-        properties={
-            "value": value,
-        },
+        properties={},
     )
