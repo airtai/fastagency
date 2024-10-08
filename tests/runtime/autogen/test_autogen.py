@@ -202,7 +202,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     )
 
 
-@pytest.mark.openai
+# @pytest.mark.openai
 def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
@@ -214,7 +214,10 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
         system_message="You are a math teacher.",
         llm_config=openai_gpt4o_mini_llm_config,
     )
-    json_path = Path(__file__).parent / "api" / "openapi" / "templates" / "openapi.json"
+    json_path = (
+        Path(__file__).parents[2] / "api" / "openapi" / "templates" / "openapi.json"
+    )
+    assert json_path.exists()
     openapi_json = json_path.read_text()
     client = OpenAPI.create(openapi_json)
 
