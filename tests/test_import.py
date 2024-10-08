@@ -1,7 +1,12 @@
 import importlib
-import pkgutil  # Import the pkgutil module to work with the import system
+import pkgutil
+import sys  # Import the pkgutil module to work with the import system
 
-import pytest  # Import the importlib module to dynamically import modules
+import pytest
+
+from fastagency.exceptions import (
+    FastAgencyCLIPythonVersionError,  # Import the importlib module to dynamically import modules
+)
 
 
 def list_submodules(module_name: str) -> list[str]:
@@ -47,4 +52,12 @@ def test_list_submodules() -> None:
 
 @pytest.mark.parametrize("module", list_submodules("fastagency"))
 def test_submodules(module: str) -> None:
+    if module.startswith("fastagency.ui.mesop") and sys.version_info < (3, 10):
+        with pytest.raises(
+            FastAgencyCLIPythonVersionError,
+            match="Mesop requires Python 3.10 or higher",
+        ):
+            importlib.import_module(module)
+        return
+
     importlib.import_module(module)
