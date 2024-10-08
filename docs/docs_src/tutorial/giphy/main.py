@@ -7,11 +7,10 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency, WorkflowsProtocol
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
-from fastagency.base import TextInput
-from fastagency.runtime.autogen.agents.websurfer import WebSurferAgent
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.messages import TextInput
+from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
-
 
 llm_config = {
     "config_list": [

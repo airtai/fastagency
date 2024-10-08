@@ -3,8 +3,8 @@ from collections.abc import Iterable
 import mesop as me
 
 from ...base import ProviderProtocol
-from .base import MesopMessage, MesopUI, run_workflow
 from .data_model import State
+from .mesop import MesopMessage, MesopUI, run_workflow
 
 
 def send_prompt_to_autogen(

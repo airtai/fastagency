@@ -15,18 +15,16 @@ from faststream.nats import JStream, NatsBroker, NatsMessage
 from nats.js import api
 from pydantic import BaseModel
 
-from ...base import (
-    UI,
+from ...base import UI, ProviderProtocol, run_workflow
+from ...logging import get_logger
+from ...messages import (
     AskingMessage,
     IOMessage,
-    IOMessageVisitor,
+    MessageProcessorMixin,
     MultipleChoice,
-    ProviderProtocol,
     TextInput,
     TextMessage,
-    run_workflow,
 )
-from ...logging import get_logger
 
 if TYPE_CHECKING:
     from faststream.nats.subscriber.asyncapi import AsyncAPISubscriber
@@ -61,7 +59,7 @@ JETSTREAM = JStream(
 )
 
 
-class NatsAdapter(IOMessageVisitor):
+class NatsAdapter(MessageProcessorMixin):
     def __init__(
         self,
         provider: ProviderProtocol,

@@ -3,7 +3,6 @@
 import asyncio
 import json
 import re
-from collections.abc import Iterable, Mapping
 from typing import Any, Callable, Optional, Union
 from uuid import UUID, uuid4
 
@@ -15,21 +14,18 @@ from pydantic import BaseModel
 
 from fastagency.logging import get_logger
 
-from ...base import (
-    UI,
-    Agent,
+from ...base import UI, ProviderProtocol, WorkflowsProtocol
+from ...messages import (
     AskingMessage,
     IOMessage,
-    IOMessageVisitor,
-    Workflow,
-    WorkflowsProtocol,
+    MessageProcessorMixin,
 )
 from ..nats import InitiateModel, InputResponseModel, NatsProvider
 
 logger = get_logger(__name__)
 
 
-class FastAPIAdapter(IOMessageVisitor):
+class FastAPIAdapter(MessageProcessorMixin):
     def __init__(
         self,
         provider: NatsProvider,
@@ -123,7 +119,7 @@ class FastAPIAdapter(IOMessageVisitor):
         nats_url: Optional[str] = None,
         nats_user: Optional[str] = None,
         nats_password: Optional[str] = None,
-    ) -> WorkflowsProtocol:
+    ) -> ProviderProtocol:
         return FastAPIProvider(
             fastapi_url=fastapi_url,
             fastapi_user=fastapi_user,
@@ -134,7 +130,7 @@ class FastAPIAdapter(IOMessageVisitor):
         )
 
 
-class FastAPIProvider(WorkflowsProtocol):
+class FastAPIProvider:
     def __init__(
         self,
         fastapi_url: str,
@@ -166,11 +162,6 @@ class FastAPIProvider(WorkflowsProtocol):
         self.nats_password = nats_password
 
         self.is_broker_running: bool = False
-
-    def register(
-        self, name: str, description: str, *, fail_on_redefintion: bool = False
-    ) -> Callable[[Workflow], Workflow]:
-        raise NotImplementedError("Just ignore this for now; @register")
 
     def _send_initiate_chat_msg(
         self, workflow_name: str, initial_message: str
@@ -289,16 +280,3 @@ class FastAPIProvider(WorkflowsProtocol):
 
     def get_description(self, name: str) -> str:
         return "Student and teacher learning chat"
-
-    def register_api(
-        self,
-        api: Any,
-        callers: Union[Agent, Iterable[Agent]],
-        executors: Union[Agent, Iterable[Agent]],
-        functions: Optional[
-            Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
-        ] = None,
-    ) -> None:
-        raise NotImplementedError(
-            "Just ignore this for now, will be removed from this protocol; @register_api"
-        )

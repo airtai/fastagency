@@ -1,3 +1,3 @@
-from .base import ConsoleUI
+from .console import ConsoleUI
 
 __all__ = ["ConsoleUI"]

@@ -8,13 +8,14 @@ import mesop.labs as mel
 
 from fastagency.helpers import jsonify_string
 
-from ...base import (
+from ...logging import get_logger
+from ...messages import (
     AskingMessage,
     Error,
     FunctionCallExecution,
     IOMessage,
-    IOMessageVisitor,
     KeepAlive,
+    MessageProcessorMixin,
     MultipleChoice,
     SuggestedFunctionCall,
     SystemMessage,
@@ -22,10 +23,9 @@ from ...base import (
     TextMessage,
     WorkflowCompleted,
 )
-from ...logging import get_logger
-from .base import MesopMessage
 from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
+from .mesop import MesopMessage
 from .send_prompt import get_more_messages, send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
 from .timer import wakeup_component
@@ -89,7 +89,7 @@ def message_box(
     visitor.process_message(io_message)
 
 
-class MesopGUIMessageVisitor(IOMessageVisitor):
+class MesopGUIMessageVisitor(MessageProcessorMixin):
     def __init__(
         self,
         level: int,

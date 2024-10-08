@@ -118,7 +118,7 @@ This is a core function used by the **GiphyAgent** to either present the task re
 ### Creating the Giphy and WebSurfer Agents
 
 - **GiphyAgent**: A ***ConversableAgent*** is created with the name "Giphy_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
-- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtime/autogen/websurfer){target="_blank"}.
+- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer){target="_blank"}.
 
 ```python
 {! docs_src/tutorial/giphy/main.py [ln:79-93] !}

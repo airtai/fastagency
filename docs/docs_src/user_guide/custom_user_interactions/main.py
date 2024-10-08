@@ -5,8 +5,8 @@ from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency, WorkflowsProtocol
-from fastagency.base import MultipleChoice, SystemMessage, TextInput
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.messages import MultipleChoice, SystemMessage, TextInput
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {

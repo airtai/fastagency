@@ -6,7 +6,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency, WorkflowsProtocol
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
