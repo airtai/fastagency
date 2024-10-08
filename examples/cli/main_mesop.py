@@ -1,8 +1,9 @@
 import os
+from uuid import UUID
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, WorkflowsProtocol
+from fastagency import UI, FastAgency, TextInput, WorkflowsProtocol
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
@@ -22,8 +23,13 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    wf: WorkflowsProtocol, ui: UI, conversation_id: UUID, **kwargs: Any
 ) -> str:
+    initial_message = ui.process_message(TextInput(
+        sender="Student_Agent",
+        recipient="Teacher_Agent",
+        message="Write a message to start the chat.",
+    ))
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",

@@ -16,7 +16,7 @@ from typing import (
     Union,
     runtime_checkable,
 )
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
@@ -277,7 +277,7 @@ Agent = TypeVar("Agent")
 
 @runtime_checkable
 class ProviderProtocol(Protocol):
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str: ...
+    def run(self, name: str, ui: UI, conversation_uuid: UUID, **kwargs: Any) -> str: ...
 
     @property
     def names(self) -> list[str]: ...
