@@ -95,18 +95,20 @@ class MesopUI(IOMessageVisitor):  # UI
 
     def keep_me_alive(self) -> None:
         def keep_alive_worker() -> None:
-            msg = KeepAlive()
-            # msg = TextMessage(body="just stayin' alive")
-            mesop_msg = self._mesop_message(msg)
             while self._keep_me_alive:
                 time.sleep(3)
                 if self._out_queue:
-                    print("sending keep alive")
+                    msg = KeepAlive()
+                    mesop_msg = self._mesop_message(msg)
+                    logger.info(f"putting keepalive {msg.uuid}")
                     self._out_queue.put(mesop_msg)
 
         if self._keep_me_alive and self._keep_alive_thread is None:
             self._keep_alive_thread = threading.Thread(target=keep_alive_worker)
             self._keep_alive_thread.start()
+
+    def do_not_keep_me_alive(self) -> None:
+        self._keep_me_alive = False
 
     @classmethod
     def get_created_instance(cls) -> "MesopUI":
@@ -203,9 +205,7 @@ class MesopUI(IOMessageVisitor):  # UI
         )
 
     def _publish(self, mesop_msg: MesopMessage) -> None:
-        # todo uncomment this when testing is over
-        # self.out_queue.put(mesop_msg)
-        ...
+        self.out_queue.put(mesop_msg)
 
     def _mesop_message(self, io_message: IOMessage) -> MesopMessage:
         return MesopMessage(
@@ -303,7 +303,6 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
                 ui=subconversation,  # type: ignore[arg-type]
                 initial_message=initial_message,
             )
-
             ui.process_message(
                 IOMessage.create(
                     sender="user",
@@ -315,7 +314,6 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
                     },
                 )
             )
-
             ui.process_message(
                 IOMessage.create(
                     sender="user",
@@ -344,7 +342,8 @@ def run_workflow(wf: Workflows, name: str, initial_message: str) -> MesopUI:
                     result="Exception raised",
                 )
             )
-            return
+        finally:
+            ui.do_not_keep_me_alive()
 
     ui = MesopUI(keep_alive=True)
     subconversation = ui.create_subconversation()

@@ -206,13 +206,11 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
     def visit_keep_alive(self, message: KeepAlive) -> None:
         def on_wakeup(e: mel.WebEvent) -> Iterator[None]:
             logger.info("waking up, after the keep alive")
+            self._conversation_message.feedback_completed = True
             yield from consume_responses(get_more_messages())
 
-        logger.info("visiting keep alive")
-        if not self._readonly:
-            logger.info("setting up wake up")
-            with me.box(style=me.Style(margin=me.Margin.all(15))):
-                me.text(text="hellooou")
+        with me.box():
+            if not (self._readonly or self._conversation_message.feedback_completed):
                 wakeup_component(on_wakeup=on_wakeup)
 
     def visit_suggested_function_call(self, message: SuggestedFunctionCall) -> None:
