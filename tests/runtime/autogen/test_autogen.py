@@ -227,12 +227,12 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     function_to_register = "update_item_items__item_id__ships__ship__put"
     wf.register_api(
         api=client,
-        callers=user_proxy,
-        executors=assistant,
+        callers=assistant,
+        executors=user_proxy,
         functions=function_to_register,
     )
 
-    tools = user_proxy.llm_config["tools"]
+    tools = assistant.llm_config["tools"]
     assert len(tools) == 1
     assert tools[0]["function"]["name"] == function_to_register
 
