@@ -51,7 +51,7 @@ def test_list_submodules() -> None:
 
     assert "fastagency.ui" in submodules
     assert "fastagency.ui.mesop" in submodules
-    assert "fastagency.ui.console.base" in submodules
+    assert "fastagency.ui.console.console" in submodules
 
 
 @pytest.mark.parametrize("module", list_submodules("fastagency"))

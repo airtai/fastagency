@@ -4,7 +4,7 @@ from typing import Any
 import pytest
 
 from fastagency.app import FastAgency
-from fastagency.runtime.autogen import AutoGenWorkflows
+from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 

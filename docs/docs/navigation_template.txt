@@ -5,12 +5,12 @@ search:
 - Getting Started
     - [Getting Started](getting-started/index.md)
 - [User guide](user-guide/index.md)
-    - [Runtimes](user-guide/runtime/index.md)
-        - [AutoGen](user-guide/runtime/autogen/index.md)
+    - [Runtimes](user-guide/runtimes/index.md)
+        - [AutoGen](user-guide/runtimes/autogen/index.md)
             - Agents
-                - [WebSurfer](user-guide/runtime/autogen/websurfer.md)
-            - [User interaction](user-guide/runtime/autogen/interactions.md)
-        - [CrewAI](user-guide/runtime/crewai/basics.md)
+                - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
+            - [User interaction](user-guide/runtimes/autogen/interactions.md)
+        - [CrewAI](user-guide/runtimes/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
         - [Mesop](user-guide/ui/mesop/basics.md)

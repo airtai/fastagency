@@ -14,7 +14,7 @@ mesop_test = """import os
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency, WorkflowsProtocol
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {

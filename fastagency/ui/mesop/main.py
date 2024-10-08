@@ -13,7 +13,7 @@ from .send_prompt import send_prompt_to_autogen
 from .styles import MesopHomePageStyles
 
 if TYPE_CHECKING:
-    from .base import MesopUI
+    from .mesop import MesopUI
 
 __all__ = ["me"]
 
