@@ -12,6 +12,16 @@ hide:
 ---
 
 # Release Notes
+## v0.2.4
+
+### What's Changed
+
+* Docs: Fix docs for Mesop security by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#318](https://github.com/airtai/fastagency/pull/318){.external-link target="_blank"}
+* Security: Add username and password logic to oauth security settings by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#328](https://github.com/airtai/fastagency/pull/328){.external-link target="_blank"}
+* Mesop: When past conversation is selected, scroll to the end of it by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#320](https://github.com/airtai/fastagency/pull/320){.external-link target="_blank"}
+
+**Full Changelog**: [#v0.2.3...v0.2.4](https://github.com/airtai/fastagency/compare/v0.2.3...v0.2.4){.external-link target="_blank"}
+
 ## v0.2.3
 
 ### What's Changed
