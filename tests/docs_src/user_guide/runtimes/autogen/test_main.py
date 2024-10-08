@@ -17,7 +17,8 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", InputMock([INPUT_MESSAGE]))
 
     result = runner.invoke(
-        app, ["run", "docs/docs_src/user_guide/runtime/autogen/main.py", "--single-run"]
+        app,
+        ["run", "docs/docs_src/user_guide/runtimes/autogen/main.py", "--single-run"],
     )
     assert result.exit_code == 0
     assert INPUT_MESSAGE in result.stdout
