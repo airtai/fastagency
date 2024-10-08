@@ -214,7 +214,13 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
         system_message="You are a math teacher.",
         llm_config=openai_gpt4o_mini_llm_config,
     )
-    json_path = Path(__file__).parent / "api" / "openapi" / "templates" / "openapi.json"
+    json_path = (
+        Path(__file__).parent.parent.parent
+        / "api"
+        / "openapi"
+        / "templates"
+        / "openapi.json"
+    )
     openapi_json = json_path.read_text()
     client = OpenAPI.create(openapi_json)
 
