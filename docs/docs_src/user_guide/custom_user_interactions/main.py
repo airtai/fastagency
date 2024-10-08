@@ -5,8 +5,8 @@ from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency, WorkflowsProtocol
-from fastagency.base import MultipleChoice, SystemMessage, TextInput
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.messages import MultipleChoice, SystemMessage, TextInput
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -23,7 +23,14 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")
-def exam_learning(wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None) -> str:
+def exam_learning(ui: UI, workflow_uuid: UUID, **kwargs: Any) -> str:
+    initial_message = ui.text_input(
+        prompt="What do you want to learn about today?",
+        workflow_uuid=workflow_uuid,
+        sender="Workflow",
+        recipient="User",
+    )
+
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 

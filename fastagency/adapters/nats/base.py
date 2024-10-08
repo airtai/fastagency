@@ -15,18 +15,16 @@ from faststream.nats import JStream, NatsBroker, NatsMessage
 from nats.js import api
 from pydantic import BaseModel
 
-from ...base import (
-    UI,
+from ...base import UI, ProviderProtocol, run_workflow
+from ...logging import get_logger
+from ...messages import (
     AskingMessage,
     IOMessage,
-    IOMessageVisitor,
+    MessageProcessorMixin,
     MultipleChoice,
-    ProviderProtocol,
     TextInput,
     TextMessage,
-    run_workflow,
 )
-from ...logging import get_logger
 
 if TYPE_CHECKING:
     from faststream.nats.subscriber.asyncapi import AsyncAPISubscriber
@@ -40,8 +38,8 @@ class InputResponseModel(BaseModel):
 
 class InitiateModel(BaseModel):
     user_id: UUID
-    conversation_id: UUID
-    msg: str
+    workflow_uuid: UUID
+    params: str
 
 
 logger = get_logger(__name__)
@@ -61,7 +59,7 @@ JETSTREAM = JStream(
 )
 
 
-class NatsAdapter(IOMessageVisitor):
+class NatsAdapter(MessageProcessorMixin):
     def __init__(
         self,
         provider: ProviderProtocol,
@@ -154,7 +152,7 @@ class NatsAdapter(IOMessageVisitor):
                 f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
             )
             user_id = str(body.user_id)
-            thread_id = str(body.conversation_id)
+            thread_id = str(body.workflow_uuid)
             self._input_request_subject = f"chat.client.messages.{user_id}.{thread_id}"
             self._input_receive_subject = f"chat.server.messages.{user_id}.{thread_id}"
 
@@ -380,17 +378,19 @@ class NatsProvider:
         await subscriber.start()
         logger.info(f"Subscriber for {from_server_subject} started")
 
-    def run(self, name: str, session_id: Optional[UUID] = None, ui: UI) -> str:
+    def run(
+        self, name: str, ui: UI, workflow_uuid: Optional[UUID] = None, **kwargs: Any
+    ) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
         user_id = uuid4()  # todo: fix me later
-        conversation_id = uuid4()
+        workflow_uuid = uuid4()
         init_message = InitiateModel(
             user_id=user_id,
-            conversation_id=conversation_id,
+            workflow_uuid=workflow_uuid,
         )
-        _from_server_subject = f"chat.client.messages.{user_id}.{conversation_id}"
-        _to_server_subject = f"chat.server.messages.{user_id}.{conversation_id}"
+        _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"
+        _to_server_subject = f"chat.server.messages.{user_id}.{workflow_uuid}"
 
         async def send_initiate_chat_msg() -> None:
             await self.broker.publish(init_message, self._initiate_chat_subject)

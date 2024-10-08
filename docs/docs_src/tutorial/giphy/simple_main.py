@@ -6,7 +6,7 @@ from autogen import ConversableAgent, UserProxyAgent
 from fastagency import UI, FastAgency, WorkflowsProtocol
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
 open_api_key = os.getenv("OPENAI_API_KEY")
@@ -30,8 +30,15 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_chat", description="Giphy chat")
 def giphy_workflow(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
+    ui: UI, workflow_uuid: UUID, **kwargs: Any
 ) -> str:
+    initial_message = ui.text_input(
+        prompt="What do you want me to find GIFs for?",
+        workflow_uuid=workflow_uuid,
+        sender="Workflow",
+        recipient="User",
+    )
+
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 

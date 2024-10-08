@@ -8,6 +8,6 @@ if sys.version_info < (3, 10):
 
 check_imports(["mesop"], "mesop")
 
-from .base import MesopUI  # noqa: E402
+from .mesop import MesopUI  # noqa: E402
 
 __all__ = ["MesopUI"]

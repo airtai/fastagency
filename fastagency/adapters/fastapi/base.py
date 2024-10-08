@@ -3,7 +3,6 @@
 import asyncio
 import json
 import re
-from collections.abc import Iterable, Mapping
 from typing import Any, Callable, Optional, Union
 from uuid import UUID, uuid4
 
@@ -15,21 +14,18 @@ from pydantic import BaseModel
 
 from fastagency.logging import get_logger
 
-from ...base import (
-    UI,
-    Agent,
+from ...base import UI, ProviderProtocol, WorkflowsProtocol
+from ...messages import (
     AskingMessage,
     IOMessage,
-    IOMessageVisitor,
-    Workflow,
-    WorkflowsProtocol,
+    MessageProcessorMixin,
 )
 from ..nats import InitiateModel, InputResponseModel, NatsProvider
 
 logger = get_logger(__name__)
 
 
-class FastAPIAdapter(IOMessageVisitor):
+class FastAPIAdapter(MessageProcessorMixin):
     def __init__(
         self,
         provider: NatsProvider,
@@ -58,9 +54,9 @@ class FastAPIAdapter(IOMessageVisitor):
 
         class InititateChatModel(BaseModel):
             # user_id: UUID
-            # conversation_id: UUID
+            # workflow_uuid: UUID
             workflow_name: str
-            msg: str
+            params: str
 
         class WorkflowInfo(BaseModel):
             name: str
@@ -69,15 +65,15 @@ class FastAPIAdapter(IOMessageVisitor):
         @router.post("/initiate_chat")
         async def initiate_chat(
             # user_id: UUID,
-            # conversation_id: UUID,
+            # workflow_uuid: UUID,
             initiate_chat: InititateChatModel,
         ) -> InitiateModel:
             user_id: UUID = uuid4()
-            conversation_id: UUID = uuid4()
+            workflow_uuid: UUID = uuid4()
             init_msg = InitiateModel(
                 user_id=user_id,
-                conversation_id=conversation_id,
-                msg=initiate_chat.msg,
+                workflow_uuid=workflow_uuid,
+                params=initiate_chat.params,
             )
 
             nc = await nats.connect(
@@ -123,7 +119,7 @@ class FastAPIAdapter(IOMessageVisitor):
         nats_url: Optional[str] = None,
         nats_user: Optional[str] = None,
         nats_password: Optional[str] = None,
-    ) -> WorkflowsProtocol:
+    ) -> ProviderProtocol:
         return FastAPIProvider(
             fastapi_url=fastapi_url,
             fastapi_user=fastapi_user,
@@ -134,7 +130,7 @@ class FastAPIAdapter(IOMessageVisitor):
         )
 
 
-class FastAPIProvider(WorkflowsProtocol):
+class FastAPIProvider:
     def __init__(
         self,
         fastapi_url: str,
@@ -167,14 +163,7 @@ class FastAPIProvider(WorkflowsProtocol):
 
         self.is_broker_running: bool = False
 
-    def register(
-        self, name: str, description: str, *, fail_on_redefintion: bool = False
-    ) -> Callable[[Workflow], Workflow]:
-        raise NotImplementedError("Just ignore this for now; @register")
-
-    def _send_initiate_chat_msg(
-        self, workflow_name: str
-    ) -> dict[str, str]:
+    def _send_initiate_chat_msg(self, workflow_name: str) -> dict[str, str]:
         payload = {
             "workflow_name": workflow_name,
         }
@@ -222,7 +211,6 @@ class FastAPIProvider(WorkflowsProtocol):
         async with websockets.connect(self.nats_url) as websocket:
             connect_message = await self._create_connect_message()
             await websocket.send(connect_message)
-            logger.info(f"Sent authentication message: {connect_message.strip()}")
 
             message = f"SUB {from_server_subject} 1\r\n"
             await websocket.send(message)
@@ -253,13 +241,18 @@ class FastAPIProvider(WorkflowsProtocol):
                 else:
                     ui.process_message(iomessage)
 
-    def run(self, name: str, session_id: Optional[UUID] = None, ui: UI) -> str:
+    def run(self, *, name: str, workflow_uuid: Optional[UUID] = None, ui: UI) -> str:
+        if workflow_uuid is not None:
+            logger.warning(
+                "Workflow ID is provided, but this is not supported by the `FastAPIProvider.run()`."
+            )
+
         resp_json = self._send_initiate_chat_msg(name)
         user_id = resp_json["user_id"]
-        conversation_id = resp_json["conversation_id"]
+        workflow_uuid = resp_json["workflow_uuid"]
 
-        _from_server_subject = f"chat.client.messages.{user_id}.{conversation_id}"
-        _to_server_subject = f"chat.server.messages.{user_id}.{conversation_id}"
+        _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"
+        _to_server_subject = f"chat.server.messages.{user_id}.{workflow_uuid}"
 
         async def _setup_and_run() -> None:
             await self._run_websocket_subscriber(
@@ -289,16 +282,3 @@ class FastAPIProvider(WorkflowsProtocol):
 
     def get_description(self, name: str) -> str:
         return "Student and teacher learning chat"
-
-    def register_api(
-        self,
-        api: Any,
-        callers: Union[Agent, Iterable[Agent]],
-        executors: Union[Agent, Iterable[Agent]],
-        functions: Optional[
-            Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
-        ] = None,
-    ) -> None:
-        raise NotImplementedError(
-            "Just ignore this for now, will be removed from this protocol; @register_api"
-        )

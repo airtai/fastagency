@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
+from uuid import UUID, uuid4
 
 import mesop as me
 
@@ -8,7 +9,7 @@ import mesop as me
 class ConversationMessage:
     io_message_json: str = ""
     level: int = 0
-    conversation_id: str = ""
+    workflow_uuid: UUID = field(default_factory=uuid4)
     feedback: list[str] = field(default_factory=list)
     feedback_completed: bool = False
 

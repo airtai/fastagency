@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from fastagency.base import (
+from fastagency.messages import (
     FunctionCallExecution,
     MultipleChoice,
     SuggestedFunctionCall,
@@ -62,7 +62,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
@@ -85,7 +85,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
@@ -110,7 +110,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
@@ -144,7 +144,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
@@ -170,7 +170,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
@@ -196,7 +196,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
@@ -227,7 +227,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())
@@ -249,7 +249,7 @@ class TestMessageBox:
 
         message = ConversationMessage(
             io_message_json=io_message_json,
-            conversation_id="conversation_id",
+            workflow_uuid="workflow_uuid",
         )
 
         message_box(message=message, read_only=True, styles=MesopHomePageStyles())

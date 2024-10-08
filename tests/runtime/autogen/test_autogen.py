@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 from typing import Annotated, Any
+from uuid import UUID
 
 import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
@@ -8,9 +9,8 @@ from openai import InternalServerError
 
 from fastagency import UI, IOMessage
 from fastagency.api.openapi import OpenAPI
-from fastagency.base import WorkflowsProtocol
-from fastagency.runtime.autogen import AutoGenWorkflows
-from fastagency.runtime.autogen.base import _findall, _match
+from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.autogen.autogen import _findall, _match
 from fastagency.ui.console import ConsoleUI
 from tests.conftest import InputMock
 
@@ -142,9 +142,14 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(
-        wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
-    ) -> str:
+    def simple_workflow(ui: UI, workflow_uuid: UUID, **kwargs: Any) -> str:
+        initial_message = ui.text_input(
+            prompt="What do you want to learn about today?",
+            workflow_uuid=workflow_uuid,
+            sender="Workflow",
+            recipient="User",
+        )
+
         student_agent = ConversableAgent(
             name="Student_Agent",
             system_message="You are a student willing to learn.",
@@ -248,9 +253,13 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(
-            wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
-        ) -> str:
+        def workflow(ui: UI, workflow_uuid: UUID, **kwargs: Any) -> str:
+            initial_message = ui.text_input(
+                prompt="What is the weather in Zagreb right now?",
+                workflow_uuid=workflow_uuid,
+                sender="Workflow",
+                recipient="User",
+            )
             user_proxy = UserProxyAgent(
                 name="User_Proxy",
                 human_input_mode="ALWAYS",

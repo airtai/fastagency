@@ -7,11 +7,10 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency, WorkflowsProtocol
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
-from fastagency.base import TextInput
-from fastagency.runtime.autogen.agents.websurfer import WebSurferAgent
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.messages import TextInput
+from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
-
 
 llm_config = {
     "config_list": [
@@ -58,8 +57,16 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
 def giphy_workflow_with_security(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
+    ui: UI, workflow_uuid: UUID, **kwargs: Any
 ) -> str:
+    initial_message = ui.text_input(
+        prompt="What do you want me to search for on the internet and find GIFs for?",
+        workflow_uuid=workflow_uuid,
+        sender="Workflow",
+        recipient="User",
+    )
+
+
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 

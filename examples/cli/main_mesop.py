@@ -1,10 +1,11 @@
 import os
+from typing import Any
 from uuid import UUID
 
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, TextInput, WorkflowsProtocol
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency import UI, FastAgency
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
@@ -22,14 +23,14 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(
-    wf: WorkflowsProtocol, ui: UI, conversation_id: UUID, **kwargs: Any
-) -> str:
-    initial_message = ui.process_message(TextInput(
-        sender="Student_Agent",
-        recipient="Teacher_Agent",
-        message="Write a message to start the chat.",
-    ))
+def simple_workflow(ui: UI, workflow_uuid: UUID, **kwargs: Any) -> str:
+    initial_message = ui.text_input(
+        prompt="What do you want to learn about today?",
+        workflow_uuid=workflow_uuid,
+        sender="Workflow",
+        recipient="User",
+    )
+
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",

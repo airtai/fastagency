@@ -1,20 +1,21 @@
 import json
 from collections.abc import Iterable, Iterator
 from typing import Callable, Optional
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import mesop as me
 import mesop.labs as mel
 
 from fastagency.helpers import jsonify_string
 
-from ...base import (
+from ...logging import get_logger
+from ...messages import (
     AskingMessage,
     Error,
     FunctionCallExecution,
     IOMessage,
-    IOMessageVisitor,
     KeepAlive,
+    MessageProcessorMixin,
     MultipleChoice,
     SuggestedFunctionCall,
     SystemMessage,
@@ -22,10 +23,9 @@ from ...base import (
     TextMessage,
     WorkflowCompleted,
 )
-from ...logging import get_logger
-from .base import MesopMessage
 from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
+from .mesop import MesopMessage
 from .send_prompt import get_more_messages, send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
 from .timer import wakeup_component
@@ -47,13 +47,13 @@ def handle_message(state: State, message: MesopMessage) -> None:
     conversation = state.conversation
     messages = conversation.messages
     level = message.conversation.level
-    conversation_id = message.conversation.id
+    workflow_uuid = message.conversation.workflow_uuid
     io_message = message.io_message
     message_dict = io_message.model_dump()
     message_json = json.dumps(message_dict)
     conversation_message = ConversationMessage(
         level=level,
-        conversation_id=conversation_id,
+        workflow_uuid=workflow_uuid,
         io_message_json=message_json,
         feedback=[],
     )
@@ -83,17 +83,17 @@ def message_box(
 ) -> None:
     io_message_dict = json.loads(message.io_message_json)
     level = message.level
-    conversation_id = message.conversation_id
+    workflow_uuid = message.workflow_uuid
     io_message = IOMessage.create(**io_message_dict)
-    visitor = MesopGUIMessageVisitor(level, conversation_id, message, styles, read_only)
+    visitor = MesopGUIMessageVisitor(level, workflow_uuid, message, styles, read_only)
     visitor.process_message(io_message)
 
 
-class MesopGUIMessageVisitor(IOMessageVisitor):
+class MesopGUIMessageVisitor(MessageProcessorMixin):
     def __init__(
         self,
         level: int,
-        conversation_id: str,
+        workflow_uuid: UUID,
         conversation_message: ConversationMessage,
         styles: MesopHomePageStyles,
         read_only: bool = False,
@@ -102,13 +102,13 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
 
         Args:
             level (int): The level of the message.
-            conversation_id (str): The ID of the conversation.
+            workflow_uuid (str): The ID of the conversation.
             conversation_message (ConversationMessage): Conversation message that wraps the visited io_message
             styles (MesopHomePageStyles): Styles for the message
             read_only (bool): Input messages are disabled in read only mode
         """
         self._level = level
-        self._conversation_id = conversation_id
+        self._conversation_id = workflow_uuid
         self._readonly = read_only
         self._conversation_message = conversation_message
         self._styles = styles

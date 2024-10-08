@@ -1,9 +1,11 @@
 import os
+from typing import Optional
+from uuid import UUID
 
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -22,8 +24,16 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: Optional[UUID] = None
+    ui: UI,
+    workflow_uuid: Optional[UUID] = None,
 ) -> str:
+    initial_message = ui.text_input(
+        prompt="What do you want to learn about today?",
+        workflow_uuid=workflow_uuid,
+        sender="Workflow",
+        recipient="User",
+    )
+
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",

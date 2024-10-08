@@ -6,7 +6,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency, WorkflowsProtocol
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -38,7 +38,7 @@ wf = AutoGenWorkflows()
     name="simple_weather_with_security", description="Weather chat with security"
 )
 def weather_workflow_with_security(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: Optional[UUID] = None
+    ui: UI, workflow_uuid: UUID, **kwargs: Any
 ) -> str:
     user_agent = UserProxyAgent(
         name="User_Agent",
