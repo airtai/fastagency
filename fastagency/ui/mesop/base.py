@@ -17,9 +17,9 @@ from ...base import (
     AskingMessage,
     IOMessage,
     IOMessageVisitor,
+    KeepAlive,
     MultipleChoice,
     Runnable,
-    SystemMessage,
     TextInput,
     TextMessage,
     WorkflowCompleted,
@@ -95,7 +95,7 @@ class MesopUI(IOMessageVisitor):  # UI
 
     def keep_me_alive(self) -> None:
         def keep_alive_worker() -> None:
-            msg = SystemMessage(message={"keepAlive": "Stayin' alive"})
+            msg = KeepAlive()
             # msg = TextMessage(body="just stayin' alive")
             mesop_msg = self._mesop_message(msg)
             while self._keep_me_alive:
@@ -202,6 +202,7 @@ class MesopUI(IOMessageVisitor):  # UI
         )
 
     def _publish(self, mesop_msg: MesopMessage) -> None:
+        # todo uncomment this when testing is over
         # self.out_queue.put(mesop_msg)
         ...
 
@@ -239,7 +240,7 @@ class MesopUI(IOMessageVisitor):  # UI
         return sub_conversation
 
     def _is_stream_braker(self, message: IOMessage) -> bool:
-        return isinstance(message, (AskingMessage, WorkflowCompleted, SystemMessage))
+        return isinstance(message, (AskingMessage, WorkflowCompleted, KeepAlive))
 
     def respond(self, message: str) -> None:
         self.in_queue.put(message)

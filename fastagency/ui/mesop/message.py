@@ -14,6 +14,7 @@ from ...base import (
     FunctionCallExecution,
     IOMessage,
     IOMessageVisitor,
+    KeepAlive,
     MultipleChoice,
     SuggestedFunctionCall,
     SystemMessage,
@@ -187,9 +188,6 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         )
 
     def visit_system_message(self, message: SystemMessage) -> None:
-        def on_timer_off(e: mel.WebEvent) -> Iterator[None]:
-            yield from consume_responses(get_more_messages())
-
         content = (
             f"""#### **{message.message['heading']}**
 
@@ -198,13 +196,17 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             if "heading" in message.message and "body" in message.message
             else json.dumps(message.message)
         )
-
         self.visit_default(
             message,
             content=content,
             style=self._styles.message.system,
             scrollable=True,
         )
+
+    def visit_keep_alive(self, message: KeepAlive) -> None:
+        def on_timer_off(e: mel.WebEvent) -> Iterator[None]:
+            yield from consume_responses(get_more_messages())
+
         with me.box(style=me.Style(margin=me.Margin.all(15))):
             me.text(text="hellooou")
             counter_component(
