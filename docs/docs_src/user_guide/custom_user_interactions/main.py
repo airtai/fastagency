@@ -4,7 +4,7 @@ from typing import Annotated, Any, Optional
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, Workflows
+from fastagency import UI, FastAgency, WorkflowsProtocol
 from fastagency.base import MultipleChoice, SystemMessage, TextInput
 from fastagency.runtime.autogen.base import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
@@ -23,7 +23,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")
-def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) -> str:
+def exam_learning(wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 
@@ -130,4 +130,4 @@ def exam_learning(wf: Workflows, ui: UI, initial_message: str, session_id: str) 
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(provider=wf, ui=ConsoleUI())

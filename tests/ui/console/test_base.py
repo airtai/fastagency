@@ -17,7 +17,7 @@ def import_string() -> str:
 def app(import_string: str) -> Iterator[FastAgency]:
     wf = AutoGenWorkflows()
     console = ConsoleUI()
-    app = FastAgency(wf=wf, ui=console)
+    app = FastAgency(provider=wf, ui=console)
 
     @wf.register(name="noop", description="No operation")
     def noop(*args: Any, **kwargs: Any) -> str:

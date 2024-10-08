@@ -12,7 +12,7 @@ from .base import (
     TextInput,
     TextMessage,
     Workflow,
-    Workflows,
+    WorkflowsProtocol,
 )
 
 __all__ = [
@@ -25,7 +25,7 @@ __all__ = [
     "SuggestedFunctionCall",
     "TextInput",
     "TextMessage",
-    "Workflows",
+    "WorkflowsProtocol",
     "Workflow",
     "__version__",
 ]

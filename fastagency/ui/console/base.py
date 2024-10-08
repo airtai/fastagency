@@ -56,7 +56,7 @@ class ConsoleUI(IOMessageVisitor):  # implements UI
         single_run: bool = False,
     ) -> None:
         run_workflow(
-            wf=app.wf,
+            provider=app.provider,
             ui=self,
             name=name,
             initial_message=initial_message,

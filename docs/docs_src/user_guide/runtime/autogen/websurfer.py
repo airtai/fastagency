@@ -47,4 +47,4 @@ def websurfer_workflow(
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(provider=wf, ui=ConsoleUI())
