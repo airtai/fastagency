@@ -182,7 +182,6 @@ class MesopHomePage:
         provider = self.get_provider()
 
         state = me.state(State)
-        # me.navigate("/conversation")
         conversation = Conversation(
             title="New Conversation", completed=False, waiting_for_feedback=False
         )
