@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 from autogen.agentchat import ConversableAgent
 
@@ -22,8 +23,16 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, Any]
 ) -> str:
+
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you learn about geometry. What subject you would like to explore?",
+        workflow_id=workflow_uuid,
+    )
+
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
