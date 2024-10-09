@@ -1,7 +1,10 @@
 import importlib
+import sys
 from pathlib import Path
 
 import pytest
+
+from fastagency.exceptions import FastAgencyCLIPythonVersionError
 
 from ..helpers import add_to_sys_path, list_submodules
 
@@ -24,4 +27,11 @@ def test_list_submodules() -> None:
 @pytest.mark.parametrize("module", list_submodules(module_name, include_path=root_path))
 def test_submodules(module: str) -> None:
     with add_to_sys_path(root_path):
+        if "mesop" in module and sys.version_info < (3, 10):
+            with pytest.raises(
+                FastAgencyCLIPythonVersionError,
+                match="Mesop requires Python 3.10 or higher",
+            ):
+                importlib.import_module(module)
+            return
         importlib.import_module(module)
