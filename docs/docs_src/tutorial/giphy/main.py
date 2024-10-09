@@ -4,7 +4,7 @@ from typing import Annotated, Any, Optional
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, WorkflowsProtocol
+from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.messages import TextInput

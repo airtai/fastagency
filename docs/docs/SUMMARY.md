@@ -82,6 +82,7 @@ search:
                 - [UI](api/fastagency/base/UI.md)
                 - [WSGIProtocol](api/fastagency/base/WSGIProtocol.md)
                 - [WorkflowsProtocol](api/fastagency/base/WorkflowsProtocol.md)
+                - [check_register_decorator](api/fastagency/base/check_register_decorator.md)
                 - [run_workflow](api/fastagency/base/run_workflow.md)
             - cli
                 - cli

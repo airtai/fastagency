@@ -4,7 +4,7 @@ from typing import Annotated, Any, Optional
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, WorkflowsProtocol
+from fastagency import UI, FastAgency
 from fastagency.messages import MultipleChoice, SystemMessage, TextInput
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
@@ -23,7 +23,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")
-def exam_learning(ui: UI, workflow_uuid: str, param: dict[str, Any]) -> str:
+def exam_learning(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",

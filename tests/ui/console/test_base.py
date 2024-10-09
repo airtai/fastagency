@@ -4,6 +4,7 @@ from typing import Any
 import pytest
 
 from fastagency.app import FastAgency
+from fastagency.base import UI
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
@@ -20,7 +21,7 @@ def app(import_string: str) -> Iterator[FastAgency]:
     app = FastAgency(provider=wf, ui=console)
 
     @wf.register(name="noop", description="No operation")
-    def noop(*args: Any, **kwargs: Any) -> str:
+    def noop(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
         return "ok"
 
     try:

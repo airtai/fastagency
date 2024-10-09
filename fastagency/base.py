@@ -1,3 +1,4 @@
+import inspect
 from collections.abc import Awaitable, Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
 from typing import (
@@ -121,6 +122,16 @@ class WorkflowsProtocol(ProviderProtocol, Protocol):
             Union[str, Iterable[Union[str, Mapping[str, Mapping[str, str]]]]]
         ] = None,
     ) -> None: ...
+
+
+def check_register_decorator(func: Workflow) -> None:
+    # get names of all parameters in the function signature
+    sig = inspect.signature(func)
+    params = list(sig.parameters.keys())
+    if params != ["ui", "workflow_uuid", "params"]:
+        raise ValueError(
+            f"Expected function signature to be 'def func(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str', got {sig}"
+        )
 
 
 @runtime_checkable

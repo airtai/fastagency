@@ -3,7 +3,7 @@ from typing import Any
 
 from autogen import ConversableAgent, UserProxyAgent
 
-from fastagency import UI, FastAgency, WorkflowsProtocol
+from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows

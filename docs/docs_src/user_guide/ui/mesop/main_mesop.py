@@ -4,7 +4,7 @@ from typing import Any
 import mesop as me
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, WorkflowsProtocol
+from fastagency import UI, FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 from fastagency.ui.mesop.styles import (

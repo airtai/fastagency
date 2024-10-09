@@ -16,7 +16,7 @@ from uuid import uuid4
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 
-from ...base import UI, Workflow, WorkflowsProtocol
+from ...base import UI, Workflow, WorkflowsProtocol, check_register_decorator
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -278,6 +278,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
         self, name: str, description: str, *, fail_on_redefintion: bool = False
     ) -> Callable[[Workflow], Workflow]:
         def decorator(func: Workflow) -> Workflow:
+            check_register_decorator(func)
             if name in self._workflows:
                 if fail_on_redefintion:
                     raise ValueError(f"A workflow with name '{name}' already exists.")
