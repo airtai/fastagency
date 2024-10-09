@@ -78,7 +78,10 @@ class ASGIProtocol(Protocol):
     ) -> None: ...
 
 
-Workflow = TypeVar("Workflow", bound=Callable[["WorkflowsProtocol", UI, str, str], str])
+# signature of a function decorated with @wf.register
+# Workflow = TypeVar("Workflow", bound=Callable[["WorkflowsProtocol", UI, str, str], str])
+# parameters are: WorkflowsProtocol, UI, workflow_uuid, params (kwargs)
+Workflow = TypeVar("Workflow", bound=Callable[[UI, str, dict[str, Any]], str])
 
 
 Agent = TypeVar("Agent")
@@ -86,7 +89,20 @@ Agent = TypeVar("Agent")
 
 @runtime_checkable
 class ProviderProtocol(Protocol):
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str: ...
+    # def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str: ...
+    def run(self, name: str, ui: UI, **kwargs: Any) -> str: ...
+
+    """Run a workflow.
+
+    Creates a new workflow and assigns it workflow_uuid. Then it calls the
+    workflow function (function decorated with @wf.register) with the given
+    ui and workflow_uuid.
+
+    Args:
+        name (str): The name of the workflow to run.
+        ui (UI): The UI object to use.
+        **kwargs: Additional parameters to pass to the workflow function.
+    """
 
     @property
     def names(self) -> list[str]: ...

@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 import mesop as me
 from autogen.agentchat import ConversableAgent
@@ -27,8 +28,15 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, Any]
 ) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="What do you want to learn today?",
+        workflow_id=workflow_uuid,
+    )
+
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",

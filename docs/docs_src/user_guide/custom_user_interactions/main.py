@@ -23,7 +23,14 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")
-def exam_learning(wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str) -> str:
+def exam_learning(ui: UI, workflow_uuid: str, param: dict[str, Any]) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="What do you want to learn today?",
+        workflow_id=workflow_uuid,
+    )
+    
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 

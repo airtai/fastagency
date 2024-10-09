@@ -11,6 +11,7 @@ from typing import (
     Union,
     runtime_checkable,
 )
+from uuid import uuid4
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
@@ -270,7 +271,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
     def __init__(self) -> None:
         """Initialize the workflows."""
         self._workflows: dict[
-            str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
+            str, tuple[Callable[[UI, str, dict[str, Any]], str], str]
         ] = {}
 
     def register(
@@ -288,13 +289,15 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         return decorator
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
+    # def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
+    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
         workflow, description = self._workflows[name]
 
         iostream = IOStreamAdapter(ui)
 
+        workflow_uuid = uuid4().hex
         with IOStream.set_default(iostream):
-            return workflow(self, ui, initial_message, session_id)
+            return workflow(ui, workflow_uuid, kwargs)
 
     @property
     def names(self) -> list[str]:
