@@ -1,12 +1,13 @@
 import sys
 from pathlib import Path
 from typing import Annotated, Any
+from uuid import uuid4
 
 import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 from openai import InternalServerError
 
-from fastagency import UI, IOMessage
+from fastagency import UI
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.autogen import _findall, _match
@@ -142,12 +143,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
         name="simple_learning", description="Student and teacher learning chat"
     )
     def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
-        initial_message = ui.text_input(
-            sender="Workflow",
-            recipient="User",
-            prompt="I can help you learn about geometry. What subject you would like to explore?",
-            workflow_uuid=workflow_uuid,
-        )
+        initial_message = "What is triangle inequality?"
 
         student_agent = ConversableAgent(
             name="Student_Agent",
@@ -169,40 +165,29 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
         return chat_result.summary  # type: ignore[no-any-return]
 
-    initial_message = "What is triangle inequality?"
-
     name = "simple_learning"
 
     ui = ConsoleUI()
 
-    ui.process_message(
-        IOMessage.create(
-            sender="user",
-            recipient="workflow",
-            type="system_message",
-            message={
-                "heading": "Workflow BEGIN",
-                "body": f"Starting workflow with initial_message: {initial_message}",
-            },
-        )
+    workflow_uuid = uuid4().hex
+
+    ui.workflow_started(
+        sender="workflow",
+        recipient="user",
+        name=name,
+        workflow_uuid=workflow_uuid,
     )
 
     result = wf.run(
         name=name,
-        ui=ui.create_subconversation(),
-        initial_message=initial_message,
+        ui=ui,
     )
 
-    ui.process_message(
-        IOMessage.create(
-            sender="user",
-            recipient="workflow",
-            type="system_message",
-            message={
-                "heading": "Workflow END",
-                "body": f"Ending workflow with result: {result}",
-            },
-        )
+    ui.workflow_completed(
+        sender="workflow",
+        recipient="user",
+        workflow_uuid=workflow_uuid,
+        result=result,
     )
 
 
