@@ -57,7 +57,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
 def giphy_workflow_with_security(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, Any]
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -106,6 +106,13 @@ If you are presenting a completed task, last message should be a question: 'Do y
         callers=giphy_agent,
         executors=web_surfer,
         functions=functions,
+    )
+
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you find images related to a certain subject. What kind of images would you like to find?",
+        workflow_id=workflow_uuid,
     )
 
     chat_result = giphy_agent.initiate_chat(
