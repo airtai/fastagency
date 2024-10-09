@@ -165,22 +165,24 @@ class MesopHomePage:
                     self._params.conv_starter_text,
                     style=self._styles.conv_starter_text,
                 )
-                wf_name = provider.names[0]
-                wf_description = provider.get_description(wf_name)
-                with me.content_button(
-                    on_click=lambda e: self.send_prompt(wf_name)
-                ):
-                    me.text(wf_description)
+                with me.box(style=self._styles.conv_starter_wf_box):
+                    for wf_name in provider.names:
+                        wf_description = provider.get_description(wf_name)
+                        with me.content_button(
+                            key=wf_name,
+                            on_click=lambda e: self.send_prompt(e)
+                        ):
+                            me.text(wf_description)
 
     def get_provider(self) -> ProviderProtocol:
         ui = self._ui
         return ui.app.provider
 
 
-    def send_prompt(self, name: str) -> Iterator[None]:
+    def send_prompt(self, ev: me.ClickEvent) -> Iterator[None]:
         
+        name = ev.key
         provider = self.get_provider()
-
         state = me.state(State)
         conversation = Conversation(
             title="New Conversation", completed=False, waiting_for_feedback=False
