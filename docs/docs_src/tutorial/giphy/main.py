@@ -25,7 +25,7 @@ llm_config = {
 openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
 giphy_api = OpenAPI.create(openapi_url=openapi_url)
 
-giphy_api_key = os.getenv("GIPHY_API_KEY")
+giphy_api_key = os.getenv("GIPHY_API_KEY", "")
 giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
 
 GIPHY_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and Giphy API.
