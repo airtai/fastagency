@@ -5,6 +5,8 @@ from typing import TYPE_CHECKING, Callable, Optional
 
 import mesop as me
 
+from fastagency.base import ProviderProtocol
+
 from ...logging import get_logger
 from .components.inputs import input_text
 from .data_model import Conversation, State
@@ -43,7 +45,7 @@ def create_home_page(
 @dataclass
 class MesopHomePageParams:
     # header_title: str = "FastAgency - Mesop"
-    conv_starter_text: str = "Enter a prompt to chat with FastAgency team"
+    conv_starter_text: str = "Select workflow to use with FastAgency team"
 
 
 class MesopHomePage:
@@ -153,6 +155,7 @@ class MesopHomePage:
                         )
 
     def conversation_starter_box(self) -> None:
+        provider = self.get_provider()
         with me.box(style=self._styles.chat_starter):
             self.header()
             with me.box(
@@ -162,28 +165,31 @@ class MesopHomePage:
                     self._params.conv_starter_text,
                     style=self._styles.conv_starter_text,
                 )
-                input_text(
-                    self.send_prompt,
-                    key="prompt",
-                    disabled=False,
-                    style=self._styles.message.text_input_inner,
-                )
+                wf_name = provider.names[0]
+                wf_description = provider.get_description(wf_name)
+                with me.content_button(
+                    on_click=lambda e: self.send_prompt(wf_name)
+                ):
+                    me.text(wf_description)
 
-    def send_prompt(self, prompt: str) -> Iterator[None]:
+    def get_provider(self) -> ProviderProtocol:
         ui = self._ui
-        provider = ui.app.provider
+        return ui.app.provider
 
-        name = provider.names[0]
+
+    def send_prompt(self, name: str) -> Iterator[None]:
+        
+        provider = self.get_provider()
 
         state = me.state(State)
         # me.navigate("/conversation")
         conversation = Conversation(
-            title=prompt, completed=False, waiting_for_feedback=False
+            title="New Conversation", completed=False, waiting_for_feedback=False
         )
         state.conversation = conversation
         state.in_conversation = True
         yield
-        responses = send_prompt_to_autogen(prompt=prompt, provider=provider, name=name)
+        responses = send_prompt_to_autogen(provider=provider, name=name)
         yield from consume_responses(responses)
 
     def conversation_box(self) -> None:
