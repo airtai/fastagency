@@ -8,7 +8,6 @@ from openai import InternalServerError
 
 from fastagency import UI, IOMessage
 from fastagency.api.openapi import OpenAPI
-from fastagency.base import WorkflowsProtocol
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.autogen import _findall, _match
 from fastagency.ui.console import ConsoleUI
@@ -142,9 +141,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(
-        ui: UI, workflow_uuid: str, params: dict[str, Any]
-    ) -> str:
+    def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
         initial_message = ui.text_input(
             sender="Workflow",
             recipient="User",
@@ -255,9 +252,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(
-            ui: UI, workflow_uuid: str, params: dict[str, Any]
-        ) -> str:
+        def workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
             initial_message = ui.text_input(
                 sender="Workflow",
                 recipient="User",

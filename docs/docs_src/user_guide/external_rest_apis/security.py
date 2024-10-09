@@ -46,7 +46,7 @@ def weather_workflow_with_security(
         prompt="What do you want to know about the weather?",
         workflow_id=workflow_uuid,
     )
-    
+
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent",
