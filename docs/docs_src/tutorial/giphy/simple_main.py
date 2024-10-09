@@ -64,7 +64,7 @@ def giphy_workflow(
         sender="Workflow",
         recipient="User",
         prompt="I can help you find images related to a certain subject. What kind of images would you like to find?",
-        workflow_id=workflow_uuid,
+        workflow_uuid=workflow_uuid,
     )
 
     chat_result = user_proxy.initiate_chat(

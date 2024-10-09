@@ -89,9 +89,10 @@ class FastAgency:  # Runnable
 
     def start(
         self,
+        *,
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
+        params: dict[str, Any],
         single_run: bool = False,
     ) -> None:
         """Start the FastAgency."""
@@ -99,7 +100,7 @@ class FastAgency:  # Runnable
             app=self,
             import_string=import_string,
             name=name,
-            initial_message=initial_message,
+            params=params,
             single_run=single_run,
         )
 
@@ -124,6 +125,7 @@ class FastAgency:  # Runnable
     def handle_wsgi(
         self, environ: dict[str, Any], start_response: Callable[..., Any]
     ) -> list[bytes]:
+        logger.info(f"Handling WSGI request: {environ}")
         if isinstance(self.ui, WSGIProtocol):
             return self.ui.handle_wsgi(self, environ, start_response)
         else:

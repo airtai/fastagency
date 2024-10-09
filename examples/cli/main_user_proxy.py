@@ -58,7 +58,7 @@ def simple_workflow(
         sender="Workflow",
         recipient="User",
         prompt="What would you like to find out about weather?",
-        workflow_id=workflow_uuid,
+        workflow_uuid=workflow_uuid,
     )
 
     chat_result = user_proxy.initiate_chat(

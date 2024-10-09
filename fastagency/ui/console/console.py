@@ -4,7 +4,7 @@ import textwrap
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 from ...base import (
     Runnable,
@@ -54,14 +54,14 @@ class ConsoleUI(MessageProcessorMixin):  # implements UI
         app: Runnable,
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
+        params: dict[str, Any],
         single_run: bool = False,
     ) -> None:
         run_workflow(
             provider=app.provider,
             ui=self,
             name=name,
-            initial_message=initial_message,
+            params=params,
             single_run=single_run,
         )
 

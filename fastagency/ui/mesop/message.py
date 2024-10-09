@@ -1,6 +1,6 @@
 import json
-from collections.abc import Iterable, Iterator
 import random
+from collections.abc import Iterable, Iterator
 from typing import Callable, Optional
 from uuid import uuid4
 
@@ -78,15 +78,16 @@ def handle_message(state: State, message: MesopMessage) -> None:
             )
             state.past_conversations.insert(0, becomme_past)
 
+
 def find_suitable_title(conversation: Conversation) -> str:
     messages = conversation.messages
     first_input = next(filter(lambda m: m.feedback_completed, messages), None)
-    if first_input:
-        if first_input.feedback:
-            return first_input.feedback[0]
-    
+    if first_input and first_input.feedback:
+        return first_input.feedback[0]
+
     state = me.state(State)
-    return f"The conversation that shall remain unnamed ({random.randint(0, 100)}-{len(state.past_conversations)})"
+    return f"The conversation that shall remain unnamed ({random.randint(0, 100)}-{len(state.past_conversations)})"  # nosec: B311
+
 
 def message_box(
     message: ConversationMessage, read_only: bool, *, styles: MesopHomePageStyles

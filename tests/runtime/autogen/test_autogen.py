@@ -146,7 +146,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
             sender="Workflow",
             recipient="User",
             prompt="I can help you learn about geometry. What subject you would like to explore?",
-            workflow_id=workflow_uuid,
+            workflow_uuid=workflow_uuid,
         )
 
         student_agent = ConversableAgent(
@@ -189,7 +189,6 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
     result = wf.run(
         name=name,
-        session_id="session_id",
         ui=ui.create_subconversation(),
         initial_message=initial_message,
     )
@@ -257,7 +256,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
                 sender="Workflow",
                 recipient="User",
                 prompt="I can help you learn about geometry. What subject you would like to explore?",
-                workflow_id=workflow_uuid,
+                workflow_uuid=workflow_uuid,
             )
             user_proxy = UserProxyAgent(
                 name="User_Proxy",
@@ -297,7 +296,6 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
 
         result = wf.run(
             name="test_workflow",
-            session_id="session_id",
             ui=ConsoleUI(),
             initial_message="What is the weather in Zagreb right now?",
         )

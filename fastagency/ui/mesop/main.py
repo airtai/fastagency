@@ -8,7 +8,6 @@ import mesop as me
 from fastagency.base import ProviderProtocol
 
 from ...logging import get_logger
-from .components.inputs import input_text
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
@@ -169,8 +168,7 @@ class MesopHomePage:
                     for wf_name in provider.names:
                         wf_description = provider.get_description(wf_name)
                         with me.content_button(
-                            key=wf_name,
-                            on_click=lambda e: self.send_prompt(e)
+                            key=wf_name, on_click=lambda e: self.send_prompt(e)
                         ):
                             me.text(wf_description)
 
@@ -178,9 +176,7 @@ class MesopHomePage:
         ui = self._ui
         return ui.app.provider
 
-
     def send_prompt(self, ev: me.ClickEvent) -> Iterator[None]:
-        
         name = ev.key
         provider = self.get_provider()
         state = me.state(State)

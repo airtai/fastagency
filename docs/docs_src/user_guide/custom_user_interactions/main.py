@@ -28,7 +28,7 @@ def exam_learning(ui: UI, workflow_uuid: str, param: dict[str, Any]) -> str:
         sender="Workflow",
         recipient="User",
         prompt="What do you want to learn today?",
-        workflow_id=workflow_uuid,
+        workflow_uuid=workflow_uuid,
     )
 
     def is_termination_msg(msg: dict[str, Any]) -> bool:

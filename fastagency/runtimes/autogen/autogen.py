@@ -289,7 +289,6 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         return decorator
 
-    # def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
     def run(self, name: str, ui: UI, **kwargs: Any) -> str:
         workflow, description = self._workflows[name]
 

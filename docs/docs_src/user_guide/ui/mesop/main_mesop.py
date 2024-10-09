@@ -34,7 +34,7 @@ def simple_workflow(
         sender="Workflow",
         recipient="User",
         prompt="What do you want to learn today?",
-        workflow_id=workflow_uuid,
+        workflow_uuid=workflow_uuid,
     )
 
     student_agent = ConversableAgent(

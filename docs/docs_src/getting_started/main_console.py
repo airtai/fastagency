@@ -28,7 +28,7 @@ def simple_workflow(
         sender="Workflow",
         recipient="User",
         prompt="I can help you learn about geometry. What subject you would like to explore?",
-        workflow_id=workflow_uuid,
+        workflow_uuid=workflow_uuid,
     )
 
     student_agent = ConversableAgent(
