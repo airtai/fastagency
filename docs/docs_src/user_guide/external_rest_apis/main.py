@@ -3,7 +3,7 @@ import os
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, WorkflowsProtocol
+from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
@@ -26,8 +26,15 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_weather", description="Weather chat")
 def weather_workflow(
-    wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, str]
 ) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="What do you want to know about the weather?",
+        workflow_uuid=workflow_uuid,
+    )
+
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent",

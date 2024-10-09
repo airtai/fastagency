@@ -1,14 +1,14 @@
 import sys
 from pathlib import Path
 from typing import Annotated, Any
+from uuid import uuid4
 
 import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 from openai import InternalServerError
 
-from fastagency import UI, IOMessage
+from fastagency import UI
 from fastagency.api.openapi import OpenAPI
-from fastagency.base import WorkflowsProtocol
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.autogen import _findall, _match
 from fastagency.ui.console import ConsoleUI
@@ -142,9 +142,9 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(
-        wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
-    ) -> str:
+    def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+        initial_message = "What is triangle inequality?"
+
         student_agent = ConversableAgent(
             name="Student_Agent",
             system_message="You are a student willing to learn.",
@@ -165,41 +165,29 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
         return chat_result.summary  # type: ignore[no-any-return]
 
-    initial_message = "What is triangle inequality?"
-
     name = "simple_learning"
 
     ui = ConsoleUI()
 
-    ui.process_message(
-        IOMessage.create(
-            sender="user",
-            recipient="workflow",
-            type="system_message",
-            message={
-                "heading": "Workflow BEGIN",
-                "body": f"Starting workflow with initial_message: {initial_message}",
-            },
-        )
+    workflow_uuid = uuid4().hex
+
+    ui.workflow_started(
+        sender="workflow",
+        recipient="user",
+        name=name,
+        workflow_uuid=workflow_uuid,
     )
 
     result = wf.run(
         name=name,
-        session_id="session_id",
-        ui=ui.create_subconversation(),
-        initial_message=initial_message,
+        ui=ui,
     )
 
-    ui.process_message(
-        IOMessage.create(
-            sender="user",
-            recipient="workflow",
-            type="system_message",
-            message={
-                "heading": "Workflow END",
-                "body": f"Ending workflow with result: {result}",
-            },
-        )
+    ui.workflow_completed(
+        sender="workflow",
+        recipient="user",
+        workflow_uuid=workflow_uuid,
+        result=result,
     )
 
 
@@ -248,9 +236,13 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(
-            wf: WorkflowsProtocol, ui: UI, initial_message: str, session_id: str
-        ) -> str:
+        def workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+            initial_message = ui.text_input(
+                sender="Workflow",
+                recipient="User",
+                prompt="I can help you learn about geometry. What subject you would like to explore?",
+                workflow_uuid=workflow_uuid,
+            )
             user_proxy = UserProxyAgent(
                 name="User_Proxy",
                 human_input_mode="ALWAYS",
@@ -289,7 +281,6 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
 
         result = wf.run(
             name="test_workflow",
-            session_id="session_id",
             ui=ConsoleUI(),
             initial_message="What is the weather in Zagreb right now?",
         )

@@ -20,9 +20,19 @@ from ...messages import (
     IOMessage,
     MessageProcessorMixin,
 )
-from ..nats import InitiateModel, InputResponseModel, NatsProvider
+from ..nats import InitiateWorkflowModel, InputResponseModel, NatsProvider
 
 logger = get_logger(__name__)
+
+
+class InititateChatModel(BaseModel):
+    workflow_name: str
+    params: dict[str, Any]
+
+
+class WorkflowInfo(BaseModel):
+    name: str
+    description: str
 
 
 class FastAPIAdapter(MessageProcessorMixin):
@@ -52,28 +62,17 @@ class FastAPIAdapter(MessageProcessorMixin):
     def setup_routes(self) -> APIRouter:
         router = APIRouter()
 
-        class InititateChatModel(BaseModel):
-            # user_id: UUID
-            # conversation_id: UUID
-            workflow_name: str
-            msg: str
-
-        class WorkflowInfo(BaseModel):
-            name: str
-            description: str
-
         @router.post("/initiate_chat")
         async def initiate_chat(
-            # user_id: UUID,
-            # conversation_id: UUID,
             initiate_chat: InititateChatModel,
-        ) -> InitiateModel:
+        ) -> InitiateWorkflowModel:
             user_id: UUID = uuid4()
-            conversation_id: UUID = uuid4()
-            init_msg = InitiateModel(
+            workflow_uuid: UUID = uuid4()
+            init_msg = InitiateWorkflowModel(
                 user_id=user_id,
-                conversation_id=conversation_id,
-                msg=initiate_chat.msg,
+                workflow_uuid=workflow_uuid,
+                params=initiate_chat.params,
+                name=initiate_chat.workflow_name,
             )
 
             nc = await nats.connect(
@@ -132,7 +131,7 @@ class FastAPIAdapter(MessageProcessorMixin):
         )
 
 
-class FastAPIProvider:
+class FastAPIProvider(ProviderProtocol):
     def __init__(
         self,
         fastapi_url: str,
@@ -166,16 +165,17 @@ class FastAPIProvider:
         self.is_broker_running: bool = False
 
     def _send_initiate_chat_msg(
-        self, workflow_name: str, initial_message: str
-    ) -> dict[str, str]:
-        payload = {
-            "workflow_name": workflow_name,
-            "msg": initial_message,
-        }
+        self, workflow_name: str, params: dict[str, Any]
+    ) -> InitiateWorkflowModel:
+        msg = InititateChatModel(workflow_name=workflow_name, params=params)
+
+        payload = msg.model_dump()
+
         resp = requests.post(
             f"{self.fastapi_url}/initiate_chat", json=payload, timeout=5
         )
-        return resp.json()  # type: ignore [no-any-return]
+        retval = InitiateWorkflowModel(**resp.json())
+        return retval
 
     async def _create_connect_message(self) -> str:
         connect_msg = {
@@ -246,13 +246,13 @@ class FastAPIProvider:
                 else:
                     ui.process_message(iomessage)
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
-        resp_json = self._send_initiate_chat_msg(name, initial_message)
-        user_id = resp_json["user_id"]
-        conversation_id = resp_json["conversation_id"]
+    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
+        initiate_workflow = self._send_initiate_chat_msg(name, params=kwargs)
+        user_id = initiate_workflow.user_id
+        workflow_uuid = initiate_workflow.workflow_uuid
 
-        _from_server_subject = f"chat.client.messages.{user_id}.{conversation_id}"
-        _to_server_subject = f"chat.server.messages.{user_id}.{conversation_id}"
+        _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"
+        _to_server_subject = f"chat.server.messages.{user_id}.{workflow_uuid}"
 
         async def _setup_and_run() -> None:
             await self._run_websocket_subscriber(

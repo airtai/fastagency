@@ -41,13 +41,15 @@ search:
                     - base
                         - [FastAPIAdapter](api/fastagency/adapters/fastapi/base/FastAPIAdapter.md)
                         - [FastAPIProvider](api/fastagency/adapters/fastapi/base/FastAPIProvider.md)
+                        - [InititateChatModel](api/fastagency/adapters/fastapi/base/InititateChatModel.md)
+                        - [WorkflowInfo](api/fastagency/adapters/fastapi/base/WorkflowInfo.md)
                 - nats
-                    - [InitiateModel](api/fastagency/adapters/nats/InitiateModel.md)
+                    - [InitiateWorkflowModel](api/fastagency/adapters/nats/InitiateWorkflowModel.md)
                     - [InputResponseModel](api/fastagency/adapters/nats/InputResponseModel.md)
                     - [NatsAdapter](api/fastagency/adapters/nats/NatsAdapter.md)
                     - [NatsProvider](api/fastagency/adapters/nats/NatsProvider.md)
                     - base
-                        - [InitiateModel](api/fastagency/adapters/nats/base/InitiateModel.md)
+                        - [InitiateWorkflowModel](api/fastagency/adapters/nats/base/InitiateWorkflowModel.md)
                         - [InputResponseModel](api/fastagency/adapters/nats/base/InputResponseModel.md)
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
@@ -80,6 +82,7 @@ search:
                 - [UI](api/fastagency/base/UI.md)
                 - [WSGIProtocol](api/fastagency/base/WSGIProtocol.md)
                 - [WorkflowsProtocol](api/fastagency/base/WorkflowsProtocol.md)
+                - [check_register_decorator](api/fastagency/base/check_register_decorator.md)
                 - [run_workflow](api/fastagency/base/run_workflow.md)
             - cli
                 - cli
@@ -170,6 +173,7 @@ search:
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
+                        - [find_suitable_title](api/fastagency/ui/mesop/message/find_suitable_title.md)
                         - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
                         - [message_box](api/fastagency/ui/mesop/message/message_box.md)
                     - send_prompt

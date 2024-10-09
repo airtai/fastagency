@@ -1,6 +1,6 @@
 from .base import (
     JETSTREAM,
-    InitiateModel,
+    InitiateWorkflowModel,
     InputResponseModel,
     NatsAdapter,
     NatsProvider,
@@ -8,7 +8,7 @@ from .base import (
 
 __all__ = [
     "NatsAdapter",
-    "InitiateModel",
+    "InitiateWorkflowModel",
     "InputResponseModel",
     "JETSTREAM",
     "NatsProvider",

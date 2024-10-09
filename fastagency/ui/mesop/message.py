@@ -1,4 +1,5 @@
 import json
+import random
 from collections.abc import Iterable, Iterator
 from typing import Callable, Optional
 from uuid import uuid4
@@ -69,13 +70,23 @@ def handle_message(state: State, message: MesopMessage) -> None:
             uuid: str = uuid4().hex
             becomme_past = Conversation(
                 id=uuid,
-                title=conversation.title,
+                title=find_suitable_title(conversation),
                 messages=conversation.messages,
                 completed=True,
                 is_from_the_past=True,
                 waiting_for_feedback=False,
             )
             state.past_conversations.insert(0, becomme_past)
+
+
+def find_suitable_title(conversation: Conversation) -> str:
+    messages = conversation.messages
+    first_input = next(filter(lambda m: m.feedback_completed, messages), None)
+    if first_input and first_input.feedback:
+        return first_input.feedback[0]
+
+    state = me.state(State)
+    return f"The conversation that shall remain unnamed ({random.randint(0, 100)}-{len(state.past_conversations)})"  # nosec: B311
 
 
 def message_box(

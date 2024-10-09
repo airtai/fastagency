@@ -11,11 +11,12 @@ from typing import (
     Union,
     runtime_checkable,
 )
+from uuid import uuid4
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 
-from ...base import UI, Workflow, WorkflowsProtocol
+from ...base import UI, Workflow, WorkflowsProtocol, check_register_decorator
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -270,13 +271,14 @@ class AutoGenWorkflows(WorkflowsProtocol):
     def __init__(self) -> None:
         """Initialize the workflows."""
         self._workflows: dict[
-            str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
+            str, tuple[Callable[[UI, str, dict[str, Any]], str], str]
         ] = {}
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
     ) -> Callable[[Workflow], Workflow]:
         def decorator(func: Workflow) -> Workflow:
+            check_register_decorator(func)
             if name in self._workflows:
                 if fail_on_redefintion:
                     raise ValueError(f"A workflow with name '{name}' already exists.")
@@ -288,13 +290,14 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         return decorator
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
+    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
         workflow, description = self._workflows[name]
 
         iostream = IOStreamAdapter(ui)
 
+        workflow_uuid = uuid4().hex
         with IOStream.set_default(iostream):
-            return workflow(self, ui, initial_message, session_id)
+            return workflow(ui, workflow_uuid, kwargs)
 
     @property
     def names(self) -> list[str]:

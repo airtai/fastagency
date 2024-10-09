@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
@@ -27,8 +28,15 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
 def weather_workflow(
-    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, Any]
 ) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you with the weather. What would you like to know?",
+        workflow_uuid=workflow_uuid,
+    )
+
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent",

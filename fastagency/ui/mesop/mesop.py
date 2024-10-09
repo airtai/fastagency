@@ -151,7 +151,7 @@ class MesopUI(MessageProcessorMixin):  # UI
         app: Runnable,
         import_string: str,
         name: Optional[str] = None,
-        initial_message: Optional[str] = None,
+        params: dict[str, Any],
         single_run: bool = False,
     ) -> None:
         logger.info(
@@ -281,33 +281,17 @@ class MesopUI(MessageProcessorMixin):  # UI
         return MesopUI._me(environ, start_response)  # type: ignore[no-any-return]
 
 
-def run_workflow(
-    provider: ProviderProtocol, name: str, initial_message: str
-) -> MesopUI:
+def run_workflow(provider: ProviderProtocol, name: str) -> MesopUI:
     def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
-        ui.process_message(
-            IOMessage.create(
-                sender="user",
-                recipient="workflow",
-                type="system_message",
-                message={
-                    "heading": "Workflow BEGIN",
-                    "body": f"Starting workflow with initial_message: {initial_message}",
-                },
-            )
-        )
-
         try:
             result = provider.run(
                 name=name,
-                session_id="session_id",
                 ui=subconversation,  # type: ignore[arg-type]
-                initial_message=initial_message,
             )
             ui.process_message(
                 IOMessage.create(
-                    sender="user",
-                    recipient="workflow",
+                    sender="workflow",
+                    recipient="user",
                     type="system_message",
                     message={
                         "heading": "Workflow END",

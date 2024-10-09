@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.adapters.nats.InitiateModel
+::: fastagency.ui.mesop.message.find_suitable_title

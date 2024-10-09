@@ -38,10 +38,11 @@ class InputResponseModel(BaseModel):
     error: bool = False
 
 
-class InitiateModel(BaseModel):
+class InitiateWorkflowModel(BaseModel):
     user_id: UUID
-    conversation_id: UUID
-    msg: str
+    workflow_uuid: UUID
+    name: str
+    params: dict[str, Any]
 
 
 logger = get_logger(__name__)
@@ -136,7 +137,7 @@ class NatsAdapter(MessageProcessorMixin):
             deliver_policy=api.DeliverPolicy("all"),
         )
         async def initiate_handler(
-            body: InitiateModel, msg: NatsMessage, logger: Logger
+            body: InitiateWorkflowModel, msg: NatsMessage, logger: Logger
         ) -> None:
             """Initiate the handler.
 
@@ -156,7 +157,7 @@ class NatsAdapter(MessageProcessorMixin):
                 f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
             )
             user_id = str(body.user_id)
-            thread_id = str(body.conversation_id)
+            thread_id = str(body.workflow_uuid)
             self._input_request_subject = f"chat.client.messages.{user_id}.{thread_id}"
             self._input_receive_subject = f"chat.server.messages.{user_id}.{thread_id}"
 
@@ -177,8 +178,8 @@ class NatsAdapter(MessageProcessorMixin):
                         await asyncify(run_workflow)(
                             provider=self.provider,
                             ui=self,  # type: ignore[arg-type]
-                            name=self.provider.names[0],
-                            initial_message=body.msg,
+                            name=body.name,
+                            params=body.params,
                             single_run=True,
                         )
 
@@ -330,7 +331,7 @@ class NatsAdapter(MessageProcessorMixin):
         return NatsProvider(nats_url=nats_url, user=user, password=password)
 
 
-class NatsProvider:
+class NatsProvider(ProviderProtocol):
     def __init__(
         self,
         nats_url: Optional[str] = None,
@@ -393,18 +394,19 @@ class NatsProvider:
         await subscriber.start()
         logger.info(f"Subscriber for {from_server_subject} started")
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
+    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
         user_id = uuid4()  # todo: fix me later
-        conversation_id = uuid4()
-        init_message = InitiateModel(
+        workflow_uuid = uuid4()
+        init_message = InitiateWorkflowModel(
             user_id=user_id,
-            conversation_id=conversation_id,
-            msg=initial_message,
+            workflow_uuid=workflow_uuid,
+            params=kwargs,
+            name=name,
         )
-        _from_server_subject = f"chat.client.messages.{user_id}.{conversation_id}"
-        _to_server_subject = f"chat.server.messages.{user_id}.{conversation_id}"
+        _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"
+        _to_server_subject = f"chat.server.messages.{user_id}.{workflow_uuid}"
 
         async def send_initiate_chat_msg() -> None:
             await self.broker.publish(init_message, self._initiate_chat_subject)
