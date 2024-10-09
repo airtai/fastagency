@@ -86,8 +86,8 @@ class FastAPIAdapter(MessageProcessorMixin):
 
             return init_msg
 
-        @router.get("/discover")
-        async def discover() -> list[WorkflowInfo]:
+        @router.get("/discovery")
+        def discovery() -> list[WorkflowInfo]:
             names = self.wf.names
             descriptions = [self.wf.get_description(name) for name in names]
             return [
@@ -274,9 +274,23 @@ class FastAPIProvider:
 
         return "FastAPIWorkflows.run() completed"
 
+    def _get_workflow_info(self) -> list[dict[str, str]]:
+        resp = requests.get(f"{self.fastapi_url}/discovery", timeout=5)
+        return resp.json()  # type: ignore [no-any-return]
+
+    def _get_names(self) -> list[str]:
+        return [workflow["name"] for workflow in self._get_workflow_info()]
+
+    def _get_description(self, name: str) -> str:
+        return next(
+            workflow["description"]
+            for workflow in self._get_workflow_info()
+            if workflow["name"] == name
+        )
+
     @property
     def names(self) -> list[str]:
-        return ["simple_learning"]
+        return self._get_names()
 
     def get_description(self, name: str) -> str:
-        return "Student and teacher learning chat"
+        return self._get_description(name)
