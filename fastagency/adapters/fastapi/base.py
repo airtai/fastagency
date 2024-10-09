@@ -42,7 +42,7 @@ class FastAPIAdapter(MessageProcessorMixin):
             password (Optional[str], optional): The password. Defaults to None.
             super_conversation (Optional["FastAPIProvider"], optional): The super conversation. Defaults to None.
         """
-        self.wf = provider
+        self.provider = provider
 
         self.user = user
         self.password = password
@@ -77,7 +77,9 @@ class FastAPIAdapter(MessageProcessorMixin):
             )
 
             nc = await nats.connect(
-                self.wf.nats_url, user=self.wf.user, password=self.wf.password
+                self.provider.nats_url,
+                user=self.provider.user,
+                password=self.provider.password,
             )
             await nc.publish(
                 "chat.server.initiate_chat",
@@ -86,10 +88,10 @@ class FastAPIAdapter(MessageProcessorMixin):
 
             return init_msg
 
-        @router.get("/discover")
-        async def discover() -> list[WorkflowInfo]:
-            names = self.wf.names
-            descriptions = [self.wf.get_description(name) for name in names]
+        @router.get("/discovery")
+        def discovery() -> list[WorkflowInfo]:
+            names = self.provider.names
+            descriptions = [self.provider.get_description(name) for name in names]
             return [
                 WorkflowInfo(name=name, description=description)
                 for name, description in zip(names, descriptions)
@@ -274,9 +276,23 @@ class FastAPIProvider:
 
         return "FastAPIWorkflows.run() completed"
 
+    def _get_workflow_info(self) -> list[dict[str, str]]:
+        resp = requests.get(f"{self.fastapi_url}/discovery", timeout=5)
+        return resp.json()  # type: ignore [no-any-return]
+
+    def _get_names(self) -> list[str]:
+        return [workflow["name"] for workflow in self._get_workflow_info()]
+
+    def _get_description(self, name: str) -> str:
+        return next(
+            workflow["description"]
+            for workflow in self._get_workflow_info()
+            if workflow["name"] == name
+        )
+
     @property
     def names(self) -> list[str]:
-        return ["simple_learning"]
+        return self._get_names()
 
     def get_description(self, name: str) -> str:
-        return "Student and teacher learning chat"
+        return self._get_description(name)

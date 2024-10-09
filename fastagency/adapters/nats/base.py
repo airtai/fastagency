@@ -12,7 +12,9 @@ from uuid import UUID, uuid4
 from asyncer import asyncify, syncify
 from faststream import FastStream, Logger
 from faststream.nats import JStream, NatsBroker, NatsMessage
-from nats.js import api
+from nats.aio.client import Client as NatsClient
+from nats.js import JetStreamContext, api
+from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
 from ...base import UI, ProviderProtocol, run_workflow
@@ -55,6 +57,8 @@ JETSTREAM = JStream(
         # server prints message to client; chat.server.messages.<user_uuid>.<chat_uuid>
         # we create this topic dynamically and subscribe to it => worker is fixed
         "chat.server.messages.*.*",
+        # discovery subject
+        "discovery",
     ],
 )
 
@@ -198,11 +202,21 @@ class NatsAdapter(MessageProcessorMixin):
             except Exception as e:
                 await self._send_error_msg(e, logger)
 
+    async def _publish_discovery(self) -> None:
+        """Publish the discovery message."""
+        jetstream_key_value = await self.broker.key_value(bucket="discovery")
+
+        names = self.provider.names
+        for name in names:
+            description = self.provider.get_description(name)
+            await jetstream_key_value.put(name, description.encode())
+
     # todo: make it a router
     @asynccontextmanager
     async def lifespan(self, app: Any) -> AsyncIterator[None]:
         async with self.broker:
             await self.broker.start()
+            await self._publish_discovery()
             try:
                 yield
             finally:
@@ -430,9 +444,42 @@ class NatsProvider:
 
         return "NatsWorkflows.run() completed"
 
+    @asynccontextmanager
+    async def _get_jetstream_context(self) -> AsyncIterator[JetStreamContext]:
+        nc = NatsClient()
+        await nc.connect(self.nats_url, user=self.user, password=self.password)
+        js = nc.jetstream()
+        try:
+            yield js
+        finally:
+            await nc.close()
+
+    @asynccontextmanager
+    async def _get_jetstream_key_value(
+        self, bucket: str = "discovery"
+    ) -> AsyncIterator[KeyValue]:
+        async with self._get_jetstream_context() as js:
+            kv = await js.create_key_value(bucket=bucket)
+            yield kv
+
+    async def _get_names(self) -> list[str]:
+        async with self._get_jetstream_key_value() as kv:
+            names = await kv.keys()
+        return names
+
+    async def _get_description(self, name: str) -> str:
+        async with self._get_jetstream_key_value() as kv:
+            description = await kv.get(name)
+        return description.value.decode() if description.value else ""
+
     @property
     def names(self) -> list[str]:
-        return ["simple_learning"]
+        names = syncify(self._get_names)()
+        logger.debug(f"Names: {names}")
+        return names
 
     def get_description(self, name: str) -> str:
-        return "Student and teacher learning chat"
+        description = syncify(self._get_description)(name)
+        logger.debug(f"Description: {description}")
+        # return "Student and teacher learning chat"
+        return description
