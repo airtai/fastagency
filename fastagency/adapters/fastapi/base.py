@@ -56,7 +56,7 @@ class FastAPIAdapter(MessageProcessorMixin):
             # user_id: UUID
             # conversation_id: UUID
             workflow_name: str
-            msg: str
+            msg: Optional[str] = None
 
         class WorkflowInfo(BaseModel):
             name: str
@@ -74,6 +74,7 @@ class FastAPIAdapter(MessageProcessorMixin):
                 user_id=user_id,
                 conversation_id=conversation_id,
                 msg=initiate_chat.msg,
+                name=initiate_chat.workflow_name,
             )
 
             nc = await nats.connect(
@@ -130,7 +131,7 @@ class FastAPIAdapter(MessageProcessorMixin):
         )
 
 
-class FastAPIProvider:
+class FastAPIProvider(ProviderProtocol):
     def __init__(
         self,
         fastapi_url: str,
@@ -164,7 +165,7 @@ class FastAPIProvider:
         self.is_broker_running: bool = False
 
     def _send_initiate_chat_msg(
-        self, workflow_name: str, initial_message: str
+        self, workflow_name: str, initial_message: Optional[str] = None
     ) -> dict[str, str]:
         payload = {
             "workflow_name": workflow_name,
@@ -244,8 +245,8 @@ class FastAPIProvider:
                 else:
                     ui.process_message(iomessage)
 
-    def run(self, name: str, session_id: str, ui: UI, initial_message: str) -> str:
-        resp_json = self._send_initiate_chat_msg(name, initial_message)
+    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
+        resp_json = self._send_initiate_chat_msg(name, initial_message=None)
         user_id = resp_json["user_id"]
         conversation_id = resp_json["conversation_id"]
 
