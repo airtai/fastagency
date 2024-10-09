@@ -42,7 +42,7 @@ class FastAPIAdapter(MessageProcessorMixin):
             password (Optional[str], optional): The password. Defaults to None.
             super_conversation (Optional["FastAPIProvider"], optional): The super conversation. Defaults to None.
         """
-        self.wf = provider
+        self.provider = provider
 
         self.user = user
         self.password = password
@@ -77,7 +77,9 @@ class FastAPIAdapter(MessageProcessorMixin):
             )
 
             nc = await nats.connect(
-                self.wf.nats_url, user=self.wf.user, password=self.wf.password
+                self.provider.nats_url,
+                user=self.provider.user,
+                password=self.provider.password,
             )
             await nc.publish(
                 "chat.server.initiate_chat",
@@ -88,8 +90,8 @@ class FastAPIAdapter(MessageProcessorMixin):
 
         @router.get("/discovery")
         def discovery() -> list[WorkflowInfo]:
-            names = self.wf.names
-            descriptions = [self.wf.get_description(name) for name in names]
+            names = self.provider.names
+            descriptions = [self.provider.get_description(name) for name in names]
             return [
                 WorkflowInfo(name=name, description=description)
                 for name, description in zip(names, descriptions)
