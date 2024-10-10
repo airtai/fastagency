@@ -31,15 +31,15 @@ This command installs FastAgency with support for the Console interface and Auto
 The example starts by importing the necessary modules from **AutoGen** and **FastAgency**. These imports lay the foundation for building and running multi-agent workflows.
 
 === "Using WebSurferAgent"
-    ```python hl_lines="7"
-    {!> docs_src/user_guide/runtime/autogen/websurfer.py [ln:1-9] !}
+    ```python hl_lines="8"
+    {!> docs_src/user_guide/runtimes/autogen/websurfer.py [ln:1-9] !}
     ```
 
     To create a new web surfing agent, simply import `WebSurferAgent`, which comes with built-in web surfing capabilities, and use it as needed.
 
 === "Enhancing an existing agent"
-    ```python hl_lines="4 8"
-    {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:1-9] !}
+    ```python hl_lines="4 9"
+    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:1-10] !}
     ```
 
     To enhance existing agents with web surfing capability, import `WebSurferTool` from FastAgency and `ConversableAgent` from AutoGen.
@@ -49,21 +49,21 @@ The example starts by importing the necessary modules from **AutoGen** and **Fas
 Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and websurfer agents can interact effectively.
 
 ```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:10-19] !}
+{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:10-19] !}
 ```
 
 #### 3. **Define the Workflow and Agents**
 
 === "Using WebSurferAgent"
 
-    In this step, we are going to create two agents:
+    In this step, we are going to create two agents and specify the initial message that will be displayed to users when the workflow starts:
 
     - **UserProxyAgent**: This agent simulates the user interacting with the system.
 
     - **WebSurferAgent**: This agent functions as a web surfer, with built-in capability to browse the web and fetch real-time data as required.
 
-    ```python hl_lines="18"
-    {!> docs_src/user_guide/runtime/autogen/websurfer.py [ln:20-38] !}
+    ```python hl_lines="24"
+    {!> docs_src/user_guide/runtimes/autogen/websurfer.py [ln:20-45] !}
     ```
 
     When initiating the `WebSurferAgent`, the executor parameter must be provided. This can be either a single instance of `ConversableAgent` or a `list of ConversableAgent` instances.
@@ -72,7 +72,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
 === "Enhancing an existing agent"
 
-    In this step, we create two agents and a web surfer tool:
+    In this step, we create two agents, a web surfer tool and set an initial message that will be displayed to users when the workflow starts:
 
     - **UserProxyAgent**: This agent simulates the user interacting with the system.
 
@@ -81,13 +81,13 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     - **WebSurferTool**: The tool that gives the ConversableAgent the ability to browse the web after it has been registered.
 
     ```python
-    {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:20-45] !}
+    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-54] !}
     ```
 
     Now, we need to register the WebSurferAgent with a caller and executor. This setup allows the caller to use the WebSurferAgent for performing real-time web interactions.
 
     ```python  hl_lines="2 3"
-    {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:46-50] !}
+    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:55-58] !}
     ```
 
     The `executor` can be either a single instance of `ConversableAgent` or a `list of ConversableAgent` instances.
@@ -100,20 +100,20 @@ Here, the user agent starts a conversation with the websurfer agent, which perfo
 === "Using WebSurferAgent"
 
     ```python
-    {! docs_src/user_guide/runtime/autogen/websurfer.py [ln:39-48] !}
+    {! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:46-54] !}
     ```
 
 === "Enhancing an existing agent"
 
     ```python
-    {! docs_src/user_guide/runtime/autogen/websurfer_tool.py [ln:51-60] !}
+    {! docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:59-68] !}
     ```
 
 #### 5. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtime/autogen/websurfer.py [ln:50] !}
+{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:57] !}
 ```
 
 ### Complete Application Code
@@ -123,7 +123,7 @@ Finally, we create the FastAgency application and launch it using the console in
     <details>
         <summary>websurfer_agent.py</summary>
         ```python
-        {!> docs_src/user_guide/runtime/autogen/websurfer.py !}
+        {!> docs_src/user_guide/runtimes/autogen/websurfer.py !}
         ```
     </details>
 
@@ -132,7 +132,7 @@ Finally, we create the FastAgency application and launch it using the console in
     <details>
         <summary>websurfer_tool.py</summary>
         ```python
-        {!> docs_src/user_guide/runtime/autogen/websurfer_tool.py !}
+        {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py !}
         ```
     </details>
 
@@ -156,7 +156,7 @@ Ensure you have set your OpenAI API key in the environment. The command will lau
 
 ### Output
 
-Once you run it, FastAgency automatically detects the appropriate app to execute and runs it. The application will then prompt you with: "Please enter an initial message:".
+Once you run it, FastAgency automatically detects the appropriate app to execute and runs it. The application will then prompt you with: "I can help you with your web search. What would you like to know?:"
 
 === "Using WebSurferAgent"
 
@@ -168,6 +168,8 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     ╰─────────────────────────╯
 
     [INFO] Importing autogen.base.py
+    [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.  autogen.AutoGenWorkflows object at 0x109a51610> and UI: <fastagency.ui.console.console.ConsoleUI object at 0x109adced0>
+    [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭──── Importable FastAgency app ────╮
     │                                   │
@@ -175,14 +177,19 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     │                                   │
     ╰───────────────────────────────────╯
 
-    ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+    ╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
     │                                                                              │
-    │ Starting a new workflow 'simple_websurfer' with the following                │
-    │ description:                                                                 │
+    │ {                                                                            │
+    │   "name": "simple_websurfer",                                                │
+    │   "description": "WebSurfer chat",                                           │
     │                                                                              │
-    │ WebSurfer chat                                                               │
+    │ "params": {}                                                                 │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
     │                                                                              │
-    │ Please enter an initial message:                                             │
+    │ I can help you with your web search. What would you like to know?:           │
     ╰──────────────────────────────────────────────────────────────────────────────╯
     ```
 
@@ -196,6 +203,8 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     ╰────────────────────────╯
 
     [INFO] Importing autogen.base.py
+    [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0x11368cbd0> and UI: <fastagency.ui.console.console.ConsoleUI object at 0x13441c510>
+    [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭─── Importable FastAgency app ────╮
     │                                  │
@@ -203,14 +212,19 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     │                                  │
     ╰──────────────────────────────────╯
 
-    ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+    ╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
     │                                                                              │
-    │ Starting a new workflow 'simple_websurfer' with the following                │
-    │ description:                                                                 │
+    │ {                                                                            │
+    │   "name": "simple_websurfer",                                                │
+    │   "description": "WebSurfer chat",                                           │
     │                                                                              │
-    │ WebSurfer chat                                                               │
+    │ "params": {}                                                                 │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
     │                                                                              │
-    │ Please enter an initial message:                                             │
+    │ I can help you with your web search. What would you like to know?:           │
     ╰──────────────────────────────────────────────────────────────────────────────╯
     ```
 
@@ -232,18 +246,24 @@ This will initiate the task, allowing you to see the real-time conversation betw
 │ }                                                                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
-╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
 │                                                                              │
-│ Starting a new workflow 'simple_websurfer' with the following                │
-│ description:                                                                 │
+│ {                                                                            │
+│   "name": "simple_websurfer",                                                │
+│   "description": "WebSurfer chat",                                           │
 │                                                                              │
-│ WebSurfer chat                                                               │
-│                                                                              │
-│ Please enter an initial message:                                             │
+│ "params": {}                                                                 │
+│ }                                                                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
+    │                                                                              │
+    │ I can help you with your web search. What would you like to know?:           │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
 ```
 
-The agent will summarize its findings and then prompt you again with "Please enter an initial message:", allowing you to continue the conversation with the web surfer agent.
+The agent will summarize its findings and then prompt you again with "I can help you with your web search. What would you like to know?:", allowing you to continue the conversation with the web surfer agent.
 
 ---
 
