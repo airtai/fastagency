@@ -125,7 +125,7 @@ class FastAgency:  # Runnable
     def handle_wsgi(
         self, environ: dict[str, Any], start_response: Callable[..., Any]
     ) -> list[bytes]:
-        logger.info(f"Handling WSGI request: {environ}")
+        logger.debug(f"Handling WSGI request: {environ}")
         if isinstance(self.ui, WSGIProtocol):
             return self.ui.handle_wsgi(self, environ, start_response)
         else:

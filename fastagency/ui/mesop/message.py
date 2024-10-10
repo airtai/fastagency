@@ -131,7 +131,7 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
         return self._conversation_message.feedback_completed
 
     def _provide_feedback(self, feedback: str) -> Iterator[None]:
-        logger.info(f"_provide_feedback({feedback=})")
+        logger.debug(f"MesopGUIMessageVisitor._provide_feedback({feedback=})")
         state = me.state(State)
         conversation = state.conversation
         conversation.feedback = ""
@@ -216,7 +216,7 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
 
     def visit_keep_alive(self, message: KeepAlive) -> None:
         def on_wakeup(e: mel.WebEvent) -> Iterator[None]:
-            logger.info("waking up, after the keep alive")
+            logger.debug("waking up, after the keep alive")
             self._conversation_message.feedback_completed = True
             yield from consume_responses(get_more_messages())
 
