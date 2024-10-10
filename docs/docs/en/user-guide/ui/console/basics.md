@@ -14,7 +14,7 @@ This example demonstrates how to create a workflow where a student agent interac
 We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating the ConsoleUI.
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:1-7] !}
+{! docs_src/getting_started/main_console.py [ln:1-8] !}
 ```
 
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
@@ -35,7 +35,7 @@ Next, we configure the language model that will power the agents. In this case, 
 Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:22-44] !}
+{! docs_src/getting_started/main_console.py [ln:20-52] !}
 ```
 
 - **Agent Overview**: The **Student Agent** is configured with a system message, "You are a student willing to learn," and will initiate questions during the interaction. The **Teacher Agent**, on the other hand, is set up as a math teacher and will respond to the student's questions.
@@ -45,7 +45,7 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)** to link the workflow to a text-based console interface. This allows the user to interact with the agents via the terminal.
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:47] !}
+{! docs_src/getting_started/main_console.py [ln:55] !}
 ```
 
 - **Explanation**: Here, we set up the **ConsoleUI** as the user interface for the workflow, which will allow the entire agent interaction to take place within the terminal.

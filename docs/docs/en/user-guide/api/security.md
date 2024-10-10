@@ -18,34 +18,70 @@ pip install "fastagency[autogen,openapi]"
 ## Imports
 The imports are the same as in the [previous chapter](./index.md){.internal-link}, except here we also import `APIKeyHeader` to set the security value in the header:
 
-```python hl_lines="11"
+```python hl_lines="8"
 {! docs_src/user_guide/external_rest_apis/security.py [ln:1-10] !}
 ```
 
-## Define Workflow
+## Configure the Language Model (LLM)
+Here, the large language model is configured to use the `gpt-4o-mini` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
 
-In this workflow, we create a Python client for the external REST API by passing the URL of the `openapi.json` to the `Client.create` method. Then, we register the generated client with the agent using the methods `register_for_llm` and `register_for_execution`.
+```python
+{! docs_src/user_guide/external_rest_apis/security.py [ln:11-20] !}
+```
 
-Additionally, we set the API key for the API using the `set_security_params` method:
+## Set Up the Weather API
+We define the OpenAPI specification URL for the weather service. This API will later be used by the weather agent to fetch real-time weather data.
 
-```python hl_lines="2"
+```python
+{! docs_src/user_guide/external_rest_apis/security.py [ln:22,23] !}
+```
+
+## Configuring API Security Parameters
+
+Here, we define security settings for the weather API by setting API keys for authentication. This ensures secure access when interacting with the API, globally across all methods.
+
+```python
 {! docs_src/user_guide/external_rest_apis/security.py [ln:25,26] !}
 ```
 
-Here's a simple example of a workflow definition:
+You can also set security parameters for a specific method. The code below demonstrates how to apply security parameters to a specific method instead of globally. In this example, the security settings are only applied to the `get_daily_weather_daily_get` method.
 
-```python hl_lines="15"
-{! docs_src/user_guide/external_rest_apis/security.py [ln:12-69] !}
+```python
+{! docs_src/user_guide/external_rest_apis/security.py [ln:28-32] !}
 ```
 
-This code snippet sets up a simple weather agent that calls an external weather API with security, using the registered functions generated from the `openapi.json` URL.
+## Define the Workflow and Agents
+
+In this step, we define two agents and specify the initial message that will be displayed to users when the workflow starts.
+
+- **UserProxyAgent**: This agent simulates the user interacting with the system.
+
+- **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
+
+```python
+{! docs_src/user_guide/external_rest_apis/security.py [ln:34-61] !}
+```
+
+## Register API Functions with the Agents
+In this step, we register the weather API functions to ensure that the weather agent can call the correct functions to retrieve the required weather data.
+
+```python
+{! docs_src/user_guide/external_rest_apis/security.py [ln:62-67] !}
+```
+
+## Enable Agent Interaction and Chat
+Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
+
+```python
+{! docs_src/user_guide/external_rest_apis/security.py [ln:68-76] !}
+```
 
 ## Define FastAgency Application
 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:72] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:79] !}
 ```
 
 ## Complete Application Code
@@ -68,51 +104,59 @@ fastagency run
 
 ## Output
 
-The output will vary based on the city and current weather conditions:
+The output will vary based on the city and the current weather conditions:
 
 ```console
- ╭─── Python package file structure ───╮
- │                                     │
- │  📁 docs                            │
- │  ├── 🐍 __init__.py                 │
- │  └── 📁 docs_src                    │
- │      ├── 🐍 __init__.py             │
- │      └── 📁 tutorial                │
- │          ├── 🐍 __init__.py         │
- │          └── 📁 external_rest_apis  │
- │              ├── 🐍 __init__.py     │
- │              └── 🐍 security.py     │
- │                                     │
- ╰─────────────────────────────────────╯
+╭─ Python module file ─╮
+│                      │
+│  🐍 main.py          │
+│                      │
+╰──────────────────────╯
 
- ╭───────────────────── Importable FastAgency app ──────────────────────╮
- │                                                                      │
- │  from docs.docs_src.tutorial.external_rest_apis.security import app  │
- │                                                                      │
- ╰──────────────────────────────────────────────────────────────────────╯
 
-╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+╭─ Importable FastAgency app ─╮
+│                             │
+│  from main import app       │
+│                             │
+╰─────────────────────────────╯
+
+╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
 │                                                                              │
-│ Starting a new workflow 'simple_weather_with_security' with the              │
-│ following description:                                                       │
-│                                                                              │
-│ Weather chat with security                                                   │
-│                                                                              │
-│ Please enter an                                                              │
-│ initial message:                                                             │
+│ {                                                                            │
+│   "name": "simple_weather_with_security",                                    │
+│   "description": "Weather                                                    │
+│ chat with security",                                                         │
+│   "params": {}                                                               │
+│ }                                                                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
-Get me hourly weather forecast for Chennai city
-    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
     │                                                                              │
-    │ Get me hourly weather forecast for Chennai city                              │
+    │ What do you want to know about the weather?:                                 │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ Weather_Agent -> User_Agent [suggested_function_call] ──────────────────────╮
+Get me daily weather forecast for Chennai city
+    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ Get me daily weather forecast for Chennai city                               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ I'm unable to provide real-time weather forecasts. However, you can          │
+    │ easily find the daily weather forecast for Chennai by checking               │
+    │ reliable weather websites, using weather apps, or searching for              │
+    │ "Chennai weather forecast" in your preferred search engine. If you           │
+    │ have any other questions or need information about typical weather           │
+    │ patterns in Chennai, feel free to ask!                                       │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ User_Agent -> Weather_Agent [suggested_function_call] ──────────────────────╮
     │                                                                              │
     │ {                                                                            │
-    │   "function_name": "get_hourly_weather_hourly_get",                          │
+    │   "function_name": "get_daily_weather_daily_get",                            │
     │   "call_id":                                                                 │
-    │ "call_pAMWHJ1wIlsciSSOMIb4uhst",                                             │
+    │ "call_lbik8BJJREriUyhbpuKE5hhC",                                             │
     │   "arguments": {                                                             │
     │     "city":                                                                  │
     │ "Chennai"                                                                    │
@@ -120,112 +164,57 @@ Get me hourly weather forecast for Chennai city
     │ }                                                                            │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ User_Agent -> Weather_Agent [function_call_execution] ──────────────────────╮
+    ╭─ Weather_Agent -> User_Agent [function_call_execution] ──────────────────────╮
     │                                                                              │
     │ {                                                                            │
-    │   "function_name": "get_hourly_weather_hourly_get",                          │
+    │   "function_name": "get_daily_weather_daily_get",                            │
     │   "call_id":                                                                 │
-    │ "call_pAMWHJ1wIlsciSSOMIb4uhst",                                             │
+    │ "call_lbik8BJJREriUyhbpuKE5hhC",                                             │
     │   "retval": "{\"city\": \"Chennai\",                                         │
-    │ \"temperature\": 35, \"daily_forecasts\": [{\"forecast_date\":               │
-    │ \"2024-09-10\", \"temperature\": 31, \"hourly_forecasts\":                   │
-    │ [{\"forecast_time\": \"00:00:00\", \"temperature\": 30,                      │
-    │ \"description\": \"Patchy rain nearby\"}, {\"forecast_time\":                │
-    │ \"03:00:00\", \"temperature\": 29, \"description\": \"Clear\"},              │
-    │ {\"forecast_time\": \"06:00:00\", \"temperature\": 28,                       │
-    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"09:00:00\",               │
-    │ \"temperature\": 31, \"description\": \"Sunny\"}, {\"forecast_time\":        │
-    │ \"12:00:00\", \"temperature\": 35, \"description\": \"Partly                 │
-    │ cloudy\"}, {\"forecast_time\": \"15:00:00\", \"temperature\": 32,            │
-    │ \"description\": \"Patchy light drizzle\"}, {\"forecast_time\":              │
-    │ \"18:00:00\", \"temperature\": 30, \"description\": \"Patchy light           │
-    │ drizzle\"}, {\"forecast_time\": \"21:00:00\", \"temperature\": 30,           │
-    │ \"description\": \"Patchy rain nearby\"}]}, {\"forecast_date\":              │
-    │ \"2024-09-11\", \"temperature\": 30, \"hourly_forecasts\":                   │
-    │ [{\"forecast_time\": \"00:00:00\", \"temperature\": 29,                      │
-    │ \"description\": \"Patchy rain nearby\"}, {\"forecast_time\":                │
-    │ \"03:00:00\", \"temperature\": 29, \"description\": \"Clear\"},              │
-    │ {\"forecast_time\": \"06:00:00\", \"temperature\": 28,                       │
-    │ \"description\": \"Sunny\"}, {\"forecast_time\": \"09:00:00\",               │
-    │ \"temperature\": 31, \"description\": \"Sunny\"}, {\"forecast_time\":        │
-    │ \"12:00:00\", \"temperature\": 34, \"description\": \"Partly                 │
-    │ Cloudy\"}, {\"forecast_time\": \"15:00:00\", \"temperature\": 31,            │
-    │ \"description\": \"Cloudy\"}, {\"forecast_time\": \"18:00:00\",              │
-    │ \"temperature\": 29, \"description\": \"Partly Cloudy\"},                    │
-    │ {\"forecast_time\": \"21:00:00\", \"temperature\": 29,                       │
-    │ \"description\": \"Cloudy\"}]}, {\"forecast_date\": \"2024-09-12\",          │
-    │ \"temperature\": 30, \"hourly_forecasts\": [{\"forecast_time\":              │
-    │ \"00:00:00\", \"temperature\": 29, \"description\": \"Patchy rain            │
-    │ nearby\"}, {\"forecast_time\": \"03:00:00\", \"temperature\": 29,            │
-    │ \"description\": \"Clear\"}, {\"forecast_time\": \"06:00:00\",               │
-    │ \"temperature\": 28, \"description\": \"Sunny\"}, {\"forecast_time\":        │
-    │ \"09:00:00\", \"temperature\": 31, \"description\": \"Sunny\"},              │
-    │ {\"forecast_time\": \"12:00:00\", \"temperature\": 34,                       │
-    │ \"description\": \"Partly Cloudy\"}, {\"forecast_time\": \"15:00:00\",       │
-    │  \"temperature\": 31, \"description\": \"Partly Cloudy\"},                   │
-    │ {\"forecast_time\": \"18:00:00\", \"temperature\": 29,                       │
-    │ \"description\": \"Overcast\"}, {\"forecast_time\": \"21:00:00\",            │
-    │ \"temperature\": 29, \"description\": \"Partly Cloudy\"}]}]}\n"              │
+    │ \"temperature\": 30, \"daily_forecasts\": [{\"forecast_date\":               │
+    │ \"2024-10-10\", \"temperature\": 29, \"hourly_forecasts\": null},            │
+    │ {\"forecast_date\": \"2024-10-11\", \"temperature\": 29,                     │
+    │ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-10-12\",             │
+    │ \"temperature\": 28, \"hourly_forecasts\": null}]}\n"                        │
     │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ Here is the daily weather forecast for Chennai:                              │
+    │                                                                              │
+    │ - **October 10,                                                              │
+    │ 2024**: Temperature - 29°C                                                   │
+    │ - **October 11, 2024**: Temperature - 29°C                                   │
+    │                                                                              │
+    │ - **October 12, 2024**: Temperature - 28°C                                   │
+    │                                                                              │
+    │ If you need more details                                                     │
+    │ or hourly forecasts, let me know!                                            │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
     ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
     │                                                                              │
-    │ Here is the hourly weather forecast for Chennai:                             │
+    │ Here is the daily weather forecast for Chennai:                              │
     │                                                                              │
-    │ ### September 10,                                                            │
-    │ 2024                                                                         │
-    │ - **00:00** - Temperature: 30°C, Description: Patchy rain nearby             │
+    │ - **October 10,                                                              │
+    │ 2024**: Temperature - 29°C                                                   │
+    │ - **October 11, 2024**: Temperature - 29°C                                   │
     │                                                                              │
-    │ - **03:00** - Temperature: 29°C, Description: Clear                          │
-    │ - **06:00** -                                                                │
-    │ Temperature: 28°C, Description: Sunny                                        │
-    │ - **09:00** - Temperature: 31°C,                                             │
-    │  Description: Sunny                                                          │
-    │ - **12:00** - Temperature: 35°C, Description:                                │
-    │ Partly cloudy                                                                │
-    │ - **15:00** - Temperature: 32°C, Description: Patchy                         │
-    │ light drizzle                                                                │
-    │ - **18:00** - Temperature: 30°C, Description: Patchy                         │
-    │ light drizzle                                                                │
-    │ - **21:00** - Temperature: 30°C, Description: Patchy                         │
-    │ rain nearby                                                                  │
+    │ - **October 12, 2024**: Temperature - 28°C                                   │
     │                                                                              │
-    │ ### September 11, 2024                                                       │
-    │ - **00:00** - Temperature: 29°C,                                             │
-    │ Description: Patchy rain nearby                                              │
-    │ - **03:00** - Temperature: 29°C,                                             │
-    │ Description: Clear                                                           │
-    │ - **06:00** - Temperature: 28°C, Description: Sunny                          │
-    │                                                                              │
-    │ - **09:00** - Temperature: 31°C, Description: Sunny                          │
-    │ - **12:00** -                                                                │
-    │ Temperature: 34°C, Description: Partly Cloudy                                │
-    │ - **15:00** -                                                                │
-    │ Temperature: 31°C, Description: Cloudy                                       │
-    │ - **18:00** - Temperature:                                                   │
-    │ 29°C, Description: Partly Cloudy                                             │
-    │ - **21:00** - Temperature: 29°C,                                             │
-    │ Description: Cloudy                                                          │
-    │                                                                              │
-    │ ### September 12, 2024                                                       │
-    │ - **00:00** - Temperature:                                                   │
-    │  29°C, Description: Patchy rain nearby                                       │
-    │ - **03:00** - Temperature:                                                   │
-    │ 29°C, Description: Clear                                                     │
-    │ - **06:00** - Temperature: 28°C, Description:                                │
-    │  Sunny                                                                       │
-    │ - **09:00** - Temperature: 31°C, Description: Sunny                          │
-    │ - **12:00**                                                                  │
-    │  - Temperature: 34°C, Description: Partly Cloudy                             │
-    │ - **15:00** -                                                                │
-    │ Temperature: 31°C, Description: Partly Cloudy                                │
-    │ - **18:00** -                                                                │
-    │ Temperature: 29°C, Description: Overcast                                     │
-    │ - **21:00** - Temperature:                                                   │
-    │ 29°C, Description: Partly Cloudy                                             │
-    │                                                                              │
-    │ Feel free to ask if you need more                                            │
-    │ information!                                                                 │
+    │ If you need more details                                                     │
+    │ or hourly forecasts, feel free to ask!                                       │
     ╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ workflow -> user [workflow_completed] ──────────────────────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "result": "The user requested the daily weather forecast for               │
+│ Chennai, and the assistant provided the forecast for October 10, 11,         │
+│ and 12, 2024, with temperatures of 29\u00b0C, 29\u00b0C, and                 │
+│ 28\u00b0C, respectively. The assistant also offered to provide more          │
+│ details or hourly forecasts if needed."                                      │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
 ```
