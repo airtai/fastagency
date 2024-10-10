@@ -99,7 +99,7 @@ class MesopUI(MessageProcessorMixin):  # UI
                 if self._out_queue:
                     msg = KeepAlive()
                     mesop_msg = self._mesop_message(msg)
-                    logger.info(f"putting keepalive {msg.uuid}")
+                    logger.debug(f"putting keepalive {msg.uuid}")
                     self._out_queue.put(mesop_msg)
 
         if self._keep_me_alive and self._keep_alive_thread is None:
@@ -267,7 +267,7 @@ class MesopUI(MessageProcessorMixin):  # UI
         environ: dict[str, Any],
         start_response: Callable[..., Any],
     ) -> list[bytes]:
-        logger.info(f"Starting MesopUI using WSGI interface with app: {app}")
+        logger.debug(f"Starting MesopUI using WSGI interface with app: {app}")
         MesopUI._created_instance = self
         MesopUI._app = app
 
