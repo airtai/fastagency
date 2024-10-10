@@ -58,7 +58,7 @@ def simple_workflow(
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-security_policy=me.SecurityPolicy(allowed_iframe_parents=["https://acme.com"])
+security_policy=me.SecurityPolicy(allowed_iframe_parents=["https://acme.com"], allowed_script_srcs=["https://cdn.jsdelivr.net"])
 
 styles=MesopHomePageStyles(
     stylesheets=[
