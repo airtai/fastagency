@@ -76,10 +76,15 @@ openapi = [
     "requests",  # do not pin it
 ]
 
+fastapi = [
+    "faststream[nats]>=0.5.10,<0.6",
+    "asyncer==0.0.8",
+    "fastapi>=0.112,<1",
+    "websockets>=13,<14",
+]
+
 submodules = [
-    "fastagency[mesop]",
-    "fastagency[autogen]",
-    "fastagency[openapi]",
+    "fastagency[mesop,autogen,openapi,fastapi]"
 ]
 
 server = [
@@ -170,11 +175,11 @@ exclude = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-only-include = ["fastagency", "templates"]
+only-include = ["fastagency", "templates", "javascript"]
 
 [tool.hatch.build.targets.wheel.sources]
-"src" = ""
-"scripts" = "fastagency/templates"
+# "src" = ""
+# "scripts" = "fastagency/scripts"
 
 [tool.mypy]
 

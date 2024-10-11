@@ -4,7 +4,8 @@ from typing import Any
 import pytest
 
 from fastagency.app import FastAgency
-from fastagency.runtime.autogen import AutoGenWorkflows
+from fastagency.base import UI
+from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 
@@ -17,10 +18,10 @@ def import_string() -> str:
 def app(import_string: str) -> Iterator[FastAgency]:
     wf = AutoGenWorkflows()
     console = ConsoleUI()
-    app = FastAgency(wf=wf, ui=console)
+    app = FastAgency(provider=wf, ui=console)
 
     @wf.register(name="noop", description="No operation")
-    def noop(*args: Any, **kwargs: Any) -> str:
+    def noop(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
         return "ok"
 
     try:
@@ -36,6 +37,6 @@ class TestConsoleUIInput:
         self, import_string: str, app: FastAgency, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         monkeypatch.setattr("builtins.input", lambda *args, **kwargs: "whatsapp")
-        app.start(import_string, single_run=True)
+        app.start(import_string=import_string, single_run=True, params={})
         assert isinstance(app, FastAgency)
         assert isinstance(app.ui, ConsoleUI)

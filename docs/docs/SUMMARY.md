@@ -5,12 +5,12 @@ search:
 - Getting Started
     - [Getting Started](getting-started/index.md)
 - [User guide](user-guide/index.md)
-    - [Runtimes](user-guide/runtime/index.md)
-        - [AutoGen](user-guide/runtime/autogen/index.md)
+    - [Runtimes](user-guide/runtimes/index.md)
+        - [AutoGen](user-guide/runtimes/autogen/index.md)
             - Agents
-                - [WebSurfer](user-guide/runtime/autogen/websurfer.md)
-            - [User interaction](user-guide/runtime/autogen/interactions.md)
-        - [CrewAI](user-guide/runtime/crewai/basics.md)
+                - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
+            - [User interaction](user-guide/runtimes/autogen/interactions.md)
+        - [CrewAI](user-guide/runtimes/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
         - [Mesop](user-guide/ui/mesop/basics.md)
@@ -33,7 +33,26 @@ search:
             - [TextInput](api/fastagency/TextInput.md)
             - [TextMessage](api/fastagency/TextMessage.md)
             - [UI](api/fastagency/UI.md)
-            - [Workflows](api/fastagency/Workflows.md)
+            - [WorkflowsProtocol](api/fastagency/WorkflowsProtocol.md)
+            - adapters
+                - fastapi
+                    - [FastAPIAdapter](api/fastagency/adapters/fastapi/FastAPIAdapter.md)
+                    - [FastAPIProvider](api/fastagency/adapters/fastapi/FastAPIProvider.md)
+                    - base
+                        - [FastAPIAdapter](api/fastagency/adapters/fastapi/base/FastAPIAdapter.md)
+                        - [FastAPIProvider](api/fastagency/adapters/fastapi/base/FastAPIProvider.md)
+                        - [InititateChatModel](api/fastagency/adapters/fastapi/base/InititateChatModel.md)
+                        - [WorkflowInfo](api/fastagency/adapters/fastapi/base/WorkflowInfo.md)
+                - nats
+                    - [InitiateWorkflowModel](api/fastagency/adapters/nats/InitiateWorkflowModel.md)
+                    - [InputResponseModel](api/fastagency/adapters/nats/InputResponseModel.md)
+                    - [NatsAdapter](api/fastagency/adapters/nats/NatsAdapter.md)
+                    - [NatsProvider](api/fastagency/adapters/nats/NatsProvider.md)
+                    - base
+                        - [InitiateWorkflowModel](api/fastagency/adapters/nats/base/InitiateWorkflowModel.md)
+                        - [InputResponseModel](api/fastagency/adapters/nats/base/InputResponseModel.md)
+                        - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
+                        - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
             - api
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
@@ -58,22 +77,14 @@ search:
             - app
                 - [FastAgency](api/fastagency/app/FastAgency.md)
             - base
-                - [ASGI](api/fastagency/base/ASGI.md)
-                - [AskingMessage](api/fastagency/base/AskingMessage.md)
-                - [Error](api/fastagency/base/Error.md)
-                - [FunctionCallExecution](api/fastagency/base/FunctionCallExecution.md)
-                - [IOMessage](api/fastagency/base/IOMessage.md)
-                - [IOMessageVisitor](api/fastagency/base/IOMessageVisitor.md)
-                - [MultipleChoice](api/fastagency/base/MultipleChoice.md)
+                - [ASGIProtocol](api/fastagency/base/ASGIProtocol.md)
+                - [AdapterProtocol](api/fastagency/base/AdapterProtocol.md)
+                - [ProviderProtocol](api/fastagency/base/ProviderProtocol.md)
                 - [Runnable](api/fastagency/base/Runnable.md)
-                - [SuggestedFunctionCall](api/fastagency/base/SuggestedFunctionCall.md)
-                - [SystemMessage](api/fastagency/base/SystemMessage.md)
-                - [TextInput](api/fastagency/base/TextInput.md)
-                - [TextMessage](api/fastagency/base/TextMessage.md)
                 - [UI](api/fastagency/base/UI.md)
-                - [WSGI](api/fastagency/base/WSGI.md)
-                - [WorkflowCompleted](api/fastagency/base/WorkflowCompleted.md)
-                - [Workflows](api/fastagency/base/Workflows.md)
+                - [WSGIProtocol](api/fastagency/base/WSGIProtocol.md)
+                - [WorkflowsProtocol](api/fastagency/base/WorkflowsProtocol.md)
+                - [check_register_decorator](api/fastagency/base/check_register_decorator.md)
                 - [run_workflow](api/fastagency/base/run_workflow.md)
             - cli
                 - cli
@@ -105,34 +116,45 @@ search:
                 - [optional_temp_path](api/fastagency/helpers/optional_temp_path.md)
             - logging
                 - [get_logger](api/fastagency/logging/get_logger.md)
-            - runtime
+            - messages
+                - [AskingMessage](api/fastagency/messages/AskingMessage.md)
+                - [Error](api/fastagency/messages/Error.md)
+                - [FunctionCallExecution](api/fastagency/messages/FunctionCallExecution.md)
+                - [IOMessage](api/fastagency/messages/IOMessage.md)
+                - [KeepAlive](api/fastagency/messages/KeepAlive.md)
+                - [MessageProcessorMixin](api/fastagency/messages/MessageProcessorMixin.md)
+                - [MessageProcessorProtocol](api/fastagency/messages/MessageProcessorProtocol.md)
+                - [MultipleChoice](api/fastagency/messages/MultipleChoice.md)
+                - [SuggestedFunctionCall](api/fastagency/messages/SuggestedFunctionCall.md)
+                - [SystemMessage](api/fastagency/messages/SystemMessage.md)
+                - [TextInput](api/fastagency/messages/TextInput.md)
+                - [TextMessage](api/fastagency/messages/TextMessage.md)
+                - [WorkflowCompleted](api/fastagency/messages/WorkflowCompleted.md)
+                - [WorkflowStarted](api/fastagency/messages/WorkflowStarted.md)
+            - runtimes
                 - autogen
-                    - [AutoGenWorkflows](api/fastagency/runtime/autogen/AutoGenWorkflows.md)
-                    - [IOStreamAdapter](api/fastagency/runtime/autogen/IOStreamAdapter.md)
+                    - [AutoGenWorkflows](api/fastagency/runtimes/autogen/AutoGenWorkflows.md)
+                    - [IOStreamAdapter](api/fastagency/runtimes/autogen/IOStreamAdapter.md)
                     - agents
                         - websurfer
-                            - [WebSurferAgent](api/fastagency/runtime/autogen/agents/websurfer/WebSurferAgent.md)
-                    - base
-                        - [AutoGenWorkflows](api/fastagency/runtime/autogen/base/AutoGenWorkflows.md)
-                        - [CurrentMessage](api/fastagency/runtime/autogen/base/CurrentMessage.md)
-                        - [IOStreamAdapter](api/fastagency/runtime/autogen/base/IOStreamAdapter.md)
-                        - [Toolable](api/fastagency/runtime/autogen/base/Toolable.md)
+                            - [WebSurferAgent](api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md)
+                    - autogen
+                        - [AutoGenWorkflows](api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md)
+                        - [CurrentMessage](api/fastagency/runtimes/autogen/autogen/CurrentMessage.md)
+                        - [IOStreamAdapter](api/fastagency/runtimes/autogen/autogen/IOStreamAdapter.md)
+                        - [Toolable](api/fastagency/runtimes/autogen/autogen/Toolable.md)
                     - tools
-                        - [WebSurferTool](api/fastagency/runtime/autogen/tools/WebSurferTool.md)
+                        - [WebSurferTool](api/fastagency/runtimes/autogen/tools/WebSurferTool.md)
                         - web_surfer
-                            - [WebSurferAnswer](api/fastagency/runtime/autogen/tools/web_surfer/WebSurferAnswer.md)
-                            - [WebSurferTool](api/fastagency/runtime/autogen/tools/web_surfer/WebSurferTool.md)
+                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer.md)
+                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
-                    - base
-                        - [ConsoleUI](api/fastagency/ui/console/base/ConsoleUI.md)
+                    - console
+                        - [ConsoleUI](api/fastagency/ui/console/console/ConsoleUI.md)
                 - mesop
                     - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
-                    - base
-                        - [MesopMessage](api/fastagency/ui/mesop/base/MesopMessage.md)
-                        - [MesopUI](api/fastagency/ui/mesop/base/MesopUI.md)
-                        - [run_workflow](api/fastagency/ui/mesop/base/run_workflow.md)
                     - components
                         - helpers
                             - [darken_hex_color](api/fastagency/ui/mesop/components/helpers/darken_hex_color.md)
@@ -146,12 +168,18 @@ search:
                         - [MesopHomePage](api/fastagency/ui/mesop/main/MesopHomePage.md)
                         - [MesopHomePageParams](api/fastagency/ui/mesop/main/MesopHomePageParams.md)
                         - [create_home_page](api/fastagency/ui/mesop/main/create_home_page.md)
+                    - mesop
+                        - [MesopMessage](api/fastagency/ui/mesop/mesop/MesopMessage.md)
+                        - [MesopUI](api/fastagency/ui/mesop/mesop/MesopUI.md)
+                        - [run_workflow](api/fastagency/ui/mesop/mesop/run_workflow.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
+                        - [find_suitable_title](api/fastagency/ui/mesop/message/find_suitable_title.md)
                         - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
                         - [message_box](api/fastagency/ui/mesop/message/message_box.md)
                     - send_prompt
+                        - [get_more_messages](api/fastagency/ui/mesop/send_prompt/get_more_messages.md)
                         - [send_prompt_to_autogen](api/fastagency/ui/mesop/send_prompt/send_prompt_to_autogen.md)
                         - [send_user_feedback_to_autogen](api/fastagency/ui/mesop/send_prompt/send_user_feedback_to_autogen.md)
                     - styles
@@ -161,6 +189,9 @@ search:
                         - [MesopMultipleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopMultipleChoiceInnerStyles.md)
                         - [MesopSingleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopSingleChoiceInnerStyles.md)
                         - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
+                    - timer
+                        - [configure_static_file_serving](api/fastagency/ui/mesop/timer/configure_static_file_serving.md)
+                        - [wakeup_component](api/fastagency/ui/mesop/timer/wakeup_component.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)

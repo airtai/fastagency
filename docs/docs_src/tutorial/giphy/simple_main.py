@@ -3,10 +3,10 @@ from typing import Any
 
 from autogen import ConversableAgent, UserProxyAgent
 
-from fastagency import UI, FastAgency, Workflows
+from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
 open_api_key = os.getenv("OPENAI_API_KEY")
@@ -20,7 +20,7 @@ llm_config = {
     "temperature": 0.0,
 }
 
-giphy_api_key = os.getenv("GIPHY_API_KEY")
+giphy_api_key = os.getenv("GIPHY_API_KEY", "")
 openapi_url="https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
 giphy_api = OpenAPI.create(openapi_url=openapi_url)
 giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
@@ -30,7 +30,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_chat", description="Giphy chat")
 def giphy_workflow(
-    wf: Workflows, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, Any]
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -60,6 +60,13 @@ def giphy_workflow(
         functions=["random_gif", "search_gifs", "trending_gifs"],
     )
 
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you find images related to a certain subject. What kind of images would you like to find?",
+        workflow_uuid=workflow_uuid,
+    )
+
     chat_result = user_proxy.initiate_chat(
         giphy_agent,
         message=initial_message,
@@ -70,4 +77,4 @@ def giphy_workflow(
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=MesopUI(), title="Giphy chat")
+app = FastAgency(provider=wf, ui=MesopUI(), title="Giphy chat")

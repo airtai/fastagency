@@ -39,11 +39,11 @@ You can pass a custom [SecurityPolicy](https://google.github.io/mesop/api/page/#
 - a flag to disable trusted types.
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:3] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:4] !}
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:54] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:61] !}
 
 ui = MesopUI(security_policy=security_policy)
 ```
@@ -55,11 +55,11 @@ Please see the [Mesop documentation](https://google.github.io/mesop/api/page/#me
 All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in styling of Mesop components can be passed to the [`MesopUI`](../../../../api/fastagency/ui/mesop/MesopUI/)constructor and change the default behavior. They are specified in top-level styling class [`MesopHomePageStyles`](../../../../api/fastagency/ui/mesop/styles/MesopHomePageStyles/).
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:3] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:4] !}
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:56-79] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:63-86] !}
 
 ui = MesopUI(styles=styles)
 ```
@@ -80,7 +80,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency/)**: The core class responsible for orchestrating workflows and connecting them with UIs.
 - **[UI](../../../../api/fastagency/UI/)** and **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)**: These classes define the user interface for interaction, with **MesopUI** enabling a web-based interaction.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtime/autogen/base/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
+- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/base/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
 Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
@@ -95,7 +95,7 @@ Next, we configure the language model that powers the agents. In this case, we'r
 Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:26-51] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:26-58] !}
 ```
 
 - **Agent Overview**: The **Student Agent** is configured with a system message, "You are a student willing to learn," and will initiate questions during the interaction. The **Teacher Agent**, on the other hand, is set up as a math teacher and will respond to the student's questions.
@@ -105,7 +105,7 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)** to link the workflow to a web-based interface. This allows the user to interact with the agents through a web browser.
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:54-83] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:61-90] !}
 ```
 
 - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.

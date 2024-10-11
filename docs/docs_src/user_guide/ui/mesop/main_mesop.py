@@ -1,11 +1,11 @@
 import os
+from typing import Any
 
 import mesop as me
-
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, Workflows
-from fastagency.runtime.autogen import AutoGenWorkflows
+from fastagency import UI, FastAgency
+from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 from fastagency.ui.mesop.styles import (
     MesopHomePageStyles,
@@ -28,8 +28,15 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    wf: Workflows, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, Any]
 ) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="What do you want to learn today?",
+        workflow_uuid=workflow_uuid,
+    )
+
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
@@ -51,7 +58,7 @@ def simple_workflow(
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-security_policy=me.SecurityPolicy(allowed_iframe_parents=["https://acme.com"])
+security_policy=me.SecurityPolicy(allowed_iframe_parents=["https://acme.com"], allowed_script_srcs=["https://cdn.jsdelivr.net"])
 
 styles=MesopHomePageStyles(
     stylesheets=[
@@ -80,4 +87,4 @@ styles=MesopHomePageStyles(
 
 ui = MesopUI(security_policy=security_policy, styles=styles)
 
-app = FastAgency(wf=wf, ui=MesopUI(), title="Learning Chat")
+app = FastAgency(provider=wf, ui=MesopUI(), title="Learning Chat")

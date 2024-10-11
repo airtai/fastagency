@@ -119,15 +119,15 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
-    ```python hl_lines="7"
-    {!> docs_src/getting_started/main_console.py [ln:1-7] !}
+    ```python hl_lines="8"
+    {!> docs_src/getting_started/main_console.py [ln:1-8] !}
     ```
 
     For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 === "Mesop"
-    ```python hl_lines="7"
-    {!> docs_src/getting_started/main_mesop.py [ln:1-7] !}
+    ```python hl_lines="8"
+    {!> docs_src/getting_started/main_mesop.py [ln:1-8] !}
     ```
 
     For Mesop applications, import `MesopUI` to integrate with the Mesop web interface.
@@ -137,7 +137,7 @@ Depending on the interface you choose, you'll need to import different modules. 
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:9-45] !}
+{! docs_src/getting_started/main_console.py [ln:9-53] !}
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
@@ -148,14 +148,14 @@ Next, define your FastAgency application. This ties together your workflow and t
 
 === "Console"
     ```python hl_lines="1"
-    {!> docs_src/getting_started/main_console.py [ln:47] !}
+    {!> docs_src/getting_started/main_console.py [ln:55] !}
     ```
 
     For Console applications, use `ConsoleUI` to handle user interaction via the command line.
 
 === "Mesop"
     ```python hl_lines="1"
-    {!> docs_src/getting_started/main_mesop.py [ln:47] !}
+    {!> docs_src/getting_started/main_mesop.py [ln:55] !}
     ```
 
     For Mesop applications, use `MesopUI` to enable web-based interactions.
@@ -197,7 +197,7 @@ Once everything is set up, you can run your FastAgency application using the fol
     fastagency run
     ```
 
-    However, the preferred way of running Mesop application is a Python WSGI HTTP Server such as [Gunicorn](https://gunicorn.org/). First,
+    However, the preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/). First,
     you need to install it using package manager such as `pip`:
     ```
     pip install gunicorn
@@ -226,15 +226,20 @@ The output will vary based on the interface:
     │                             │
     ╰─────────────────────────────╯
 
-    ╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+    ╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
     │                                                                              │
-    │ Starting a new workflow 'simple_learning' with the following                 │
-    │ description:                                                                 │
+    │ {                                                                            │
+    │   "name": "simple_learning",                                                 │
+    │   "description": "Student and teacher                                        │
+    │ learning chat",                                                              │
+    │   "params": {}                                                               │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
     │                                                                              │
-    │ Student and teacher learning chat                                            │
-    │                                                                              │
-    │ Please enter an                                                              │
-    │ initial message:                                                             │
+    │ I can help you learn about geometry. What subject you would like to          │
+    │ explore?:                                                                    │
     ╰──────────────────────────────────────────────────────────────────────────────╯
     ```
 
@@ -242,10 +247,10 @@ The output will vary based on the interface:
 
 === "Mesop"
     ```console
-    [2024-10-01 16:18:59 +0000] [20390] [INFO] Starting gunicorn 23.0.0
-    [2024-10-01 16:18:59 +0000] [20390] [INFO] Listening at: http://127.0.0.1:8000 (20390)
-    [2024-10-01 16:18:59 +0000] [20390] [INFO] Using worker: sync
-    [2024-10-01 16:18:59 +0000] [20391] [INFO] Booting worker with pid: 20391
+    [2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
+    [2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8000 (23635)
+    [2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
+    [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
     ```
 
     ![Initial message](./images/chat.png)

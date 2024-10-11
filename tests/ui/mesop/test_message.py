@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from fastagency.base import (
+from fastagency.messages import (
     FunctionCallExecution,
     MultipleChoice,
     SuggestedFunctionCall,

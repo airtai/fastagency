@@ -72,6 +72,10 @@ CONV_STARTER_STYLE = me.Style(
 
 CONV_STARTER_TEXT_STYLE = me.Style(font_size=20, margin=me.Margin(bottom=24))
 
+CONV_STARTER_WF_BOX_STYLE = me.Style(
+    display="flex", flex_direction="row", justify_content="flex-start"
+)
+
 CONV_LIST_STYLE = me.Style(
     overflow_y="auto",
     display="flex",
@@ -342,6 +346,9 @@ class MesopHomePageStyles:
     conv_top: me.Style = field(default_factory=lambda: CONV_TOP_STYLE)
     conv_starter: me.Style = field(default_factory=lambda: CONV_STARTER_STYLE)
     conv_starter_text: me.Style = field(default_factory=lambda: CONV_STARTER_TEXT_STYLE)
+    conv_starter_wf_box: me.Style = field(
+        default_factory=lambda: CONV_STARTER_WF_BOX_STYLE
+    )
     header: me.Style = field(default_factory=lambda: HEADER_BOX_STYLE)
     header_text: me.Style = field(default_factory=lambda: HEADER_TEXT_STYLE)
     past_chats_hide: me.Style = field(default_factory=lambda: PAST_CHATS_HIDE_STYLE)

@@ -4,14 +4,13 @@ from typing import Annotated, Any, Optional
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency, Workflows
+from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
-from fastagency.base import TextInput
-from fastagency.runtime.autogen.agents.websurfer import WebSurferAgent
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.messages import TextInput
+from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
-
 
 llm_config = {
     "config_list": [
@@ -26,7 +25,7 @@ llm_config = {
 openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
 giphy_api = OpenAPI.create(openapi_url=openapi_url)
 
-giphy_api_key = os.getenv("GIPHY_API_KEY")
+giphy_api_key = os.getenv("GIPHY_API_KEY", "")
 giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
 
 GIPHY_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and Giphy API.
@@ -58,7 +57,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
 def giphy_workflow_with_security(
-    wf: Workflows, ui: UI, initial_message: str, session_id: str
+    ui: UI, workflow_uuid: str, params: dict[str, Any]
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -109,6 +108,13 @@ If you are presenting a completed task, last message should be a question: 'Do y
         functions=functions,
     )
 
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you find images related to a certain subject. What kind of images would you like to find?",
+        workflow_uuid=workflow_uuid,
+    )
+
     chat_result = giphy_agent.initiate_chat(
         web_surfer,
         message=f"Users initial message: {initial_message}",
@@ -119,4 +125,4 @@ If you are presenting a completed task, last message should be a question: 'Do y
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(wf=wf, ui=MesopUI(), title="Giphy and Websurfer chat")
+app = FastAgency(provider=wf, ui=MesopUI(), title="Giphy and Websurfer chat")

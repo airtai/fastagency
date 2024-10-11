@@ -5,6 +5,9 @@
         "./docker-compose.yml"
     ],
     "service": "python-3.9-fastagency",
+    "forwardPorts": [
+        "fastagency-${containerEnv:CONTAINER_PREFIX}-nats-py39:9222"
+    ],
     "secrets": {
         "OPENAI_API_KEY": {
             "description": "This key is optional and only needed if you are working on OpenAI-related code. Leave it blank if not required. You can always set it later as an environment variable in the codespace terminal."

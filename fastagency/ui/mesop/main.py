@@ -5,15 +5,16 @@ from typing import TYPE_CHECKING, Callable, Optional
 
 import mesop as me
 
+from fastagency.base import ProviderProtocol
+
 from ...logging import get_logger
-from .components.inputs import input_text
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
 from .styles import MesopHomePageStyles
 
 if TYPE_CHECKING:
-    from .base import MesopUI
+    from .mesop import MesopUI
 
 __all__ = ["me"]
 
@@ -22,7 +23,8 @@ logger = get_logger(__name__)
 
 
 DEFAULT_SECURITY_POLICY = me.SecurityPolicy(
-    allowed_iframe_parents=["https://fastagency.ai"]
+    allowed_script_srcs=["https://cdn.jsdelivr.net"],
+    allowed_iframe_parents=["https://fastagency.ai"],
 )
 
 
@@ -40,7 +42,7 @@ def create_home_page(
 @dataclass
 class MesopHomePageParams:
     # header_title: str = "FastAgency - Mesop"
-    conv_starter_text: str = "Enter a prompt to chat with FastAgency team"
+    conv_starter_text: str = "Select workflow to use with FastAgency team"
 
 
 class MesopHomePage:
@@ -150,6 +152,7 @@ class MesopHomePage:
                         )
 
     def conversation_starter_box(self) -> None:
+        provider = self.get_provider()
         with me.box(style=self._styles.chat_starter):
             self.header()
             with me.box(
@@ -159,28 +162,29 @@ class MesopHomePage:
                     self._params.conv_starter_text,
                     style=self._styles.conv_starter_text,
                 )
-                input_text(
-                    self.send_prompt,
-                    key="prompt",
-                    disabled=False,
-                    style=self._styles.message.text_input_inner,
-                )
+                with me.box(style=self._styles.conv_starter_wf_box):
+                    for wf_name in provider.names:
+                        wf_description = provider.get_description(wf_name)
+                        with me.content_button(
+                            key=wf_name, on_click=lambda e: self.send_prompt(e)
+                        ):
+                            me.text(wf_description)
 
-    def send_prompt(self, prompt: str) -> Iterator[None]:
+    def get_provider(self) -> ProviderProtocol:
         ui = self._ui
-        wf = ui.app.wf
+        return ui.app.provider
 
-        name = wf.names[0]
-
+    def send_prompt(self, ev: me.ClickEvent) -> Iterator[None]:
+        name = ev.key
+        provider = self.get_provider()
         state = me.state(State)
-        # me.navigate("/conversation")
         conversation = Conversation(
-            title=prompt, completed=False, waiting_for_feedback=False
+            title="New Conversation", completed=False, waiting_for_feedback=False
         )
         state.conversation = conversation
         state.in_conversation = True
         yield
-        responses = send_prompt_to_autogen(prompt=prompt, wf=wf, name=name)
+        responses = send_prompt_to_autogen(provider=provider, name=name)
         yield from consume_responses(responses)
 
     def conversation_box(self) -> None:

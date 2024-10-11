@@ -32,13 +32,13 @@ def _import_fixture(
     main_content = f"""
 from unittest.mock import MagicMock
 from fastagency.ui.console import ConsoleUI
-from fastagency.runtime.autogen.base import AutoGenWorkflows
-{'frim fastagency import FastAgency' if syntax_error else 'from fastagency import FastAgency'}
+from fastagency.runtimes.autogen import AutoGenWorkflows
+{'frim' if syntax_error else 'from'} fastagency import FastAgency
 
 
 wf = AutoGenWorkflows()
 
-app = {'FastAgency(wf=wf, ui=ConsoleUI())' if not mock_app else 'MagicMock()'}
+app = {'FastAgency(provider=wf, ui=ConsoleUI())' if not mock_app else 'MagicMock()'}
 
 """
 

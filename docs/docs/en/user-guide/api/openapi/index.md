@@ -24,22 +24,52 @@ These imports are similar to the imports section we have already covered, with t
 {! docs_src/user_guide/external_rest_apis/main.py [ln:1-9] !}
 ```
 
-## Define Workflow
-
-In this workflow, the only difference is that we create a Python client for the external REST API by passing the URL of the `openapi.json` to the `Client.create` method. Then, we register the generated client with the agent using the methods `register_for_llm` and `register_for_execution`. Here's a simple example of a workflow definition:
+## Configure the Language Model (LLM)
+Here, the large language model is configured to use the `gpt-4o-mini` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:11-57] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:11-19] !}
 ```
 
-This code snippet sets up a simple weather agent that calls an external weather API using the registered functions generated from the `openapi.json` URL.
+## Set Up the Weather API
+We define the OpenAPI specification URL for the weather service. This API will later be used by the weather agent to fetch real-time weather data.
+
+```python
+{! docs_src/user_guide/external_rest_apis/main.py [ln:21-22] !}
+```
+
+## Define the Workflow and Agents
+
+In this step, we define two agents and specify the initial message that will be displayed to users when the workflow starts.
+
+- **UserProxyAgent**: This agent simulates the user interacting with the system.
+
+- **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
+
+```python
+{! docs_src/user_guide/external_rest_apis/main.py [ln:24-50] !}
+```
+
+## Register API Functions with the Agents
+In this step, we register the weather API functions to ensure that the weather agent can call the correct functions to retrieve the required weather data.
+
+```python
+{! docs_src/user_guide/external_rest_apis/main.py [ln:51-55] !}
+```
+
+## Enable Agent Interaction and Chat
+Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
+
+```python
+{! docs_src/user_guide/external_rest_apis/main.py [ln:56-64] !}
+```
 
 ## Define FastAgency Application
 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:60] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:67] !}
 ```
 
 ## Complete Application Code
@@ -65,48 +95,56 @@ fastagency run
 The output will vary based on the city and the current weather conditions:
 
 ```console
- ╭─── Python package file structure ───╮
- │                                     │
- │  📁 docs                            │
- │  ├── 🐍 __init__.py                 │
- │  └── 📁 docs_src                    │
- │      ├── 🐍 __init__.py             │
- │      └── 📁 tutorial                │
- │          ├── 🐍 __init__.py         │
- │          └── 📁 external_rest_apis  │
- │              ├── 🐍 __init__.py     │
- │              └── 🐍 main.py         │
- │                                     │
- ╰─────────────────────────────────────╯
+╭─ Python module file ─╮
+│                      │
+│  🐍 main.py          │
+│                      │
+╰──────────────────────╯
 
- ╭─────────────────── Importable FastAgency app ────────────────────╮
- │                                                                  │
- │  from docs.docs_src.tutorial.external_rest_apis.main import app  │
- │                                                                  │
- ╰──────────────────────────────────────────────────────────────────╯
 
-╭─ FastAgency -> user [text_input] ────────────────────────────────────────────╮
+╭─ Importable FastAgency app ─╮
+│                             │
+│  from main import app       │
+│                             │
+╰─────────────────────────────╯
+
+╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
 │                                                                              │
-│ Starting a new workflow 'simple_weather' with the following                  │
-│ description:                                                                 │
+│ {                                                                            │
+│   "name": "simple_weather",                                                  │
+│   "description": "Weather chat",                                             │
 │                                                                              │
-│ Weather chat                                                                 │
-│                                                                              │
-│ Please enter an initial message:                                             │
+│ "params": {}                                                                 │
+│ }                                                                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
-Get me daily weather forecast for Chennai city
 
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
+    │                                                                              │
+    │ What do you want to know about the weather?:                                 │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+Get me daily weather forecast for Chennai city
     ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
     │                                                                              │
     │ Get me daily weather forecast for Chennai city                               │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ Weather_Agent -> User_Agent [suggested_function_call] ──────────────────────╮
+    ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ I'm unable to provide real-time weather forecasts. However, you can          │
+    │ easily find the daily weather forecast for Chennai by checking               │
+    │ reliable weather websites, using weather apps, or searching for              │
+    │ "Chennai weather forecast" in your preferred search engine. If you           │
+    │ have any other questions or need information about typical weather           │
+    │ patterns in Chennai, feel free to ask!                                       │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ User_Agent -> Weather_Agent [suggested_function_call] ──────────────────────╮
     │                                                                              │
     │ {                                                                            │
     │   "function_name": "get_daily_weather_daily_get",                            │
     │   "call_id":                                                                 │
-    │ "call_VZ19VFNcTE9n8BnXa9aiMzFA",                                             │
+    │ "call_lbik8BJJREriUyhbpuKE5hhC",                                             │
     │   "arguments": {                                                             │
     │     "city":                                                                  │
     │ "Chennai"                                                                    │
@@ -114,32 +152,57 @@ Get me daily weather forecast for Chennai city
     │ }                                                                            │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ User_Agent -> Weather_Agent [function_call_execution] ──────────────────────╮
+    ╭─ Weather_Agent -> User_Agent [function_call_execution] ──────────────────────╮
     │                                                                              │
     │ {                                                                            │
     │   "function_name": "get_daily_weather_daily_get",                            │
     │   "call_id":                                                                 │
-    │ "call_VZ19VFNcTE9n8BnXa9aiMzFA",                                             │
+    │ "call_lbik8BJJREriUyhbpuKE5hhC",                                             │
     │   "retval": "{\"city\": \"Chennai\",                                         │
-    │ \"temperature\": 31, \"daily_forecasts\": [{\"forecast_date\":               │
-    │ \"2024-09-10\", \"temperature\": 31, \"hourly_forecasts\": null},            │
-    │ {\"forecast_date\": \"2024-09-11\", \"temperature\": 30,                     │
-    │ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-09-12\",             │
-    │ \"temperature\": 30, \"hourly_forecasts\": null}]}\n"                        │
+    │ \"temperature\": 30, \"daily_forecasts\": [{\"forecast_date\":               │
+    │ \"2024-10-10\", \"temperature\": 29, \"hourly_forecasts\": null},            │
+    │ {\"forecast_date\": \"2024-10-11\", \"temperature\": 29,                     │
+    │ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-10-12\",             │
+    │ \"temperature\": 28, \"hourly_forecasts\": null}]}\n"                        │
     │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+    │                                                                              │
+    │ Here is the daily weather forecast for Chennai:                              │
+    │                                                                              │
+    │ - **October 10,                                                              │
+    │ 2024**: Temperature - 29°C                                                   │
+    │ - **October 11, 2024**: Temperature - 29°C                                   │
+    │                                                                              │
+    │ - **October 12, 2024**: Temperature - 28°C                                   │
+    │                                                                              │
+    │ If you need more details                                                     │
+    │ or hourly forecasts, let me know!                                            │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 
     ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
     │                                                                              │
-    │ The daily weather forecast for Chennai is as follows:                        │
+    │ Here is the daily weather forecast for Chennai:                              │
     │                                                                              │
-    │ - **September                                                                │
-    │ 10, 2024**: Temperature - 31°C                                               │
-    │ - **September 11, 2024**: Temperature -                                      │
-    │  30°C                                                                        │
-    │ - **September 12, 2024**: Temperature - 30°C                                 │
+    │ - **October 10,                                                              │
+    │ 2024**: Temperature - 29°C                                                   │
+    │ - **October 11, 2024**: Temperature - 29°C                                   │
     │                                                                              │
-    │ If you need more                                                             │
-    │ details or forecasts for more days, feel free to ask!                        │
+    │ - **October 12, 2024**: Temperature - 28°C                                   │
+    │                                                                              │
+    │ If you need more details                                                     │
+    │ or hourly forecasts, feel free to ask!                                       │
     ╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ workflow -> user [workflow_completed] ──────────────────────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "result": "The user requested the daily weather forecast for               │
+│ Chennai, and the assistant provided the forecast for October 10, 11,         │
+│ and 12, 2024, with temperatures of 29\u00b0C, 29\u00b0C, and                 │
+│ 28\u00b0C, respectively. The assistant also offered to provide more          │
+│ details or hourly forecasts if needed."                                      │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
 ```

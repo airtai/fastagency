@@ -1,9 +1,10 @@
 import os
+from typing import Any
 
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -21,9 +22,14 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(
-    wf: AutoGenWorkflows, ui: UI, initial_message: str, session_id: str
-) -> str:
+def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you learn about geometry. What subject you would like to explore?",
+        workflow_uuid=workflow_uuid,
+    )
+
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
@@ -45,4 +51,4 @@ def simple_workflow(
     return chat_result.summary
 
 
-app = FastAgency(wf=wf, ui=ConsoleUI())
+app = FastAgency(provider=wf, ui=ConsoleUI())

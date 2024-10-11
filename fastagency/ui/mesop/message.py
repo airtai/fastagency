@@ -1,18 +1,22 @@
 import json
+import random
 from collections.abc import Iterable, Iterator
 from typing import Callable, Optional
 from uuid import uuid4
 
 import mesop as me
+import mesop.labs as mel
 
 from fastagency.helpers import jsonify_string
 
-from ...base import (
+from ...logging import get_logger
+from ...messages import (
     AskingMessage,
     Error,
     FunctionCallExecution,
     IOMessage,
-    IOMessageVisitor,
+    KeepAlive,
+    MessageProcessorMixin,
     MultipleChoice,
     SuggestedFunctionCall,
     SystemMessage,
@@ -20,12 +24,12 @@ from ...base import (
     TextMessage,
     WorkflowCompleted,
 )
-from ...logging import get_logger
-from .base import MesopMessage
 from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
-from .send_prompt import send_user_feedback_to_autogen
+from .mesop import MesopMessage
+from .send_prompt import get_more_messages, send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
+from .timer import wakeup_component
 
 logger = get_logger(__name__)
 
@@ -66,13 +70,23 @@ def handle_message(state: State, message: MesopMessage) -> None:
             uuid: str = uuid4().hex
             becomme_past = Conversation(
                 id=uuid,
-                title=conversation.title,
+                title=find_suitable_title(conversation),
                 messages=conversation.messages,
                 completed=True,
                 is_from_the_past=True,
                 waiting_for_feedback=False,
             )
             state.past_conversations.insert(0, becomme_past)
+
+
+def find_suitable_title(conversation: Conversation) -> str:
+    messages = conversation.messages
+    first_input = next(filter(lambda m: m.feedback_completed, messages), None)
+    if first_input and first_input.feedback:
+        return first_input.feedback[0]
+
+    state = me.state(State)
+    return f"The conversation that shall remain unnamed ({random.randint(0, 100)}-{len(state.past_conversations)})"  # nosec: B311
 
 
 def message_box(
@@ -86,7 +100,7 @@ def message_box(
     visitor.process_message(io_message)
 
 
-class MesopGUIMessageVisitor(IOMessageVisitor):
+class MesopGUIMessageVisitor(MessageProcessorMixin):
     def __init__(
         self,
         level: int,
@@ -117,7 +131,7 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
         return self._conversation_message.feedback_completed
 
     def _provide_feedback(self, feedback: str) -> Iterator[None]:
-        logger.info(f"_provide_feedback({feedback=})")
+        logger.debug(f"MesopGUIMessageVisitor._provide_feedback({feedback=})")
         state = me.state(State)
         conversation = state.conversation
         conversation.feedback = ""
@@ -193,13 +207,22 @@ class MesopGUIMessageVisitor(IOMessageVisitor):
             if "heading" in message.message and "body" in message.message
             else json.dumps(message.message)
         )
-
         self.visit_default(
             message,
             content=content,
             style=self._styles.message.system,
             scrollable=True,
         )
+
+    def visit_keep_alive(self, message: KeepAlive) -> None:
+        def on_wakeup(e: mel.WebEvent) -> Iterator[None]:
+            logger.debug("waking up, after the keep alive")
+            self._conversation_message.feedback_completed = True
+            yield from consume_responses(get_more_messages())
+
+        with me.box():
+            if not (self._readonly or self._conversation_message.feedback_completed):
+                wakeup_component(on_wakeup=on_wakeup)
 
     def visit_suggested_function_call(self, message: SuggestedFunctionCall) -> None:
         content = f"""**function_name**: `{message.function_name}`<br>

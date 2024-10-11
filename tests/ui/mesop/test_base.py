@@ -3,11 +3,11 @@ import sys
 import pytest
 
 from fastagency.app import FastAgency
-from fastagency.base import TextMessage
-from fastagency.runtime.autogen.base import AutoGenWorkflows
+from fastagency.messages import TextMessage
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 
 if sys.version_info >= (3, 10):
-    from fastagency.ui.mesop.base import MesopUI
+    from fastagency.ui.mesop.mesop import MesopUI
 
     class TestMesopUI:
         def test_mesop_init(self) -> None:
@@ -22,7 +22,7 @@ if sys.version_info >= (3, 10):
                 MesopUI.get_created_instance()
 
             wf = AutoGenWorkflows()
-            app = FastAgency(wf=wf, ui=mesop_ui)
+            app = FastAgency(provider=wf, ui=mesop_ui)
 
             with mesop_ui.create(app, "import_string"):
                 assert MesopUI.get_created_instance() == mesop_ui

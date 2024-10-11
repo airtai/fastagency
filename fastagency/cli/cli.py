@@ -1,6 +1,6 @@
 from logging import getLogger
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated, Any, Optional
 
 import typer
 
@@ -43,7 +43,7 @@ def _run_app(
     path: Optional[Path],
     app: Optional[str],
     workflow: Optional[str],
-    initial_message: Optional[str],
+    params: dict[str, Any],
     dev_mode: bool = False,
     single_run: bool = False,
 ) -> None:
@@ -54,7 +54,7 @@ def _run_app(
             fa_app.start(
                 import_string=import_string,
                 name=workflow,
-                initial_message=initial_message,
+                params=params,
                 single_run=single_run,
             )
     except FastAgencyCLIPythonVersionError as e:
@@ -96,7 +96,10 @@ Otherwise, it uses the first [bold]FastAgency[/bold] app found in the imported m
     return {"help": help, "short_help": short_help}
 
 
-@app.command(**_get_help_messages(False))  # type: ignore[arg-type]
+@app.command(
+    context_settings={"allow_extra_args": True, "ignore_unknown_options": True},
+    **_get_help_messages(False),  # type: ignore[arg-type]
+)
 def run(
     path: Annotated[
         Optional[Path],
@@ -119,33 +122,34 @@ def run(
             help="The name of the workflow to run. If not provided, the default workflow will be run.",
         ),
     ] = None,
-    initial_message: Annotated[
-        Optional[str],
-        typer.Option(
-            "--initial_message",
-            "-i",
-            help="The initial message to send to the workflow. If not provided, a default message will be sent.",
-        ),
-    ] = None,
     single_run: Annotated[
         bool,
         typer.Option(
             "--single-run", help="If set, only a single workflow will be executed."
         ),
     ] = False,
+    ctx: typer.Context,
 ) -> None:
+    if len(ctx.args) > 0:
+        raise NotImplementedError("Extra arguments are not supported in this command.")
+    else:
+        params: dict[str, Any] = {}
+
     dev_mode = False
     _run_app(
         path=path,
         app=app,
         workflow=workflow,
-        initial_message=initial_message,
+        params=params,
         dev_mode=dev_mode,
         single_run=single_run,
     )
 
 
-@app.command(**_get_help_messages(True))  # type: ignore[arg-type]
+@app.command(
+    context_settings={"allow_extra_args": True, "ignore_unknown_options": True},
+    **_get_help_messages(True),  # type: ignore[arg-type]
+)
 def dev(
     path: Annotated[
         Optional[Path],
@@ -168,27 +172,24 @@ def dev(
             help="The name of the workflow to run. If not provided, the default workflow will be run.",
         ),
     ] = None,
-    initial_message: Annotated[
-        Optional[str],
-        typer.Option(
-            "--initial_message",
-            "-i",
-            help="The initial message to send to the workflow. If not provided, a default message will be sent.",
-        ),
-    ] = None,
     single_run: Annotated[
         bool,
         typer.Option(
             "--single-run", help="If set, only a single workflow will be executed."
         ),
     ] = False,
+    ctx: typer.Context,
 ) -> None:
     dev_mode = True
+    if len(ctx.args) > 0:
+        raise NotImplementedError("Extra arguments are not supported in this command.")
+    else:
+        params: dict[str, Any] = {}
     _run_app(
         path=path,
         app=app,
         workflow=workflow,
-        initial_message=initial_message,
+        params=params,
         dev_mode=dev_mode,
         single_run=single_run,
     )
