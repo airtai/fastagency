@@ -6,6 +6,7 @@ import re
 from typing import Any, Callable, Optional, Union
 from uuid import UUID, uuid4
 
+from asyncer import asyncify, syncify
 import nats
 import requests
 import websockets
@@ -65,6 +66,8 @@ class FastAPIAdapter(MessageProcessorMixin):
         self.discovery_path = discovery_path
         self.ws_path = ws_path
 
+        self.websockets: dict[str, WebSocket] = {}
+
     def setup_routes(self) -> APIRouter:
         router = APIRouter()
 
@@ -74,6 +77,7 @@ class FastAPIAdapter(MessageProcessorMixin):
         ) -> InitiateWorkflowModel:
             user_id: UUID = uuid4()
             workflow_uuid: UUID = uuid4()
+
             init_msg = InitiateWorkflowModel(
                 user_id=user_id,
                 workflow_uuid=workflow_uuid,
@@ -81,17 +85,34 @@ class FastAPIAdapter(MessageProcessorMixin):
                 name=initiate_chat.workflow_name,
             )
 
-            nc = await nats.connect(
-                self.provider.nats_url,
-                user=self.provider.user,
-                password=self.provider.password,
-            )
-            await nc.publish(
-                "chat.server.initiate_chat",
-                init_msg.model_dump_json().encode(),
-            )
+            # nc = await nats.connect(
+            #     self.provider.nats_url,
+            #     user=self.provider.user,
+            #     password=self.provider.password,
+            # )
+            # await nc.publish(
+            #     "chat.server.initiate_chat",
+            #     init_msg.model_dump_json().encode(),
+            # )
 
             return init_msg
+
+        @router.websocket(self.ws_path)
+        async def websocket_endpoint(websocket: WebSocket) -> None:
+            await websocket.accept()
+            init_msg_json = await websocket.receive_text()
+            init_msg = InitiateWorkflowModel.model_validate_json(init_msg_json)
+
+            workflow_uuid = uuid4()
+            self.websockets["workflow_uuid"] = websocket
+
+            await asyncify(self.provider.run)(name=init_msg.name, ui=self, **init_msg.params)
+
+            while True:
+                data = await websocket.receive_text()
+
+                await websocket.send_text(f"Message text was: {data}")
+
 
         @router.get(self.discovery_path)
         def discovery() -> list[WorkflowInfo]:
@@ -102,26 +123,21 @@ class FastAPIAdapter(MessageProcessorMixin):
                 for name, description in zip(names, descriptions)
             ]
         
-        @router.websocket(self.ws_path)
-        async def websocket_endpoint(websocket: WebSocket):
-            # read and write from NATS
-            raise NotImplementedError("websocket_endpoint")
-            # await websocket.accept()
-            # while True:
-            #     data = await websocket.receive_text()
-            #     await websocket.send_text(f"Message text was: {data}")
-
-        return router
 
     def visit_default(self, message: IOMessage) -> Optional[str]:
-        raise NotImplementedError(f"visit_{message.type}")
+        if isinstance(message, AskingMessage):
+            raise NotImplementedError("visit_default")
+        
+        workflow_uuid = message.workflow_uuid
+        websocket = self.websockets.get(workflow_uuid)
+        syncify(websocket).send_text(message.model_dump_json())
 
-    def process_message(self, message: IOMessage) -> Optional[str]:
-        try:
-            return self.visit(message)
-        except Exception as e:
-            logger.error(f"Error in process_message: {e}", stack_info=True)
-            raise
+    # def process_message(self, message: IOMessage) -> Optional[str]:
+    #     try:
+    #         return self.visit(message)
+    #     except Exception as e:
+    #         logger.error(f"Error in process_message: {e}", stack_info=True)
+    #         raise
 
     def create_subconversation(self) -> "FastAPIAdapter":
         return self
@@ -200,6 +216,8 @@ class FastAPIProvider(ProviderProtocol):
         return retval
 
     async def _create_connect_message(self) -> str:
+        # todo: use InitiateWorkflowModel
+        raise NotImplementedError("create_connect_message")
         connect_msg = {
             "verbose": False,
             "pedantic": False,

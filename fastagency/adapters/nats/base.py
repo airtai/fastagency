@@ -476,11 +476,13 @@ class NatsProvider(ProviderProtocol):
 
     @property
     def names(self) -> list[str]:
+        return ["simple_learning"]
         names = syncify(self._get_names)()
-        logger.debug(f"Names: {names}")
+        logger.info(f"Names: {names}")
         return names
 
     def get_description(self, name: str) -> str:
+        return "Student and teacher learning chat"
         description = syncify(self._get_description)(name)
         logger.debug(f"Description: {description}")
         # return "Student and teacher learning chat"
