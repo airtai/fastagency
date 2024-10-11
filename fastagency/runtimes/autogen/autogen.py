@@ -290,13 +290,21 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         return decorator
 
-    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
-        workflow, description = self._workflows[name]
+    def run(
+        self,
+        name: str,
+        ui: UI,
+        workflow_uuid: Optional[str] = None,
+        user_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> str:
+        workflow, _ = self._workflows[name]
 
         iostream = IOStreamAdapter(ui)
 
-        workflow_uuid = uuid4().hex
+        workflow_uuid = workflow_uuid or uuid4().hex
         with IOStream.set_default(iostream):
+            # todo: inject user_id into call (and other stuff)
             return workflow(ui, workflow_uuid, kwargs)
 
     @property

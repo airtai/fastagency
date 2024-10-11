@@ -1,8 +1,5 @@
 from os import environ
 
-from fastapi import FastAPI
-
-from fastagency.adapters.fastapi import FastAPIAdapter
 from fastagency.adapters.nats import NatsAdapter
 from fastagency.app import FastAgency
 from fastagency.ui.mesop.mesop import MesopUI

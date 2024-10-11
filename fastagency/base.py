@@ -87,7 +87,14 @@ Agent = TypeVar("Agent")
 
 @runtime_checkable
 class ProviderProtocol(Protocol):
-    def run(self, name: str, ui: UI, **kwargs: Any) -> str: ...
+    def run(
+        self,
+        name: str,
+        ui: UI,
+        workflow_uuid: Optional[str] = None,
+        user_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> str: ...
 
     """Run a workflow.
 

@@ -148,7 +148,7 @@ def openapi_oauth2_schema() -> dict[str, Any]:
                         "username": {"type": "string", "title": "Username"},
                         "password": {"type": "string", "title": "Password"},
                         "scope": {"type": "string", "title": "Scope", "default": ""},
-                        "client_id": {
+                        "user_id": {
                             "anyOf": [{"type": "string"}, {"type": "null"}],
                             "title": "Client Id",
                         },

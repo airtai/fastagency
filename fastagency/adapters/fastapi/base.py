@@ -2,32 +2,34 @@
 
 import asyncio
 import json
-import re
-from typing import Any, Callable, Optional, Union
+from collections.abc import Iterator
+from contextlib import contextmanager
+from typing import Any, Callable, Optional
 from uuid import UUID, uuid4
 
-from asyncer import asyncify, syncify
-import nats
 import requests
 import websockets
+from asyncer import asyncify, syncify
 from fastapi import APIRouter, WebSocket
 from pydantic import BaseModel
 
 from fastagency.logging import get_logger
 
-from ...base import UI, ProviderProtocol, WorkflowsProtocol
+from ...base import UI, ProviderProtocol, Runnable, WorkflowsProtocol
 from ...messages import (
     AskingMessage,
     IOMessage,
     MessageProcessorMixin,
 )
-from ..nats import InitiateWorkflowModel, InputResponseModel, NatsProvider
+from ..nats import InitiateWorkflowModel, InputResponseModel
 
 logger = get_logger(__name__)
 
 
 class InititateChatModel(BaseModel):
     workflow_name: str
+    workflow_uuid: str
+    user_id: Optional[str]
     params: dict[str, Any]
 
 
@@ -35,25 +37,29 @@ class WorkflowInfo(BaseModel):
     name: str
     description: str
 
+
 class FastAPIAdapter(MessageProcessorMixin):
     def __init__(
         self,
-        provider: NatsProvider,
+        provider: ProviderProtocol,
         *,
         user: Optional[str] = None,
         password: Optional[str] = None,
-        super_conversation: Optional["FastAPIAdapter"] = None,
-        initiate_chat_path: str = "/fastagency/initiate_chat",
+        # super_conversation: Optional["FastAPIAdapter"] = None,
+        initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
     ) -> None:
-        """Provider for NATS.
+        """Provider for FastAPI.
 
         Args:
-            provider (NatsProvider): The provider.
+            provider (ProviderProtocol): The provider.
             user (Optional[str], optional): The user. Defaults to None.
             password (Optional[str], optional): The password. Defaults to None.
             super_conversation (Optional["FastAPIProvider"], optional): The super conversation. Defaults to None.
+            initiate_workflow_path (str, optional): The initiate workflow path. Defaults to "/fastagency/initiate_workflow".
+            discovery_path (str, optional): The discovery path. Defaults to "/fastagency/discovery".
+            ws_path (str, optional): The websocket path. Defaults to "/fastagency/ws".
         """
         self.provider = provider
 
@@ -62,7 +68,7 @@ class FastAPIAdapter(MessageProcessorMixin):
 
         self.router = self.setup_routes()
 
-        self.initiate_chat_path = initiate_chat_path
+        self.initiate_chat_path = initiate_workflow_path
         self.discovery_path = discovery_path
         self.ws_path = ws_path
 
@@ -85,16 +91,6 @@ class FastAPIAdapter(MessageProcessorMixin):
                 name=initiate_chat.workflow_name,
             )
 
-            # nc = await nats.connect(
-            #     self.provider.nats_url,
-            #     user=self.provider.user,
-            #     password=self.provider.password,
-            # )
-            # await nc.publish(
-            #     "chat.server.initiate_chat",
-            #     init_msg.model_dump_json().encode(),
-            # )
-
             return init_msg
 
         @router.websocket(self.ws_path)
@@ -103,16 +99,20 @@ class FastAPIAdapter(MessageProcessorMixin):
             init_msg_json = await websocket.receive_text()
             init_msg = InitiateWorkflowModel.model_validate_json(init_msg_json)
 
-            workflow_uuid = uuid4()
             self.websockets["workflow_uuid"] = websocket
 
-            await asyncify(self.provider.run)(name=init_msg.name, ui=self, **init_msg.params)
-
-            while True:
-                data = await websocket.receive_text()
-
-                await websocket.send_text(f"Message text was: {data}")
-
+            try:
+                await asyncify(self.provider.run)(
+                    name=init_msg.name,
+                    ui=self,
+                    workflow_uuid=init_msg.workflow_uuid.hex,
+                    user_id=init_msg.user_id.hex,
+                    **init_msg.params,
+                )
+            except Exception as e:
+                logger.warning(f"Error in websocket_endpoint: {e}", stack_info=True)
+            finally:
+                self.websockets.pop("workflow_uuid")
 
         @router.get(self.discovery_path)
         def discovery() -> list[WorkflowInfo]:
@@ -122,15 +122,22 @@ class FastAPIAdapter(MessageProcessorMixin):
                 WorkflowInfo(name=name, description=description)
                 for name, description in zip(names, descriptions)
             ]
-        
+
+        return router
 
     def visit_default(self, message: IOMessage) -> Optional[str]:
-        if isinstance(message, AskingMessage):
-            raise NotImplementedError("visit_default")
-        
-        workflow_uuid = message.workflow_uuid
-        websocket = self.websockets.get(workflow_uuid)
-        syncify(websocket).send_text(message.model_dump_json())
+        async def a_visit_default(
+            self: FastAPIAdapter, message: IOMessage
+        ) -> Optional[str]:
+            workflow_uuid = message.workflow_uuid
+            websocket = self.websockets[workflow_uuid]  # type: ignore[index]
+            await websocket.send_text(json.dumps(message.model_dump()))
+
+            if isinstance(message, AskingMessage):
+                return await websocket.receive_text()
+            return None
+
+        return syncify(a_visit_default)(self, message)
 
     # def process_message(self, message: IOMessage) -> Optional[str]:
     #     try:
@@ -139,8 +146,23 @@ class FastAPIAdapter(MessageProcessorMixin):
     #         logger.error(f"Error in process_message: {e}", stack_info=True)
     #         raise
 
-    def create_subconversation(self) -> "FastAPIAdapter":
+    def create_subconversation(self) -> UI:
         return self
+
+    @contextmanager
+    def create(self, app: Runnable, import_string: str) -> Iterator[None]:
+        raise NotImplementedError("create")
+
+    def start(
+        self,
+        *,
+        app: "Runnable",
+        import_string: str,
+        name: Optional[str] = None,
+        params: dict[str, Any],
+        single_run: bool = False,
+    ) -> None:
+        raise NotImplementedError("start")
 
     @classmethod
     def create_provider(
@@ -154,11 +176,11 @@ class FastAPIAdapter(MessageProcessorMixin):
     ) -> ProviderProtocol:
         return FastAPIProvider(
             fastapi_url=fastapi_url,
-            fastapi_user=fastapi_user,
-            fastapi_password=fastapi_password,
-            nats_url=nats_url,
-            nats_user=nats_user,
-            nats_password=nats_password,
+            # fastapi_user=fastapi_user,
+            # fastapi_password=fastapi_password,
+            # nats_url=nats_url,
+            # nats_user=nats_user,
+            # nats_password=nats_password,
         )
 
 
@@ -166,8 +188,8 @@ class FastAPIProvider(ProviderProtocol):
     def __init__(
         self,
         fastapi_url: str,
-        fastapi_user: Optional[str] = None,
-        fastapi_password: Optional[str] = None,
+        # fastapi_user: Optional[str] = None,
+        # fastapi_password: Optional[str] = None,
         # nats_url: Optional[str] = None,
         # nats_user: Optional[str] = None,
         # nats_password: Optional[str] = None,
@@ -184,16 +206,16 @@ class FastAPIProvider(ProviderProtocol):
         self.fastapi_url = (
             fastapi_url[:-1] if fastapi_url.endswith("/") else fastapi_url
         )
-        self.fastapi_user = fastapi_user
-        self.fastapi_password = fastapi_password
+        # self.fastapi_user = fastapi_user
+        # self.fastapi_password = fastapi_password
 
-        # self.nats_url = nats_url or "ws://localhost:9222"
-        if not self.nats_url.startswith(
-            "ws://"  # nosemgrep
-        ) and not self.nats_url.startswith("wss://"):
-            raise ValueError(
-                f"NATS URL must start with ws:// or wss:// but got {self.nats_url}"  # nosemgrep
-            )
+        # # self.nats_url = nats_url or "ws://localhost:9222"
+        # if not self.nats_url.startswith(
+        #     "ws://"  # nosemgrep
+        # ) and not self.nats_url.startswith("wss://"):
+        #     raise ValueError(
+        #         f"NATS URL must start with ws:// or wss:// but got {self.nats_url}"  # nosemgrep
+        #     )
         # self.nats_user = nats_user
         # self.nats_password = nats_password
 
@@ -201,11 +223,21 @@ class FastAPIProvider(ProviderProtocol):
 
         self.initiate_chat_path = initiate_chat_path
         self.discovery_path = discovery_path
+        self.ws_path = ws_path
 
     def _send_initiate_chat_msg(
-        self, workflow_name: str, params: dict[str, Any]
+        self,
+        workflow_name: str,
+        workflow_uuid: str,
+        user_id: Optional[str],
+        params: dict[str, Any],
     ) -> InitiateWorkflowModel:
-        msg = InititateChatModel(workflow_name=workflow_name, params=params)
+        msg = InititateChatModel(
+            workflow_name=workflow_name,
+            workflow_uuid=workflow_uuid,
+            user_id=user_id,
+            params=params,
+        )
 
         payload = msg.model_dump()
 
@@ -215,94 +247,92 @@ class FastAPIProvider(ProviderProtocol):
         retval = InitiateWorkflowModel(**resp.json())
         return retval
 
-    async def _create_connect_message(self) -> str:
-        # todo: use InitiateWorkflowModel
-        raise NotImplementedError("create_connect_message")
-        connect_msg = {
-            "verbose": False,
-            "pedantic": False,
-            "tls_required": False,
-            "user": self.nats_user,
-            "pass": self.nats_password,
-        }
-        return f"CONNECT {json.dumps(connect_msg)}\r\n"
-
     async def _publish_websocket_message(
         self,
         websocket: websockets.WebSocketClientProtocol,
-        subject: str,
         message: InputResponseModel,
     ) -> None:
         payload = message.model_dump_json()
-        # todo: reformat message to match the adapter
-        raise NotImplementedError("publish_websocket_message")
-        # protocol_message = f"PUB {subject} {len(payload)}\r\n{payload}\r\n"
-        # await websocket.send(protocol_message)
-        # logger.info(f"Message sent to topic {subject}: {message}")
-
-    async def _parse_websocket_message(
-        self, message: Union[bytes, str]
-    ) -> Optional[dict[str, Any]]:
-        message_str = message.decode() if isinstance(message, bytes) else message
-
-        # todo: parse to match the adapter
-        raise NotImplementedError("parse_websocket_message")
-        # if not message_str.startswith("MSG"):
-        #     return None
-
-        # pattern = r"\r\n(.*?)\r\n"
-        # json_str = re.search(pattern, message_str, re.DOTALL).group(1)  # type: ignore [union-attr]
-        # return json.loads(json_str)  # type: ignore [no-any-return]
+        await websocket.send(payload)
+        logger.info(f"Message sent to websocket ({websocket}): {message}")
 
     async def _run_websocket_subscriber(
-        self, ui: UI, from_server_subject: str, to_server_subject: str
+        self,
+        ui: UI,
+        workflow_name: str,
+        workflow_uuid: str,
+        user_id: Optional[str],
+        from_server_subject: str,
+        to_server_subject: str,
+        params: dict[str, Any],
     ) -> None:
         # connect_url = self.nats_url
         connect_url = f"{self.fastapi_url}{self.ws_path}"
         async with websockets.connect(connect_url) as websocket:
-            connect_message = await self._create_connect_message()
-            await websocket.send(connect_message)
+            init_workflow_msg = InitiateWorkflowModel(
+                name=workflow_name,
+                workflow_uuid=workflow_uuid,
+                user_id=user_id,
+                params=params,
+            )
+            await websocket.send(init_workflow_msg.model_dump_json())
 
-            message = f"SUB {from_server_subject} 1\r\n"
-            await websocket.send(message)
-            logger.info(f"Subscribed to topic {from_server_subject}")
+            # message = f"SUB {from_server_subject} 1\r\n"
+            # await websocket.send(message)
+            # logger.info(f"Subscribed to topic {from_server_subject}")
 
             while True:
                 response = await websocket.recv()
-
-                parsed_message = await self._parse_websocket_message(response)
-                if parsed_message is None:
-                    continue
-                logger.info(f"Received message: {parsed_message}")
-
-                iomessage = (
-                    IOMessage.create(**{"type": "error", "long": parsed_message["msg"]})
-                    if parsed_message.get("error")
-                    else IOMessage.create(**parsed_message)
+                response = (
+                    response.decode() if isinstance(response, bytes) else response
                 )
-                if isinstance(iomessage, AskingMessage):
-                    processed_message = ui.process_message(iomessage)
-                    input_response = InputResponseModel(
-                        msg=processed_message, question_id=iomessage.uuid
-                    )
-                    logger.debug(f"Processed response: {input_response}")
-                    await self._publish_websocket_message(
-                        websocket, to_server_subject, input_response
-                    )
-                else:
-                    ui.process_message(iomessage)
 
-    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
-        initiate_workflow = self._send_initiate_chat_msg(name, params=kwargs)
-        user_id = initiate_workflow.user_id
-        workflow_uuid = initiate_workflow.workflow_uuid
+                logger.info(f"Received message: {response}")
+
+                msg = IOMessage.create(**json.loads(response))
+
+                retval = await asyncify(ui.process_message)(msg)
+                logger.info(f"Message {msg}: processed with response {retval}")
+
+                if isinstance(msg, AskingMessage):
+                    if retval is None:
+                        logger.warning(
+                            f"Message {msg}: response is None. Skipping response to websocket"
+                        )
+                    else:
+                        await websocket.send(retval)
+                        logger.info(
+                            f"Message {msg}: response {retval} sent to websocket"
+                        )
+
+    def run(
+        self,
+        name: str,
+        ui: UI,
+        workflow_uuid: Optional[str] = None,
+        user_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> str:
+        workflow_uuid = workflow_uuid or uuid4().hex
+
+        initiate_workflow = self._send_initiate_chat_msg(
+            name, workflow_uuid=workflow_uuid, user_id=user_id, params=kwargs
+        )
+        user_id = initiate_workflow.user_id.hex
+        workflow_uuid = initiate_workflow.workflow_uuid.hex
 
         _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"
         _to_server_subject = f"chat.server.messages.{user_id}.{workflow_uuid}"
 
         async def _setup_and_run() -> None:
             await self._run_websocket_subscriber(
-                ui, _from_server_subject, _to_server_subject
+                ui,
+                name,
+                workflow_uuid,
+                user_id,
+                _from_server_subject,
+                _to_server_subject,
+                kwargs,
             )
 
         async def run_lifespan() -> None:

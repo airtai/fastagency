@@ -394,11 +394,17 @@ class NatsProvider(ProviderProtocol):
         await subscriber.start()
         logger.info(f"Subscriber for {from_server_subject} started")
 
-    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
+    def run(
+        self,
+        name: str,
+        ui: UI,
+        workflow_uuid: Optional[str] = None,
+        user_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
-        user_id = uuid4()  # todo: fix me later
-        workflow_uuid = uuid4()
+        workflow_uuid = workflow_uuid or uuid4().hex
         init_message = InitiateWorkflowModel(
             user_id=user_id,
             workflow_uuid=workflow_uuid,
