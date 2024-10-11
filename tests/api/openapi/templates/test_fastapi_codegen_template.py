@@ -4,6 +4,7 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from datamodel_code_generator import DataModelType
 from fastapi_code_generator.__main__ import generate_code
 
 OPENAPI_FILE_PATHS = Path(__file__).parent.glob("*.json")
@@ -23,6 +24,7 @@ def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
             encoding="utf-8",
             output_dir=td,
             template_dir=TEMPLATE_DIR,
+            output_model_type=DataModelType.PydanticV2BaseModel,
         )
 
         main_path = td / "main.py"
@@ -32,12 +34,21 @@ def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
         with open(main_path, "w") as f:  # noqa: PTH123
             f.write(main_py_code)
 
+        original_sys_path = sys.path.copy()
         # add td to sys.path
         try:
             sys.path.append(str(td))
+            importlib.invalidate_caches()
+
+            if "main" in sys.modules:
+                del sys.modules["main"]
+            if "models" in sys.modules:
+                del sys.modules["models"]
+
             main = importlib.import_module("main", package=td.name)  # nosemgrep
+            importlib.reload(main)
         finally:
-            sys.path.remove(str(td))
+            sys.path = original_sys_path
 
         app = main.app
-        assert app.title == "FastAPI"
+        assert app.title == openapi_file_path.stem

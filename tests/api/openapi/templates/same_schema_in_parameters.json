@@ -1,7 +1,7 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "test",
+        "title": "same_schema_in_parameters",
         "version": "0.1.0"
     },
     "servers": [
