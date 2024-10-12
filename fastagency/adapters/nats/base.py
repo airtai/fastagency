@@ -17,7 +17,7 @@ from nats.js import JetStreamContext, api
 from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
-from ...base import ProviderProtocol, WorkflowUI, run_workflow
+from ...base import UI, ProviderProtocol, run_workflow
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -366,7 +366,7 @@ class NatsProvider(ProviderProtocol):
         self.is_broker_running: bool = False
 
     async def _setup_subscriber(
-        self, ui: WorkflowUI, from_server_subject: str, to_server_subject: str
+        self, ui: UI, from_server_subject: str, to_server_subject: str
     ) -> None:
         logger.info(
             f"Setting up subscriber for {from_server_subject=}, {to_server_subject=}"
@@ -380,14 +380,14 @@ class NatsProvider(ProviderProtocol):
                 else IOMessage.create(**msg)
             )
             if isinstance(iomessage, AskingMessage):
-                processed_message = ui.ui.process_message(iomessage)
+                processed_message = ui.process_message(iomessage)
                 response = InputResponseModel(
                     msg=processed_message, question_id=iomessage.uuid
                 )
                 logger.debug(f"Processed response: {response}")
                 await self.broker.publish(response, to_server_subject)
             else:
-                ui.ui.process_message(iomessage)
+                ui.process_message(iomessage)
 
         subscriber = self.broker.subscriber(
             from_server_subject,
@@ -402,13 +402,13 @@ class NatsProvider(ProviderProtocol):
     def run(
         self,
         name: str,
-        ui: WorkflowUI,
+        ui: UI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
-        workflow_uuid = ui.workflow_uuid
+        workflow_uuid = ui._workflow_uuid
         init_message = InitiateWorkflowModel(
             user_id=user_id,
             workflow_uuid=workflow_uuid,

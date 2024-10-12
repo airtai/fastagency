@@ -12,15 +12,13 @@ from typing import (
     runtime_checkable,
 )
 
-from .messages import (
-    MessageProcessorProtocol,
-)
+from .messages import IOMessage, MessageProcessorProtocol
 
 if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
-    "UI",
+    "UIBase",
     "WSGIProtocol",
     "ASGIProtocol",
     "ProviderProtocol",
@@ -34,7 +32,7 @@ __all__ = [
 
 
 @runtime_checkable
-class UI(MessageProcessorProtocol, Protocol):
+class UIBase(MessageProcessorProtocol, Protocol):
     @contextmanager
     def create(self, app: "Runnable", import_string: str) -> Iterator[None]: ...
 
@@ -48,7 +46,7 @@ class UI(MessageProcessorProtocol, Protocol):
         single_run: bool = False,
     ) -> None: ...
 
-    def create_workflow_ui(self, workflow_uuid: str) -> "WorkflowUI": ...
+    def create_workflow_ui(self, workflow_uuid: str) -> "UI": ...
 
     # def process_streaming_message(
     #     self, message: IOStreamingMessage
@@ -56,14 +54,25 @@ class UI(MessageProcessorProtocol, Protocol):
 
 
 class CreateWorkflowUIMixin:
-    def create_workflow_ui(self: UI, workflow_uuid: str) -> "WorkflowUI":
-        return WorkflowUI(ui=self, workflow_uuid=workflow_uuid)
+    def create_workflow_ui(self: UIBase, workflow_uuid: str) -> "UI":
+        return UI(uibase=self, workflow_uuid=workflow_uuid)
 
 
-class WorkflowUI:
-    def __init__(self, ui: UI, workflow_uuid: str) -> None:
-        self.ui = ui
-        self.workflow_uuid = workflow_uuid
+class UI:
+    def __init__(self, uibase: UIBase, workflow_uuid: str) -> None:
+        self._uibase = uibase
+        self._workflow_uuid = workflow_uuid
+
+    @property
+    def workflow_uuid(self) -> str:
+        return self._workflow_uuid
+
+    @property
+    def uibase(self) -> UIBase:
+        return self._uibase
+
+    def process_message(self, message: IOMessage) -> Optional[str]:
+        return self._uibase.process_message(message)
 
     def text_message(
         self,
@@ -75,7 +84,7 @@ class WorkflowUI:
         # text_message specific parameters
         body: Optional[str] = None,
     ) -> Optional[str]:
-        return self.ui.text_message(
+        return self._uibase.text_message(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -95,7 +104,7 @@ class WorkflowUI:
         call_id: Optional[str] = None,
         arguments: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
-        return self.ui.suggested_function_call(
+        return self._uibase.suggested_function_call(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -118,7 +127,7 @@ class WorkflowUI:
         call_id: Optional[str] = None,
         retval: Any = None,
     ) -> Optional[str]:
-        return self.ui.function_call_execution(
+        return self._uibase.function_call_execution(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -142,7 +151,7 @@ class WorkflowUI:
         suggestions: Optional[list[str]] = None,
         password: bool = False,
     ) -> Optional[str]:
-        return self.ui.text_input(
+        return self._uibase.text_input(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -165,7 +174,7 @@ class WorkflowUI:
         default: Optional[str] = None,
         single: bool = True,
     ) -> Optional[str]:
-        return self.ui.multiple_choice(
+        return self._uibase.multiple_choice(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -187,7 +196,7 @@ class WorkflowUI:
         # system_message specific parameters
         message: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
-        return self.ui.system_message(
+        return self._uibase.system_message(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -209,7 +218,7 @@ class WorkflowUI:
         description: Optional[str] = None,
         params: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
-        return self.ui.workflow_started(
+        return self._uibase.workflow_started(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -231,7 +240,7 @@ class WorkflowUI:
         # workflow_completed specific parameters
         result: Optional[str] = None,
     ) -> Optional[str]:
-        return self.ui.workflow_completed(
+        return self._uibase.workflow_completed(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -252,7 +261,7 @@ class WorkflowUI:
         short: Optional[str] = None,
         long: Optional[str] = None,
     ) -> Optional[str]:
-        return self.ui.error(
+        return self._uibase.error(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -271,7 +280,7 @@ class WorkflowUI:
         uuid: Optional[str] = None,
         workflow_uuid: Optional[str] = None,
     ) -> Optional[str]:
-        return self.ui.keep_alive(
+        return self._uibase.keep_alive(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -302,7 +311,7 @@ class ASGIProtocol(Protocol):
 
 
 # signature of a function decorated with @wf.register
-Workflow = TypeVar("Workflow", bound=Callable[[WorkflowUI, dict[str, Any]], str])
+Workflow = TypeVar("Workflow", bound=Callable[[UI, dict[str, Any]], str])
 
 
 Agent = TypeVar("Agent")
@@ -313,7 +322,7 @@ class ProviderProtocol(Protocol):
     def run(
         self,
         name: str,
-        ui: WorkflowUI,
+        ui: UI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str: ...
@@ -387,7 +396,7 @@ class Runnable(Protocol):
     def provider(self) -> ProviderProtocol: ...
 
     @property
-    def ui(self) -> UI: ...
+    def ui(self) -> UIBase: ...
 
     @property
     def title(self) -> str: ...
@@ -399,7 +408,7 @@ class Runnable(Protocol):
 def run_workflow(
     *,
     provider: ProviderProtocol,
-    ui: UI,
+    ui: UIBase,
     workflow_uuid: str,
     name: Optional[str],
     params: dict[str, Any],

@@ -2,7 +2,7 @@
 
 from .__about__ import __version__
 from .app import FastAgency
-from .base import UI, Workflow, WorkflowUI, WorkflowsProtocol
+from .base import UI, UIBase, Workflow, WorkflowsProtocol
 from .messages import (
     FunctionCallExecution,
     IOMessage,
@@ -14,7 +14,7 @@ from .messages import (
 )
 
 __all__ = [
-    "UI",
+    "UIBase",
     "FastAgency",
     "FunctionCallExecution",
     "IOMessage",
@@ -25,6 +25,6 @@ __all__ = [
     "TextMessage",
     "WorkflowsProtocol",
     "Workflow",
-    "WorkflowUI",
+    "UI",
     "__version__",
 ]

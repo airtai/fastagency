@@ -4,7 +4,7 @@ from typing import Any
 from autogen.agentchat import ConversableAgent
 from fastapi import FastAPI
 
-from fastagency import WorkflowUI
+from fastagency import UI
 from fastagency.adapters.fastapi.base import FastAPIAdapter
 from fastagency.logging import get_logger
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
@@ -25,7 +25,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(ui: WorkflowUI, params: dict[str, Any]) -> str:
+def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     ui.text_message(sender="Workflow", recipient="User", body="Hi!")
 
     initial_message = ui.text_input(

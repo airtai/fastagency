@@ -5,10 +5,10 @@ from contextlib import contextmanager
 from typing import Any, Callable, Optional, Union
 
 from .base import (
-    UI,
     ASGIProtocol,
     ProviderProtocol,
     Runnable,
+    UIBase,
     WSGIProtocol,
 )
 from .exceptions import (
@@ -24,7 +24,7 @@ class FastAgency:  # Runnable
     def __init__(
         self,
         provider: ProviderProtocol,
-        ui: UI,
+        ui: UIBase,
         *,
         title: Optional[str] = None,
         description: Optional[str] = None,
@@ -77,7 +77,7 @@ class FastAgency:  # Runnable
         return self._provider
 
     @property
-    def ui(self) -> UI:
+    def ui(self) -> UIBase:
         """Return the UI object."""
         return self._ui
 

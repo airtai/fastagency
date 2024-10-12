@@ -16,8 +16,8 @@ from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 
 from ...base import (
+    UI,
     Workflow,
-    WorkflowUI,
     WorkflowsProtocol,
     check_register_decorator,
 )
@@ -220,7 +220,7 @@ class CurrentMessage:
 
 
 class IOStreamAdapter:  # IOStream
-    def __init__(self, ui: WorkflowUI) -> None:
+    def __init__(self, ui: UI) -> None:
         """Initialize the adapter with a ChatableIO object.
 
         Args:
@@ -228,7 +228,7 @@ class IOStreamAdapter:  # IOStream
 
         """
         self.ui = ui
-        self.current_message = CurrentMessage(ui.workflow_uuid)
+        self.current_message = CurrentMessage(ui._workflow_uuid)
 
         self.messages: list[IOMessage] = []
         # if not isinstance(self.ui, UI):
@@ -239,7 +239,7 @@ class IOStreamAdapter:  # IOStream
             msgs = self.current_message.create_message()
             for msg in msgs:
                 self.messages.append(msg)
-            self.current_message = CurrentMessage(self.ui.workflow_uuid)
+            self.current_message = CurrentMessage(self.ui._workflow_uuid)
 
             return len(msgs)
         else:
@@ -253,7 +253,7 @@ class IOStreamAdapter:  # IOStream
         num_to_send = self._process_message_chunk(body)
         for i in range(-num_to_send, 0, 1):
             message = self.messages[i]
-            self.ui.ui.process_message(message)
+            self.ui.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")
@@ -261,7 +261,7 @@ class IOStreamAdapter:  # IOStream
             prompt, password, self.messages
         )
 
-        retval: str = self.ui.ui.process_message(message)  # type: ignore[assignment]
+        retval: str = self.ui.process_message(message)  # type: ignore[assignment]
 
         # in case of approving a suggested function call, we need to return an empty string to AutoGen
         if (
@@ -280,9 +280,7 @@ class IOStreamAdapter:  # IOStream
 class AutoGenWorkflows(WorkflowsProtocol):
     def __init__(self) -> None:
         """Initialize the workflows."""
-        self._workflows: dict[
-            str, tuple[Callable[[WorkflowUI, dict[str, Any]], str], str]
-        ] = {}
+        self._workflows: dict[str, tuple[Callable[[UI, dict[str, Any]], str], str]] = {}
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
@@ -303,7 +301,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
     def run(
         self,
         name: str,
-        ui: WorkflowUI,
+        ui: UI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str:

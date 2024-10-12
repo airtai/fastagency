@@ -4,7 +4,7 @@ from typing import Any
 from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
-from fastagency import WorkflowUI, FastAgency
+from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
@@ -28,7 +28,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
 def weather_workflow(
-    ui: WorkflowUI, params: dict[str, Any]
+    ui: UI, params: dict[str, Any]
 ) -> str:
     initial_message = ui.text_input(
         sender="Workflow",

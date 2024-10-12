@@ -4,7 +4,7 @@ from typing import Any
 import mesop as me
 from autogen.agentchat import ConversableAgent
 
-from fastagency import WorkflowUI, FastAgency
+from fastagency import UI, FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 from fastagency.ui.mesop.styles import (
@@ -28,7 +28,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    ui: WorkflowUI, params: dict[str, Any]
+    ui: UI, params: dict[str, Any]
 ) -> str:
     initial_message = ui.text_input(
         sender="Workflow",

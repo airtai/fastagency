@@ -3,7 +3,7 @@ from typing import Any
 
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 
-from fastagency import FastAgency, WorkflowUI
+from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
@@ -24,7 +24,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="weatherman_workflow", description="Weatherman chat")
-def simple_workflow(ui: WorkflowUI, params: dict[str, Any]) -> str:
+def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
         human_input_mode="ALWAYS",

@@ -20,7 +20,7 @@ from ...base import (
     CreateWorkflowUIMixin,
     ProviderProtocol,
     Runnable,
-    WorkflowUI,
+    UIBase,
     WorkflowsProtocol,
 )
 from ...messages import (
@@ -168,7 +168,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
     #         logger.error(f"Error in process_message: {e}", stack_info=True)
     #         raise
 
-    def create_subconversation(self) -> UI:
+    def create_subconversation(self) -> UIBase:
         return self
 
     @contextmanager
@@ -222,7 +222,7 @@ class FastAPIProvider(ProviderProtocol):
     ) -> None:
         """Initialize the fastapi workflows."""
         self._workflows: dict[
-            str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
+            str, tuple[Callable[[WorkflowsProtocol, UIBase, str, str], str], str]
         ] = {}
 
         self.fastapi_url = (
@@ -283,7 +283,7 @@ class FastAPIProvider(ProviderProtocol):
 
     async def _run_websocket_subscriber(
         self,
-        ui: WorkflowUI,
+        ui: UI,
         workflow_name: str,
         user_id: Optional[str],
         from_server_subject: str,
@@ -295,7 +295,7 @@ class FastAPIProvider(ProviderProtocol):
         async with websockets.connect(connect_url) as websocket:
             init_workflow_msg = InitiateWorkflowModel(
                 name=workflow_name,
-                workflow_uuid=ui.workflow_uuid,
+                workflow_uuid=ui._workflow_uuid,
                 user_id=user_id,
                 params=params,
             )
@@ -315,7 +315,7 @@ class FastAPIProvider(ProviderProtocol):
 
                 msg = IOMessage.create(**json.loads(response))
 
-                retval = await asyncify(ui.ui.process_message)(msg)
+                retval = await asyncify(ui.process_message)(msg)
                 logger.info(f"Message {msg}: processed with response {retval}")
 
                 if isinstance(msg, AskingMessage):
@@ -332,11 +332,11 @@ class FastAPIProvider(ProviderProtocol):
     def run(
         self,
         name: str,
-        ui: WorkflowUI,
+        ui: UI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str:
-        workflow_uuid = ui.workflow_uuid
+        workflow_uuid = ui._workflow_uuid
 
         initiate_workflow = self._send_initiate_chat_msg(
             name, workflow_uuid=workflow_uuid, user_id=user_id, params=kwargs

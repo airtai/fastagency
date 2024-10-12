@@ -8,7 +8,7 @@ from autogen.agentchat import ConversableAgent, UserProxyAgent
 from openai import InternalServerError
 
 from fastagency.api.openapi import OpenAPI
-from fastagency.base import WorkflowUI
+from fastagency.base import UI
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.autogen import _findall, _match
 from fastagency.ui.console import ConsoleUI
@@ -142,7 +142,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(ui: WorkflowUI, params: dict[str, Any]) -> str:
+    def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         initial_message = "What is triangle inequality?"
 
         student_agent = ConversableAgent(
@@ -232,7 +232,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(ui: WorkflowUI, params: dict[str, Any]) -> str:
+        def workflow(ui: UI, params: dict[str, Any]) -> str:
             initial_message = ui.text_input(
                 sender="Workflow",
                 recipient="User",
