@@ -62,7 +62,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         workflow_uuid = uuid4().hex
         run_workflow(
             provider=app.provider,
-            ui=self,
+            ui_base=self,
             name=name,
             params=params,
             single_run=single_run,

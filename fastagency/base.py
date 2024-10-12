@@ -60,7 +60,7 @@ class CreateWorkflowUIMixin:
 
 class UI:
     def __init__(self, uibase: UIBase, workflow_uuid: str) -> None:
-        self._uibase = uibase
+        self._ui_base = uibase
         self._workflow_uuid = workflow_uuid
 
     @property
@@ -68,11 +68,11 @@ class UI:
         return self._workflow_uuid
 
     @property
-    def uibase(self) -> UIBase:
-        return self._uibase
+    def ui_base(self) -> UIBase:
+        return self._ui_base
 
     def process_message(self, message: IOMessage) -> Optional[str]:
-        return self._uibase.process_message(message)
+        return self._ui_base.process_message(message)
 
     def text_message(
         self,
@@ -84,7 +84,7 @@ class UI:
         # text_message specific parameters
         body: Optional[str] = None,
     ) -> Optional[str]:
-        return self._uibase.text_message(
+        return self._ui_base.text_message(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -104,7 +104,7 @@ class UI:
         call_id: Optional[str] = None,
         arguments: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
-        return self._uibase.suggested_function_call(
+        return self._ui_base.suggested_function_call(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -127,7 +127,7 @@ class UI:
         call_id: Optional[str] = None,
         retval: Any = None,
     ) -> Optional[str]:
-        return self._uibase.function_call_execution(
+        return self._ui_base.function_call_execution(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -151,7 +151,7 @@ class UI:
         suggestions: Optional[list[str]] = None,
         password: bool = False,
     ) -> Optional[str]:
-        return self._uibase.text_input(
+        return self._ui_base.text_input(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -174,7 +174,7 @@ class UI:
         default: Optional[str] = None,
         single: bool = True,
     ) -> Optional[str]:
-        return self._uibase.multiple_choice(
+        return self._ui_base.multiple_choice(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -196,7 +196,7 @@ class UI:
         # system_message specific parameters
         message: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
-        return self._uibase.system_message(
+        return self._ui_base.system_message(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -218,7 +218,7 @@ class UI:
         description: Optional[str] = None,
         params: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
-        return self._uibase.workflow_started(
+        return self._ui_base.workflow_started(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -240,7 +240,7 @@ class UI:
         # workflow_completed specific parameters
         result: Optional[str] = None,
     ) -> Optional[str]:
-        return self._uibase.workflow_completed(
+        return self._ui_base.workflow_completed(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -261,7 +261,7 @@ class UI:
         short: Optional[str] = None,
         long: Optional[str] = None,
     ) -> Optional[str]:
-        return self._uibase.error(
+        return self._ui_base.error(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -280,7 +280,7 @@ class UI:
         uuid: Optional[str] = None,
         workflow_uuid: Optional[str] = None,
     ) -> Optional[str]:
-        return self._uibase.keep_alive(
+        return self._ui_base.keep_alive(
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -408,7 +408,7 @@ class Runnable(Protocol):
 def run_workflow(
     *,
     provider: ProviderProtocol,
-    ui: UIBase,
+    ui_base: UIBase,
     workflow_uuid: str,
     name: Optional[str],
     params: dict[str, Any],
@@ -418,7 +418,7 @@ def run_workflow(
 
     Args:
         provider (ProviderProtocol): The provider to use.
-        ui (UI): The UI object to use.
+        ui_base (UIBase): The UI object to use.
         workflow_uuid (str): The UUID of the workflow.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
         params (dict[str, Any]): Additional parameters to pass to the workflow function.
@@ -428,7 +428,7 @@ def run_workflow(
         name = provider.names[0] if name is None else name
         description = provider.get_description(name)
 
-        wfui = ui.create_workflow_ui(workflow_uuid)
+        wfui = ui_base.create_workflow_ui(workflow_uuid)
 
         wfui.workflow_started(
             sender="FastAgency",
@@ -438,17 +438,28 @@ def run_workflow(
             params=params,
         )
 
-        result = provider.run(
-            name,
-            wfui,
-            **params,
-        )
+        try:
+            result = provider.run(
+                name,
+                wfui,
+                **params,
+            )
 
-        wfui.workflow_completed(
-            sender="workflow",
-            recipient="user",
-            result=result,
-        )
+        except Exception as e:
+            wfui.error(
+                sender="workflow",
+                recipient="user",
+                short=f"An error occurred: {e}",
+                long=e.args[0],
+            )
+            raise
+
+        finally:
+            wfui.workflow_completed(
+                sender="workflow",
+                recipient="user",
+                result=result,
+            )
 
         if single_run:
             break

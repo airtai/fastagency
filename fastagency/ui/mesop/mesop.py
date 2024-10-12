@@ -13,7 +13,13 @@ import mesop as me
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
 from mesop.bin.bin import main as mesop_main
 
-from ...base import CreateWorkflowUIMixin, ProviderProtocol, Runnable
+from ...base import (
+    UI,
+    CreateWorkflowUIMixin,
+    ProviderProtocol,
+    Runnable,
+    run_workflow,
+)
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -39,7 +45,7 @@ class MesopMessage:
     conversation: "MesopUI"
 
 
-class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UI
+class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
     _import_string: Optional[str] = None
     _main_path: Optional[str] = None
     _created_instance: Optional["MesopUI"] = None
@@ -282,61 +288,76 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UI
         return MesopUI._me(environ, start_response)  # type: ignore[no-any-return]
 
 
-def run_workflow(provider: ProviderProtocol, name: str) -> MesopUI:
-    def conversation_worker(ui: MesopUI, subconversation: MesopUI) -> None:
+def run_workflow_mesop(provider: ProviderProtocol, name: str) -> UI:
+    def conversation_worker(
+        provider: ProviderProtocol, name: str, mesop_ui: MesopUI, workflow_uuid: str
+    ) -> None:
+        # try:
+        #     result = provider.run(
+        #         name=name,
+        #         ui=subconversation,  # type: ignore[arg-type]
+        #     )
+        #     ui_base.process_message(
+        #         IOMessage.create(
+        #             sender="workflow",
+        #             recipient="user",
+        #             type="system_message",
+        #             message={
+        #                 "heading": "Workflow END",
+        #                 "body": f"Ending workflow with result: {result}",
+        #             },
+        #         )
+        #     )
+        #     ui_base.process_message(
+        #         IOMessage.create(
+        #             sender="user",
+        #             recipient="workflow",
+        #             type="workflow_completed",
+        #             result=result,
+        #         )
+        #     )
+
+        # except Exception as ex:
+        #     ui_base.process_message(
+        #         IOMessage.create(
+        #             sender="system",
+        #             recipient="user",
+        #             type="error",
+        #             short=f"Exception raised: `{type(ex)}`",
+        #             long=str(ex.args[0]),
+        #         )
+        #     )
+
+        #     ui_base.process_message(
+        #         IOMessage.create(
+        #             sender="user",
+        #             recipient="workflow",
+        #             type="workflow_completed",
+        #             result="Exception raised",
+        #         )
+        #     )
         try:
-            result = provider.run(
+            run_workflow(
+                provider=provider,
+                ui_base=mesop_ui,
+                workflow_uuid=workflow_uuid,
                 name=name,
-                ui=subconversation,  # type: ignore[arg-type]
-            )
-            ui.process_message(
-                IOMessage.create(
-                    sender="workflow",
-                    recipient="user",
-                    type="system_message",
-                    message={
-                        "heading": "Workflow END",
-                        "body": f"Ending workflow with result: {result}",
-                    },
-                )
-            )
-            ui.process_message(
-                IOMessage.create(
-                    sender="user",
-                    recipient="workflow",
-                    type="workflow_completed",
-                    result=result,
-                )
-            )
-
-        except Exception as ex:
-            ui.process_message(
-                IOMessage.create(
-                    sender="system",
-                    recipient="user",
-                    type="error",
-                    short=f"Exception raised: `{type(ex)}`",
-                    long=str(ex.args[0]),
-                )
-            )
-
-            ui.process_message(
-                IOMessage.create(
-                    sender="user",
-                    recipient="workflow",
-                    type="workflow_completed",
-                    result="Exception raised",
-                )
+                params={},
+                single_run=True,
             )
         finally:
-            ui.do_not_keep_me_alive()
+            mesop_ui.do_not_keep_me_alive()
 
-    ui = MesopUI(keep_alive=True)
-    subconversation = ui.create_subconversation()
-    thread = threading.Thread(target=conversation_worker, args=(ui, subconversation))
+    ui_base = MesopUI(keep_alive=True)
+    workflow_uuid = ui_base.id
+
+    # subconversation = ui_base.create_subconversation()
+    thread = threading.Thread(
+        target=conversation_worker, args=(provider, name, ui_base, workflow_uuid)
+    )
     thread.start()
 
-    return subconversation
+    return ui_base.create_workflow_ui(workflow_uuid)
 
     # # needed for uvicorn to recognize the class as a valid ASGI application
     # async def __call__(

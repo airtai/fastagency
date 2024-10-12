@@ -181,7 +181,7 @@ class NatsAdapter(MessageProcessorMixin):
                     try:
                         await asyncify(run_workflow)(
                             provider=self.provider,
-                            ui=self,  # type: ignore[arg-type]
+                            ui_base=self,  # type: ignore[arg-type]
                             workflow_uuid=workflow_uuid,
                             name=body.name,
                             params=body.params,
