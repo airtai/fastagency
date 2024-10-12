@@ -124,7 +124,6 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             except Exception as e:
                 # logger.warning(f"Error in websocket_endpoint: {e}", stack_info=True)
                 logger.error(f"Error in websocket_endpoint: {e}")
-                # raise
             finally:
                 self.websockets.pop(workflow_uuid)
 

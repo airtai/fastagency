@@ -442,6 +442,7 @@ def run_workflow(
         )
 
         try:
+            result: Optional[str] = None
             result = provider.run(
                 name,
                 wfui,
@@ -461,7 +462,7 @@ def run_workflow(
             wfui.workflow_completed(
                 sender="workflow",
                 recipient="user",
-                result=result,
+                result=result or "Error occurred",
             )
 
         if single_run:

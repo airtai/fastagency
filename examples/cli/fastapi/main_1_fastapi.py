@@ -26,8 +26,6 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
-    ui.text_message(sender="Workflow", recipient="User", body="Hi!")
-
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
