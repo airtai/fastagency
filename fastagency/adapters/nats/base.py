@@ -7,7 +7,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from queue import Queue
 from typing import TYPE_CHECKING, Any, Optional
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from asyncer import asyncify, syncify
 from faststream import FastStream, Logger
@@ -17,7 +17,7 @@ from nats.js import JetStreamContext, api
 from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
-from ...base import UI, ProviderProtocol, run_workflow
+from ...base import ProviderProtocol, WorkflowUI, run_workflow
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -52,10 +52,10 @@ JETSTREAM = JStream(
     subjects=[
         # starts new conversation (can land on any worker)
         "chat.server.initiate_chat",
-        # server requests input from client; chat.client.messages.<user_uuid>.<chat_uuid>
+        # server requests input from client; chat.client.messages.<user_uuid>.<workflow_uuid>
         # we create this topic dynamically => client process consuming NATS can fix its worker
         "chat.client.messages.*.*",
-        # server prints message to client; chat.server.messages.<user_uuid>.<chat_uuid>
+        # server prints message to client; chat.server.messages.<user_uuid>.<workflow_uuid>
         # we create this topic dynamically and subscribe to it => worker is fixed
         "chat.server.messages.*.*",
         # discovery subject
@@ -142,8 +142,8 @@ class NatsAdapter(MessageProcessorMixin):
             """Initiate the handler.
 
             1. Subscribes to the chat.server.initiate_chat topic.
-            2. When a message is consumed from the topic, it dynamically subscribes to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
-            3. Starts the chat workflow after successfully subscribing to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
+            2. When a message is consumed from the topic, it dynamically subscribes to the chat.server.messages.<user_uuid>.<workflow_uuid> topic.
+            3. Starts the chat workflow after successfully subscribing to the chat.server.messages.<user_uuid>.<workflow_uuid> topic.
 
             Args:
                 body (InitiateModel): The body of the message.
@@ -157,9 +157,13 @@ class NatsAdapter(MessageProcessorMixin):
                 f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
             )
             user_id = str(body.user_id)
-            thread_id = str(body.workflow_uuid)
-            self._input_request_subject = f"chat.client.messages.{user_id}.{thread_id}"
-            self._input_receive_subject = f"chat.server.messages.{user_id}.{thread_id}"
+            workflow_uuid = str(body.workflow_uuid)
+            self._input_request_subject = (
+                f"chat.client.messages.{user_id}.{workflow_uuid}"
+            )
+            self._input_receive_subject = (
+                f"chat.server.messages.{user_id}.{workflow_uuid}"
+            )
 
             # dynamically subscribe to the chat server
             subscriber = self.broker.subscriber(
@@ -173,11 +177,12 @@ class NatsAdapter(MessageProcessorMixin):
 
             try:
 
-                async def start_chat() -> None:  # type: ignore [return]
+                async def start_chat(workflow_uuid: str) -> None:  # type: ignore [return]
                     try:
                         await asyncify(run_workflow)(
                             provider=self.provider,
                             ui=self,  # type: ignore[arg-type]
+                            workflow_uuid=workflow_uuid,
                             name=body.name,
                             params=body.params,
                             single_run=True,
@@ -187,7 +192,7 @@ class NatsAdapter(MessageProcessorMixin):
                         await self._send_error_msg(e, logger)
 
                 background_tasks = set()
-                task = asyncio.create_task(start_chat())  # type: ignore
+                task = asyncio.create_task(start_chat(workflow_uuid))  # type: ignore
                 background_tasks.add(task)
 
                 async def callback(t: asyncio.Task[Any]) -> None:
@@ -361,7 +366,7 @@ class NatsProvider(ProviderProtocol):
         self.is_broker_running: bool = False
 
     async def _setup_subscriber(
-        self, ui: UI, from_server_subject: str, to_server_subject: str
+        self, ui: WorkflowUI, from_server_subject: str, to_server_subject: str
     ) -> None:
         logger.info(
             f"Setting up subscriber for {from_server_subject=}, {to_server_subject=}"
@@ -375,14 +380,14 @@ class NatsProvider(ProviderProtocol):
                 else IOMessage.create(**msg)
             )
             if isinstance(iomessage, AskingMessage):
-                processed_message = ui.process_message(iomessage)
+                processed_message = ui.ui.process_message(iomessage)
                 response = InputResponseModel(
                     msg=processed_message, question_id=iomessage.uuid
                 )
                 logger.debug(f"Processed response: {response}")
                 await self.broker.publish(response, to_server_subject)
             else:
-                ui.process_message(iomessage)
+                ui.ui.process_message(iomessage)
 
         subscriber = self.broker.subscriber(
             from_server_subject,
@@ -397,14 +402,13 @@ class NatsProvider(ProviderProtocol):
     def run(
         self,
         name: str,
-        ui: UI,
-        workflow_uuid: Optional[str] = None,
+        ui: WorkflowUI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
-        workflow_uuid = workflow_uuid or uuid4().hex
+        workflow_uuid = ui.workflow_uuid
         init_message = InitiateWorkflowModel(
             user_id=user_id,
             workflow_uuid=workflow_uuid,

@@ -13,7 +13,7 @@ import mesop as me
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
 from mesop.bin.bin import main as mesop_main
 
-from ...base import ProviderProtocol, Runnable
+from ...base import CreateWorkflowUIMixin, ProviderProtocol, Runnable
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -39,7 +39,7 @@ class MesopMessage:
     conversation: "MesopUI"
 
 
-class MesopUI(MessageProcessorMixin):  # UI
+class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UI
     _import_string: Optional[str] = None
     _main_path: Optional[str] = None
     _created_instance: Optional["MesopUI"] = None
@@ -97,7 +97,8 @@ class MesopUI(MessageProcessorMixin):  # UI
             while self._keep_me_alive:
                 time.sleep(3)
                 if self._out_queue:
-                    msg = KeepAlive()
+                    # todo: do something more elegant
+                    msg = KeepAlive(workflow_uuid="")
                     mesop_msg = self._mesop_message(msg)
                     logger.debug(f"putting keepalive {msg.uuid}")
                     self._out_queue.put(mesop_msg)

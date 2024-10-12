@@ -11,12 +11,16 @@ from typing import (
     Union,
     runtime_checkable,
 )
-from uuid import uuid4
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 
-from ...base import UI, Workflow, WorkflowsProtocol, check_register_decorator
+from ...base import (
+    Workflow,
+    WorkflowUI,
+    WorkflowsProtocol,
+    check_register_decorator,
+)
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -94,6 +98,7 @@ def _findall(key: str, string: str, /) -> tuple[str, ...]:
 
 @dataclass
 class CurrentMessage:
+    workflow_uuid: str
     sender: Optional[str] = None
     recipient: Optional[str] = None
     type: MessageType = "text_message"
@@ -179,11 +184,16 @@ class CurrentMessage:
                 prompt="Please approve the suggested function call.",
                 choices=["Approve", "Reject", "Exit"],
                 default="Approve",
+                workflow_uuid=self.workflow_uuid,
             )
         else:
             # logger.info("IOStreamAdapter.input(): text_message detected")
             message = TextInput(
-                sender=None, recipient=None, prompt=prompt, password=password
+                sender=None,
+                recipient=None,
+                prompt=prompt,
+                password=password,
+                workflow_uuid=self.workflow_uuid,
             )
 
         return message
@@ -210,7 +220,7 @@ class CurrentMessage:
 
 
 class IOStreamAdapter:  # IOStream
-    def __init__(self, ui: UI) -> None:
+    def __init__(self, ui: WorkflowUI) -> None:
         """Initialize the adapter with a ChatableIO object.
 
         Args:
@@ -218,7 +228,7 @@ class IOStreamAdapter:  # IOStream
 
         """
         self.ui = ui
-        self.current_message = CurrentMessage()
+        self.current_message = CurrentMessage(ui.workflow_uuid)
 
         self.messages: list[IOMessage] = []
         # if not isinstance(self.ui, UI):
@@ -229,7 +239,7 @@ class IOStreamAdapter:  # IOStream
             msgs = self.current_message.create_message()
             for msg in msgs:
                 self.messages.append(msg)
-            self.current_message = CurrentMessage()
+            self.current_message = CurrentMessage(self.ui.workflow_uuid)
 
             return len(msgs)
         else:
@@ -243,7 +253,7 @@ class IOStreamAdapter:  # IOStream
         num_to_send = self._process_message_chunk(body)
         for i in range(-num_to_send, 0, 1):
             message = self.messages[i]
-            self.ui.process_message(message)
+            self.ui.ui.process_message(message)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")
@@ -251,7 +261,7 @@ class IOStreamAdapter:  # IOStream
             prompt, password, self.messages
         )
 
-        retval: str = self.ui.process_message(message)  # type: ignore[assignment]
+        retval: str = self.ui.ui.process_message(message)  # type: ignore[assignment]
 
         # in case of approving a suggested function call, we need to return an empty string to AutoGen
         if (
@@ -271,7 +281,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
     def __init__(self) -> None:
         """Initialize the workflows."""
         self._workflows: dict[
-            str, tuple[Callable[[UI, str, dict[str, Any]], str], str]
+            str, tuple[Callable[[WorkflowUI, dict[str, Any]], str], str]
         ] = {}
 
     def register(
@@ -293,8 +303,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
     def run(
         self,
         name: str,
-        ui: UI,
-        workflow_uuid: Optional[str] = None,
+        ui: WorkflowUI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str:
@@ -302,10 +311,9 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         iostream = IOStreamAdapter(ui)
 
-        workflow_uuid = workflow_uuid or uuid4().hex
         with IOStream.set_default(iostream):
             # todo: inject user_id into call (and other stuff)
-            return workflow(ui, workflow_uuid, kwargs)
+            return workflow(ui, kwargs)
 
     @property
     def names(self) -> list[str]:

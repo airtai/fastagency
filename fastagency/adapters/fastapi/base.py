@@ -15,7 +15,14 @@ from pydantic import BaseModel
 
 from fastagency.logging import get_logger
 
-from ...base import UI, ProviderProtocol, Runnable, WorkflowsProtocol
+from ...base import (
+    UI,
+    CreateWorkflowUIMixin,
+    ProviderProtocol,
+    Runnable,
+    WorkflowUI,
+    WorkflowsProtocol,
+)
 from ...messages import (
     AskingMessage,
     IOMessage,
@@ -38,13 +45,13 @@ class WorkflowInfo(BaseModel):
     description: str
 
 
-class FastAPIAdapter(MessageProcessorMixin):
+class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
     def __init__(
         self,
         provider: ProviderProtocol,
         *,
-        user: Optional[str] = None,
-        password: Optional[str] = None,
+        # user: Optional[str] = None,
+        # password: Optional[str] = None,
         # super_conversation: Optional["FastAPIAdapter"] = None,
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
@@ -63,21 +70,21 @@ class FastAPIAdapter(MessageProcessorMixin):
         """
         self.provider = provider
 
-        self.user = user
-        self.password = password
+        # self.user = user
+        # self.password = password
 
-        self.router = self.setup_routes()
-
-        self.initiate_chat_path = initiate_workflow_path
+        self.initiate_workflow_path = initiate_workflow_path
         self.discovery_path = discovery_path
         self.ws_path = ws_path
 
         self.websockets: dict[str, WebSocket] = {}
 
+        self.router = self.setup_routes()
+
     def setup_routes(self) -> APIRouter:
         router = APIRouter()
 
-        @router.post(self.initiate_chat_path)
+        @router.post(self.initiate_workflow_path)
         async def initiate_chat(
             initiate_chat: InititateChatModel,
         ) -> InitiateWorkflowModel:
@@ -95,24 +102,31 @@ class FastAPIAdapter(MessageProcessorMixin):
 
         @router.websocket(self.ws_path)
         async def websocket_endpoint(websocket: WebSocket) -> None:
+            logger.info("Websocket connected")
             await websocket.accept()
+            logger.info("Websocket accepted")
+
             init_msg_json = await websocket.receive_text()
+            logger.info(f"Received message: {init_msg_json}")
+
             init_msg = InitiateWorkflowModel.model_validate_json(init_msg_json)
 
-            self.websockets["workflow_uuid"] = websocket
+            workflow_uuid = init_msg.workflow_uuid.hex
+            self.websockets[workflow_uuid] = websocket
 
             try:
                 await asyncify(self.provider.run)(
                     name=init_msg.name,
-                    ui=self,
-                    workflow_uuid=init_msg.workflow_uuid.hex,
+                    ui=self.create_workflow_ui(workflow_uuid),
                     user_id=init_msg.user_id.hex,
                     **init_msg.params,
                 )
             except Exception as e:
-                logger.warning(f"Error in websocket_endpoint: {e}", stack_info=True)
+                # logger.warning(f"Error in websocket_endpoint: {e}", stack_info=True)
+                logger.error(f"Error in websocket_endpoint: {e}")
+                # raise
             finally:
-                self.websockets.pop("workflow_uuid")
+                self.websockets.pop(workflow_uuid)
 
         @router.get(self.discovery_path)
         def discovery() -> list[WorkflowInfo]:
@@ -130,11 +144,19 @@ class FastAPIAdapter(MessageProcessorMixin):
             self: FastAPIAdapter, message: IOMessage
         ) -> Optional[str]:
             workflow_uuid = message.workflow_uuid
+            if workflow_uuid not in self.websockets:
+                logger.error(
+                    f"Workflow {workflow_uuid} not found in websockets: {self.websockets}"
+                )
+                raise RuntimeError(
+                    f"Workflow {workflow_uuid} not found in websockets: {self.websockets}"
+                )
             websocket = self.websockets[workflow_uuid]  # type: ignore[index]
             await websocket.send_text(json.dumps(message.model_dump()))
 
             if isinstance(message, AskingMessage):
-                return await websocket.receive_text()
+                response = await websocket.receive_text()
+                return response
             return None
 
         return syncify(a_visit_default)(self, message)
@@ -193,7 +215,7 @@ class FastAPIProvider(ProviderProtocol):
         # nats_url: Optional[str] = None,
         # nats_user: Optional[str] = None,
         # nats_password: Optional[str] = None,
-        initiate_chat_path: str = "/fastagency/initiate_chat",
+        initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
         # todo: we need security context
@@ -206,6 +228,8 @@ class FastAPIProvider(ProviderProtocol):
         self.fastapi_url = (
             fastapi_url[:-1] if fastapi_url.endswith("/") else fastapi_url
         )
+        self.ws_url = "ws" + self.fastapi_url[4:]
+
         # self.fastapi_user = fastapi_user
         # self.fastapi_password = fastapi_password
 
@@ -221,7 +245,7 @@ class FastAPIProvider(ProviderProtocol):
 
         self.is_broker_running: bool = False
 
-        self.initiate_chat_path = initiate_chat_path
+        self.initiate_workflow_path = initiate_workflow_path
         self.discovery_path = discovery_path
         self.ws_path = ws_path
 
@@ -242,8 +266,9 @@ class FastAPIProvider(ProviderProtocol):
         payload = msg.model_dump()
 
         resp = requests.post(
-            f"{self.fastapi_url}{self.initiate_chat_path}", json=payload, timeout=5
+            f"{self.fastapi_url}{self.initiate_workflow_path}", json=payload, timeout=5
         )
+        logger.info(f"Initiate chat response: {resp.json()}")
         retval = InitiateWorkflowModel(**resp.json())
         return retval
 
@@ -258,20 +283,19 @@ class FastAPIProvider(ProviderProtocol):
 
     async def _run_websocket_subscriber(
         self,
-        ui: UI,
+        ui: WorkflowUI,
         workflow_name: str,
-        workflow_uuid: str,
         user_id: Optional[str],
         from_server_subject: str,
         to_server_subject: str,
         params: dict[str, Any],
     ) -> None:
         # connect_url = self.nats_url
-        connect_url = f"{self.fastapi_url}{self.ws_path}"
+        connect_url = f"{self.ws_url}{self.ws_path}"
         async with websockets.connect(connect_url) as websocket:
             init_workflow_msg = InitiateWorkflowModel(
                 name=workflow_name,
-                workflow_uuid=workflow_uuid,
+                workflow_uuid=ui.workflow_uuid,
                 user_id=user_id,
                 params=params,
             )
@@ -291,7 +315,7 @@ class FastAPIProvider(ProviderProtocol):
 
                 msg = IOMessage.create(**json.loads(response))
 
-                retval = await asyncify(ui.process_message)(msg)
+                retval = await asyncify(ui.ui.process_message)(msg)
                 logger.info(f"Message {msg}: processed with response {retval}")
 
                 if isinstance(msg, AskingMessage):
@@ -308,12 +332,11 @@ class FastAPIProvider(ProviderProtocol):
     def run(
         self,
         name: str,
-        ui: UI,
-        workflow_uuid: Optional[str] = None,
+        ui: WorkflowUI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str:
-        workflow_uuid = workflow_uuid or uuid4().hex
+        workflow_uuid = ui.workflow_uuid
 
         initiate_workflow = self._send_initiate_chat_msg(
             name, workflow_uuid=workflow_uuid, user_id=user_id, params=kwargs
@@ -328,7 +351,6 @@ class FastAPIProvider(ProviderProtocol):
             await self._run_websocket_subscriber(
                 ui,
                 name,
-                workflow_uuid,
                 user_id,
                 _from_server_subject,
                 _to_server_subject,

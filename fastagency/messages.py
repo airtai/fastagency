@@ -48,12 +48,14 @@ MessageType = Literal[
 
 
 @dataclass
-class IOMessage(ABC):  # noqa: B024  # `IOMessage` is an abstract base class, but it has no abstract methods
+class IOMessage(
+    ABC
+):  # `IOMessage` is an abstract base class, but it has no abstract methods
+    workflow_uuid: Optional[str]
     sender: Optional[str] = None
     recipient: Optional[str] = None
     auto_reply: bool = False
     uuid: str = field(default_factory=lambda: str(uuid4().hex))
-    workflow_uuid: Optional[str] = None
 
     @property
     def type(self) -> MessageType:
@@ -358,7 +360,7 @@ class MessageProcessorMixin(ABC):
             return self.visit(message)
         except Exception as e:
             # log the error and return None
-            logger.error(f"Error processing message: {e}")
+            logger.error(f"Error processing message ({message}): {e}", stack_info=True)
             return None
 
     def text_message(

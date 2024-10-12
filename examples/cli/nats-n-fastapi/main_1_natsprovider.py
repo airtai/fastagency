@@ -5,7 +5,7 @@ from typing import Any
 from autogen.agentchat import ConversableAgent
 from fastapi import FastAPI
 
-from fastagency import UI
+from fastagency import WorkflowUI
 from fastagency.adapters.nats import NatsAdapter
 from fastagency.logging import get_logger
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
@@ -26,12 +26,11 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+def simple_workflow(ui: WorkflowUI, params: dict[str, Any]) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
         prompt="I can help you learn about geometry. What subject you would like to explore?",
-        workflow_uuid=workflow_uuid,
     )
 
     student_agent = ConversableAgent(
@@ -78,4 +77,4 @@ def list_workflows():
 
 
 # start the provider with either command
-# uvicorn 1_main_natsprovider:app --reload
+# uvicorn main_1_natsprovider:app --reload

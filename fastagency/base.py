@@ -48,11 +48,236 @@ class UI(MessageProcessorProtocol, Protocol):
         single_run: bool = False,
     ) -> None: ...
 
+    def create_workflow_ui(self, workflow_uuid: str) -> "WorkflowUI": ...
+
     # def process_streaming_message(
     #     self, message: IOStreamingMessage
     # ) -> Optional[str]: ...
 
-    def create_subconversation(self) -> "UI": ...
+
+class CreateWorkflowUIMixin:
+    def create_workflow_ui(self: UI, workflow_uuid: str) -> "WorkflowUI":
+        return WorkflowUI(ui=self, workflow_uuid=workflow_uuid)
+
+
+class WorkflowUI:
+    def __init__(self, ui: UI, workflow_uuid: str) -> None:
+        self.ui = ui
+        self.workflow_uuid = workflow_uuid
+
+    def text_message(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        # text_message specific parameters
+        body: Optional[str] = None,
+    ) -> Optional[str]:
+        return self.ui.text_message(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            body=body,
+        )
+
+    def suggested_function_call(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        # suggested_function_call specific parameters
+        function_name: Optional[str] = None,
+        call_id: Optional[str] = None,
+        arguments: Optional[dict[str, Any]] = None,
+    ) -> Optional[str]:
+        return self.ui.suggested_function_call(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            function_name=function_name,
+            call_id=call_id,
+            arguments=arguments,
+        )
+
+    def function_call_execution(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        workflow_uuid: Optional[str] = None,
+        # function_call_execution specific parameters
+        function_name: Optional[str] = None,
+        call_id: Optional[str] = None,
+        retval: Any = None,
+    ) -> Optional[str]:
+        return self.ui.function_call_execution(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            workflow_uuid=workflow_uuid,
+            function_name=function_name,
+            call_id=call_id,
+            retval=retval,
+        )
+
+    def text_input(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        workflow_uuid: Optional[str] = None,
+        # text_input specific parameters
+        prompt: Optional[str] = None,
+        suggestions: Optional[list[str]] = None,
+        password: bool = False,
+    ) -> Optional[str]:
+        return self.ui.text_input(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            prompt=prompt,
+            suggestions=suggestions,
+            password=password,
+        )
+
+    def multiple_choice(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        # multiple_choice specific parameters
+        prompt: Optional[str] = None,
+        choices: Optional[list[str]] = None,
+        default: Optional[str] = None,
+        single: bool = True,
+    ) -> Optional[str]:
+        return self.ui.multiple_choice(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            prompt=prompt,
+            choices=choices,
+            default=default,
+            single=single,
+        )
+
+    def system_message(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        workflow_uuid: Optional[str] = None,
+        # system_message specific parameters
+        message: Optional[dict[str, Any]] = None,
+    ) -> Optional[str]:
+        return self.ui.system_message(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            workflow_uuid=workflow_uuid,
+            message=message,
+        )
+
+    def workflow_started(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        workflow_uuid: Optional[str] = None,
+        # workflow_started specific parameters
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        params: Optional[dict[str, Any]] = None,
+    ) -> Optional[str]:
+        return self.ui.workflow_started(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            workflow_uuid=workflow_uuid,
+            name=name,
+            description=description,
+            params=params,
+        )
+
+    def workflow_completed(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        workflow_uuid: Optional[str] = None,
+        # workflow_completed specific parameters
+        result: Optional[str] = None,
+    ) -> Optional[str]:
+        return self.ui.workflow_completed(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            workflow_uuid=workflow_uuid,
+            result=result,
+        )
+
+    def error(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        workflow_uuid: Optional[str] = None,
+        # error specific parameters
+        short: Optional[str] = None,
+        long: Optional[str] = None,
+    ) -> Optional[str]:
+        return self.ui.error(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            workflow_uuid=workflow_uuid,
+            short=short,
+            long=long,
+        )
+
+    def keep_alive(
+        self,
+        # common parameters for all messages
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
+        auto_reply: bool = False,
+        uuid: Optional[str] = None,
+        workflow_uuid: Optional[str] = None,
+    ) -> Optional[str]:
+        return self.ui.keep_alive(
+            sender=sender,
+            recipient=recipient,
+            auto_reply=auto_reply,
+            uuid=uuid,
+            workflow_uuid=workflow_uuid,
+        )
 
 
 @runtime_checkable
@@ -77,9 +302,7 @@ class ASGIProtocol(Protocol):
 
 
 # signature of a function decorated with @wf.register
-# Workflow = TypeVar("Workflow", bound=Callable[["WorkflowsProtocol", UI, str, str], str])
-# parameters are: WorkflowsProtocol, UI, workflow_uuid, params (kwargs)
-Workflow = TypeVar("Workflow", bound=Callable[[UI, str, dict[str, Any]], str])
+Workflow = TypeVar("Workflow", bound=Callable[[WorkflowUI, dict[str, Any]], str])
 
 
 Agent = TypeVar("Agent")
@@ -90,8 +313,7 @@ class ProviderProtocol(Protocol):
     def run(
         self,
         name: str,
-        ui: UI,
-        workflow_uuid: Optional[str] = None,
+        ui: WorkflowUI,
         user_id: Optional[str] = None,
         **kwargs: Any,
     ) -> str: ...
@@ -135,7 +357,7 @@ def check_register_decorator(func: Workflow) -> None:
     # get names of all parameters in the function signature
     sig = inspect.signature(func)
     params = list(sig.parameters.keys())
-    if params != ["ui", "workflow_uuid", "params"]:
+    if params != ["ui", "params"]:
         raise ValueError(
             f"Expected function signature to be 'def func(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str', got {sig}"
         )
@@ -178,6 +400,7 @@ def run_workflow(
     *,
     provider: ProviderProtocol,
     ui: UI,
+    workflow_uuid: str,
     name: Optional[str],
     params: dict[str, Any],
     single_run: bool = False,
@@ -187,6 +410,7 @@ def run_workflow(
     Args:
         provider (ProviderProtocol): The provider to use.
         ui (UI): The UI object to use.
+        workflow_uuid (str): The UUID of the workflow.
         name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
         params (dict[str, Any]): Additional parameters to pass to the workflow function.
         single_run (bool, optional): If True, the workflow will only be run once. Defaults to False.
@@ -195,7 +419,9 @@ def run_workflow(
         name = provider.names[0] if name is None else name
         description = provider.get_description(name)
 
-        ui.workflow_started(
+        wfui = ui.create_workflow_ui(workflow_uuid)
+
+        wfui.workflow_started(
             sender="FastAgency",
             recipient="user",
             name=name,
@@ -204,12 +430,12 @@ def run_workflow(
         )
 
         result = provider.run(
-            name=name,
-            ui=ui.create_subconversation(),
+            name,
+            wfui,
             **params,
         )
 
-        ui.workflow_completed(
+        wfui.workflow_completed(
             sender="workflow",
             recipient="user",
             result=result,

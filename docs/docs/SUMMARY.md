@@ -33,6 +33,7 @@ search:
             - [TextInput](api/fastagency/TextInput.md)
             - [TextMessage](api/fastagency/TextMessage.md)
             - [UI](api/fastagency/UI.md)
+            - [WorkflowUI](api/fastagency/WorkflowUI.md)
             - [WorkflowsProtocol](api/fastagency/WorkflowsProtocol.md)
             - adapters
                 - fastapi
@@ -77,10 +78,12 @@ search:
             - base
                 - [ASGIProtocol](api/fastagency/base/ASGIProtocol.md)
                 - [AdapterProtocol](api/fastagency/base/AdapterProtocol.md)
+                - [CreateWorkflowUIMixin](api/fastagency/base/CreateWorkflowUIMixin.md)
                 - [ProviderProtocol](api/fastagency/base/ProviderProtocol.md)
                 - [Runnable](api/fastagency/base/Runnable.md)
                 - [UI](api/fastagency/base/UI.md)
                 - [WSGIProtocol](api/fastagency/base/WSGIProtocol.md)
+                - [WorkflowUI](api/fastagency/base/WorkflowUI.md)
                 - [WorkflowsProtocol](api/fastagency/base/WorkflowsProtocol.md)
                 - [check_register_decorator](api/fastagency/base/check_register_decorator.md)
                 - [run_workflow](api/fastagency/base/run_workflow.md)
