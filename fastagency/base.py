@@ -12,6 +12,7 @@ from typing import (
     runtime_checkable,
 )
 
+from .logging import get_logger
 from .messages import IOMessage, MessageProcessorProtocol
 
 if TYPE_CHECKING:
@@ -29,6 +30,8 @@ __all__ = [
     "Agent",
     "run_workflow",
 ]
+
+logger = get_logger(__name__)
 
 
 @runtime_checkable
@@ -60,6 +63,9 @@ class CreateWorkflowUIMixin:
 
 class UI:
     def __init__(self, uibase: UIBase, workflow_uuid: str) -> None:
+        if workflow_uuid is None:
+            logger.error("workflow_uuid must be provided")
+            raise ValueError("workflow_uuid must be provided")
         self._ui_base = uibase
         self._workflow_uuid = workflow_uuid
 
@@ -85,6 +91,7 @@ class UI:
         body: Optional[str] = None,
     ) -> Optional[str]:
         return self._ui_base.text_message(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -105,6 +112,7 @@ class UI:
         arguments: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
         return self._ui_base.suggested_function_call(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -121,18 +129,17 @@ class UI:
         recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
-        workflow_uuid: Optional[str] = None,
         # function_call_execution specific parameters
         function_name: Optional[str] = None,
         call_id: Optional[str] = None,
         retval: Any = None,
     ) -> Optional[str]:
         return self._ui_base.function_call_execution(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
             uuid=uuid,
-            workflow_uuid=workflow_uuid,
             function_name=function_name,
             call_id=call_id,
             retval=retval,
@@ -145,13 +152,13 @@ class UI:
         recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
-        workflow_uuid: Optional[str] = None,
         # text_input specific parameters
         prompt: Optional[str] = None,
         suggestions: Optional[list[str]] = None,
         password: bool = False,
     ) -> Optional[str]:
         return self._ui_base.text_input(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -175,6 +182,7 @@ class UI:
         single: bool = True,
     ) -> Optional[str]:
         return self._ui_base.multiple_choice(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
@@ -192,16 +200,15 @@ class UI:
         recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
-        workflow_uuid: Optional[str] = None,
         # system_message specific parameters
         message: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
         return self._ui_base.system_message(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
             uuid=uuid,
-            workflow_uuid=workflow_uuid,
             message=message,
         )
 
@@ -212,18 +219,17 @@ class UI:
         recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
-        workflow_uuid: Optional[str] = None,
         # workflow_started specific parameters
         name: Optional[str] = None,
         description: Optional[str] = None,
         params: Optional[dict[str, Any]] = None,
     ) -> Optional[str]:
         return self._ui_base.workflow_started(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
             uuid=uuid,
-            workflow_uuid=workflow_uuid,
             name=name,
             description=description,
             params=params,
@@ -236,16 +242,15 @@ class UI:
         recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
-        workflow_uuid: Optional[str] = None,
         # workflow_completed specific parameters
         result: Optional[str] = None,
     ) -> Optional[str]:
         return self._ui_base.workflow_completed(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
             uuid=uuid,
-            workflow_uuid=workflow_uuid,
             result=result,
         )
 
@@ -256,17 +261,16 @@ class UI:
         recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
-        workflow_uuid: Optional[str] = None,
         # error specific parameters
         short: Optional[str] = None,
         long: Optional[str] = None,
     ) -> Optional[str]:
         return self._ui_base.error(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
             uuid=uuid,
-            workflow_uuid=workflow_uuid,
             short=short,
             long=long,
         )
@@ -278,14 +282,13 @@ class UI:
         recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
-        workflow_uuid: Optional[str] = None,
     ) -> Optional[str]:
         return self._ui_base.keep_alive(
+            workflow_uuid=self.workflow_uuid,
             sender=sender,
             recipient=recipient,
             auto_reply=auto_reply,
             uuid=uuid,
-            workflow_uuid=workflow_uuid,
         )
 
 
