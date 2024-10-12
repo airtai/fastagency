@@ -1,7 +1,7 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "FastAPI",
+        "title": "openapi",
         "version": "0.1.0"
     },
     "servers": [
