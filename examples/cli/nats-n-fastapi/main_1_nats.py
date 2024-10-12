@@ -60,7 +60,7 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     return chat_result.summary
 
 
-nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
+nats_url = environ.get("NATS_URL", "nats://localhost:4222")
 
 user: str = "faststream"
 password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]

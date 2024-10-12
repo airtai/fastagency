@@ -4,7 +4,7 @@ from fastagency.adapters.nats import NatsAdapter
 from fastagency.app import FastAgency
 from fastagency.ui.mesop.mesop import MesopUI
 
-nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
+nats_url = environ.get("NATS_URL", "nats://localhost:4222")
 
 fastapi_user: str = "fastapi"
 fastapi_password: str = environ.get("FASTAPI_PASSWORD")  # type: ignore[assignment]

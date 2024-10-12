@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastagency.adapters.fastapi import FastAPIAdapter
 from fastagency.adapters.nats import NatsAdapter
 
-nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
+nats_url = environ.get("NATS_URL", "nats://localhost:4222")
 nats_user: str = "faststream"
 nats_password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 
