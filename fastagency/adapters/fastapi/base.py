@@ -375,8 +375,12 @@ class FastAPIProvider(ProviderProtocol):
         return "FastAPIWorkflows.run() completed"
 
     def _get_workflow_info(self) -> list[dict[str, str]]:
-        resp = requests.get(f"{self.fastapi_url}/{self.discovery_path}", timeout=5)
-        return resp.json()  # type: ignore [no-any-return]
+        try:
+            resp = requests.get(f"{self.fastapi_url}/{self.discovery_path}", timeout=15)
+            return resp.json()  # type: ignore [no-any-return]
+        except Exception as e:
+            logger.warning(f"Error in _get_workflow_info: {e}")
+            return []
 
     def _get_names(self) -> list[str]:
         return [workflow["name"] for workflow in self._get_workflow_info()]

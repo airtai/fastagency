@@ -1,4 +1,5 @@
 import sys
+from uuid import uuid4
 
 import pytest
 
@@ -35,6 +36,7 @@ if sys.version_info >= (3, 10):
                 sender="sender",
                 recipient="recipient",
                 body="message",
+                workflow_uuid=uuid4().hex,
             )
 
             mesop_msg = mesop_ui._mesop_message(io_msg)
