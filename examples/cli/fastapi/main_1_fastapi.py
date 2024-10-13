@@ -45,16 +45,12 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         # human_input_mode="ALWAYS",
     )
 
-    logger.info("Above initiate_chat in simple_workflow")
-    logger.info(llm_config)
     chat_result = student_agent.initiate_chat(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=5,
     )
-    logger.info("Below initiate_chat in simple_workflow")
-    logger.info(chat_result)
 
     return chat_result.summary
 

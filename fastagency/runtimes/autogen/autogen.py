@@ -311,7 +311,26 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         with IOStream.set_default(iostream):
             # todo: inject user_id into call (and other stuff)
-            return workflow(ui, kwargs)
+            try:
+                ui.workflow_started(
+                    sender="AutoGenWorkflows",
+                    name=name,
+                    description=self.get_description(name),
+                    params=kwargs,
+                )
+                retval = workflow(ui, kwargs)
+
+            except Exception as e:
+                logger.error(f"Unexpected error: {e}", stack_info=True)
+                retval = f"Unexpected error: {e}"
+
+            ui.workflow_completed(
+                sender="AutoGenWorkflows",
+                result=retval,
+            )
+            logger.info(f"Workflow '{name}' completed with result: {retval}")
+
+            return retval
 
     @property
     def names(self) -> list[str]:

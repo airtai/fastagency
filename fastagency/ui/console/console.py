@@ -10,7 +10,6 @@ from uuid import uuid4
 from ...base import (
     CreateWorkflowUIMixin,
     Runnable,
-    run_workflow,
 )
 from ...logging import get_logger
 from ...messages import (
@@ -60,14 +59,9 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         single_run: bool = False,
     ) -> None:
         workflow_uuid = uuid4().hex
-        run_workflow(
-            provider=app.provider,
-            ui_base=self,
-            name=name,
-            params=params,
-            single_run=single_run,
-            workflow_uuid=workflow_uuid,
-        )
+        ui = self.create_workflow_ui(workflow_uuid=workflow_uuid)
+        name = name or app.provider.names[0]
+        app.provider.run(name=name, ui=ui, **params)
 
     @property
     def level(self) -> int:

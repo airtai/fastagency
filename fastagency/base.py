@@ -28,7 +28,6 @@ __all__ = [
     "Runnable",
     "Workflow",
     "Agent",
-    "run_workflow",
 ]
 
 logger = get_logger(__name__)
@@ -406,64 +405,3 @@ class Runnable(Protocol):
 
     @property
     def description(self) -> str: ...
-
-
-def run_workflow(
-    *,
-    provider: ProviderProtocol,
-    ui_base: UIBase,
-    workflow_uuid: str,
-    name: Optional[str],
-    params: dict[str, Any],
-    single_run: bool = False,
-) -> None:
-    """Run a workflow.
-
-    Args:
-        provider (ProviderProtocol): The provider to use.
-        ui_base (UIBase): The UI object to use.
-        workflow_uuid (str): The UUID of the workflow.
-        name (Optional[str]): The name of the workflow to run. If not provided, the default workflow will be run.
-        params (dict[str, Any]): Additional parameters to pass to the workflow function.
-        single_run (bool, optional): If True, the workflow will only be run once. Defaults to False.
-    """
-    while True:
-        name = provider.names[0] if name is None else name
-        description = provider.get_description(name)
-
-        wfui = ui_base.create_workflow_ui(workflow_uuid)
-
-        wfui.workflow_started(
-            sender="FastAgency",
-            recipient="user",
-            name=name,
-            description=description,
-            params=params,
-        )
-
-        try:
-            result: Optional[str] = None
-            result = provider.run(
-                name,
-                wfui,
-                **params,
-            )
-
-        except Exception as e:
-            wfui.error(
-                sender="workflow",
-                recipient="user",
-                short=f"An error occurred: {e}",
-                long=e.args[0],
-            )
-            raise
-
-        finally:
-            wfui.workflow_completed(
-                sender="workflow",
-                recipient="user",
-                result=result or "Error occurred",
-            )
-
-        if single_run:
-            break

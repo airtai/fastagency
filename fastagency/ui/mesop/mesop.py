@@ -1,5 +1,6 @@
 import threading
 import time
+import traceback
 from collections.abc import Generator, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -18,7 +19,6 @@ from ...base import (
     CreateWorkflowUIMixin,
     ProviderProtocol,
     Runnable,
-    run_workflow,
 )
 from ...logging import get_logger
 from ...messages import (
@@ -289,62 +289,26 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
 
 
 def run_workflow_mesop(provider: ProviderProtocol, name: str) -> UI:
-    def conversation_worker(
+    def workflow_worker(
         provider: ProviderProtocol, name: str, mesop_ui: MesopUI, workflow_uuid: str
     ) -> None:
-        # try:
-        #     result = provider.run(
-        #         name=name,
-        #         ui=subconversation,  # type: ignore[arg-type]
-        #     )
-        #     ui_base.process_message(
-        #         IOMessage.create(
-        #             sender="workflow",
-        #             recipient="user",
-        #             type="system_message",
-        #             message={
-        #                 "heading": "Workflow END",
-        #                 "body": f"Ending workflow with result: {result}",
-        #             },
-        #         )
-        #     )
-        #     ui_base.process_message(
-        #         IOMessage.create(
-        #             sender="user",
-        #             recipient="workflow",
-        #             type="workflow_completed",
-        #             result=result,
-        #         )
-        #     )
-
-        # except Exception as ex:
-        #     ui_base.process_message(
-        #         IOMessage.create(
-        #             sender="system",
-        #             recipient="user",
-        #             type="error",
-        #             short=f"Exception raised: `{type(ex)}`",
-        #             long=str(ex.args[0]),
-        #         )
-        #     )
-
-        #     ui_base.process_message(
-        #         IOMessage.create(
-        #             sender="user",
-        #             recipient="workflow",
-        #             type="workflow_completed",
-        #             result="Exception raised",
-        #         )
-        #     )
+        ui = mesop_ui.create_workflow_ui(workflow_uuid)
         try:
-            run_workflow(
-                provider=provider,
-                ui_base=mesop_ui,
-                workflow_uuid=workflow_uuid,
+            provider.run(
                 name=name,
-                params={},
-                single_run=True,
+                ui=ui,
             )
+        except Exception as e:
+            logger.error(
+                f"Unexpected exception raised in Mesop workflow worker: {e}",
+                stack_info=True,
+            )
+            ui.error(
+                sender="Mesop workflow_worker",
+                short=f"Unexpected exception raised: {e}",
+                long=traceback.format_exc(),
+            )
+            return
         finally:
             mesop_ui.do_not_keep_me_alive()
 
@@ -353,7 +317,7 @@ def run_workflow_mesop(provider: ProviderProtocol, name: str) -> UI:
 
     # subconversation = ui_base.create_subconversation()
     thread = threading.Thread(
-        target=conversation_worker, args=(provider, name, ui_base, workflow_uuid)
+        target=workflow_worker, args=(provider, name, ui_base, workflow_uuid)
     )
     thread.start()
 

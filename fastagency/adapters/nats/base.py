@@ -3,8 +3,8 @@
 import asyncio
 import os
 import traceback
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from collections.abc import AsyncIterator, Iterator
+from contextlib import asynccontextmanager, contextmanager
 from queue import Queue
 from typing import TYPE_CHECKING, Any, Optional
 from uuid import UUID
@@ -17,7 +17,7 @@ from nats.js import JetStreamContext, api
 from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
-from ...base import UI, ProviderProtocol, run_workflow
+from ...base import UI, CreateWorkflowUIMixin, ProviderProtocol, Runnable, UIBase
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -64,7 +64,7 @@ JETSTREAM = JStream(
 )
 
 
-class NatsAdapter(MessageProcessorMixin):
+class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
     def __init__(
         self,
         provider: ProviderProtocol,
@@ -177,22 +177,49 @@ class NatsAdapter(MessageProcessorMixin):
 
             try:
 
-                async def start_chat(workflow_uuid: str) -> None:  # type: ignore [return]
-                    try:
-                        await asyncify(run_workflow)(
-                            provider=self.provider,
-                            ui_base=self,  # type: ignore[arg-type]
-                            workflow_uuid=workflow_uuid,
-                            name=body.name,
-                            params=body.params,
-                            single_run=True,
-                        )
+                async def start_chat(
+                    ui_base: UIBase,
+                    provider: ProviderProtocol,
+                    name: str,
+                    params: dict[str, Any],
+                    workflow_uuid: str,
+                ) -> None:  # type: ignore [return]
+                    def _start_chat(
+                        ui_base: UIBase,
+                        provider: ProviderProtocol,
+                        name: str,
+                        params: dict[str, Any],
+                        workflow_uuid: str,
+                    ) -> None:  # type: ignore [return]
+                        ui: UI = ui_base.create_workflow_ui(workflow_uuid=workflow_uuid)
+                        try:
+                            provider.run(
+                                name=name,
+                                ui=ui,
+                                **params,
+                            )
+                        except Exception as e:
+                            logger.error(
+                                f"Unexpecter error in NatsAdapter.start_chat: {e}",
+                                stack_info=True,
+                            )
+                            ui.error(
+                                sender="NatsAdapter",
+                                short=f"Unexpected error: {e}",
+                                long=traceback.format_exc(),
+                            )
+                            return
 
-                    except Exception as e:
-                        await self._send_error_msg(e, logger)
+                    return await asyncify(_start_chat)(
+                        ui_base, provider, name, params, workflow_uuid
+                    )
 
                 background_tasks = set()
-                task = asyncio.create_task(start_chat(workflow_uuid))  # type: ignore
+                task = asyncio.create_task(
+                    start_chat(
+                        self, self.provider, body.name, body.params, workflow_uuid
+                    )
+                )  # type: ignore
                 background_tasks.add(task)
 
                 async def callback(t: asyncio.Task[Any]) -> None:
@@ -334,6 +361,21 @@ class NatsAdapter(MessageProcessorMixin):
         password: Optional[str] = None,
     ) -> ProviderProtocol:
         return NatsProvider(nats_url=nats_url, user=user, password=password)
+
+    @contextmanager
+    def create(self, app: Runnable, import_string: str) -> Iterator[None]:
+        raise NotImplementedError("NatsAdapter.create() is not implemented")
+
+    def start(
+        self,
+        *,
+        app: Runnable,
+        import_string: str,
+        name: Optional[str] = None,
+        params: dict[str, Any],
+        single_run: bool = False,
+    ) -> None:
+        raise NotImplementedError("NatsAdapter.start() is not implemented")
 
 
 class NatsProvider(ProviderProtocol):
