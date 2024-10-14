@@ -28,3 +28,15 @@ class FastAgencyNATSConnectionError(FastAgencyConnectionError):
 
 class FastAgencyFastAPIConnectionError(FastAgencyConnectionError):
     pass
+
+
+class FastAgencyKeyError(KeyError):
+    pass
+
+
+class FastAgencyNATSKeyError(FastAgencyKeyError):
+    pass
+
+
+class FastAgencyFastAPIKeyError(FastAgencyKeyError):
+    pass

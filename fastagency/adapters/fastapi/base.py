@@ -26,6 +26,7 @@ from ...base import (
 from ...exceptions import (
     FastAgencyConnectionError,
     FastAgencyFastAPIConnectionError,
+    FastAgencyKeyError,
 )
 from ...messages import (
     AskingMessage,
@@ -124,13 +125,24 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             finally:
                 self.websockets.pop(workflow_uuid)
 
-        @router.get(self.discovery_path, responses={404: {"detail": "Not Found"}})
+        @router.get(
+            self.discovery_path,
+            responses={
+                404: {"detail": "Key Not Found"},
+                504: {"detail": "Unable to connect to provider"},
+            },
+        )
         def discovery() -> list[WorkflowInfo]:
             try:
                 names = self.provider.names
             except FastAgencyConnectionError as e:
-                raise HTTPException(status_code=404, detail=str(e))  # noqa: B904
-            descriptions = [self.provider.get_description(name) for name in names]
+                raise HTTPException(status_code=504, detail=str(e)) from e
+
+            try:
+                descriptions = [self.provider.get_description(name) for name in names]
+            except FastAgencyKeyError as e:
+                raise HTTPException(status_code=404, detail=str(e)) from e
+
             return [
                 WorkflowInfo(name=name, description=description)
                 for name, description in zip(names, descriptions)
@@ -340,8 +352,10 @@ class FastAPIProvider(ProviderProtocol):
             raise FastAgencyFastAPIConnectionError(
                 f"Unable to connect to FastAPI server at {self.fastapi_url}"
             ) from e
-        if resp.status_code == 404:
+        if resp.status_code == 504:
             raise FastAgencyConnectionError(resp.json()["detail"])
+        elif resp.status_code == 404:
+            raise FastAgencyKeyError(resp.json()["detail"])
         return resp.json()  # type: ignore [no-any-return]
 
     def _get_names(self) -> list[str]:
