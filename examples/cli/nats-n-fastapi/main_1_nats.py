@@ -1,21 +1,14 @@
-import sys
-from pathlib import Path
-from tempfile import TemporaryDirectory
-
-import pytest
-from typer.testing import CliRunner
-
-from fastagency.cli import app
-
-runner = CliRunner()
-
-mesop_test = """import os
+import os
+from os import environ
+from typing import Any
 
 from autogen.agentchat import ConversableAgent
+from fastapi import FastAPI
 
-from fastagency import UI, FastAgency, WorkflowsProtocol
-from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.ui.mesop import MesopUI
+from fastagency import UI
+from fastagency.adapters.nats import NatsAdapter
+from fastagency.logging import get_logger
+from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 
 llm_config = {
     "config_list": [
@@ -27,27 +20,30 @@ llm_config = {
     "temperature": 0.0,
 }
 
+logger = get_logger(__name__)
+
 wf = AutoGenWorkflows()
 
+
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(
-    ui: UI, workflow_uuid: str, params: dict[str, Any]
-) -> str:
+def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
         prompt="I can help you learn about mathematics. What subject you would like to explore?",
-        workflow_uuid=workflow_uuid,
     )
+
     student_agent = ConversableAgent(
         name="Student_Agent",
         system_message="You are a student willing to learn.",
         llm_config=llm_config,
+        # human_input_mode="ALWAYS",
     )
     teacher_agent = ConversableAgent(
         name="Teacher_Agent",
         system_message="You are a math teacher.",
         llm_config=llm_config,
+        # human_input_mode="ALWAYS",
     )
 
     chat_result = student_agent.initiate_chat(
@@ -59,22 +55,22 @@ def simple_workflow(
 
     return chat_result.summary
 
-app = FastAgency(provider=wf, ui=MesopUI())
-"""
+
+nats_url = environ.get("NATS_URL", "nats://localhost:4222")
+
+user: str = "faststream"
+password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
+
+adapter = NatsAdapter(provider=wf, nats_url=nats_url, user=user, password=password)
+
+app = FastAPI(lifespan=adapter.lifespan)
 
 
-@pytest.mark.skipif(
-    sys.version_info >= (3, 10), reason="Python 3.10 or higher is required"
-)
-def test_app_failure_for_python39() -> None:
-    """Test that the app fails when Python 3.9 is used."""
-    with TemporaryDirectory() as tmp_dir:
-        tmp_path = Path(tmp_dir) / "main_mesop.py"
-        with tmp_path.open("w") as f:
-            f.write(mesop_test)
+# this is optional, but we would like to see the list of workflows
+@app.get("/")
+def list_workflows():
+    return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
 
-        result = runner.invoke(app, ["run", str(tmp_path)])
 
-        assert result.exit_code == 1
-
-        assert "Mesop requires Python 3.10 or higher" in result.output
+# start the provider with either command
+# uvicorn main_1_nats:app --reload

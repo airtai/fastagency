@@ -7,8 +7,8 @@ import pytest
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 from openai import InternalServerError
 
-from fastagency import UI
 from fastagency.api.openapi import OpenAPI
+from fastagency.base import UI
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.autogen import _findall, _match
 from fastagency.ui.console import ConsoleUI
@@ -142,7 +142,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
     )
-    def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+    def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         initial_message = "What is triangle inequality?"
 
         student_agent = ConversableAgent(
@@ -167,15 +167,12 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
     name = "simple_learning"
 
-    ui = ConsoleUI()
-
-    workflow_uuid = uuid4().hex
+    ui = ConsoleUI().create_workflow_ui(workflow_uuid=uuid4().hex)
 
     ui.workflow_started(
         sender="workflow",
         recipient="user",
         name=name,
-        workflow_uuid=workflow_uuid,
     )
 
     result = wf.run(
@@ -186,7 +183,6 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     ui.workflow_completed(
         sender="workflow",
         recipient="user",
-        workflow_uuid=workflow_uuid,
         result=result,
     )
 
@@ -236,12 +232,11 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
             name="test_workflow",
             description="Test of user proxy with human input mode set to always",
         )
-        def workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+        def workflow(ui: UI, params: dict[str, Any]) -> str:
             initial_message = ui.text_input(
                 sender="Workflow",
                 recipient="User",
-                prompt="I can help you learn about geometry. What subject you would like to explore?",
-                workflow_uuid=workflow_uuid,
+                prompt="I can help you learn about mathematics. What subject you would like to explore?",
             )
             user_proxy = UserProxyAgent(
                 name="User_Proxy",
@@ -281,7 +276,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
 
         result = wf.run(
             name="test_workflow",
-            ui=ConsoleUI(),
+            ui=ConsoleUI().create_workflow_ui(workflow_uuid=uuid4().hex),
             initial_message="What is the weather in Zagreb right now?",
         )
 

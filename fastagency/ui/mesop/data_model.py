@@ -33,3 +33,6 @@ class State:
     conversation: Conversation
     past_conversations: list[Conversation] = field(default_factory=list)
     hide_past: bool = True
+    available_workflows: list[str] = field(default_factory=list)
+    available_workflows_initialized = False
+    available_workflows_exception = False

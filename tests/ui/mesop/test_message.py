@@ -2,6 +2,7 @@ import json
 import sys
 from typing import Union
 from unittest.mock import MagicMock
+from uuid import uuid4
 
 import pytest
 
@@ -53,10 +54,13 @@ class TestMessageBox:
     def test_text_message(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         text_message = TextMessage(
             sender="sender",
             recipient="recipient",
             body="this is a test message",
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(text_message.model_dump())
 
@@ -76,10 +80,13 @@ class TestMessageBox:
     def test_system_message(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         system_message = SystemMessage(
             sender="sender",
             recipient="recipient",
             message={"type": "test", "data": "this is a test message"},
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(system_message.model_dump())
 
@@ -99,12 +106,15 @@ class TestMessageBox:
     def test_suggested_function_call(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         suggested_function_call = SuggestedFunctionCall(
             sender="sender",
             recipient="recipient",
             function_name="function_name",
             call_id="my_call_id",
             arguments={"arg1": "value1", "arg2": "value2"},
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(suggested_function_call.model_dump())
 
@@ -133,12 +143,15 @@ class TestMessageBox:
     def test_function_call_execution(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         function_call_execution = FunctionCallExecution(
             sender="sender",
             recipient="recipient",
             function_name="function_name",
             call_id="my_call_id",
             retval="return_value",
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(function_call_execution.model_dump())
 
@@ -160,11 +173,14 @@ class TestMessageBox:
     def test_text_input(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         text_input = TextInput(
             sender="sender",
             recipient="recipient",
             prompt="Who is the president of the United States?",
             suggestions=["Donald Trump", "Joe Biden"],
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(text_input.model_dump())
 
@@ -185,12 +201,15 @@ class TestMessageBox:
     def test_multiple_choice_single(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         multiple_choice = MultipleChoice(
             sender="sender",
             recipient="recipient",
             prompt="Who is the president of the United States?",
             choices=["Donald Trump", "Joe Biden"],
             default="Joe Biden",
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(multiple_choice.model_dump())
 
@@ -216,12 +235,15 @@ class TestMessageBox:
     def test_multiple_choice_multiple(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         multiple_choice = MultipleChoice(
             sender="sender",
             recipient="recipient",
             prompt="Who are Snow White helpers?",
             choices=["Doc", "Grumpy", "Happy", "Sleepy", "Bashful", "Sneezy", "Dopey"],
             single=False,
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(multiple_choice.model_dump())
 
@@ -242,8 +264,13 @@ class TestMessageBox:
     def test_workflow_completed(self, monkeypatch: pytest.MonkeyPatch) -> None:
         me = self._apply_monkeypatch(monkeypatch)
 
+        workflow_uuid = uuid4().hex
+
         workflow_completed = WorkflowCompleted(
-            sender="sender", recipient="recipient", result="success"
+            sender="sender",
+            recipient="recipient",
+            result="success",
+            workflow_uuid=workflow_uuid,
         )
         io_message_json = json.dumps(workflow_completed.model_dump())
 

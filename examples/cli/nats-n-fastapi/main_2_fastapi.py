@@ -5,11 +5,7 @@ from fastapi import FastAPI
 from fastagency.adapters.fastapi import FastAPIAdapter
 from fastagency.adapters.nats import NatsAdapter
 
-nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
-
-fastapi_user: str = "fastapi"
-fastapi_password: str = environ.get("FASTAPI_PASSWORD")  # type: ignore[assignment]
-
+nats_url = environ.get("NATS_URL", "nats://localhost:4222")
 nats_user: str = "faststream"
 nats_password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 
@@ -19,8 +15,6 @@ provider = NatsAdapter.create_provider(
 
 adapter = FastAPIAdapter(
     provider=provider,
-    user=fastapi_user,
-    password=fastapi_password,
 )
 
 # app = FastAPI(lifespan=provider.lifespan)
@@ -37,4 +31,4 @@ def read_root():
 
 
 # start the provider with the following command
-# uvicorn 2_main_fastapiprovider:app --host 0.0.0.0 --port 8008 --reload
+# uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload

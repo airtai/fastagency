@@ -5,10 +5,11 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import Any, Optional
+from uuid import uuid4
 
 from ...base import (
+    CreateWorkflowUIMixin,
     Runnable,
-    run_workflow,
 )
 from ...logging import get_logger
 from ...messages import (
@@ -22,7 +23,7 @@ from ...messages import (
 logger = get_logger(__name__)
 
 
-class ConsoleUI(MessageProcessorMixin):  # implements UI
+class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
     @dataclass
     class ConsoleMessage:
         """A console message."""
@@ -57,13 +58,10 @@ class ConsoleUI(MessageProcessorMixin):  # implements UI
         params: dict[str, Any],
         single_run: bool = False,
     ) -> None:
-        run_workflow(
-            provider=app.provider,
-            ui=self,
-            name=name,
-            params=params,
-            single_run=single_run,
-        )
+        workflow_uuid = uuid4().hex
+        ui = self.create_workflow_ui(workflow_uuid=workflow_uuid)
+        name = name or app.provider.names[0]
+        app.provider.run(name=name, ui=ui, **params)
 
     @property
     def level(self) -> int:

@@ -23,12 +23,11 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="exam_practice", description="Student and teacher chat")
-def exam_learning(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+def exam_learning(ui: UI, params: dict[str, Any]) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
         prompt="What do you want to learn today?",
-        workflow_uuid=workflow_uuid,
     )
 
     def is_termination_msg(msg: dict[str, Any]) -> bool:
@@ -58,7 +57,7 @@ def exam_learning(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
         message: Annotated[str, "Message for examiner"],
     ) -> Optional[str]:
         try:
-            msg = TextInput(
+            return ui.text_input(
                 sender="student",
                 recipient="teacher",
                 prompt=message,
@@ -70,13 +69,12 @@ def exam_learning(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
                     "5) Vitruvian Man",
                 ],
             )
-            return ui.process_message(msg)
         except Exception as e:  # pragma: no cover
             return f"retrieve_exam_questions() FAILED! {e}"
 
     def write_final_answers(message: Annotated[str, "Message for examiner"]) -> str:
         try:
-            msg = SystemMessage(
+            ui.system_message(
                 sender="function call logger",
                 recipient="system",
                 message={
@@ -84,7 +82,6 @@ def exam_learning(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
                     "content": message,
                 },
             )
-            ui.process_message(msg)
             return "Final answers stored."
         except Exception as e:  # pragma: no cover
             return f"write_final_answers() FAILED! {e}"
@@ -93,13 +90,12 @@ def exam_learning(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
         message: Annotated[str, "Message for examiner"],
     ) -> Optional[str]:
         try:
-            msg = MultipleChoice(
+            return ui.multiple_choice(
                 sender="student",
                 recipient="teacher",
                 prompt=message,
                 choices=["A", "B", "C", "D", "F"],
             )
-            return ui.process_message(msg)
         except Exception as e:  # pragma: no cover
             return f"get_final_grade() FAILED! {e}"
 
