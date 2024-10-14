@@ -17,7 +17,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 logger = get_logger(__name__)
@@ -53,7 +53,7 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         max_turns=5,
     )
 
-    return chat_result.summary
+    return chat_result.summary  # type: ignore[no-any-return]
 
 
 nats_url = environ.get("NATS_URL", "nats://localhost:4222")
@@ -68,7 +68,7 @@ app = FastAPI(lifespan=adapter.lifespan)
 
 # this is optional, but we would like to see the list of workflows
 @app.get("/")
-def list_workflows():
+def list_workflows() -> dict[str, Any]:
     return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
 
 

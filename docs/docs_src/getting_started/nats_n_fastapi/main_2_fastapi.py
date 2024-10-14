@@ -24,7 +24,7 @@ app.include_router(adapter.router)
 
 # this is optional, but we would like to see the list of available workflows
 @app.get("/")
-def read_root():
+def read_root() -> dict[str, dict[str, str]]:
     return {
         "Workflows": {name: provider.get_description(name) for name in provider.names}
     }

@@ -76,7 +76,7 @@ def azure_model_llm_config(model_env_name: str) -> dict[str, Any]:
 
     llm_config = {
         "config_list": config_list,
-        "temperature": 0.0,
+        "temperature": 0.8,
     }
 
     return llm_config
@@ -113,7 +113,7 @@ def openai_llm_config(model: str) -> dict[str, Any]:
 
     llm_config = {
         "config_list": config_list,
-        "temperature": 0.0,
+        "temperature": 0.8,
     }
 
     return llm_config

@@ -77,14 +77,18 @@ openapi = [
 ]
 
 fastapi = [
-    "faststream[nats]>=0.5.10,<0.6",
     "asyncer==0.0.8",
     "fastapi>=0.112,<1",
     "websockets>=13,<14",
 ]
 
+nats = [
+    "fastagency[fastapi]",
+    "faststream[nats]>=0.5.27,<0.6",
+]
+
 submodules = [
-    "fastagency[mesop,autogen,openapi,fastapi]"
+    "fastagency[mesop,autogen,openapi,fastapi,nats]"
 ]
 
 server = [
