@@ -321,8 +321,18 @@ class AutoGenWorkflows(WorkflowsProtocol):
                 retval = workflow(ui, kwargs)
 
             except Exception as e:
-                logger.error(f"Unexpected error: {e}", stack_info=True)
-                retval = f"Unexpected error: {e}"
+                logger.error(
+                    f"Unhandled exception occurred when executing the workflow: {e}",
+                    stack_info=True,
+                )
+                ui.error(
+                    sender="AutoGenWorkflows",
+                    short="Unhandled exception occurred when executing the workflow.",
+                    long=str(e),
+                )
+                retval = (
+                    f"Unhandled exception occurred when executing the workflow: {e}"
+                )
 
             ui.workflow_completed(
                 sender="AutoGenWorkflows",
