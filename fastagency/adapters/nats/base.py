@@ -39,7 +39,7 @@ class InputResponseModel(BaseModel):
 
 
 class InitiateWorkflowModel(BaseModel):
-    user_id: UUID
+    user_id: Optional[UUID] = None
     workflow_uuid: UUID
     name: str
     params: dict[str, Any]
@@ -156,8 +156,8 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             logger.info(
                 f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
             )
-            user_id = str(body.user_id)
-            workflow_uuid = str(body.workflow_uuid)
+            user_id = body.user_id.hex if body.user_id else "None"
+            workflow_uuid = body.workflow_uuid.hex
             self._input_request_subject = (
                 f"chat.client.messages.{user_id}.{workflow_uuid}"
             )
@@ -321,6 +321,9 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         question_id = message.uuid
         logger.info(f"visit_text_input(): {content=}")
         syncify(self.broker.publish)(content, self._input_request_subject)
+        logger.info(
+            f"visit_text_input(): published message '{content}' to {self._input_request_subject}"
+        )
 
         input_response: InputResponseModel = syncify(
             self._wait_for_question_response_with_timeout
