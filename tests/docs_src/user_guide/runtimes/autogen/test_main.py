@@ -8,7 +8,7 @@ from ....helpers import skip_internal_server_error
 
 runner = CliRunner()
 
-INPUT_MESSAGE = "What's the weather in Zagreb'?"
+INPUT_MESSAGE = "What's the weather in Zagreb?"
 
 
 @pytest.mark.openai
@@ -22,4 +22,4 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     )
     assert result.exit_code == 0
     assert INPUT_MESSAGE in result.stdout
-    assert "workflow -> user [workflow_completed]" in result.stdout
+    assert "AutoGenWorkflows -> user [workflow_completed]" in result.stdout

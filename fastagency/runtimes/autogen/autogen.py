@@ -314,6 +314,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
             try:
                 ui.workflow_started(
                     sender="AutoGenWorkflows",
+                    recipient="user",
                     name=name,
                     description=self.get_description(name),
                     params=kwargs,
@@ -327,6 +328,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
                 )
                 ui.error(
                     sender="AutoGenWorkflows",
+                    recipient="user",
                     short="Unhandled exception occurred when executing the workflow.",
                     long=str(e),
                 )
@@ -336,6 +338,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
             ui.workflow_completed(
                 sender="AutoGenWorkflows",
+                recipient="user",
                 result=retval,
             )
             logger.info(f"Workflow '{name}' completed with result: {retval}")
