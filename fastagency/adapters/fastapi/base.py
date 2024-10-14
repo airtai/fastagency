@@ -24,8 +24,8 @@ from ...base import (
     WorkflowsProtocol,
 )
 from ...exceptions import (
+    FastAgencyConnectionError,
     FastAgencyFastAPIConnectionError,
-    FastAgencyNATSConnectionError,
 )
 from ...messages import (
     AskingMessage,
@@ -128,7 +128,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         def discovery() -> list[WorkflowInfo]:
             try:
                 names = self.provider.names
-            except FastAgencyNATSConnectionError as e:
+            except FastAgencyConnectionError as e:
                 raise HTTPException(status_code=404, detail=str(e))  # noqa: B904
             descriptions = [self.provider.get_description(name) for name in names]
             return [
@@ -341,7 +341,7 @@ class FastAPIProvider(ProviderProtocol):
                 f"Unable to connect to FastAPI server at {self.fastapi_url}"
             ) from e
         if resp.status_code == 404:
-            raise FastAgencyNATSConnectionError(resp.json()["detail"])
+            raise FastAgencyConnectionError(resp.json()["detail"])
         return resp.json()  # type: ignore [no-any-return]
 
     def _get_names(self) -> list[str]:

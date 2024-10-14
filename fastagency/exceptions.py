@@ -2,10 +2,6 @@ class FastAgencyError(Exception):
     pass
 
 
-class FastAgencyValueError(ValueError):
-    pass
-
-
 class FastAgencyCLIError(FastAgencyError):
     pass
 
@@ -22,9 +18,13 @@ class FastAgencyASGINotImplementedError(FastAgencyError):
     pass
 
 
-class FastAgencyNATSConnectionError(FastAgencyValueError):
+class FastAgencyConnectionError(FastAgencyError):
     pass
 
 
-class FastAgencyFastAPIConnectionError(FastAgencyValueError):
+class FastAgencyNATSConnectionError(FastAgencyConnectionError):
+    pass
+
+
+class FastAgencyFastAPIConnectionError(FastAgencyConnectionError):
     pass
