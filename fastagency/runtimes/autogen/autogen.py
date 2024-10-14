@@ -11,12 +11,16 @@ from typing import (
     Union,
     runtime_checkable,
 )
-from uuid import uuid4
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 
-from ...base import UI, Workflow, WorkflowsProtocol, check_register_decorator
+from ...base import (
+    UI,
+    Workflow,
+    WorkflowsProtocol,
+    check_register_decorator,
+)
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -94,6 +98,7 @@ def _findall(key: str, string: str, /) -> tuple[str, ...]:
 
 @dataclass
 class CurrentMessage:
+    workflow_uuid: str
     sender: Optional[str] = None
     recipient: Optional[str] = None
     type: MessageType = "text_message"
@@ -179,11 +184,16 @@ class CurrentMessage:
                 prompt="Please approve the suggested function call.",
                 choices=["Approve", "Reject", "Exit"],
                 default="Approve",
+                workflow_uuid=self.workflow_uuid,
             )
         else:
             # logger.info("IOStreamAdapter.input(): text_message detected")
             message = TextInput(
-                sender=None, recipient=None, prompt=prompt, password=password
+                sender=None,
+                recipient=None,
+                prompt=prompt,
+                password=password,
+                workflow_uuid=self.workflow_uuid,
             )
 
         return message
@@ -218,7 +228,7 @@ class IOStreamAdapter:  # IOStream
 
         """
         self.ui = ui
-        self.current_message = CurrentMessage()
+        self.current_message = CurrentMessage(ui._workflow_uuid)
 
         self.messages: list[IOMessage] = []
         # if not isinstance(self.ui, UI):
@@ -229,7 +239,7 @@ class IOStreamAdapter:  # IOStream
             msgs = self.current_message.create_message()
             for msg in msgs:
                 self.messages.append(msg)
-            self.current_message = CurrentMessage()
+            self.current_message = CurrentMessage(self.ui._workflow_uuid)
 
             return len(msgs)
         else:
@@ -270,9 +280,7 @@ class IOStreamAdapter:  # IOStream
 class AutoGenWorkflows(WorkflowsProtocol):
     def __init__(self) -> None:
         """Initialize the workflows."""
-        self._workflows: dict[
-            str, tuple[Callable[[UI, str, dict[str, Any]], str], str]
-        ] = {}
+        self._workflows: dict[str, tuple[Callable[[UI, dict[str, Any]], str], str]] = {}
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
@@ -290,14 +298,52 @@ class AutoGenWorkflows(WorkflowsProtocol):
 
         return decorator
 
-    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
-        workflow, description = self._workflows[name]
+    def run(
+        self,
+        name: str,
+        ui: UI,
+        user_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> str:
+        workflow, _ = self._workflows[name]
 
         iostream = IOStreamAdapter(ui)
 
-        workflow_uuid = uuid4().hex
         with IOStream.set_default(iostream):
-            return workflow(ui, workflow_uuid, kwargs)
+            # todo: inject user_id into call (and other stuff)
+            try:
+                ui.workflow_started(
+                    sender="AutoGenWorkflows",
+                    recipient="user",
+                    name=name,
+                    description=self.get_description(name),
+                    params=kwargs,
+                )
+                retval = workflow(ui, kwargs)
+
+            except Exception as e:
+                logger.error(
+                    f"Unhandled exception occurred when executing the workflow: {e}",
+                    stack_info=True,
+                )
+                ui.error(
+                    sender="AutoGenWorkflows",
+                    recipient="user",
+                    short="Unhandled exception occurred when executing the workflow.",
+                    long=str(e),
+                )
+                retval = (
+                    f"Unhandled exception occurred when executing the workflow: {e}"
+                )
+
+            ui.workflow_completed(
+                sender="AutoGenWorkflows",
+                recipient="user",
+                result=retval,
+            )
+            logger.info(f"Workflow '{name}' completed with result: {retval}")
+
+            return retval
 
     @property
     def names(self) -> list[str]:

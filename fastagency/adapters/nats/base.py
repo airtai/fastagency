@@ -3,21 +3,24 @@
 import asyncio
 import os
 import traceback
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from collections.abc import AsyncIterator, Iterator
+from contextlib import asynccontextmanager, contextmanager
 from queue import Queue
 from typing import TYPE_CHECKING, Any, Optional
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from asyncer import asyncify, syncify
 from faststream import FastStream, Logger
 from faststream.nats import JStream, NatsBroker, NatsMessage
 from nats.aio.client import Client as NatsClient
+from nats.errors import NoServersError
 from nats.js import JetStreamContext, api
+from nats.js.errors import KeyNotFoundError, NoKeysError
 from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
-from ...base import UI, ProviderProtocol, run_workflow
+from ...base import UI, CreateWorkflowUIMixin, ProviderProtocol, Runnable, UIBase
+from ...exceptions import FastAgencyNATSConnectionError, FastAgencyNATSKeyError
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -39,7 +42,7 @@ class InputResponseModel(BaseModel):
 
 
 class InitiateWorkflowModel(BaseModel):
-    user_id: UUID
+    user_id: Optional[UUID] = None
     workflow_uuid: UUID
     name: str
     params: dict[str, Any]
@@ -52,10 +55,10 @@ JETSTREAM = JStream(
     subjects=[
         # starts new conversation (can land on any worker)
         "chat.server.initiate_chat",
-        # server requests input from client; chat.client.messages.<user_uuid>.<chat_uuid>
+        # server requests input from client; chat.client.messages.<user_uuid>.<workflow_uuid>
         # we create this topic dynamically => client process consuming NATS can fix its worker
         "chat.client.messages.*.*",
-        # server prints message to client; chat.server.messages.<user_uuid>.<chat_uuid>
+        # server prints message to client; chat.server.messages.<user_uuid>.<workflow_uuid>
         # we create this topic dynamically and subscribe to it => worker is fixed
         "chat.server.messages.*.*",
         # discovery subject
@@ -64,7 +67,7 @@ JETSTREAM = JStream(
 )
 
 
-class NatsAdapter(MessageProcessorMixin):
+class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
     def __init__(
         self,
         provider: ProviderProtocol,
@@ -142,8 +145,8 @@ class NatsAdapter(MessageProcessorMixin):
             """Initiate the handler.
 
             1. Subscribes to the chat.server.initiate_chat topic.
-            2. When a message is consumed from the topic, it dynamically subscribes to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
-            3. Starts the chat workflow after successfully subscribing to the chat.server.messages.<user_uuid>.<chat_uuid> topic.
+            2. When a message is consumed from the topic, it dynamically subscribes to the chat.server.messages.<user_uuid>.<workflow_uuid> topic.
+            3. Starts the chat workflow after successfully subscribing to the chat.server.messages.<user_uuid>.<workflow_uuid> topic.
 
             Args:
                 body (InitiateModel): The body of the message.
@@ -156,10 +159,14 @@ class NatsAdapter(MessageProcessorMixin):
             logger.info(
                 f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
             )
-            user_id = str(body.user_id)
-            thread_id = str(body.workflow_uuid)
-            self._input_request_subject = f"chat.client.messages.{user_id}.{thread_id}"
-            self._input_receive_subject = f"chat.server.messages.{user_id}.{thread_id}"
+            user_id = body.user_id.hex if body.user_id else "None"
+            workflow_uuid = body.workflow_uuid.hex
+            self._input_request_subject = (
+                f"chat.client.messages.{user_id}.{workflow_uuid}"
+            )
+            self._input_receive_subject = (
+                f"chat.server.messages.{user_id}.{workflow_uuid}"
+            )
 
             # dynamically subscribe to the chat server
             subscriber = self.broker.subscriber(
@@ -173,21 +180,49 @@ class NatsAdapter(MessageProcessorMixin):
 
             try:
 
-                async def start_chat() -> None:  # type: ignore [return]
-                    try:
-                        await asyncify(run_workflow)(
-                            provider=self.provider,
-                            ui=self,  # type: ignore[arg-type]
-                            name=body.name,
-                            params=body.params,
-                            single_run=True,
-                        )
+                async def start_chat(
+                    ui_base: UIBase,
+                    provider: ProviderProtocol,
+                    name: str,
+                    params: dict[str, Any],
+                    workflow_uuid: str,
+                ) -> None:  # type: ignore [return]
+                    def _start_chat(
+                        ui_base: UIBase,
+                        provider: ProviderProtocol,
+                        name: str,
+                        params: dict[str, Any],
+                        workflow_uuid: str,
+                    ) -> None:  # type: ignore [return]
+                        ui: UI = ui_base.create_workflow_ui(workflow_uuid=workflow_uuid)
+                        try:
+                            provider.run(
+                                name=name,
+                                ui=ui,
+                                **params,
+                            )
+                        except Exception as e:
+                            logger.error(
+                                f"Unexpecter error in NatsAdapter.start_chat: {e}",
+                                stack_info=True,
+                            )
+                            ui.error(
+                                sender="NatsAdapter",
+                                short=f"Unexpected error: {e}",
+                                long=traceback.format_exc(),
+                            )
+                            return
 
-                    except Exception as e:
-                        await self._send_error_msg(e, logger)
+                    return await asyncify(_start_chat)(
+                        ui_base, provider, name, params, workflow_uuid
+                    )
 
                 background_tasks = set()
-                task = asyncio.create_task(start_chat())  # type: ignore
+                task = asyncio.create_task(
+                    start_chat(
+                        self, self.provider, body.name, body.params, workflow_uuid
+                    )
+                )  # type: ignore
                 background_tasks.add(task)
 
                 async def callback(t: asyncio.Task[Any]) -> None:
@@ -289,6 +324,9 @@ class NatsAdapter(MessageProcessorMixin):
         question_id = message.uuid
         logger.info(f"visit_text_input(): {content=}")
         syncify(self.broker.publish)(content, self._input_request_subject)
+        logger.info(
+            f"visit_text_input(): published message '{content}' to {self._input_request_subject}"
+        )
 
         input_response: InputResponseModel = syncify(
             self._wait_for_question_response_with_timeout
@@ -330,6 +368,21 @@ class NatsAdapter(MessageProcessorMixin):
     ) -> ProviderProtocol:
         return NatsProvider(nats_url=nats_url, user=user, password=password)
 
+    @contextmanager
+    def create(self, app: Runnable, import_string: str) -> Iterator[None]:
+        raise NotImplementedError("NatsAdapter.create() is not implemented")
+
+    def start(
+        self,
+        *,
+        app: Runnable,
+        import_string: str,
+        name: Optional[str] = None,
+        params: dict[str, Any],
+        single_run: bool = False,
+    ) -> None:
+        raise NotImplementedError("NatsAdapter.start() is not implemented")
+
 
 class NatsProvider(ProviderProtocol):
     def __init__(
@@ -345,10 +398,6 @@ class NatsProvider(ProviderProtocol):
             user (Optional[str], optional): The user. Defaults to None.
             password (Optional[str], optional): The password. Defaults to None.
         """
-        # self._workflows: dict[
-        #     str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
-        # ] = {}
-
         self.nats_url = nats_url or "nats://localhost:4222"
         self.user = user
         self.password = password
@@ -394,11 +443,16 @@ class NatsProvider(ProviderProtocol):
         await subscriber.start()
         logger.info(f"Subscriber for {from_server_subject} started")
 
-    def run(self, name: str, ui: UI, **kwargs: Any) -> str:
+    def run(
+        self,
+        name: str,
+        ui: UI,
+        user_id: Optional[str] = None,
+        **kwargs: Any,
+    ) -> str:
         # subscribe to whatever topic you need
         # consume a message from the topic and call that visitor pattern (which is happening in NatsProvider)
-        user_id = uuid4()  # todo: fix me later
-        workflow_uuid = uuid4()
+        workflow_uuid = ui._workflow_uuid
         init_message = InitiateWorkflowModel(
             user_id=user_id,
             workflow_uuid=workflow_uuid,
@@ -465,23 +519,41 @@ class NatsProvider(ProviderProtocol):
             yield kv
 
     async def _get_names(self) -> list[str]:
-        async with self._get_jetstream_key_value() as kv:
-            names = await kv.keys()
+        try:
+            async with self._get_jetstream_key_value() as kv:
+                names = await kv.keys()
+        except NoKeysError:
+            names = []
+        except NoServersError as e:
+            raise FastAgencyNATSConnectionError(
+                f"Unable to connect to NATS server at {self.nats_url}"
+            ) from e
+
         return names
 
     async def _get_description(self, name: str) -> str:
-        async with self._get_jetstream_key_value() as kv:
-            description = await kv.get(name)
-        return description.value.decode() if description.value else ""
+        try:
+            async with self._get_jetstream_key_value() as kv:
+                description = await kv.get(name)
+            return description.value.decode() if description.value else ""
+        except KeyNotFoundError as e:
+            raise FastAgencyNATSKeyError(
+                f"Workflow name {name} not found to get description"
+            ) from e
+        except NoServersError as e:
+            raise FastAgencyNATSConnectionError(
+                f"Unable to connect to NATS server at {self.nats_url}"
+            ) from e
 
     @property
     def names(self) -> list[str]:
-        names = syncify(self._get_names)()
+        names = asyncio.run(self._get_names())
         logger.debug(f"Names: {names}")
+        # return ["simple_learning"]
         return names
 
     def get_description(self, name: str) -> str:
-        description = syncify(self._get_description)(name)
+        description = asyncio.run(self._get_description(name))
         logger.debug(f"Description: {description}")
         # return "Student and teacher learning chat"
         return description

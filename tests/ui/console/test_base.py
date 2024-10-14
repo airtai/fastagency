@@ -21,7 +21,7 @@ def app(import_string: str) -> Iterator[FastAgency]:
     app = FastAgency(provider=wf, ui=console)
 
     @wf.register(name="noop", description="No operation")
-    def noop(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+    def noop(ui: UI, params: dict[str, Any]) -> str:
         return "ok"
 
     try:

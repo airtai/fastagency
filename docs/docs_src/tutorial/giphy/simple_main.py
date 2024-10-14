@@ -30,7 +30,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_chat", description="Giphy chat")
 def giphy_workflow(
-    ui: UI, workflow_uuid: str, params: dict[str, Any]
+    ui: UI, params: dict[str, Any]
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -64,7 +64,6 @@ def giphy_workflow(
         sender="Workflow",
         recipient="User",
         prompt="I can help you find images related to a certain subject. What kind of images would you like to find?",
-        workflow_uuid=workflow_uuid,
     )
 
     chat_result = user_proxy.initiate_chat(

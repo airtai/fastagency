@@ -38,13 +38,12 @@ wf = AutoGenWorkflows()
     name="simple_weather_with_security", description="Weather chat with security"
 )
 def weather_workflow_with_security(
-    ui: UI, workflow_uuid: str, params: dict[str, str]
+    ui: UI, params: dict[str, str]
 ) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
         prompt="What do you want to know about the weather?",
-        workflow_uuid=workflow_uuid,
     )
 
     user_agent = UserProxyAgent(

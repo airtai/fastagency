@@ -3,17 +3,25 @@ from collections.abc import Iterable
 import mesop as me
 
 from ...base import ProviderProtocol
+from ...logging import get_logger
 from .data_model import State
-from .mesop import MesopMessage, MesopUI, run_workflow
+from .mesop import MesopMessage, MesopUI, run_workflow_mesop
+
+logger = get_logger(__name__)
 
 
 def send_prompt_to_autogen(
     provider: ProviderProtocol, name: str
 ) -> Iterable[MesopMessage]:
-    mesop_io = run_workflow(provider, name=name)
+    ui = run_workflow_mesop(provider, name=name)
+    if not isinstance(ui.ui_base, MesopUI):  # pragma: no cover
+        logger.error("")
+        raise RuntimeError(f"Expected MesopUI, got {type(ui.ui_base)}")
+    mesop_ui: MesopUI = ui.ui_base
+
     state = me.state(State)
-    state.conversation.fastagency = mesop_io.id
-    return mesop_io.get_message_stream()
+    state.conversation.fastagency = ui.ui_base.id
+    return mesop_ui.get_message_stream()
 
 
 def send_user_feedback_to_autogen(user_response: str) -> Iterable[MesopMessage]:

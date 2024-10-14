@@ -33,6 +33,7 @@ search:
             - [TextInput](api/fastagency/TextInput.md)
             - [TextMessage](api/fastagency/TextMessage.md)
             - [UI](api/fastagency/UI.md)
+            - [UIBase](api/fastagency/UIBase.md)
             - [WorkflowsProtocol](api/fastagency/WorkflowsProtocol.md)
             - adapters
                 - fastapi
@@ -79,13 +80,14 @@ search:
             - base
                 - [ASGIProtocol](api/fastagency/base/ASGIProtocol.md)
                 - [AdapterProtocol](api/fastagency/base/AdapterProtocol.md)
+                - [CreateWorkflowUIMixin](api/fastagency/base/CreateWorkflowUIMixin.md)
                 - [ProviderProtocol](api/fastagency/base/ProviderProtocol.md)
                 - [Runnable](api/fastagency/base/Runnable.md)
                 - [UI](api/fastagency/base/UI.md)
+                - [UIBase](api/fastagency/base/UIBase.md)
                 - [WSGIProtocol](api/fastagency/base/WSGIProtocol.md)
                 - [WorkflowsProtocol](api/fastagency/base/WorkflowsProtocol.md)
                 - [check_register_decorator](api/fastagency/base/check_register_decorator.md)
-                - [run_workflow](api/fastagency/base/run_workflow.md)
             - cli
                 - cli
                     - [callback](api/fastagency/cli/cli/callback.md)
@@ -107,7 +109,13 @@ search:
                 - [FastAgencyASGINotImplementedError](api/fastagency/exceptions/FastAgencyASGINotImplementedError.md)
                 - [FastAgencyCLIError](api/fastagency/exceptions/FastAgencyCLIError.md)
                 - [FastAgencyCLIPythonVersionError](api/fastagency/exceptions/FastAgencyCLIPythonVersionError.md)
+                - [FastAgencyConnectionError](api/fastagency/exceptions/FastAgencyConnectionError.md)
                 - [FastAgencyError](api/fastagency/exceptions/FastAgencyError.md)
+                - [FastAgencyFastAPIConnectionError](api/fastagency/exceptions/FastAgencyFastAPIConnectionError.md)
+                - [FastAgencyFastAPIKeyError](api/fastagency/exceptions/FastAgencyFastAPIKeyError.md)
+                - [FastAgencyKeyError](api/fastagency/exceptions/FastAgencyKeyError.md)
+                - [FastAgencyNATSConnectionError](api/fastagency/exceptions/FastAgencyNATSConnectionError.md)
+                - [FastAgencyNATSKeyError](api/fastagency/exceptions/FastAgencyNATSKeyError.md)
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
             - helpers
                 - [check_imports](api/fastagency/helpers/check_imports.md)
@@ -171,7 +179,7 @@ search:
                     - mesop
                         - [MesopMessage](api/fastagency/ui/mesop/mesop/MesopMessage.md)
                         - [MesopUI](api/fastagency/ui/mesop/mesop/MesopUI.md)
-                        - [run_workflow](api/fastagency/ui/mesop/mesop/run_workflow.md)
+                        - [run_workflow_mesop](api/fastagency/ui/mesop/mesop/run_workflow_mesop.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)

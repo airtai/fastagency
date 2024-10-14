@@ -26,13 +26,12 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_weather", description="Weather chat")
 def weather_workflow(
-    ui: UI, workflow_uuid: str, params: dict[str, str]
+    ui: UI, params: dict[str, str]
 ) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
         prompt="What do you want to know about the weather?",
-        workflow_uuid=workflow_uuid,
     )
 
     user_agent = UserProxyAgent(
