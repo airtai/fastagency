@@ -12,8 +12,7 @@ from fastagency.ui.console import ConsoleUI
 llm_config = {
     "config_list": [
         {
-            "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-            # "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+            "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
             "api_key": os.getenv("TOGETHER_API_KEY"),
             "api_type": "together",
             "hide_tools": "if_any_run"
@@ -25,8 +24,9 @@ llm_config = {
 openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
 weather_api = OpenAPI.create(openapi_url=openapi_url)
 
-wf = AutoGenWorkflows()
+weather_agent_system_message = """You are a real-time weather agent. When asked about the weather for a specific city, NEVER provide any information from memory. ALWAYS respond with: "Please wait while I fetch the weather data for [city name]..." and immediately call the provided function to retrieve real-time data for that city. Be concise in your response. Only handle one city request at a time."""
 
+wf = AutoGenWorkflows()
 
 @wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
 def weather_workflow(
@@ -47,7 +47,7 @@ def weather_workflow(
     )
     weather_agent = ConversableAgent(
         name="Weather_Agent",
-        system_message="""You are a real-time weather agent. When asked about the weather, NEVER provide any information from memory. ALWAYS respond with: "Please wait while I fetch the weather data for [location]..." and immediately call the provided function to retrieve real-time data. Be concise in your response.""",
+        system_message=weather_agent_system_message,
         llm_config=llm_config,
         human_input_mode="NEVER",
     )
@@ -55,19 +55,7 @@ def weather_workflow(
     wf.register_api(  # type: ignore[attr-defined]
         api=weather_api,
         callers=user_agent,
-        executors=weather_agent,
-        functions=[
-            {
-                "get_daily_weather_daily_get": {
-                    "name": "get_daily_weather",
-                    "description": "Get the daily weather for any given city",
-                },
-                "get_hourly_weather_hourly_get": {
-                    "name": "get_hourly_weather",
-                    "description": "Get the hourly weather for any given city. Call this function only if the user asks for hourly weather data for the city.",
-                },
-            },
-        ],
+        executors=weather_agent
     )
 
     chat_result = user_agent.initiate_chat(
