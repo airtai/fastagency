@@ -5,8 +5,7 @@ from autogen.agentchat import ConversableAgent
 from fastapi import FastAPI
 
 from fastagency import UI
-from fastagency.adapters.fastapi.base import FastAPIAdapter
-from fastagency.logging import get_logger
+from fastagency.adapters.nats import NatsAdapter
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 
 llm_config = {
@@ -16,10 +15,8 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
-
-logger = get_logger(__name__)
 
 wf = AutoGenWorkflows()
 
@@ -52,22 +49,23 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         max_turns=5,
     )
 
-    return chat_result.summary
+    return chat_result.summary  # type: ignore[no-any-return]
 
 
-adapter = FastAPIAdapter(
-    provider=wf,
-)
+nats_url = os.environ.get("NATS_URL", "nats://localhost:4222")
+user: str = "faststream"
+password: str = os.environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 
-app = FastAPI()
-app.include_router(adapter.router)
+adapter = NatsAdapter(provider=wf, nats_url=nats_url, user=user, password=password)
+
+app = FastAPI(lifespan=adapter.lifespan)
 
 
-# this is optional, but we would like to see the list of available workflows
+# this is optional, but we would like to see the list of workflows
 @app.get("/")
-def read_root():
+def list_workflows() -> dict[str, Any]:
     return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
 
 
-# start the provider with the following command
-# uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+# start the provider with either command
+# uvicorn main_1_nats:app --reload

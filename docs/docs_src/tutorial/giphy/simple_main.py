@@ -17,7 +17,7 @@ llm_config = {
             "api_key": open_api_key,
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 giphy_api_key = os.getenv("GIPHY_API_KEY", "")
