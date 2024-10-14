@@ -130,8 +130,16 @@ and running workflows.
 ### Imports
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
-```python hl_lines="8"
-{!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:1-9] !}
+```python
+import os
+from typing import Any
+
+from autogen.agentchat import ConversableAgent
+from fastapi import FastAPI
+
+from fastagency import UI
+from fastagency.adapters.fastapi import FastAPIAdapter
+from fastagency.runtimes.autogen import AutoGenWorkflows
 ```
 
 For FastAPI applications, import `FastAPIAdapter` to expose your workflows as REST API.
@@ -141,7 +149,48 @@ For FastAPI applications, import `FastAPIAdapter` to expose your workflows as RE
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:9-53] !}
+llm_config = {
+    "config_list": [
+        {
+            "model": "gpt-4o-mini",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+        }
+    ],
+    "temperature": 0.8,
+}
+
+wf = AutoGenWorkflows()
+
+
+@wf.register(name="simple_learning", description="Student and teacher learning chat")
+def simple_workflow(
+    ui: UI, params: dict[str, Any]
+) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you learn about mathematics. What subject you would like to explore?",
+    )
+
+    student_agent = ConversableAgent(
+        name="Student_Agent",
+        system_message="You are a student willing to learn.",
+        llm_config=llm_config,
+    )
+    teacher_agent = ConversableAgent(
+        name="Teacher_Agent",
+        system_message="You are a math teacher.",
+        llm_config=llm_config,
+    )
+
+    chat_result = student_agent.initiate_chat(
+        teacher_agent,
+        message=initial_message,
+        summary_method="reflection_with_llm",
+        max_turns=3,
+    )
+
+    return chat_result.summary
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
@@ -152,8 +201,11 @@ This code snippet sets up a simple learning chat between a student and a teacher
 In the case of FastAPI application, we will create an `FastAPIAdapter` and then include a router to the `FastAPI` application.
 The adapter will have all REST and Websocket routes for communicating with a client.
 
-```python hl_lines="1 4"
-{!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:55-58] !}
+```python
+adapter = FastAPIAdapter(provider=wf)
+
+app = FastAPI()
+app.include_router(adapter.router)
 ```
 
 ### Adapter Chaining
@@ -161,25 +213,116 @@ The adapter will have all REST and Websocket routes for communicating with a cli
 There is an additional specification file for an application using `MesopUI`
 to connect to the `FastAPIAdapter`
 
-!!! note "main_2_mesop.py"
-    ```python hl_lines="7-9 11"
-    {!> docs_src/getting_started/fastapi/main_2_mesop.py [ln:1-11] !}
-    ```
+#### `main_2_mesop.py`
+```python
+from fastagency.adapters.fastapi import FastAPIAdapter
+from fastagency.app import FastAgency
+from fastagency.ui.mesop import MesopUI
+
+fastapi_url = "http://localhost:8008"
+
+provider = FastAPIAdapter.create_provider(
+    fastapi_url=fastapi_url,
+)
+
+app = FastAgency(provider=provider, ui=MesopUI())
+```
 
 
 ## Complete Application Code
 
-#### main_1_fastapi.py
+#### `main_1_fastapi.py`
 
 ```python
-{!> docs_src/getting_started/fastapi/main_1_fastapi.py !}
+import os
+from typing import Any
+
+from autogen.agentchat import ConversableAgent
+from fastapi import FastAPI
+
+from fastagency import UI
+from fastagency.adapters.fastapi import FastAPIAdapter
+from fastagency.runtimes.autogen import AutoGenWorkflows
+
+llm_config = {
+    "config_list": [
+        {
+            "model": "gpt-4o-mini",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+        }
+    ],
+    "temperature": 0.8,
+}
+
+wf = AutoGenWorkflows()
+
+
+@wf.register(name="simple_learning", description="Student and teacher learning chat")
+def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
+    initial_message = ui.text_input(
+        sender="Workflow",
+        recipient="User",
+        prompt="I can help you learn about mathematics. What subject you would like to explore?",
+    )
+
+    student_agent = ConversableAgent(
+        name="Student_Agent",
+        system_message="You are a student willing to learn.",
+        llm_config=llm_config,
+        # human_input_mode="ALWAYS",
+    )
+    teacher_agent = ConversableAgent(
+        name="Teacher_Agent",
+        system_message="You are a math teacher.",
+        llm_config=llm_config,
+        # human_input_mode="ALWAYS",
+    )
+
+    chat_result = student_agent.initiate_chat(
+        teacher_agent,
+        message=initial_message,
+        summary_method="reflection_with_llm",
+        max_turns=5,
+    )
+
+    return chat_result.summary  # type: ignore[no-any-return]
+
+
+adapter = FastAPIAdapter(provider=wf)
+
+app = FastAPI()
+app.include_router(adapter.router)
+
+
+# this is optional, but we would like to see the list of available workflows
+@app.get("/")
+def read_root() -> dict[str, dict[str, str]]:
+    return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
+
+
+# start the provider with the following command
+# uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
 ```
 
-#### main_2_mesop.py
+#### `main_2_mesop.py`
 
 ```python
-{!> docs_src/getting_started/fastapi/main_2_mesop.py !}
+from fastagency.adapters.fastapi import FastAPIAdapter
+from fastagency.app import FastAgency
+from fastagency.ui.mesop import MesopUI
+
+fastapi_url = "http://localhost:8008"
+
+provider = FastAPIAdapter.create_provider(
+    fastapi_url=fastapi_url,
+)
+
+app = FastAgency(provider=provider, ui=MesopUI())
+
+# start the provider with the following command
+# gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
 ```
+
 ### Run Application
 
 Once everything is set up, you can run your FastAgency application using the following command:
