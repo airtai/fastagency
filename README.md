@@ -68,15 +68,9 @@ Currently, the only supported runtime is [**AutoGen**](https://github.com/micros
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-<<<<<<< HEAD
 - **Console**: Use the [**`ConsoleUI`**](https://fastagency.ai/0.3/api/fastagency/ui/console/ConsoleUI/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
 
 - [**Mesop**](https://google.github.io/mesop/): Utilize [**`MesopUI`**](https://fastagency.ai/0.3/api/fastagency/ui/mesop/MesopUI/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
-=======
-- **Console**: Use the [**`ConsoleUI`**](https://fastagency.ai/0.3/api/fastagency/ui/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-
-- [**Mesop**](https://google.github.io/mesop/): Utilize [**`MesopUI`**](https://fastagency.ai/0.3/api/fastagency/ui/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
->>>>>>> origin/main
 
 ### Supported Network Adapters
 
@@ -84,15 +78,9 @@ FastAgency can use chainable network adapters that can be used to easily create
 scalable, production ready architectures for serving your workflows. Currently, we
 support the following network adapters:
 
-<<<<<<< HEAD
 - [**REST API**](https://en.wikipedia.org/wiki/REST) via [**FastAPI**](https://fastapi.tiangolo.com/): Use the [**`FastAPIAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/fastapi/FastAPIAdapter/) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/) server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
 
 - [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/airtai/faststream): Utilize the [**`NatsAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/nats/NatsAdapter/) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/fastapi/FastAPIAdapter/) to serve public workflows in an authenticated, secure manner.
-=======
-- [**REST API**](https://en.wikipedia.org/wiki/REST) via [**FastAPI**](https://fastapi.tiangolo.com/): Use the [**`FastAPIAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/) server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
-
-- [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/airtai/faststream): Utilize the [**`NatsAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
->>>>>>> origin/main
 
 ## Quick start
 
