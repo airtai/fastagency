@@ -110,6 +110,9 @@ search:
                 - [FastAgencyCLIError](api/fastagency/exceptions/FastAgencyCLIError.md)
                 - [FastAgencyCLIPythonVersionError](api/fastagency/exceptions/FastAgencyCLIPythonVersionError.md)
                 - [FastAgencyError](api/fastagency/exceptions/FastAgencyError.md)
+                - [FastAgencyFastAPIConnectionError](api/fastagency/exceptions/FastAgencyFastAPIConnectionError.md)
+                - [FastAgencyNATSConnectionError](api/fastagency/exceptions/FastAgencyNATSConnectionError.md)
+                - [FastAgencyValueError](api/fastagency/exceptions/FastAgencyValueError.md)
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
             - helpers
                 - [check_imports](api/fastagency/helpers/check_imports.md)
