@@ -43,6 +43,10 @@ def create_home_page(
 class MesopHomePageParams:
     # header_title: str = "FastAgency - Mesop"
     conv_starter_text: str = "Select workflow to use with FastAgency team"
+    no_workflows_text: str = "No workflows found, click to retry"
+    workflows_exception_text: str = (
+        "An exception occurred while discovering workflows, click to retry"
+    )
 
 
 class MesopHomePage:
@@ -152,6 +156,14 @@ class MesopHomePage:
                         )
 
     def conversation_starter_box(self) -> None:
+        def retry(ev: me.ClickEvent) -> None:
+            state = me.state(State)
+            try:
+                state.available_workflows = provider.names
+                state.available_workflows_exception = False
+            except Exception:
+                state.available_workflows_exception = False
+
         provider = self.get_provider()
         with me.box(style=self._styles.chat_starter):
             self.header()
@@ -163,12 +175,33 @@ class MesopHomePage:
                     style=self._styles.conv_starter_text,
                 )
                 with me.box(style=self._styles.conv_starter_wf_box):
-                    for wf_name in provider.names:
-                        wf_description = provider.get_description(wf_name)
-                        with me.content_button(
-                            key=wf_name, on_click=lambda e: self.send_prompt(e)
-                        ):
-                            me.text(wf_description)
+                    state = me.state(State)
+                    if not state.available_workflows_initialized:
+                        state.available_workflows_initialized = True
+                        try:
+                            state.available_workflows = provider.names
+                            state.available_workflows_exception = False
+                        except Exception:
+                            state.available_workflows = []
+                            state.available_workflows_exception = True
+
+                    names = state.available_workflows
+                    if names and not state.available_workflows_exception:
+                        try:
+                            for wf_name in names:
+                                wf_description = provider.get_description(wf_name)
+                                with me.content_button(
+                                    key=wf_name, on_click=lambda e: self.send_prompt(e)
+                                ):
+                                    me.text(wf_description)
+                        except Exception:
+                            state.available_workflows_exception = True
+                    if not names or state.available_workflows_exception:
+                        with me.content_button(on_click=retry):
+                            if state.available_workflows_exception:
+                                me.text(self._params.workflows_exception_text)
+                            else:
+                                me.text(self._params.no_workflows_text)
 
     def get_provider(self) -> ProviderProtocol:
         ui = self._ui
@@ -186,6 +219,11 @@ class MesopHomePage:
         yield
         responses = send_prompt_to_autogen(provider=provider, name=name)
         yield from consume_responses(responses)
+        try:
+            state.available_workflows = provider.names
+        except Exception:
+            state.available_workflows = []
+            state.available_workflows_exception = True
 
     def conversation_box(self) -> None:
         state = me.state(State)
