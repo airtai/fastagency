@@ -5,8 +5,9 @@ import requests
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from fastagency.api.openapi import OpenAPI
-from fastagency.api.openapi.security import HTTPBearer as HTTPBearerSecurity
+from docs.docs_src.user_guide.external_rest_apis.security_examples import (
+    configure_http_bearer_client,
+)
 
 
 def create_http_bearer_fastapi_app(host: str, port: int) -> FastAPI:
@@ -97,8 +98,7 @@ def test_openapi_schema(fastapi_openapi_url: str) -> None:
     indirect=["fastapi_openapi_url"],
 )
 def test_http_bearer_token_correct(fastapi_openapi_url: str) -> None:
-    api_client = OpenAPI.create(openapi_url=fastapi_openapi_url)
-    api_client.set_security_params(HTTPBearerSecurity.Parameters(value="supersecret"))
+    api_client = configure_http_bearer_client(fastapi_openapi_url, "supersecret")
 
     expected = [
         "get_hello_hello_get",
@@ -122,8 +122,7 @@ def test_http_bearer_token_correct(fastapi_openapi_url: str) -> None:
     indirect=["fastapi_openapi_url"],
 )
 def test_http_bearer_token_wrong(fastapi_openapi_url: str) -> None:
-    api_client = OpenAPI.create(openapi_url=fastapi_openapi_url)
-    api_client.set_security_params(HTTPBearerSecurity.Parameters(value="wrong_api_key"))
+    api_client = configure_http_bearer_client(fastapi_openapi_url, "wrong_api_key")
 
     expected = [
         "get_hello_hello_get",

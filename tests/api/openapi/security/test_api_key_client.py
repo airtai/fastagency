@@ -1,15 +1,17 @@
 import json
+from typing import Callable
 
 import pytest
 import requests
 from fastapi import FastAPI, HTTPException, Security, status
 from fastapi.security import APIKeyCookie, APIKeyHeader, APIKeyQuery
 
+from docs.docs_src.user_guide.external_rest_apis.security_examples import (
+    configure_api_key_cookie_client,
+    configure_api_key_header_client,
+    configure_api_key_query_client,
+)
 from fastagency.api.openapi import OpenAPI
-from fastagency.api.openapi.security import APIKeyCookie as APIKeyCookieSecurity
-from fastagency.api.openapi.security import APIKeyHeader as APIKeyHeaderSecurity
-from fastagency.api.openapi.security import APIKeyQuery as APIKeyQuerySecurity
-from fastagency.api.openapi.security import BaseSecurity
 
 
 def create_api_key_header_fastapi_app(host: str, port: int) -> FastAPI:
@@ -130,19 +132,19 @@ def test_openapi_schema(
 
 
 @pytest.mark.parametrize(
-    "fastapi_openapi_url, security_class",  # noqa: PT006
+    "fastapi_openapi_url, client_config_func",  # noqa: PT006
     [
-        (create_api_key_header_fastapi_app, APIKeyHeaderSecurity),
-        (create_api_key_cookie_fastapi_app, APIKeyCookieSecurity),
-        (create_api_key_query_fastapi_app, APIKeyQuerySecurity),
+        (create_api_key_header_fastapi_app, configure_api_key_header_client),
+        (create_api_key_cookie_fastapi_app, configure_api_key_cookie_client),
+        (create_api_key_query_fastapi_app, configure_api_key_query_client),
     ],
     indirect=["fastapi_openapi_url"],
 )
 def test_api_key_correct(
-    fastapi_openapi_url: str, security_class: BaseSecurity
+    fastapi_openapi_url: str,
+    client_config_func: Callable[OpenAPI, dict[str, str]],  # type: ignore
 ) -> None:
-    api_client = OpenAPI.create(openapi_url=fastapi_openapi_url)
-    api_client.set_security_params(security_class.Parameters(value="api_key"))  # type: ignore
+    api_client = client_config_func(fastapi_openapi_url, "api_key")  # type: ignore
 
     expected = [
         "get_hello_hello_get",
@@ -159,17 +161,19 @@ def test_api_key_correct(
 
 
 @pytest.mark.parametrize(
-    "fastapi_openapi_url, security_class",  # noqa: PT006
+    "fastapi_openapi_url, client_config_func",  # noqa: PT006
     [
-        (create_api_key_header_fastapi_app, APIKeyHeaderSecurity),
-        (create_api_key_cookie_fastapi_app, APIKeyCookieSecurity),
-        (create_api_key_query_fastapi_app, APIKeyQuerySecurity),
+        (create_api_key_header_fastapi_app, configure_api_key_header_client),
+        (create_api_key_cookie_fastapi_app, configure_api_key_cookie_client),
+        (create_api_key_query_fastapi_app, configure_api_key_query_client),
     ],
     indirect=["fastapi_openapi_url"],
 )
-def test_api_key_wrong(fastapi_openapi_url: str, security_class: BaseSecurity) -> None:
-    api_client = OpenAPI.create(openapi_url=fastapi_openapi_url)
-    api_client.set_security_params(security_class.Parameters(value="wrong_api_key"))  # type: ignore
+def test_api_key_wrong(
+    fastapi_openapi_url: str,
+    client_config_func: Callable[OpenAPI, dict[str, str]],  # type: ignore
+) -> None:
+    api_client = client_config_func(fastapi_openapi_url, "wrong_api_key")  # type: ignore
 
     expected = [
         "get_hello_hello_get",

@@ -7,8 +7,10 @@ from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer as FastAPIOAuth2PasswordBearer
 from fastapi.security import OAuth2PasswordRequestForm
 
-from fastagency.api.openapi import OpenAPI
-from fastagency.api.openapi.security import OAuth2PasswordBearer
+from docs.docs_src.user_guide.external_rest_apis.security_examples import (
+    configure_oauth_client,
+    configure_oauth_client_token,
+)
 
 
 def create_oauth2_fastapi_app(host: str, port: int) -> FastAPI:
@@ -224,12 +226,7 @@ def test_oauth2_fastapi_app(
     indirect=["fastapi_openapi_url"],
 )
 def test_generate_oauth2_client_token(fastapi_openapi_url: str) -> None:
-    api_client = OpenAPI.create(
-        openapi_url=fastapi_openapi_url,
-    )
-    api_client.set_security_params(
-        OAuth2PasswordBearer.Parameters(bearer_token="token123")
-    )
+    api_client = configure_oauth_client_token(fastapi_openapi_url, "token123")
 
     expected = ["post_oauth_low_post", "login_token_post"]
 
@@ -249,13 +246,7 @@ def test_generate_oauth2_client_token(fastapi_openapi_url: str) -> None:
     indirect=["fastapi_openapi_url"],
 )
 def test_generate_oauth2_client_password(fastapi_openapi_url: str) -> None:
-    api_client = OpenAPI.create(openapi_url=fastapi_openapi_url)
-    api_client.set_security_params(
-        OAuth2PasswordBearer.Parameters(
-            username="user",
-            password="password",  # pragma: allowlist secret
-        )
-    )
+    api_client = configure_oauth_client(fastapi_openapi_url, "user", "password")
 
     expected = ["post_oauth_low_post", "login_token_post"]
 
@@ -275,14 +266,7 @@ def test_generate_oauth2_client_password(fastapi_openapi_url: str) -> None:
     indirect=["fastapi_openapi_url"],
 )
 def test_generate_oauth2_client_wrong_password(fastapi_openapi_url: str) -> None:
-    api_client = OpenAPI.create(openapi_url=fastapi_openapi_url)
-    api_client.set_security_params(
-        OAuth2PasswordBearer.Parameters(
-            username="user",
-            password="password123",  # pragma: allowlist secret
-        )
-    )
-
+    api_client = configure_oauth_client(fastapi_openapi_url, "user", "wrong_password")
     expected = ["post_oauth_low_post", "login_token_post"]
 
     functions = list(api_client._get_functions_to_register())
