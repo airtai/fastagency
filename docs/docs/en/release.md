@@ -12,6 +12,14 @@ hide:
 ---
 
 # Release Notes
+## v0.2.5
+
+### What's Changed
+
+* Fix Pydantic name annotated is not defined by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#365](https://github.com/airtai/fastagency/pull/365){.external-link target="_blank"}
+
+**Full Changelog**: [#v0.2.4...v0.2.5](https://github.com/airtai/fastagency/compare/v0.2.4...v0.2.5){.external-link target="_blank"}
+
 ## v0.2.4
 
 ### What's Changed
