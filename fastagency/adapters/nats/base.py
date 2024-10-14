@@ -395,10 +395,6 @@ class NatsProvider(ProviderProtocol):
             user (Optional[str], optional): The user. Defaults to None.
             password (Optional[str], optional): The password. Defaults to None.
         """
-        # self._workflows: dict[
-        #     str, tuple[Callable[[WorkflowsProtocol, UI, str, str], str], str]
-        # ] = {}
-
         self.nats_url = nats_url or "nats://localhost:4222"
         self.user = user
         self.password = password
