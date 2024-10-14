@@ -180,7 +180,7 @@
 <a id=__codelineno-0-314 name=__codelineno-0-314></a>        <span class=k>try</span><span class=p>:</span>
 <a id=__codelineno-0-315 name=__codelineno-0-315></a>            <span class=n>ui</span><span class=o>.</span><span class=n>workflow_started</span><span class=p>(</span>
 <a id=__codelineno-0-316 name=__codelineno-0-316></a>                <span class=n>sender</span><span class=o>=</span><span class=s2>&quot;AutoGenWorkflows&quot;</span><span class=p>,</span>
-<a id=__codelineno-0-317 name=__codelineno-0-317></a>                <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;user&quot;</span><span class=p>,</span>
+<a id=__codelineno-0-317 name=__codelineno-0-317></a>                <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;User&quot;</span><span class=p>,</span>
 <a id=__codelineno-0-318 name=__codelineno-0-318></a>                <span class=n>name</span><span class=o>=</span><span class=n>name</span><span class=p>,</span>
 <a id=__codelineno-0-319 name=__codelineno-0-319></a>                <span class=n>description</span><span class=o>=</span><span class=bp>self</span><span class=o>.</span><span class=n>get_description</span><span class=p>(</span><span class=n>name</span><span class=p>),</span>
 <a id=__codelineno-0-320 name=__codelineno-0-320></a>                <span class=n>params</span><span class=o>=</span><span class=n>kwargs</span><span class=p>,</span>
@@ -194,7 +194,7 @@
 <a id=__codelineno-0-328 name=__codelineno-0-328></a>            <span class=p>)</span>
 <a id=__codelineno-0-329 name=__codelineno-0-329></a>            <span class=n>ui</span><span class=o>.</span><span class=n>error</span><span class=p>(</span>
 <a id=__codelineno-0-330 name=__codelineno-0-330></a>                <span class=n>sender</span><span class=o>=</span><span class=s2>&quot;AutoGenWorkflows&quot;</span><span class=p>,</span>
-<a id=__codelineno-0-331 name=__codelineno-0-331></a>                <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;user&quot;</span><span class=p>,</span>
+<a id=__codelineno-0-331 name=__codelineno-0-331></a>                <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;User&quot;</span><span class=p>,</span>
 <a id=__codelineno-0-332 name=__codelineno-0-332></a>                <span class=n>short</span><span class=o>=</span><span class=s2>&quot;Unhandled exception occurred when executing the workflow.&quot;</span><span class=p>,</span>
 <a id=__codelineno-0-333 name=__codelineno-0-333></a>                <span class=n>long</span><span class=o>=</span><span class=nb>str</span><span class=p>(</span><span class=n>e</span><span class=p>),</span>
 <a id=__codelineno-0-334 name=__codelineno-0-334></a>            <span class=p>)</span>
@@ -204,7 +204,7 @@
 <a id=__codelineno-0-338 name=__codelineno-0-338></a>
 <a id=__codelineno-0-339 name=__codelineno-0-339></a>        <span class=n>ui</span><span class=o>.</span><span class=n>workflow_completed</span><span class=p>(</span>
 <a id=__codelineno-0-340 name=__codelineno-0-340></a>            <span class=n>sender</span><span class=o>=</span><span class=s2>&quot;AutoGenWorkflows&quot;</span><span class=p>,</span>
-<a id=__codelineno-0-341 name=__codelineno-0-341></a>            <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;user&quot;</span><span class=p>,</span>
+<a id=__codelineno-0-341 name=__codelineno-0-341></a>            <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;User&quot;</span><span class=p>,</span>
 <a id=__codelineno-0-342 name=__codelineno-0-342></a>            <span class=n>result</span><span class=o>=</span><span class=n>retval</span><span class=p>,</span>
 <a id=__codelineno-0-343 name=__codelineno-0-343></a>        <span class=p>)</span>
 <a id=__codelineno-0-344 name=__codelineno-0-344></a>        <span class=n>logger</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=sa>f</span><span class=s2>&quot;Workflow &#39;</span><span class=si>{</span><span class=n>name</span><span class=si>}</span><span class=s2>&#39; completed with result: </span><span class=si>{</span><span class=n>retval</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>)</span>

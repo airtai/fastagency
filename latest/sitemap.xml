@@ -853,6 +853,24 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/basics/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/user-guide/adapters/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/adapters/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/user-guide/adapters/fastapi/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/adapters/fastapi/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/user-guide/adapters/nats/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/adapters/nats/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/user-guide/api/</loc>
         <lastmod>2024-10-14</lastmod>
         <changefreq>daily</changefreq>
