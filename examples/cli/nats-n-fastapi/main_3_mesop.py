@@ -16,4 +16,4 @@ app = FastAgency(provider=provider, ui=ui)
 ...
 
 # start the provider with the following command
-# gunicorn 3_main_mesop:app -b 0.0.0.0:8888 --reload
+# gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload

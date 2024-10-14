@@ -50,3 +50,6 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
 
 
 app = FastAgency(provider=wf, ui=MesopUI())
+
+# start with the following command
+# gunicorn main_mesop:app -b 0.0.0.0:8888 --reload
