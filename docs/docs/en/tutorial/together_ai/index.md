@@ -142,97 +142,86 @@ The output will vary based on the city and the current weather conditions:
     │ I can help you with the weather. What would you like to know?:               │
     ╰──────────────────────────────────────────────────────────────────────────────╯
 What's the weather in Zagreb
-    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
-    │                                                                              │
-    │ What's the weather in Zagreb                                                 │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+│                                                                              │
+│ What's the weather in Zagreb                                                 │
+╰──────────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
-    │                                                                              │
-    │ Please wait while I fetch the weather data for Zagreb...                     │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
+│                                                                              │
+│ Please wait while I fetch the weather data for Zagreb...                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ User_Agent -> Weather_Agent [suggested_function_call] ──────────────────────╮
-    │                                                                              │
-    │ {                                                                            │
-    │   "function_name": "get_daily_weather_daily_get",                            │
-    │   "call_id":                                                                 │
-    │ "call_fwdnhh2bptuauqqniiwha4g7",                                             │
-    │   "arguments": {                                                             │
-    │     "city": "Zagreb"                                                         │
-    │                                                                              │
-    │   }                                                                          │
-    │ }                                                                            │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
-
-    ╭─ Weather_Agent -> User_Agent [function_call_execution] ──────────────────────╮
-    │                                                                              │
-    │ {                                                                            │
-    │   "function_name": "get_daily_weather_daily_get",                            │
-    │   "call_id":                                                                 │
-    │ "call_fwdnhh2bptuauqqniiwha4g7",                                             │
-    │   "retval": "{\"city\": \"Zagreb\",                                          │
-    │ \"temperature\": 15, \"daily_forecasts\": [{\"forecast_date\":               │
-    │ \"2024-10-14\", \"temperature\": 14, \"hourly_forecasts\": null},            │
-    │ {\"forecast_date\": \"2024-10-15\", \"temperature\": 15,                     │
-    │ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-10-16\",             │
-    │ \"temperature\": 14, \"hourly_forecasts\": null}]}\n"                        │
-    │ }                                                                            │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
-
-    ╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
-    │                                                                              │
-    │ The current weather in Zagreb is 15°C. The forecast for the next few         │
-    │ days is as follows:                                                          │
-    │                                                                              │
-    │ - October 14, 2024: 14°C                                                     │
-    │ - October 15, 2024: 15°C                                                     │
-    │                                                                              │
-    │ - October 16, 2024: 14°C                                                     │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
-
-    ╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
-    │                                                                              │
-    │ The current weather in Zagreb is 15°C. The forecast for the next few         │
-    │ days is as follows:                                                          │
-    │                                                                              │
-    │ - October 14, 2024: 14°C                                                     │
-    │ - October 15, 2024: 15°C                                                     │
-    │                                                                              │
-    │ - October 16, 2024: 14°C                                                     │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
-
-╭─ workflow -> user [workflow_completed] ──────────────────────────────────────╮
+╭─ User_Agent -> Weather_Agent [suggested_function_call] ──────────────────────╮
 │                                                                              │
 │ {                                                                            │
-│   "result": {                                                                │
-│     "content": "The current weather in Zagreb is                             │
-│ 15\u00b0C, with a forecast of 14\u00b0C on October 14, 15\u00b0C on          │
-│ October 15, and 14\u00b0C on October 16.",                                   │
-│     "refusal": null,                                                         │
-│                                                                              │
-│ "role": "assistant",                                                         │
-│     "function_call": null,                                                   │
-│     "tool_calls": null                                                       │
+│   "function_name": "get_daily_weather_daily_get",                            │
+│   "call_id":                                                                 │
+│ "call_fwdnhh2bptuauqqniiwha4g7",                                             │
+│   "arguments": {                                                             │
+│     "city": "Zagreb"                                                         │
 │                                                                              │
 │   }                                                                          │
 │ }                                                                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
-╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
+╭─ Weather_Agent -> User_Agent [function_call_execution] ──────────────────────╮
 │                                                                              │
 │ {                                                                            │
-│   "name": "simple_weather",                                                  │
-│   "description": "Weather chat",                                             │
-│                                                                              │
-│ "params": {}                                                                 │
+│   "function_name": "get_daily_weather_daily_get",                            │
+│   "call_id":                                                                 │
+│ "call_fwdnhh2bptuauqqniiwha4g7",                                             │
+│   "retval": "{\"city\": \"Zagreb\",                                          │
+│ \"temperature\": 17, \"daily_forecasts\": [{\"forecast_date\":               │
+│ \"2024-10-14\", \"temperature\": 14, \"hourly_forecasts\": null},            │
+│ {\"forecast_date\": \"2024-10-15\", \"temperature\": 15,                     │
+│ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-10-16\",             │
+│ \"temperature\": 15, \"hourly_forecasts\": null}]}\n"                        │
 │ }                                                                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
-    │                                                                              │
-    │ I can help you with the weather. What would you like to know?:               │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
+│                                                                              │
+│ The current weather in Zagreb is 17 degrees Celsius. The forecast for        │
+│ the next few days is as follows:                                             │
+│                                                                              │
+│ - October 14, 2024: 14 degrees                                               │
+│ Celsius                                                                      │
+│ - October 15, 2024: 15 degrees Celsius                                       │
+│ - October 16, 2024: 15                                                       │
+│ degrees Celsius                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
+│                                                                              │
+│ The current weather in Zagreb is 17 degrees Celsius. The forecast for        │
+│ the next few days is as follows:                                             │
+│                                                                              │
+│ - October 14, 2024: 14 degrees                                               │
+│ Celsius                                                                      │
+│ - October 15, 2024: 15 degrees Celsius                                       │
+│ - October 16, 2024: 15                                                       │
+│ degrees Celsius                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ AutoGenWorkflows -> user [workflow_completed] ──────────────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "result": {                                                                │
+│     "content": "The current weather in Zagreb is 17                          │
+│ degrees Celsius, with forecasted temperatures of 14 degrees Celsius on       │
+│  October 14, 15 degrees Celsius on October 15, and 15 degrees Celsius        │
+│ on October 16.",                                                             │
+│     "refusal": null,                                                         │
+│     "role": "assistant",                                                     │
+│                                                                              │
+│ "function_call": null,                                                       │
+│     "tool_calls": null                                                       │
+│   }                                                                          │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2024-10-14 19:37:11,923 [INFO] Workflow 'simple_weather' completed with result: {'content': 'The current weather in Zagreb is 17 degrees Celsius, with forecasted temperatures of 14 degrees Celsius on October 14, 15 degrees Celsius on October 15, and 15 degrees Celsius on October 16.', 'refusal': None, 'role': 'assistant', 'function_call': None, 'tool_calls': None}
 ```
 
 ## Conclusion
