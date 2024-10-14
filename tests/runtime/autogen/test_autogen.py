@@ -171,7 +171,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
     ui.workflow_started(
         sender="workflow",
-        recipient="user",
+        recipient="User",
         name=name,
     )
 
@@ -182,7 +182,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
     ui.workflow_completed(
         sender="workflow",
-        recipient="user",
+        recipient="User",
         result=result,
     )
 

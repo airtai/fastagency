@@ -8,12 +8,7 @@ provider = FastAPIAdapter.create_provider(
     fastapi_url=fastapi_url,
 )
 
-ui = MesopUI()
-
-app = FastAgency(provider=provider, ui=ui)
-
-# write their own routes here
-...
+app = FastAgency(provider=provider, ui=MesopUI())
 
 # start the provider with the following command
 # gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload

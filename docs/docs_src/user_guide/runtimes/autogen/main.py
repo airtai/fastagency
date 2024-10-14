@@ -16,7 +16,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
