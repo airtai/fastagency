@@ -72,8 +72,6 @@ FastAgency currently supports workflows defined using AutoGen and provides optio
 
 - [**Mesop**](https://google.github.io/mesop/): Utilize [**`MesopUI`**](../api/fastagency/ui/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
-We are also working on adding support for other frameworks, such as [**CrewAI**](https://www.crewai.com/), to broaden the scope and capabilities of FastAgency. Stay tuned for updates on these integrations.
-
 ### Supported Network Adapters
 
 FastAgency can use chainable network adapters that can be used to easily create
