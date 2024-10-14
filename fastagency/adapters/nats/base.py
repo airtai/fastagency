@@ -521,8 +521,12 @@ class NatsProvider(ProviderProtocol):
         try:
             async with self._get_jetstream_key_value() as kv:
                 names = await kv.keys()
-        except (NoKeysError, NoServersError):
+        except NoKeysError:
             names = []
+        except NoServersError as e:
+            raise ValueError(
+                f"Unable to connect to NATS server at {self.nats_url}"
+            ) from e
 
         return names
 
