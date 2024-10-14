@@ -61,6 +61,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/UI/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/UIBase/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/UIBase/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/WorkflowsProtocol/</loc>
         <lastmod>2024-10-14</lastmod>
         <changefreq>daily</changefreq>
@@ -253,6 +259,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/AdapterProtocol/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/base/CreateWorkflowUIMixin/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/CreateWorkflowUIMixin/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/base/ProviderProtocol/</loc>
         <lastmod>2024-10-14</lastmod>
         <changefreq>daily</changefreq>
@@ -271,6 +283,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/UI/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/base/UIBase/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/UIBase/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/base/WSGIProtocol/</loc>
         <lastmod>2024-10-14</lastmod>
         <changefreq>daily</changefreq>
@@ -287,12 +305,6 @@
         <lastmod>2024-10-14</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/check_register_decorator/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/base/run_workflow/</loc>
-        <lastmod>2024-10-14</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/base/run_workflow/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/cli/cli/callback/</loc>
@@ -391,10 +403,46 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyCLIPythonVersionError/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyConnectionError/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyConnectionError/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyError/</loc>
         <lastmod>2024-10-14</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyError/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyFastAPIConnectionError/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyFastAPIConnectionError/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyFastAPIKeyError/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyFastAPIKeyError/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyKeyError/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyKeyError/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyNATSConnectionError/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyNATSConnectionError/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyNATSKeyError/</loc>
+        <lastmod>2024-10-14</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyNATSKeyError/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/exceptions/FastAgencyWSGINotImplementedError/</loc>
@@ -655,10 +703,10 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/MesopUI/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/run_workflow/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/run_workflow_mesop/</loc>
         <lastmod>2024-10-14</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/run_workflow/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/mesop/run_workflow_mesop/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/message/MesopGUIMessageVisitor/</loc>

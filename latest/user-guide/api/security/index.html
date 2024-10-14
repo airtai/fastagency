@@ -43,27 +43,26 @@
 <a id=__codelineno-6-5 name=__codelineno-6-5 href=#__codelineno-6-5></a>    <span class=n>name</span><span class=o>=</span><span class=s2>&quot;simple_weather_with_security&quot;</span><span class=p>,</span> <span class=n>description</span><span class=o>=</span><span class=s2>&quot;Weather chat with security&quot;</span>
 <a id=__codelineno-6-6 name=__codelineno-6-6 href=#__codelineno-6-6></a><span class=p>)</span>
 <a id=__codelineno-6-7 name=__codelineno-6-7 href=#__codelineno-6-7></a><span class=k>def</span> <span class=nf>weather_workflow_with_security</span><span class=p>(</span>
-<a id=__codelineno-6-8 name=__codelineno-6-8 href=#__codelineno-6-8></a>    <span class=n>ui</span><span class=p>:</span> <span class=n>UI</span><span class=p>,</span> <span class=n>workflow_uuid</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>params</span><span class=p>:</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>str</span><span class=p>]</span>
+<a id=__codelineno-6-8 name=__codelineno-6-8 href=#__codelineno-6-8></a>    <span class=n>ui</span><span class=p>:</span> <span class=n>UI</span><span class=p>,</span> <span class=n>params</span><span class=p>:</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>str</span><span class=p>]</span>
 <a id=__codelineno-6-9 name=__codelineno-6-9 href=#__codelineno-6-9></a><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
 <a id=__codelineno-6-10 name=__codelineno-6-10 href=#__codelineno-6-10></a>    <span class=n>initial_message</span> <span class=o>=</span> <span class=n>ui</span><span class=o>.</span><span class=n>text_input</span><span class=p>(</span>
 <a id=__codelineno-6-11 name=__codelineno-6-11 href=#__codelineno-6-11></a>        <span class=n>sender</span><span class=o>=</span><span class=s2>&quot;Workflow&quot;</span><span class=p>,</span>
 <a id=__codelineno-6-12 name=__codelineno-6-12 href=#__codelineno-6-12></a>        <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;User&quot;</span><span class=p>,</span>
 <a id=__codelineno-6-13 name=__codelineno-6-13 href=#__codelineno-6-13></a>        <span class=n>prompt</span><span class=o>=</span><span class=s2>&quot;What do you want to know about the weather?&quot;</span><span class=p>,</span>
-<a id=__codelineno-6-14 name=__codelineno-6-14 href=#__codelineno-6-14></a>        <span class=n>workflow_uuid</span><span class=o>=</span><span class=n>workflow_uuid</span><span class=p>,</span>
-<a id=__codelineno-6-15 name=__codelineno-6-15 href=#__codelineno-6-15></a>    <span class=p>)</span>
-<a id=__codelineno-6-16 name=__codelineno-6-16 href=#__codelineno-6-16></a>
-<a id=__codelineno-6-17 name=__codelineno-6-17 href=#__codelineno-6-17></a>    <span class=n>user_agent</span> <span class=o>=</span> <span class=n>UserProxyAgent</span><span class=p>(</span>
-<a id=__codelineno-6-18 name=__codelineno-6-18 href=#__codelineno-6-18></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;User_Agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-6-19 name=__codelineno-6-19 href=#__codelineno-6-19></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a user agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-6-20 name=__codelineno-6-20 href=#__codelineno-6-20></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
-<a id=__codelineno-6-21 name=__codelineno-6-21 href=#__codelineno-6-21></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
-<a id=__codelineno-6-22 name=__codelineno-6-22 href=#__codelineno-6-22></a>    <span class=p>)</span>
-<a id=__codelineno-6-23 name=__codelineno-6-23 href=#__codelineno-6-23></a>    <span class=n>weather_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
-<a id=__codelineno-6-24 name=__codelineno-6-24 href=#__codelineno-6-24></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Weather_Agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-6-25 name=__codelineno-6-25 href=#__codelineno-6-25></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a weather agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-6-26 name=__codelineno-6-26 href=#__codelineno-6-26></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
-<a id=__codelineno-6-27 name=__codelineno-6-27 href=#__codelineno-6-27></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
-<a id=__codelineno-6-28 name=__codelineno-6-28 href=#__codelineno-6-28></a>    <span class=p>)</span>
+<a id=__codelineno-6-14 name=__codelineno-6-14 href=#__codelineno-6-14></a>    <span class=p>)</span>
+<a id=__codelineno-6-15 name=__codelineno-6-15 href=#__codelineno-6-15></a>
+<a id=__codelineno-6-16 name=__codelineno-6-16 href=#__codelineno-6-16></a>    <span class=n>user_agent</span> <span class=o>=</span> <span class=n>UserProxyAgent</span><span class=p>(</span>
+<a id=__codelineno-6-17 name=__codelineno-6-17 href=#__codelineno-6-17></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;User_Agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-6-18 name=__codelineno-6-18 href=#__codelineno-6-18></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a user agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-6-19 name=__codelineno-6-19 href=#__codelineno-6-19></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
+<a id=__codelineno-6-20 name=__codelineno-6-20 href=#__codelineno-6-20></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
+<a id=__codelineno-6-21 name=__codelineno-6-21 href=#__codelineno-6-21></a>    <span class=p>)</span>
+<a id=__codelineno-6-22 name=__codelineno-6-22 href=#__codelineno-6-22></a>    <span class=n>weather_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
+<a id=__codelineno-6-23 name=__codelineno-6-23 href=#__codelineno-6-23></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Weather_Agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-6-24 name=__codelineno-6-24 href=#__codelineno-6-24></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a weather agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-6-25 name=__codelineno-6-25 href=#__codelineno-6-25></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
+<a id=__codelineno-6-26 name=__codelineno-6-26 href=#__codelineno-6-26></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
+<a id=__codelineno-6-27 name=__codelineno-6-27 href=#__codelineno-6-27></a>    <span class=p>)</span>
 </code></pre></div> <h2 id=register-api-functions-with-the-agents>Register API Functions with the Agents<a class=headerlink href=#register-api-functions-with-the-agents title="Permanent link">#</a></h2> <p>In this step, we register the weather API functions to ensure that the weather agent can call the correct functions to retrieve the required weather data.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-7-1 name=__codelineno-7-1 href=#__codelineno-7-1></a>    <span class=n>wf</span><span class=o>.</span><span class=n>register_api</span><span class=p>(</span>
 <a id=__codelineno-7-2 name=__codelineno-7-2 href=#__codelineno-7-2></a>        <span class=n>api</span><span class=o>=</span><span class=n>weather_api</span><span class=p>,</span>
 <a id=__codelineno-7-3 name=__codelineno-7-3 href=#__codelineno-7-3></a>        <span class=n>callers</span><span class=o>=</span><span class=n>user_agent</span><span class=p>,</span>
@@ -77,7 +76,7 @@
 <a id=__codelineno-8-6 name=__codelineno-8-6 href=#__codelineno-8-6></a>    <span class=p>)</span>
 <a id=__codelineno-8-7 name=__codelineno-8-7 href=#__codelineno-8-7></a>
 <a id=__codelineno-8-8 name=__codelineno-8-8 href=#__codelineno-8-8></a>    <span class=k>return</span> <span class=n>chat_result</span><span class=o>.</span><span class=n>summary</span>  <span class=c1># type: ignore[no-any-return]</span>
-</code></pre></div> <h2 id=define-fastagency-application>Define FastAgency Application<a class=headerlink href=#define-fastagency-application title="Permanent link">#</a></h2> <p>Next, define your FastAgency application.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-9-1 name=__codelineno-9-1 href=#__codelineno-9-1></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span> <span class=n>ui</span><span class=o>=</span><span class=n>ConsoleUI</span><span class=p>())</span>
+</code></pre></div> <h2 id=define-fastagency-application>Define FastAgency Application<a class=headerlink href=#define-fastagency-application title="Permanent link">#</a></h2> <p>Next, define your FastAgency application.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-9-1 name=__codelineno-9-1 href=#__codelineno-9-1></a>
 </code></pre></div> <h2 id=complete-application-code>Complete Application Code<a class=headerlink href=#complete-application-code title="Permanent link">#</a></h2> <details> <summary>main.py</summary> <div class=highlight><pre><span></span><code><a id=__codelineno-10-1 name=__codelineno-10-1 href=#__codelineno-10-1></a><span class=kn>import</span> <span class=nn>os</span>
 <a id=__codelineno-10-2 name=__codelineno-10-2 href=#__codelineno-10-2></a>
 <a id=__codelineno-10-3 name=__codelineno-10-3 href=#__codelineno-10-3></a><span class=kn>from</span> <span class=nn>autogen</span> <span class=kn>import</span> <span class=n>UserProxyAgent</span>
@@ -118,45 +117,44 @@
 <a id=__codelineno-10-38 name=__codelineno-10-38 href=#__codelineno-10-38></a>    <span class=n>name</span><span class=o>=</span><span class=s2>&quot;simple_weather_with_security&quot;</span><span class=p>,</span> <span class=n>description</span><span class=o>=</span><span class=s2>&quot;Weather chat with security&quot;</span>
 <a id=__codelineno-10-39 name=__codelineno-10-39 href=#__codelineno-10-39></a><span class=p>)</span>
 <a id=__codelineno-10-40 name=__codelineno-10-40 href=#__codelineno-10-40></a><span class=k>def</span> <span class=nf>weather_workflow_with_security</span><span class=p>(</span>
-<a id=__codelineno-10-41 name=__codelineno-10-41 href=#__codelineno-10-41></a>    <span class=n>ui</span><span class=p>:</span> <span class=n>UI</span><span class=p>,</span> <span class=n>workflow_uuid</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>params</span><span class=p>:</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>str</span><span class=p>]</span>
+<a id=__codelineno-10-41 name=__codelineno-10-41 href=#__codelineno-10-41></a>    <span class=n>ui</span><span class=p>:</span> <span class=n>UI</span><span class=p>,</span> <span class=n>params</span><span class=p>:</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>str</span><span class=p>]</span>
 <a id=__codelineno-10-42 name=__codelineno-10-42 href=#__codelineno-10-42></a><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
 <a id=__codelineno-10-43 name=__codelineno-10-43 href=#__codelineno-10-43></a>    <span class=n>initial_message</span> <span class=o>=</span> <span class=n>ui</span><span class=o>.</span><span class=n>text_input</span><span class=p>(</span>
 <a id=__codelineno-10-44 name=__codelineno-10-44 href=#__codelineno-10-44></a>        <span class=n>sender</span><span class=o>=</span><span class=s2>&quot;Workflow&quot;</span><span class=p>,</span>
 <a id=__codelineno-10-45 name=__codelineno-10-45 href=#__codelineno-10-45></a>        <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;User&quot;</span><span class=p>,</span>
 <a id=__codelineno-10-46 name=__codelineno-10-46 href=#__codelineno-10-46></a>        <span class=n>prompt</span><span class=o>=</span><span class=s2>&quot;What do you want to know about the weather?&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-47 name=__codelineno-10-47 href=#__codelineno-10-47></a>        <span class=n>workflow_uuid</span><span class=o>=</span><span class=n>workflow_uuid</span><span class=p>,</span>
-<a id=__codelineno-10-48 name=__codelineno-10-48 href=#__codelineno-10-48></a>    <span class=p>)</span>
-<a id=__codelineno-10-49 name=__codelineno-10-49 href=#__codelineno-10-49></a>
-<a id=__codelineno-10-50 name=__codelineno-10-50 href=#__codelineno-10-50></a>    <span class=n>user_agent</span> <span class=o>=</span> <span class=n>UserProxyAgent</span><span class=p>(</span>
-<a id=__codelineno-10-51 name=__codelineno-10-51 href=#__codelineno-10-51></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;User_Agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-52 name=__codelineno-10-52 href=#__codelineno-10-52></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a user agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-53 name=__codelineno-10-53 href=#__codelineno-10-53></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
-<a id=__codelineno-10-54 name=__codelineno-10-54 href=#__codelineno-10-54></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-55 name=__codelineno-10-55 href=#__codelineno-10-55></a>    <span class=p>)</span>
-<a id=__codelineno-10-56 name=__codelineno-10-56 href=#__codelineno-10-56></a>    <span class=n>weather_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
-<a id=__codelineno-10-57 name=__codelineno-10-57 href=#__codelineno-10-57></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Weather_Agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-58 name=__codelineno-10-58 href=#__codelineno-10-58></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a weather agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-59 name=__codelineno-10-59 href=#__codelineno-10-59></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
-<a id=__codelineno-10-60 name=__codelineno-10-60 href=#__codelineno-10-60></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-61 name=__codelineno-10-61 href=#__codelineno-10-61></a>    <span class=p>)</span>
-<a id=__codelineno-10-62 name=__codelineno-10-62 href=#__codelineno-10-62></a>
-<a id=__codelineno-10-63 name=__codelineno-10-63 href=#__codelineno-10-63></a>    <span class=n>wf</span><span class=o>.</span><span class=n>register_api</span><span class=p>(</span>
-<a id=__codelineno-10-64 name=__codelineno-10-64 href=#__codelineno-10-64></a>        <span class=n>api</span><span class=o>=</span><span class=n>weather_api</span><span class=p>,</span>
-<a id=__codelineno-10-65 name=__codelineno-10-65 href=#__codelineno-10-65></a>        <span class=n>callers</span><span class=o>=</span><span class=n>user_agent</span><span class=p>,</span>
-<a id=__codelineno-10-66 name=__codelineno-10-66 href=#__codelineno-10-66></a>        <span class=n>executors</span><span class=o>=</span><span class=n>weather_agent</span><span class=p>,</span>
-<a id=__codelineno-10-67 name=__codelineno-10-67 href=#__codelineno-10-67></a>    <span class=p>)</span>
-<a id=__codelineno-10-68 name=__codelineno-10-68 href=#__codelineno-10-68></a>
-<a id=__codelineno-10-69 name=__codelineno-10-69 href=#__codelineno-10-69></a>    <span class=n>chat_result</span> <span class=o>=</span> <span class=n>user_agent</span><span class=o>.</span><span class=n>initiate_chat</span><span class=p>(</span>
-<a id=__codelineno-10-70 name=__codelineno-10-70 href=#__codelineno-10-70></a>        <span class=n>weather_agent</span><span class=p>,</span>
-<a id=__codelineno-10-71 name=__codelineno-10-71 href=#__codelineno-10-71></a>        <span class=n>message</span><span class=o>=</span><span class=n>initial_message</span><span class=p>,</span>
-<a id=__codelineno-10-72 name=__codelineno-10-72 href=#__codelineno-10-72></a>        <span class=n>summary_method</span><span class=o>=</span><span class=s2>&quot;reflection_with_llm&quot;</span><span class=p>,</span>
-<a id=__codelineno-10-73 name=__codelineno-10-73 href=#__codelineno-10-73></a>        <span class=n>max_turns</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span>
-<a id=__codelineno-10-74 name=__codelineno-10-74 href=#__codelineno-10-74></a>    <span class=p>)</span>
-<a id=__codelineno-10-75 name=__codelineno-10-75 href=#__codelineno-10-75></a>
-<a id=__codelineno-10-76 name=__codelineno-10-76 href=#__codelineno-10-76></a>    <span class=k>return</span> <span class=n>chat_result</span><span class=o>.</span><span class=n>summary</span>  <span class=c1># type: ignore[no-any-return]</span>
+<a id=__codelineno-10-47 name=__codelineno-10-47 href=#__codelineno-10-47></a>    <span class=p>)</span>
+<a id=__codelineno-10-48 name=__codelineno-10-48 href=#__codelineno-10-48></a>
+<a id=__codelineno-10-49 name=__codelineno-10-49 href=#__codelineno-10-49></a>    <span class=n>user_agent</span> <span class=o>=</span> <span class=n>UserProxyAgent</span><span class=p>(</span>
+<a id=__codelineno-10-50 name=__codelineno-10-50 href=#__codelineno-10-50></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;User_Agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-51 name=__codelineno-10-51 href=#__codelineno-10-51></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a user agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-52 name=__codelineno-10-52 href=#__codelineno-10-52></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
+<a id=__codelineno-10-53 name=__codelineno-10-53 href=#__codelineno-10-53></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-54 name=__codelineno-10-54 href=#__codelineno-10-54></a>    <span class=p>)</span>
+<a id=__codelineno-10-55 name=__codelineno-10-55 href=#__codelineno-10-55></a>    <span class=n>weather_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
+<a id=__codelineno-10-56 name=__codelineno-10-56 href=#__codelineno-10-56></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Weather_Agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-57 name=__codelineno-10-57 href=#__codelineno-10-57></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a weather agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-58 name=__codelineno-10-58 href=#__codelineno-10-58></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
+<a id=__codelineno-10-59 name=__codelineno-10-59 href=#__codelineno-10-59></a>        <span class=n>human_input_mode</span><span class=o>=</span><span class=s2>&quot;NEVER&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-60 name=__codelineno-10-60 href=#__codelineno-10-60></a>    <span class=p>)</span>
+<a id=__codelineno-10-61 name=__codelineno-10-61 href=#__codelineno-10-61></a>
+<a id=__codelineno-10-62 name=__codelineno-10-62 href=#__codelineno-10-62></a>    <span class=n>wf</span><span class=o>.</span><span class=n>register_api</span><span class=p>(</span>
+<a id=__codelineno-10-63 name=__codelineno-10-63 href=#__codelineno-10-63></a>        <span class=n>api</span><span class=o>=</span><span class=n>weather_api</span><span class=p>,</span>
+<a id=__codelineno-10-64 name=__codelineno-10-64 href=#__codelineno-10-64></a>        <span class=n>callers</span><span class=o>=</span><span class=n>user_agent</span><span class=p>,</span>
+<a id=__codelineno-10-65 name=__codelineno-10-65 href=#__codelineno-10-65></a>        <span class=n>executors</span><span class=o>=</span><span class=n>weather_agent</span><span class=p>,</span>
+<a id=__codelineno-10-66 name=__codelineno-10-66 href=#__codelineno-10-66></a>    <span class=p>)</span>
+<a id=__codelineno-10-67 name=__codelineno-10-67 href=#__codelineno-10-67></a>
+<a id=__codelineno-10-68 name=__codelineno-10-68 href=#__codelineno-10-68></a>    <span class=n>chat_result</span> <span class=o>=</span> <span class=n>user_agent</span><span class=o>.</span><span class=n>initiate_chat</span><span class=p>(</span>
+<a id=__codelineno-10-69 name=__codelineno-10-69 href=#__codelineno-10-69></a>        <span class=n>weather_agent</span><span class=p>,</span>
+<a id=__codelineno-10-70 name=__codelineno-10-70 href=#__codelineno-10-70></a>        <span class=n>message</span><span class=o>=</span><span class=n>initial_message</span><span class=p>,</span>
+<a id=__codelineno-10-71 name=__codelineno-10-71 href=#__codelineno-10-71></a>        <span class=n>summary_method</span><span class=o>=</span><span class=s2>&quot;reflection_with_llm&quot;</span><span class=p>,</span>
+<a id=__codelineno-10-72 name=__codelineno-10-72 href=#__codelineno-10-72></a>        <span class=n>max_turns</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span>
+<a id=__codelineno-10-73 name=__codelineno-10-73 href=#__codelineno-10-73></a>    <span class=p>)</span>
+<a id=__codelineno-10-74 name=__codelineno-10-74 href=#__codelineno-10-74></a>
+<a id=__codelineno-10-75 name=__codelineno-10-75 href=#__codelineno-10-75></a>    <span class=k>return</span> <span class=n>chat_result</span><span class=o>.</span><span class=n>summary</span>  <span class=c1># type: ignore[no-any-return]</span>
+<a id=__codelineno-10-76 name=__codelineno-10-76 href=#__codelineno-10-76></a>
 <a id=__codelineno-10-77 name=__codelineno-10-77 href=#__codelineno-10-77></a>
-<a id=__codelineno-10-78 name=__codelineno-10-78 href=#__codelineno-10-78></a>
-<a id=__codelineno-10-79 name=__codelineno-10-79 href=#__codelineno-10-79></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span> <span class=n>ui</span><span class=o>=</span><span class=n>ConsoleUI</span><span class=p>())</span>
+<a id=__codelineno-10-78 name=__codelineno-10-78 href=#__codelineno-10-78></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span> <span class=n>ui</span><span class=o>=</span><span class=n>ConsoleUI</span><span class=p>())</span>
 </code></pre></div> </details> <h2 id=run-application>Run Application<a class=headerlink href=#run-application title="Permanent link">#</a></h2> <p>You can run this chapter's FastAgency application using the following command::</p> <div class=highlight><pre><span></span><code><a id=__codelineno-11-1 name=__codelineno-11-1 href=#__codelineno-11-1></a><span class=go>fastagency run</span>
 </code></pre></div> <h2 id=output>Output<a class=headerlink href=#output title="Permanent link">#</a></h2> <p>The output will vary based on the city and the current weather conditions:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-12-1 name=__codelineno-12-1 href=#__codelineno-12-1></a><span class=go>╭─ Python module file ─╮</span>
 <a id=__codelineno-12-2 name=__codelineno-12-2 href=#__codelineno-12-2></a><span class=go>│                      │</span>
