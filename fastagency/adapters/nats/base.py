@@ -13,11 +13,14 @@ from asyncer import asyncify, syncify
 from faststream import FastStream, Logger
 from faststream.nats import JStream, NatsBroker, NatsMessage
 from nats.aio.client import Client as NatsClient
+from nats.errors import NoServersError
 from nats.js import JetStreamContext, api
+from nats.js.errors import KeyNotFoundError, NoKeysError
 from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
 from ...base import UI, CreateWorkflowUIMixin, ProviderProtocol, Runnable, UIBase
+from ...exceptions import FastAgencyNATSConnectionError, FastAgencyNATSKeyError
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -516,25 +519,41 @@ class NatsProvider(ProviderProtocol):
             yield kv
 
     async def _get_names(self) -> list[str]:
-        async with self._get_jetstream_key_value() as kv:
-            names = await kv.keys()
+        try:
+            async with self._get_jetstream_key_value() as kv:
+                names = await kv.keys()
+        except NoKeysError:
+            names = []
+        except NoServersError as e:
+            raise FastAgencyNATSConnectionError(
+                f"Unable to connect to NATS server at {self.nats_url}"
+            ) from e
+
         return names
 
     async def _get_description(self, name: str) -> str:
-        async with self._get_jetstream_key_value() as kv:
-            description = await kv.get(name)
-        return description.value.decode() if description.value else ""
+        try:
+            async with self._get_jetstream_key_value() as kv:
+                description = await kv.get(name)
+            return description.value.decode() if description.value else ""
+        except KeyNotFoundError as e:
+            raise FastAgencyNATSKeyError(
+                f"Workflow name {name} not found to get description"
+            ) from e
+        except NoServersError as e:
+            raise FastAgencyNATSConnectionError(
+                f"Unable to connect to NATS server at {self.nats_url}"
+            ) from e
 
     @property
     def names(self) -> list[str]:
-        return ["simple_learning"]
-        names = syncify(self._get_names)()
-        logger.info(f"Names: {names}")
+        names = asyncio.run(self._get_names())
+        logger.debug(f"Names: {names}")
+        # return ["simple_learning"]
         return names
 
     def get_description(self, name: str) -> str:
-        return "Student and teacher learning chat"
-        description = syncify(self._get_description)(name)
+        description = asyncio.run(self._get_description(name))
         logger.debug(f"Description: {description}")
         # return "Student and teacher learning chat"
         return description

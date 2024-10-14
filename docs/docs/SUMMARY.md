@@ -109,7 +109,13 @@ search:
                 - [FastAgencyASGINotImplementedError](api/fastagency/exceptions/FastAgencyASGINotImplementedError.md)
                 - [FastAgencyCLIError](api/fastagency/exceptions/FastAgencyCLIError.md)
                 - [FastAgencyCLIPythonVersionError](api/fastagency/exceptions/FastAgencyCLIPythonVersionError.md)
+                - [FastAgencyConnectionError](api/fastagency/exceptions/FastAgencyConnectionError.md)
                 - [FastAgencyError](api/fastagency/exceptions/FastAgencyError.md)
+                - [FastAgencyFastAPIConnectionError](api/fastagency/exceptions/FastAgencyFastAPIConnectionError.md)
+                - [FastAgencyFastAPIKeyError](api/fastagency/exceptions/FastAgencyFastAPIKeyError.md)
+                - [FastAgencyKeyError](api/fastagency/exceptions/FastAgencyKeyError.md)
+                - [FastAgencyNATSConnectionError](api/fastagency/exceptions/FastAgencyNATSConnectionError.md)
+                - [FastAgencyNATSKeyError](api/fastagency/exceptions/FastAgencyNATSKeyError.md)
                 - [FastAgencyWSGINotImplementedError](api/fastagency/exceptions/FastAgencyWSGINotImplementedError.md)
             - helpers
                 - [check_imports](api/fastagency/helpers/check_imports.md)

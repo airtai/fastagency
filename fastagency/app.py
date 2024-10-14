@@ -39,16 +39,7 @@ class FastAgency:  # Runnable
         """
         _self: Runnable = self
         self._title = title or "FastAgency application"
-        default_description = "FastAgency application"
-
-        if len(provider.names) == 0:
-            logger.warning(f"No workflows found in {provider}")
-            default_description += " - No workflows found"
-        else:
-            default_description += " - Workflows:"
-            for name in provider.names:
-                default_description += f" - {name}: {provider.get_description(name)}"
-        self._description = description or default_description
+        self._description = description or "FastAgency application"
 
         logger.info(
             f"Initializing FastAgency {self} with workflows: {provider} and UI: {ui}"

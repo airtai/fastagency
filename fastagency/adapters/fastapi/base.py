@@ -10,7 +10,7 @@ from uuid import UUID, uuid4
 import requests
 import websockets
 from asyncer import asyncify, syncify
-from fastapi import APIRouter, WebSocket
+from fastapi import APIRouter, HTTPException, WebSocket
 from pydantic import BaseModel
 
 from fastagency.logging import get_logger
@@ -22,6 +22,11 @@ from ...base import (
     Runnable,
     UIBase,
     WorkflowsProtocol,
+)
+from ...exceptions import (
+    FastAgencyConnectionError,
+    FastAgencyFastAPIConnectionError,
+    FastAgencyKeyError,
 )
 from ...messages import (
     AskingMessage,
@@ -120,10 +125,24 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             finally:
                 self.websockets.pop(workflow_uuid)
 
-        @router.get(self.discovery_path)
+        @router.get(
+            self.discovery_path,
+            responses={
+                404: {"detail": "Key Not Found"},
+                504: {"detail": "Unable to connect to provider"},
+            },
+        )
         def discovery() -> list[WorkflowInfo]:
-            names = self.provider.names
-            descriptions = [self.provider.get_description(name) for name in names]
+            try:
+                names = self.provider.names
+            except FastAgencyConnectionError as e:
+                raise HTTPException(status_code=504, detail=str(e)) from e
+
+            try:
+                descriptions = [self.provider.get_description(name) for name in names]
+            except FastAgencyKeyError as e:
+                raise HTTPException(status_code=404, detail=str(e)) from e
+
             return [
                 WorkflowInfo(name=name, description=description)
                 for name, description in zip(names, descriptions)
@@ -329,10 +348,15 @@ class FastAPIProvider(ProviderProtocol):
     def _get_workflow_info(self) -> list[dict[str, str]]:
         try:
             resp = requests.get(f"{self.fastapi_url}/{self.discovery_path}", timeout=15)
-            return resp.json()  # type: ignore [no-any-return]
-        except Exception as e:
-            logger.warning(f"Error in _get_workflow_info: {e}")
-            return []
+        except requests.exceptions.ConnectionError as e:
+            raise FastAgencyFastAPIConnectionError(
+                f"Unable to connect to FastAPI server at {self.fastapi_url}"
+            ) from e
+        if resp.status_code == 504:
+            raise FastAgencyConnectionError(resp.json()["detail"])
+        elif resp.status_code == 404:
+            raise FastAgencyKeyError(resp.json()["detail"])
+        return resp.json()  # type: ignore [no-any-return]
 
     def _get_names(self) -> list[str]:
         return [workflow["name"] for workflow in self._get_workflow_info()]
