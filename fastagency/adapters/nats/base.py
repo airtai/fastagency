@@ -14,7 +14,7 @@ from faststream import FastStream, Logger
 from faststream.nats import JStream, NatsBroker, NatsMessage
 from nats.aio.client import Client as NatsClient
 from nats.js import JetStreamContext, api
-from nats.js.errors import NoKeysError
+from nats.js.errors import KeyNotFoundError, NoKeysError
 from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
@@ -526,9 +526,14 @@ class NatsProvider(ProviderProtocol):
         return names
 
     async def _get_description(self, name: str) -> str:
-        async with self._get_jetstream_key_value() as kv:
-            description = await kv.get(name)
-        return description.value.decode() if description.value else ""
+        try:
+            async with self._get_jetstream_key_value() as kv:
+                description = await kv.get(name)
+            return description.value.decode() if description.value else ""
+        except KeyNotFoundError as e:
+            raise ValueError(
+                f"Workflow name {name} not found to get description"
+            ) from e
 
     @property
     def names(self) -> list[str]:
