@@ -20,6 +20,7 @@ from nats.js.kv import KeyValue
 from pydantic import BaseModel
 
 from ...base import UI, CreateWorkflowUIMixin, ProviderProtocol, Runnable, UIBase
+from ...exceptions import FastAgencyNATSConnectionError
 from ...logging import get_logger
 from ...messages import (
     AskingMessage,
@@ -524,7 +525,7 @@ class NatsProvider(ProviderProtocol):
         except NoKeysError:
             names = []
         except NoServersError as e:
-            raise ValueError(
+            raise FastAgencyNATSConnectionError(
                 f"Unable to connect to NATS server at {self.nats_url}"
             ) from e
 
@@ -536,7 +537,7 @@ class NatsProvider(ProviderProtocol):
                 description = await kv.get(name)
             return description.value.decode() if description.value else ""
         except (KeyNotFoundError, NoServersError) as e:
-            raise ValueError(
+            raise FastAgencyNATSConnectionError(
                 f"Workflow name {name} not found to get description"
             ) from e
 
