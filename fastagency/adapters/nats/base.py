@@ -13,6 +13,7 @@ from asyncer import asyncify, syncify
 from faststream import FastStream, Logger
 from faststream.nats import JStream, NatsBroker, NatsMessage
 from nats.aio.client import Client as NatsClient
+from nats.errors import NoServersError
 from nats.js import JetStreamContext, api
 from nats.js.errors import KeyNotFoundError, NoKeysError
 from nats.js.kv import KeyValue
@@ -520,7 +521,7 @@ class NatsProvider(ProviderProtocol):
         try:
             async with self._get_jetstream_key_value() as kv:
                 names = await kv.keys()
-        except NoKeysError:
+        except (NoKeysError, NoServersError):
             names = []
 
         return names
@@ -530,7 +531,7 @@ class NatsProvider(ProviderProtocol):
             async with self._get_jetstream_key_value() as kv:
                 description = await kv.get(name)
             return description.value.decode() if description.value else ""
-        except KeyNotFoundError as e:
+        except (KeyNotFoundError, NoServersError) as e:
             raise ValueError(
                 f"Workflow name {name} not found to get description"
             ) from e
