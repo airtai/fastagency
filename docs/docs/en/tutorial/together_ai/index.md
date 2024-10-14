@@ -33,7 +33,7 @@ In this section, we'll go through the steps to install FastAgency and set up you
 To get started, you need to install FastAgency with autogen submodule. You can do this using `pip`, Python's package installer.
 
 ```bash
-pip install "fastagency[autogen]"
+pip install "fastagency[autogen,openapi]"
 ```
 
 ### Setting Up Your Together AI Account and API Key
