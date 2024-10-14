@@ -50,9 +50,6 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         self,
         provider: ProviderProtocol,
         *,
-        # user: Optional[str] = None,
-        # password: Optional[str] = None,
-        # super_conversation: Optional["FastAPIAdapter"] = None,
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
@@ -69,9 +66,6 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             ws_path (str, optional): The websocket path. Defaults to "/fastagency/ws".
         """
         self.provider = provider
-
-        # self.user = user
-        # self.password = password
 
         self.initiate_workflow_path = initiate_workflow_path
         self.discovery_path = discovery_path
@@ -122,8 +116,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                     **init_msg.params,
                 )
             except Exception as e:
-                # logger.warning(f"Error in websocket_endpoint: {e}", stack_info=True)
-                logger.error(f"Error in websocket_endpoint: {e}")
+                logger.error(f"Error in websocket_endpoint: {e}", stack_info=True)
             finally:
                 self.websockets.pop(workflow_uuid)
 
@@ -160,13 +153,6 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
         return syncify(a_visit_default)(self, message)
 
-    # def process_message(self, message: IOMessage) -> Optional[str]:
-    #     try:
-    #         return self.visit(message)
-    #     except Exception as e:
-    #         logger.error(f"Error in process_message: {e}", stack_info=True)
-    #         raise
-
     def create_subconversation(self) -> UIBase:
         return self
 
@@ -189,19 +175,9 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
     def create_provider(
         cls,
         fastapi_url: str,
-        fastapi_user: Optional[str] = None,
-        fastapi_password: Optional[str] = None,
-        nats_url: Optional[str] = None,
-        nats_user: Optional[str] = None,
-        nats_password: Optional[str] = None,
     ) -> ProviderProtocol:
         return FastAPIProvider(
             fastapi_url=fastapi_url,
-            # fastapi_user=fastapi_user,
-            # fastapi_password=fastapi_password,
-            # nats_url=nats_url,
-            # nats_user=nats_user,
-            # nats_password=nats_password,
         )
 
 
@@ -209,11 +185,6 @@ class FastAPIProvider(ProviderProtocol):
     def __init__(
         self,
         fastapi_url: str,
-        # fastapi_user: Optional[str] = None,
-        # fastapi_password: Optional[str] = None,
-        # nats_url: Optional[str] = None,
-        # nats_user: Optional[str] = None,
-        # nats_password: Optional[str] = None,
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
@@ -228,19 +199,6 @@ class FastAPIProvider(ProviderProtocol):
             fastapi_url[:-1] if fastapi_url.endswith("/") else fastapi_url
         )
         self.ws_url = "ws" + self.fastapi_url[4:]
-
-        # self.fastapi_user = fastapi_user
-        # self.fastapi_password = fastapi_password
-
-        # # self.nats_url = nats_url or "ws://localhost:9222"
-        # if not self.nats_url.startswith(
-        #     "ws://"  # nosemgrep
-        # ) and not self.nats_url.startswith("wss://"):
-        #     raise ValueError(
-        #         f"NATS URL must start with ws:// or wss:// but got {self.nats_url}"  # nosemgrep
-        #     )
-        # self.nats_user = nats_user
-        # self.nats_password = nats_password
 
         self.is_broker_running: bool = False
 
@@ -289,7 +247,6 @@ class FastAPIProvider(ProviderProtocol):
         to_server_subject: str,
         params: dict[str, Any],
     ) -> None:
-        # connect_url = self.nats_url
         connect_url = f"{self.ws_url}{self.ws_path}"
         async with websockets.connect(connect_url) as websocket:
             init_workflow_msg = InitiateWorkflowModel(
@@ -299,10 +256,6 @@ class FastAPIProvider(ProviderProtocol):
                 params=params,
             )
             await websocket.send(init_workflow_msg.model_dump_json())
-
-            # message = f"SUB {from_server_subject} 1\r\n"
-            # await websocket.send(message)
-            # logger.info(f"Subscribed to topic {from_server_subject}")
 
             while True:
                 response = await websocket.recv()
