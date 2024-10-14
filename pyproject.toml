@@ -147,7 +147,7 @@ testing = [
 
 dev = [
     "fastagency[submodules,server,lint,testing,devdocs]",
-    "pre-commit==3.8.0",
+    "pre-commit==4.0.1",
     "detect-secrets==1.5.0",
 ]
 
