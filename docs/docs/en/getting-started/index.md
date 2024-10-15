@@ -111,16 +111,14 @@ We will show you four different setups, two for development and two for producti
 
 - Production setups
 
-    - **FastAPI + Mesop**: This is fairly scalable setup using [**FastAPI**](https://fastapi.tiangolo.com/)
-        {target="_blank"} to execute your workflows and [**Mesop**](https://google.github.io/mesop/){target="_blank"} for interactive web application. [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} supports execution with multiple workers with each workflowe being executed in the context of a websocket connection. [**Mesop**](https://google.github.io/mesop/){target="_blank"} is still limited to a single worker, although there is much less load of it due to workflows being executed in the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} workers.
+    - **FastAPI + Mesop**: This is fairly scalable setup using [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} to execute your workflows and [**Mesop**](https://google.github.io/mesop/){target="_blank"} for interactive web application. [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} supports execution with multiple workers, with each workflow being executed in the context of a WebSocket connection. [**Mesop**](https://google.github.io/mesop/){target="_blank"} is still limited to a single worker, although there is much less load of it due to workflows being executed in the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} workers.
 
     - **NATS + FastAPI + Mesop**: This is the most scalable setup using a distributed message broker
         [**NATS.io MQ**](https://nats.io/){target="_blank"}. Workflows are being executed with
         multiple workers that attach to the MQ waiting for initiate workflow messages. Such workers
         can be running on different machines or even different data centers/cloud providers.
         Message queues are highly scalable, but more difficult to integrate with end-clients.
-        In order to make such integrations easier, we will connect our [**NATS**](https://nats.io/){target="_blank"}-based message queue with the [**FastAPI**](https://fastapi.tiangolo.com/)
-        {target="_blank"} application.
+        In order to make such integrations easier, we will connect our [**NATS**](https://nats.io/){target="_blank"}-based message queue with the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application.
 
 
 ### Install
@@ -150,7 +148,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
 === "NATS + FastAPI + Mesop"
     ```console
-    pip install "fastagency[autogen,mesop,fastapi,nats]"
+    pip install "fastagency[autogen,mesop,nats]"
     ```
 
     This command installs FastAgency with support for both the Console and Mesop
@@ -179,7 +177,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
     === "NATS + FastAPI + Mesop"
         ```console
-        pip install "fastagency[pyautogen,mesop,fastapi,nats]"
+        pip install "fastagency[pyautogen,mesop,nats]"
         ```
 
 
@@ -346,14 +344,14 @@ This code snippet sets up a simple learning chat between a student and a teacher
     <details>
         <summary>main_2_fastapi.py</summary>
         ```python
-        {!> docs_src/getting_started/fastapi/main_2_fastapi.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py !}
         ```
     </details>
 
     <details>
         <summary>main_3_mesop.py</summary>
         ```python
-        {!> docs_src/getting_started/fastapi/main_3_mesop.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/main_3_mesop.py !}
         ```
     </details>
 
