@@ -59,7 +59,7 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
 nats_url = environ.get("NATS_URL", "nats://localhost:4222")
 
 user: str = "fastagency"
-password: str = environ.get("FASTAGENCY_NATS_PASSWORD")  # type: ignore[assignment]
+password: str = environ.get("FASTAGENCY_NATS_PASSWORD", "fastagency_nats_password")  # type: ignore[assignment]
 
 adapter = NatsAdapter(provider=wf, nats_url=nats_url, user=user, password=password)
 
