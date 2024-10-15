@@ -2,7 +2,10 @@
 
 In this tutorial, you'll learn how to use **non-OpenAI models with FastAgency**. Since FastAgency uses AutoGen as its default runtime, it automatically supports all proxy servers that are AutoGen compatible. For more information on the supported proxy servers, please see <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
 
-To keep things simple and demonstrate the use of non-OpenAI models, we’ll recreate the **Weatherman** example mentioned in this [section](../../user-guide/api/openapi/index.md) using  **Together AI Cloud along with the powerful Meta-Llama-3.1-70B-Instruct-Turbo** model. Let’s get started!
+To keep things simple and demonstrate how to use non-OpenAI models, we’ll recreate the **Weatherman** example from this [section](../../user-guide/api/openapi/index.md), but this time using **Together AI** Cloud along with the **Meta-Llama-3.1-70B-Instruct-Turbo** model.
+
+You can **easily switch** to non-OpenAI models by making **just a few lines of code changes** and adjusting the system prompts. Let’s get started!
+
 
 ## What You’ll Learn
 
@@ -20,7 +23,7 @@ Let’s get started with using non-OpenAI models in **FastAgency!**
 Before you begin this tutorial, ensure you have the following:
 
 - **FastAgency installed**: Follow the installation instructions mentioned [here](#installing-fastagency) for installing FastAgency.
-- **Together AI account and API Key**: For details on how to create an account and obtain your API key, see the [Setting Up Your Together AI Account and API Key section](#setting-up-your-together-ai-account-and-api-key).
+- **Together AI account and API Key**: For instructions on creating a Together AI account and getting your API key, follow the steps outlined [here](#setting-up-your-together-ai-account-and-api-key) section.
 
 With these prerequisites in place, you’re ready to dive into the tutorial!
 
@@ -30,7 +33,7 @@ In this section, we'll go through the steps to install FastAgency and set up you
 
 ### Installing FastAgency
 
-To get started, you need to install FastAgency with autogen submodule. You can do this using `pip`, Python's package installer.
+To get started, you need to install FastAgency with autogen and openapi submodule. You can do this using `pip`, Python's package installer.
 
 ```bash
 pip install "fastagency[autogen,openapi]"
@@ -231,7 +234,6 @@ In this tutorial, we explored how to **leverage non-OpenAI models with FastAgenc
 You’ve learned how to:
 
 - **Configure a non-OpenAI model** within FastAgency.
-- Update system messages to optimize interactions with different models.
 - **Easily transition between models** with minimal code changes.
 
 With these skills, you now have the foundation to integrate other non-OpenAI models into your projects, opening up new possibilities for building robust and diverse applications.
