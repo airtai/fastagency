@@ -23,12 +23,13 @@ from ...logging import get_logger
 from ...messages import (
     AskingMessage,
     IOMessage,
+    InitiateWorkflowModel,
+    InputResponseModel,
     MessageProcessorMixin,
     MultipleChoice,
     TextInput,
     TextMessage,
 )
-from .messages import InitiateWorkflowModel, InputResponseModel
 
 if TYPE_CHECKING:
     from faststream.nats.subscriber.asyncapi import AsyncAPISubscriber

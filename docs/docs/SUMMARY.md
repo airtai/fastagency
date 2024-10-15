@@ -53,9 +53,6 @@ search:
                     - base
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
-                    - messages
-                        - [InitiateWorkflowModel](api/fastagency/adapters/nats/messages/InitiateWorkflowModel.md)
-                        - [InputResponseModel](api/fastagency/adapters/nats/messages/InputResponseModel.md)
             - api
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
@@ -131,6 +128,8 @@ search:
                 - [Error](api/fastagency/messages/Error.md)
                 - [FunctionCallExecution](api/fastagency/messages/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/messages/IOMessage.md)
+                - [InitiateWorkflowModel](api/fastagency/messages/InitiateWorkflowModel.md)
+                - [InputResponseModel](api/fastagency/messages/InputResponseModel.md)
                 - [KeepAlive](api/fastagency/messages/KeepAlive.md)
                 - [MessageProcessorMixin](api/fastagency/messages/MessageProcessorMixin.md)
                 - [MessageProcessorProtocol](api/fastagency/messages/MessageProcessorProtocol.md)

@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.adapters.nats.messages.InitiateWorkflowModel
+::: fastagency.messages.InitiateWorkflowModel
