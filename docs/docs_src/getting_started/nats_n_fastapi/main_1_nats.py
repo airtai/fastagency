@@ -67,5 +67,5 @@ def list_workflows() -> dict[str, Any]:
     return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
 
 
-# start the provider with either command
+# start the adapter with the following command
 # uvicorn main_1_nats:app --reload

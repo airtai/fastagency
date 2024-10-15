@@ -253,11 +253,17 @@ This code snippet sets up a simple learning chat between a student and a teacher
     add it to a `FastAPI` application using the `lifespan` parameter. The adapter
     will have all REST and Websocket routes for communicating with a client.
 
-    The `NatsAdapter` requires a running NATS server. The easiest way to start NATS server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication. Later in this getting started guide, we will learn about [defining the NATS configuration](#complete-application-code) and [starting the NATS docker container](#run-application).
-
     ```python hl_lines="5 7"
     {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:55-61] !}
     ```
+
+    The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
+
+    ```python hl_lines="1 3 6 11 17"
+    {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf [ln:1-23]!}
+    ```
+
+    In the above NATS configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in NATS and configure NATS to serve via the appropriate ports.
 
 ### Adapter Chaining
 
@@ -298,6 +304,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
 
 
 ### Complete Application Code
+Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
 === "Console"
 
