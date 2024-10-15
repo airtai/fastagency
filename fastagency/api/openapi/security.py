@@ -172,6 +172,10 @@ class HTTPBearer(BaseSecurity):
     type: ClassVar[Literal["http"]] = "http"
     in_value: ClassVar[Literal["bearer"]] = "bearer"
 
+    @classmethod
+    def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
+        return cls.type == type and cls.in_value == schema_parameters.get("scheme")
+
     class Parameters(BaseModel):  # BaseSecurityParameters
         """HTTP Bearer security parameters class."""
 
