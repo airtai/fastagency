@@ -10,6 +10,7 @@ search:
             - Agents
                 - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
             - [User interaction](user-guide/runtimes/autogen/interactions.md)
+            - [Using Non-OpenAI Models](user-guide/runtimes/autogen/using_non_openai_models.md)
         - [CrewAI](user-guide/runtimes/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
