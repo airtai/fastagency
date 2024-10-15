@@ -48,13 +48,9 @@ search:
                         - [InititateChatModel](api/fastagency/adapters/fastapi/base/InititateChatModel.md)
                         - [WorkflowInfo](api/fastagency/adapters/fastapi/base/WorkflowInfo.md)
                 - nats
-                    - [InitiateWorkflowModel](api/fastagency/adapters/nats/InitiateWorkflowModel.md)
-                    - [InputResponseModel](api/fastagency/adapters/nats/InputResponseModel.md)
                     - [NatsAdapter](api/fastagency/adapters/nats/NatsAdapter.md)
                     - [NatsProvider](api/fastagency/adapters/nats/NatsProvider.md)
                     - base
-                        - [InitiateWorkflowModel](api/fastagency/adapters/nats/base/InitiateWorkflowModel.md)
-                        - [InputResponseModel](api/fastagency/adapters/nats/base/InputResponseModel.md)
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
             - api
@@ -132,6 +128,8 @@ search:
                 - [Error](api/fastagency/messages/Error.md)
                 - [FunctionCallExecution](api/fastagency/messages/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/messages/IOMessage.md)
+                - [InitiateWorkflowModel](api/fastagency/messages/InitiateWorkflowModel.md)
+                - [InputResponseModel](api/fastagency/messages/InputResponseModel.md)
                 - [KeepAlive](api/fastagency/messages/KeepAlive.md)
                 - [MessageProcessorMixin](api/fastagency/messages/MessageProcessorMixin.md)
                 - [MessageProcessorProtocol](api/fastagency/messages/MessageProcessorProtocol.md)
