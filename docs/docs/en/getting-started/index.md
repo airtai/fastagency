@@ -385,7 +385,7 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "FastAPI + Mesop"
 
-    In this setup, we need to run two command in separate terminal windows:
+    In this setup, we need to run **two** commands in **separate** terminal windows:
 
     !!! note "Terminal 1"
         This command starts a **FastAPI** application using uvicorn:
@@ -403,15 +403,18 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "NATS + FastAPI + Mesop"
 
-    In this setup, we need to run three command in separate terminal windows:
+    In this setup, we need to run **three** commands in **separate** terminal windows:
 
     !!! note "Terminal 1"
+
+        This command starts a **FastAPI** application that provides a conversational workflow:
+
         ```
         uvicorn main_1_nats:app --reload
         ```
 
     !!! note "Terminal 2"
-        This command starts a **FastAPI** application using uvicorn:
+        This command starts a **FastAPI** application integrated with a **NATS** messaging system:
 
         ```
         uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
