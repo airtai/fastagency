@@ -10,7 +10,7 @@ from uuid import UUID, uuid4
 import requests
 import websockets
 from asyncer import asyncify, syncify
-from fastapi import APIRouter, HTTPException, WebSocket
+from fastapi import APIRouter, Depends, HTTPException, WebSocket
 from pydantic import BaseModel
 
 from fastagency.logging import get_logger
@@ -58,6 +58,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
+        get_user_id: Callable[[], Optional[str]] = lambda: None,
     ) -> None:
         """Provider for FastAPI.
 
@@ -69,12 +70,15 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             initiate_workflow_path (str, optional): The initiate workflow path. Defaults to "/fastagency/initiate_workflow".
             discovery_path (str, optional): The discovery path. Defaults to "/fastagency/discovery".
             ws_path (str, optional): The websocket path. Defaults to "/fastagency/ws".
+            get_user_id (Callable[[], Optional[str]], optional): The get user id function. Defaults to lambda: None.
         """
         self.provider = provider
 
         self.initiate_workflow_path = initiate_workflow_path
         self.discovery_path = discovery_path
         self.ws_path = ws_path
+
+        self.get_user_id = get_user_id
 
         self.websockets: dict[str, WebSocket] = {}
 
@@ -85,9 +89,8 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
         @router.post(self.initiate_workflow_path)
         async def initiate_chat(
-            initiate_chat: InititateChatModel,
+            initiate_chat: InititateChatModel, user_id: str = Depends(self.get_user_id)
         ) -> InitiateWorkflowModel:
-            user_id: Optional[UUID] = uuid4()
             workflow_uuid: UUID = uuid4()
 
             init_msg = InitiateWorkflowModel(
