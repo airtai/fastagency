@@ -148,7 +148,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
 === "NATS + FastAPI + Mesop"
     ```console
-    pip install "fastagency[autogen,mesop,nats]"
+    pip install "fastagency[autogen,mesop,fastapi,nats]"
     ```
 
     This command installs FastAgency with support for both the Console and Mesop
@@ -177,7 +177,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
     === "NATS + FastAPI + Mesop"
         ```console
-        pip install "fastagency[pyautogen,mesop,nats]"
+        pip install "fastagency[pyautogen,mesop,fastapi,nats]"
         ```
 
 
