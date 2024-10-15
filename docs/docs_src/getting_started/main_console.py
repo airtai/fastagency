@@ -14,7 +14,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 wf = AutoGenWorkflows()
@@ -22,13 +22,12 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(
-    ui: UI, workflow_uuid: str, params: dict[str, Any]
+    ui: UI, params: dict[str, Any]
 ) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
-        prompt="I can help you learn about geometry. What subject you would like to explore?",
-        workflow_uuid=workflow_uuid,
+        prompt="I can help you learn about mathematics. What subject you would like to explore?",
     )
 
     student_agent = ConversableAgent(

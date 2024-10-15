@@ -16,7 +16,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 wf = AutoGenWorkflows()
@@ -24,13 +24,12 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="simple_websurfer", description="WebSurfer chat")  # type: ignore[type-var]
 def websurfer_workflow(
-    ui: UI, workflow_uuid: str, params: dict[str, Any]
+    ui: UI, params: dict[str, Any]
 ) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
         prompt="I can help you with your web search. What would you like to know?",
-        workflow_uuid=workflow_uuid,
     )
 
     user_agent = UserProxyAgent(

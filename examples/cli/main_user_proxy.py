@@ -16,7 +16,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 
@@ -24,11 +24,7 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="weatherman_workflow", description="Weatherman chat")
-def simple_workflow(
-    ui: UI,
-    workflow_uuid: str,
-    params: dict[str, Any],
-) -> str:
+def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
         human_input_mode="ALWAYS",
@@ -58,7 +54,6 @@ def simple_workflow(
         sender="Workflow",
         recipient="User",
         prompt="What would you like to find out about weather?",
-        workflow_uuid=workflow_uuid,
     )
 
     chat_result = user_proxy.initiate_chat(

@@ -19,7 +19,7 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
@@ -57,7 +57,7 @@ wf = AutoGenWorkflows()
 
 @wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")
 def giphy_workflow_with_security(
-    ui: UI, workflow_uuid: str, params: dict[str, Any]
+    ui: UI, params: dict[str, Any]
 ) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
@@ -66,12 +66,11 @@ def giphy_workflow_with_security(
         message: Annotated[str, "Message for examiner"],
     ) -> Optional[str]:
         try:
-            msg = TextInput(
+            return ui.text_input(
                 sender="giphy_agent",
                 recipient="giphy_agent",
                 prompt=message,
             )
-            return ui.process_message(msg)
         except Exception as e:  # pragma: no cover
             return f"present_completed_task_or_ask_question() FAILED! {e}"
 
@@ -112,7 +111,6 @@ If you are presenting a completed task, last message should be a question: 'Do y
         sender="Workflow",
         recipient="User",
         prompt="I can help you find images related to a certain subject. What kind of images would you like to find?",
-        workflow_uuid=workflow_uuid,
     )
 
     chat_result = giphy_agent.initiate_chat(

@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.base.run_workflow
+::: fastagency.exceptions.FastAgencyNATSConnectionError

@@ -1,5 +1,4 @@
 import os
-from os import environ
 from typing import Any
 
 from autogen.agentchat import ConversableAgent
@@ -7,7 +6,6 @@ from fastapi import FastAPI
 
 from fastagency import UI
 from fastagency.adapters.nats import NatsAdapter
-from fastagency.logging import get_logger
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 
 llm_config = {
@@ -17,21 +15,18 @@ llm_config = {
             "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
-
-logger = get_logger(__name__)
 
 wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
+def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
-        prompt="I can help you learn about geometry. What subject you would like to explore?",
-        workflow_uuid=workflow_uuid,
+        prompt="I can help you learn about mathematics. What subject you would like to explore?",
     )
 
     student_agent = ConversableAgent(
@@ -47,24 +42,19 @@ def simple_workflow(ui: UI, workflow_uuid: str, params: dict[str, Any]) -> str:
         # human_input_mode="ALWAYS",
     )
 
-    logger.info("Above initiate_chat in simple_workflow")
-    logger.info(llm_config)
     chat_result = student_agent.initiate_chat(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=5,
     )
-    logger.info("Below initiate_chat in simple_workflow")
-    logger.info(chat_result)
 
-    return chat_result.summary
+    return chat_result.summary  # type: ignore[no-any-return]
 
 
-nats_url = environ.get("NATS_URL", None)  # type: ignore[assignment]
-
+nats_url = os.environ.get("NATS_URL", "nats://localhost:4222")
 user: str = "faststream"
-password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
+password: str = os.environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
 
 adapter = NatsAdapter(provider=wf, nats_url=nats_url, user=user, password=password)
 
@@ -73,9 +63,9 @@ app = FastAPI(lifespan=adapter.lifespan)
 
 # this is optional, but we would like to see the list of workflows
 @app.get("/")
-def list_workflows():
+def list_workflows() -> dict[str, Any]:
     return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
 
 
 # start the provider with either command
-# uvicorn 1_main_natsprovider:app --reload
+# uvicorn main_1_nats:app --reload
