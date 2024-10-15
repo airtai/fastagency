@@ -48,15 +48,14 @@ search:
                         - [InititateChatModel](api/fastagency/adapters/fastapi/base/InititateChatModel.md)
                         - [WorkflowInfo](api/fastagency/adapters/fastapi/base/WorkflowInfo.md)
                 - nats
-                    - [InitiateWorkflowModel](api/fastagency/adapters/nats/InitiateWorkflowModel.md)
-                    - [InputResponseModel](api/fastagency/adapters/nats/InputResponseModel.md)
                     - [NatsAdapter](api/fastagency/adapters/nats/NatsAdapter.md)
                     - [NatsProvider](api/fastagency/adapters/nats/NatsProvider.md)
                     - base
-                        - [InitiateWorkflowModel](api/fastagency/adapters/nats/base/InitiateWorkflowModel.md)
-                        - [InputResponseModel](api/fastagency/adapters/nats/base/InputResponseModel.md)
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
+                    - messages
+                        - [InitiateWorkflowModel](api/fastagency/adapters/nats/messages/InitiateWorkflowModel.md)
+                        - [InputResponseModel](api/fastagency/adapters/nats/messages/InputResponseModel.md)
             - api
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)

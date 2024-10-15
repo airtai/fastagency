@@ -7,7 +7,6 @@ from collections.abc import AsyncIterator, Iterator
 from contextlib import asynccontextmanager, contextmanager
 from queue import Queue
 from typing import TYPE_CHECKING, Any, Optional
-from uuid import UUID
 
 from asyncer import asyncify, syncify
 from faststream import FastStream, Logger
@@ -17,7 +16,6 @@ from nats.errors import NoServersError
 from nats.js import JetStreamContext, api
 from nats.js.errors import KeyNotFoundError, NoKeysError
 from nats.js.kv import KeyValue
-from pydantic import BaseModel
 
 from ...base import UI, CreateWorkflowUIMixin, ProviderProtocol, Runnable, UIBase
 from ...exceptions import FastAgencyNATSConnectionError, FastAgencyNATSKeyError
@@ -30,22 +28,10 @@ from ...messages import (
     TextInput,
     TextMessage,
 )
+from .messages import InitiateWorkflowModel, InputResponseModel
 
 if TYPE_CHECKING:
     from faststream.nats.subscriber.asyncapi import AsyncAPISubscriber
-
-
-class InputResponseModel(BaseModel):
-    msg: str
-    question_id: Optional[UUID] = None
-    error: bool = False
-
-
-class InitiateWorkflowModel(BaseModel):
-    user_id: Optional[UUID] = None
-    workflow_uuid: UUID
-    name: str
-    params: dict[str, Any]
 
 
 logger = get_logger(__name__)

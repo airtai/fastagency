@@ -33,7 +33,7 @@ from ...messages import (
     IOMessage,
     MessageProcessorMixin,
 )
-from ..nats import InitiateWorkflowModel, InputResponseModel
+from ..nats.messages import InitiateWorkflowModel, InputResponseModel
 
 logger = get_logger(__name__)
 
