@@ -2,7 +2,7 @@
 
 FastAgency makes it simple to use **non-OpenAI models** through AutoGen's runtime, which connects to proxy servers offering OpenAI-compatible API. This allows you to create agents using a wide variety of models. For more details on supported proxy servers, check <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
 
-With this flexibility, you can **access a broad range of models**, **assign specialized models to agents**, **run workflows locally**, and **optimise inference costs** for better efficiency.
+This flexibility allows you to **access a variety of models**, assign **tailored models to agents**, and **optimise inference costs**, among other advantages.
 
 To show how simple it is to use **non-OpenAI models**, we’ll **rewrite** the [Weatherman chatbot](./index.md#example-integrating-a-weather-api-with-autogen) example from earlier, making just a **few changes** to switch to **Together AI** Cloud with the **Meta-Llama-3.1-70B-Instruct-Turbo** model. Let’s dive in!
 
