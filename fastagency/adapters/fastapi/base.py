@@ -58,7 +58,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
-        get_user_id: Callable[[], Optional[str]] = lambda: None,
+        get_user_id: Callable[[], Optional[UUID]] = lambda: None,
     ) -> None:
         """Provider for FastAPI.
 
@@ -89,7 +89,8 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
         @router.post(self.initiate_workflow_path)
         async def initiate_chat(
-            initiate_chat: InititateChatModel, user_id: str = Depends(self.get_user_id)
+            initiate_chat: InititateChatModel,
+            user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
         ) -> InitiateWorkflowModel:
             workflow_uuid: UUID = uuid4()
 
