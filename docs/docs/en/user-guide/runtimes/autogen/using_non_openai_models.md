@@ -1,8 +1,11 @@
 # Using Non-OpenAI Models with FastAgency
 
-FastAgency makes it simple to use **non-OpenAI models** through AutoGen's runtime, which connects to proxy servers offering OpenAI-compatible API. This allows you to create agents using a wide variety of models. For more details on supported proxy servers, check <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
+FastAgency makes it simple to work with **non-OpenAI models** through AutoGen's runtime. You can do this in a couple of ways:
 
-This flexibility allows you to **access a variety of models**, assign **tailored models to agents**, and **optimise inference costs**, among other advantages.
+- via **proxy servers that provide an OpenAI-compatible API**
+- by **using a custom model client class**, which lets you define and load your own models, as explained [here](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}.
+
+This flexibility allows you to **access a variety of models**, assign **tailored models to agents**, and **optimise inference costs**, among other advantages. For more details, check out AutoGen's documentation on running **non-OpenAI models** <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
 
 To show how simple it is to use **non-OpenAI models**, we’ll **rewrite** the [Weatherman chatbot](./index.md#example-integrating-a-weather-api-with-autogen) example from earlier, making just a **few changes** to switch to **Together AI** Cloud with the **Meta-Llama-3.1-70B-Instruct-Turbo** model. Let’s dive in!
 
@@ -20,7 +23,7 @@ This installation includes the AutoGen runtime, allowing you to build multi-agen
 
 Before you begin this guide, ensure you have:
 
-- **Together AI account and API Key**: For instructions on creating a Together AI account and getting your API key, follow the steps outlined [here](#setting-up-your-together-ai-account-and-api-key) section.
+- **Together AI account and API Key**: To create a Together AI account and obtain your API key, follow the steps in the section below.
 
 ### Setting Up Your Together AI Account and API Key
 
@@ -81,7 +84,7 @@ Here we are setting `hide_tools` to `if_any_run`, indicating that we want to hid
 The system message has been adjusted to work optimally with the **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo** model. You may need to experiment with the system prompt if you are using a different model.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py [ln:27] !}
+{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py [ln:27-32] !}
 ```
 
 ### Complete Application Code
@@ -216,4 +219,4 @@ What's the weather in Zagreb
 2024-10-14 19:37:11,923 [INFO] Workflow 'simple_weather' completed with result: {'content': 'The current weather in Zagreb is 17 degrees Celsius, with forecasted temperatures of 14 degrees Celsius on October 14, 15 degrees Celsius on October 15, and 15 degrees Celsius on October 16.', 'refusal': None, 'role': 'assistant', 'function_call': None, 'tool_calls': None}
 ```
 
-This example demonstrates the power of the AutoGen runtime within FastAgency, showcasing how to **leverage non-OpenAI models with FastAgency** by making just a few lines of code. By leveraging FastAgency, developers can quickly build interactive, scalable applications that interact with live data sources.
+This example demonstrates the power of AutoGen's runtime in FastAgency, highlighting how easily you can use **non-OpenAI models** with just a few changes in the code. With FastAgency, developers can **quickly build interactive**, **scalable applications** that work with live data sources.
