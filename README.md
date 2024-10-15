@@ -55,7 +55,7 @@
 
 ## What is FastAgency?
 
-For start, FastAgency is not yet another agentic AI frameworks. There are many such
+For start, FastAgency is not yet another agentic AI framework. There are many such
 frameworks available today, the most popular open-source ones being [**AutoGen**](https://github.com/microsoft/autogen), [**CrewAI**](https://www.crewai.com/), [**Swarm**](https://github.com/openai/swarm) and [**LangGraph**](https://github.com/langchain-ai/langgraph). FastAgency provides you with a unified programming interface for deploying agentic workflows written in above agentic frameworks in both development and productional settings (current version supports [**AutoGen**](https://github.com/microsoft/autogen) only, but other frameworks will be supported very soon). With only a few lines of code, you can create a web chat application or REST API service interacting with agents of your choice. If you need to scale-up your workloads, FastAgency can help you deploy a fully distributed system using internal message brokers coordinating multiple machines in multiple datacenters with just a few lines of code changed from your local development setup.
 
 In the rest of this guide, we will walk you through the initial setup and usage of FastAgency, using both development and production environments.
