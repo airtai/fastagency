@@ -10,6 +10,7 @@ search:
             - Agents
                 - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
             - [User interaction](user-guide/runtimes/autogen/interactions.md)
+            - [Using Non-OpenAI Models](user-guide/runtimes/autogen/using_non_openai_models.md)
         - [CrewAI](user-guide/runtimes/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
@@ -17,7 +18,7 @@ search:
         - [FastAPI](user-guide/ui/fastapi/basics.md)
     - [Adapters](user-guide/adapters/index.md)
         - [FastAPI](user-guide/adapters/fastapi/index.md)
-        - [Nats.io](user-guide/adapters/nats/index.md)
+        - [NATS.io](user-guide/adapters/nats/index.md)
     - [API-s](user-guide/api/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
