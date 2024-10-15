@@ -58,7 +58,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
-        get_user_id: Callable[[], Optional[UUID]] = lambda: None,
+        get_user_id: Optional[Callable[[], Optional[UUID]]] = None,
     ) -> None:
         """Provider for FastAPI.
 
@@ -70,7 +70,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             initiate_workflow_path (str, optional): The initiate workflow path. Defaults to "/fastagency/initiate_workflow".
             discovery_path (str, optional): The discovery path. Defaults to "/fastagency/discovery".
             ws_path (str, optional): The websocket path. Defaults to "/fastagency/ws".
-            get_user_id (Callable[[], Optional[str]], optional): The get user id function. Defaults to lambda: None.
+            get_user_id (Optional[Callable[[], Optional[UUID]]], optional): The get user id. Defaults to None.
         """
         self.provider = provider
 
@@ -78,7 +78,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         self.discovery_path = discovery_path
         self.ws_path = ws_path
 
-        self.get_user_id = get_user_id
+        self.get_user_id = get_user_id or (lambda: None)
 
         self.websockets: dict[str, WebSocket] = {}
 
@@ -104,7 +104,10 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             return init_msg
 
         @router.websocket(self.ws_path)
-        async def websocket_endpoint(websocket: WebSocket) -> None:
+        async def websocket_endpoint(
+            websocket: WebSocket,
+            user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
+        ) -> None:
             logger.info("Websocket connected")
             await websocket.accept()
             logger.info("Websocket accepted")
@@ -136,7 +139,9 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                 504: {"detail": "Unable to connect to provider"},
             },
         )
-        def discovery() -> list[WorkflowInfo]:
+        def discovery(
+            user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
+        ) -> list[WorkflowInfo]:
             try:
                 names = self.provider.names
             except FastAgencyConnectionError as e:

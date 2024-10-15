@@ -4,6 +4,9 @@ from fastagency.ui.mesop import MesopUI
 
 fastapi_url = "http://localhost:8008"
 
+# todo: add security params
+# get token from /login route and pass token to provider
+
 provider = FastAPIAdapter.create_provider(
     fastapi_url=fastapi_url,
 )
