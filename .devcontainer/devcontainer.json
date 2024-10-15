@@ -55,7 +55,7 @@
             // "upgradePackages": "true"
         },
         // "ghcr.io/devcontainers/features/python:1": {},
-        // "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/node:1": {},
         // The below configuration with "version" set to "latest" fails in codespace
         // "ghcr.io/devcontainers/features/git:1": {
         //     "version": "latest",
