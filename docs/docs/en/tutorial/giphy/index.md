@@ -1,4 +1,4 @@
-# Generating GIFs through Web Scraping
+# Web Scraping and Giphy API Integration
 
 In this tutorial, we will explore how to leverage the **FastAgency** framework to create a dynamic and interactive chatbot that integrates two powerful agents:
 

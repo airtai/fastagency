@@ -10,6 +10,7 @@ search:
             - Agents
                 - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
             - [User interaction](user-guide/runtimes/autogen/interactions.md)
+            - [Using Non-OpenAI Models](user-guide/runtimes/autogen/using_non_openai_models.md)
         - [CrewAI](user-guide/runtimes/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
@@ -23,9 +24,8 @@ search:
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
     - [CLI](user-guide/cli/index.md)
-- [Tutorial](tutorial/index.md)
-    - [Generating GIFs through Web Scraping](tutorial/giphy/index.md)
-    - [Using Non-OpenAI Models](tutorial/together_ai/index.md)
+- Tutorial
+    - [Giphy API & WebSurfer](tutorial/giphy/index.md)
 - Reference
 {api}
 {cli}

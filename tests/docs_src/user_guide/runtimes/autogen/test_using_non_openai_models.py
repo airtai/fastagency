@@ -3,8 +3,8 @@ from typer.testing import CliRunner
 
 from fastagency.cli import app
 
-from ...conftest import InputMock
-from ..helpers import skip_internal_server_error
+from .....conftest import InputMock
+from ....helpers import skip_internal_server_error
 
 runner = CliRunner()
 
@@ -18,7 +18,11 @@ def test_cli_together_ai(monkeypatch: pytest.MonkeyPatch) -> None:
 
     result = runner.invoke(
         app,
-        ["run", "docs/docs_src/tutorial/together_ai/main.py", "--single-run"],
+        [
+            "run",
+            "docs/docs_src/user_guide/runtimes/autogen/using_non_openai_models.py",
+            "--single-run",
+        ],
     )
     assert result.exit_code == 0
     assert INPUT_MESSAGE in result.stdout

@@ -1,43 +1,24 @@
 # Using Non-OpenAI Models with FastAgency
 
-In this tutorial, you'll learn how to use **non-OpenAI models with FastAgency**. Since FastAgency uses AutoGen as its default runtime, it automatically supports all proxy servers that are AutoGen compatible. For more information on the supported proxy servers, please see <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
+FastAgency makes it easy to use **non-OpenAI models** through AutoGen's runtime, which works with proxy servers offering OpenAI-compatible APIs. This allows you to create agents with a wide variety of models. For more details on supported proxy servers, check <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
 
-To keep things simple and demonstrate how to use non-OpenAI models, we’ll recreate the **Weatherman** example from this [section](../../user-guide/api/openapi/index.md), but this time using **Together AI** Cloud along with the **Meta-Llama-3.1-70B-Instruct-Turbo** model.
+With this flexibility, you can **access a broad range of models**, **assign specialized models to agents**, **run workflows locally**, and **optimise inference costs** for better efficiency.
 
-You can **easily switch** to non-OpenAI models by making **just a few lines of code changes** and adjusting the system prompts. Let’s get started!
+## Installation
 
-
-## What You’ll Learn
-
-By the end of this tutorial, you’ll learn how to:
-
-- **Utilize non-OpenAI** models with FastAgency.
-- Set up and configure **Together AI Cloud and the Meta-Llama-3.1-70B-Instruct-Turbo** model for your applications.
-- Build and register agents that can effectively use non-OpenAI models.
-- Use FastAgency workflows to manage agent interactions and user input.
-
-Let’s get started with using non-OpenAI models in **FastAgency!**
-
-## Prerequisites
-
-Before you begin this tutorial, ensure you have the following:
-
-- **FastAgency installed**: Follow the installation instructions mentioned [here](#installing-fastagency) for installing FastAgency.
-- **Together AI account and API Key**: For instructions on creating a Together AI account and getting your API key, follow the steps outlined [here](#setting-up-your-together-ai-account-and-api-key) section.
-
-With these prerequisites in place, you’re ready to dive into the tutorial!
-
-## Installation and Together AI API Key Setup
-
-In this section, we'll go through the steps to install FastAgency and set up your Together AI API key.
-
-### Installing FastAgency
-
-To get started, you need to install FastAgency with autogen and openapi submodule. You can do this using `pip`, Python's package installer.
+Before getting started, make sure you have installed FastAgency with **autogen and openapi submodules** by running the following command:
 
 ```bash
 pip install "fastagency[autogen,openapi]"
 ```
+
+This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
+
+## Prerequisites
+
+Before you begin this guide, ensure you have:
+
+- **Together AI account and API Key**: For instructions on creating a Together AI account and getting your API key, follow the steps outlined [here](#setting-up-your-together-ai-account-and-api-key) section.
 
 ### Setting Up Your Together AI Account and API Key
 
@@ -59,7 +40,7 @@ pip install "fastagency[autogen,openapi]"
 
 To securely use the API keys in your project, you should store it in an environment variables.
 
-You can set the API keys in your terminal as an environment variable:
+You can set the together API key in your terminal as an environment variable:
 
 === "Linux/macOS"
     ```bash
@@ -70,41 +51,49 @@ You can set the API keys in your terminal as an environment variable:
     set TOGETHER_API_KEY="your_together_api_key"  # pragma: allowlist secret
     ```
 
-## Code Walkthrough
+## Example: Integrating a Weather API with AutoGen
 
-Since we are recreating an [existing example](../../user-guide/api/openapi/index.md) with non-OpenAI models, most of the code remains the same, with just a few changes:
+To show just how **simple it is to use non-OpenAI models**, we’ll **rewrite** the [Weatherman chatbot](./index.md#example-integrating-a-weather-api-with-autogen) example, making just a **few changes to the code** to switch to **Together AI** Cloud with the **Meta-Llama-3.1-70B-Instruct-Turbo** model. Let’s dive in!
+
+### Code Walkthrough
+
+As we rewrite the existing [Weatherman chatbox](./index.md#example-integrating-a-weather-api-with-autogen) to use **non-OpenAI models**, most of the code remains unchanged. The only modifications to the original code are:
 
 - **Configure the Language Model (LLM)**
 - **Update the System Message**
 
-These are the only modifications made to the original code, demonstrating how easy it is to switch to a non-OpenAI model with just a few lines of code.
+Since the modifications are minor, **I will focus only on these differences in this guide**. For a **detailed explanation** of the original code, please refer to the original [guide](./index.md#example-integrating-a-weather-api-with-autogen).
 
-### Configure the Language Model (LLM)
+#### 1. Configure the Language Model (LLM)
 
-In this step, the large language model is configured to use the `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo` model. The `API` key is retrieved from the `TOGETHER_API_KEY` environment variable, and the `api_type` is set to `together`.
+The first and most important change is to update the LLM configuration **to use non-OpenAI models**. In this example, we’ll use **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo**, but you can choose any models offered by Together AI Cloud. Additionally, we need to add two more parameters: **api_type** and **hide_tools**.
 
-```python
-{! docs_src/tutorial/together_ai/main.py [ln:12-22] !}
-```
+The **hide_tools** parameter is particularly useful, as it prevents tools from appearing in the Together AI response creation call if they have already been executed. This helps minimize the chances of the LLM choosing a tool when it's unnecessary.
 
-### Update the System Message
-
-The system message has been updated to work with the `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo` model
+Here we are setting `hide_tools` to `if_any_run`, indicating that we want to hide the tools if any of the tools have already been run.
 
 ```python
-{! docs_src/tutorial/together_ai/main.py [ln:27] !}
+{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py [ln:12-22] !}
 ```
 
-## Complete Application Code
+#### 2. Update the System Message
+
+The system message has been adjusted to work optimally with the **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo** model. You may need to experiment with the system prompt if you are using a different model.
+
+```python
+{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py [ln:27] !}
+```
+
+### Complete Application Code
 
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/tutorial/together_ai/main.py !}
+{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py !}
 ```
 </details>
 
-## Running the Application
+### Running the Application
 
 Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
 
@@ -112,7 +101,7 @@ Once the workflow is set up, you can run the application using the **FastAgency 
 fastagency run
 ```
 
-## Output
+### Output
 
 The output will vary based on the city and the current weather conditions:
 
@@ -227,13 +216,4 @@ What's the weather in Zagreb
 2024-10-14 19:37:11,923 [INFO] Workflow 'simple_weather' completed with result: {'content': 'The current weather in Zagreb is 17 degrees Celsius, with forecasted temperatures of 14 degrees Celsius on October 14, 15 degrees Celsius on October 15, and 15 degrees Celsius on October 16.', 'refusal': None, 'role': 'assistant', 'function_call': None, 'tool_calls': None}
 ```
 
-## Conclusion
-
-In this tutorial, we explored how to **leverage non-OpenAI models with FastAgency** by making just a few lines of code changes to an existing example. By configuring the Language Model (LLM) and updating the system message, we demonstrated how simple it is to switch to a different model, specifically the `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo`.
-
-You’ve learned how to:
-
-- **Configure a non-OpenAI model** within FastAgency.
-- **Easily transition between models** with minimal code changes.
-
-With these skills, you now have the foundation to integrate other non-OpenAI models into your projects, opening up new possibilities for building robust and diverse applications.
+This example demonstrates the power of the AutoGen runtime within FastAgency, showcasing how to **leverage non-OpenAI models with FastAgency** by making just a few lines of code. By leveraging FastAgency, developers can quickly build interactive, scalable applications that interact with live data sources.
