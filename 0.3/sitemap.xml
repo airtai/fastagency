@@ -109,18 +109,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/adapters/fastapi/base/WorkflowInfo/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/adapters/nats/InitiateWorkflowModel/</loc>
-        <lastmod>2024-10-15</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/adapters/nats/InitiateWorkflowModel/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/adapters/nats/InputResponseModel/</loc>
-        <lastmod>2024-10-15</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/adapters/nats/InputResponseModel/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/adapters/nats/NatsAdapter/</loc>
         <lastmod>2024-10-15</lastmod>
         <changefreq>daily</changefreq>
@@ -131,18 +119,6 @@
         <lastmod>2024-10-15</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/adapters/nats/NatsProvider/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/adapters/nats/base/InitiateWorkflowModel/</loc>
-        <lastmod>2024-10-15</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/adapters/nats/base/InitiateWorkflowModel/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/adapters/nats/base/InputResponseModel/</loc>
-        <lastmod>2024-10-15</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/adapters/nats/base/InputResponseModel/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/adapters/nats/base/NatsAdapter/</loc>
@@ -503,6 +479,18 @@
         <lastmod>2024-10-15</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/IOMessage/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/InitiateWorkflowModel/</loc>
+        <lastmod>2024-10-15</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/InitiateWorkflowModel/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/messages/InputResponseModel/</loc>
+        <lastmod>2024-10-15</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/messages/InputResponseModel/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/messages/KeepAlive/</loc>
