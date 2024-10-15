@@ -53,8 +53,8 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
 
 
 nats_url = os.environ.get("NATS_URL", "nats://localhost:4222")
-user: str = "faststream"
-password: str = os.environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
+user: str = "fastagency"
+password: str = os.environ.get("FASTAGENCY_NATS_PASSWORD", "fastagency_nats_password")  # type: ignore[assignment]
 
 adapter = NatsAdapter(provider=wf, nats_url=nats_url, user=user, password=password)
 
@@ -67,5 +67,5 @@ def list_workflows() -> dict[str, Any]:
     return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
 
 
-# start the provider with either command
+# start the adapter with the following command
 # uvicorn main_1_nats:app --reload

@@ -1,6 +1,6 @@
 # Custom User Interactions
 
-In this example, we'll demonstrate how to create custom interaction with the user using [`UI`](../../../../api/fastagency/UI/) protocol and its [`process_message`](../../../../api/fastagency/UI/#fastagency.UI.create_subconversation) method.
+In this example, we'll demonstrate how to create custom interaction with the user using [`UI`](../../../../api/fastagency/UI/) protocol and its [`process_message`](../../../../api/fastagency/UI/#fastagency.UI.process_message) method.
 
 
 ## Install
