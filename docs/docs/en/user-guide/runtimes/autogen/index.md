@@ -56,21 +56,21 @@ The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/ru
 In this step, we register the weather API functions to ensure that the weather agent can call the correct functions, such as `get_daily_weather` and `get_daily_weather_weekly_get`, to retrieve the required weather data.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:53-66] !}
+{! docs_src/user_guide/runtimes/autogen/main.py [ln:52-65] !}
 ```
 
 #### 6. **Enable Agent Interaction and Chat**
 Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:68-75] !}
+{! docs_src/user_guide/runtimes/autogen/main.py [ln:67-74] !}
 ```
 
 #### 7. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:78] !}
+{! docs_src/user_guide/runtimes/autogen/main.py [ln:77] !}
 ```
 
 ### Complete Application Code
