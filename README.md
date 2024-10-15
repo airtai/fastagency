@@ -328,16 +328,12 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 In this setup, we need to run **two** commands in **separate** terminal windows:
 
-Start **FastAPI** application using uvicorn.
-
-**Terminal 1**
+**Terminal 1** - Start **FastAPI** application using uvicorn
 ```
 uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
 ```
 
-Start **Mesop** web interface using gunicorn.
-
-**Terminal 2**
+**Terminal 2** - Start **Mesop** web interface using gunicorn
 ```
 gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
 ```
