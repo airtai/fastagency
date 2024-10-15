@@ -123,36 +123,27 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/
 
 ### Running the Application
 
-Once the workflow is set up, you can run the application either:
+There are two options of running a Mesop application:
 
-- **locally** using the [FastAgency CLI](../../../cli/), or
+1. Using [`fastagency`](../../../../cli/cli/) command line:
 
-- **publicly** using the WSGI HTTP Server such as [Gunicorn](https://gunicorn.org/).
+    !!! note "Terminal (using [fastagency](../../../../cli/cli/))"
+        ```
+        fastagency run
+        ```
 
-=== "Local deployment"
+    !!! danger "Currently not working on **MacOS**"
+        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
 
-    Navigate to the directory where the script is located and run the following command:
+2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
 
-    ```bash
-    fastagency run
-    ```
+    The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
 
-    This will launch a local web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
-
-=== "Public deployment"
-    Assuming that you installed gunicorn first using something like this:
-
-    ```console
-    pip install "fastagency[autogen,mesop]" gunicorn
-    ```
-
-    you can start the Mesop app by navigating to the directory where the script `main.py` is located and running the following command:
-
-    ```bash
-    gunicorn --bind 0.0.0.0:8080 main:app
-    ```
-
-    This will launch a *publicly available* web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
+    !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
+        ```
+        pip install gunicorn
+        gunicorn main:app
+        ```
 
 ---
 
