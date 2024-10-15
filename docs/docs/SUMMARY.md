@@ -17,7 +17,7 @@ search:
         - [FastAPI](user-guide/ui/fastapi/basics.md)
     - [Adapters](user-guide/adapters/index.md)
         - [FastAPI](user-guide/adapters/fastapi/index.md)
-        - [Nats.io](user-guide/adapters/nats/index.md)
+        - [NATS.io](user-guide/adapters/nats/index.md)
     - [API-s](user-guide/api/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
