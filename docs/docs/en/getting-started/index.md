@@ -141,7 +141,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
 === "FastAPI + Mesop"
     ```console
-    pip install "fastagency[autogen,mesop,fastapi]"
+    pip install "fastagency[autogen,mesop,fastapi,server]"
     ```
 
     This command installs FastAgency with support for both the Console and Mesop
@@ -150,7 +150,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
 === "NATS + FastAPI + Mesop"
     ```console
-    pip install "fastagency[autogen,mesop,fastapi,nats]"
+    pip install "fastagency[autogen,mesop,fastapi,server,nats]"
     ```
 
     This command installs FastAgency with support for both the Console and Mesop
@@ -174,12 +174,12 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
     === "FastAPI + Mesop"
         ```console
-        pip install "fastagency[pyautogen,mesop,fastapi]"
+        pip install "fastagency[pyautogen,mesop,fastapi,server]"
         ```
 
     === "NATS + FastAPI + Mesop"
         ```console
-        pip install "fastagency[pyautogen,mesop,fastapi,nats]"
+        pip install "fastagency[pyautogen,mesop,fastapi,server,nats]"
         ```
 
 
@@ -375,10 +375,11 @@ Once everything is set up, you can run your FastAgency application using the fol
         fastagency run
         ```
 
-    However, the preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/). First,
-    you need to install it using package manager such as `pip` and then run it as follows:
+        ***Note:*** To run on MacOS, use the commands below.
 
-    !!! note "Terminal (alternative)"
+        The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/). First,
+        you need to install it using package manager such as `pip` and then run it as follows:
+
         ```
         pip install gunicorn
         gunicorn main:app
@@ -389,11 +390,15 @@ Once everything is set up, you can run your FastAgency application using the fol
     In this setup, we need to run two command in separate terminal windows:
 
     !!! note "Terminal 1"
+        This command starts a **FastAPI** application using uvicorn:
+
         ```
         uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
         ```
 
     !!! note "Terminal 2"
+        This command starts a **Mesop** web interface using gunicorn:
+
         ```
         gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
         ```
@@ -408,11 +413,15 @@ Once everything is set up, you can run your FastAgency application using the fol
         ```
 
     !!! note "Terminal 2"
+        This command starts a **FastAPI** application using uvicorn:
+
         ```
         uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
         ```
 
     !!! note "Terminal 3"
+        This command starts a **Mesop** web interface using gunicorn:
+
         ```
         gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
         ```

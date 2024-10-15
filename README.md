@@ -117,7 +117,7 @@ We will show you how to deploy your workflow using the **FastAPI + Mesop** combi
 To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
 
 ```console
-pip install "fastagency[autogen,mesop,fastapi]"
+pip install "fastagency[autogen,mesop,fastapi,server]"
 ```
 
 This command installs FastAgency with support for both the Console and Mesop
