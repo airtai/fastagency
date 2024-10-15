@@ -1,3 +1,3 @@
 # NATS.io
 
-TBD
+This is the most scalable setup using a distributed message broker [**NATS.io MQ**](https://nats.io/){target="_blank"}. Workflows are being executed with multiple workers that attach to the MQ waiting for initiate workflow messages. Such workers can be running on different machines or even different data centers/cloud providers. Message queues are highly scalable, but more difficult to integrate with end-clients. In order to make such integrations easier, we will connect our [**NATS**](https://nats.io/){target="_blank"}-based message queue with the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application.
