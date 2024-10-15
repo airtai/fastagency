@@ -2,6 +2,8 @@
 
 **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)** in FastAgency offers a web-based interface for interacting with multi-agent workflows. Unlike the **ConsoleUI**, which is text-based and runs in the command line, MesopUI provides a user-friendly browser interface, making it ideal for applications that need a more engaging, graphical interaction. MesopUI is perfect for building interactive web applications and enabling users to interact with agents in a more intuitive way.
 
+Below, we’ll demonstrate how to set up a basic student-teacher conversation using **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)**.
+
 ## Installation
 
 To install **FastAgency** with MesopUI support, use the following command:
@@ -11,8 +13,6 @@ pip install "fastagency[autogen,mesop]"
 ```
 
 This command ensures that the required dependencies for both **AutoGen** and **Mesop** are installed.
-
-Below, we’ll demonstrate how to set up a basic student-teacher conversation using **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)**.
 
 ## Usage
 
@@ -43,7 +43,7 @@ You can pass a custom [SecurityPolicy](https://google.github.io/mesop/api/page/#
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:61] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:60] !}
 
 ui = MesopUI(security_policy=security_policy)
 ```
@@ -59,7 +59,7 @@ All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:63-86] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:62-86] !}
 
 ui = MesopUI(styles=styles)
 ```
@@ -105,13 +105,13 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)** to link the workflow to a web-based interface. This allows the user to interact with the agents through a web browser.
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:61-90] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:59-90] !}
 ```
 
 - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
 
-## Complete Application Code
+### Complete Application Code
 
 <details>
 <summary>main.py</summary>
@@ -157,9 +157,21 @@ Once the workflow is set up, you can run the application either:
 ---
 
 !!! note
-    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using **gpt-4o-mini**. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
-### Debugging Tips
+### Output
+
+The outputs will vary based on the interface, here is the output of the last terminal starting UI:
+
+```console
+[2024-10-15 16:57:44 +0530] [36365] [INFO] Starting gunicorn 23.0.0
+[2024-10-15 16:57:44 +0530] [36365] [INFO] Listening at: http://127.0.0.1:8000 (36365)
+[2024-10-15 16:57:44 +0530] [36365] [INFO] Using worker: sync
+[2024-10-15 16:57:44 +0530] [36366] [INFO] Booting worker with pid: 36366
+```
+![Initial message](./images/chat.png)
+
+## Debugging Tips
 If you encounter issues running the application, ensure that:
 
 - The OpenAI API key is correctly set in your environment variables.
