@@ -901,6 +901,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtimes/autogen/interactions/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/</loc>
+        <lastmod>2024-10-15</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/user-guide/runtimes/autogen/websurfer/</loc>
         <lastmod>2024-10-15</lastmod>
         <changefreq>daily</changefreq>
