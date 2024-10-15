@@ -18,7 +18,7 @@ llm_config = {
             "hide_tools": "if_any_run"
         }
     ],
-    "temperature": 0.0,
+    "temperature": 0.8,
 }
 
 openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
@@ -53,8 +53,17 @@ def weather_workflow(
 
     wf.register_api(  # type: ignore[attr-defined]
         api=weather_api,
-        callers=user_agent,
-        executors=weather_agent
+        callers=[user_agent],
+        executors=[weather_agent],
+        functions=[
+            {
+                "get_daily_weather_daily_get": {
+                    "name": "get_daily_weather",
+                    "description": "Get the daily weather",
+                }
+            },
+            "get_hourly_weather_hourly_get",
+        ],
     )
 
     chat_result = user_agent.initiate_chat(

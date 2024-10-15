@@ -26,4 +26,4 @@ def test_cli_together_ai(monkeypatch: pytest.MonkeyPatch) -> None:
     )
     assert result.exit_code == 0
     assert INPUT_MESSAGE in result.stdout
-    assert "get_daily_weather_daily_get" in result.stdout
+    assert "get_daily_weather" in result.stdout

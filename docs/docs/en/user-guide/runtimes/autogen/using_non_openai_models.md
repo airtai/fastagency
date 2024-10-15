@@ -1,8 +1,10 @@
 # Using Non-OpenAI Models with FastAgency
 
-FastAgency makes it easy to use **non-OpenAI models** through AutoGen's runtime, which works with proxy servers offering OpenAI-compatible APIs. This allows you to create agents with a wide variety of models. For more details on supported proxy servers, check <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
+FastAgency makes it simple to use **non-OpenAI models** through AutoGen's runtime, which connects to proxy servers offering OpenAI-compatible API. This allows you to create agents using a wide variety of models. For more details on supported proxy servers, check <a href="https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models" target="_blank" >here</a>.
 
 With this flexibility, you can **access a broad range of models**, **assign specialized models to agents**, **run workflows locally**, and **optimise inference costs** for better efficiency.
+
+To show how simple it is to use **non-OpenAI models**, we’ll **rewrite** the [Weatherman chatbot](./index.md#example-integrating-a-weather-api-with-autogen) example from earlier, making just a **few changes** to switch to **Together AI** Cloud with the **Meta-Llama-3.1-70B-Instruct-Turbo** model. Let’s dive in!
 
 ## Installation
 
@@ -22,19 +24,19 @@ Before you begin this guide, ensure you have:
 
 ### Setting Up Your Together AI Account and API Key
 
-1. Create a Together AI account:
+**1. Create a Together AI account:**
 
-    - Go to <a href="https://api.together.ai" target="_blank">https://api.together.ai</a>.
-    - Click on one of the options to Sign in and follow the instructions to create your account.
-    - If you already have an account, simply log in.
+- Go to <a href="https://api.together.ai" target="_blank">https://api.together.ai</a>.
+- Click on one of the options to Sign in and follow the instructions to create your account.
+- If you already have an account, simply log in.
 
-2. Obtain your API Key:
+**2. Obtain your API Key:**
 
-    - Once you complete the account creation process the API key will be displayed on the screen which you can copy.
-    - Or you can do the following to view your API key:
-        - Tap on the person icon at the top right corner, and click **Settings**
-        - On the left side bar, navigate to **API Keys**
-        - **Copy your API key**, and you're ready to go!
+- Once you complete the account creation process the API key will be displayed on the screen which you can copy.
+- Or you can do the following to view your API key:
+    - Tap on the person icon at the top right corner, and click **Settings**
+    - On the left side bar, navigate to **API Keys**
+    - **Copy your API key**, and you're ready to go!
 
 #### Set Up Your API Keys in the Environment
 
@@ -52,8 +54,6 @@ You can set the together API key in your terminal as an environment variable:
     ```
 
 ## Example: Integrating a Weather API with AutoGen
-
-To show just how **simple it is to use non-OpenAI models**, we’ll **rewrite** the [Weatherman chatbot](./index.md#example-integrating-a-weather-api-with-autogen) example, making just a **few changes to the code** to switch to **Together AI** Cloud with the **Meta-Llama-3.1-70B-Instruct-Turbo** model. Let’s dive in!
 
 ### Code Walkthrough
 
