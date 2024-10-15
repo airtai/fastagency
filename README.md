@@ -117,7 +117,7 @@ We will show you how to deploy your workflow using the **FastAPI + Mesop** combi
 To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
 
 ```console
-pip install "fastagency[autogen,mesop,fastapi]"
+pip install "fastagency[autogen,mesop,fastapi,server]"
 ```
 
 This command installs FastAgency with support for both the Console and Mesop
@@ -326,14 +326,14 @@ app = FastAgency(provider=provider, ui=MesopUI())
 Once everything is set up, you can run your FastAgency application using the following command:
 
 
-In this setup, we need to run two command in separate terminal windows:
+In this setup, we need to run **two** commands in **separate** terminal windows:
 
-#### Terminal 1
+**Terminal 1** - Start **FastAPI** application using uvicorn
 ```
 uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
 ```
 
-#### Terminal 2
+**Terminal 2** - Start **Mesop** web interface using gunicorn
 ```
 gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
 ```
