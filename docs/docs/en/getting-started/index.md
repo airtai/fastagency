@@ -408,20 +408,27 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "Mesop"
 
-    !!! note "Terminal"
-        ```
-        fastagency run
-        ```
+    There are two options of running a Mesop application:
 
-        ***Note:*** To run on MacOS, use the commands below.
+    1. Using [`fastagency`](../cli/cli/) command line:
 
-        The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/). First,
-        you need to install it using package manager such as `pip` and then run it as follows:
+        !!! note "Terminal (using [fastagency](../cli/cli/))"
+            ```
+            fastagency run
+            ```
 
-        ```
-        pip install gunicorn
-        gunicorn main:app
-        ```
+        !!! danger "Currently not working on **MacOS**"
+            The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
+
+    2. Usign [Gunicorn](https://gunicorn.org/) WSGI HTTP server:
+
+        The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/). First, you need to install it using package manager such as `pip` and then run it as follows:
+
+        !!! note "Terminal (using [Gunicorn](https://gunicorn.org/))"
+            ```
+            pip install gunicorn
+            gunicorn main:app
+            ```
 
 === "FastAPI + Mesop"
 
