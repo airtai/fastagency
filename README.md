@@ -323,9 +323,6 @@ app = FastAgency(provider=provider, ui=MesopUI())
 
 ### Run Application
 
-Once everything is set up, you can run your FastAgency application using the following command:
-
-
 In this setup, we need to run **two** commands in **separate** terminal windows:
 
 **Terminal 1** - Start **FastAPI** application using uvicorn
@@ -349,7 +346,7 @@ The outputs will vary based on the interface, here is the output of the last ter
 [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
 ```
 
-![Initial message](https://fastagency.ai/0.3/getting-started/images/chat.png)
+![Initial message](https://fastagency.ai/0.3/getting-started/images/chat.png?v20241015)
 
 
 ## Future Plans
