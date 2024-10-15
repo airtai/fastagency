@@ -326,14 +326,18 @@ app = FastAgency(provider=provider, ui=MesopUI())
 Once everything is set up, you can run your FastAgency application using the following command:
 
 
-In this setup, we need to run two command in separate terminal windows:
+In this setup, we need to run **two** commands in **separate** terminal windows:
 
-#### Terminal 1
+Start **FastAPI** application using uvicorn.
+
+**Terminal 1**
 ```
 uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
 ```
 
-#### Terminal 2
+Start **Mesop** web interface using gunicorn.
+
+**Terminal 2**
 ```
 gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
 ```

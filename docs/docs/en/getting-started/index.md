@@ -420,7 +420,7 @@ Once everything is set up, you can run your FastAgency application using the fol
         !!! danger "Currently not working on **MacOS**"
             The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
 
-    2. Usign [Gunicorn](https://gunicorn.org/) WSGI HTTP server:
+    2. Using [Gunicorn](https://gunicorn.org/) WSGI HTTP server:
 
         The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/). First, you need to install it using package manager such as `pip` and then run it as follows:
 
@@ -434,16 +434,14 @@ Once everything is set up, you can run your FastAgency application using the fol
 
     In this setup, we need to run **two** commands in **separate** terminal windows:
 
+    - Start **FastAPI** application using uvicorn:
     !!! note "Terminal 1"
-        This command starts a **FastAPI** application using uvicorn:
-
         ```
         uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
         ```
 
+    - Start **Mesop** web interface using gunicorn:
     !!! note "Terminal 2"
-        This command starts a **Mesop** web interface using gunicorn:
-
         ```
         gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
         ```
@@ -452,24 +450,20 @@ Once everything is set up, you can run your FastAgency application using the fol
 
     In this setup, we need to run **three** commands in **separate** terminal windows:
 
+    - Start **FastAPI** application that provides a conversational workflow:
     !!! note "Terminal 1"
-
-        This command starts a **FastAPI** application that provides a conversational workflow:
-
         ```
         uvicorn main_1_nats:app --reload
         ```
 
+    - Start **FastAPI** application integrated with a **NATS** messaging system:
     !!! note "Terminal 2"
-        This command starts a **FastAPI** application integrated with a **NATS** messaging system:
-
         ```
         uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
         ```
 
+    - Start **Mesop** web interface using gunicorn:
     !!! note "Terminal 3"
-        This command starts a **Mesop** web interface using gunicorn:
-
         ```
         gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
         ```
