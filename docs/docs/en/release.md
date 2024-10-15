@@ -12,6 +12,38 @@ hide:
 ---
 
 # Release Notes
+## v0.3.0
+
+### What's Changed
+
+* Remove log which is causing security issue by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#348](https://github.com/airtai/fastagency/pull/348){.external-link target="_blank"}
+* Refactor messages by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#350](https://github.com/airtai/fastagency/pull/350){.external-link target="_blank"}
+* Implement name and description discovery over nats and fastapi by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#353](https://github.com/airtai/fastagency/pull/353){.external-link target="_blank"}
+* Refactor workflow run by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#355](https://github.com/airtai/fastagency/pull/355){.external-link target="_blank"}
+* Fix subscriber close issue by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#358](https://github.com/airtai/fastagency/pull/358){.external-link target="_blank"}
+* Moved some logs from info to debug by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#359](https://github.com/airtai/fastagency/pull/359){.external-link target="_blank"}
+* Realign the examples in the documentation with the new source code by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#361](https://github.com/airtai/fastagency/pull/361){.external-link target="_blank"}
+* Fix pydantic name annotated is not defined main by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#364](https://github.com/airtai/fastagency/pull/364){.external-link target="_blank"}
+* Update package versions by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#378](https://github.com/airtai/fastagency/pull/378){.external-link target="_blank"}
+* Refactor WebSockets interface by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#360](https://github.com/airtai/fastagency/pull/360){.external-link target="_blank"}
+* Update getting started guide by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#384](https://github.com/airtai/fastagency/pull/384){.external-link target="_blank"}
+* Polish readme by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#385](https://github.com/airtai/fastagency/pull/385){.external-link target="_blank"}
+* Polish readme by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#386](https://github.com/airtai/fastagency/pull/386){.external-link target="_blank"}
+* Rewrite documentation for api security by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#388](https://github.com/airtai/fastagency/pull/388){.external-link target="_blank"}
+* Move pydantic message classes to separate file by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#392](https://github.com/airtai/fastagency/pull/392){.external-link target="_blank"}
+* Fix errors in the getting started guide by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#387](https://github.com/airtai/fastagency/pull/387){.external-link target="_blank"}
+* Add a section to start NATS by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#395](https://github.com/airtai/fastagency/pull/395){.external-link target="_blank"}
+* Move running nats section to appropriate sections by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#398](https://github.com/airtai/fastagency/pull/398){.external-link target="_blank"}
+* Fix broken links in docs by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#400](https://github.com/airtai/fastagency/pull/400){.external-link target="_blank"}
+* Test and update getting started page by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#396](https://github.com/airtai/fastagency/pull/396){.external-link target="_blank"}
+* Add alternative llm guide llama  togetherai by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#381](https://github.com/airtai/fastagency/pull/381){.external-link target="_blank"}
+* Add skeleton for adapter docs by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#402](https://github.com/airtai/fastagency/pull/402){.external-link target="_blank"}
+* Update UI docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#397](https://github.com/airtai/fastagency/pull/397){.external-link target="_blank"}
+* Release 0.3.0 by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#403](https://github.com/airtai/fastagency/pull/403){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.2.4...v0.3.0](https://github.com/airtai/fastagency/compare/v0.2.4...v0.3.0){.external-link target="_blank"}
+
 ## v0.2.5
 
 ### What's Changed
