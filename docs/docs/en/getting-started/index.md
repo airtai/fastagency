@@ -180,47 +180,6 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
         pip install "fastagency[pyautogen,mesop,fastapi,server,nats]"
         ```
 
-### Start NATS Server
-
-!!! note "This step applies only to NATS-based examples"
-
-The easiest way to start [NATS](https://nats.io/){target="_blank"} is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication with NATS. Both of these can be specified in the NATS configuration. Save the following configuration in a file called `nats-server.conf`.
-
-```txt
-port: 4222
-
-monitor_port: 8222
-
-websocket {
-    port: 9222
-    no_tls: true
-    compress: true
-}
-
-jetstream {}
-
-accounts {
-  AUTH {
-    jetstream: enabled
-    users: [
-      { user: fastagency, password: $FASTAGENCY_NATS_PASSWORD }
-    ]
-  }
-  SYS {}
-}
-
-system_account: SYS
-
-```
-
-In the above configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. . We also enable JetStream in NATS and configure NATS to serve via WebSockets on port `9222`.
-
-Start the NATS Docker container with the following command:
-```console
-docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
-```
-Running this command should start NATS in a Docker container and expose the necessary ports for connection.
-
 ### Imports
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
@@ -298,6 +257,14 @@ This code snippet sets up a simple learning chat between a student and a teacher
     {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:55-61] !}
     ```
 
+    The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
+
+    ```python hl_lines="1 3 6 11 17"
+    {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf [ln:1-23]!}
+    ```
+
+    In the above NATS configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in NATS and configure NATS to serve via the appropriate ports.
+
 ### Adapter Chaining
 
 === "Console"
@@ -336,7 +303,8 @@ This code snippet sets up a simple learning chat between a student and a teacher
         ```
 
 
-## Complete Application Code
+### Complete Application Code
+Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
 === "Console"
 
@@ -373,6 +341,13 @@ This code snippet sets up a simple learning chat between a student and a teacher
     </details>
 
 === "NATS + FastAPI + Mesop"
+
+    <details>
+        <summary>nats-server.conf</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
+        ```
+    </details>
 
     <details>
         <summary>main_1_nats.py</summary>
@@ -448,22 +423,28 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "NATS + FastAPI + Mesop"
 
-    In this setup, we need to run **three** commands in **separate** terminal windows:
+    In this setup, we need to run **four** commands in **separate** terminal windows:
+
+    - Start **NATS** Docker container:
+    !!! note "Terminal 1"
+        ```
+        docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+        ```
 
     - Start **FastAPI** application that provides a conversational workflow:
-    !!! note "Terminal 1"
+    !!! note "Terminal 2"
         ```
         uvicorn main_1_nats:app --reload
         ```
 
     - Start **FastAPI** application integrated with a **NATS** messaging system:
-    !!! note "Terminal 2"
+    !!! note "Terminal 3"
         ```
         uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
         ```
 
     - Start **Mesop** web interface using gunicorn:
-    !!! note "Terminal 3"
+    !!! note "Terminal 4"
         ```
         gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
         ```
