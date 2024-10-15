@@ -46,6 +46,7 @@ dynamic = ["version"]
 dependencies = [
     "typer>=0.9",
     "typing-extensions>=4.8.0,<5",
+    "pydantic>=2.2.0,<3",
 ]
 
 [project.optional-dependencies]
