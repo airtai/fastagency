@@ -11,9 +11,9 @@ FastAgency currently supports the following security schemas:
 
 2. **API Key**
    API keys can be provided in:
-   - HTTP header
-   - Query parameters
-   - Cookies
+    - HTTP header
+    - Query parameters
+    - Cookies
 
 3. **OAuth2 (Password Flow)**
    A flow where the token authority and API service reside on the same address. This is useful for scenarios where the client credentials are exchanged for a token directly.
@@ -22,7 +22,7 @@ FastAgency currently supports the following security schemas:
 
 To secure your APIs, you'll need to define security schemas in your OpenAPI specification. Here are examples for each supported schema, to learn more about security schemas, please visit [OpenAPI guide on authentication](https://swagger.io/docs/specification/v3_0/authentication/):
 
-## 1. **HTTP Bearer Token**
+### HTTP Bearer Token
 In your OpenAPI schema:
 ```json
 {
@@ -37,7 +37,7 @@ In your OpenAPI schema:
 }
 ```
 
-## 2. **API Key (in Header, Query, or Cookie)**
+### API Key (in Header, Query, or Cookie)
 In your OpenAPI schema:
 ```json
 {
@@ -63,7 +63,7 @@ In your OpenAPI schema:
 }
 ```
 
-## 3. **OAuth2 (Password Flow)**
+### OAuth2 (Password Flow)
 In your OpenAPI schema:
 ```json
 {
@@ -90,35 +90,34 @@ In your OpenAPI schema:
 
 FastAgency will automatically generate the necessary authentication functions from the OpenAPI schemas. Here’s how you can configure each security method in the FastAgency client.
 
-## 1. **Using HTTP Bearer Token**
+### Using HTTP Bearer Token
 To configure bearer token authentication, provide the token when initializing the API client:
-```python
-from fastagency import APIClient
-
-client = APIClient(base_url="https://api.example.com", auth="Bearer <your_token>")
+```python hl_lines="5"
+{! docs_src/user_guide/external_rest_apis/security_examples.py [ln:66-70] !}
 ```
 
-## 2. **Using API Key (in Header, Query, or Cookie)**
+### Using API Key (in Header, Query, or Cookie)
 You can configure the client to send an API key in the appropriate location (header, query, or cookie):
+
 - **API Key in Header**:
-  ```python
-  client = APIClient(base_url="https://api.example.com", headers={"X-API-Key": "<your_api_key>"})
+  ```python hl_lines="5"
+{! docs_src/user_guide/external_rest_apis/security_examples.py [ln:44-48] !}
   ```
 
 - **API Key in Query Parameter**:
-  ```python
-  client = APIClient(base_url="https://api.example.com", params={"api_key": "<your_api_key>"})
+  ```python hl_lines="5"
+{! docs_src/user_guide/external_rest_apis/security_examples.py [ln:33-37] !}
   ```
 
 - **API Key in Cookie**:
-  ```python
-  client = APIClient(base_url="https://api.example.com", cookies={"API_COOKIE": "<your_api_key>"})
+  ```python hl_lines="5"
+{! docs_src/user_guide/external_rest_apis/security_examples.py [ln:55-59] !}
   ```
 
-## 3. **Using OAuth2 (Password Flow)**
+### Using OAuth2 (Password Flow)
 FastAgency makes it simple to handle OAuth2's password flow. Configure the client with the token URL and credentials:
-```python
-client = APIClient(base_url="https://api.example.com", auth=OAuth2PasswordFlow(username="<your_username>", password="<your_password>", token_url="/token"))
+```python hl_lines="5 6 7 8 9 10"
+{! docs_src/user_guide/external_rest_apis/security_examples.py [ln:6-15] !}
 ```
 
 In this configuration, FastAgency automatically handles the token exchange and uses the access token for subsequent requests.
