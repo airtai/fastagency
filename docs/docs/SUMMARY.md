@@ -201,7 +201,9 @@ search:
                         - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
                     - timer
                         - [configure_static_file_serving](api/fastagency/ui/mesop/timer/configure_static_file_serving.md)
+                        - [format_filename](api/fastagency/ui/mesop/timer/format_filename.md)
                         - [wakeup_component](api/fastagency/ui/mesop/timer/wakeup_component.md)
+                        - [web_component_patched](api/fastagency/ui/mesop/timer/web_component_patched.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)

@@ -1,10 +1,15 @@
+import inspect
+import os
+import platform
+from functools import wraps
 from pathlib import Path
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, TypeVar, cast
 
 import mesop.labs as mel
 import mesop.server.static_file_serving
 import mesop.server.wsgi_app
 from flask import Flask, Response
+from mesop.runtime import runtime
 from mesop.server.static_file_serving import (
     WEB_COMPONENTS_PATH_SEGMENT,
     noop,
@@ -13,6 +18,7 @@ from mesop.server.static_file_serving import (
 from mesop.server.static_file_serving import (
     configure_static_file_serving as configure_static_file_serving_original,
 )
+from mesop.utils.validate import validate
 
 from ...logging import get_logger
 
@@ -51,8 +57,69 @@ def configure_static_file_serving(
         )
 
 
+C = TypeVar("C", bound=Callable[..., Any])
+
+
+def format_filename(filename: str) -> str:
+    if ".runfiles" in filename:
+        # Handle Bazel case
+        return filename.split(".runfiles", 1)[1]
+    else:
+        # Handle pip CLI case
+        return os.path.relpath(filename, os.getcwd())  # noqa: PTH109
+
+
+def web_component_patched(*, path: str, skip_validation: bool = False):  # type: ignore
+    """A decorator for defining a web component.
+
+    This decorator is used to define a web component. It takes a path to the
+    JavaScript file of the web component and an optional parameter to skip
+    validation. It then registers the JavaScript file in the runtime.
+
+    Args:
+        path: The path to the JavaScript file of the web component.
+        skip_validation: If set to True, skips validation. Defaults to False.
+    """
+    runtime().check_register_web_component_is_valid()
+
+    current_frame = inspect.currentframe()
+    assert current_frame  # nosec
+    previous_frame = current_frame.f_back
+    assert previous_frame  # nosec
+    caller_module_file = inspect.getfile(previous_frame)
+    caller_module_dir = format_filename(
+        os.path.dirname(os.path.abspath(caller_module_file))  # noqa: PTH120,PTH100
+    )
+    full_path = os.path.normpath(os.path.join(caller_module_dir, path))  # noqa: PTH118
+    # if not full_path.startswith("/"):
+    #     full_path = "/" + full_path
+
+    # ToDo: propagate below fix to mesop repo
+    # In Windows, above if section from original web_component function
+    # creates a path which looks like "/\__fast_agency_internal__\javascript\wakeup_component.js"
+    # Below three lines fixes this
+    starting_char = "\\" if platform.system() == "Windows" else "/"
+    if not full_path.startswith(starting_char):
+        full_path = starting_char + full_path
+
+    js_module_path = full_path
+
+    def component_wrapper(fn: C) -> C:
+        validated_fn = fn if skip_validation else validate(fn)
+
+        @wraps(fn)
+        def wrapper(*args: Any, **kw_args: Any):  # type: ignore
+            runtime().context().register_js_module(js_module_path)
+            return validated_fn(*args, **kw_args)
+
+        return cast(C, wrapper)
+
+    return component_wrapper
+
+
 logger.info("Patching static file serving in Mesop")
 mesop.server.wsgi_app.configure_static_file_serving = configure_static_file_serving
+mel.web_component = web_component_patched
 
 
 @mel.web_component(path="/__fast_agency_internal__/javascript/wakeup_component.js")  # type: ignore[misc]
