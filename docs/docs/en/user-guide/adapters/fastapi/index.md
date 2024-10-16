@@ -9,6 +9,41 @@ The FastAPI Adapter provides several benefits:
 - **Scalability**: FastAPI supports execution with **multiple workers**, allowing you to scale your workflows horizontally. Each workflow is executed in the context of a **WebSocket connection**, enabling efficient handling of concurrent requests.
 - **API-driven Development**: By exposing your workflows as a **REST API**, you can easily integrate them with other systems and services. This enables you to build robust and scalable applications that leverage the power of agentic workflows.
 
+## Architecture Overview
+
+The architecture of our FastAgency application consists of two main components: the **FastAgency Mesop App** and the **FastAgency FastAPI App**. These components work together to provide a seamless interface between the client and the underlying AutoGen workflows.
+
+![Mesop FastAPI](../images/mesop_fastapi.png)
+
+### FastAgency Mesop App
+
+The FastAgency Mesop App serves as the front-end interface for our system. It contains:
+
+- **Mesop UI**: A web-based user interface that allows clients to interact with the application.
+- **FastAPI Provider**: A component that facilitates communication between the Mesop UI and the FastAPI Adapter.
+
+This app handles all client interactions and presents the results back to the user.
+
+### FastAgency FastAPI App
+
+The FastAgency FastAPI App forms the backend of our system and consists of:
+
+- **AutoGen Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
+- **FastAPI Adapter**: This component receives requests from the FastAPI Provider and executes the corresponding AutoGen workflows.
+- **FastAPI**: The framework that provides the infrastructure for building and exposing our autogen workflows via REST API.
+
+### Interaction Flow
+
+1. The client initiates communication with the Mesop UI in the FastAgency Mesop App.
+2. The Mesop UI interacts with the FastAPI Provider, sending requests based on user actions.
+3. The FastAPI Provider communicates these requests to the FastAPI Adapter in the FastAgency FastAPI App.
+4. The FastAPI Adapter processes the requests and triggers the appropriate AutoGen workflows.
+5. The AutoGen workflows execute, performing the required tasks and generating results.
+6. Results are sent back through the FastAPI Adapter to the FastAPI Provider.
+7. The FastAPI Provider relays the results to the Mesop UI, which then presents them to the client.
+
+This architecture ensures a clear separation between the user interface and the core application logic, allowing for flexibility in development and maintenance. The use of FastAPI provides a robust and efficient API layer, while the AutoGen workflows enable complex, agent-based task execution.
+
 Now, it's time to see the FastAPI Adapter using FastAgency in action. Let's dive into an example and learn how to use it!
 
 ## Installation
