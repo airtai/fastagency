@@ -331,4 +331,4 @@ extend-exclude = """
 
 [tool.codespell]
 skip = "./venv*,./docs/site/*,./htmlcov"
-# ignore-words = ".codespell-whitelist.txt"
+ignore-words = ".codespell-whitelist.txt"

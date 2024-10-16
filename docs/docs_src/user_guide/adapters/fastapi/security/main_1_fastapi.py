@@ -1,4 +1,6 @@
-from typing import Annotated, Union
+from typing import Annotated, Any, Optional, Union
+from uuid import UUID
+import uuid
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -25,22 +27,24 @@ fake_users_db = {
         "username": "johndoe",
         "full_name": "John Doe",
         "email": "johndoe@example.com",
-        "hashed_password": "fakehashedsecret",
+        "hashed_password": "fakehashedsecret", # pragma: allowlist secret
         "disabled": False,
+        "user_id": uuid.uuid4(),
     },
     "alice": {
         "username": "alice",
         "full_name": "Alice Wonderson",
         "email": "alice@example.com",
-        "hashed_password": "fakehashedsecret2",
+        "hashed_password": "fakehashedsecret2", # pragma: allowlist secret
         "disabled": True,
+        "user_id": uuid.uuid4(),
     },
 }
 
 app = FastAPI()
 
 
-def fake_hash_password(password: str):
+def fake_hash_password(password: str) -> str:
     return "fakehashed" + password
 
 
@@ -52,26 +56,28 @@ class User(BaseModel):
     email: Union[str, None] = None
     full_name: Union[str, None] = None
     disabled: Union[bool, None] = None
+    user_id: UUID
 
 
 class UserInDB(User):
     hashed_password: str
 
 
-def get_user(db, username: str):
+def get_user(db: dict[str, Any], username: str) -> Optional[UserInDB]:
     if username in db:
         user_dict = db[username]
         return UserInDB(**user_dict)
+    return None
 
 
-def fake_decode_token(token):
+def fake_decode_token(token: str) -> Optional[UserInDB]:
     # This doesn't provide any security at all
     # Check the next version
     user = get_user(fake_users_db, token)
     return user
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Optional[User]:
     user = fake_decode_token(token)
     if not user:
         raise HTTPException(
@@ -84,14 +90,14 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 
 async def get_current_active_user(
     current_user: Annotated[User, Depends(get_current_user)],
-):
+) -> Optional[User]:
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 
 @app.post("/token")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> dict[str, str]:
     user_dict = fake_users_db.get(form_data.username)
     if not user_dict:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
@@ -108,8 +114,12 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 #
 ################################################################################
 
+def get_user_id(
+    current_user: Annotated[User, Depends(get_current_user)],
+) -> Optional[UUID]:
+    return current_user.user_id
 
-adapter = FastAPIAdapter(provider=wf, get_user_id=get_current_active_user)
+adapter = FastAPIAdapter(provider=wf, get_user_id=get_user_id)
 app.include_router(adapter.router)
 
 # this is optional, but we would like to see the list of available workflows
