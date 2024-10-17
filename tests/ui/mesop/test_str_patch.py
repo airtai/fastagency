@@ -3,16 +3,18 @@ import sys
 
 import pytest
 
+if sys.version_info < (3, 10):
+    pytest.skip("Mesop is not supported in Python 3.9", allow_module_level=True)
+from fastagency.ui.mesop.timer import (
+    MEL_WEB_COMPONENT_PATH,
+    WINDOWS_MEL_WEB_COMPONENT_PATH,
+)
+
 
 @pytest.mark.skipif(
     sys.version_info < (3, 10), reason="Mesop is not supported in Python 3.9"
 )
 class TestStrOSPatch:
-    from fastagency.ui.mesop.timer import (
-        MEL_WEB_COMPONENT_PATH,
-        WINDOWS_MEL_WEB_COMPONENT_PATH,
-    )
-
     @pytest.mark.parametrize(
         "value, startswith, expected",  # noqa: PT006
         [
