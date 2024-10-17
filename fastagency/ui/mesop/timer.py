@@ -73,9 +73,7 @@ class _MyPatchedStr(str):
         end: Optional[SupportsIndex] = None,
     ) -> bool:
         return (
-            sys.platform == "win32"
-            and self == WINDOWS_MEL_WEB_COMPONENT_PATH
-            and prefix == "/"
+            self == WINDOWS_MEL_WEB_COMPONENT_PATH and prefix == "/"
         ) or super().startswith(prefix, start, end)
 
 
@@ -90,12 +88,15 @@ def _os_path_normpath_patch(path: str) -> str:
 
 
 @contextmanager
-def _patch_os_and_str() -> Iterator[None]:
-    os.path.normpath = _os_path_normpath_patch  # type: ignore[assignment]
-    try:
+def _patch_os_path_normpath_for_win32() -> Iterator[None]:
+    if sys.platform == "win32":
+        os.path.normpath = _os_path_normpath_patch  # type: ignore[assignment]
+        try:
+            yield
+        finally:
+            os.path.normpath = _original_os_path_normpath
+    else:
         yield
-    finally:
-        os.path.normpath = _original_os_path_normpath
 
 
 def wakeup_component(
@@ -103,7 +104,7 @@ def wakeup_component(
     on_wakeup: Callable[[mel.WebEvent], Any],
     key: Optional[str] = None,
 ) -> Any:
-    with _patch_os_and_str():
+    with _patch_os_path_normpath_for_win32():
 
         @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
         def mel_wakeup_component(

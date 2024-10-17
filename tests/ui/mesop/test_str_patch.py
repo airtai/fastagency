@@ -66,9 +66,12 @@ class TestStrOSPatch:
     def test_patch_os_and_str(self) -> None:
         from fastagency.ui.mesop.timer import (
             _os_path_normpath_patch,
-            _patch_os_and_str,
+            _patch_os_path_normpath_for_win32,
         )
 
-        with _patch_os_and_str():
-            assert os.path.normpath is _os_path_normpath_patch
+        with _patch_os_path_normpath_for_win32():
+            if sys.platform == "win32":
+                assert os.path.normpath is _os_path_normpath_patch
+            else:
+                assert os.path.normpath is not _os_path_normpath_patch
         assert os.path.normpath is not _os_path_normpath_patch
