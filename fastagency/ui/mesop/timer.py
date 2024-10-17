@@ -1,6 +1,5 @@
 import inspect
 import os
-import platform
 from functools import wraps
 from pathlib import Path
 from typing import Any, Callable, Optional, TypeVar, cast
@@ -98,9 +97,8 @@ def web_component_patched(*, path: str, skip_validation: bool = False):  # type:
     # In Windows, above if section from original web_component function
     # creates a path which looks like "/\__fast_agency_internal__\javascript\wakeup_component.js"
     # Below three lines fixes this
-    starting_char = "\\" if platform.system() == "Windows" else "/"
-    if not full_path.startswith(starting_char):
-        full_path = starting_char + full_path
+    if not full_path.startswith(os.sep):
+        full_path = os.sep + full_path
 
     js_module_path = full_path
 
