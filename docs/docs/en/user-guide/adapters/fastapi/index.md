@@ -11,7 +11,7 @@ The FastAPI Adapter provides several benefits:
 
 ## Architecture Overview
 
-The architecture of our FastAgency application consists of two main components: the **FastAgency Mesop App** and the **FastAgency FastAPI App**. These components work together to provide a seamless interface between the client and the underlying AutoGen workflows.
+At a high level we have two FastAgency applications: the **FastAgency Mesop App** and the **FastAgency FastAPI App**. These applications work together to provide a seamless interface between the client and the underlying AutoGen workflows.
 
 ![Mesop FastAPI](../images/mesop_fastapi.png)
 
