@@ -57,13 +57,14 @@ def test_end2end(
     )
 
     message_existed = False
+    expected_message = "Item created"
     for message in agent.chat_messages[user_proxy]:
         if (
             isinstance(message, dict)
             and "content" in message
             and isinstance(message["content"], str)
-            and message["content"] == "Item created"
+            and message["content"] == expected_message
         ):
             message_existed = True
             break
-    assert message_existed, "Item created message not found"
+    assert message_existed, f"Expected message '{expected_message}' not found"

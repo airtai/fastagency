@@ -104,7 +104,10 @@ def create_whatsapp_fastapi_app(host: str, port: int) -> FastAPI:
         body: InfobipwhatsappstandaloneapiserviceOpenapiTextMessage,
     ) -> InfobipwhatsappstandaloneapiserviceOpenapiSingleMessageInfo:
         """Send WhatsApp text message."""
-        return InfobipwhatsappstandaloneapiserviceOpenapiSingleMessageInfo()
+        return InfobipwhatsappstandaloneapiserviceOpenapiSingleMessageInfo(
+            to=body.to,
+            messageCount=1,
+        )
 
     return app
 
@@ -361,15 +364,20 @@ def test_end2end(
         agent,
         message=message,
         summary_method="reflection_with_llm",
-        max_turns=6,
+        max_turns=3,
     )
 
+    message_existed = False
+    expected_message = (
+        '{"to": "385911425425", "messageCount": 1, "messageId": null, "status": null}'
+    )
     for message in agent.chat_messages[user_proxy]:
         if (
             isinstance(message, dict)
             and "content" in message
             and isinstance(message["content"], str)
+            and message["content"] == expected_message
         ):
-            assert (
-                "Error: 'dict' object has no attribute 'dict'" not in message["content"]
-            )
+            message_existed = True
+            break
+    assert message_existed, f"Expected message not found: {expected_message}"
