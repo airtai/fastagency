@@ -4,13 +4,13 @@ The **FastAPI Adapter** allows you to expose your FastAgency workflows as a REST
 
 ## Use Cases
 
-This section outlines the scenarios where it's particularly beneficial to use the FastAPI Adapter.
+This section outlines the scenarios where it's particularly beneficial to use the **FastAPI** Adapter.
 
-### When to Use the FastAPI Adapter:
+### When to Use the FastAPI Adapter
 
-- **Custom Client Applications**: Use this adapter when you want to build your own client application that interacts with your FastAgency workflows using the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework.
-- **Moderate User Demand**: The FastAPI Adapter is a good fit for scenarios with moderate user request volume. For example, it's well-suited for a medium-sized company developing an internal custom chat application.
-- **Simplified Production Setup**: Choose this adapter if you need a simple and easy-to-manage production setup for deploying your FastAgency workflows as a REST API.
+- **Custom Client Applications**: If you want to build your **own client applications** that interact with your FastAgency workflows using REST APIs, this adapter provides greater flexibility and control over the client-side implementation.
+- **Moderate User Demand**: The FastAPI Adapter is a good fit for scenarios with **moderate user request volume**. For example, it's well-suited for a medium-sized company developing an internal custom chat application.
+- **Simplified Production Setup**: Choose this adapter if you need a **simple and easy-to-manage** production setup for deploying your FastAgency workflows as a REST API.
 
 
 ## Architecture Overview
@@ -25,7 +25,7 @@ The system consists of two main components:
 
 The FastAgency Mesop App serves as the frontend interface for the system. It includes:
 
-- **Mesop UI**: A web interface for users to interact with the workflows. It communicates with both the client and the NATS Provider.
+- **Mesop UI**: A user-friendly web interface for users to interact with the workflows. It communicates with the client and the FastAPI Provider.
 - **FastAPI Provider**: A component that facilitates communication between the Mesop UI and the FastAPI Adapter.
 
 This app handles all client interactions and presents the results back to the user.
@@ -36,7 +36,7 @@ The FastAgency FastAPI App forms the backend of our system and consists of:
 
 - **AutoGen Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
 - **FastAPI Adapter**: This component receives requests from the FastAPI Provider and executes the corresponding AutoGen workflows.
-- **FastAPI**: The framework that provides the infrastructure for building and exposing our autogen workflows via REST API.
+- **FastAPI**: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
 
 ### Interaction Flow
 
@@ -150,4 +150,4 @@ The outputs will vary based on the interface. Here is the output of the last ter
 
 ![Initial message](../../../getting-started/images/chat.png)
 
-The FastAPI Adapter provides a powerful solution for developers seeking a user-friendly and efficient way to expose their FastAgency workflows as REST APIs, contributing to building production-ready applications.
+The **FastAPI Adapter** provides a powerful solution for developers seeking a **user-friendly** and efficient way to expose their FastAgency workflows as **REST APIs**, contributing to building production-ready applications.

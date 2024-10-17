@@ -17,10 +17,39 @@ FastAgency uses **chainable network adapters** that can be easily combined to cr
 
 Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
 
-[Learn more about **FastAPI** →](./fastapi/)
+#### When to Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md)
+
+- **Custom Client Applications**: If you want to build your **own client applications** that interact with your FastAgency workflows using REST APIs, this adapter provides greater flexibility and control over the client-side implementation.
+- **Moderate User Demand**: The FastAPI Adapter is a good fit for scenarios with **moderate user request volume**. For example, it's well-suited for a medium-sized company developing an internal custom chat application.
+- **Simplified Production Setup**: Choose this adapter if you need a **simple and easy-to-manage** production setup for deploying your FastAgency workflows as a REST API.
+
+
+[Learn more about **FastAPI adapter** →](./fastapi/)
 
 ### Nats.io
 
-Utilize the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
+Utilize the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for highly-scalable, production-ready setup.
 
-[Learn more about **NATS.io** →](./nats/)
+#### When to Use the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md)
+
+- **Default Client Application**: If you prefer using the **default Mesop client** provided by FastAgency without the need to build your own client application.
+
+- **High User Demand**: When your application requires **high scalability** to handle a large number of users or messages, and you are comfortable with a more complex production setup involving a message broker. For example, it's well-suited for building a **scalable chat application** for a larger company or external customers.
+
+- **Conversation Auditing**: If you need the ability to **audit conversations**, the NATS Adapter provides the necessary infrastructure to enable this feature.
+
+
+[Learn more about **NATS.io adapter** →](./nats/)
+
+
+### FastAPI + Nats.io
+
+The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) + [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency offers the most scalable setup by combining the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework for building and exposing workflows as REST APIs with the [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This setup is the preferred way for running large workloads in production
+
+#### When to Use the FastAPI + NATS.io Adapter
+
+- **Custom Client Applications**: If you want to build your **own client applications** that interact with your FastAgency workflows using REST APIs, this adapter provides greater flexibility and control over the client-side implementation.
+- **High User Demand**: When your application needs to handle a large number of users or messages and requires high scalability, the FastAPI + NATS Adapter is an excellent choice. It is well-suited for building **scalable custom chat applications for larger companies or external customers**.
+- **Conversation Auditing**: If you need the ability to **audit conversations**, the NATS Adapter provides the necessary infrastructure to enable this feature.
+
+[Learn more about **FastAPI + NATS.io adapter** →](./fastapi_nats/)

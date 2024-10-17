@@ -1,22 +1,22 @@
-# NATS.io
+# Nats.io
 
-The **NATS Adapter** in FastAgency enables seamless integration of your workflows with the [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building distributed applications.
+The **Nats Adapter** in FastAgency enables seamless integration of your workflows with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building distributed applications.
 
 ## Use Cases
 
-This section outlines the scenarios where it's particularly beneficial to use the NATS Adapter.
+This section outlines the scenarios where it's particularly beneficial to use the **Nats** Adapter.
 
-### When to Use the NATS Adapter:
+### When to Use the Nats Adapter
 
-- **Default Client Application**: If you prefer using the default Mesop client provided by FastAgency without the need to build your own client application.
+- **Default Client Application**: If you prefer using the **default Mesop client** provided by FastAgency without the need to build your own client application.
 
-- **High User Demand**: When your application requires high scalability to handle a large number of users or messages, and you are comfortable with a more complex production setup involving a message broker. For example, it's well-suited for building a scalable chat application for a larger company or external customers.
+- **High User Demand**: When your application requires **high scalability** to handle a large number of users or messages, and you are comfortable with a more complex production setup involving a message broker. For example, it's well-suited for building a **scalable chat application** for a larger company or external customers.
 
-- **Conversation Auditing**: If you need the ability to audit conversations, the NATS Adapter provides the necessary infrastructure to enable this feature.
+- **Conversation Auditing**: If you need the ability to **audit conversations**, the Nats Adapter provides the necessary infrastructure to enable this feature.
 
 ## Architecture Overview
 
-The following diagram illustrates the high-level architecture of an application using the **NATS Adapter with Mesop UI** as its frontend:
+The following diagram illustrates the high-level architecture of an application using the **Nats Adapter with Mesop UI** as its frontend:
 
 
 ![Mesop Nats](../images/mesop_nats.png)
@@ -27,29 +27,29 @@ The system consists of two main components:
 
 The FastAgency Mesop App serves as the frontend interface for the system. It includes:
 
-- **Mesop UI**: A web interface for users to interact with the workflows. It communicates with both the client and the NATS Provider.
-- **NATS Provider**: The [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker responsible for handling message communication between different parts of the system.
+- **Mesop UI**: A user-friendly web interface for users to interact with the workflows. It communicates with the client and the Nats Provider.
+- **Nats Provider**: The [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker responsible for handling message communication between different parts of the system.
 
 This app handles all client interactions and presents the results back to the user.
 
-### FastAgency NATS App
+### FastAgency Nats App
 
-The FastAgency NATS App forms the backend of the system and consists of:
+The FastAgency Nats App forms the backend of the system and consists of:
 
-- **AutoGen Workflows**: The workflows defined using the AutoGen framework. They are executed by the workers in the NATS Adapter.
-- **NATS Adapter**: Responsible for connecting to the NATS Provider, receiving workflow initiation messages, and distributing them to the workers for execution.
+- **AutoGen Workflows**: The workflows defined using the AutoGen framework. They are executed by the workers in the Nats Adapter.
+- **Nats Adapter**: Responsible for connecting to the Nats Provider, receiving workflow initiation messages, and distributing them to the workers for execution.
 
 ### Interaction Flow
 
 1. The client interacts with the Mesop UI to initiate a workflow.
-2. The Mesop UI sends a message to the NATS Provider to initiate the workflow.
-3. The NATS Adapter, connected to the NATS Provider, receives the message.
-4. The NATS Adapter distributes the workflow execution task to one of the available workers.
+2. The Mesop UI sends a message to the Nats Provider to initiate the workflow.
+3. The Nats Adapter, connected to the Nats Provider, receives the message.
+4. The Nats Adapter distributes the workflow execution task to one of the available workers.
 5. The worker executes the AutoGen Workflow.
-6. The results are sent back through the NATS Provider to the Mesop UI and ultimately to the client.
+6. The results are sent back through the Nats Provider to the Mesop UI and ultimately to the client.
 
 
-Now, it's time to see the NATS Adapter using FastAgency in action. Let's dive into an example and learn how to use it!
+Now, it's time to see the Nats Adapter using FastAgency in action. Let's dive into an example and learn how to use it!
 
 ## Installation
 
@@ -59,11 +59,11 @@ Before getting started, make sure you have installed FastAgency by running the f
 pip install "fastagency[autogen,mesop,fastapi,server,nats]"
 ```
 
-This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows and the NATS Adapter for workflow execution.
+This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows and the Nats Adapter for workflow execution.
 
 ## Example: Student and Teacher Learning Chat
 
-In this example, we'll create a simple learning chat where a student agent asks questions and a teacher agent responds, simulating a learning environment.  We'll use MesopUI for the web interface and the NATS Adapter for workflow execution.
+In this example, we'll create a simple learning chat where a student agent asks questions and a teacher agent responds, simulating a learning environment.  We'll use MesopUI for the web interface and the Nats Adapter for workflow execution.
 
 ### Step-by-Step Breakdown
 
@@ -83,9 +83,9 @@ Define the workflow that your application will use. This is where you specify ho
 {!> docs_src/getting_started/nats/main_1_nats.py [ln:3-57] !}
 ```
 
-#### 3. **Configure the NATS Adapter**
+#### 3. **Configure the Nats Adapter**
 
-Create an instance of the NatsAdapter and pass your workflow to it. The adapter will handle the communication with the NATS Provider and distribute workflow execution to the workers.
+Create an instance of the NatsAdapter and pass your workflow to it. The adapter will handle the communication with the Nats Provider and distribute workflow execution to the workers.
 
 ```python
 {!> docs_src/getting_started/nats/main_1_nats.py [ln:59-64] !}
@@ -99,15 +99,15 @@ Create an NatsAdapter and then add it to a FastAPI application using the lifespa
 {!> docs_src/getting_started/nats/main_1_nats.py [ln:66] !}
 ```
 
-#### 5. **NATS server setup**
+#### 5. **Nats server setup**
 
-The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
+The `NatsAdapter` requires a running Nats server. The easiest way to start the Nats server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of Nats and also utilizes authentication.
 
 ```python hl_lines="1 3 6 11 17"
 {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf [ln:1-23]!}
 ```
 
-In the above NATS configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in NATS and configure NATS to serve via the appropriate ports.
+In the above Nats configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in Nats and configure Nats to serve via the appropriate ports.
 
 ### Complete Application Code
 
@@ -138,13 +138,13 @@ Please copy and paste the following code into the same folder, using the file na
 
 Once everything is set up, you can run your FastAgency application using the following commands. You need to run **three** commands in **separate** terminal windows:
 
-- 1. Start **NATS** Docker container:
+- 1. Start **Nats** Docker container:
 !!! note "Terminal 1"
     ```
     docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
     ```
 
-The above command starts a NATS container with the necessary ports exposed and configuration file mounted. It also sets the `FASTAGENCY_NATS_PASSWORD` environment variable for authentication.
+The above command starts a Nats container with the necessary ports exposed and configuration file mounted. It also sets the `FASTAGENCY_NATS_PASSWORD` environment variable for authentication.
 
  - 2. Start **FastAPI** application that provides a conversational workflow:
 !!! note "Terminal 2"
@@ -155,7 +155,7 @@ The above command starts a NATS container with the necessary ports exposed and c
 This command starts the FastAPI application using Uvicorn, a lightning-fast ASGI server. The --reload flag enables auto-reloading, so any changes made to the code will be automatically reflected without needing to restart the server.
 
 - 3. Start **Mesop** web interface using gunicorn:
-!!! note "Terminal 2"
+!!! note "Terminal 3"
     ```
     gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
     ```
@@ -175,4 +175,4 @@ The outputs will vary based on the interface. Here is the output of the last ter
 
 ![Initial message](../../../getting-started/images/chat.png)
 
-The NATS Adapter in FastAgency provides a powerful and flexible way to integrate your workflows with the NATS.io message broker. By leveraging the scalability and distributed architecture of NATS, you can build highly scalable and production-ready applications. With its easy-to-use API and seamless integration with the Mesop UI, the NATS Adapter simplifies the development process while enabling advanced features like conversation auditing.
+The Nats Adapter in FastAgency provides a powerful and flexible way to integrate your workflows with the Nats.io message broker. By leveraging the scalability and distributed architecture of Nats, you can build highly scalable and production-ready applications. With its easy-to-use API and seamless integration with the Mesop UI, the Nats Adapter simplifies the development process while enabling advanced features like conversation auditing.
