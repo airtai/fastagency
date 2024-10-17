@@ -26,7 +26,7 @@ with (Path(__file__).parent / "../../../../examples/openapi/whatsapp_openapi.jso
 whatsapp_api_key = os.getenv("WHATSAPP_API_KEY", "")
 
 whatsapp_api = OpenAPI.create(
-    openapi_json=openapi_json
+    openapi_json=openapi_json,
 )
 whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=whatsapp_api_key))
 
