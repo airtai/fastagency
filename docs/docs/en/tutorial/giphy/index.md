@@ -162,9 +162,9 @@ For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/bas
 Once the workflow is set up, you can run the application using the **FastAgency CLI**.
 There are two options of running a Mesop application:
 
-1. Using [`fastagency`](../cli/cli/){target="_blank"} command line:
+1. Using [`fastagency`](../../cli/cli.md){target="_blank"} command line:
 
-    !!! note "Terminal (using [fastagency](../cli/cli/){target="_blank"})"
+    !!! note "Terminal (using [fastagency](../../cli/cli.md){target="_blank"})"
         ```
         fastagency run
         ```
