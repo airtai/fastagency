@@ -69,10 +69,14 @@ class MyStr(str):
     def startswith(
         self,
         prefix: str | tuple[str, ...],  # type: ignore
-        start: SupportsIndex | None = ...,  # type: ignore
-        end: SupportsIndex | None = ...,  # type: ignore
+        start: SupportsIndex | None = None,  # type: ignore
+        end: SupportsIndex | None = None,  # type: ignore
     ) -> bool:
-        if platform.system() == "Windows" and self == WINDOWS_MEL_WEB_COMPONENT_PATH:
+        if (
+            platform.system() == "Windows"
+            and self == WINDOWS_MEL_WEB_COMPONENT_PATH
+            and prefix == "/"
+        ):
             return True
         return super().startswith(prefix, start, end)
 
@@ -88,7 +92,7 @@ def os_path_normpath_patch(path: str) -> str:
 
 
 @contextmanager
-def patch_str_startswith() -> Iterator[None]:
+def patch_os_and_str() -> Iterator[None]:
     os.path.normpath = os_path_normpath_patch  # type: ignore[assignment]
     yield
     os.path.normpath = original_os_path_normpath
@@ -99,7 +103,7 @@ def wakeup_component(
     on_wakeup: Callable[[mel.WebEvent], Any],
     key: Optional[str] = None,
 ) -> Any:
-    with patch_str_startswith():
+    with patch_os_and_str():
 
         @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
         def mel_wakeup_component(
