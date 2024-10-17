@@ -20,14 +20,14 @@ llm_config = {
     "temperature": 0.8,
 }
 
-with open(Path("../../../../examples/openapi/whatsapp_openapi.json")) as f:
+with (Path(__file__).parent / "../../../../examples/openapi/whatsapp_openapi.json").open() as f:
     openapi_json = f.read()
 
 # infobip_base_url = os.getenv("INFOBIP_BASE_URL", "")
 whatsapp_api_key = os.getenv("WHATSAPP_API_KEY", "")
 
 whatsapp_api = OpenAPI.create(
-    openapi_json=openapi_json, client_source_path="examples/whatsapp_debug"
+    openapi_json=openapi_json
 )
 whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=whatsapp_api_key))
 
@@ -90,92 +90,3 @@ def giphy_workflow_with_security(ui: UI, params: dict[str, Any]) -> str:
 
 
 app = FastAgency(provider=wf, ui=ConsoleUI(), title="Giphy and Websurfer chat")
-
-
-[
-    {
-        "type": "function",
-        "function": {
-            "description": "Send a text message to a single recipient. Text messages can only be successfully delivered, if the recipient has contacted the business within the last 24 hours, otherwise template message should be used.",
-            "name": "channels_whatsapp_send_whatsapp_text_message",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "body": {
-                        "$defs": {
-                            "InfobipwhatsappstandaloneapiserviceOpenapiTextContent": {
-                                "properties": {
-                                    "text": {
-                                        "description": "Text of the message that will be sent.",
-                                        "maxLength": 4096,
-                                        "minLength": 1,
-                                        "title": "Text",
-                                        "type": "string",
-                                    },
-                                    "previewUrl": {
-                                        "anyOf": [
-                                            {"type": "boolean"},
-                                            {"type": "null"},
-                                        ],
-                                        "default": None,
-                                        "description": "Allows for URL previews in text messages. If the value is set to `true`, text is expected to contain URL starting with `https://` or `http://`. The default value is `false`.",
-                                        "title": "Previewurl",
-                                    },
-                                },
-                                "required": ["text"],
-                                "title": "InfobipwhatsappstandaloneapiserviceOpenapiTextContent",
-                                "type": "object",
-                            }
-                        },
-                        "properties": {
-                            "from": {
-                                "description": "Registered WhatsApp sender number. Must be in international format.",
-                                "maxLength": 24,
-                                "minLength": 1,
-                                "title": "From",
-                                "type": "string",
-                            },
-                            "to": {
-                                "description": "Message recipient number. Must be in international format.",
-                                "maxLength": 24,
-                                "minLength": 1,
-                                "title": "To",
-                                "type": "string",
-                            },
-                            "messageId": {
-                                "anyOf": [
-                                    {"maxLength": 50, "minLength": 0, "type": "string"},
-                                    {"type": "null"},
-                                ],
-                                "default": None,
-                                "description": "The ID that uniquely identifies the message sent.",
-                                "title": "Messageid",
-                            },
-                            "content": {
-                                "$ref": "#/$defs/InfobipwhatsappstandaloneapiserviceOpenapiTextContent"
-                            },
-                            "callbackData": {
-                                "anyOf": [
-                                    {
-                                        "maxLength": 4000,
-                                        "minLength": 0,
-                                        "type": "string",
-                                    },
-                                    {"type": "null"},
-                                ],
-                                "default": None,
-                                "description": "Custom client data that will be included in Delivery Report.",
-                                "title": "Callbackdata",
-                            },
-                        },
-                        "required": ["from", "to", "content"],
-                        "title": "InfobipwhatsappstandaloneapiserviceOpenapiTextMessage",
-                        "type": "object",
-                        "description": "body",
-                    }
-                },
-                "required": ["body"],
-            },
-        },
-    }
-]
