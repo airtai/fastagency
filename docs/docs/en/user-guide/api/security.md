@@ -171,7 +171,7 @@ Here, we define security settings for the weather API by setting API keys for au
 You can also set security parameters for a specific method. The code below demonstrates how to apply security parameters to a specific method instead of globally. In this example, the security settings are only applied to the `get_daily_weather_daily_get` method.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:28-32] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:28,29.3,30.3,31.3,32.3] !}
 ```
 
 ### Define the Workflow and Agents
@@ -197,7 +197,7 @@ In this step, we register the weather API functions to ensure that the weather a
 Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:68-76] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:68-75] !}
 ```
 
 ### Define FastAgency Application
@@ -205,7 +205,7 @@ Here, the user agent initiates a chat with the weather agent, which queries the 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:79] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:78] !}
 ```
 
 ### Complete Application Code

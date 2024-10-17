@@ -47,21 +47,21 @@ In this step, we define two agents and specify the initial message that will be 
 - **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:24-50] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:24-48] !}
 ```
 
 ## Register API Functions with the Agents
 In this step, we register the weather API functions to ensure that the weather agent can call the correct functions to retrieve the required weather data.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:51-55] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:50-54] !}
 ```
 
 ## Enable Agent Interaction and Chat
 Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:56-64] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:56-63] !}
 ```
 
 ## Define FastAgency Application
@@ -69,7 +69,7 @@ Here, the user agent initiates a chat with the weather agent, which queries the 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:67] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:66] !}
 ```
 
 ## Complete Application Code
