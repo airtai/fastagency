@@ -1,10 +1,10 @@
 import os
 import os.path
-import platform
+import sys
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Callable, Optional, SupportsIndex
+from typing import Any, Callable, Optional, SupportsIndex, Union
 
 import mesop.labs as mel
 import mesop.server.static_file_serving
@@ -65,37 +65,37 @@ WINDOWS_MEL_WEB_COMPONENT_PATH = MEL_WEB_COMPONENT_PATH.replace("/", "\\")
 
 
 # Extended subclass
-class MyStr(str):
+class _MyPatchedStr(str):
     def startswith(
         self,
-        prefix: str | tuple[str, ...],  # type: ignore
-        start: SupportsIndex | None = None,  # type: ignore
-        end: SupportsIndex | None = None,  # type: ignore
+        prefix: Union[str, tuple[str, ...]],
+        start: Optional[SupportsIndex] = None,
+        end: Optional[SupportsIndex] = None,
     ) -> bool:
-        if (
-            platform.system() == "Windows"
+        return (
+            sys.platform == "win32"
             and self == WINDOWS_MEL_WEB_COMPONENT_PATH
             and prefix == "/"
-        ):
-            return True
-        return super().startswith(prefix, start, end)
+        ) or super().startswith(prefix, start, end)
 
 
-original_os_path_normpath = os.path.normpath
+_original_os_path_normpath = os.path.normpath
 
 
-def os_path_normpath_patch(path: str) -> str:
-    path = original_os_path_normpath(path)
+def _os_path_normpath_patch(path: str) -> str:
+    path = _original_os_path_normpath(path)
     if path == WINDOWS_MEL_WEB_COMPONENT_PATH:
-        return MyStr(path)
+        return _MyPatchedStr(path)
     return path
 
 
 @contextmanager
-def patch_os_and_str() -> Iterator[None]:
-    os.path.normpath = os_path_normpath_patch  # type: ignore[assignment]
-    yield
-    os.path.normpath = original_os_path_normpath
+def _patch_os_and_str() -> Iterator[None]:
+    os.path.normpath = _os_path_normpath_patch  # type: ignore[assignment]
+    try:
+        yield
+    finally:
+        os.path.normpath = _original_os_path_normpath
 
 
 def wakeup_component(
@@ -103,7 +103,7 @@ def wakeup_component(
     on_wakeup: Callable[[mel.WebEvent], Any],
     key: Optional[str] = None,
 ) -> Any:
-    with patch_os_and_str():
+    with _patch_os_and_str():
 
         @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
         def mel_wakeup_component(
