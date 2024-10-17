@@ -71,8 +71,6 @@ def giphy_workflow_with_security(ui: UI, params: dict[str, Any]) -> str:
         executors=user_proxy,
     )
 
-    print(whatsapp_agent.llm_config["tools"])
-
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",

@@ -2,7 +2,7 @@
     "openapi": "3.0.1",
     "servers": [
         {
-            "url": "k24wk8.api.infobip.com"
+            "url": "https://api.infobip.com"
         }
     ],
     "info": {
