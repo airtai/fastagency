@@ -6,9 +6,11 @@ import pytest
 if sys.version_info < (3, 10):
     pytest.skip("Mesop is not supported in Python 3.9", allow_module_level=True)
 from fastagency.ui.mesop.timer import (
-    MEL_WEB_COMPONENT_PATH,
     WINDOWS_MEL_WEB_COMPONENT_PATH,
 )
+
+TEST_LINUX_PATH = "/test/random/path"
+TEST_WINDOWS_PATH = TEST_LINUX_PATH.replace("/", "\\")
 
 
 @pytest.mark.skipif(
@@ -18,10 +20,10 @@ class TestStrOSPatch:
     @pytest.mark.parametrize(
         "value, startswith, expected",  # noqa: PT006
         [
-            (MEL_WEB_COMPONENT_PATH, "/", True),
-            (MEL_WEB_COMPONENT_PATH, "\\", False),
-            (WINDOWS_MEL_WEB_COMPONENT_PATH, "/", False),
-            (WINDOWS_MEL_WEB_COMPONENT_PATH, "\\", True),
+            (TEST_LINUX_PATH, "/", True),
+            (TEST_LINUX_PATH, "\\", False),
+            (TEST_WINDOWS_PATH, "/", False),
+            (TEST_WINDOWS_PATH, "\\", True),
             ("random string", "r", True),
             ("random string", "/", False),
         ],
@@ -47,7 +49,7 @@ class TestStrOSPatch:
     @pytest.mark.parametrize(
         "value, expected",  # noqa: PT006
         [
-            (MEL_WEB_COMPONENT_PATH, False),
+            (TEST_LINUX_PATH, False),
             (WINDOWS_MEL_WEB_COMPONENT_PATH, True),
             ("random string", False),
         ],
