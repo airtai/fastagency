@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.timer.web_component_patched
+::: fastagency.ui.mesop.timer.os_path_normpath_patch

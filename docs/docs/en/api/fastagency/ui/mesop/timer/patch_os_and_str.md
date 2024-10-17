@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.timer.format_filename
+::: fastagency.ui.mesop.timer.patch_os_and_str

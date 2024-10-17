@@ -200,10 +200,11 @@ search:
                         - [MesopSingleChoiceInnerStyles](api/fastagency/ui/mesop/styles/MesopSingleChoiceInnerStyles.md)
                         - [MesopTextInputInnerStyles](api/fastagency/ui/mesop/styles/MesopTextInputInnerStyles.md)
                     - timer
+                        - [MyStr](api/fastagency/ui/mesop/timer/MyStr.md)
                         - [configure_static_file_serving](api/fastagency/ui/mesop/timer/configure_static_file_serving.md)
-                        - [format_filename](api/fastagency/ui/mesop/timer/format_filename.md)
+                        - [os_path_normpath_patch](api/fastagency/ui/mesop/timer/os_path_normpath_patch.md)
+                        - [patch_os_and_str](api/fastagency/ui/mesop/timer/patch_os_and_str.md)
                         - [wakeup_component](api/fastagency/ui/mesop/timer/wakeup_component.md)
-                        - [web_component_patched](api/fastagency/ui/mesop/timer/web_component_patched.md)
     - [CLI](cli/cli.md)
 - [Contributing](contributing/index.md)
     - [Development](contributing/CONTRIBUTING.md)
