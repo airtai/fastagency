@@ -1,19 +1,26 @@
 # FastAPI
 
-The **FastAPI Adapter** in FastAgency allows you to expose your workflows as a REST API using the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework.
+The **FastAPI Adapter** allows you to expose your FastAgency workflows as a REST API using the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework.
 
-## Why Use FastAPI Adapter?
+## Use Cases
 
-The FastAPI Adapter provides several benefits:
+This section outlines the scenarios where it's particularly beneficial to use the FastAPI Adapter.
 
-- **Scalability**: FastAPI supports execution with **multiple workers**, allowing you to scale your workflows horizontally. Each workflow is executed in the context of a **WebSocket connection**, enabling efficient handling of concurrent requests.
-- **API-driven Development**: By exposing your workflows as a **REST API**, you can easily integrate them with other systems and services. This enables you to build robust and scalable applications that leverage the power of agentic workflows.
+### When to Use the FastAPI Adapter:
+
+- **Custom Client Applications**: Use this adapter when you want to build your own client application that interacts with your FastAgency workflows using the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework.
+- **Moderate User Demand**: The FastAPI Adapter is a good fit for scenarios with moderate user request volume. For example, it's well-suited for a medium-sized company developing an internal custom chat application.
+- **Simplified Production Setup**: Choose this adapter if you need a simple and easy-to-manage production setup for deploying your FastAgency workflows as a REST API.
+
 
 ## Architecture Overview
 
-At a high level we have two FastAgency applications: the **FastAgency Mesop App** and the **FastAgency FastAPI App**. These applications work together to provide a seamless interface between the client and the underlying AutoGen workflows.
+Here's a high-level overview of an application using the **FastAPI Adapter with Mesop UI** as its frontend:
 
 ![Mesop FastAPI](../images/mesop_fastapi.png)
+
+The system consists of two main components:
+
 
 ### FastAgency Mesop App
 
@@ -146,11 +153,10 @@ The outputs will vary based on the interface. Here is the output of the last ter
 
 ## Scaling with FastAPI Adapter
 
-To scale your FastAgency application using the FastAPI Adapter, you can leverage the multi-worker support provided by FastAPI. By running multiple instances of your application behind a load balancer, you can distribute the incoming requests across multiple workers.
+FastAPI's multi-worker support enables you to enhance the scalability of your FastAgency application using the FastAPI Adapter. This example illustrates how to achieve this by launching Gunicorn with four worker processes:
 
-For example, you can use a process manager like Gunicorn to run multiple worker processes:
 ```cmd
 gunicorn main_1_fastapi:app --workers 4 --worker-class uvicorn.workers.UvicornWorker
 ```
 
-This command starts Gunicorn with 4 worker processes, each running an instance of your FastAPI application. The incoming requests will be distributed among these workers, allowing for efficient handling of concurrent requests.
+In this configuration, each of the four worker processes runs an independent instance of your FastAPI application. Gunicorn effectively manages these workers, distributing incoming requests among them. This approach leads to more efficient handling of concurrent requests, ultimately improving the application's ability to manage increased traffic.
