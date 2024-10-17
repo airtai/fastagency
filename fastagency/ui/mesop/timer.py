@@ -1,15 +1,15 @@
-import inspect
 import os
+import os.path
 import platform
-from functools import wraps
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Callable, Optional, SupportsIndex, TypeVar, cast
+from typing import Any, Callable, Optional, SupportsIndex
 
 import mesop.labs as mel
 import mesop.server.static_file_serving
 import mesop.server.wsgi_app
 from flask import Flask, Response
-from mesop.runtime import runtime
 from mesop.server.static_file_serving import (
     WEB_COMPONENTS_PATH_SEGMENT,
     noop,
@@ -18,11 +18,6 @@ from mesop.server.static_file_serving import (
 from mesop.server.static_file_serving import (
     configure_static_file_serving as configure_static_file_serving_original,
 )
-from mesop.utils.validate import validate
-
-from contextlib import contextmanager
-import builtins
-
 
 from ...logging import get_logger
 
@@ -61,99 +56,42 @@ def configure_static_file_serving(
         )
 
 
-# C = TypeVar("C", bound=Callable[..., Any])
-
-
-# def format_filename(filename: str) -> str:
-#     if ".runfiles" in filename:
-#         # Handle Bazel case
-#         return filename.split(".runfiles", 1)[1]
-#     else:
-#         # Handle pip CLI case
-#         return os.path.relpath(filename, os.getcwd())  # noqa: PTH109
-
-
-# def web_component_patched(*, path: str, skip_validation: bool = False):  # type: ignore
-#     """A decorator for defining a web component.
-
-#     This decorator is used to define a web component. It takes a path to the
-#     JavaScript file of the web component and an optional parameter to skip
-#     validation. It then registers the JavaScript file in the runtime.
-
-#     Args:
-#         path: The path to the JavaScript file of the web component.
-#         skip_validation: If set to True, skips validation. Defaults to False.
-#     """
-#     runtime().check_register_web_component_is_valid()
-
-#     current_frame = inspect.currentframe()
-#     assert current_frame  # nosec
-#     previous_frame = current_frame.f_back
-#     assert previous_frame  # nosec
-#     caller_module_file = inspect.getfile(previous_frame)
-#     caller_module_dir = format_filename(
-#         os.path.dirname(os.path.abspath(caller_module_file))  # noqa: PTH120,PTH100
-#     )
-#     full_path = os.path.normpath(os.path.join(caller_module_dir, path))  # noqa: PTH118
-#     # if not full_path.startswith("/"):
-#     #     full_path = "/" + full_path
-
-#     # ToDo: propagate below fix to mesop repo
-#     # In Windows, above if section from original web_component function
-#     # creates a path which looks like "/\__fast_agency_internal__\javascript\wakeup_component.js"
-#     # Below three lines fixes this
-#     starting_char = "\\" if platform.system() == "Windows" else "/"
-#     if not full_path.startswith(starting_char):
-#         full_path = starting_char + full_path
-
-#     js_module_path = full_path
-
-#     def component_wrapper(fn: C) -> C:
-#         validated_fn = fn if skip_validation else validate(fn)
-
-#         @wraps(fn)
-#         def wrapper(*args: Any, **kw_args: Any):  # type: ignore
-#             runtime().context().register_js_module(js_module_path)
-#             return validated_fn(*args, **kw_args)
-
-#         return cast(C, wrapper)
-
-#     return component_wrapper
-
-
 logger.info("Patching static file serving in Mesop")
 mesop.server.wsgi_app.configure_static_file_serving = configure_static_file_serving
 
 
 MEL_WEB_COMPONENT_PATH = "/__fast_agency_internal__/javascript/wakeup_component.js"
-WINDOW_MEL_WEB_COMPONENT_PATH = MEL_WEB_COMPONENT_PATH.replace("/", "\\")
+WINDOWS_MEL_WEB_COMPONENT_PATH = MEL_WEB_COMPONENT_PATH.replace("/", "\\")
 
-
-original_str_startswith = str.startswith
-original_str = str
 
 # Extended subclass
-class mystr(str):
-    def startswith(self, prefix: str | tuple[str, ...], start: SupportsIndex | None = ..., end: SupportsIndex | None = ...) -> bool:
-        print(f"Called startswith with {self=}, {prefix=}, {start=}, {end=}")
-        if platform.system() == "Windows" and self == WINDOW_MEL_WEB_COMPONENT_PATH:
+class MyStr(str):
+    def startswith(
+        self,
+        prefix: str | tuple[str, ...],  # type: ignore
+        start: SupportsIndex | None = ...,  # type: ignore
+        end: SupportsIndex | None = ...,  # type: ignore
+    ) -> bool:
+        if platform.system() == "Windows" and self == WINDOWS_MEL_WEB_COMPONENT_PATH:
             return True
         return super().startswith(prefix, start, end)
 
+
+original_os_path_normpath = os.path.normpath
+
+
+def os_path_normpath_patch(path: str) -> str:
+    path = original_os_path_normpath(path)
+    if path == WINDOWS_MEL_WEB_COMPONENT_PATH:
+        return MyStr(path)
+    return path
+
+
 @contextmanager
-def patch_str_startswith():
-    print("Patching str.startswith")
-    # original_str_startswith = str.startswith
-    # def patched_str_startswith(self, prefix, start=None, end=None):
-    #     if platform.system() == "Windows" and self == WINDOW_MEL_WEB_COMPONENT_PATH:
-    #         return False
-    #     return original_str_startswith(self, prefix, start, end)
-    
-    # str.startswith = patched_str_startswith
-    builtins.str = mystr
+def patch_str_startswith() -> Iterator[None]:
+    os.path.normpath = os_path_normpath_patch  # type: ignore[assignment]
     yield
-    # str.startswith = original_str_startswith
-    builtins.str = original_str
+    os.path.normpath = original_os_path_normpath
 
 
 def wakeup_component(
@@ -162,6 +100,7 @@ def wakeup_component(
     key: Optional[str] = None,
 ) -> Any:
     with patch_str_startswith():
+
         @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
         def mel_wakeup_component(
             *,
@@ -176,4 +115,5 @@ def wakeup_component(
                 },
                 properties={},
             )
+
         return mel_wakeup_component(on_wakeup=on_wakeup, key=key)
