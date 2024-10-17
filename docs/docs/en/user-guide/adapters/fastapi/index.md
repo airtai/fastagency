@@ -15,18 +15,17 @@ This section outlines the scenarios where it's particularly beneficial to use th
 
 ## Architecture Overview
 
-Here's a high-level overview of an application using the **FastAPI Adapter with Mesop UI** as its frontend:
+The following diagram illustrates the high-level architecture of an application using the  **FastAPI Adapter with Mesop UI** as its frontend:
 
 ![Mesop FastAPI](../images/mesop_fastapi.png)
 
 The system consists of two main components:
 
-
 ### FastAgency Mesop App
 
-The FastAgency Mesop App serves as the front-end interface for our system. It contains:
+The FastAgency Mesop App serves as the frontend interface for the system. It includes:
 
-- **Mesop UI**: A web-based user interface that allows clients to interact with the application.
+- **Mesop UI**: A web interface for users to interact with the workflows. It communicates with both the client and the NATS Provider.
 - **FastAPI Provider**: A component that facilitates communication between the Mesop UI and the FastAPI Adapter.
 
 This app handles all client interactions and presents the results back to the user.
@@ -151,12 +150,4 @@ The outputs will vary based on the interface. Here is the output of the last ter
 
 ![Initial message](../../../getting-started/images/chat.png)
 
-## Scaling with FastAPI Adapter
-
-FastAPI's multi-worker support enables you to enhance the scalability of your FastAgency application using the FastAPI Adapter. This example illustrates how to achieve this by launching Gunicorn with four worker processes:
-
-```cmd
-gunicorn main_1_fastapi:app --workers 4 --worker-class uvicorn.workers.UvicornWorker
-```
-
-In this configuration, each of the four worker processes runs an independent instance of your FastAPI application. Gunicorn effectively manages these workers, distributing incoming requests among them. This approach leads to more efficient handling of concurrent requests, ultimately improving the application's ability to manage increased traffic.
+The FastAPI Adapter provides a powerful solution for developers seeking a user-friendly and efficient way to expose their FastAgency workflows as REST APIs, contributing to building production-ready applications.
