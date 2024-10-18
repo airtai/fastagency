@@ -15,18 +15,18 @@ This section outlines the scenarios where it's particularly beneficial to use th
 
 ## Architecture Overview
 
-The following diagram illustrates the high-level architecture of an application using the  **FastAPI Adapter with Mesop UI** as its frontend:
+The following diagram illustrates the high-level architecture of an application using the  **FastAPI Adapter**:
 
 ![Mesop FastAPI](../images/mesop_fastapi.png)
 
 The system consists of two main components:
 
-### FastAgency Mesop App
+### FastAgency Client App
 
-The FastAgency Mesop App serves as the frontend interface for the system. It includes:
+The FastAgency Client App serves as the frontend interface for the system. It includes:
 
-- **Mesop UI**: A user-friendly web interface for users to interact with the workflows. It communicates with the client and the FastAPI Provider.
-- **FastAPI Provider**: A component that facilitates communication between the Mesop UI and the FastAPI Adapter.
+- **Mesop UI or Custom UI**: A web interface for users to interact with the workflows. It facilitates the communication with the client and the FastAPI Provider.
+- **FastAPI Provider**: A component that facilitates communication between the Mesop UI or Custom UI and the FastAPI Adapter.
 
 This app handles all client interactions and presents the results back to the user.
 
@@ -35,18 +35,18 @@ This app handles all client interactions and presents the results back to the us
 The FastAgency FastAPI App forms the backend of our system and consists of:
 
 - **AutoGen Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
-- **FastAPI Adapter**: This component receives requests from the FastAPI Provider and executes the corresponding AutoGen workflows.
+- **FastAPI Adapter**: This component communicates with AutoGen, and implemets routes and websocket for FastAPI.
 - **FastAPI**: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
 
 ### Interaction Flow
 
-1. The client initiates communication with the Mesop UI in the FastAgency Mesop App.
-2. The Mesop UI interacts with the FastAPI Provider, sending requests based on user actions.
+1. The client initiates communication with the Mesop UI or Custom UI in the FastAgency Client App.
+2. The Mesop UI or Custom UI interacts with the FastAPI Provider, sending requests based on user actions.
 3. The FastAPI Provider communicates these requests to the FastAPI Adapter in the FastAgency FastAPI App.
 4. The FastAPI Adapter processes the requests and triggers the appropriate AutoGen workflows.
 5. The AutoGen workflows execute, performing the required tasks and generating results.
 6. Results are sent back through the FastAPI Adapter to the FastAPI Provider.
-7. The FastAPI Provider relays the results to the Mesop UI, which then presents them to the client.
+7. The FastAPI Provider relays the results to the Mesop UI or Custom UI, which then presents them to the client.
 
 This architecture ensures a clear separation between the user interface and the core application logic, allowing for flexibility in development and maintenance. The use of FastAPI provides a robust and efficient API layer, while the AutoGen workflows enable complex, agent-based task execution.
 

@@ -37,7 +37,7 @@ This app handles all client interactions and presents the results back to the us
 The FastAgency Nats App forms the backend of the system and consists of:
 
 - **AutoGen Workflows**: The workflows defined using the AutoGen framework. They are executed by the workers in the Nats Adapter.
-- **Nats Adapter**: Responsible for connecting to the Nats Provider, receiving workflow initiation messages, and distributing them to the workers for execution.
+- **Nats Adapter**: Communicates with AutoGen, and makes the workflow messages available on corresponding Nats topics.
 
 ### Interaction Flow
 
