@@ -1,6 +1,6 @@
-# FastAPI (Coming Soon)
+# FastAPI
 
-FastAgency is expanding its capabilities with support for [**FastAPI**](https://fastapi.tiangolo.com/)! This upcoming feature will allow developers to build multi-agent applications with a powerful, fully-fledged FastAPI backend, making it even easier to integrate agents into modern web applications.
+FastAgency has expanded its capabilities with support for [**FastAPI**](https://fastapi.tiangolo.com/)! This powerful feature allows developers to build multi-agent applications with a fully-fledged FastAPI backend, making it even easier to integrate agents into modern web applications.
 
 With [**FastAPI**](https://fastapi.tiangolo.com/), you will be able to:
 
@@ -10,8 +10,4 @@ With [**FastAPI**](https://fastapi.tiangolo.com/), you will be able to:
 
 - Build scalable, high-performance web applications powered by FastAgency agents.
 
-Stay tuned for more updates as this feature is being developed. To get the latest news and join the discussion, visit our [**Discord channel**](https://discord.gg/kJjSGWrknU).
-
----
-
-Check back soon for detailed documentation and usage examples!
+For a comprehensive overview of how to leverage this feature in your projects, please refer to our detailed guide on the [**`FastAPI`**](../../adapters/fastapi/index.md) Adapter.
