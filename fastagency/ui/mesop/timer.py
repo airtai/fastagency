@@ -73,7 +73,7 @@ class _MyPatchedStr(str):
         end: Optional[SupportsIndex] = None,
     ) -> bool:
         return (
-            self == WINDOWS_MEL_WEB_COMPONENT_PATH and prefix == "/"
+            super().startswith("\\", start, end) and prefix == "/"
         ) or super().startswith(prefix, start, end)
 
 
@@ -99,26 +99,19 @@ def _patch_os_path_normpath_for_win32() -> Iterator[None]:
         yield
 
 
-def wakeup_component(
-    *,
-    on_wakeup: Callable[[mel.WebEvent], Any],
-    key: Optional[str] = None,
-) -> Any:
-    with _patch_os_path_normpath_for_win32():
+with _patch_os_path_normpath_for_win32():
 
-        @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
-        def mel_wakeup_component(
-            *,
-            on_wakeup: Callable[[mel.WebEvent], Any],
-            key: Optional[str] = None,
-        ) -> Any:
-            return mel.insert_web_component(
-                name="wakeup-component",
-                key=key,
-                events={
-                    "wakeupEvent": on_wakeup,
-                },
-                properties={},
-            )
-
-        return mel_wakeup_component(on_wakeup=on_wakeup, key=key)
+    @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
+    def wakeup_component(
+        *,
+        on_wakeup: Callable[[mel.WebEvent], Any],
+        key: Optional[str] = None,
+    ) -> Any:
+        return mel.insert_web_component(
+            name="wakeup-component",
+            key=key,
+            events={
+                "wakeupEvent": on_wakeup,
+            },
+            properties={},
+        )
