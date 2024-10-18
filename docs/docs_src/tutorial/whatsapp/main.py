@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from typing import Annotated, Any, Optional
 
 from autogen import register_function
@@ -22,14 +21,9 @@ llm_config = {
     "temperature": 0.8,
 }
 
-whatsapp_openapi_path = (
-    Path(__file__).parent / "../../../../examples/openapi/whatsapp_openapi.json"
-)
-with whatsapp_openapi_path.open() as f:
-    openapi_json = f.read()
-
+openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/whatsapp_openapi.json"
 whatsapp_api = OpenAPI.create(
-    openapi_json=openapi_json,
+    openapi_url=openapi_url,
 )
 
 whatsapp_api_key = "App "  # pragma: allowlist secret
