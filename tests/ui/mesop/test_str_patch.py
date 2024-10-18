@@ -75,3 +75,12 @@ class TestStrOSPatch:
             else:
                 assert os.path.normpath is not _os_path_normpath_patch
         assert os.path.normpath is not _os_path_normpath_patch
+
+    def test_check_mesop_version(self) -> None:
+        import mesop
+
+        # Check mesop version is less than 0.12.7
+        # Because mesop version 0.12.7 will introduce the fix after that patching is not needed
+        assert (
+            mesop.__version__ < "0.12.7"
+        ), "Mesop version is 0.12.7; Patching os.path.normpath is not needed anymore"
