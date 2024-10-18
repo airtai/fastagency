@@ -8,7 +8,7 @@ from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
 
 llm_config = {
     "config_list": [
@@ -89,4 +89,4 @@ What is your number and which message would you like to send?""",
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(provider=wf, ui=ConsoleUI(), title="WhatsApp chat")
+app = FastAgency(provider=wf, ui=MesopUI(), title="WhatsApp chat")
