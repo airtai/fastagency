@@ -35,7 +35,7 @@ This app handles all client interactions and presents the results back to the us
 The FastAgency FastAPI App forms the backend of our system and consists of:
 
 - **AutoGen Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
-- **FastAPI Adapter**: This component communicates with AutoGen, and implemets routes and websocket for FastAPI.
+- **FastAPI Adapter**: This component communicates with AutoGen, and implements routes and websocket for FastAPI.
 - **FastAPI**: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
 
 ### Interaction Flow
