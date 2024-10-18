@@ -44,7 +44,7 @@ Utilize the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.m
 
 ### FastAPI + Nats.io
 
-The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) + [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency offers the most scalable setup by combining the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework for building and exposing workflows as REST APIs with the [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This setup is the preferred way for running large workloads in production
+The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) + [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency offers the most scalable setup by combining the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework for building and exposing workflows as REST APIs with the [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This setup is the preferred way for running large workloads in production.
 
 #### When to Use the FastAPI + NATS.io Adapter
 
