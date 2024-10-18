@@ -1,21 +1,14 @@
 import { expect, test } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('/');
 
-  // Expect a title "to contain" a substring.
+test('student teacher', async ({ page }) => {
+  await page.goto('/');
   await expect(page).toHaveTitle(/Mesop/);
-});
-
-test('get started link', async ({ page }) => {
-  await page.goto('/');
-
-  // Click the get started link.
-  await page.getByRole('link', { name: '/Student and teacher/' }).click();
-
-  // Expects workflow to get started.
-  await page.locator('p')
-    .filter({ hasText: "Workflow started" })
-    .isVisible()
-
+  const startWorkflow = await page.getByRole('button', { name: 'Student and teacher learning' })
+  await startWorkflow.click()
+  const started = await page.getByText("Workflow started")
+  const textInput = await page.getByRole("textbox").fill("triangles")
+  await page.locator('button').filter({ hasText: 'send' }).click()
+  const completed = await page.getByText('Workflow copleted:')
+  expect(completed)
 });
