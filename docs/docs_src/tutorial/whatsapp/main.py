@@ -1,12 +1,14 @@
 import os
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any, Optional
 
-from autogen.agentchat import ConversableAgent, UserProxyAgent
+from autogen import register_function
+from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
+from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
 from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
@@ -39,13 +41,33 @@ def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 
-    user_proxy = UserProxyAgent(
-        name="User_Proxy",
-        human_input_mode="NEVER",
-        is_termination_msg=is_termination_msg,
-    )
+    def present_completed_task_or_ask_question(
+        message: Annotated[str, "Message for examiner"],
+    ) -> Optional[str]:
+        try:
+            return ui.text_input(
+                sender="whatsapp_agent",
+                recipient="whatsapp_agent",
+                prompt=message,
+            )
+        except Exception as e:  # pragma: no cover
+            return f"present_completed_task_or_ask_question() FAILED! {e}"
 
-    WHATSAPP_SYSTEM_MESSAGE = """Msg Body must use the following format:
+    # user_proxy = UserProxyAgent(
+    #     name="User_Proxy",
+    #     human_input_mode="NEVER",
+    #     is_termination_msg=is_termination_msg,
+    # )
+
+    WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and WhatsAPP API.
+Always use 'present_completed_task_or_ask_question' to interact with the user.
+- make sure that the 'message' parameter contains all the necessary information for the user!
+Initially, the Web_Surfer_Agent will provide you with some content from the web.
+You should ask the user if he would like to receive the summary of the scraped page
+by using 'present_completed_task_or_ask_question'.
+- "If you want to receive the summary of the page as a WhatsApp message, please provide your number."
+
+    When sending the message, the Body must use the following format:
 {
     "from": "447860099299",
     "to": "receiverNumber",
@@ -66,21 +88,38 @@ def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
         is_termination_msg=is_termination_msg,
     )
 
+    web_surfer = WebSurferAgent(
+        name="Web_Surfer_Agent",
+        llm_config=llm_config,
+        summarizer_llm_config=llm_config,
+        human_input_mode="NEVER",
+        executor=whatsapp_agent,
+        is_termination_msg=is_termination_msg,
+    )
+
+    register_function(
+        present_completed_task_or_ask_question,
+        caller=whatsapp_agent,
+        executor=web_surfer,
+        name="present_completed_task_or_ask_question",
+        description="""Present completed task or ask question.
+If you are presenting a completed task, last message should be a question: 'Do yo need anything else?'""",
+    )
+
     wf.register_api(
         api=whatsapp_api,
         callers=whatsapp_agent,
-        executors=user_proxy,
+        executors=web_surfer,
     )
 
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
-        prompt="""I can help you send a message to your WhatsApp.
-What is your number and which message would you like to send?""",
+        prompt="For which website would you like to receive a summary?",
     )
 
-    chat_result = user_proxy.initiate_chat(
-        whatsapp_agent,
+    chat_result = whatsapp_agent.initiate_chat(
+        web_surfer,
         message=f"Users initial message: {initial_message}",
         summary_method="reflection_with_llm",
         max_turns=10,
