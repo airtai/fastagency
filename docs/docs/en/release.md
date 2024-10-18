@@ -12,6 +12,18 @@ hide:
 ---
 
 # Release Notes
+## v0.3.1
+
+### What's Changed
+* Update tutorial docs by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#414](https://github.com/airtai/fastagency/pull/414){.external-link target="_blank"}
+* Fix OpenAPI docs by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#419](https://github.com/airtai/fastagency/pull/419){.external-link target="_blank"}
+* Fix broken links in docs by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#420](https://github.com/airtai/fastagency/pull/420){.external-link target="_blank"}
+* Implement path to make mesop work in Windows by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#415](https://github.com/airtai/fastagency/pull/415){.external-link target="_blank"}
+* Fix _process_params method when body is present by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#429](https://github.com/airtai/fastagency/pull/429){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.3.0...v0.3.1](https://github.com/airtai/fastagency/compare/v0.3.0...v0.3.1){.external-link target="_blank"}
+
 ## v0.3.0
 
 ### What's Changed
