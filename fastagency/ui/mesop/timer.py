@@ -72,7 +72,9 @@ class _MyPatchedStr(str):
         start: Optional[SupportsIndex] = None,
         end: Optional[SupportsIndex] = None,
     ) -> bool:
-        return prefix == "/" or super().startswith(prefix, start, end)
+        return (
+            super().startswith("\\", start, end) and prefix == "/"
+        ) or super().startswith(prefix, start, end)
 
 
 _original_os_path_normpath = os.path.normpath

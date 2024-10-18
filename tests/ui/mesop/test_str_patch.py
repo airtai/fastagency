@@ -22,7 +22,7 @@ class TestStrOSPatch:
         [
             (TEST_LINUX_PATH, "/", True),
             (TEST_LINUX_PATH, "\\", False),
-            (TEST_WINDOWS_PATH, "/", False),
+            (TEST_WINDOWS_PATH, "/", True),
             (TEST_WINDOWS_PATH, "\\", True),
             ("random string", "r", True),
             ("random string", "/", False),
