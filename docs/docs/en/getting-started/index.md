@@ -405,6 +405,13 @@ Once everything is set up, you can run your FastAgency application using the fol
             gunicorn main:app
             ```
 
+        !!! danger "Currently not working on **Windows**"
+            The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+            ```
+            pip install waitress
+            waitress-serve --listen=0.0.0.0:8000 main:app
+            ```
+
 === "FastAPI + Mesop"
 
     In this setup, we need to run **two** commands in **separate** terminal windows:
@@ -419,6 +426,13 @@ Once everything is set up, you can run your FastAgency application using the fol
     !!! note "Terminal 2"
         ```
         gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+        ```
+
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
         ```
 
 === "NATS + FastAPI + Mesop"
@@ -447,6 +461,13 @@ Once everything is set up, you can run your FastAgency application using the fol
     !!! note "Terminal 4"
         ```
         gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
+        ```
+
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
         ```
 
 ### Output
