@@ -15,9 +15,15 @@ This section outlines the scenarios where it's particularly beneficial to use th
 
 ## Architecture Overview
 
-The following diagram illustrates the high-level architecture of an application using the  **FastAPI Adapter**:
+The following diagram illustrates the high-level architecture of an application uses **FastAPI Adapter along with default Mesop UI** and **FastAPI Adapter with Custom UI**
 
-![Mesop FastAPI](../images/mesop_fastapi.png)
+=== "FastAPI + Default Mesop UI"
+
+    ![Mesop FastAPI App](../images/mesop_fastapi.png)
+
+=== "FastAPI + Custom UI"
+
+    ![Custom FastAPI App](../images/custom_fastapi.png)
 
 The system consists of two main components:
 
