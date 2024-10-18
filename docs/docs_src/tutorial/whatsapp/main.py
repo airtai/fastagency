@@ -22,7 +22,9 @@ llm_config = {
     "temperature": 0.8,
 }
 
-whatsapp_openapi_path = Path(__file__).parent / "../../../../examples/openapi/whatsapp_openapi.json"
+whatsapp_openapi_path = (
+    Path(__file__).parent / "../../../../examples/openapi/whatsapp_openapi.json"
+)
 with whatsapp_openapi_path.open() as f:
     openapi_json = f.read()
 
@@ -30,36 +32,11 @@ whatsapp_api = OpenAPI.create(
     openapi_json=openapi_json,
 )
 
-whatsapp_api_key = "App " # pragma: allowlist secret
+whatsapp_api_key = "App "  # pragma: allowlist secret
 whatsapp_api_key += os.getenv("WHATSAPP_API_KEY", "")
 whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=whatsapp_api_key))
 
-wf = AutoGenWorkflows()
-
-@wf.register(name="whatsapp", description="WhatsApp chat")
-def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
-    def is_termination_msg(msg: dict[str, Any]) -> bool:
-        return msg["content"] is not None and "TERMINATE" in msg["content"]
-
-    def present_completed_task_or_ask_question(
-        message: Annotated[str, "Message for examiner"],
-    ) -> Optional[str]:
-        try:
-            return ui.text_input(
-                sender="whatsapp_agent",
-                recipient="whatsapp_agent",
-                prompt=message,
-            )
-        except Exception as e:  # pragma: no cover
-            return f"present_completed_task_or_ask_question() FAILED! {e}"
-
-    # user_proxy = UserProxyAgent(
-    #     name="User_Proxy",
-    #     human_input_mode="NEVER",
-    #     is_termination_msg=is_termination_msg,
-    # )
-
-    WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and WhatsAPP API.
+WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and WhatsAPP API.
 Always use 'present_completed_task_or_ask_question' to interact with the user.
 - make sure that the 'message' parameter contains all the necessary information for the user!
 Initially, the Web_Surfer_Agent will provide you with some content from the web.
@@ -80,6 +57,27 @@ by using 'present_completed_task_or_ask_question'.
 
 "from" number is always the same.
 """
+
+wf = AutoGenWorkflows()
+
+
+@wf.register(name="whatsapp", description="WhatsApp chat")
+def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
+    def is_termination_msg(msg: dict[str, Any]) -> bool:
+        return msg["content"] is not None and "TERMINATE" in msg["content"]
+
+    def present_completed_task_or_ask_question(
+        message: Annotated[str, "Message for examiner"],
+    ) -> Optional[str]:
+        try:
+            return ui.text_input(
+                sender="whatsapp_agent",
+                recipient="whatsapp_agent",
+                prompt=message,
+            )
+        except Exception as e:  # pragma: no cover
+            return f"present_completed_task_or_ask_question() FAILED! {e}"
+
     whatsapp_agent = ConversableAgent(
         name="Whatsapp_Agent",
         system_message=WHATSAPP_SYSTEM_MESSAGE,
