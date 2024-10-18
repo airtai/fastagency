@@ -41,7 +41,7 @@ def test_submodules(module: str) -> None:
                 or module == "docs_src.tutorial.whatsapp"
             ):
                 pass
-            elif ("mesop" in module) or ("giphy" in module):
+            elif ("mesop" in module) or ("giphy" in module) or ("whatsapp" in module):
                 with pytest.raises(
                     FastAgencyCLIPythonVersionError,
                     match="Mesop requires Python 3.10 or higher",
