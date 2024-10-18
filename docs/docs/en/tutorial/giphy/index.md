@@ -182,6 +182,13 @@ There are two options of running a Mesop application:
         gunicorn main:app
         ```
 
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8000 main:app
+        ```
+
 ```console
  ╭─ Python package file structure ──╮
  │                                  │
