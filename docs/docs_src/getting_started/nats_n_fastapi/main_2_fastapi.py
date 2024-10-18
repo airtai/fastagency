@@ -10,7 +10,7 @@ nats_user: str = "fastagency"
 nats_password: str = environ.get("FASTAGENCY_NATS_PASSWORD", "fastagency_nats_password")  # type: ignore[assignment]
 
 provider = NatsAdapter.create_provider(
-    nats_url=environ.get("NATS_URL", None), user=nats_user, password=nats_password
+    nats_url=nats_url, user=nats_user, password=nats_password
 )
 
 adapter = FastAPIAdapter(
