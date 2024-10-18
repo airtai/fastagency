@@ -7,8 +7,6 @@ from pydantic import BaseModel, Field, StringConstraints, constr
 
 from fastagency.api.openapi.client import OpenAPI
 
-# from fastagency.api.openapi.security import APIKeyHeader
-
 
 def create_whatsapp_fastapi_app(host: str, port: int) -> FastAPI:
     class InfobipwhatsappstandaloneapiserviceOpenapiTextContent(BaseModel):
@@ -77,13 +75,6 @@ def create_whatsapp_fastapi_app(host: str, port: int) -> FastAPI:
             description="Custom client data that will be included in Delivery Report.",
         )
 
-    # app = OpenAPI(
-    #     title="Infobip WHATSAPP OpenApi Specification",
-    #     description="OpenApi Spec containing WHATSAPP public endpoints for Postman collection purposes.",
-    #     contact={"name": "Infobip support", "email": "support@infobip.com"},
-    #     version="1.0.195",
-    #     servers=[{"url": "k24wk8.api.infobip.com"}],
-    # )
     app = FastAPI(
         title="WhatsApp",
         servers=[
@@ -96,9 +87,6 @@ def create_whatsapp_fastapi_app(host: str, port: int) -> FastAPI:
         response_model=InfobipwhatsappstandaloneapiserviceOpenapiSingleMessageInfo,
         description="Send a text message to a single recipient. Text messages can only be successfully delivered, if the recipient has contacted the business within the last 24 hours, otherwise template message should be used.",
         tags=["Send WhatsApp Message"],
-        # security=[
-        #     APIKeyHeader(name="Authorization"),
-        # ],
     )
     def send(
         body: InfobipwhatsappstandaloneapiserviceOpenapiTextMessage,
@@ -347,7 +335,21 @@ def test_end2end(
 ) -> None:
     api = OpenAPI.create(openapi_url=fastapi_openapi_url)
 
-    agent = ConversableAgent(name="agent", llm_config=azure_gpt35_turbo_16k_llm_config)
+    system_message = """When sending the message, the Body must use the following format:
+{
+    "from": "senderNumber",
+    "to": "receiverNumber",
+    "messageId": "test-message-randomInt",
+    "content": {
+        "text": "message"
+    },
+    "callbackData": "Callback data"
+}"""
+    agent = ConversableAgent(
+        name="agent",
+        system_message=system_message,
+        llm_config=azure_gpt35_turbo_16k_llm_config,
+    )
     user_proxy = UserProxyAgent(
         name="user_proxy",
         llm_config=azure_gpt35_turbo_16k_llm_config,
