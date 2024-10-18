@@ -98,15 +98,15 @@ class OpenAPI:
 
         url = self.servers[0]["url"] + expanded_path
 
+        body_dict = {}
         if body and body in kwargs:
-            if isinstance(kwargs[body], dict):
-                body_dict = {"json": kwargs[body]}
-            elif hasattr(kwargs[body], "model_dump"):
-                body_dict = {"json": kwargs[body].model_dump()}
+            body_value = kwargs[body]
+            if isinstance(body_value, dict):
+                body_dict = {"json": body_value}
+            elif hasattr(body_value, "model_dump"):
+                body_dict = {"json": body_value.model_dump()}
             else:
-                body_dict = {"json": kwargs[body].dict()}
-        else:
-            body_dict = {}
+                body_dict = {"json": body_value.dict()}
 
         body_dict["headers"] = {"Content-Type": "application/json"}
         if security:
