@@ -140,8 +140,8 @@ The following section presents high-level architecture diagrams for the two avai
     - **Initiation**: Client requests to start the chosen workflow.
     - **Connection**: WebSocket connection established for real-time communication. These includes:
         - Server sending workflow message to the client
-        - Client sending optional message to the server
-        - Server processes request and sends the next workflow message
+        - Client sends optional response to server if previous server message requires user input
+        - Server processes and sends the next workflow message
 
 
     #### Implementation Guide
@@ -161,7 +161,7 @@ The following section presents high-level architecture diagrams for the two avai
 
         - The below example uses a **simple HTML with JavaScript**, all in a single string and served directly from the FastAgency FastAPI app for **simplicity**.
         - This approach is **not suitable for production** but ideal for demonstrating core concepts.
-        - In a real-world scenario, you'd use a separate frontend built with a framework like **React or Vue.js**.
+        - In a real-world scenario, you'd use a separate frontend, built with frameworks like React or Vue.js, or other languages such as Java, Go, or Ruby, based on your project needs.
 
     Let's begin by looking at the code structure and then break down each component.
 
