@@ -41,9 +41,6 @@ fake_users_db = {
     },
 }
 
-app = FastAPI()
-
-
 def fake_hash_password(password: str) -> str:
     return "fakehashed" + password
 
@@ -126,7 +123,3 @@ app.include_router(adapter.router)
 @app.get("/")
 def read_root() -> dict[str, dict[str, str]]:
     return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
-
-
-# start the provider with the following command
-# uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
