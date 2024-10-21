@@ -20,8 +20,8 @@ html = """
       <div id="workflows"></div>
       <ul id="messages"></ul>
       <script>
-         const API_URL = 'http://localhost:8008/fastagency';
-         const WS_URL = 'ws://localhost:8008/fastagency/ws';
+         const API_URL = 'http://0.0.0.0:8008/fastagency';
+         const WS_URL = 'ws://0.0.0.0:8008/fastagency/ws'; // nosemgrep
          let socket;
 
          async function fetchWorkflows() {

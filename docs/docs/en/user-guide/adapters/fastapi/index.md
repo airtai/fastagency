@@ -77,7 +77,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     ### Building Custom Client Applications
 
-    To write a custom application that interacts with FastAgency FastAPI App, we first need to understand the available server routes and their purposes. This knowledge forms the foundation of our client-server interaction model.
+    To write a custom application that interacts with FastAgency FastAPI App, we first need to understand the **available server routes** and their purposes. This knowledge forms the foundation of our client-server interaction model.
 
     #### Available API Endpoints
 
@@ -94,7 +94,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     #### System Interaction Flow
 
-    The following sequence diagram illustrates the step-by-step process of how a custom client application interacts with the FastAgency FastAPI server:
+    The following sequence diagram illustrates the step-by-step process of how a **custom client application** interacts with the FastAgency FastAPI server:
 
     ```mermaid
     sequenceDiagram
@@ -105,26 +105,26 @@ The following section presents high-level architecture diagrams for the two avai
     Client->>FastAPI: GET /fastagency/discovery
     FastAPI-->>Client: Available Workflows
 
-    Note over Client,FastAPI: 2. Workflow Discovery
     Client->>Client: Display workflow options to user
 
-    Note over Client,FastAPI: 3. Workflow Initiation
+    Note over Client,FastAPI: 2. Workflow Initiation
     Client->>FastAPI: POST /fastagency/initiate_workflow
     FastAPI-->>Client: Workflow Configuration
 
-    Note over Client,FastAPI: 4. WebSocket Connection
+    Note over Client,FastAPI: 3. WebSocket Connection
     Client->>FastAPI: Initiate a WebSocket Connection (/fastagency/ws)
     FastAPI-->>Client: WebSocket Connection Established
 
-    Note over Client,FastAPI: 5. Real-time Communication
+    Note over Client,FastAPI: 4. Real-time Communication
     Client->>FastAPI: Send Initial WebSocket Message
     FastAPI-->>Client: Acknowledge Connection
 
     activate FastAPI
     activate Client
     Note right of FastAPI: Message Processing Loop
-    Client->>FastAPI: Send Task/Question
-    FastAPI->>Client: Process & Send Response
+    FastAPI->>Client: Send Workflow Message
+    Client->>FastAPI: Send Response If Required
+    FastAPI->>Client: Send Next Workflow Message
     deactivate Client
     deactivate FastAPI
     ```
@@ -139,8 +139,9 @@ The following section presents high-level architecture diagrams for the two avai
     - **Selection**: User selects a workflow to execute.
     - **Initiation**: Client requests to start the chosen workflow.
     - **Connection**: WebSocket connection established for real-time communication. These includes:
-        - Client sends tasks/questions
-        - Server processes request and sends the response
+        - Server sending workflow message to the client
+        - Client sending optional message to the server
+        - Server processes request and sends the next workflow message
 
 
     #### Implementation Guide
@@ -158,9 +159,9 @@ The following section presents high-level architecture diagrams for the two avai
 
         Before we examine the code:
 
-        - The below example uses a simple HTML document with JavaScript, all in a single string and served directly from the FastAgency FastAPI app for simplicity.
-        - This approach is not suitable for production but ideal for demonstrating core concepts.
-        - In a real-world scenario, you'd use a separate frontend built with a framework like React or Vue.js.
+        - The below example uses a **simple HTML with JavaScript**, all in a single string and served directly from the FastAgency FastAPI app for **simplicity**.
+        - This approach is **not suitable for production** but ideal for demonstrating core concepts.
+        - In a real-world scenario, you'd use a separate frontend built with a framework like **React or Vue.js**.
 
     Let's begin by looking at the code structure and then break down each component.
 
@@ -298,8 +299,6 @@ Please copy and paste the following code into the same folder, using the file na
         gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
         ```
 
-    Open your browser at [http://localhost:8888](http://localhost:8888){target="_blank"}.
-
 === "FastAPI with Custom Client"
 
     Once everything is set up, you can run your FastAgency application using the following command.
@@ -309,8 +308,6 @@ Please copy and paste the following code into the same folder, using the file na
         ```
         uvicorn main_custom_fastapi_client:app --host 0.0.0.0 --port 8008 --reload
         ```
-
-    Open your browser at [http://localhost:8008](http://localhost:8008){target="_blank"}.
 
 
 ### Output
