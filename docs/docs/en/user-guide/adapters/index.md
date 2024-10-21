@@ -26,6 +26,18 @@ Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdap
 
 [Learn more about **FastAPI adapter** →](./fastapi/)
 
+### FastAPI + Nats.io
+
+The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) + [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency offers the most scalable setup by combining the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework for building and exposing workflows as REST APIs with the [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This setup is the preferred way for running large workloads in production.
+
+#### When to Use the FastAPI + NATS.io Adapter
+
+- **Custom Client Applications**: If you want to build your **own client applications** that interact with your FastAgency workflows using REST APIs, this adapter provides greater flexibility and control over the client-side implementation.
+- **High User Demand**: When your application needs to handle a large number of users or messages and requires high scalability, the FastAPI + NATS Adapter is an excellent choice. It is well-suited for building **scalable custom chat applications for larger companies or external customers**.
+- **Conversation Auditing**: If you need the ability to **audit conversations**, the NATS Adapter provides the necessary infrastructure to enable this feature.
+
+[Learn more about **FastAPI + NATS.io adapter** →](./fastapi_nats/)
+
 ### Nats.io
 
 Utilize the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for highly-scalable, production-ready setup.
@@ -40,16 +52,3 @@ Utilize the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.m
 
 
 [Learn more about **NATS.io adapter** →](./nats/)
-
-
-### FastAPI + Nats.io
-
-The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) + [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency offers the most scalable setup by combining the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework for building and exposing workflows as REST APIs with the [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This setup is the preferred way for running large workloads in production.
-
-#### When to Use the FastAPI + NATS.io Adapter
-
-- **Custom Client Applications**: If you want to build your **own client applications** that interact with your FastAgency workflows using REST APIs, this adapter provides greater flexibility and control over the client-side implementation.
-- **High User Demand**: When your application needs to handle a large number of users or messages and requires high scalability, the FastAPI + NATS Adapter is an excellent choice. It is well-suited for building **scalable custom chat applications for larger companies or external customers**.
-- **Conversation Auditing**: If you need the ability to **audit conversations**, the NATS Adapter provides the necessary infrastructure to enable this feature.
-
-[Learn more about **FastAPI + NATS.io adapter** →](./fastapi_nats/)
