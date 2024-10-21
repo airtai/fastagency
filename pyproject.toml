@@ -46,6 +46,7 @@ dynamic = ["version"]
 dependencies = [
     "typer>=0.9",
     "typing-extensions>=4.8.0,<5",
+    "pydantic>=2.2.0,<3",
 ]
 
 [project.optional-dependencies]
@@ -87,13 +88,13 @@ nats = [
     "faststream[nats]>=0.5.27,<0.6",
 ]
 
-submodules = [
-    "fastagency[mesop,autogen,openapi,fastapi,nats]"
+server = [
+    "uvicorn>=0.31.0",
+    "gunicorn>=23.0.0",
 ]
 
-server = [
-    "uvicorn==0.31.0",
-    "gunicorn==23.0.0",
+submodules = [
+    "fastagency[mesop,autogen,openapi,fastapi,nats,server]"
 ]
 
 # dev dependencies
@@ -150,7 +151,7 @@ testing = [
 ]
 
 dev = [
-    "fastagency[submodules,server,lint,testing,devdocs]",
+    "fastagency[submodules,lint,testing,devdocs]",
     "pre-commit==4.0.1",
     "detect-secrets==1.5.0",
 ]

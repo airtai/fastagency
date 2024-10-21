@@ -33,9 +33,10 @@ from ...exceptions import (
 from ...messages import (
     AskingMessage,
     IOMessage,
+    InitiateWorkflowModel,
+    InputResponseModel,
     MessageProcessorMixin,
 )
-from ..nats import InitiateWorkflowModel, InputResponseModel
 
 logger = get_logger(__name__)
 

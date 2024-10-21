@@ -1,0 +1,260 @@
+{
+    "openapi": "3.0.1",
+    "servers": [
+        {
+            "url": "https://api.infobip.com"
+        }
+    ],
+    "info": {
+        "title": "Infobip WHATSAPP OpenApi Specification",
+        "description": "OpenApi Spec containing WHATSAPP public endpoints for Postman collection purposes.",
+        "contact": {
+            "name": "Infobip support",
+            "email": "support@infobip.com"
+        },
+        "version": "1.0.195",
+        "x-additionalInfo": {
+            "title": "Integration essentials and developer toolbox",
+            "markdown": "# Essentials\n​\n- [Get Infobip account](https://www.infobip.com/contact)\n- [Get API key](https://portal.infobip.com/settings/accounts/api-keys)\n- [Authentication and authorization details](https://www.infobip.com/docs/essentials/api-authentication)\n- [My base URL](https://www.infobip.com/docs/essentials/base-url)\n- [Response Status and Error Codes](https://www.infobip.com/docs/essentials/response-status-and-error-codes)\n- [Supported content types](https://www.infobip.com/docs/essentials/content-types)\n- [Libraries](https://www.infobip.com/docs/sdk)\n- [Demo applications](https://www.infobip.com/docs/essentials/demo-applications)\n- [API service status](https://www.infobip.com/docs/essentials/api-service-status)\n- [Integration best practices](https://www.infobip.com/docs/essentials/integration-best-practices)\n​\n"
+        },
+        "x-homepage": {
+            "markdown": "### Customer engagement\n> Complete API solutions that will help you drive better outcomes for your customers and business, throughout the customer journey with rich set of APIs for managing People, Flow, Conversations and more.\n>\n> [SEE ALL SOLUTIONS](#customer-engagement)\n​\n### Channels\n> If you require a straight forward connectivity for your existing solutions this is what you are looking for. Implement one-way or two-way communication over any major mobile messaging channel like SMS, Voice, RCS, WhatsApp, Viber and more.\n>\n> [SEE ALL CHANNELS](#channels)\n​\n### Platform and connectivity\n>A powerful set of APIs for managing phone numbers, IoT and more.\n>\n>[SEE ALL](#platform-&-connectivity)\n​\n---\n### What are you working on?\nTake your integration to the next level - explore our [partnership program](https://www.infobip.com/partnership)!\n"
+        }
+    },
+    "paths": {
+        "/whatsapp/1/message/text": {
+            "post": {
+                "tags": [
+                    "Send WhatsApp Message"
+                ],
+                "summary": "Send WhatsApp text message",
+                "description": "Send a text message to a single recipient. Text messages can only be successfully delivered, if the recipient has contacted the business within the last 24 hours, otherwise template message should be used.",
+                "externalDocs": {
+                    "description": "Learn more about WhatsApp channel and use cases",
+                    "url": "https://www.infobip.com/docs/whatsapp"
+                },
+                "operationId": "channels-whatsapp-send-whatsapp-text-message",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/infobipwhatsappstandaloneapiservice_openapi_TextMessage"
+                            },
+                            "examples": {
+                                "Text message": {
+                                    "value": {
+                                        "from": "441134960000",
+                                        "to": "441134960001",
+                                        "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
+                                        "content": {
+                                            "text": "Some text"
+                                        },
+                                        "callbackData": "Callback data"
+                                    }
+                                },
+                                "Text message with previewable url": {
+                                    "value": {
+                                        "from": "441134960000",
+                                        "to": "441134960001",
+                                        "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
+                                        "content": {
+                                            "text": "Some text with url: http://example.com",
+                                            "previewUrl": true
+                                        },
+                                        "callbackData": "Callback data"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Message accepted for delivery.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/infobipwhatsappstandaloneapiservice_openapi_SingleMessageInfo"
+                                },
+                                "examples": {
+                                    "Success Response": {
+                                        "value": {
+                                            "to": "441134960001",
+                                            "messageCount": 1,
+                                            "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
+                                            "status": {
+                                                "groupId": 1,
+                                                "groupName": "PENDING",
+                                                "id": 7,
+                                                "name": "PENDING_ENROUTE",
+                                                "description": "Message sent to next instance"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "x-rate-limits": [
+                    {
+                        "type": "route",
+                        "implementation": "iam",
+                        "limit": "200/s"
+                    }
+                ],
+                "x-additionalInfo": {
+                    "markdown": ""
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "infobipwhatsappstandaloneapiservice_openapi_TextMessage": {
+                "required": [
+                    "content",
+                    "from",
+                    "to"
+                ],
+                "type": "object",
+                "properties": {
+                    "from": {
+                        "maxLength": 24,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Registered WhatsApp sender number. Must be in international format."
+                    },
+                    "to": {
+                        "maxLength": 24,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Message recipient number. Must be in international format."
+                    },
+                    "messageId": {
+                        "maxLength": 50,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "The ID that uniquely identifies the message sent."
+                    },
+                    "content": {
+                        "$ref": "#/components/schemas/infobipwhatsappstandaloneapiservice_openapi_TextContent"
+                    },
+                    "callbackData": {
+                        "maxLength": 4000,
+                        "minLength": 0,
+                        "type": "string",
+                        "description": "Custom client data that will be included in Delivery Report."
+                    }
+                }
+            },
+            "infobipwhatsappstandaloneapiservice_openapi_TextContent": {
+                "required": [
+                    "text"
+                ],
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "maxLength": 4096,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "Text of the message that will be sent."
+                    },
+                    "previewUrl": {
+                        "type": "boolean",
+                        "description": "Allows for URL previews in text messages. If the value is set to `true`, text is expected to contain URL starting with `https://` or `http://`. The default value is `false`."
+                    }
+                },
+                "description": "Content of the message that will be sent."
+            },
+            "infobipwhatsappstandaloneapiservice_openapi_SingleMessageStatus": {
+                "type": "object",
+                "properties": {
+                    "groupId": {
+                        "type": "integer",
+                        "description": "Status group ID.",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "groupName": {
+                        "type": "string",
+                        "description": "Status group name.",
+                        "example": "PENDING"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "description": "Status ID.",
+                        "format": "int32",
+                        "example": 7
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Status name.",
+                        "example": "PENDING_ENROUTE"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Human-readable description of the status.",
+                        "example": "Message sent to next instance"
+                    },
+                    "action": {
+                        "type": "string",
+                        "description": "Action that should be taken to eliminate the error."
+                    }
+                }
+            },
+            "infobipwhatsappstandaloneapiservice_openapi_SingleMessageInfo": {
+                "type": "object",
+                "properties": {
+                    "to": {
+                        "type": "string",
+                        "description": "Message destination.",
+                        "example": "385977666618"
+                    },
+                    "messageCount": {
+                        "type": "integer",
+                        "description": "Number of messages required to deliver.",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "messageId": {
+                        "type": "string",
+                        "description": "The ID that uniquely identifies the message sent.",
+                        "example": "06df139a-7eb5-4a6e-902e-40e892210455"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/infobipwhatsappstandaloneapiservice_openapi_SingleMessageStatus"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "APIKeyHeader": {
+                "type": "apiKey",
+                "description": "This is the most secure authorization type and the one with the most flexibility.\n\nAPI keys can be generated by calling the dedicated API method. Furthermore, API keys can have a limited scope and cover only some API methods. Lastly, they can be revoked at any time. This range of possibilities makes API keys well suited for separating the API access rights across multiple applications or use cases. Finally, the loss of an API key is easily manageable.\n\nYou can manage your API keys from [GUI](https://portal.infobip.com/settings/accounts/api-keys), or programmatically with [dedicated API](#platform-&-connectivity/settings).\n\nAPI key Authorization header example:\n\n```shell\nAuthorization: App 003026bbc133714df1834b8638bb496e-8f4b3d9a-e931-478d-a994-28a725159ab9\n```\n",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Send WhatsApp Message",
+            "description": ""
+        },
+        {
+            "name": "Receive WhatsApp Message",
+            "description": ""
+        },
+        {
+            "name": "Manage WhatsApp",
+            "description": ""
+        }
+    ]
+}

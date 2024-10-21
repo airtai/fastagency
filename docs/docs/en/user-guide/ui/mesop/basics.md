@@ -2,6 +2,8 @@
 
 **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)** in FastAgency offers a web-based interface for interacting with multi-agent workflows. Unlike the **ConsoleUI**, which is text-based and runs in the command line, MesopUI provides a user-friendly browser interface, making it ideal for applications that need a more engaging, graphical interaction. MesopUI is perfect for building interactive web applications and enabling users to interact with agents in a more intuitive way.
 
+Below, we’ll demonstrate how to set up a basic student-teacher conversation using **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)**.
+
 ## Installation
 
 To install **FastAgency** with MesopUI support, use the following command:
@@ -11,8 +13,6 @@ pip install "fastagency[autogen,mesop]"
 ```
 
 This command ensures that the required dependencies for both **AutoGen** and **Mesop** are installed.
-
-Below, we’ll demonstrate how to set up a basic student-teacher conversation using **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)**.
 
 ## Usage
 
@@ -43,7 +43,7 @@ You can pass a custom [SecurityPolicy](https://google.github.io/mesop/api/page/#
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:61] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:60] !}
 
 ui = MesopUI(security_policy=security_policy)
 ```
@@ -59,7 +59,7 @@ All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:63-86] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:62-86] !}
 
 ui = MesopUI(styles=styles)
 ```
@@ -80,7 +80,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency/)**: The core class responsible for orchestrating workflows and connecting them with UIs.
 - **[UI](../../../../api/fastagency/UI/)** and **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)**: These classes define the user interface for interaction, with **MesopUI** enabling a web-based interaction.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/base/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
+- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
 Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
@@ -105,13 +105,13 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/)** to link the workflow to a web-based interface. This allows the user to interact with the agents through a web browser.
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:61-90] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:59-90] !}
 ```
 
 - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
 
-## Complete Application Code
+### Complete Application Code
 
 <details>
 <summary>main.py</summary>
@@ -123,43 +123,53 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI/
 
 ### Running the Application
 
-Once the workflow is set up, you can run the application either:
+There are two options of running a Mesop application:
 
-- **locally** using the [FastAgency CLI](../../../cli/), or
+1. Using [`fastagency`](../../../../cli/cli/) command line:
 
-- **publicly** using the WSGI HTTP Server such as [Gunicorn](https://gunicorn.org/).
+    !!! note "Terminal (using [fastagency](../../../../cli/cli/))"
+        ```
+        fastagency run
+        ```
 
-=== "Local deployment"
+    !!! danger "Currently not working on **MacOS**"
+        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
 
-    Navigate to the directory where the script is located and run the following command:
+2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
 
-    ```bash
-    fastagency run
-    ```
+    The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
 
-    This will launch a local web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
+    !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
+        ```
+        pip install gunicorn
+        gunicorn main:app
+        ```
 
-=== "Public deployment"
-    Assuming that you installed gunicorn first using something like this:
-
-    ```console
-    pip install "fastagency[autogen,mesop]" gunicorn
-    ```
-
-    you can start the Mesop app by navigating to the directory where the script `main.py` is located and running the following command:
-
-    ```bash
-    gunicorn --bind 0.0.0.0:8080 main:app
-    ```
-
-    This will launch a *publicly available* web server, and you will be able to access the MesopUI interface through your browser. The web interface will display the interaction between the student and teacher agents, allowing you to input questions and see the teacher’s responses.
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8000 main:app
+        ```
 
 ---
 
 !!! note
-    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using **gpt-4o-mini**. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
-### Debugging Tips
+### Output
+
+The outputs will vary based on the interface, here is the output of the last terminal starting UI:
+
+```console
+[2024-10-15 16:57:44 +0530] [36365] [INFO] Starting gunicorn 23.0.0
+[2024-10-15 16:57:44 +0530] [36365] [INFO] Listening at: http://127.0.0.1:8000 (36365)
+[2024-10-15 16:57:44 +0530] [36365] [INFO] Using worker: sync
+[2024-10-15 16:57:44 +0530] [36366] [INFO] Booting worker with pid: 36366
+```
+![Initial message](../../../getting-started/images/chat.png)
+
+## Debugging Tips
 If you encounter issues running the application, ensure that:
 
 - The OpenAI API key is correctly set in your environment variables.

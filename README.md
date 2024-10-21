@@ -55,7 +55,7 @@
 
 ## What is FastAgency?
 
-For start, FastAgency is not yet another agentic AI frameworks. There are many such
+For start, FastAgency is not yet another agentic AI framework. There are many such
 frameworks available today, the most popular open-source ones being [**AutoGen**](https://github.com/microsoft/autogen), [**CrewAI**](https://www.crewai.com/), [**Swarm**](https://github.com/openai/swarm) and [**LangGraph**](https://github.com/langchain-ai/langgraph). FastAgency provides you with a unified programming interface for deploying agentic workflows written in above agentic frameworks in both development and productional settings (current version supports [**AutoGen**](https://github.com/microsoft/autogen) only, but other frameworks will be supported very soon). With only a few lines of code, you can create a web chat application or REST API service interacting with agents of your choice. If you need to scale-up your workloads, FastAgency can help you deploy a fully distributed system using internal message brokers coordinating multiple machines in multiple datacenters with just a few lines of code changed from your local development setup.
 
 In the rest of this guide, we will walk you through the initial setup and usage of FastAgency, using both development and production environments.
@@ -117,7 +117,7 @@ We will show you how to deploy your workflow using the **FastAPI + Mesop** combi
 To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
 
 ```console
-pip install "fastagency[autogen,mesop,fastapi]"
+pip install "fastagency[autogen,mesop,fastapi,server]"
 ```
 
 This command installs FastAgency with support for both the Console and Mesop
@@ -227,7 +227,7 @@ app = FastAgency(provider=provider, ui=MesopUI())
 ```
 
 
-## Complete Application Code
+### Complete Application Code
 
 #### `main_1_fastapi.py`
 
@@ -323,17 +323,14 @@ app = FastAgency(provider=provider, ui=MesopUI())
 
 ### Run Application
 
-Once everything is set up, you can run your FastAgency application using the following command:
+In this setup, we need to run **two** commands in **separate** terminal windows:
 
-
-In this setup, we need to run two command in separate terminal windows:
-
-#### Terminal 1
+**Terminal 1** - Start **FastAPI** application using uvicorn
 ```
 uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
 ```
 
-#### Terminal 2
+**Terminal 2** - Start **Mesop** web interface using gunicorn
 ```
 gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
 ```
@@ -349,7 +346,7 @@ The outputs will vary based on the interface, here is the output of the last ter
 [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
 ```
 
-![Initial message](https://fastagency.ai/0.3/getting-started/images/chat.png)
+![Initial message](https://fastagency.ai/0.3/getting-started/images/chat.png?v20241015)
 
 
 ## Future Plans

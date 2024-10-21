@@ -121,7 +121,7 @@ This is a core function used by the **GiphyAgent** to either present the task re
 - **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer){target="_blank"}.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:78-92] !}
+{! docs_src/tutorial/giphy/main.py [ln:77-91] !}
 ```
 
 ### Registering Functions
@@ -129,12 +129,12 @@ This is a core function used by the **GiphyAgent** to either present the task re
 The function ***present_completed_task_or_ask_question*** is registered to allow the **GiphyAgent** to ask questions or present completed tasks after receiving data from the **WebSurferAgent**.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:94-101] !}
+{! docs_src/tutorial/giphy/main.py [ln:93-100] !}
 ```
 
 We specify which Giphy API functions can be used by the **GiphyAgent**: *random_gif*, *search_gifs*, and *trending_gifs*. These functions allow the agent to generate GIFs based on user input or trending content.
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:103-109] !}
+{! docs_src/tutorial/giphy/main.py [ln:102-108] !}
 ```
 
 ### Initiating the Chat
@@ -144,7 +144,7 @@ We initiate the conversation between the user, **WebSurferAgent**, and **GiphyAg
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:118-125] !}
+{! docs_src/tutorial/giphy/main.py [ln:116-123] !}
 ```
 
 ### Starting the Application
@@ -152,18 +152,42 @@ Once the conversation ends, the summary is returned to the user, wrapping up the
 The FastAgency app is created, using the registered workflows (***wf***) and web-based user interface (***MesopUI***). This makes the conversation between agents and the user interactive.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:128] !}
+{! docs_src/tutorial/giphy/main.py [ln:126] !}
 ```
 
 For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics){target="_blank"}.
 
 ## Running the Application
 
-Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
+Once the workflow is set up, you can run the application using the **FastAgency CLI**.
+There are two options of running a Mesop application:
 
-```bash
-fastagency run
-```
+1. Using [`fastagency`](../../cli/cli.md){target="_blank"} command line:
+
+    !!! note "Terminal (using [fastagency](../../cli/cli.md){target="_blank"})"
+        ```
+        fastagency run
+        ```
+
+    !!! danger "Currently not working on **MacOS**"
+        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
+
+2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
+
+    The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
+
+    !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
+        ```
+        pip install gunicorn
+        gunicorn main:app
+        ```
+
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8000 main:app
+        ```
 
 ```console
  ╭─ Python package file structure ──╮

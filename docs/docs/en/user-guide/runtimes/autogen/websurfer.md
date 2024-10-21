@@ -62,7 +62,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     - **WebSurferAgent**: This agent functions as a web surfer, with built-in capability to browse the web and fetch real-time data as required.
 
-    ```python hl_lines="24"
+    ```python hl_lines="18-25"
     {!> docs_src/user_guide/runtimes/autogen/websurfer.py [ln:20-45] !}
     ```
 
@@ -80,14 +80,14 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     - **WebSurferTool**: The tool that gives the ConversableAgent the ability to browse the web after it has been registered.
 
-    ```python
-    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-54] !}
+    ```python hl_lines="27-31"
+    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-52] !}
     ```
 
     Now, we need to register the WebSurferAgent with a caller and executor. This setup allows the caller to use the WebSurferAgent for performing real-time web interactions.
 
     ```python  hl_lines="2 3"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:55-58] !}
+    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:54-58] !}
     ```
 
     The `executor` can be either a single instance of `ConversableAgent` or a `list of ConversableAgent` instances.
@@ -100,7 +100,7 @@ Here, the user agent starts a conversation with the websurfer agent, which perfo
 === "Using WebSurferAgent"
 
     ```python
-    {! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:46-54] !}
+    {! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:46-53] !}
     ```
 
 === "Enhancing an existing agent"
@@ -113,7 +113,7 @@ Here, the user agent starts a conversation with the websurfer agent, which perfo
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:57] !}
+{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:56] !}
 ```
 
 ### Complete Application Code

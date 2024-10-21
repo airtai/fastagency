@@ -67,7 +67,7 @@ search:
 
 ## What is FastAgency?
 
-For start, FastAgency is not yet another agentic AI frameworks. There are many such
+For start, FastAgency is not yet another agentic AI framework. There are many such
 frameworks available today, the most popular open-source ones being [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"}, [**CrewAI**](https://www.crewai.com/){target="_blank"}, [**Swarm**](https://github.com/openai/swarm){target="_blank"} and [**LangGraph**](https://github.com/langchain-ai/langgraph){target="_blank"}. FastAgency provides you with a unified programming interface for deploying agentic workflows written in above agentic frameworks in both development and productional settings (current version supports [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"} only, but other frameworks will be supported very soon). With only a few lines of code, you can create a web chat application or REST API service interacting with agents of your choice. If you need to scale-up your workloads, FastAgency can help you deploy a fully distributed system using internal message brokers coordinating multiple machines in multiple datacenters with just a few lines of code changed from your local development setup.
 
 In the rest of this guide, we will walk you through the initial setup and usage of FastAgency, using both development and production environments.
@@ -111,16 +111,14 @@ We will show you four different setups, two for development and two for producti
 
 - Production setups
 
-    - **FastAPI + Mesop**: This is fairly scalable setup using [**FastAPI**](https://fastapi.tiangolo.com/)
-        {target="_blank"} to execute your workflows and [**Mesop**](https://google.github.io/mesop/){target="_blank"} for interactive web application. [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} supports execution with multiple workers with each workflowe being executed in the context of a websocket connection. [**Mesop**](https://google.github.io/mesop/){target="_blank"} is still limited to a single worker, although there is much less load of it due to workflows being executed in the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} workers.
+    - **FastAPI + Mesop**: This is fairly scalable setup using [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} to execute your workflows and [**Mesop**](https://google.github.io/mesop/){target="_blank"} for interactive web application. [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} supports execution with multiple workers, with each workflow being executed in the context of a WebSocket connection. [**Mesop**](https://google.github.io/mesop/){target="_blank"} is still limited to a single worker, although there is much less load of it due to workflows being executed in the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} workers.
 
     - **NATS + FastAPI + Mesop**: This is the most scalable setup using a distributed message broker
         [**NATS.io MQ**](https://nats.io/){target="_blank"}. Workflows are being executed with
         multiple workers that attach to the MQ waiting for initiate workflow messages. Such workers
         can be running on different machines or even different data centers/cloud providers.
         Message queues are highly scalable, but more difficult to integrate with end-clients.
-        In order to make such integrations easier, we will connect our [**NATS**](https://nats.io/){target="_blank"}-based message queue with the [**FastAPI**](https://fastapi.tiangolo.com/)
-        {target="_blank"} application.
+        In order to make such integrations easier, we will connect our [**NATS**](https://nats.io/){target="_blank"}-based message queue with the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application.
 
 
 ### Install
@@ -141,7 +139,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
 === "FastAPI + Mesop"
     ```console
-    pip install "fastagency[autogen,mesop,fastapi]"
+    pip install "fastagency[autogen,mesop,fastapi,server]"
     ```
 
     This command installs FastAgency with support for both the Console and Mesop
@@ -150,7 +148,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
 === "NATS + FastAPI + Mesop"
     ```console
-    pip install "fastagency[autogen,mesop,fastapi,nats]"
+    pip install "fastagency[autogen,mesop,fastapi,server,nats]"
     ```
 
     This command installs FastAgency with support for both the Console and Mesop
@@ -174,14 +172,13 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 
     === "FastAPI + Mesop"
         ```console
-        pip install "fastagency[pyautogen,mesop,fastapi]"
+        pip install "fastagency[pyautogen,mesop,fastapi,server]"
         ```
 
     === "NATS + FastAPI + Mesop"
         ```console
-        pip install "fastagency[pyautogen,mesop,fastapi,nats]"
+        pip install "fastagency[pyautogen,mesop,fastapi,server,nats]"
         ```
-
 
 ### Imports
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
@@ -260,6 +257,14 @@ This code snippet sets up a simple learning chat between a student and a teacher
     {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:55-61] !}
     ```
 
+    The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
+
+    ```python hl_lines="1 3 6 11 17"
+    {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf [ln:1-23]!}
+    ```
+
+    In the above NATS configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in NATS and configure NATS to serve via the appropriate ports.
+
 ### Adapter Chaining
 
 === "Console"
@@ -298,7 +303,8 @@ This code snippet sets up a simple learning chat between a student and a teacher
         ```
 
 
-## Complete Application Code
+### Complete Application Code
+Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
 === "Console"
 
@@ -337,6 +343,13 @@ This code snippet sets up a simple learning chat between a student and a teacher
 === "NATS + FastAPI + Mesop"
 
     <details>
+        <summary>nats-server.conf</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
+        ```
+    </details>
+
+    <details>
         <summary>main_1_nats.py</summary>
         ```python
         {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py !}
@@ -346,14 +359,14 @@ This code snippet sets up a simple learning chat between a student and a teacher
     <details>
         <summary>main_2_fastapi.py</summary>
         ```python
-        {!> docs_src/getting_started/fastapi/main_2_fastapi.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py !}
         ```
     </details>
 
     <details>
         <summary>main_3_mesop.py</summary>
         ```python
-        {!> docs_src/getting_started/fastapi/main_3_mesop.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/main_3_mesop.py !}
         ```
     </details>
 
@@ -370,51 +383,91 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "Mesop"
 
-    !!! note "Terminal"
-        ```
-        fastagency run
-        ```
+    There are two options of running a Mesop application:
 
-    However, the preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/). First,
-    you need to install it using package manager such as `pip` and then run it as follows:
+    1. Using [`fastagency`](../cli/cli/){target="_blank"} command line:
 
-    !!! note "Terminal (alternative)"
-        ```
-        pip install gunicorn
-        gunicorn main:app
-        ```
+        !!! note "Terminal (using [fastagency](../cli/cli/){target="_blank"})"
+            ```
+            fastagency run
+            ```
+
+        !!! danger "Currently not working on **MacOS**"
+            The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
+
+    2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
+
+        The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
+
+        !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
+            ```
+            pip install gunicorn
+            gunicorn main:app
+            ```
+
+        !!! danger "Currently not working on **Windows**"
+            The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+            ```
+            pip install waitress
+            waitress-serve --listen=0.0.0.0:8000 main:app
+            ```
 
 === "FastAPI + Mesop"
 
-    In this setup, we need to run two command in separate terminal windows:
+    In this setup, we need to run **two** commands in **separate** terminal windows:
 
+    - Start **FastAPI** application using uvicorn:
     !!! note "Terminal 1"
         ```
         uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
         ```
 
+    - Start **Mesop** web interface using gunicorn:
     !!! note "Terminal 2"
         ```
         gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
         ```
 
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+        ```
+
 === "NATS + FastAPI + Mesop"
 
-    In this setup, we need to run three command in separate terminal windows:
+    In this setup, we need to run **four** commands in **separate** terminal windows:
 
+    - Start **NATS** Docker container:
     !!! note "Terminal 1"
+        ```
+        docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+        ```
+
+    - Start **FastAPI** application that provides a conversational workflow:
+    !!! note "Terminal 2"
         ```
         uvicorn main_1_nats:app --reload
         ```
 
-    !!! note "Terminal 2"
+    - Start **FastAPI** application integrated with a **NATS** messaging system:
+    !!! note "Terminal 3"
         ```
         uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
         ```
 
-    !!! note "Terminal 3"
+    - Start **Mesop** web interface using gunicorn:
+    !!! note "Terminal 4"
         ```
         gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
+        ```
+
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
         ```
 
 ### Output

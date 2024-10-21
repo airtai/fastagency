@@ -4,6 +4,16 @@
 
 Below is an example that demonstrates how to set up a simple learning conversation between a student and a teacher using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)**.
 
+## Installation
+
+Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
+
+```bash
+pip install "fastagency[autogen]"
+```
+
+This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
+
 ## Example: Student and Teacher Learning Chat
 
 This example demonstrates how to create a workflow where a student agent interacts with a teacher agent. The student asks questions, and the teacher provides responses, simulating a learning environment. The interaction is facilitated through the console using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)**.
@@ -20,10 +30,10 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency/)**: The core class responsible for orchestrating workflows and connecting them with UIs.
 - **[UI](../../../../api/fastagency/UI/)** and **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)**: These classes define the user interface for interaction, with ConsoleUI providing a text-based interface.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/base/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
+- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
-Next, we configure the language model that will power the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
+Next, we configure the language model that will power the agents. In this case, we're using **gpt-4o-mini**, and the API key is retrieved from the environment.
 
 ```python
 {! docs_src/getting_started/main_console.py [ln:9-19] !}
@@ -45,13 +55,13 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)** to link the workflow to a text-based console interface. This allows the user to interact with the agents via the terminal.
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:55] !}
+{! docs_src/getting_started/main_console.py [ln:54] !}
 ```
 
 - **Explanation**: Here, we set up the **ConsoleUI** as the user interface for the workflow, which will allow the entire agent interaction to take place within the terminal.
 
 
-## Complete Application Code
+### Complete Application Code
 
 <details>
 <summary>main.py</summary>
@@ -72,14 +82,78 @@ fastagency run
 This will launch the console interface, allowing you to input messages as the student and observe how the teacher agent responds.
 
 !!! note
-    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+    Ensure that your **OpenAI API key** is set in the environment, as the agents rely on it to interact using **gpt-4o-mini**. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
-### Debugging Tips
+### Output
+
+Once you run it, FastAgency automatically detects the appropriate app to execute and runs it.
+
+```console
+╭─ Python module file ─╮
+│                      │
+│  🐍 main.py          │
+│                      │
+╰──────────────────────╯
+
+
+╭─ Importable FastAgency app ─╮
+│                             │
+│  from main import app       │
+│                             │
+╰─────────────────────────────╯
+
+╭─ AutoGenWorkflows -> User [workflow_started] ────────────────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "name": "simple_learning",                                                 │
+│   "description": "Student and teacher                                        │
+│ learning chat",                                                              │
+│   "params": {}                                                               │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
+│                                                                              │
+│ I can help you learn about mathematics. What subject you would like to       │
+│  explore?:                                                                   │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+Enter a math topic you're interested in, such as **What is the triangle inequality?** and press Enter.
+
+This will start the task, letting you watch the agents collaborate in real time to complete it. When the task is finished, you'll see an **output similar to the example below**
+
+```console
+╭─ AutoGenWorkflows -> User [workflow_completed] ──────────────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "result": "The triangle inequality states that for any triangle,           │
+│ the sum of the lengths of any two sides must be greater than the             │
+│ length of the third side. It can be expressed mathematically as \\(a +       │
+│  b > c\\), \\(a + c > b\\), and \\(b + c > a\\). \n\nIn higher               │
+│ dimensions, the triangle inequality applies to vector spaces, stating        │
+│ that for any two vectors \\(\\mathbf{u}\\) and \\(\\mathbf{v}\\), the        │
+│ inequality \\(\\|\\mathbf{u} + \\mathbf{v}\\| \\leq \\|\\mathbf{u}\\|        │
+│ + \\|\\mathbf{v}\\|\\) holds, where \\(\\|\\cdot\\|\\) denotes the           │
+│ norm of the vector. This principle helps determine the relationship          │
+│ between the lengths of vectors and their sums, confirming that the           │
+│ triangle inequality is a fundamental concept in both geometry and            │
+│ linear algebra."                                                             │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+2024-10-15 16:36:20,047 [INFO] Workflow 'simple_learning' completed with result: The triangle inequality states that for any triangle, the sum of the lengths of any two sides must be greater than the length of the third side. It can be expressed mathematically as \(a + b > c\), \(a + c > b\), and \(b + c > a\).
+
+In higher dimensions, the triangle inequality applies to vector spaces, stating that for any two vectors \(\mathbf{u}\) and \(\mathbf{v}\), the inequality \(\|\mathbf{u} + \mathbf{v}\| \leq \|\mathbf{u}\| + \|\mathbf{v}\|\) holds, where \(\|\cdot\|\) denotes the norm of the vector. This principle helps determine the relationship between the lengths of vectors and their sums, confirming that the triangle inequality is a fundamental concept in both geometry and linear algebra.
+```
+
+
+## Debugging Tips
 If you encounter issues running the application, ensure that:
 
 - The OpenAI API key is correctly set in your environment variables.
 - All necessary packages are installed, especially the `fastagency[autogen]` dependencies.
-- The API connection to GPT-4o is functional and responds as expected.
+- The API connection to gpt-4o-mini is functional and responds as expected.
 
 ---
 

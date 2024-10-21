@@ -6,11 +6,11 @@ from fastagency.adapters.fastapi import FastAPIAdapter
 from fastagency.adapters.nats import NatsAdapter
 
 nats_url = environ.get("NATS_URL", "nats://localhost:4222")
-nats_user: str = "faststream"
-nats_password: str = environ.get("FASTSTREAM_NATS_PASSWORD")  # type: ignore[assignment]
+nats_user: str = "fastagency"
+nats_password: str = environ.get("FASTAGENCY_NATS_PASSWORD", "fastagency_nats_password")  # type: ignore[assignment]
 
 provider = NatsAdapter.create_provider(
-    nats_url=environ.get("NATS_URL", None), user=nats_user, password=nats_password
+    nats_url=nats_url, user=nats_user, password=nats_password
 )
 
 adapter = FastAPIAdapter(

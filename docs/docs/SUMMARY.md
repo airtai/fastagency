@@ -10,6 +10,7 @@ search:
             - Agents
                 - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
             - [User interaction](user-guide/runtimes/autogen/interactions.md)
+            - [Using Non-OpenAI Models](user-guide/runtimes/autogen/using_non_openai_models.md)
         - [CrewAI](user-guide/runtimes/crewai/basics.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
@@ -18,6 +19,7 @@ search:
     - [Adapters](user-guide/adapters/index.md)
         - [FastAPI](user-guide/adapters/fastapi/index.md)
         - [Nats.io](user-guide/adapters/nats/index.md)
+        - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
     - [API-s](user-guide/api/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
@@ -48,13 +50,9 @@ search:
                         - [InititateChatModel](api/fastagency/adapters/fastapi/base/InititateChatModel.md)
                         - [WorkflowInfo](api/fastagency/adapters/fastapi/base/WorkflowInfo.md)
                 - nats
-                    - [InitiateWorkflowModel](api/fastagency/adapters/nats/InitiateWorkflowModel.md)
-                    - [InputResponseModel](api/fastagency/adapters/nats/InputResponseModel.md)
                     - [NatsAdapter](api/fastagency/adapters/nats/NatsAdapter.md)
                     - [NatsProvider](api/fastagency/adapters/nats/NatsProvider.md)
                     - base
-                        - [InitiateWorkflowModel](api/fastagency/adapters/nats/base/InitiateWorkflowModel.md)
-                        - [InputResponseModel](api/fastagency/adapters/nats/base/InputResponseModel.md)
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
             - api
@@ -132,6 +130,8 @@ search:
                 - [Error](api/fastagency/messages/Error.md)
                 - [FunctionCallExecution](api/fastagency/messages/FunctionCallExecution.md)
                 - [IOMessage](api/fastagency/messages/IOMessage.md)
+                - [InitiateWorkflowModel](api/fastagency/messages/InitiateWorkflowModel.md)
+                - [InputResponseModel](api/fastagency/messages/InputResponseModel.md)
                 - [KeepAlive](api/fastagency/messages/KeepAlive.md)
                 - [MessageProcessorMixin](api/fastagency/messages/MessageProcessorMixin.md)
                 - [MessageProcessorProtocol](api/fastagency/messages/MessageProcessorProtocol.md)
