@@ -299,6 +299,12 @@ Please copy and paste the following code into the same folder, using the file na
         gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
         ```
 
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+        ```
+
 === "FastAPI with Custom Client"
 
     Once everything is set up, you can run your FastAgency application using the following command.
@@ -308,13 +314,6 @@ Please copy and paste the following code into the same folder, using the file na
         ```
         uvicorn main_custom_fastapi_client:app --host 0.0.0.0 --port 8008 --reload
         ```
-
-
-!!! danger "Currently not working on **Windows**"
-    The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-    ```
-    waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
-    ```
 
 ### Output
 
