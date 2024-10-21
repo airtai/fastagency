@@ -90,7 +90,8 @@ nats = [
 
 server = [
     "uvicorn>=0.31.0",
-    "gunicorn>=23.0.0",
+    "gunicorn>=23.0.0 ; platform_system != 'Windows'",
+    "waitress>=3.0.0 ; platform_system == 'Windows'",
 ]
 
 submodules = [
