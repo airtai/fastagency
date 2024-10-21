@@ -194,7 +194,6 @@ Once everything is set up, you can run your FastAgency application using the fol
 !!! danger "Currently not working on **Windows**"
     The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
     ```
-    pip install waitress
     waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
     ```
 
