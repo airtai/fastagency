@@ -160,6 +160,13 @@ This command starts the FastAPI application using Uvicorn, a lightning-fast ASGI
     gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
     ```
 
+!!! danger "Currently not working on **Windows**"
+    The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+    ```
+    pip install waitress
+    waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+    ```
+
 This command starts the Mesop web interface using Gunicorn, a production-grade WSGI server. The -b flag specifies the binding address and port, and the --reload flag enables auto-reloading.
 
 ### Output
