@@ -21,6 +21,7 @@ search:
             - [Security](user-guide/adapters/fastapi/security.md)
         - [Nats.io](user-guide/adapters/nats/index.md)
         - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
+        - [Nats.io](user-guide/adapters/nats/index.md)
     - [API-s](user-guide/api/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
