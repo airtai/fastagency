@@ -137,6 +137,12 @@ Once everything is set up, you can run your FastAgency application using the fol
     gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
     ```
 
+!!! danger "Currently not working on **Windows**"
+    The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+    ```
+    waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+    ```
+
 ### Output
 
 The outputs will vary based on the interface. Here is the output of the last terminal starting the UI:
