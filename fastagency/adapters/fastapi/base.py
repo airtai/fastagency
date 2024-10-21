@@ -10,11 +10,17 @@ from uuid import UUID, uuid4
 import requests
 import websockets
 from asyncer import asyncify, syncify
-from fastapi import APIRouter, Depends, HTTPException, Request, WebSocket, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Request,
+    Response,
+    WebSocket,
+)
 from fastapi.dependencies.utils import get_dependant, solve_dependencies
 from pydantic import BaseModel
 
-from fastagency.api.openapi.security import BaseSecurityParameters
 from fastagency.logging import get_logger
 
 from ...base import (
@@ -87,6 +93,34 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
         self.router = self.setup_routes()
 
+    async def get_user_id_websocket(self, websocket: WebSocket) -> Optional[UUID]:
+        def get_user_id_depends(
+            user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
+        ) -> Optional[UUID]:
+            return user_id
+
+        dependant = get_dependant(path="", call=get_user_id_depends)
+
+        try:
+            async with AsyncExitStack() as cm:
+                scope = websocket.scope
+                scope["type"] = "http"
+
+                solved_dependency = await solve_dependencies(
+                    dependant=dependant,
+                    request=Request(scope=scope),  # Inject the request here
+                    body=None,
+                    dependency_overrides_provider=None,
+                    async_exit_stack=cm,
+                    embed_body_fields=False,
+                )
+        except HTTPException as e:
+            raise e
+        finally:
+            scope["type"] = "websocket"
+
+        return solved_dependency.values["user_id"]  # type: ignore[no-any-return]
+
     def setup_routes(self) -> APIRouter:
         router = APIRouter()
 
@@ -106,37 +140,19 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
             return init_msg
 
-        async def get_user_id_websocket(websocket: WebSocket) -> Optional[UUID]:
-            def get_user_id_depends(
-                user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
-            ) -> Optional[UUID]:
-                return user_id
-
-            dependant = get_dependant(path="", call=get_user_id_depends)
-
-            try:
-                async with AsyncExitStack() as cm:
-                    scope = websocket.scope
-                    scope["type"] = "http"
-
-                    solved_dependency = await solve_dependencies(
-                        dependant=dependant,
-                        request=Request(scope=scope),  # Inject the request adapter here
-                        body=None,
-                        dependency_overrides_provider=None,
-                        async_exit_stack=cm,
-                        embed_body_fields=False,
-                    )
-            except HTTPException:
-                await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
-
-            return solved_dependency.values["user_id"]  # type: ignore[no-any-return]
-
         @router.websocket(self.ws_path)
         async def websocket_endpoint(
             websocket: WebSocket,
-            user_id: Optional[UUID] = Depends(get_user_id_websocket),
         ) -> None:
+            try:
+                user_id = await self.get_user_id_websocket(websocket)
+            except HTTPException as e:
+                headers = getattr(e, "headers", None)
+                await websocket.send_denial_response(
+                    Response(status_code=e.status_code, headers=headers)
+                )
+                return
+
             logger.info("Websocket connected")
             await websocket.accept()
             logger.info("Websocket accepted")
@@ -261,11 +277,6 @@ class FastAPIProvider(ProviderProtocol):
         self.initiate_workflow_path = initiate_workflow_path
         self.discovery_path = discovery_path
         self.ws_path = ws_path
-
-    def set_security_params(
-        self, security_params: BaseSecurityParameters, name: Optional[str] = None
-    ) -> None:
-        raise NotImplementedError("set_security_params")
 
     def _send_initiate_chat_msg(
         self,
