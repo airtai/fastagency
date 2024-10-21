@@ -134,7 +134,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         @router.websocket(self.ws_path)
         async def websocket_endpoint(
             websocket: WebSocket,
-            user_id: Optional[str] = Depends(get_user_id_websocket),
+            user_id: Optional[UUID] = Depends(get_user_id_websocket),
         ) -> None:
             logger.info("Websocket connected")
             await websocket.accept()
@@ -152,7 +152,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                 await asyncify(self.provider.run)(
                     name=init_msg.name,
                     ui=self.create_workflow_ui(workflow_uuid),
-                    user_id=init_msg.user_id.hex if init_msg.user_id else "None",
+                    user_id=user_id.hex if user_id else "None",
                     **init_msg.params,
                 )
             except Exception as e:
