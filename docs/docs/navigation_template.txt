@@ -27,6 +27,7 @@ search:
     - [CLI](user-guide/cli/index.md)
 - Tutorial
     - [Giphy API & WebSurfer](tutorial/giphy/index.md)
+    - [Playing chess](tutorial/chess/index.md)
 - Reference
 {api}
 {cli}
