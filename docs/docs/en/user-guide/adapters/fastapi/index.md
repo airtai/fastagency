@@ -144,7 +144,29 @@ The following section presents high-level architecture diagrams for the two avai
         - Server processes and sends the next workflow message
 
 
-    ##### Implementation Guide
+    #### Message Types
+
+    Before diving into the implementation, we need to learn a bit about the **message types** that FastAgency FastAPI adapter provides. Understanding these will help us handle messages in our custom client and display them properly to the users.
+
+    FastAgency tags each message sent from the server to the client over WebSocket with a `type` attribute. This helps the client differentiate between different types of messages and handle them accordingly. Let’s break them down into two categories:
+
+    **Messages for Display**:
+
+    - **`text_message`**: A basic text message from the server, intended for display to the user. It doesn’t require any action from the user, serving purely as information or status updates.
+    - **`workflow_started`**: This message indicates the start of a new workflow. The message includes the workflow’s name and a description along with other details.
+    - **`workflow_completed`**: This message signals that the current workflow has been successfully completed. The client can use this to notify the user or transition to the next step in the application.
+    - **`suggested_function_call`**: Indicates that the LLM has suggested a function call.
+    - **`function_call_execution`**: Indicates that the LLM has executed the suggested function call.
+    - **`error`**: Indicates that an error occurred during the workflow. The client can handle this by displaying an error message or prompting the user to retry the action.
+
+    **Messages That Require User Response**:
+
+    - **`text_input`**: This message prompts the client to gather input from the user. It could be a question or request for data. The client should provide a way for the user to respond (e.g., a text input or text area) and then send the response back to the server.
+    - **`multiple_choice`**: This message requires the user to choose from a predefined set of options provided by the LLM. The client should present these options (e.g., checkboxes or radio buttons) and submit the user’s selection back to the server.
+
+    A full list of message types and their detailed usage will be **available soon in the FastAgency Adapter’s OpenAPI specification**—stay tuned!
+
+    #### Implementation Guide
 
     In the following sections, we'll walk through the process of creating a custom client application that implements the flow we've just described. We'll build a simple web-based client that demonstrates how to interact with **FastAgency FastAPI App** effectively.
 
