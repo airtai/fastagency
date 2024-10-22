@@ -1,10 +1,5 @@
-import os
-import os.path
-import sys
-from collections.abc import Iterator
-from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Callable, Optional, SupportsIndex, Union
+from typing import Any, Callable, Optional
 
 import mesop.labs as mel
 import mesop.server.static_file_serving
@@ -61,57 +56,19 @@ mesop.server.wsgi_app.configure_static_file_serving = configure_static_file_serv
 
 
 MEL_WEB_COMPONENT_PATH = "/__fast_agency_internal__/javascript/wakeup_component.js"
-WINDOWS_MEL_WEB_COMPONENT_PATH = MEL_WEB_COMPONENT_PATH.replace("/", "\\")
 
 
-# Extended subclass
-class _MyPatchedStr(str):
-    def startswith(
-        self,
-        prefix: Union[str, tuple[str, ...]],
-        start: Optional[SupportsIndex] = None,
-        end: Optional[SupportsIndex] = None,
-    ) -> bool:
-        return (
-            super().startswith("\\", start, end) and prefix == "/"
-        ) or super().startswith(prefix, start, end)
-
-
-_original_os_path_normpath = os.path.normpath
-
-
-def _os_path_normpath_patch(path: str) -> str:
-    path = _original_os_path_normpath(path)
-    if path == WINDOWS_MEL_WEB_COMPONENT_PATH:
-        return _MyPatchedStr(path)
-    return path
-
-
-@contextmanager
-def _patch_os_path_normpath_for_win32() -> Iterator[None]:
-    if sys.platform == "win32":
-        os.path.normpath = _os_path_normpath_patch  # type: ignore[assignment]
-        try:
-            yield
-        finally:
-            os.path.normpath = _original_os_path_normpath
-    else:
-        yield
-
-
-with _patch_os_path_normpath_for_win32():
-
-    @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
-    def wakeup_component(
-        *,
-        on_wakeup: Callable[[mel.WebEvent], Any],
-        key: Optional[str] = None,
-    ) -> Any:
-        return mel.insert_web_component(
-            name="wakeup-component",
-            key=key,
-            events={
-                "wakeupEvent": on_wakeup,
-            },
-            properties={},
-        )
+@mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]
+def wakeup_component(
+    *,
+    on_wakeup: Callable[[mel.WebEvent], Any],
+    key: Optional[str] = None,
+) -> Any:
+    return mel.insert_web_component(
+        name="wakeup-component",
+        key=key,
+        events={
+            "wakeupEvent": on_wakeup,
+        },
+        properties={},
+    )
