@@ -26,9 +26,9 @@ whatsapp_api = OpenAPI.create(
     openapi_url=openapi_url,
 )
 
-whatsapp_api_key = "App "  # pragma: allowlist secret
-whatsapp_api_key += os.getenv("WHATSAPP_API_KEY", "")
-whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=whatsapp_api_key))
+header_authorization = "App "  # pragma: allowlist secret
+header_authorization += os.getenv("WHATSAPP_API_KEY", "")
+whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=header_authorization))
 
 WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and WhatsAPP API.
 Always use 'present_completed_task_or_ask_question' to interact with the user.
@@ -65,8 +65,8 @@ def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
     ) -> Optional[str]:
         try:
             return ui.text_input(
-                sender="whatsapp_agent",
-                recipient="whatsapp_agent",
+                sender="Whatsapp_Agent",
+                recipient="User",
                 prompt=message,
             )
         except Exception as e:  # pragma: no cover
