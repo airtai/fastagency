@@ -4,7 +4,7 @@ from typing import Any
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
+from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
