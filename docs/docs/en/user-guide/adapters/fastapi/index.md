@@ -26,7 +26,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     The system consists of two main components:
 
-    ### FastAgency Client App
+    #### FastAgency Client App
 
     The FastAgency Client App serves as the frontend interface for the system. It includes:
 
@@ -35,7 +35,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     This app handles all client interactions and presents the results back to the user.
 
-    ### FastAgency FastAPI App
+    #### FastAgency FastAPI App
 
     The FastAgency FastAPI App forms the backend of our system and consists of:
 
@@ -43,7 +43,7 @@ The following section presents high-level architecture diagrams for the two avai
     - **FastAPI Adapter**: This component communicates with AutoGen, and implements routes and websocket for FastAPI.
     - **FastAPI**: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
 
-    ### Interaction Flow
+    #### Interaction Flow
 
     1. The user initiates communication with the Mesop client in the FastAgency Client App.
     2. The Mesop client interacts with the FastAPI Provider, sending requests based on user actions.
@@ -59,7 +59,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     The system consists of two main components:
 
-    ### FastAgency Client App
+    #### FastAgency Client App
 
     The FastAgency Client App serves as the frontend interface for the system. It includes:
 
@@ -67,7 +67,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     This custom client app handles all interactions with the **FastAgency FastAPI App** and presents the results back to the user.
 
-    ### FastAgency FastAPI App
+    #### FastAgency FastAPI App
 
     The FastAgency FastAPI App forms the backend of our system and consists of:
 
@@ -75,11 +75,11 @@ The following section presents high-level architecture diagrams for the two avai
     - **FastAPI Adapter**: This component communicates with AutoGen, and implements routes and websocket for FastAPI.
     - **FastAPI**: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
 
-    ### Building Custom Client Applications
+    #### Building Custom Client Applications
 
     To write a custom application that interacts with FastAgency FastAPI App, we first need to understand the **available server routes** and their purposes. This knowledge forms the foundation of our client-server interaction model.
 
-    #### Available API Endpoints
+    ##### Available API Endpoints
 
     FastAgency FastAPI App provides three primary endpoints for building client applications:
 
@@ -92,7 +92,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     Now that we understand the available routes, let's visualize how these components interact in a typical client-server communication flow.
 
-    #### System Interaction Flow
+    ##### System Interaction Flow
 
     The following sequence diagram illustrates the step-by-step process of how a **custom client application** interacts with the FastAgency FastAPI server:
 
@@ -131,7 +131,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     To better understand this diagram, let's break down the key steps involved in the client-server interaction:
 
-    #### Understanding the Flow
+    ##### Understanding the Flow
 
     The interaction between client and server follows these key steps:
 
@@ -144,7 +144,7 @@ The following section presents high-level architecture diagrams for the two avai
         - Server processes and sends the next workflow message
 
 
-    #### Implementation Guide
+    ##### Implementation Guide
 
     In the following sections, we'll walk through the process of creating a custom client application that implements the flow we've just described. We'll build a simple web-based client that demonstrates how to interact with **FastAgency FastAPI App** effectively.
 
@@ -212,7 +212,7 @@ Before getting started, make sure you have installed FastAgency by running the f
     To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the Custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a REST API.
 
     ```python hl_lines="6 9"
-    {!> docs_src/getting_started/fastapi/main_custom_fastapi_client.py [ln:1-10] !}
+    {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py [ln:1-10] !}
     ```
 
 #### 2. **Define Workflow**
@@ -249,7 +249,7 @@ Create an instance of the [**`FastAPIAdapter`**](../../../api/fastagency/adapter
     Finally, use the HTML Response from FastAPI to serve the custom client code.
 
     ```python
-    {!> docs_src/getting_started/fastapi/main_custom_fastapi_client.py [ln:12-98,146-148] !}
+    {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py [ln:12-98,146-148] !}
     ```
 
 ### Complete Application Code
@@ -275,9 +275,9 @@ Please copy and paste the following code into the same folder, using the file na
 === "FastAPI with Custom Client"
 
     <details>
-        <summary>main_custom_fastapi_client.py</summary>
+        <summary>main_fastapi_custom_client.py</summary>
         ```python
-        {!> docs_src/getting_started/fastapi/main_custom_fastapi_client.py !}
+        {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py !}
         ```
     </details>
 
@@ -312,7 +312,7 @@ Please copy and paste the following code into the same folder, using the file na
     - Start **FastAPI** application using uvicorn:
     !!! note "Terminal 1"
         ```
-        uvicorn main_custom_fastapi_client:app --host 0.0.0.0 --port 8008 --reload
+        uvicorn main_fastapi_custom_client:app --host 0.0.0.0 --port 8008 --reload
         ```
 
 ### Output
