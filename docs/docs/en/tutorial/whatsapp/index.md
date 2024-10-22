@@ -113,3 +113,19 @@ Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register i
 ```python
 {! docs_src/tutorial/whatsapp/main.py [ln:58-60] !}
 ```
+
+### Interaction with the user
+This is a core function used by the **WhatsAppAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
+
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:63-73] !}
+```
+
+### Creating the WhatsApp and WebSurfer Agents
+
+- **WhatsAppAgent**: A ***ConversableAgent*** is created with the name "WhatsApp_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
+- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer){target="_blank"}.
+
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:75-90] !}
+```

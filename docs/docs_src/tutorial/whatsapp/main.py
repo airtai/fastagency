@@ -73,7 +73,7 @@ def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
             return f"present_completed_task_or_ask_question() FAILED! {e}"
 
     whatsapp_agent = ConversableAgent(
-        name="Whatsapp_Agent",
+        name="WhatsApp_Agent",
         system_message=WHATSAPP_SYSTEM_MESSAGE,
         llm_config=llm_config,
         human_input_mode="NEVER",
