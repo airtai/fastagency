@@ -144,7 +144,7 @@ The following section presents high-level architecture diagrams for the two avai
         - Server processes and sends the next workflow message
 
 
-    #### Message Types
+    ##### Message Types
 
     Before diving into the implementation, we need to learn a bit about the **message types** that FastAgency FastAPI adapter provides. Understanding these will help us handle messages in our custom client and display them properly to the users.
 
@@ -166,7 +166,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     A full list of message types and their detailed usage will be **available soon in the FastAgency Adapter’s OpenAPI specification**—stay tuned!
 
-    #### Implementation Guide
+    ##### Implementation Guide
 
     In the following sections, we'll walk through the process of creating a custom client application that implements the flow we've just described. We'll build a simple web-based client that demonstrates how to interact with **FastAgency FastAPI App** effectively.
 

@@ -119,34 +119,24 @@ Before getting started, make sure you have installed FastAgency by running the f
 
 === "FastAPI + Nats Adapter with Custom Client"
 
-    In this example, we'll create a simple learning chat where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll create a custom client for the web interface and the FastAPI Adapter to expose the workflow as a REST API.
+    In this example, we'll create a simple learning chat where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use **custom client** for the web interface and the **FastAPI + Nats** Adapter to expose the workflow as a REST API.
 
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the client. Additionally, import the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) class for workflow execution.
 
-    To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.Additionally, import the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) class for workflow execution.
-
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:1-9] !}
-    ```
-
-=== "FastAPI + Nats Adapter with Custom Client"
-
-    To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the Custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a REST API.
-
-    ```python hl_lines="6 9"
-    {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py [ln:1-10] !}
-    ```
+```python hl_lines="8"
+{!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:1-9] !}
+```
 
 #### 2. **Define Workflow**
 
 Next, define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:9-53] !}
+{! docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:11-52] !}
 ```
 
 #### 3. **Configure the Nats Adapter**
@@ -169,13 +159,12 @@ Create an NatsAdapter and then add it to a FastAPI application using the lifespa
 
 Above, we created Nats.io provider that will start brokers waiting to consume initiate workflow messages from the message broker. Now, we create FastAPI service interacting with Nats.io provider:
 
-!!! note "main_2_fastapi.py"
-    ```python hl_lines="16-18 21-22"
-    {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py [ln:1-22] !}
-    ```
-
 === "FastAPI + Nats Adapter with Mesop Client"
-    Finally, we create Mesop app communicating with the FastAPI application:
+
+    !!! note "main_2_fastapi.py"
+        ```python hl_lines="16-18 21-22"
+        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py [ln:1-22] !}
+        ```
 
     !!! note "main_3_mesop.py"
         ```python hl_lines="7-9 11"
@@ -184,11 +173,26 @@ Above, we created Nats.io provider that will start brokers waiting to consume in
 
 === "FastAPI + Nats Adapter with Custom Client"
 
-    Finally, use the HTML Response from FastAPI to serve the custom client code.
+    !!! note "main_fastapi_custom_client.py"
+        ```python hl_lines="17-19 22-23"
+        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi_custom_client.py [ln:1-8,96-110] !}
+        ```
 
-    ```python
-    {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py [ln:12-98,146-148] !}
-    ```
+    ##### Serving the Custom HTML Client
+
+    Finally, use the HTML Response from FastAPI to serve the custom client.
+
+    !!! note
+
+        - The below example uses a **simple HTML with JavaScript**, all in a single string and served directly from the FastAgency FastAPI app for **simplicity**.
+        - This approach is **not suitable for production** but ideal for demonstrating core concepts.
+        - In a real-world scenario, you'd use a separate frontend, built with frameworks like React or Vue.js, or other languages such as Java, Go, or Ruby, based on your project needs.
+
+    !!! note "main_fastapi_custom_client.py"
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi_custom_client.py [ln:9-95,113-115] !}
+        ```
+
 
 #### 6. **Nats server setup**
 
@@ -204,80 +208,148 @@ In the above Nats configuration, we define a user called `fastagency`, and its p
 
 Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
-<details>
-    <summary>nats-server.conf</summary>
-    ```python
-    {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
-    ```
-</details>
+=== "FastAPI + Nats Adapter with Mesop Client"
 
-<details>
-    <summary>main_1_nats.py</summary>
-    ```python
-    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py !}
-    ```
-</details>
+    <details>
+        <summary>nats-server.conf</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
+        ```
+    </details>
 
-<details>
-    <summary>main_2_fastapi.py</summary>
-    ```python
-    {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py !}
-    ```
-</details>
+    <details>
+        <summary>main_1_nats.py</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py !}
+        ```
+    </details>
 
-<details>
-    <summary>main_3_mesop.py</summary>
-    ```python
-    {!> docs_src/getting_started/nats_n_fastapi/main_3_mesop.py !}
-    ```
-</details>
+    <details>
+        <summary>main_2_fastapi.py</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py !}
+        ```
+    </details>
+
+    <details>
+        <summary>main_3_mesop.py</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/main_3_mesop.py !}
+        ```
+    </details>
+
+=== "FastAPI + Nats Adapter with Custom Client"
+
+    <details>
+        <summary>nats-server.conf</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
+        ```
+    </details>
+
+    <details>
+        <summary>main_1_nats.py</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py !}
+        ```
+    </details>
+
+    <details>
+        <summary>main_2_fastapi_custom_client.py</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi_custom_client.py !}
+        ```
+    </details>
 
 ### Run Application
 
-Once everything is set up, you can run your FastAgency application using the following commands. You need to run **Four** commands in **separate** terminal windows:
+Once everything is set up, you can run your FastAgency application using the following commands.
 
-- Start **Nats** Docker container:
-!!! note "Terminal 1"
-    ```
-    docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
-    ```
+=== "FastAPI + Nats Adapter with Mesop Client"
 
-- Start **FastAPI** application that provides a conversational workflow:
-!!! note "Terminal 2"
-    ```
-    uvicorn main_1_nats:app --reload
-    ```
+    You need to run **Four** commands in **separate** terminal windows:
 
-- Start **FastAPI** application integrated with a **Nats** messaging system:
-!!! note "Terminal 3"
-    ```
-    uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
-    ```
+    - Start **Nats** Docker container:
+    !!! note "Terminal 1"
+        ```
+        docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+        ```
 
-- Start **Mesop** web interface using gunicorn:
-!!! note "Terminal 4"
-    ```
-    gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
-    ```
+    - Start **FastAPI** application that provides a conversational workflow:
+    !!! note "Terminal 2"
+        ```
+        uvicorn main_1_nats:app --reload
+        ```
 
-!!! danger "Currently not working on **Windows**"
-    The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-    ```
-    waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
-    ```
+    - Start **FastAPI** application integrated with a **Nats** messaging system:
+    !!! note "Terminal 3"
+        ```
+        uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+        ```
+
+    - Start **Mesop** web interface using gunicorn:
+    !!! note "Terminal 4"
+        ```
+        gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
+        ```
+
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
+        ```
+
+=== "FastAPI + Nats Adapter with Custom Client"
+
+    You need to run **Three** commands in **separate** terminal windows:
+
+    - Start **Nats** Docker container:
+    !!! note "Terminal 1"
+        ```
+        docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+        ```
+
+    - Start **FastAPI** application that provides a conversational workflow:
+    !!! note "Terminal 2"
+        ```
+        uvicorn main_1_nats:app --reload
+        ```
+
+    - Start **FastAPI** application integrated with a **Nats** messaging system:
+    !!! note "Terminal 3"
+        ```
+        uvicorn main_2_fastapi_custom_client:app --host 0.0.0.0 --port 8008 --reload
+        ```
+
 
 ### Output
 
 The outputs will vary based on the interface. Here is the output of the last terminal starting the UI:
 
-```console
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8888 (23635)
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
-[2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
-```
+=== "FastAPI + Nats Adapter with Mesop Client"
 
-![Initial message](../../../getting-started/images/chat.png)
+    ```console
+    [2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
+    [2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8888 (23635)
+    [2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
+    [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
+    ```
+
+    ![Initial message](../../../getting-started/images/chat.png)
+
+
+=== "FastAPI + Nats Adapter with Custom Client"
+
+    ```console
+    INFO:     Will watch for changes in these directories: ['/tmp/custom_fastapi_demo']
+    INFO:     Uvicorn running on http://0.0.0.0:8008 (Press CTRL+C to quit)
+    INFO:     Started reloader process [73937] using StatReload
+    INFO:     Started server process [73940]
+    INFO:     Waiting for application startup.
+    INFO:     Application startup complete.
+    ```
+    ![Output Screenshot](../images/custom_chat_output.png)
+
 
 The **FastAPI + Nats** Adapter in FastAgency provides a **highly scalable** and **flexible solution** for building distributed applications. By leveraging the power of [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} for building REST APIs and the [**Nats.io MQ**](https://nats.io/){target="_blank"} for asynchronous communication, you can create robust and efficient workflows that can handle high user demand and complex production setups.
 
