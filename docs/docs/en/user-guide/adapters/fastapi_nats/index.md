@@ -8,10 +8,11 @@ This section outlines the scenarios where it's particularly beneficial to use th
 
 ### When to Use the FastAPI + Nats.io Adapter
 
-- **Custom Client Applications**: If you want to build your **own client applications** that interact with your FastAgency workflows using REST APIs, this adapter provides greater flexibility and control over the client-side implementation.
-- **High User Demand**: When your application needs to handle a large number of users or messages and requires high scalability, the FastAPI + Nats Adapter is an excellent choice. It is well-suited for building **scalable custom chat applications for larger companies or external customers**.
-- **Conversation Auditing**: If you need the ability to **audit conversations**, the Nats Adapter provides the necessary infrastructure to enable this feature.
+- **High User Demand**: If you need to scale above what can be achieved with multiple-workers of the [**FastAPI** adapter](../fastapi/index.md), then you can use [**Nats.io MQ**](https://nats.io/){target="_blank"}-based message que and multiple workers consuming and producing messages. This kind of distributed, [message-queue architecture](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} allows you to scale up not just across multiple workers, but also across multiple machines and even across multiple clusters.
 
+- **Observability**: If you need the ability to **audit workflow executions** both in realtime and posteriori, the Nats Adapter provides the necessary infrastructure to enable this feature.
+
+- Security features of FastAPI (links etc.)
 
 ## Architecture Overview
 
