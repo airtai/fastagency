@@ -58,11 +58,18 @@ To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){t
 **Step 3**: Test WhatsApp API
 
 - After you have created the account, you will be redirected [Infobip Homepage](https://portal.infobip.com/homepage){target="_blank"}.
-- Check the **Send your first message** option and send a WhatsApp message to yourself. (In this tutorial, we will only be sending messages to your own number)
+- Check the **Send your first message** option and send a WhatsApp message to yourself.
+- In this tutorial, we will only be sending messages **to your own number**
 
-If you've successfully received the message, you're all set!
+!!! note "Important"
+    Upon receiving this message, please **reply** (e.g., with "Hi") to initiate the session. Note that sessions expire after 24 hours. If your session has expired, simply send another message to create a new one.
 
 Copy the **API Key** from the top-right corner and continue with the next steps.
+
+**Step 4**: Register your WhatsApp sender (Optional)
+
+- By default, Infobip number will be used as the sender for your messages.
+- If you wish to create a new sender phone number and customize your branding (including your name and logo), click on [Register Sender](https://portal.infobip.com/channels-and-numbers/channels/whatsapp/senders){target="_blank"}.
 
 #### Set Up Your API Keys in the Environment
 
@@ -271,4 +278,4 @@ Finally, the results are delivered to the user through a WhatsApp message.
 
 ## Conclusion
 
-In conclusion, integrating **FastAgency** with the **Infobip WhatsApp API** offers a powerful way to build dynamic chat systems capable of scraping web data and delivering it directly to users via WhatsApp. By leveraging two agents—**WebSurferAgent** for retrieving web content and **WhatsAppAgent** for seamless messaging—you can create interactive and responsive experiences for users. This tutorial walked you through the key steps for setting up these agents, configuring API security, and handling user interaction. With this setup, you can expand your chatbot’s functionality, enabling real-time data delivery and efficient communication across platforms.
+In summary, connecting **FastAgency** with the **Infobip WhatsApp API** lets you create chat systems that can gather web data and send it straight to users on WhatsApp. By using two agents — **WebSurferAgent** to pull web content and **WhatsAppAgent** for messaging, you can build engaging experiences for users. This tutorial covered the essential steps to set up these agents, secure the API, and manage user interactions. With this setup, you can enhance your chatbot’s capabilities, providing real-time information and smooth communication across different platforms.
