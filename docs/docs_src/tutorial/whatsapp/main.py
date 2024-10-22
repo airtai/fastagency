@@ -55,8 +55,8 @@ by using 'present_completed_task_or_ask_question'.
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="whatsapp", description="WhatsApp chat")
-def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
+@wf.register(name="whatsapp_and_websurfer", description="WhatsApp and WebSurfer chat")
+def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 

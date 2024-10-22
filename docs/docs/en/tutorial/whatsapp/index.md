@@ -89,3 +89,27 @@ You can set the API keys in your terminal as an environment variable:
 {! docs_src/tutorial/whatsapp/main.py !}
 ```
 </details>
+
+
+## Code Walkthrough
+
+Now we will go over each key part of the code, explaining its function and purpose within the FastAgency framework. Understanding these components is crucial for building a dynamic interaction between the user, the **WebSurferAgent**, and the **WhatsAppAgent**.
+
+### Creating the WhatsApp API Instance
+The following lines shows hot to initializes the WhatsApp API by loading the OpenAPI specification from a URL. The OpenAPI spec defines how to interact with the WhatsApp API, including endpoints, parameters, and security details.
+
+Also, we configure the **WhatsApp API** with the __*WHATSAPP_API_KEY*__ using __*set_security_params*__ to authenticate our requests.
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:24-31] !}
+```
+
+For more information, visit [**API Integration User Guide**](../../user-guide/api){target="_blank"}.
+
+
+### Registering the Workflow
+
+Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"whatsapp_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both WhatsAppAgent and WebSurferAgent.
+
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:58-60] !}
+```
