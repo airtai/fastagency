@@ -247,3 +247,28 @@ The command will launch a web interface where users can input their requests and
 
 !!! note
     Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
+
+## Chat Example
+In this scenario, the user instructs the agents to scrape [BBC Sport](https://www.bbc.com/sport) for the latest sports news.
+
+![Initial message](./images/initial_message.png)
+
+Upon receiving the request, **WebSurferAgent** initiates the process by scraping the webpage for relevant updates.
+
+![Scraping](./images/scraping.png)
+
+After the scraping process is complete, the agents compile the findings and present them to the user. In the final step, the user submits their phone number to receive the results via WhatsApp message.
+
+![Scraped Info](./images/scraped_info.png)
+
+![WhatsApp API call](./images/whatsapp_api_call.png)
+
+
+Finally, the results are delivered to the user through a WhatsApp message.
+
+![WhatsApp Message](./images/whatsapp.png)
+
+
+## Conclusion
+
+In conclusion, integrating **FastAgency** with the **Infobip WhatsApp API** offers a powerful way to build dynamic chat systems capable of scraping web data and delivering it directly to users via WhatsApp. By leveraging two agents—**WebSurferAgent** for retrieving web content and **WhatsAppAgent** for seamless messaging—you can create interactive and responsive experiences for users. This tutorial walked you through the key steps for setting up these agents, configuring API security, and handling user interaction. With this setup, you can expand your chatbot’s functionality, enabling real-time data delivery and efficient communication across platforms.
