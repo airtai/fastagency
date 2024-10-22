@@ -19,7 +19,7 @@ jobs:
   static-analysis:
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12, 3.13"]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +48,7 @@ jobs:
   test-without-llms:
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
     uses: ./.github/workflows/test.yaml
     with:
@@ -105,7 +105,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
           cache: "pip"
           cache-dependency-path: pyproject.toml
 
@@ -123,7 +123,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
           cache: "pip"
           cache-dependency-path: pyproject.toml
 
