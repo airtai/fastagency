@@ -1,6 +1,4 @@
-import uuid
 from typing import Annotated, Any, Optional, Union
-from uuid import UUID
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -32,7 +30,6 @@ fake_users_db = {
         "email": "johndoe@example.com",
         "hashed_password": "fakehashedsecret", # pragma: allowlist secret
         "disabled": False,
-        "user_id": uuid.uuid4(),
     },
     "alice": {
         "username": "alice",
@@ -40,7 +37,6 @@ fake_users_db = {
         "email": "alice@example.com",
         "hashed_password": "fakehashedsecret2", # pragma: allowlist secret
         "disabled": True,
-        "user_id": uuid.uuid4(),
     },
 }
 
@@ -56,7 +52,6 @@ class User(BaseModel):
     email: Union[str, None] = None
     full_name: Union[str, None] = None
     disabled: Union[bool, None] = None
-    user_id: UUID
 
 
 class UserInDB(User):
@@ -116,8 +111,8 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> d
 
 def get_user_id(
     current_user: Annotated[User, Depends(get_current_active_user)],
-) -> Optional[UUID]:
-    return current_user.user_id
+) -> Optional[str]:
+    return current_user.username
 
 adapter = FastAPIAdapter(provider=wf, get_user_id=get_user_id)
 app.include_router(adapter.router)

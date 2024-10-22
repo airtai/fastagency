@@ -1,7 +1,7 @@
 import re
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field, fields
-from typing import Any, Literal, Optional, Protocol, Type
+from typing import Any, Literal, Optional, Protocol, Type, Union
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel
@@ -610,7 +610,7 @@ class InputResponseModel(BaseModel):
 
 
 class InitiateWorkflowModel(BaseModel):
-    user_id: Optional[UUID] = None
+    user_id: Optional[Union[UUID, str]] = None
     workflow_uuid: UUID
     name: str
     params: dict[str, Any]

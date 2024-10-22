@@ -6,19 +6,29 @@ import websockets
 from dirty_equals import IsPartialDict
 from fastapi import FastAPI
 
-from docs.docs_src.user_guide.adapters.fastapi.security.main_1_simple import app
+from docs.docs_src.user_guide.adapters.fastapi.security.main_1_jwt import app as app_jwt
+from docs.docs_src.user_guide.adapters.fastapi.security.main_1_simple import (
+    app as app_simple,
+)
 
 
-def create_oauth2_fastapi_app(host: str, port: int) -> FastAPI:
-    app.servers = [
+def create_oauth2_fastapi_app_simple(host: str, port: int) -> FastAPI:
+    app_simple.servers = [
         {"url": f"http://{host}:{port}", "description": "Local development server"}
     ]
-    return app
+    return app_simple
+
+
+def create_oauth2_fastapi_app_jwt(host: str, port: int) -> FastAPI:
+    app_jwt.servers = [
+        {"url": f"http://{host}:{port}", "description": "Local development server"}
+    ]
+    return app_jwt
 
 
 @pytest.mark.parametrize(
     "fastapi_openapi_url",
-    [(create_oauth2_fastapi_app)],
+    [(create_oauth2_fastapi_app_simple), (create_oauth2_fastapi_app_jwt)],
     indirect=["fastapi_openapi_url"],
 )
 def test_secure_unauthorized(
@@ -38,7 +48,7 @@ def test_secure_unauthorized(
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "fastapi_openapi_url",
-    [(create_oauth2_fastapi_app)],
+    [(create_oauth2_fastapi_app_simple), (create_oauth2_fastapi_app_jwt)],
     indirect=["fastapi_openapi_url"],
 )
 async def test_secure_unauthorized_websocket(
@@ -55,15 +65,31 @@ async def test_secure_unauthorized_websocket(
     assert e.value.status_code == 401
 
 
+@pytest.fixture
+def token(fastapi_openapi_url: str) -> str:
+    auth_url = f"{fastapi_openapi_url.split('/openapi.json')[0]}/token"
+
+    response = requests.post(
+        auth_url,
+        data={
+            "username": "johndoe",
+            "password": "secret",  # pragma: allowlist secret
+        },
+    )
+
+    token = response.json().get("access_token")
+    return token  # type: ignore
+
+
 @pytest.mark.parametrize(
     "fastapi_openapi_url",
-    [(create_oauth2_fastapi_app)],
+    [(create_oauth2_fastapi_app_simple), (create_oauth2_fastapi_app_jwt)],
     indirect=["fastapi_openapi_url"],
 )
 def test_secure_authorized(
     fastapi_openapi_url: str,
+    token: str,
 ) -> None:
-    token = "johndoe"
     fastagency_url = fastapi_openapi_url.split("/openapi.json")[0]
 
     payload = {
@@ -92,13 +118,13 @@ def test_secure_authorized(
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "fastapi_openapi_url",
-    [(create_oauth2_fastapi_app)],
+    [(create_oauth2_fastapi_app_simple), (create_oauth2_fastapi_app_jwt)],
     indirect=["fastapi_openapi_url"],
 )
 async def test_secure_authorized_websocket(
     fastapi_openapi_url: str,
+    token: str,
 ) -> None:
-    token = "johndoe"
     fastagency_url = fastapi_openapi_url.split("/openapi.json")[0]
 
     payload = {

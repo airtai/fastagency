@@ -50,7 +50,7 @@ logger = get_logger(__name__)
 class InititateChatModel(BaseModel):
     workflow_name: str
     workflow_uuid: str
-    user_id: Optional[UUID]
+    user_id: Optional[str]
     params: dict[str, Any]
 
 
@@ -67,7 +67,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
-        get_user_id: Optional[Callable[..., Optional[UUID]]] = None,
+        get_user_id: Optional[Callable[..., Optional[str]]] = None,
     ) -> None:
         """Provider for FastAPI.
 
@@ -95,8 +95,8 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
     async def get_user_id_websocket(self, websocket: WebSocket) -> Optional[UUID]:
         def get_user_id_depends(
-            user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
-        ) -> Optional[UUID]:
+            user_id: Optional[str] = Depends(self.get_user_id),
+        ) -> Optional[str]:
             return user_id
 
         dependant = get_dependant(path="", call=get_user_id_depends)
@@ -127,7 +127,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         @router.post(self.initiate_workflow_path)
         async def initiate_chat(
             initiate_chat: InititateChatModel,
-            user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
+            user_id: Optional[str] = Depends(self.get_user_id),
         ) -> InitiateWorkflowModel:
             workflow_uuid: UUID = uuid4()
 
@@ -169,7 +169,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                 await asyncify(self.provider.run)(
                     name=init_msg.name,
                     ui=self.create_workflow_ui(workflow_uuid),
-                    user_id=user_id.hex if user_id else "None",
+                    user_id=user_id if user_id else "None",  # type: ignore
                     **init_msg.params,
                 )
             except Exception as e:
@@ -365,7 +365,7 @@ class FastAPIProvider(ProviderProtocol):
         initiate_workflow = self._send_initiate_chat_msg(
             name, workflow_uuid=workflow_uuid, user_id=user_id, params=kwargs
         )
-        user_id = initiate_workflow.user_id.hex if initiate_workflow.user_id else "None"
+        user_id = initiate_workflow.user_id if initiate_workflow.user_id else "None"  # type: ignore
         workflow_uuid = initiate_workflow.workflow_uuid.hex
 
         _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"

@@ -1,8 +1,8 @@
-# Securing the FastAPI Adapter
+# Securing the FastAPIAdapter
 
 When exposing your FastAgency workflows using the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md), it's crucial to ensure the security of your API. Implementing proper security practices will protect your data, workflows, and client applications from unauthorized access, attacks, and data breaches.
 
-This section will demonstrate how to secure your FastAPI adapter.
+This section will demonstrate how to secure your [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
 ## Authentication
 Authentication is the process of verifying who a user is. For securing your [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md), we recommend using [OAuth2](https://oauth.net/2/){target="_blank"} with password flow or API keys. In this section, we’ll demonstrate how to use the following security variations of [OAuth2](https://oauth.net/2/){target="_blank"} with [FastAPI](https://fastapi.tiangolo.com/){target="_blank"}:
@@ -13,9 +13,9 @@ Authentication is the process of verifying who a user is. For securing your [**`
 
 ## Example: OAuth2 Password Flow
 
-Lets first take a look at the full code on how to add the OAuth2 security to your FastAPI Adapter, and then go through the code step by step.
+Lets first take a look at the full code on how to add the [OAuth2](https://oauth.net/2/){target="_blank"} security to your [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md), and then go through the code step by step.
 
-Here’s the full code on how you can add OAuth2 password flow to your FastAPI Adapter:
+Here’s the full code on how you can add [OAuth2](https://oauth.net/2/){target="_blank"} password flow to your [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md):
 
 === "simple OAuth2"
 
@@ -61,16 +61,29 @@ You can now start your secured adapter using the following command:
 uvicorn secured_fastapi_adapter.main:app --host 0.0.0.0 --port 8008
 ```
 
-Now, lets go through the steps on how to build the OAuth2 security and add it to your FastAPI provider.
+Now, lets go through the steps on how to build the [OAuth2](https://oauth.net/2/){target="_blank"} security and add it to your FastAPI provider.
 
 ### Step 0: Install
 
-```console
-pip install "fastagency[autogen,mesop,fastapi,server]"
-```
+=== "simple OAuth2"
 
-This command installs FastAgency with support for both the Console and Mesop
-interfaces for AutoGen workflows, but with FastAPI both serving input requests
+    ```console
+    pip install "fastagency[autogen,mesop,fastapi,server]"
+    ```
+
+
+=== "OAuth2 using JWT tokens"
+
+    To use JWT tokens, you need to install [PyJWT](https://pyjwt.readthedocs.io/en/stable/) and [passlib](https://passlib.readthedocs.io/en/stable/).
+
+    ```console
+    pip install "fastagency[autogen,mesop,fastapi,server]"
+    pip install PyJWT
+    pip install "passlib[bcrypt]"
+    ```
+
+This command installs FastAgency with support for both the Console and [Mesop](https://google.github.io/mesop/)
+interfaces for [AutoGen](https://microsoft.github.io/autogen/) workflows, but with FastAPI both serving input requests
 and running workflows.
 
 ### Step 0: Imports
@@ -80,7 +93,7 @@ and running workflows.
 - [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): We'll attach the adapter to the FastAPI app. It exposes the workflows as REST APIs.
 
 
-### Step 1: Initial Setup of FastAPI, FastAPIAdapter, and Workflows
+### Step 1: Initial Setup
 We start by defining the [`FastAPI` app](https://fastapi.tiangolo.com/reference/fastapi/){target="_blank"}, setting up the [**`AutoGenWorkflows`**](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) object, and registering a simple workflow (simple_workflow) for the adapter.
 
 === "simple OAuth2"
@@ -99,18 +112,48 @@ We start by defining the [`FastAPI` app](https://fastapi.tiangolo.com/reference/
 ### Step 2: Mock Database Setup
 This step sets up a mock database with two users (johndoe and alice). This is a simplified user store for the example, where each user has attributes like username, email, and hashed_password.
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:25-42]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:25-42]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:25-42]!}
+        ```
+    </details>
 
 `fake_users_db`: A dictionary that represents a mock database of users. Each user has attributes like `hashed_password`, `disabled` (for checking active users), and `user_id` (which we will use for authorization).
 
 ### Step 3: OAuth2 Authentication Setup
 Here we configure OAuth2 with password flow and token-based authentication. This ensures that users authenticate with a username and password, and the app generates a token.
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:44-48]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:44-48]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:44-48]!}
+        ```
+    </details>
 
 `OAuth2PasswordBearer`: This is used to handle token-based authentication. `tokenUrl="token"` indicates that users will obtain a token by calling the `/token` endpoint.
 `fake_hash_password`: A simple mock function to simulate password hashing.
@@ -118,9 +161,24 @@ Here we configure OAuth2 with password flow and token-based authentication. This
 ### Step 4: User Authentication Logic
 This step simulates user lookup, token decoding, and user validation. The token received in API requests is decoded to get the user, and the user’s information is validated for authorization.
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:51-74]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:51-74]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:51-74]!}
+        ```
+    </details>
 
 `User and UserInDB`: These Pydantic models represent user data. UserInDB extends User by adding a hashed_password field for password comparison.
 `get_user`: This function retrieves user data from `fake_users_db`.
@@ -129,18 +187,48 @@ This step simulates user lookup, token decoding, and user validation. The token 
 ### Step 5: OAuth2 Token Login Endpoint
 This step defines the `/token` endpoint where users submit their username and password to receive an authentication token (mocked as the username). The system checks if the password matches before generating the token.
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:96-106]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:96-106]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:25-42]!}
+        ```
+    </details>
 
 `/token`: This endpoint handles user login. If the username and password match, it returns a token in the form of the username. Otherwise, an error is returned.
 
 ### Step 6: Securing Routes with OAuth2
 Here we secure the FastAPI routes by requiring the user to pass an OAuth2 token to authenticate and authorize requests.
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:77-93]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:77-93]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:25-42]!}
+        ```
+    </details>
 
 `get_current_user`: This function extracts the token from the request, decodes it, and returns the user object if valid. If the token is invalid, a 401 error is returned.
 `get_current_active_user`: It checks whether the user account is active `(disabled = False)`, raising an error if the user is inactive.
@@ -148,27 +236,72 @@ Here we secure the FastAPI routes by requiring the user to pass an OAuth2 token 
 ### Step 7: Custom Client ID Generation
 This step extracts the user’s user_id from the current authenticated user and provides it to the adapter. This will allow syncing client information during workflow interactions.
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:114-117]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:114-117]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:25-42]!}
+        ```
+    </details>
 
 `get_user_id`: Returns the user_id of the authenticated user, which is later used for authorization in the workflows.
 
 ### Step 8: Connecting the Adapter and Securing It
-Finally, we connect the FastAPIAdapter to the FastAPI app. The get_user_id function is passed as a security dependency, ensuring that every internal API call is secured.
+Finally, we connect the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to the FastAPI app. The get_user_id function is passed as a security dependency, ensuring that every internal API call is secured.
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:119-120]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:119-120]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:25-42]!}
+        ```
+    </details>
 
 `get_user_id`: This function ensures that the `user_id` of the authenticated user is passed with every internal request, securing the workflows exposed by the adapter.
 
 ### Step 9: Workflow Listing Endpoint
-We add an optional `/` endpoint to list the available workflows, which can be useful for understanding what workflows are currently available in the FastAPIAdapter.
+We add an optional `/` endpoint to list the available workflows, which can be useful for understanding what workflows are currently available in the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
-```python
-    {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:123-125]!}
-```
+=== "simple OAuth2"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_simple.py [ln:123-125]!}
+        ```
+    </details>
+
+
+=== "OAuth2 using JWT tokens"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:25-42]!}
+        ```
+    </details>
 
 `/`: Lists the available workflows and their descriptions for easier access and understanding of what the API offers.
 
@@ -181,4 +314,6 @@ In this setup:
 
  - The `get_user_id` function is the central security mechanism, ensuring that each user’s actions are tracked and authorized via their `user_id`.
 
- - By attaching the `get_user_id` function to the FastAPIAdapter, we effectively secure all the internal API calls exposed by the workflows, providing a scalable and consistent approach to authorization and client sync.
+ - By attaching the `get_user_id` function to the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md), we effectively secure all the internal API calls exposed by the workflows, providing a scalable and consistent approach to authorization and client sync.
+
+ ### Implementing and connecting a simple client to secured [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md)
