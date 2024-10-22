@@ -9,7 +9,7 @@ from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
-from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
+from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
