@@ -4,7 +4,7 @@ In this tutorial, we will explore how to leverage the **FastAgency** framework t
 
 1. [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md): A web-scraping agent capable of retrieving relevant content from webpages (learn more [here](../../user-guide/runtimes/autogen/websurfer)).
 
-2. **WhatsApp agent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send WhatsApp messages based on the user’s request. It will be created using the standard [**`ConversableAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/conversable_agent/){target="_blank"} from [AutoGen](https://microsoft.github.io/autogen){target="_blank"} and the [**`OpenAPI`**](../../api/openapi/OpenAPI.md) object instantiated with an OpenAPI [specification](https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/whatsapp_openapi.json){target="_blank"} of Infobip's [REST API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"}.
+2. **WhatsApp agent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send WhatsApp messages based on the user’s request. It will be created using the standard [**`ConversableAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/conversable_agent/){target="_blank"} from [AutoGen](https://microsoft.github.io/autogen){target="_blank"} and the [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md) object instantiated with an OpenAPI [specification](https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/whatsapp_openapi.json){target="_blank"} of Infobip's [REST API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"}.
 
 The chat system will operate between these two agents and the user, allowing them to scrape web content and send the relevant information via WhatsApp, all within a seamless conversation. This tutorial will guide you through setting up these agents, handling user interaction, and ensuring secure API communication.
 
@@ -12,7 +12,7 @@ The chat system will operate between these two agents and the user, allowing the
 
 By the end of this tutorial, you will understand how to:
 
-1. Integrate external APIs like [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} using [**`OpenAPI`**](../../api/openapi/OpenAPI.md).
+1. Integrate external APIs like [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} using [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md).
 2. Build and register agents that autonomously scrape the web for relevant information using [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
 3. Use [**`AutoGenWorkflows`**](../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) to manage agent interactions and user input.
 4. Present scraped content to the user and offer sending that content via WhatsApp.
