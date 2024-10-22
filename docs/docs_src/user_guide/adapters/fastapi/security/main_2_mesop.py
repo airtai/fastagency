@@ -2,8 +2,6 @@ from fastagency.adapters.fastapi import FastAPIAdapter
 from fastagency.app import FastAgency
 from fastagency.ui.mesop import MesopUI
 
-from fastagency.api.openapi.security import OAuth2PasswordBearer
-
 fastapi_url = "http://localhost:8008"
 
 # todo: add security params

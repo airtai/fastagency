@@ -4,7 +4,7 @@ The **FastAPI Adapter** allows you to expose your FastAgency workflows as a REST
 
 ## Use Cases
 
-This section outlines the scenarios where it's particularly beneficial to use the **FastAPI** Adapter.
+This section outlines the scenarios where it's particularly beneficial to use the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
 ### When to Use the FastAPI Adapter
 

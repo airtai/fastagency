@@ -1,6 +1,6 @@
+import uuid
 from typing import Annotated, Any, Optional, Union
 from uuid import UUID
-import uuid
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -13,7 +13,10 @@ from .workflows import simple_workflow
 
 wf = AutoGenWorkflows()
 
-wf.register(name="simple_learning", description="Student and teacher learning chat")(simple_workflow)
+wf.register(
+    name="simple_learning",
+    description="Student and teacher learning chat"
+)(simple_workflow)
 
 app = FastAPI(title="FastAPI with FastAgency")
 
@@ -112,7 +115,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> d
 ################################################################################
 
 def get_user_id(
-    current_user: Annotated[User, Depends(get_current_user)],
+    current_user: Annotated[User, Depends(get_current_active_user)],
 ) -> Optional[UUID]:
     return current_user.user_id
 

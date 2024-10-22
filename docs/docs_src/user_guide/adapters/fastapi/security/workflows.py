@@ -1,6 +1,8 @@
 import os
 from typing import Any
+
 from autogen.agentchat import ConversableAgent
+
 from fastagency import UI
 
 llm_config = {

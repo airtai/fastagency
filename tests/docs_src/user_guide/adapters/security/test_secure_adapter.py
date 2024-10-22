@@ -6,7 +6,7 @@ import websockets
 from dirty_equals import IsPartialDict
 from fastapi import FastAPI
 
-from docs.docs_src.user_guide.adapters.fastapi.security.main_1_fastapi import app
+from docs.docs_src.user_guide.adapters.fastapi.security.main_1_simple import app
 
 
 def create_oauth2_fastapi_app(host: str, port: int) -> FastAPI:
