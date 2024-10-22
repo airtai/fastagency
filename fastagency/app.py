@@ -121,7 +121,7 @@ class FastAgency:  # Runnable
             return self.ui.handle_wsgi(self, environ, start_response)
         else:
             raise FastAgencyWSGINotImplementedError(
-                "WSGI interface not supported for UI: {self.ui}"
+                f"WSGI interface not supported for UI: {self.ui.__class__.__name__}. Try running with 'fastapi run' or with a ASGI server like 'uvicorn'."
             )
 
     async def handle_asgi(
@@ -134,5 +134,5 @@ class FastAgency:  # Runnable
             return await self.ui.handle_asgi(self, scope, receive, send)
         else:
             raise FastAgencyASGINotImplementedError(
-                "ASGI interface not supported for UI: {self.ui}"
+                f"ASGI interface not supported for UI: {self.ui.__class__.__name__}. Try running with 'fastapi run' or with a WSGI server like 'gunicorn'/'waitress'."
             )
