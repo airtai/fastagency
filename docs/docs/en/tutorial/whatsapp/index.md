@@ -118,14 +118,14 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"whatsapp_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both WhatsAppAgent and WebSurferAgent.
 
 ```python
-{! docs_src/tutorial/whatsapp/main.py [ln:58-60] !}
+{! docs_src/tutorial/whatsapp/main.py [ln:60-62] !}
 ```
 
 ### Interaction with the user
 This is a core function used by the **WhatsAppAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
 
 ```python
-{! docs_src/tutorial/whatsapp/main.py [ln:63-73] !}
+{! docs_src/tutorial/whatsapp/main.py [ln:65-75] !}
 ```
 
 ### Creating the WhatsApp and WebSurfer Agents
@@ -134,7 +134,7 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 - **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer){target="_blank"}.
 
 ```python
-{! docs_src/tutorial/whatsapp/main.py [ln:75-90] !}
+{! docs_src/tutorial/whatsapp/main.py [ln:77-93] !}
 ```
 
 
@@ -143,13 +143,13 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 The function ***present_completed_task_or_ask_question*** is registered to allow the **WhatsAppAgent** to ask questions or present completed tasks after receiving data from the **WebSurferAgent**.
 
 ```python
-{! docs_src/tutorial/whatsapp/main.py [ln:92-99] !}
+{! docs_src/tutorial/whatsapp/main.py [ln:94-102] !}
 ```
 
 
 We register the WhatsApp API, which allows the **WhatsAppAgent** to handle tasks like suggesting messages that will be sent to the user.
 ```python
-{! docs_src/tutorial/whatsapp/main.py [ln:101-105] !}
+{! docs_src/tutorial/whatsapp/main.py [ln:104-108] !}
 ```
 
 ### Initiating the Chat
@@ -159,7 +159,7 @@ We initiate the conversation between the user, **WebSurferAgent**, and **WhatsAp
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorial/whatsapp/main.py [ln:113-120] !}
+{! docs_src/tutorial/whatsapp/main.py [ln:116-123] !}
 ```
 
 ### Starting the Application
@@ -167,7 +167,7 @@ Once the conversation ends, the summary is returned to the user, wrapping up the
 The FastAgency app is created, using the registered workflows (***wf***) and web-based user interface (***MesopUI***). This makes the conversation between agents and the user interactive.
 
 ```python
-{! docs_src/tutorial/whatsapp/main.py [ln:123] !}
+{! docs_src/tutorial/whatsapp/main.py [ln:126] !}
 ```
 
 For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics){target="_blank"}.

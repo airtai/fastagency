@@ -30,7 +30,10 @@ header_authorization = "App "  # pragma: allowlist secret
 header_authorization += os.getenv("WHATSAPP_API_KEY", "")
 whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=header_authorization))
 
-WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and WhatsAPP API.
+# This is the default sender number for Infobip.
+# If you want to use your own sender, please update the value below:
+sender = "447860099299"
+WHATSAPP_SYSTEM_MESSAGE = f"""You are an agent in charge to communicate with the user and WhatsAPP API.
 Always use 'present_completed_task_or_ask_question' to interact with the user.
 - make sure that the 'message' parameter contains all the necessary information for the user!
 Initially, the Web_Surfer_Agent will provide you with some content from the web.
@@ -39,15 +42,15 @@ by using 'present_completed_task_or_ask_question'.
 - "If you want to receive the summary of the page as a WhatsApp message, please provide your number."
 
     When sending the message, the Body must use the following format:
-{
-    "from": "447860099299",
+{{
+    "from": "{sender}",
     "to": "receiverNumber",
     "messageId": "test-message-randomInt",
-    "content": {
+    "content": {{
         "text": "message"
-    },
+    }},
     "callbackData": "Callback data"
-}
+}}
 
 "from" number is always the same.
 """
