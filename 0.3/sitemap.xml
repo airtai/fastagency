@@ -823,10 +823,22 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/getting-started/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/tutorial/</loc>
+        <lastmod>2024-10-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorial/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/tutorial/giphy/</loc>
         <lastmod>2024-10-22</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorial/giphy/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/tutorial/whatsapp/</loc>
+        <lastmod>2024-10-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorial/whatsapp/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/user-guide/</loc>
