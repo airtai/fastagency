@@ -129,3 +129,121 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 ```python
 {! docs_src/tutorial/whatsapp/main.py [ln:75-90] !}
 ```
+
+
+### Registering Functions
+
+The function ***present_completed_task_or_ask_question*** is registered to allow the **WhatsAppAgent** to ask questions or present completed tasks after receiving data from the **WebSurferAgent**.
+
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:92-99] !}
+```
+
+
+We register the WhatsApp API, which allows the **WhatsAppAgent** to handle tasks like suggesting messages that will be sent to the user.
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:101-105] !}
+```
+
+### Initiating the Chat
+
+We initiate the conversation between the user, **WebSurferAgent**, and **WhatsAppAgent**. The user’s initial message is provided, and the system is configured to handle up to 10 turns of interaction. The conversation is summarized using the ***reflection_with_llm*** method, which uses a language model to summarize the chat.
+
+Once the conversation ends, the summary is returned to the user, wrapping up the session.
+
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:113-120] !}
+```
+
+### Starting the Application
+
+The FastAgency app is created, using the registered workflows (***wf***) and web-based user interface (***MesopUI***). This makes the conversation between agents and the user interactive.
+
+```python
+{! docs_src/tutorial/whatsapp/main.py [ln:123] !}
+```
+
+For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics){target="_blank"}.
+
+## Running the Application
+
+Once the workflow is set up, you can run the application using the **FastAgency CLI**.
+There are two options of running a Mesop application:
+
+1. Using [`fastagency`](../../cli/cli.md){target="_blank"} command line:
+
+    !!! note "Terminal (using [fastagency](../../cli/cli.md){target="_blank"})"
+        ```
+        fastagency run
+        ```
+
+    !!! danger "Currently not working on **MacOS**"
+        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
+
+2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
+
+    The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
+
+    !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
+        ```
+        pip install gunicorn
+        gunicorn main:app
+        ```
+
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8000 main:app
+        ```
+
+```console
+ ╭─ Python package file structure ──╮
+ │                                  │
+ │  📁 docs                         │
+ │  ├── 🐍 __init__.py              │
+ │  └── 📁 docs_src                 │
+ │      ├── 🐍 __init__.py          │
+ │      └── 📁 tutorial             │
+ │          ├── 🐍 __init__.py      │
+ │          └── 📁 whatsapp         │
+ │              ├── 🐍 __init__.py  │
+ │              └── 🐍 main.py      │
+ │                                  │
+ ╰──────────────────────────────────╯
+
+/home/vscode/.local/lib/python3.10/site-packages/pydantic/_internal/_config.py:341: UserWarning: Valid config keys have changed in V2:
+* 'keep_untouched' has been renamed to 'ignored_types'
+  warnings.warn(message, UserWarning)
+2024-10-22 10:04:31,524 [INFO] Patched OpenAPIParser.parse_schema
+2024-10-22 10:04:31,527 [INFO] Importing autogen.base.py
+2024-10-22 10:04:32,226 [INFO] Patching static file serving in Mesop
+/home/vscode/.local/lib/python3.10/site-packages/pydantic/main.py:214: UserWarning: A custom validator is returning a value other than `self`.
+Returning anything other than `self` from a top level model validator isn't supported when validating via `__init__`.
+See the `model_validator` docs (https://docs.pydantic.dev/latest/concepts/validators/#model-validators) for more details.
+  warnings.warn(
+2024-10-22 10:04:32,726 [INFO] Initializing MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0xffffb1122cb0>
+2024-10-22 10:04:32,731 [INFO] Initialized MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0xffffb1122cb0>
+2024-10-22 10:04:32,731 [INFO] Initializing FastAgency <FastAgency title=WhatsApp chat> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0xffff94c7e530> and UI: <fastagency.ui.mesop.mesop.MesopUI object at 0xffffb1122cb0>
+2024-10-22 10:04:32,731 [INFO] Initialized FastAgency: <FastAgency title=WhatsApp chat>
+
+ ╭────────────── Importable FastAgency app ───────────────╮
+ │                                                        │
+ │  from docs.docs_src.tutorial.whatsapp.main import app  │
+ │                                                        │
+ ╰────────────────────────────────────────────────────────╯
+
+2024-10-22 10:04:32,755 [INFO] Creating MesopUI with import string: docs.docs_src.tutorial.whatsapp.main:app
+2024-10-22 10:04:32,755 [INFO] Starting MesopUI: import_string=docs.docs_src.tutorial.whatsapp.main:app, main_path=/tmp/tmp6jdunoni/main.py
+2024-10-22 10:04:32,757 [INFO] Configuring static file serving with patched method
+Running with hot reload:
+
+Running server on: http://localhost:32123
+ * Serving Flask app 'mesop.server.server'
+ * Debug mode: off
+```
+
+The command will launch a web interface where users can input their requests and interact with the agents (in this case ***http://localhost:32123***)
+
+!!! note
+    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
