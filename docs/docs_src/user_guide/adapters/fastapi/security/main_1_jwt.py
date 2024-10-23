@@ -45,13 +45,9 @@ fake_users_db = {
 }
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
-class TokenData(BaseModel):
-    username: Union[str, None] = None
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 class User(BaseModel):
@@ -65,17 +61,8 @@ class UserInDB(User):
     hashed_password: str
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password) # type: ignore
-
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password) # type: ignore
 
 
 def get_user(db: dict[str, Any], username: str) -> Optional[UserInDB]:
@@ -92,17 +79,6 @@ def authenticate_user(fake_db: dict[str, Any], username: str, password: str) -> 
     if not verify_password(password, user.hashed_password):
         return False
     return user
-
-
-def create_access_token(data: dict[str, Any], expires_delta: Union[timedelta, None] = None) -> str:
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
-    else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) # nosemgrep
-    return encoded_jwt
 
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> UserInDB:
@@ -131,6 +107,26 @@ async def get_current_active_user(
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Union[str, None] = None
+
+
+def create_access_token(data: dict[str, Any], expires_delta: Union[timedelta, None] = None) -> str:
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) # nosemgrep
+    return encoded_jwt
 
 
 @app.post("/token")
