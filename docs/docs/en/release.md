@@ -12,6 +12,33 @@ hide:
 ---
 
 # Release Notes
+## v0.3.2
+
+### What's Changed
+* Update Release Notes for v0.3.1 by @airt-release-notes-updater in [#430](https://github.com/airtai/fastagency/pull/430){.external-link target="_blank"}
+* Update adapters docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#422](https://github.com/airtai/fastagency/pull/422){.external-link target="_blank"}
+* Add waitress as alternative command for gunicorn in Windows by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#431](https://github.com/airtai/fastagency/pull/431){.external-link target="_blank"}
+* Add WhatsApp API example by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#433](https://github.com/airtai/fastagency/pull/433){.external-link target="_blank"}
+* Add a test which checks mesop version by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#434](https://github.com/airtai/fastagency/pull/434){.external-link target="_blank"}
+* Update mesop version and remove mesop patch by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#449](https://github.com/airtai/fastagency/pull/449){.external-link target="_blank"}
+* Update package versions by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#450](https://github.com/airtai/fastagency/pull/450){.external-link target="_blank"}
+* Install OS specific WSGI server by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#452](https://github.com/airtai/fastagency/pull/452){.external-link target="_blank"}
+* Add waitress as alternative of gunicorn for Windows by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#448](https://github.com/airtai/fastagency/pull/448){.external-link target="_blank"}
+* Add Custom Client example to the docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#435](https://github.com/airtai/fastagency/pull/435){.external-link target="_blank"}
+* Add source links by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#457](https://github.com/airtai/fastagency/pull/457){.external-link target="_blank"}
+* Add message types in docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#458](https://github.com/airtai/fastagency/pull/458){.external-link target="_blank"}
+* Add more descriptive error message by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#455](https://github.com/airtai/fastagency/pull/455){.external-link target="_blank"}
+* Follow uniform AutoGenWorkflows import across files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#459](https://github.com/airtai/fastagency/pull/459){.external-link target="_blank"}
+* Docs for whatsapp tutorial by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#462](https://github.com/airtai/fastagency/pull/462){.external-link target="_blank"}
+* Fix parsing openapi schema fails when operation id contains by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#466](https://github.com/airtai/fastagency/pull/466){.external-link target="_blank"}
+* Add security to FastAPIAdapter by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#442](https://github.com/airtai/fastagency/pull/442){.external-link target="_blank"}
+* Switch the example to use mesop UI instead of console UI in adapter docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#465](https://github.com/airtai/fastagency/pull/465){.external-link target="_blank"}
+* Update FastAPI and NATS.io adapter sections with custom HTML/JS client implementation by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#461](https://github.com/airtai/fastagency/pull/461){.external-link target="_blank"}
+* Add bing api key to websurfer and fix documentation warnings by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#470](https://github.com/airtai/fastagency/pull/470){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.3.1...v0.3.2](https://github.com/airtai/fastagency/compare/v0.3.1...v0.3.2){.external-link target="_blank"}
+
 ## v0.3.1
 
 ### What's Changed
