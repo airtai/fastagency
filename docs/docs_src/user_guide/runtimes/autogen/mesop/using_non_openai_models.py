@@ -47,6 +47,7 @@ def weather_workflow(
         system_message="You are a user agent",
         llm_config=llm_config,
         human_input_mode="NEVER",
+        code_execution_config=False
     )
     weather_agent = ConversableAgent(
         name="Weather_Agent",

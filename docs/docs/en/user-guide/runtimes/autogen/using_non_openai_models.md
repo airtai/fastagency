@@ -1,9 +1,9 @@
 # Using Non-OpenAI Models with FastAgency
 
-FastAgency makes it simple to work with **non-OpenAI models** through its [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime. You can do this in a couple of ways:
+FastAgency makes it simple to work with **non-OpenAI models** through its [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime. You can do this in a couple of ways:
 
-- Using a [**proxy servers that provide an OpenAI-compatible API**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#openai-compatible-api-proxy-server){target="_blank"} or
-- by [**using a custom model client class**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}, which lets you define and load your own models.
+- Using a [**proxy server that provides an OpenAI-compatible API**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#openai-compatible-api-proxy-server){target="_blank"} or
+- By [**using a custom model client class**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}, which lets you define and load your own models.
 
 This flexibility allows you to **access a variety of models**, assign **tailored models to agents**, and **optimise inference costs**, among other advantages.
 
@@ -19,7 +19,7 @@ Before you get started, ensure that you have FastAgency installed. Run the follo
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-This command installs the FastAgency library along with the  [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+This command installs the FastAgency library along with the  [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ## Prerequisites
 
@@ -116,25 +116,6 @@ The system message has been adjusted to work optimally with the **meta-llama/Met
 
 ### Running the Application
 
-### Running the Application
-
-!!! note
-
-    In this example, AutoGen will utilize its [**code execution**](https://microsoft.github.io/autogen/0.2/docs/tutorial/code-executors#use-code-execution-in-conversation){target="_blank"} feature to execute external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} and retrieve their responses. For security reasons, AutoGen defaults to running code execution inside a [**Docker**](https://www.docker.com/){target="_blank"} container. If Docker is not running on the machine where you are executing this example, you will encounter the following error:
-
-    ```cmd
-    [INFO] Workflow 'simple_weather' completed with result: Unhandled exception occurred
-    when executing the workflow: Code execution is set to be run in docker (default behaviour)
-    but docker is not running.
-
-    The options available are:
-        - Make sure docker is running (advised approach for code execution)
-        - Set "use_docker": False in code_execution_config
-        - Set AUTOGEN_USE_DOCKER to "0/False/no" in your environment variables
-    ```
-
-    For more details on this and running code execution locally without Docker, follow this guide: [**Run code execution locally**](https://microsoft.github.io/autogen/blog/2024/01/23/Code-execution-in-docker/#run-code-execution-locally){target="_blank"}.
-
 There are two options of running a Mesop application:
 
 1. Using [**`fastagency`**](../../cli/index.md) command line:
@@ -177,4 +158,4 @@ Once you run the command above, FastAgency will start a [**Mesop**](https://goog
 
 ![Initial message](./images/weather_chat.png)
 
-This example demonstrates the power of [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime in FastAgency, highlighting how easily you can use **non-OpenAI models** with just a few changes in the code. With FastAgency, developers can **quickly build interactive**, **scalable applications** that work with live data sources.
+This example demonstrates the power of [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime in FastAgency, highlighting how easily you can use **non-OpenAI models** with just a few changes in the code. With FastAgency, developers can **quickly build interactive**, **scalable applications** that work with live data sources.

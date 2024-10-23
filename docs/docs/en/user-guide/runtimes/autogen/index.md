@@ -1,18 +1,18 @@
 # AutoGen in FastAgency
 
-The [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
+The [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
 
-In this example, we will create a simple weather [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} using [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime in FastAgency. The chatbot will enable a user to interact with a weather agent that fetches real-time weather information from an external REST API using [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_Specification){target="_blank"}.
+In this example, we will create a simple weather [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} using [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime in FastAgency. The chatbot will enable a user to interact with a weather agent that fetches real-time weather information from an external REST API using [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_Specification){target="_blank"}.
 
 ## Installation
 
-Before you get started, ensure that you have FastAgency installed. Run the following command:
+Before getting started, make sure you have installed FastAgency with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules by running the following command:
 
 ```bash
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-This command installs the FastAgency library along with the  [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ## Prerequisites
 
@@ -85,28 +85,28 @@ In this step, we define two agents and specify the initial message that will be 
 The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/)**.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:32-56] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:32-57] !}
 ```
 
 #### 5. **Register API Functions with the Agents**
 In this step, we register the [**weather API**](https://weather.tools.fastagency.ai/docs){target="_blank"} functions to ensure that the weather agent can call the correct functions, such as `get_daily_weather` and `get_daily_weather_weekly_get`, to retrieve the required weather data.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:58-72] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:58-73] !}
 ```
 
 #### 6. **Enable Agent Interaction and Chat**
 Here, the user agent initiates a chat with the weather agent, which queries the [**weather API**](https://weather.tools.fastagency.ai/docs){target="_blank"} and returns the weather information. The conversation is summarized using a method provided by the [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:73-81] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:73-82] !}
 ```
 
 #### 7. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the [**`mesop`**](../../../api/fastagency/ui/mesop/MesopUI.md) interface.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:83] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:84] !}
 ```
 
 ### Complete Application Code
@@ -121,26 +121,9 @@ Finally, we create the FastAgency application and launch it using the [**`mesop`
 
 ### Running the Application
 
-!!! note
-
-    In this example, AutoGen will utilize its [**code execution**](https://microsoft.github.io/autogen/0.2/docs/tutorial/code-executors#use-code-execution-in-conversation){target="_blank"} feature to execute external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} and retrieve their responses. For security reasons, AutoGen defaults to running code execution inside a [**Docker**](https://www.docker.com/){target="_blank"} container. If Docker is not running on the machine where you are executing this example, you will encounter the following error:
-
-    ```cmd
-    [INFO] Workflow 'simple_weather' completed with result: Unhandled exception occurred
-    when executing the workflow: Code execution is set to be run in docker (default behaviour)
-    but docker is not running.
-
-    The options available are:
-        - Make sure docker is running (advised approach for code execution)
-        - Set "use_docker": False in code_execution_config
-        - Set AUTOGEN_USE_DOCKER to "0/False/no" in your environment variables
-    ```
-
-    For more details on this and running code execution locally without Docker, follow this guide: [**Run code execution locally**](https://microsoft.github.io/autogen/blog/2024/01/23/Code-execution-in-docker/#run-code-execution-locally){target="_blank"}.
-
 There are two options of running a Mesop application:
 
-1. Using [**`fastagency`**](../../cli/index.md) command line:
+1. Using [**`fastagency`**](../../cli/index.md) command:
 
     !!! note "Terminal (using [**`fastagency`**](../../cli/index.md))"
         ```
@@ -184,6 +167,6 @@ Once you run the command above, FastAgency will start a [**Mesop**](https://goog
 
 ---
 
-This example demonstrates the power of the [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime within FastAgency, showing how easy it is to integrate [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}-powered agents with real-time [**Rest API**](https://en.wikipedia.org/wiki/REST){target="_blank"} services. By leveraging FastAgency, developers can quickly create interactive, scalable applications that interact with external data sources in real-time.
+This example demonstrates the power of the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime within FastAgency, showing how easy it is to integrate [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}-powered agents with real-time [**Rest API**](https://en.wikipedia.org/wiki/REST){target="_blank"} services. By leveraging FastAgency, developers can quickly create interactive, scalable applications that interact with external data sources in real-time.
 
-For more detailed documentation, visit the [AutoGen Reference](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/).
+For more detailed documentation, visit the [**AutoGen Reference**](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/).
