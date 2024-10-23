@@ -55,7 +55,7 @@
             // "upgradePackages": "true"
         },
         // "ghcr.io/devcontainers/features/python:1": {},
-        // "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/devcontainers/features/node:1": {},
         // The below configuration with "version" set to "latest" fails in codespace
         // "ghcr.io/devcontainers/features/git:1": {
         //     "version": "latest",
@@ -66,7 +66,7 @@
         "ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {}
     },
     "updateContentCommand": "bash .devcontainer/setup.sh",
-    "postCreateCommand": [],
+    "postCreateCommand": "npm install && npx playwright install-deps && npx playwright install",
     "customizations": {
         "vscode": {
             "settings": {
@@ -90,7 +90,8 @@
                 "ms-toolsai.jupyter-keymap",
                 "ms-toolsai.jupyter-renderers",
                 "ms-toolsai.vscode-jupyter-slideshow",
-                "ms-python.vscode-pylance"
+                "ms-python.vscode-pylance",
+                "ms-playwright.playwright"
             ]
         }
     }
