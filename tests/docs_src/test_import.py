@@ -39,6 +39,7 @@ def test_submodules(module: str) -> None:
                 module.startswith("docs_src.user_guide.ui.mesop")
                 or module == "docs_src.tutorial.giphy"
                 or module == "docs_src.tutorial.whatsapp"
+                or module == "docs_src.user_guide.runtimes.autogen.mesop"
             ):
                 pass
             elif ("mesop" in module) or ("giphy" in module) or ("whatsapp" in module):

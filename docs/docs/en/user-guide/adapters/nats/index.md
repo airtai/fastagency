@@ -4,15 +4,11 @@ The **Nats Adapter** in FastAgency enables seamless integration of your workflow
 
 ## Use Cases
 
-This section outlines the scenarios where it's particularly beneficial to use the **Nats** Adapter.
+When to Use the Nats Adapter:
 
-### When to Use the Nats Adapter
+- **High User Demand**: If you need to scale above what can be achieved with multiple-workers of the [**FastAPI** adapter](../fastapi/index.md), then you can use [**Nats.io MQ**](https://nats.io/){target="_blank"}-based message que and multiple workers consuming and producing messages. This kind of distributed, [message-queue architecture](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} allows you to scale up not just across multiple workers, but also across multiple machines and even across multiple clusters.
 
-- **Default Client Application**: If you prefer using the **default Mesop client** provided by FastAgency without the need to build your own client application.
-
-- **High User Demand**: When your application requires **high scalability** to handle a large number of users or messages, and you are comfortable with a more complex production setup involving a message broker. For example, it's well-suited for building a **scalable chat application** for a larger company or external customers.
-
-- **Conversation Auditing**: If you need the ability to **audit conversations**, the Nats Adapter provides the necessary infrastructure to enable this feature.
+- **Observability**: If you need the ability to **audit workflow executions** both in realtime and posteriori, the Nats Adapter provides the necessary infrastructure to enable this feature.
 
 ## Architecture Overview
 

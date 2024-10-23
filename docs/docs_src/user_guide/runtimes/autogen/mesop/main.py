@@ -7,31 +7,30 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
 
 llm_config = {
     "config_list": [
         {
-            "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-            "api_key": os.getenv("TOGETHER_API_KEY"),
-            "api_type": "together",
-            "hide_tools": "if_any_run"
+            "model": "gpt-4o-mini",
+            "api_key": os.getenv("OPENAI_API_KEY"),
         }
     ],
     "temperature": 0.8,
 }
 
 openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
+
 weather_api = OpenAPI.create(openapi_url=openapi_url)
 
-weather_agent_system_message = """You are a real-time weather agent. When asked
-about the weather for a specific city, NEVER provide any information from
-memory. ALWAYS respond with: "Please wait while I fetch the weather data for
-[city name]..." and immediately call the provided function to retrieve
-real-time data for that city. Be concise in your response. Only handle one
-city request at a time."""
+weather_agent_system_message = """You are a weather agent. When asked
+for weather, always call the function to get real-time data immediately.
+Do not respond until the data is retrieved. Provide the actual weather
+concisely based only on the real-time data from the function. Do not
+use any pre-existing knowledge or memory."""
 
 wf = AutoGenWorkflows()
+
 
 @wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
 def weather_workflow(
@@ -48,6 +47,7 @@ def weather_workflow(
         system_message="You are a user agent",
         llm_config=llm_config,
         human_input_mode="NEVER",
+        code_execution_config=False
     )
     weather_agent = ConversableAgent(
         name="Weather_Agent",
@@ -81,4 +81,4 @@ def weather_workflow(
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(provider=wf, ui=ConsoleUI())
+app = FastAgency(provider=wf, ui=MesopUI())
