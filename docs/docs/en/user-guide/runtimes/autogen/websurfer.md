@@ -13,7 +13,7 @@ In this guide, we'll demonstrate both methods with a real-world example. We’ll
 
 We’ll build agents and assign them the task: “Search for information about Microsoft AutoGen and summarize the results” to showcase its ability to browse and gather real-time data in action.
 
-## Installation
+## Installation & Setup
 
 Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
 
@@ -22,6 +22,25 @@ pip install "fastagency[autogen]"
 ```
 
 This command installs FastAgency with support for the Console interface and AutoGen framework.
+
+### Create Bing Web Search API Key
+To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.
+
+!!! note
+    You will need to create **Microsoft Azure** Account.
+
+#### Set Up Your API Key in the Environment
+
+You can set the Binga API key in your terminal as an environment variable:
+
+=== "Linux/macOS"
+    ```bash
+    export BING_API_KEY="your_bing_api_key"
+    ```
+=== "Windows"
+    ```bash
+    set BING_API_KEY="your_bing_api_key"
+    ```
 
 ## Example: Search for information about Microsoft AutoGen and summarize the results
 
