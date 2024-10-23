@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
 
 llm_config = {
     "config_list": [
@@ -22,6 +22,12 @@ llm_config = {
 openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
 
 weather_api = OpenAPI.create(openapi_url=openapi_url)
+
+weather_agent_system_message = """You are a weather agent. When asked
+for weather, always call the function to get real-time data immediately.
+Do not respond until the data is retrieved. Provide the actual weather
+concisely based only on the real-time data from the function. Do not
+use any pre-existing knowledge or memory."""
 
 wf = AutoGenWorkflows()
 
@@ -44,7 +50,7 @@ def weather_workflow(
     )
     weather_agent = ConversableAgent(
         name="Weather_Agent",
-        system_message="You are a weather agent",
+        system_message=weather_agent_system_message,
         llm_config=llm_config,
         human_input_mode="NEVER",
     )
@@ -74,4 +80,4 @@ def weather_workflow(
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(provider=wf, ui=ConsoleUI())
+app = FastAgency(provider=wf, ui=MesopUI())

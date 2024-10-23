@@ -1,19 +1,19 @@
 # Using Non-OpenAI Models with FastAgency
 
-FastAgency makes it simple to work with **non-OpenAI models** through AutoGen's runtime. You can do this in a couple of ways:
+FastAgency makes it simple to work with **non-OpenAI models** through its [**AutoGen's runtime**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md). You can do this in a couple of ways:
 
-- via [proxy servers that provide an OpenAI-compatible API](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#openai-compatible-api-proxy-server){target="_blank"}
-- by [using a custom model client class](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}, which lets you define and load your own models.
+- Using a [**proxy servers that provide an OpenAI-compatible API**](https://microsoft.github.io/autogen/docs/topics/non-openai-models/about-using-nonopenai-models/#openai-compatible-api-proxy-server){target="_blank"} or
+- by [**using a custom model client class**](https://microsoft.github.io/autogen/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}, which lets you define and load your own models.
 
 This flexibility allows you to **access a variety of models**, assign **tailored models to agents**, and **optimise inference costs**, among other advantages.
 
-To show how simple it is to use **non-OpenAI models**, we'll **rewrite** the [Weatherman chatbot](./index.md#example-integrating-a-weather-api-with-autogen) example. With just a **few changes**, we'll switch to the [Together AI](https://www.together.ai){target="_blank"} Cloud platform, utilizing their **Meta-Llama-3.1-70B-Instruct-Turbo** model. For a comprehensive list of models available through Together AI, please refer to their official [documentation](https://docs.together.ai/docs/chat-models){target="_blank"}.
+To show how simple it is to use **non-OpenAI models**, we'll **rewrite** the [**Weatherman chatbot**](./index.md#example-integrating-a-weather-api-with-autogen) example. With just a **few changes**, we'll switch to the [**Together AI**](https://www.together.ai){target="_blank"} Cloud platform, utilizing their **Meta-Llama-3.1-70B-Instruct-Turbo** model. For a comprehensive list of models available through Together AI, please refer to their official [**documentation**](https://docs.together.ai/docs/chat-models){target="_blank"}.
 
 Let’s dive in!
 
 ## Installation
 
-Before getting started, make sure you have installed FastAgency with **[autogen](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) and [openapi](../../../api/fastagency/api/openapi/OpenAPI.md) submodules** by running the following command:
+Before getting started, make sure you have installed FastAgency with [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules by running the following command:
 
 ```bash
 pip install "fastagency[autogen,openapi]"
@@ -25,29 +25,29 @@ This installation includes the AutoGen runtime, allowing you to build multi-agen
 
 Before you begin this guide, ensure you have:
 
-- **Together AI account and API Key**: To create a [Together AI](https://www.together.ai){target="_blank"} account and obtain your API key, follow the steps in the section below.
+- **Together AI account and API Key**: To create a [**Together AI**](https://www.together.ai){target="_blank"} account and obtain your API key, follow the steps in the section below.
 
 ### Setting Up Your Together AI Account and API Key
 
 **1. Create a Together AI account:**
 
-- Go to <a href="https://api.together.ai" target="_blank">https://api.together.ai</a>.
-- Choose a sign-in option and follow the instructions to create your account.
-- If you already have an account, simply log in.
+- Go to <b><a href="https://api.together.ai" target="_blank">https://api.together.ai</a></b>.
+- Choose a **sign-in** option and follow the instructions to create your account.
+- If you already have an account, simply **log-in**.
 
 **2. Obtain your API Key:**
 
 - Once you complete the account creation process the API key will be displayed on the screen which you can copy.
 - Or you can do the following to view your API key:
-    - Tap on the person icon at the top right corner, and click [Settings](https://api.together.ai/settings/profile){target="_blank"}
-    - On the left side bar, navigate to [API Keys](https://api.together.ai/settings/api-keys){target="_blank"}
+    - Tap on the person icon at the top right corner, and click [**Settings**](https://api.together.ai/settings/profile){target="_blank"}
+    - On the left side bar, navigate to [**API Keys**](https://api.together.ai/settings/api-keys){target="_blank"}
     - **Copy your API key**, and you're ready to go!
 
 #### Set Up Your API Keys in the Environment
 
-To securely use the API keys in your project, you should store it in an environment variables.
+To securely use the API keys in your project, you should store it as an [**environment variable**](https://en.wikipedia.org/wiki/Environment_variable){target="_blank"}.
 
-You can set the together API key in your terminal as an environment variable:
+Run the following command in the **same terminal where you will run the FastAgency application**. The application requires this environment variable to be set:
 
 === "Linux/macOS"
     ```bash
@@ -62,23 +62,23 @@ You can set the together API key in your terminal as an environment variable:
 
 ### Code Walkthrough
 
-As we rewrite the existing [Weatherman chatbox](./index.md#example-integrating-a-weather-api-with-autogen) to use **non-OpenAI models**, most of the code remains unchanged. The only modifications to the original code are:
+As we rewrite the existing [**Weatherman chatbox**](./index.md#example-integrating-a-weather-api-with-autogen) to use **non-OpenAI models**, most of the code remains unchanged. The only modifications to the original code are:
 
 - **Configure the Language Model (LLM)**
 - **Update the System Message**
 
-Since the modifications are minor, **I will focus only on these differences in this guide**. For a **detailed explanation** of the original code, please refer to the original [guide](./index.md#example-integrating-a-weather-api-with-autogen).
+Since the modifications are minor, **I will focus only on these differences in this guide**. For a **detailed explanation** of the original code, please refer to the original [**guide**](./index.md#example-integrating-a-weather-api-with-autogen).
 
 #### 1. Configure the Language Model (LLM)
 
-First, update the LLM configuration to use **non-OpenAI models**. For our example, we'll use **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo**, but you can choose any model from [Together AI](https://www.together.ai){target="_blank"} Cloud. For a complete list, refer to their official [documentation](https://docs.together.ai/docs/chat-models){target="_blank"}.
+First, update the LLM configuration to use **non-OpenAI models**. For our example, we'll use **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo**, but you can choose any model from [**Together AI**](https://www.together.ai){target="_blank"} Cloud. For a complete list, refer to their official [**documentation**](https://docs.together.ai/docs/chat-models){target="_blank"}.
 
 
 Next, add two parameters: `api_type` and `hide_tools`.
 
 - `hide_tools`
 
-    The [hide_tools](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/local-ollama#reducing-repetitive-tool-calls){target="_blank"} in AutoGen controls when tools are visible during LLM conversations. It addresses a common issue where LLMs might **repeatedly recommend tool calls**, even after they've been executed, potentially creating an **endless loop** of tool invocations.
+    The [**hide_tools**](https://microsoft.github.io/autogen/docs/topics/non-openai-models/local-ollama#reducing-repetitive-tool-calls){target="_blank"} in [**AutoGen**](https://microsoft.github.io/autogen/){target="_blank"} controls when tools are visible during LLM conversations. It addresses a common issue where LLMs might **repeatedly recommend tool calls**, even after they've been executed, potentially creating an **endless loop** of tool invocations.
 
     This parameter offers three options to control tool visibility:
 

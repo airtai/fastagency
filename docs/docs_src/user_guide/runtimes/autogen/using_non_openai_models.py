@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.ui.console import ConsoleUI
+from fastagency.ui.mesop import MesopUI
 
 llm_config = {
     "config_list": [
@@ -81,4 +81,4 @@ def weather_workflow(
     return chat_result.summary  # type: ignore[no-any-return]
 
 
-app = FastAgency(provider=wf, ui=ConsoleUI())
+app = FastAgency(provider=wf, ui=MesopUI())
