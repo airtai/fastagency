@@ -146,7 +146,7 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             logger.info(
                 f"Message in subject 'chat.server.initiate_chat': {body=} -> from process id {os.getpid()}"
             )
-            user_id = body.user_id.hex if body.user_id else "None"  # type: ignore
+            user_id = body.user_id if body.user_id else "None"
             workflow_uuid = body.workflow_uuid.hex
             self._input_request_subject = (
                 f"chat.client.messages.{user_id}.{workflow_uuid}"

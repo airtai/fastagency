@@ -93,13 +93,15 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
         self.router = self.setup_routes()
 
-    async def get_user_id_websocket(self, websocket: WebSocket) -> Optional[UUID]:
-        def get_user_id_depends(
+    async def get_user_id_websocket(self, websocket: WebSocket) -> Optional[str]:
+        def get_user_id_depends_stub(
             user_id: Optional[str] = Depends(self.get_user_id),
         ) -> Optional[str]:
-            return user_id
+            raise RuntimeError(
+                "Stub get_user_id_depends_stub called"
+            )  # pragma: no cover
 
-        dependant = get_dependant(path="", call=get_user_id_depends)
+        dependant = get_dependant(path="", call=get_user_id_depends_stub)
 
         try:
             async with AsyncExitStack() as cm:
@@ -169,7 +171,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                 await asyncify(self.provider.run)(
                     name=init_msg.name,
                     ui=self.create_workflow_ui(workflow_uuid),
-                    user_id=user_id if user_id else "None",  # type: ignore
+                    user_id=user_id if user_id else "None",
                     **init_msg.params,
                 )
             except Exception as e:
@@ -185,7 +187,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             },
         )
         def discovery(
-            user_id: Optional[UUID] = Depends(self.get_user_id),  # noqa: B008
+            user_id: Optional[str] = Depends(self.get_user_id),
         ) -> list[WorkflowInfo]:
             try:
                 names = self.provider.names
