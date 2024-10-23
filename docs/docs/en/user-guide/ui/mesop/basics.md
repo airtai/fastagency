@@ -52,7 +52,7 @@ Please see the [Mesop documentation](https://google.github.io/mesop/api/page/#me
 
 ### Modifying styles
 
-All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in styling of Mesop components can be passed to the [`MesopUI`](../../../../api/fastagency/ui/mesop/MesopUI.md)constructor and change the default behavior. They are specified in top-level styling class [`MesopHomePageStyles`](../../../../api/fastagency/ui/mesop/styles/MesopHomePageStyles/).
+All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in styling of Mesop components can be passed to the [`MesopUI`](../../../../api/fastagency/ui/mesop/MesopUI.md)constructor and change the default behavior. They are specified in top-level styling class [`MesopHomePageStyles`](../../../../api/fastagency/ui/mesop/styles/MesopHomePageStyles.md).
 
 ```python
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:4] !}
