@@ -52,11 +52,11 @@ Run the following command in the [**same terminal**](#running-the-application) w
 
 === "Linux/macOS"
     ```bash
-    export TOGETHER_API_KEY="your_together_api_key"  # pragma: allowlist secret
+    export TOGETHER_API_KEY="your_together_api_key"
     ```
 === "Windows"
     ```bash
-    set TOGETHER_API_KEY="your_together_api_key"  # pragma: allowlist secret
+    set TOGETHER_API_KEY="your_together_api_key"
     ```
 
 ## Example: Integrating a Weather API with AutoGen
