@@ -94,6 +94,10 @@ server = [
     "waitress>=3.0.0 ; platform_system == 'Windows'",
 ]
 
+tutorials = [
+    "chess==1.11.1",
+]
+
 submodules = [
     "fastagency[mesop,autogen,openapi,fastapi,nats,server]"
 ]
@@ -152,7 +156,7 @@ testing = [
 ]
 
 dev = [
-    "fastagency[submodules,lint,testing,devdocs]",
+    "fastagency[submodules,lint,testing,devdocs,tutorials]",
     "pre-commit==4.0.1",
     "detect-secrets==1.5.0",
 ]
