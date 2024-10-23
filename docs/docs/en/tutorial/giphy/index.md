@@ -170,11 +170,11 @@ There are two options of running a Mesop application:
         ```
 
     !!! danger "Currently not working on **MacOS**"
-        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
+        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
 
 2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
 
-    The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
+    The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
 
     !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
         ```
