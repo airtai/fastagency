@@ -871,6 +871,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/adapters/fastapi/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/user-guide/adapters/fastapi/security/</loc>
+        <lastmod>2024-10-23</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/adapters/fastapi/security/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/user-guide/adapters/fastapi_nats/</loc>
         <lastmod>2024-10-23</lastmod>
         <changefreq>daily</changefreq>
