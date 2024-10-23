@@ -5,7 +5,7 @@ from autogen import UserProxyAgent
 
 from fastagency import UI, FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.runtimes.autogen.agents.websurfer_agent import WebSurferAgent
+from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
