@@ -18,8 +18,9 @@ search:
         - [FastAPI](user-guide/ui/fastapi/basics.md)
     - [Adapters](user-guide/adapters/index.md)
         - [FastAPI](user-guide/adapters/fastapi/index.md)
-        - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
         - [Nats.io](user-guide/adapters/nats/index.md)
+        - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
+        - [FastAPI Security](user-guide/adapters/fastapi/security.md)
     - [API-s](user-guide/api/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
@@ -66,6 +67,7 @@ search:
                         - [ArgumentWithDescription](api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                         - [patch_get_parameter_type](api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
                     - patch_fastapi_code_generator
+                        - [patch_function_name_parsing](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_function_name_parsing.md)
                         - [patch_parse_schema](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_parse_schema.md)
                     - security
                         - [APIKeyCookie](api/fastagency/api/openapi/security/APIKeyCookie.md)
