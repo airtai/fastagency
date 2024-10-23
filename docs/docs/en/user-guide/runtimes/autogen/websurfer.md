@@ -80,8 +80,8 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     - **WebSurferTool**: The tool that gives the ConversableAgent the ability to browse the web after it has been registered.
 
-    ```python hl_lines="27-31"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-52] !}
+    ```python hl_lines="27-32"
+    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-53] !}
     ```
 
     Now, we need to register the WebSurferAgent with a caller and executor. This setup allows the caller to use the WebSurferAgent for performing real-time web interactions.
@@ -113,7 +113,7 @@ Here, the user agent starts a conversation with the websurfer agent, which perfo
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:56] !}
+{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:57] !}
 ```
 
 ### Complete Application Code
