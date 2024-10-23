@@ -90,6 +90,7 @@ def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
         human_input_mode="NEVER",
         executor=whatsapp_agent,
         is_termination_msg=is_termination_msg,
+        bing_api_key=os.getenv("BING_API_KEY")
     )
 
     register_function(

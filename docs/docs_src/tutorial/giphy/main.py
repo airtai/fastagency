@@ -88,6 +88,7 @@ def giphy_workflow_with_security(
         human_input_mode="NEVER",
         executor=giphy_agent,
         is_termination_msg=is_termination_msg,
+        bing_api_key=os.getenv("BING_API_KEY")
     )
 
     register_function(
