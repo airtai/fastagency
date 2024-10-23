@@ -3,14 +3,22 @@
 import asyncio
 import json
 from collections.abc import Iterator
-from contextlib import contextmanager
+from contextlib import AsyncExitStack, contextmanager
 from typing import Any, Callable, Optional
 from uuid import UUID, uuid4
 
 import requests
 import websockets
 from asyncer import asyncify, syncify
-from fastapi import APIRouter, HTTPException, WebSocket
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Request,
+    Response,
+    WebSocket,
+)
+from fastapi.dependencies.utils import get_dependant, solve_dependencies
 from pydantic import BaseModel
 
 from fastagency.logging import get_logger
@@ -59,6 +67,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
+        get_user_id: Optional[Callable[..., Optional[str]]] = None,
     ) -> None:
         """Provider for FastAPI.
 
@@ -70,6 +79,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             initiate_workflow_path (str, optional): The initiate workflow path. Defaults to "/fastagency/initiate_workflow".
             discovery_path (str, optional): The discovery path. Defaults to "/fastagency/discovery".
             ws_path (str, optional): The websocket path. Defaults to "/fastagency/ws".
+            get_user_id (Optional[Callable[[], Optional[UUID]]], optional): The get user id. Defaults to None.
         """
         self.provider = provider
 
@@ -77,9 +87,41 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         self.discovery_path = discovery_path
         self.ws_path = ws_path
 
+        self.get_user_id = get_user_id or (lambda: None)
+
         self.websockets: dict[str, WebSocket] = {}
 
         self.router = self.setup_routes()
+
+    async def get_user_id_websocket(self, websocket: WebSocket) -> Optional[str]:
+        def get_user_id_depends_stub(
+            user_id: Optional[str] = Depends(self.get_user_id),
+        ) -> Optional[str]:
+            raise RuntimeError(
+                "Stub get_user_id_depends_stub called"
+            )  # pragma: no cover
+
+        dependant = get_dependant(path="", call=get_user_id_depends_stub)
+
+        try:
+            async with AsyncExitStack() as cm:
+                scope = websocket.scope
+                scope["type"] = "http"
+
+                solved_dependency = await solve_dependencies(
+                    dependant=dependant,
+                    request=Request(scope=scope),  # Inject the request here
+                    body=None,
+                    dependency_overrides_provider=None,
+                    async_exit_stack=cm,
+                    embed_body_fields=False,
+                )
+        except HTTPException as e:
+            raise e
+        finally:
+            scope["type"] = "websocket"
+
+        return solved_dependency.values["user_id"]  # type: ignore[no-any-return]
 
     def setup_routes(self) -> APIRouter:
         router = APIRouter()
@@ -87,8 +129,8 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         @router.post(self.initiate_workflow_path)
         async def initiate_chat(
             initiate_chat: InititateChatModel,
+            user_id: Optional[str] = Depends(self.get_user_id),
         ) -> InitiateWorkflowModel:
-            user_id: Optional[UUID] = uuid4()
             workflow_uuid: UUID = uuid4()
 
             init_msg = InitiateWorkflowModel(
@@ -101,7 +143,18 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             return init_msg
 
         @router.websocket(self.ws_path)
-        async def websocket_endpoint(websocket: WebSocket) -> None:
+        async def websocket_endpoint(
+            websocket: WebSocket,
+        ) -> None:
+            try:
+                user_id = await self.get_user_id_websocket(websocket)
+            except HTTPException as e:
+                headers = getattr(e, "headers", None)
+                await websocket.send_denial_response(
+                    Response(status_code=e.status_code, headers=headers)
+                )
+                return
+
             logger.info("Websocket connected")
             await websocket.accept()
             logger.info("Websocket accepted")
@@ -118,7 +171,7 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                 await asyncify(self.provider.run)(
                     name=init_msg.name,
                     ui=self.create_workflow_ui(workflow_uuid),
-                    user_id=init_msg.user_id.hex if init_msg.user_id else "None",
+                    user_id=user_id if user_id else "None",
                     **init_msg.params,
                 )
             except Exception as e:
@@ -133,7 +186,9 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                 504: {"detail": "Unable to connect to provider"},
             },
         )
-        def discovery() -> list[WorkflowInfo]:
+        def discovery(
+            user_id: Optional[str] = Depends(self.get_user_id),
+        ) -> list[WorkflowInfo]:
             try:
                 names = self.provider.names
             except FastAgencyConnectionError as e:
@@ -208,7 +263,6 @@ class FastAPIProvider(ProviderProtocol):
         initiate_workflow_path: str = "/fastagency/initiate_workflow",
         discovery_path: str = "/fastagency/discovery",
         ws_path: str = "/fastagency/ws",
-        # todo: we need security context
     ) -> None:
         """Initialize the fastapi workflows."""
         self._workflows: dict[
@@ -313,7 +367,7 @@ class FastAPIProvider(ProviderProtocol):
         initiate_workflow = self._send_initiate_chat_msg(
             name, workflow_uuid=workflow_uuid, user_id=user_id, params=kwargs
         )
-        user_id = initiate_workflow.user_id.hex if initiate_workflow.user_id else "None"
+        user_id = initiate_workflow.user_id if initiate_workflow.user_id else "None"
         workflow_uuid = initiate_workflow.workflow_uuid.hex
 
         _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"
