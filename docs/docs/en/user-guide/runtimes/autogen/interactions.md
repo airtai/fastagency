@@ -44,7 +44,7 @@ Let's define three functions which will be available to the agents:
 
 ### Other Types of Messages
 
-All supported messages are subclasses of the [IOMessage](../../../../api/fastagency/IOMessage/) base class.
+All supported messages are subclasses of the [IOMessage](../../../../api/fastagency/IOMessage.md) base class.
 
 ## Registering the Functions
 We now register these functions with the workflow, linking the `student_agent` as the caller and the `teacher_agent` as the executor.
