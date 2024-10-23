@@ -125,7 +125,7 @@ Depending on the interface you choose, you'll need to import different modules. 
     from autogen.agentchat import ConversableAgent
 
     from fastagency import UI
-    from fastagency.runtimes.autogen.base import AutoGenWorkflows
+    from fastagency.runtimes.autogen import AutoGenWorkflows
     from fastagency.ui.mesop import MesopUI
 
     from fastagency import FastAgency
