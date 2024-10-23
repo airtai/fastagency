@@ -82,7 +82,7 @@ In this step, we define two agents and specify the initial message that will be 
 
 - [**`ConversableAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/conversable_agent/#conversableagent){target="_blank"}: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
-The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/)**.
+The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md)**.
 
 ```python
 {! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:32-57] !}

@@ -1,3 +1,3 @@
-from .web_surfer import WebSurferTool
+from .websurfer import WebSurferTool
 
 __all__ = ["WebSurferTool"]

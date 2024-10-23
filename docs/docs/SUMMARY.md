@@ -159,9 +159,9 @@ search:
                         - [Toolable](api/fastagency/runtimes/autogen/autogen/Toolable.md)
                     - tools
                         - [WebSurferTool](api/fastagency/runtimes/autogen/tools/WebSurferTool.md)
-                        - web_surfer
-                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer.md)
-                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool.md)
+                        - websurfer
+                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferAnswer.md)
+                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)

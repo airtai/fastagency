@@ -6,15 +6,15 @@ Currently, FastAgency supports importing API functionality from [**OpenAPI**](ht
 
 ## API Features in FastAgency
 
-### 1. **[OpenAPI Import](./openapi/)**
+### 1. **[OpenAPI Import](./openapi/index.md)**
 FastAgency can automatically generate API functions from OpenAPI specifications, streamlining the process of connecting agents to external services. With just a few lines of code, you can import an API specification, and FastAgency will handle the function generation and LLM integration, making it simple for agents to call external APIs.
 
-[Learn more about OpenAPI Import →](./openapi/)
+[Learn more about OpenAPI Import →](./openapi/index.md)
 
-### 2. **[API Security](./security/)**
+### 2. **[API Security](./security.md)**
 FastAgency supports different types of security for REST APIs, including OAuth, API keys, and more. This ensures that your API integrations are secure and can handle sensitive data. Our API security mechanisms are flexible, allowing you to configure and manage secure communication between your agents and external APIs.
 
-[Learn more about API Security →](./security/)
+[Learn more about API Security →](./security.md)
 
 ---
 
