@@ -68,7 +68,7 @@ Currently, the only supported runtime is [**AutoGen**](https://github.com/micros
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [**`ConsoleUI`**](https://fastagency.ai/0.3/api/fastagency/ui/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Console**: Use the [**`ConsoleUI`**](https://fastagency.ai/0.3/api/fastagency/ui/console/ConsoleUI/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
 
 - [**Mesop**](https://google.github.io/mesop/): Utilize [**`MesopUI`**](https://fastagency.ai/0.3/api/fastagency/ui/mesop/MesopUI/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 

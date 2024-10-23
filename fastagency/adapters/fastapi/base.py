@@ -73,9 +73,6 @@ class FastAPIAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
 
         Args:
             provider (ProviderProtocol): The provider.
-            user (Optional[str], optional): The user. Defaults to None.
-            password (Optional[str], optional): The password. Defaults to None.
-            super_conversation (Optional["FastAPIProvider"], optional): The super conversation. Defaults to None.
             initiate_workflow_path (str, optional): The initiate workflow path. Defaults to "/fastagency/initiate_workflow".
             discovery_path (str, optional): The discovery path. Defaults to "/fastagency/discovery".
             ws_path (str, optional): The websocket path. Defaults to "/fastagency/ws".
