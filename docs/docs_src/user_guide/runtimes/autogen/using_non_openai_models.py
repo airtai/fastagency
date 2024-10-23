@@ -24,12 +24,11 @@ llm_config = {
 openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
 weather_api = OpenAPI.create(openapi_url=openapi_url)
 
-weather_agent_system_message = """You are a real-time weather agent. When asked
+weather_agent_system_message = """You are a weather agent. When asked
 about the weather for a specific city, NEVER provide any information from
-memory. ALWAYS respond with: "Please wait while I fetch the weather data for
-[city name]..." and immediately call the provided function to retrieve
-real-time data for that city. Be concise in your response. Only handle one
-city request at a time."""
+memory. ALWAYS respond with: "Please hold on while I retrieve the real-time
+weather data for [city name]." and immediately call the provided function to
+retrieve real-time data for that city. Be concise in your response."""
 
 wf = AutoGenWorkflows()
 

@@ -1,9 +1,9 @@
 # Using Non-OpenAI Models with FastAgency
 
-FastAgency makes it simple to work with **non-OpenAI models** through its [**AutoGen's runtime**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md). You can do this in a couple of ways:
+FastAgency makes it simple to work with **non-OpenAI models** through its [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime. You can do this in a couple of ways:
 
-- Using a [**proxy servers that provide an OpenAI-compatible API**](https://microsoft.github.io/autogen/docs/topics/non-openai-models/about-using-nonopenai-models/#openai-compatible-api-proxy-server){target="_blank"} or
-- by [**using a custom model client class**](https://microsoft.github.io/autogen/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}, which lets you define and load your own models.
+- Using a [**proxy servers that provide an OpenAI-compatible API**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#openai-compatible-api-proxy-server){target="_blank"} or
+- by [**using a custom model client class**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}, which lets you define and load your own models.
 
 This flexibility allows you to **access a variety of models**, assign **tailored models to agents**, and **optimise inference costs**, among other advantages.
 
@@ -13,19 +13,20 @@ Let’s dive in!
 
 ## Installation
 
-Before getting started, make sure you have installed FastAgency with [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules by running the following command:
+Before you get started, ensure that you have FastAgency installed. Run the following command:
 
 ```bash
-pip install "fastagency[autogen,openapi]"
+pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
+This command installs the FastAgency library along with the  [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ## Prerequisites
 
 Before you begin this guide, ensure you have:
 
-- **Together AI account and API Key**: To create a [**Together AI**](https://www.together.ai){target="_blank"} account and obtain your API key, follow the steps in the section below.
+- **Together AI account and API Key**: This guide uses [**Together AI's**](https://www.together.ai){target="_blank"} **Meta-Llama-3.1-70B-Instruct-Turbo** model, so you'll need access to it. Follow the steps in the section below to create your Together AI account and obtain your API key.
+
 
 ### Setting Up Your Together AI Account and API Key
 
@@ -47,7 +48,7 @@ Before you begin this guide, ensure you have:
 
 To securely use the API keys in your project, you should store it as an [**environment variable**](https://en.wikipedia.org/wiki/Environment_variable){target="_blank"}.
 
-Run the following command in the **same terminal where you will run the FastAgency application**. The application requires this environment variable to be set:
+Run the following command in the [**same terminal**](#running-the-application) where you will run the FastAgency application. This environment variable must be set for the application to function correctly; **skipping this step will cause the example application to crash**.
 
 === "Linux/macOS"
     ```bash
@@ -67,18 +68,18 @@ As we rewrite the existing [**Weatherman chatbox**](./index.md#example-integrati
 - **Configure the Language Model (LLM)**
 - **Update the System Message**
 
-Since the modifications are minor, **I will focus only on these differences in this guide**. For a **detailed explanation** of the original code, please refer to the original [**guide**](./index.md#example-integrating-a-weather-api-with-autogen).
+Since the modifications are minor, **I will focus only on these differences in this guide**. For a **detailed explanation** of the original code, please refer to the original [**guide**](./index.md#autogen-in-fastagency).
 
 #### 1. Configure the Language Model (LLM)
 
-First, update the LLM configuration to use **non-OpenAI models**. For our example, we'll use **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo**, but you can choose any model from [**Together AI**](https://www.together.ai){target="_blank"} Cloud. For a complete list, refer to their official [**documentation**](https://docs.together.ai/docs/chat-models){target="_blank"}.
+First, update the [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"} configuration to use **non-OpenAI models**. For our example, we'll use **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo**, but you can choose any model from [**Together AI**](https://www.together.ai){target="_blank"} Cloud. For a complete list, refer to their official [**documentation**](https://docs.together.ai/docs/chat-models){target="_blank"}.
 
 
 Next, add two parameters: `api_type` and `hide_tools`.
 
 - `hide_tools`
 
-    The [**hide_tools**](https://microsoft.github.io/autogen/docs/topics/non-openai-models/local-ollama#reducing-repetitive-tool-calls){target="_blank"} in [**AutoGen**](https://microsoft.github.io/autogen/){target="_blank"} controls when tools are visible during LLM conversations. It addresses a common issue where LLMs might **repeatedly recommend tool calls**, even after they've been executed, potentially creating an **endless loop** of tool invocations.
+    The [**`hide_tools`**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/local-ollama#reducing-repetitive-tool-calls){target="_blank"} in [**AutoGen**](https://microsoft.github.io/autogen/){target="_blank"} controls when tools are visible during [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"} conversations. It addresses a common issue where LLMs might **repeatedly recommend tool calls**, even after they've been executed, potentially creating an **endless loop** of tool invocations.
 
     This parameter offers three options to control tool visibility:
 
@@ -115,125 +116,65 @@ The system message has been adjusted to work optimally with the **meta-llama/Met
 
 ### Running the Application
 
-Once the workflow is set up, you can run the application using the **FastAgency CLI**. Navigate to the directory where the script is located and run the following command:
+### Running the Application
 
-```bash
-fastagency run
-```
+!!! note
+
+    In this example, AutoGen will utilize its [**code execution**](https://microsoft.github.io/autogen/0.2/docs/tutorial/code-executors#use-code-execution-in-conversation){target="_blank"} feature to execute external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} and retrieve their responses. For security reasons, AutoGen defaults to running code execution inside a [**Docker**](https://www.docker.com/){target="_blank"} container. If Docker is not running on the machine where you are executing this example, you will encounter the following error:
+
+    ```cmd
+    [INFO] Workflow 'simple_weather' completed with result: Unhandled exception occurred
+    when executing the workflow: Code execution is set to be run in docker (default behaviour)
+    but docker is not running.
+
+    The options available are:
+        - Make sure docker is running (advised approach for code execution)
+        - Set "use_docker": False in code_execution_config
+        - Set AUTOGEN_USE_DOCKER to "0/False/no" in your environment variables
+    ```
+
+    For more details on this and running code execution locally without Docker, follow this guide: [**Run code execution locally**](https://microsoft.github.io/autogen/blog/2024/01/23/Code-execution-in-docker/#run-code-execution-locally){target="_blank"}.
+
+There are two options of running a Mesop application:
+
+1. Using [**`fastagency`**](../../cli/index.md) command line:
+
+    !!! note "Terminal (using [**`fastagency`**](../../cli/index.md))"
+        ```
+        fastagency run
+        ```
+
+    !!! danger "Currently not working on **MacOS**"
+        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
+
+2. Using [**Gunicorn**](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
+
+    The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
+
+    !!! note "Terminal (using [**Gunicorn**](https://gunicorn.org/){target="_blank"})"
+        ```
+        pip install gunicorn
+        gunicorn main:app
+        ```
+
+    !!! danger "Currently not working on **Windows**"
+        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
+        ```
+        pip install waitress
+        waitress-serve --listen=0.0.0.0:8000 main:app
+        ```
 
 ### Output
 
-The output will vary based on the city and the current weather conditions:
+Once you run the command above, FastAgency will start a [**Mesop**](https://google.github.io/mesop/){target="_blank"} application. Below is the output from the terminal along with a partial screenshot of the Mesop application:
 
 ```console
-╭─ Python module file ─╮
-│                      │
-│  🐍 main.py          │
-│                      │
-╰──────────────────────╯
-
-
-╭─ Importable FastAgency app ─╮
-│                             │
-│  from main import app       │
-│                             │
-╰─────────────────────────────╯
-
-╭─ FastAgency -> user [workflow_started] ──────────────────────────────────────╮
-│                                                                              │
-│ {                                                                            │
-│   "name": "simple_weather",                                                  │
-│   "description": "Weather chat",                                             │
-│                                                                              │
-│ "params": {}                                                                 │
-│ }                                                                            │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
-    │                                                                              │
-    │ I can help you with the weather. What would you like to know?:               │
-    ╰──────────────────────────────────────────────────────────────────────────────╯
-What's the weather in Zagreb
-╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
-│                                                                              │
-│ What's the weather in Zagreb                                                 │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
-│                                                                              │
-│ Please wait while I fetch the weather data for Zagreb...                     │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-╭─ User_Agent -> Weather_Agent [suggested_function_call] ──────────────────────╮
-│                                                                              │
-│ {                                                                            │
-│   "function_name": "get_daily_weather_daily_get",                            │
-│   "call_id":                                                                 │
-│ "call_fwdnhh2bptuauqqniiwha4g7",                                             │
-│   "arguments": {                                                             │
-│     "city": "Zagreb"                                                         │
-│                                                                              │
-│   }                                                                          │
-│ }                                                                            │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-╭─ Weather_Agent -> User_Agent [function_call_execution] ──────────────────────╮
-│                                                                              │
-│ {                                                                            │
-│   "function_name": "get_daily_weather_daily_get",                            │
-│   "call_id":                                                                 │
-│ "call_fwdnhh2bptuauqqniiwha4g7",                                             │
-│   "retval": "{\"city\": \"Zagreb\",                                          │
-│ \"temperature\": 17, \"daily_forecasts\": [{\"forecast_date\":               │
-│ \"2024-10-14\", \"temperature\": 14, \"hourly_forecasts\": null},            │
-│ {\"forecast_date\": \"2024-10-15\", \"temperature\": 15,                     │
-│ \"hourly_forecasts\": null}, {\"forecast_date\": \"2024-10-16\",             │
-│ \"temperature\": 15, \"hourly_forecasts\": null}]}\n"                        │
-│ }                                                                            │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-╭─ User_Agent -> Weather_Agent [text_message] ─────────────────────────────────╮
-│                                                                              │
-│ The current weather in Zagreb is 17 degrees Celsius. The forecast for        │
-│ the next few days is as follows:                                             │
-│                                                                              │
-│ - October 14, 2024: 14 degrees                                               │
-│ Celsius                                                                      │
-│ - October 15, 2024: 15 degrees Celsius                                       │
-│ - October 16, 2024: 15                                                       │
-│ degrees Celsius                                                              │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-╭─ Weather_Agent -> User_Agent [text_message] ─────────────────────────────────╮
-│                                                                              │
-│ The current weather in Zagreb is 17 degrees Celsius. The forecast for        │
-│ the next few days is as follows:                                             │
-│                                                                              │
-│ - October 14, 2024: 14 degrees                                               │
-│ Celsius                                                                      │
-│ - October 15, 2024: 15 degrees Celsius                                       │
-│ - October 16, 2024: 15                                                       │
-│ degrees Celsius                                                              │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-╭─ AutoGenWorkflows -> user [workflow_completed] ──────────────────────────────╮
-│                                                                              │
-│ {                                                                            │
-│   "result": {                                                                │
-│     "content": "The current weather in Zagreb is 17                          │
-│ degrees Celsius, with forecasted temperatures of 14 degrees Celsius on       │
-│  October 14, 15 degrees Celsius on October 15, and 15 degrees Celsius        │
-│ on October 16.",                                                             │
-│     "refusal": null,                                                         │
-│     "role": "assistant",                                                     │
-│                                                                              │
-│ "function_call": null,                                                       │
-│     "tool_calls": null                                                       │
-│   }                                                                          │
-│ }                                                                            │
-╰──────────────────────────────────────────────────────────────────────────────╯
-
-2024-10-14 19:37:11,923 [INFO] Workflow 'simple_weather' completed with result: {'content': 'The current weather in Zagreb is 17 degrees Celsius, with forecasted temperatures of 14 degrees Celsius on October 14, 15 degrees Celsius on October 15, and 15 degrees Celsius on October 16.', 'refusal': None, 'role': 'assistant', 'function_call': None, 'tool_calls': None}
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8000 (23635)
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
+[2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
 ```
 
-This example demonstrates the power of AutoGen's runtime in FastAgency, highlighting how easily you can use **non-OpenAI models** with just a few changes in the code. With FastAgency, developers can **quickly build interactive**, **scalable applications** that work with live data sources.
+![Initial message](./images/weather_chat.png)
+
+This example demonstrates the power of [**autogen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime in FastAgency, highlighting how easily you can use **non-OpenAI models** with just a few changes in the code. With FastAgency, developers can **quickly build interactive**, **scalable applications** that work with live data sources.
