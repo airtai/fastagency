@@ -116,7 +116,7 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         logger.error(f"Error in chat: {e}")
         logger.error(traceback.format_exc())
 
-        error_msg = InputResponseModel(msg=str(e), error=True, question_id=None)
+        error_msg = InputResponseModel(msg=str(e), error=True, question_uuid=None)
         await self.broker.publish(error_msg, self._input_request_subject)
 
     def _create_initiate_subscriber(self) -> None:
@@ -275,7 +275,7 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             )
             return InputResponseModel(
                 msg="User didn't send a reply. Exit the workflow execution.",
-                question_id=question_id,
+                question_uuid=question_id,
                 error=True,
             )
 
@@ -291,7 +291,9 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
             )
 
             question_id_hex = (
-                input_response.question_id.hex if input_response.question_id else "None"
+                input_response.question_uuid.hex
+                if input_response.question_uuid
+                else "None"
             )
             logger.debug(question_id_hex)
             logger.debug(question_id)
@@ -413,7 +415,7 @@ class NatsProvider(ProviderProtocol):
             if isinstance(iomessage, AskingMessage):
                 processed_message = ui.process_message(iomessage)
                 response = InputResponseModel(
-                    msg=processed_message, question_id=iomessage.uuid
+                    msg=processed_message, question_uuid=iomessage.uuid
                 )
                 logger.debug(f"Processed response: {response}")
                 await self.broker.publish(response, to_server_subject)

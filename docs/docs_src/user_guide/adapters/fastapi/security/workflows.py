@@ -4,6 +4,9 @@ from typing import Any
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI
+from fastagency.runtimes.autogen import AutoGenWorkflows
+
+__init__ = ["wf"]
 
 llm_config = {
     "config_list": [
@@ -15,7 +18,10 @@ llm_config = {
     "temperature": 0.8,
 }
 
+wf = AutoGenWorkflows()
 
+
+@wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     initial_message = ui.text_input(
         sender="Workflow",

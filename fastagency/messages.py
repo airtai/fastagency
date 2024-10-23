@@ -1,7 +1,7 @@
 import re
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field, fields
-from typing import Any, Literal, Optional, Protocol, Type, Union
+from typing import Any, Literal, Optional, Protocol, Type
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel
@@ -605,12 +605,12 @@ class MessageProcessorMixin(ABC):
 
 class InputResponseModel(BaseModel):
     msg: str
-    question_id: Optional[UUID] = None
+    question_uuid: Optional[UUID] = None
     error: bool = False
 
 
 class InitiateWorkflowModel(BaseModel):
-    user_id: Optional[Union[UUID, str]] = None
+    user_id: Optional[str] = None
     workflow_uuid: UUID
     name: str
     params: dict[str, Any]

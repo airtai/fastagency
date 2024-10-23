@@ -9,16 +9,8 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 from fastagency.adapters.fastapi import FastAPIAdapter
-from fastagency.runtimes.autogen import AutoGenWorkflows
 
-from .workflows import simple_workflow
-
-wf = AutoGenWorkflows()
-
-wf.register(
-    name="simple_learning",
-    description="Student and teacher learning chat"
-)(simple_workflow)
+from .workflows import wf
 
 app = FastAPI(title="FastAPI with FastAgency")
 
@@ -29,7 +21,7 @@ app = FastAPI(title="FastAPI with FastAgency")
 
 # to get a string like this run:
 # openssl rand -hex 32
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7" # pragma: allowlist secret
+SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"  # pragma: allowlist secret
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -39,7 +31,7 @@ fake_users_db = {
         "username": "johndoe",
         "full_name": "John Doe",
         "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW", # nosemgrep
+        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",  # nosemgrep
         "disabled": False,
     }
 }
@@ -62,7 +54,7 @@ class UserInDB(User):
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password) # type: ignore
+    return pwd_context.verify(plain_password, hashed_password)  # type: ignore
 
 
 def get_user(db: dict[str, Any], username: str) -> Optional[UserInDB]:
@@ -72,7 +64,9 @@ def get_user(db: dict[str, Any], username: str) -> Optional[UserInDB]:
     return None
 
 
-def authenticate_user(fake_db: dict[str, Any], username: str, password: str) -> Union[bool, UserInDB]:
+def authenticate_user(
+    fake_db: dict[str, Any], username: str, password: str
+) -> Union[bool, UserInDB]:
     user = get_user(fake_db, username)
     if not user:
         return False
@@ -95,7 +89,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Use
         token_data = TokenData(username=username)
     except InvalidTokenError:
         raise credentials_exception from None
-    user = get_user(fake_users_db, username=token_data.username) # type: ignore
+    user = get_user(fake_users_db, username=token_data.username)  # type: ignore
     if user is None:
         raise credentials_exception
     return user
@@ -118,14 +112,16 @@ class TokenData(BaseModel):
     username: Union[str, None] = None
 
 
-def create_access_token(data: dict[str, Any], expires_delta: Union[timedelta, None] = None) -> str:
+def create_access_token(
+    data: dict[str, Any], expires_delta: Union[timedelta, None] = None
+) -> str:
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM) # nosemgrep
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)  # nosemgrep
     return encoded_jwt
 
 
@@ -142,7 +138,8 @@ async def login_for_access_token(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires # type: ignore
+        data={"sub": user.username},
+        expires_delta=access_token_expires,  # type: ignore
     )
     return Token(access_token=access_token, token_type="bearer")
 
@@ -152,13 +149,16 @@ async def login_for_access_token(
 #
 ################################################################################
 
+
 def get_user_id(
     current_user: Annotated[User, Depends(get_current_active_user)],
 ) -> Optional[str]:
     return current_user.username
 
+
 adapter = FastAPIAdapter(provider=wf, get_user_id=get_user_id)
 app.include_router(adapter.router)
+
 
 # this is optional, but we would like to see the list of available workflows
 @app.get("/")

@@ -5,16 +5,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
 
 from fastagency.adapters.fastapi import FastAPIAdapter
-from fastagency.runtimes.autogen import AutoGenWorkflows
 
-from .workflows import simple_workflow
-
-wf = AutoGenWorkflows()
-
-wf.register(
-    name="simple_learning",
-    description="Student and teacher learning chat"
-)(simple_workflow)
+from .workflows import wf
 
 app = FastAPI(title="FastAPI with FastAgency")
 
@@ -28,17 +20,18 @@ fake_users_db = {
         "username": "johndoe",
         "full_name": "John Doe",
         "email": "johndoe@example.com",
-        "hashed_password": "fakehashedsecret", # pragma: allowlist secret
+        "hashed_password": "fakehashedsecret",  # pragma: allowlist secret
         "disabled": False,
     },
     "alice": {
         "username": "alice",
         "full_name": "Alice Wonderson",
         "email": "alice@example.com",
-        "hashed_password": "fakehashedsecret2", # pragma: allowlist secret
+        "hashed_password": "fakehashedsecret2",  # pragma: allowlist secret
         "disabled": True,
     },
 }
+
 
 def fake_hash_password(password: str) -> str:
     return "fakehashed" + password
@@ -72,7 +65,9 @@ def fake_decode_token(token: str) -> Optional[UserInDB]:
     return user
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Optional[User]:
+async def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+) -> Optional[User]:
     user = fake_decode_token(token)
     if not user:
         raise HTTPException(
@@ -92,7 +87,9 @@ async def get_current_active_user(
 
 
 @app.post("/token")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> dict[str, str]:
+async def login(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+) -> dict[str, str]:
     user_dict = fake_users_db.get(form_data.username)
     if not user_dict:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
@@ -109,13 +106,16 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> d
 #
 ################################################################################
 
+
 def get_user_id(
     current_user: Annotated[User, Depends(get_current_active_user)],
 ) -> Optional[str]:
     return current_user.username
 
+
 adapter = FastAPIAdapter(provider=wf, get_user_id=get_user_id)
 app.include_router(adapter.router)
+
 
 # this is optional, but we would like to see the list of available workflows
 @app.get("/")
