@@ -8,7 +8,7 @@ provider = FastAPIAdapter.create_provider(
     fastapi_url=fastapi_url,
 )
 
-app = FastAgency(provider=provider, ui=MesopUI())
+app = FastAgency(provider=provider, ui=MesopUI(), title="Chess chat")
 
 # start the provider with the following command
 # gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
