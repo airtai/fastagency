@@ -25,8 +25,10 @@ search:
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
     - [CLI](user-guide/cli/index.md)
-- Tutorial
+- [Tutorial](tutorial/index.md)
     - [Giphy API & WebSurfer](tutorial/giphy/index.md)
+    - [Infobip WhatsApp API & WebSurfer](tutorial/whatsapp/index.md)
+    - [Playing chess](tutorial/chess/index.md)
 - Reference
     - API
         - fastagency
