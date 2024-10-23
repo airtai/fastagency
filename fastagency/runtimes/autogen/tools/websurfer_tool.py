@@ -1,4 +1,3 @@
-import os
 from typing import Annotated, Any, Optional, Union
 
 from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
@@ -81,9 +80,7 @@ class WebSurferTool:  # implements Toolable
         self.llm_config = llm_config
         self.summarizer_llm_config = summarizer_llm_config
         self.viewport_size = viewport_size
-        self.bing_api_key = (
-            bing_api_key if bing_api_key is not None else os.getenv("BING_API_KEY")
-        )
+        self.bing_api_key = bing_api_key
         self.max_consecutive_auto_reply = max_consecutive_auto_reply
         self.max_links_to_click = max_links_to_click
         self.websurfer_kwargs = websurfer_kwargs

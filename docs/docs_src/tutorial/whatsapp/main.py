@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
-from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
+from fastagency.runtimes.autogen.agents.websurfer_agent import WebSurferAgent
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 

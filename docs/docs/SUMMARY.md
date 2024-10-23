@@ -148,8 +148,8 @@ search:
                     - [AutoGenWorkflows](api/fastagency/runtimes/autogen/AutoGenWorkflows.md)
                     - [IOStreamAdapter](api/fastagency/runtimes/autogen/IOStreamAdapter.md)
                     - agents
-                        - websurfer
-                            - [WebSurferAgent](api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md)
+                        - websurfer_agent
+                            - [WebSurferAgent](api/fastagency/runtimes/autogen/agents/websurfer_agent/WebSurferAgent.md)
                     - autogen
                         - [AutoGenWorkflows](api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md)
                         - [CurrentMessage](api/fastagency/runtimes/autogen/autogen/CurrentMessage.md)
@@ -157,9 +157,9 @@ search:
                         - [Toolable](api/fastagency/runtimes/autogen/autogen/Toolable.md)
                     - tools
                         - [WebSurferTool](api/fastagency/runtimes/autogen/tools/WebSurferTool.md)
-                        - web_surfer
-                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer.md)
-                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool.md)
+                        - websurfer_tool
+                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/websurfer_tool/WebSurferAnswer.md)
+                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/websurfer_tool/WebSurferTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)

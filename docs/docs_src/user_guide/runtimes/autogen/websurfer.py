@@ -5,7 +5,7 @@ from autogen import UserProxyAgent
 
 from fastagency import UI, FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
+from fastagency.runtimes.autogen.agents.websurfer_agent import WebSurferAgent
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -41,6 +41,7 @@ def websurfer_workflow(
         summarizer_llm_config=llm_config,
         human_input_mode="NEVER",
         executor=user_agent,
+        bing_api_key=os.getenv("BING_API_KEY"),
     )
 
     chat_result = user_agent.initiate_chat(

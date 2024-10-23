@@ -46,7 +46,7 @@ In this step, we define two agents and specify the initial message that will be 
 
 - **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
-The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/)**.
+The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md)**.
 
 ```python
 {! docs_src/user_guide/runtimes/autogen/main.py [ln:26-51] !}
@@ -129,4 +129,4 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
 
 This example demonstrates the power of the **AutoGen** runtime within FastAgency, showing how easy it is to integrate LLM-powered agents with real-time API services. By leveraging FastAgency, developers can quickly create interactive, scalable applications that interact with external data sources in real-time.
 
-For more detailed documentation, visit the [AutoGen Reference](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/).
+For more detailed documentation, visit the [AutoGen Reference](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md).
