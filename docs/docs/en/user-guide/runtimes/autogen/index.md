@@ -58,21 +58,21 @@ Run the following command in the [**same terminal**](#running-the-application) w
 The example starts by importing the necessary modules from [**AutoGen**](https://microsoft.github.io/autogen/){target="_blank"} and **FastAgency**. These imports lay the foundation for building and running [**multi-agent**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} workflows.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:1-10] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:1-10] !}
 ```
 
 #### 2. **Configure the Language Model (LLM)**
 Here, the [**large language model**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"} is configured to use the Open AI's [**`gpt-4o-mini`**](https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/){target="_blank"} model, and the [**API key**](https://en.wikipedia.org/wiki/API_key){target="_blank"} is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:12-20] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:12-20] !}
 ```
 
 #### 3. **Set Up the Weather API**
 We define the [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_Specification){target="_blank"} URL for the weather service. This [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} will later be used by the weather agent to fetch real-time weather data.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:22-24] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:22-24] !}
 ```
 
 #### 4. **Define the Workflow and Agents**
@@ -85,28 +85,28 @@ In this step, we define two agents and specify the initial message that will be 
 The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/)**.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:32-56] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:32-56] !}
 ```
 
 #### 5. **Register API Functions with the Agents**
 In this step, we register the [**weather API**](https://weather.tools.fastagency.ai/docs){target="_blank"} functions to ensure that the weather agent can call the correct functions, such as `get_daily_weather` and `get_daily_weather_weekly_get`, to retrieve the required weather data.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:58-72] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:58-72] !}
 ```
 
 #### 6. **Enable Agent Interaction and Chat**
 Here, the user agent initiates a chat with the weather agent, which queries the [**weather API**](https://weather.tools.fastagency.ai/docs){target="_blank"} and returns the weather information. The conversation is summarized using a method provided by the [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:73-81] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:73-81] !}
 ```
 
 #### 7. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the [**`mesop`**](../../../api/fastagency/ui/mesop/MesopUI.md) interface.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py [ln:83] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:83] !}
 ```
 
 ### Complete Application Code
@@ -114,7 +114,7 @@ Finally, we create the FastAgency application and launch it using the [**`mesop`
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/user_guide/runtimes/autogen/main.py!}
+{! docs_src/user_guide/runtimes/autogen/mesop/main.py!}
 ```
 </details>
 

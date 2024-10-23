@@ -94,7 +94,7 @@ Next, add two parameters: `api_type` and `hide_tools`.
     Set the `api_type` to `together` to instruct FastAgency to use Together AI Cloud for model inference.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py [ln:12-22] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/using_non_openai_models.py [ln:12-22] !}
 ```
 
 #### 2. Update the System Message
@@ -102,7 +102,7 @@ Next, add two parameters: `api_type` and `hide_tools`.
 The system message has been adjusted to work optimally with the **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo** model. You may need to experiment with the system prompt if you are using a different model.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py [ln:27-32] !}
+{! docs_src/user_guide/runtimes/autogen/mesop/using_non_openai_models.py [ln:27-32] !}
 ```
 
 ### Complete Application Code
@@ -110,7 +110,7 @@ The system message has been adjusted to work optimally with the **meta-llama/Met
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/user_guide/runtimes/autogen/using_non_openai_models.py !}
+{! docs_src/user_guide/runtimes/autogen/mesop/using_non_openai_models.py !}
 ```
 </details>
 
