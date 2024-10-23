@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from typing import Annotated, Any, Optional
 
 from autogen import register_function
@@ -9,7 +8,7 @@ from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
-from fastagency.runtimes.autogen.autogen import AutoGenWorkflows
+from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
@@ -22,21 +21,19 @@ llm_config = {
     "temperature": 0.8,
 }
 
-whatsapp_openapi_path = (
-    Path(__file__).parent / "../../../../examples/openapi/whatsapp_openapi.json"
-)
-with whatsapp_openapi_path.open() as f:
-    openapi_json = f.read()
-
+openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/whatsapp_openapi.json"
 whatsapp_api = OpenAPI.create(
-    openapi_json=openapi_json,
+    openapi_url=openapi_url,
 )
 
-whatsapp_api_key = "App "  # pragma: allowlist secret
-whatsapp_api_key += os.getenv("WHATSAPP_API_KEY", "")
-whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=whatsapp_api_key))
+header_authorization = "App "  # pragma: allowlist secret
+header_authorization += os.getenv("WHATSAPP_API_KEY", "")
+whatsapp_api.set_security_params(APIKeyHeader.Parameters(value=header_authorization))
 
-WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and WhatsAPP API.
+# This is the default sender number for Infobip.
+# If you want to use your own sender, please update the value below:
+sender = "447860099299"
+WHATSAPP_SYSTEM_MESSAGE = f"""You are an agent in charge to communicate with the user and WhatsAPP API.
 Always use 'present_completed_task_or_ask_question' to interact with the user.
 - make sure that the 'message' parameter contains all the necessary information for the user!
 Initially, the Web_Surfer_Agent will provide you with some content from the web.
@@ -45,15 +42,15 @@ by using 'present_completed_task_or_ask_question'.
 - "If you want to receive the summary of the page as a WhatsApp message, please provide your number."
 
     When sending the message, the Body must use the following format:
-{
-    "from": "447860099299",
+{{
+    "from": "{sender}",
     "to": "receiverNumber",
     "messageId": "test-message-randomInt",
-    "content": {
+    "content": {{
         "text": "message"
-    },
+    }},
     "callbackData": "Callback data"
-}
+}}
 
 "from" number is always the same.
 """
@@ -61,8 +58,8 @@ by using 'present_completed_task_or_ask_question'.
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="whatsapp", description="WhatsApp chat")
-def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
+@wf.register(name="whatsapp_and_websurfer", description="WhatsApp and WebSurfer chat")
+def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 
@@ -71,15 +68,15 @@ def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
     ) -> Optional[str]:
         try:
             return ui.text_input(
-                sender="whatsapp_agent",
-                recipient="whatsapp_agent",
+                sender="Whatsapp_Agent",
+                recipient="User",
                 prompt=message,
             )
         except Exception as e:  # pragma: no cover
             return f"present_completed_task_or_ask_question() FAILED! {e}"
 
     whatsapp_agent = ConversableAgent(
-        name="Whatsapp_Agent",
+        name="WhatsApp_Agent",
         system_message=WHATSAPP_SYSTEM_MESSAGE,
         llm_config=llm_config,
         human_input_mode="NEVER",
