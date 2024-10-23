@@ -25,7 +25,7 @@ def patch_parse_schema() -> None:
 
 
 def patch_function_name_parsing() -> None:
-    def function_name(self: Any) -> str:
+    def function_name(self: Operation) -> str:
         if self.operationId:
             name: str = self.operationId.replace("/", "_")
         else:
