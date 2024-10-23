@@ -367,7 +367,7 @@ class FastAPIProvider(ProviderProtocol):
         initiate_workflow = self._send_initiate_chat_msg(
             name, workflow_uuid=workflow_uuid, user_id=user_id, params=kwargs
         )
-        user_id = initiate_workflow.user_id if initiate_workflow.user_id else "None"  # type: ignore
+        user_id = initiate_workflow.user_id if initiate_workflow.user_id else "None"
         workflow_uuid = initiate_workflow.workflow_uuid.hex
 
         _from_server_subject = f"chat.client.messages.{user_id}.{workflow_uuid}"
