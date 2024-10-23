@@ -1,7 +1,7 @@
 {
     "openapi": "3.1.0",
     "info": {
-        "title": "openapi",
+        "title": "schema_with_frontslashes",
         "version": "0.1.0"
     },
     "servers": [
