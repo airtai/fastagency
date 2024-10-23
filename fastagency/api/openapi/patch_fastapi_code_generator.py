@@ -1,7 +1,9 @@
-from functools import wraps
+import re
+from functools import cached_property, wraps
 from typing import Any
 
-from fastapi_code_generator.parser import OpenAPIParser
+import stringcase
+from fastapi_code_generator.parser import OpenAPIParser, Operation
 
 from ...logging import get_logger
 
@@ -20,3 +22,18 @@ def patch_parse_schema() -> None:
 
     OpenAPIParser.parse_schema = my_parse_schema
     logger.info("Patched OpenAPIParser.parse_schema")
+
+
+def patch_function_name_parsing() -> None:
+    def function_name(self: Operation) -> str:
+        if self.operationId:
+            name: str = self.operationId.replace("/", "_")
+        else:
+            path = re.sub(r"/{|/", "_", self.snake_case_path).replace("}", "")
+            name = f"{self.type}{path}"
+        return stringcase.snakecase(name)  # type: ignore[no-any-return]
+
+    Operation.function_name = cached_property(function_name)
+    Operation.function_name.__set_name__(Operation, "function_name")
+
+    logger.info("Patched Operation.function_name")
