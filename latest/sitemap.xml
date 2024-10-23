@@ -607,16 +607,16 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/WebSurferTool/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/websurfer/WebSurferAnswer/</loc>
         <lastmod>2024-10-23</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/websurfer/WebSurferAnswer/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool/</loc>
+        <loc>https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/websurfer/WebSurferTool/</loc>
         <lastmod>2024-10-23</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/runtimes/autogen/tools/websurfer/WebSurferTool/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/console/ConsoleUI/</loc>
@@ -851,12 +851,6 @@
         <lastmod>2024-10-23</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/user-guide/basics/</loc>
-        <lastmod>2024-10-23</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/basics/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/user-guide/adapters/</loc>
