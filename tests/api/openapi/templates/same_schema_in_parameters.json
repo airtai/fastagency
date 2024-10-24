@@ -80,9 +80,9 @@
                     }
                 }
             }
-        },
-        "components": {
-            "schemas": {}
         }
+    },
+    "components": {
+        "schemas": {}
     }
 }

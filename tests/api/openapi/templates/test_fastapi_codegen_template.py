@@ -7,9 +7,9 @@ import pytest
 from datamodel_code_generator import DataModelType
 from fastapi_code_generator.__main__ import generate_code
 
-from fastagency.api.openapi import *  # noqa: F403
+from fastagency.api.openapi import OpenAPI
 
-OPENAPI_FILE_PATHS = Path(__file__).parent.glob("*.json")
+OPENAPI_FILE_PATHS = list(Path(__file__).parent.glob("*.json"))
 TEMPLATE_DIR = Path(__file__).parents[4] / "templates"
 
 assert TEMPLATE_DIR.exists(), TEMPLATE_DIR
@@ -54,3 +54,9 @@ def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
 
         app = main.app
         assert app.title == openapi_file_path.stem
+
+
+@pytest.mark.parametrize("openapi_file_path", OPENAPI_FILE_PATHS)
+def test_fastapi_codegen_template_openapi(openapi_file_path: Path) -> None:
+    app = OpenAPI.create(openapi_json=openapi_file_path.read_text())
+    assert isinstance(app, OpenAPI)
