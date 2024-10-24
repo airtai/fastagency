@@ -87,4 +87,4 @@ def patch_generate_code() -> None:
     # Patch the original function
     fastapi_code_generator_main.generate_code = patched_generate_code
 
-    logger.info("Patched fastapi_code_generator_main.generate_code")
+    logger.info("Patched fastapi_code_generator.__main__.generate_code")
