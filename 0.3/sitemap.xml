@@ -169,6 +169,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/patch_fastapi_code_generator/patch_function_name_parsing/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/patch_fastapi_code_generator/patch_generate_code/</loc>
+        <lastmod>2024-10-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/patch_fastapi_code_generator/patch_generate_code/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/patch_fastapi_code_generator/patch_parse_schema/</loc>
         <lastmod>2024-10-24</lastmod>
         <changefreq>daily</changefreq>
