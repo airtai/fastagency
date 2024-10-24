@@ -26,6 +26,7 @@ search:
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
     - [CLI](user-guide/cli/index.md)
+    - [Cookiecutter](user-guide/cookiecutter/index.md)
 - [Tutorials](tutorials/index.md)
     - [Giphy API & WebSurfer](tutorials/giphy/index.md)
     - [WhatsApp API & WebSurfer](tutorials/whatsapp/index.md)
