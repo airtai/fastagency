@@ -2,29 +2,38 @@
 
 In this series of tutorials, you'll learn how to use the **FastAgency** framework to create interactive chatbots that can scrape the web and work with different APIs to respond to user requests.
 
+---
 
-## Giphy API Integration and Web Scraping
+## Available Tutorials
 
-In this tutorial, you will build a team of agents capable of summarising news from a given site and find an appropriate GIF-s for each news summariezed.
+### 1. Web Scraping and Giphy API Integration
 
-By the end of these tutorials, you’ll know how to:
+In this tutorial, we will explore how to leverage the **FastAgency** framework to create a dynamic chatbot that integrates two powerful agents:
 
-- Build agents that can automatically pull information from websites.
-- Connect your chatbot to external APIs such as Giphy REST API to add more features.
-- Set up workflows that handle conversations between users and agents.
-- Keep API communication secure and manage sensitive information.
+- [**`WebSurferAgent`**](../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) – A web-scraping agent capable of retrieving relevant content from webpages.
+- **Giphy agent** – An agent that interacts with the [Giphy API](https://giphy.com){target="_blank"} to fetch GIFs based on the user’s request.
 
-[Learn more about **Giphy API and Websurfer** →](./giphy/index.md)
+### When to Use Web Scraping and Giphy API Integration?
+- **API Integration**: Learn how to integrate external APIs like Giphy with FastAgency.
+- **Autonomous Agents**: Build and register agents that autonomously scrape the web for relevant information.
+- **User-Agent Workflows**: Use [AutoGen workflows](../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) to manage agent interactions and user input.
+- **Personalized Content**: Present scraped content to users and offer personalized GIF suggestions based on that content.
 
-## WhatsApp API Integration and Web Scraping
+[Let’s dive into Web Scraping and Giphy API Integration →](giphy/index.md)
 
-In this tutorial, you will build a team of agents capable of summarising a given site and send it to your whatsapp account.
+---
 
-By the end of these tutorials, you’ll know how to:
+### 2. WhatsApp API Integration and Web Scraping
 
-- Build agents that can automatically pull information from websites.
-- Connect your chatbot to external APIs such as Infobip's Whatsapp REST API to add more features.
-- Set up workflows that handle conversations between users and agents.
-- Keep API communication secure and manage sensitive information.
+In this tutorial, we will explore how to build a chatbot using the **FastAgency** framework that integrates two essential agents:
 
-[Learn more about **WhatsApp API Integration and Websurfer** →](./whatsapp/index.md)
+- [**`WebSurferAgent`**](../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) – A web-scraping agent capable of retrieving content from websites.
+- **WhatsApp agent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send messages via WhatsApp.
+
+### When to Use WhatsApp API Integration and Web Scraping?
+- **API Integration**: Learn how to integrate the Infobip WhatsApp API using OpenAPI.
+- **Autonomous Agents**: Build and register agents that autonomously scrape the web using the [**`WebSurferAgent`**](../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
+- **User-Agent Workflows**: Manage user interactions and send scraped content via WhatsApp using [AutoGen workflows](../api/fastagency/runtimes/autogen/AutoGenWorkflows.md).
+- **Security**: Handle secure API credentials using [**`APIKeyHeader`**](../api/fastagency/api/openapi/security/APIKeyHeader.md) and ensure safe communication.
+
+[Let’s dive into WhatsApp API Integration and Web Scraping →](whatsapp/index.md)
