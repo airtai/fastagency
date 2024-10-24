@@ -37,8 +37,8 @@ def test_submodules(module: str) -> None:
                 return
             elif (
                 module.startswith("docs_src.user_guide.ui.mesop")
-                or module == "docs_src.tutorial.giphy"
-                or module == "docs_src.tutorial.whatsapp"
+                or module == "docs_src.tutorials.giphy"
+                or module == "docs_src.tutorials.whatsapp"
                 or module == "docs_src.user_guide.runtimes.autogen.mesop"
             ):
                 pass

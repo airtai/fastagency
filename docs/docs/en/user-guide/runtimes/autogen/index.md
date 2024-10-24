@@ -169,4 +169,4 @@ Once you run the command above, FastAgency will start a [**Mesop**](https://goog
 
 This example demonstrates the power of the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime within FastAgency, showing how easy it is to integrate [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}-powered agents with real-time [**Rest API**](https://en.wikipedia.org/wiki/REST){target="_blank"} services. By leveraging FastAgency, developers can quickly create interactive, scalable applications that interact with external data sources in real-time.
 
-For more detailed documentation, visit the [**AutoGen Reference**](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/).
+For more detailed documentation, visit the [**AutoGen Reference**](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md).
