@@ -1,0 +1,33 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "schema_without_operation_id",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Local environment"
+        }
+    ],
+    "paths": {
+        "/items/ships/": {
+            "get": {
+                "summary": "Update Item",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {}
+    }
+}

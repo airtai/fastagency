@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.tools.web_surfer.WebSurferTool
+::: fastagency.api.openapi.patch_fastapi_code_generator.patch_function_name_parsing

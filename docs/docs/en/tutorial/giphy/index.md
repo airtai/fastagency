@@ -98,7 +98,7 @@ Also, we configure the **Giphy API** with the __*GIPHY_API_KEY*__ using __*set_s
 {! docs_src/tutorial/giphy/main.py [ln:25-29] !}
 ```
 
-For more information, visit [**API Integration User Guide**](../../user-guide/api){target="_blank"}.
+For more information, visit [**API Integration User Guide**](../../user-guide/api/index.md){target="_blank"}.
 
 ### Registering the Workflow
 
@@ -118,10 +118,10 @@ This is a core function used by the **GiphyAgent** to either present the task re
 ### Creating the Giphy and WebSurfer Agents
 
 - **GiphyAgent**: A ***ConversableAgent*** is created with the name "Giphy_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
-- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer){target="_blank"}.
+- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer.md){target="_blank"}.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:77-91] !}
+{! docs_src/tutorial/giphy/main.py [ln:77-92] !}
 ```
 
 ### Registering Functions
@@ -129,12 +129,12 @@ This is a core function used by the **GiphyAgent** to either present the task re
 The function ***present_completed_task_or_ask_question*** is registered to allow the **GiphyAgent** to ask questions or present completed tasks after receiving data from the **WebSurferAgent**.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:93-100] !}
+{! docs_src/tutorial/giphy/main.py [ln:94-101] !}
 ```
 
 We specify which Giphy API functions can be used by the **GiphyAgent**: *random_gif*, *search_gifs*, and *trending_gifs*. These functions allow the agent to generate GIFs based on user input or trending content.
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:102-108] !}
+{! docs_src/tutorial/giphy/main.py [ln:103-109] !}
 ```
 
 ### Initiating the Chat
@@ -144,7 +144,7 @@ We initiate the conversation between the user, **WebSurferAgent**, and **GiphyAg
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:116-123] !}
+{! docs_src/tutorial/giphy/main.py [ln:117-124] !}
 ```
 
 ### Starting the Application
@@ -152,10 +152,10 @@ Once the conversation ends, the summary is returned to the user, wrapping up the
 The FastAgency app is created, using the registered workflows (***wf***) and web-based user interface (***MesopUI***). This makes the conversation between agents and the user interactive.
 
 ```python
-{! docs_src/tutorial/giphy/main.py [ln:126] !}
+{! docs_src/tutorial/giphy/main.py [ln:127] !}
 ```
 
-For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics){target="_blank"}.
+For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics.md){target="_blank"}.
 
 ## Running the Application
 
@@ -170,11 +170,11 @@ There are two options of running a Mesop application:
         ```
 
     !!! danger "Currently not working on **MacOS**"
-        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
+        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
 
 2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
 
-    The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
+    The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
 
     !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
         ```
