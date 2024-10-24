@@ -2,8 +2,9 @@
 
 In this tutorial, we will explore how to leverage the **FastAgency** framework to create a dynamic and interactive chatbot that integrates two powerful agents:
 
-**WebSurferAgent** – A web-scraping agent capable of retrieving relevant content from webpages.
-**GiphyAgent** – An agent that interacts with the [Giphy](https://giphy.com){target="_blank"} **API** to fetch GIFs based on the user’s request.
+1. [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) – A web-scraping agent capable of retrieving relevant content from webpages (learn more [here](../../user-guide/runtimes/autogen/websurfer.md)).
+
+2. **Giphy agent** – An agent that interacts with the [Giphy](https://giphy.com){target="_blank"} API to fetch GIFs based on the user’s request. It will be created using the standard [**`ConversableAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/conversable_agent/){target="_blank"} from [AutoGen](https://microsoft.github.io/autogen){target="_blank"} and the [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md) object instantiated with an OpenAPI [specification](https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json){target="_blank"}
 
 The chat system will operate between these two agents and the user, allowing them to scrape web content and generate GIFs based on that content, all within a seamless conversation. This tutorial will guide you through setting up these agents and handling user interaction in a secure, structured, and intuitive manner.
 
@@ -11,10 +12,10 @@ The chat system will operate between these two agents and the user, allowing the
 
 By the end of this tutorial, you’ll understand how to:
 
-- Integrate external APIs like [Giphy](https://giphy.com){target="_blank"} with **FastAgency**.
-- Build and register agents that can autonomously scrape the web for relevant information.
-- Use **FastAgency** workflows to manage agent interactions and user input.
-- Present scraped content to the user and offer personalized GIF suggestions based on that content.
+1. Integrate external APIs like [Giphy](https://giphy.com){target="_blank"} with **FastAgency**.
+2. Build and register agents that autonomously scrape the web for relevant information using [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
+3. Use [**`AutoGenWorkflows`**](../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) to manage agent interactions and user input.
+4. Present scraped content to the user and offer personalized GIF suggestions based on that content.
 
 We will walk through setting up each agent, handling API security, and creating a cohesive conversation that can scrape data, process user input, and generate GIFs in response.
 
@@ -34,7 +35,7 @@ pip install "fastagency[autogen,mesop,openapi]"
 ```
 
 ### API Key Setup
-**WebSurferAgent** requires an **Bing Web Search** API key and **GiphyAgent** requires an API key to interact with Giphy's service. Follow these steps to create your API keys:
+[**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **Giphy agent** requires an API key to interact with Giphy's service. Follow these steps to create your API keys:
 
 #### Create Bing Web Search API Key
 To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.
@@ -88,7 +89,7 @@ You can set the API keys in your terminal as an environment variable:
 
 ## Code Walkthrough
 
-Now we will go over each key part of the code, explaining its function and purpose within the FastAgency framework. Understanding these components is crucial for building a dynamic interaction between the user, the **WebSurferAgent**, and the **GiphyAgent**.
+Now we will go over each key part of the code, explaining its function and purpose within the FastAgency framework. Understanding these components is crucial for building a dynamic interaction between the user, the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md), and the **Giphy agent**.
 
 ### Creating the Giphy API Instance
 The following lines shows hot to initializes the Giphy API by loading the OpenAPI specification from a URL. The OpenAPI spec defines how to interact with the Giphy API, including endpoints, parameters, and security details.
@@ -102,14 +103,14 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 
 ### Registering the Workflow
 
-Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"giphy_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both GiphyAgent and WebSurferAgent.
+Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"giphy_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both Giphy agent and WebSurferAgent.
 
 ```python
 {! docs_src/tutorials/giphy/main.py [ln:58-61] !}
 ```
 
 ### Interaction with the user
-This is a core function used by the **GiphyAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
+This is a core function used by the **Giphy agent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
 
 ```python
 {! docs_src/tutorials/giphy/main.py [ln:65-76] !}
@@ -117,8 +118,8 @@ This is a core function used by the **GiphyAgent** to either present the task re
 
 ### Creating the Giphy and WebSurfer Agents
 
-- **GiphyAgent**: A ***ConversableAgent*** is created with the name "Giphy_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
-- **WebSurferAgent**: The ***WebSurferAgent*** is responsible for scraping web content and passes the retrieved data to the **GiphyAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer.md){target="_blank"}.
+- **Giphy agent**: A ***ConversableAgent*** is created with the name "Giphy_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
+- **WebSurferAgent**: The *[**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md)* is responsible for scraping web content and passes the retrieved data to the **Giphy agent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer.md){target="_blank"}.
 
 ```python
 {! docs_src/tutorials/giphy/main.py [ln:77-92] !}
@@ -126,20 +127,20 @@ This is a core function used by the **GiphyAgent** to either present the task re
 
 ### Registering Functions
 
-The function ***present_completed_task_or_ask_question*** is registered to allow the **GiphyAgent** to ask questions or present completed tasks after receiving data from the **WebSurferAgent**.
+The function ***present_completed_task_or_ask_question*** is registered to allow the **Giphy agent** to ask questions or present completed tasks after receiving data from the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
 
 ```python
 {! docs_src/tutorials/giphy/main.py [ln:94-101] !}
 ```
 
-We specify which Giphy API functions can be used by the **GiphyAgent**: *random_gif*, *search_gifs*, and *trending_gifs*. These functions allow the agent to generate GIFs based on user input or trending content.
+We specify which Giphy API functions can be used by the **Giphy agent**: *random_gif*, *search_gifs*, and *trending_gifs*. These functions allow the agent to generate GIFs based on user input or trending content.
 ```python
 {! docs_src/tutorials/giphy/main.py [ln:103-109] !}
 ```
 
 ### Initiating the Chat
 
-We initiate the conversation between the user, **WebSurferAgent**, and **GiphyAgent**. The user’s initial message is provided, and the system is configured to handle up to 10 turns of interaction. The conversation is summarized using the ***reflection_with_llm*** method, which uses a language model to summarize the chat.
+We initiate the conversation between the user, [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md), and **Giphy agent**. The user’s initial message is provided, and the system is configured to handle up to 10 turns of interaction. The conversation is summarized using the ***reflection_with_llm*** method, which uses a language model to summarize the chat.
 
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
@@ -238,14 +239,14 @@ In this scenario, the user instructs the agents to scrape [BBC Sport](https://ww
 
 ![Initial message](./images/initial_message.png)
 
-Upon receiving the request, **WebSurferAgent** initiates the process by scraping the webpage for relevant updates.
+Upon receiving the request, [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) initiates the process by scraping the webpage for relevant updates.
 
 ![Scraping 1](./images/scraping1.png)
 
 ![Scraping 2](./images/scraping2.png)
 
 Once the scraping is complete, the agents deliver their findings to the user.
-In the final step, the user asks for a few *Premier League* GIFs, which **GiphyAgent** promptly provides.
+In the final step, the user asks for a few *Premier League* GIFs, which **Giphy agent** promptly provides.
 
 ![Scraped Info](./images/scraped_info.png)
 
@@ -253,7 +254,7 @@ In the final step, the user asks for a few *Premier League* GIFs, which **GiphyA
 
 ## Conclusion
 
-In this tutorial, we walked through how to create a simple chatbot using **FastAgency** that can scrape web content and provide relevant GIFs. By integrating the **WebSurferAgent** and **GiphyAgent**, we built a tool that lets users gather information from the web and request GIFs all in one conversation.
+In this tutorial, we walked through how to create a simple chatbot using **FastAgency** that can scrape web content and provide relevant GIFs. By integrating the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) and **Giphy agent**, we built a tool that lets users gather information from the web and request GIFs all in one conversation.
 
 You’ve learned how to:
 
