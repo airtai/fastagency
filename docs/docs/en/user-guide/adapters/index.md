@@ -17,7 +17,7 @@ FastAgency uses **chainable network adapters** that can be easily combined to cr
 
 Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your FastAgency workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} using the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework. This setup allows you to work your workflows in [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} and serve them using the highly extensible and stable [**ASGI**](https://asgi.readthedocs.io/en/latest/){target="_blank"} server.
 
-When to Use the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md):
+When to Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md):
 
 - **Custom Client Applications**: If you want to build your **own client applications** in a language other than Python, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}), that interacts with your FastAgency workflows using [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"}.
 
@@ -44,13 +44,11 @@ The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.
 
 Utilize the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for highly-scalable, production-ready setup.
 
-#### When to Use the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md)
+When to Use the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter):
 
-- **Default Client Application**: If you prefer using the **default Mesop client** provided by FastAgency without the need to build your own client application.
+- **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](../fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
 
-- **High User Demand**: When your application requires **high scalability** to handle a large number of users or messages, and you are comfortable with a more complex production setup involving a message broker. For example, it's well-suited for building a **scalable chat application** for a larger company or external customers.
-
-- **Conversation Auditing**: If you need the ability to **audit conversations**, the NATS Adapter provides the necessary infrastructure to enable this feature.
+- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter) provides the necessary infrastructure to enable this feature.
 
 
 [Learn more about **NATS.io adapter** →](./nats/index.md)
