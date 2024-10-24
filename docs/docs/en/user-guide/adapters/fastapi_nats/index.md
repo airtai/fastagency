@@ -1,134 +1,123 @@
 # FastAPI + Nats.io
 
-The **FastAPI + Nats.io** Adapter in FastAgency offers the most scalable setup by combining the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework for building and exposing workflows as [**REST APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker for **scalable and asynchronous** communication. This setup is the **preferred way** for running large workloads in production.
+Combining the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency provides the most scalable setup. It harnesses the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework to build and expose workflows as [**REST APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} while utilizing the [**Nats.io**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This setup is **preferred** for running large workloads in production.
 
 ## Use Cases
 
-This section outlines the scenarios where it's particularly beneficial to use the **FastAPI + Nats** Adapter.
+This section outlines the scenarios where it is particularly beneficial to combine the `FastAPIAdapter` and `NATSAdapter`.
 
-### When to Use the FastAPI + Nats.io Adapter
+When to Use the `FastAPIAdapter` and `NATSAdapter` Together:
 
-- **High User Demand**: If you need to scale above what can be achieved with multiple-workers of the [**FastAPI** adapter](../fastapi/index.md), then you can use [**Nats.io MQ**](https://nats.io/){target="_blank"}-based message que and multiple workers consuming and producing messages. This kind of distributed, [message-queue architecture](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} allows you to scale up not just across multiple workers, but also across multiple machines and even across multiple clusters.
+- **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](../fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
 
-- **Observability**: If you need the ability to **audit workflow executions** both in realtime and posteriori, the Nats Adapter provides the necessary infrastructure to enable this feature.
+- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) provides the necessary infrastructure to enable this feature.
 
-- Security features of FastAPI (links etc.)
+- **Security features of FastAPI**: If you want to leverage the [**security features**](https://fastapi.tiangolo.com/tutorial/security){target="_blank"} of FastAPI, such as authentication, authorization, along with the [**distributed architecture**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} of NATS, this setup is the most suitable option. Please check the [**securing your FastAPIAdapter**](../fastapi/security.md) documentation for more information.
 
 ## Architecture Overview
 
-The following section presents high-level architecture diagrams for the two available setups:
+The following section presents high-level architecture diagrams for the two available setups using the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) together with:
 
-- **FastAPI + Nats Adapter with Mesop Client**
-- **FastAPI + Nats Adapter with Custom Client**
+- [**Mesop**](https://google.github.io/mesop/){target="_blank"} client using [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md), and
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+- Custom [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} client
+
+=== "Mesop"
 
     ![Mesop FastAPI](../images/mesop_fastapi_nats.png)
 
     The system is composed of three main components:
 
-    #### 1. FastAgency Client App
+    #### 1. Mesop Client App
 
-    The FastAgency Client App serves as the frontend interface for the system. It includes:
+    This application serves as the frontend interface for the system. It includes:
 
-    - **Mesop Client**: A friendly web interface for users to interact with the workflows. It facilitates the communication with the user and the FastAPI Provider.
-    - **FastAPI Provider**: A component that facilitates communication between the Mesop client and the FastAPI Adapter.
+    - [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md): A friendly web interface for users to interact with the workflows. It facilitates the communication with the user and the [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md).
+    - [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md): A component that facilitates communication between the Mesop client and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
-    This app handles all client interactions and presents the results back to the user.
-
-    #### 2. FastAgency FastAPI App
-
-    The FastAgency FastAPI App forms the backend of our system and consists of:
-
-    - **Nats Provider**: Responsible for connecting to the Nats Provider, receiving workflow initiation messages, and distributing them to the workers for execution.
-    - **FastAPI Adapter**: This component communicates with AutoGen, and implements routes and websocket for FastAPI.
-    - **FastAPI**: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
-
-    #### 3. FastAgency Nats App
-    - **Nats Adapter**: This adapter connects to the Nats Provider. Its primary responsibility is to receive workflow initiation messages and delegate them to available workers for execution.
-    - **AutoGen Workflows**: These workflows, defined using the AutoGen framework, embody the core logic and behavior of your application. They leverage agents to perform various tasks and accomplish specific goals.
-
-    #### Interaction Flow
-    1. The user initiates communication with the Mesop client in the FastAgency Client App.
-    2. The Mesop client relays requests, based on user actions, to the FastAPI Provider.
-    3. The FastAPI Provider forwards these requests to the FastAPI Adapter in the FastAgency FastAPI App.
-    4. The FastAPI Adapter processes the requests and sends a message to the Nats Provider to start the workflow.
-    5. The Nats Adapter, connected to the Nats Provider, receives the workflow initiation message.
-    6. The Nats Adapter distributes the task of executing the workflow to one of the available workers.
-    7. The designated worker executes the AutoGen Workflow and sends the results back through the Nats Provider to the FastAPI Adapter.
-    8. The FastAPI Adapter sends the results to the FastAPI Provider, which relays them to the Mesop client for presentation to the client.
-
-    This architecture promotes a clear separation of concerns between the user interface, the API layer, and the workflow execution logic, enhancing modularity and maintainability. The FastAPI framework provides a user-friendly and efficient API, while the Nats Adapter, coupled with the Nats.io MQ message broker, ensures scalability and asynchronous communication.
-
-=== "FastAPI + Nats Adapter with Custom Client"
+=== "Custom REST API and WebSocket"
 
     ![Mesop FastAPI](../images/custom_fastapi_nats.png)
 
     The system is composed of three main components:
 
-    #### 1. FastAgency Client App
+    #### 1. Custom Client App
 
-    The FastAgency Client App serves as the frontend interface for the system. It includes:
+    This application serves as the frontend interface for the system. It includes:
 
-    - **Custom Client**: A custom web interface for users to interact with the workflows. It facilitates the communication with the user and the **FastAgency FastAPI App**.
+    - **Custom Client**: A client application built in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}, [**Go**](https://go.dev/){target="_blank"}, [**Java**](https://www.java.com/en/){target="_blank"}, etc.) that  facilitates communication between the user and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
-    This custom client app handles all interactions with the **FastAgency FastAPI App** and presents the results back to the user.
+    This application handles all interactions with the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and presents the results back to the user.
 
-    #### 2. FastAgency FastAPI App
+#### 2. FastAPI App
 
-    The FastAgency FastAPI App forms the backend of our system and consists of:
+This application is part of our system's backend and consists of:
 
-    - **Nats Provider**: Responsible for connecting to the Nats Provider, receiving workflow initiation messages, and distributing them to the workers for execution.
-    - **FastAPI Adapter**: This component communicates with AutoGen, and implements routes and websocket for FastAPI.
-    - **FastAPI**: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
+- [**`NatsProvider`**](../../../api/fastagency/adapters/nats/NatsProvider.md): Responsible for connecting to the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md), receiving workflow initiation messages, and distributing them to the workers for execution.
 
-    #### 3. FastAgency Nats App
-    - **Nats Adapter**: This adapter connects to the Nats Provider. Its primary responsibility is to receive workflow initiation messages and delegate them to available workers for execution.
-    - **AutoGen Workflows**: These workflows, defined using the AutoGen framework, embody the core logic and behavior of your application. They leverage agents to perform various tasks and accomplish specific goals.
+- [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with `NatsProvider`, and implements routes and websocket for FastAPI.
+
+- [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+
+#### 3. Nats App
+
+This application is also part of our system's backend and consists of:
+
+- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md): This adapter connects to the `NatsProvider` and is responsible for communicating with AutoGen workflows.
+
+- **AutoGen Workflows**: These workflows, defined using the AutoGen framework, embody the core logic and behavior of your application. They leverage agents to perform various tasks and accomplish specific goals.
+
+This architecture promotes a clear separation of concerns between the user interface, the API layer, and the workflow execution logic, enhancing modularity and maintainability. The [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework provides a user-friendly and efficient [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}, while the `NATSAdapter`, combined with the [**Nats.io**](https://nats.io/){target="_blank"} message broker, ensures scalability and asynchronous communication.
+
+=== "Mesop"
+
+
+=== "Custom REST API and WebSocket"
 
     #### Building Custom Client Applications
 
-    For details on building a custom client that interacts with the FastAgency FastAPI backend, check out the guide [here](../fastapi/index.md#building-custom-client-applications). It covers the **routes, message types, and integration steps in detail**, helping you set up seamless communication with FastAgency’s FastAPI backend.
+    For details on building a custom client that interacts with the FastAPI backend, check out the guide [**here**](../fastapi/index.md#building-custom-client-applications). It covers the **routes, message types, and integration steps in detail**, helping you set up seamless communication with FastAPI backend.
 
-Now, it's time to see the **FastAPI + Nats Adapter** using FastAgency in action. Let's dive into an example and learn how to use it!
+Now, it's time to see the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) in action together. Let's dive into an example and learn how to use it!
+
+
 
 ## Installation
 
-Before getting started, make sure you have installed FastAgency by running the following command:
+=== "Mesop"
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server**, and **nats** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,mesop,fastapi,server,nats]"
     ```
 
-    This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, but with FastAPI serving input requests and independent workers communicating over Nats.io protocol running workflows.
+    This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and independent workers communicating over [**Nats.io**](https://nats.io/){target="_blank"} protocol running workflows.
 
-=== "FastAPI + Nats Adapter with Custom Client"
+=== "Custom REST API and WebSocket"
+
+    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the **fastapi**, **server**, and **nats** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,fastapi,server,nats]"
     ```
 
-    This command installs FastAgency, but with FastAPI serving input requests and independent workers communicating over Nats.io protocol running workflows.
+    This command installs FastAgency, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and independent workers communicating over [**Nats.io**](https://nats.io/){target="_blank"} protocol running workflows.
 
 ## Example: Student and Teacher Learning Chat
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+=== "Mesop"
 
-    In this example, we'll create a simple learning chat where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use **MesopUI** for the web interface and the **FastAPI + Nats** Adapter to expose the workflow as a REST API.
+    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for serving and executing the workflows.
 
-    ### Step-by-Step Breakdown
+=== "Custom REST API and WebSocket"
 
-    As shown in the [architecture overview](#architecture-overview), this setup requires **three** components (applications). Let's begin with the first component, the [FastAgency NATS App](#3-fastagency-nats-app).
+    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll create a custom client using [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"} and [**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"} for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for serving and executing the workflows.
 
-=== "FastAPI + Nats Adapter with Custom Client"
 
-    In this example, we'll create a simple learning chat where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use **custom client** for the web interface and the **FastAPI + Nats** Adapter to expose the workflow as a REST API.
+### Step-by-Step Breakdown
 
-    ### Step-by-Step Breakdown
-
-    As shown in the [architecture overview](#architecture-overview), this setup requires **three** components (applications). Let's begin with the first component, the [FastAgency NATS App](#3-fastagency-nats-app_1).
+As shown in the [**architecture overview**](#architecture-overview), this setup requires **three** components (applications). Let's begin our code walkthrough, starting with the [**NATS App**](#3-nats-app).
 
 #### 1. **Import Required Modules**
 
@@ -146,9 +135,9 @@ Next, define the workflow that your application will use. This is where you spec
 {! docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:11-52] !}
 ```
 
-#### 3. **Configure the Nats Adapter**
+#### 3. **Configure the `NatsAdapter`**
 
-Create an instance of the NatsAdapter and pass your workflow to it. The adapter will handle the communication with the Nats Provider and distribute workflow execution to the workers.
+Create an instance of the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and pass your workflow to it. The adapter will handle the communication with the [**`NatsProvider`**](../../../api/fastagency/adapters/nats/NatsProvider.md) and distribute workflow execution to the workers.
 
 ```python hl_lines="5 7"
 {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:55-60] !}
@@ -156,7 +145,7 @@ Create an instance of the NatsAdapter and pass your workflow to it. The adapter 
 
 #### 4. **Define FastAgency Application**
 
-Create an NatsAdapter and then add it to a FastAPI application using the lifespan parameter. The adapter will have all REST and Websocket routes for communicating with a client. For more information on the lifespan parameter, check out the official documentation [**here**](https://fastapi.tiangolo.com/advanced/events/){target="_blank"}
+Create a [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and then add it to the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application using the [**lifespan parameter**](https://fastapi.tiangolo.com/advanced/events/){target="_blank"}.
 
 ```python
 {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:61] !}
@@ -166,33 +155,30 @@ Create an NatsAdapter and then add it to a FastAPI application using the lifespa
 
 Above, we created Nats.io provider that will start brokers waiting to consume initiate workflow messages from the message broker.
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+Next, we set up a FastAPI service to interact with the NATS.io provider. This introduces the second component: the [**FastAPI App**](#2-fastapi-app).
 
-    Next, we set up a FastAPI service to interact with the NATS.io provider. This introduces the second component: the [**FastAgency FastAPI App**](#2-fastagency-fastapi-app).
+=== "Mesop"
 
     !!! note "main_2_fastapi.py"
         ```python hl_lines="16-18 21-22"
         {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py [ln:1-22] !}
         ```
 
-    Finally, the third component is the [**FastAgency Client App**](#1-fastagency-client-app), which uses the **Mesop client** to communicate with both the user and the FastAPI provider.
+    Finally, the last component is the [**Mesop Client App**](#1-mesop-client-app), which uses the [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) to communicate with both the user and the [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md).
 
     !!! note "main_3_mesop.py"
         ```python hl_lines="7-9 11"
         {!> docs_src/getting_started/nats_n_fastapi/main_3_mesop.py [ln:1-11] !}
         ```
 
-=== "FastAPI + Nats Adapter with Custom Client"
-
-    Next, we’ll set up a FastAPI service to interact with the NATS.io provider, introducing the second component: the [**FastAgency FastAPI App**](#2-fastagency-fastapi-app_1).
-
+=== "Custom REST API and WebSocket"
 
     !!! note "main_fastapi_custom_client.py"
         ```python hl_lines="17-19 22-23"
         {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi_custom_client.py [ln:1-8,96-110] !}
         ```
 
-    Finally, for simplicity, we will serve our custom HTML client as part of the same [**FastAgency FastAPI App**](#2-fastagency-fastapi-app_1) using FastAPI's [**HTMLResponse**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"}.
+    Finally, for simplicity, we will serve our custom HTML client as part of the same [**FastAPI App**](#2-fastapi-app) using FastAPI's [**HTMLResponse**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"}.
 
     !!! note
 
@@ -208,7 +194,7 @@ Above, we created Nats.io provider that will start brokers waiting to consume in
 
 #### 6. **Nats server setup**
 
-The `NatsAdapter` requires a running Nats server. The easiest way to start the Nats server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of Nats and also utilizes authentication.
+The [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) requires a running NATS server. The easiest way to start the NATS server is by using [**Docker**](https://www.docker.com/){target="_blank"}. FastAgency leverages the [**JetStream**](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
 
 ```python hl_lines="1 3 6 11 17"
 {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf [ln:1-23]!}
@@ -220,7 +206,7 @@ In the above Nats configuration, we define a user called `fastagency`, and its p
 
 Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+=== "Mesop"
 
     <details>
         <summary>nats-server.conf</summary>
@@ -250,7 +236,7 @@ Please copy and paste the following code into the same folder, using the file na
         ```
     </details>
 
-=== "FastAPI + Nats Adapter with Custom Client"
+=== "Custom REST API and WebSocket"
 
     <details>
         <summary>nats-server.conf</summary>
@@ -277,7 +263,7 @@ Please copy and paste the following code into the same folder, using the file na
 
 Once everything is set up, you can run your FastAgency application using the following commands.
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+=== "Mesop"
 
     You need to run **Four** commands in **separate** terminal windows:
 
@@ -311,7 +297,7 @@ Once everything is set up, you can run your FastAgency application using the fol
         waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
         ```
 
-=== "FastAPI + Nats Adapter with Custom Client"
+=== "Custom REST API and WebSocket"
 
     You need to run **Three** commands in **separate** terminal windows:
 
@@ -330,7 +316,7 @@ Once everything is set up, you can run your FastAgency application using the fol
     - Start **FastAPI** application integrated with a **Nats** messaging system:
     !!! note "Terminal 3"
         ```
-        uvicorn main_2_fastapi_custom_client:app --host 0.0.0.0 --port 8008 --reload
+        uvicorn main_2_fastapi_custom_client:app --port 8008 --reload
         ```
 
 
@@ -338,7 +324,7 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 The outputs will vary based on the interface. Here is the output of the last terminal starting the UI:
 
-=== "FastAPI + Nats Adapter with Mesop Client"
+=== "Mesop"
 
     ```console
     [2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
@@ -350,7 +336,7 @@ The outputs will vary based on the interface. Here is the output of the last ter
     ![Initial message](../../../getting-started/images/chat.png)
 
 
-=== "FastAPI + Nats Adapter with Custom Client"
+=== "Custom REST API and WebSocket"
 
     ```console
     INFO:     Will watch for changes in these directories: ['/tmp/custom_fastapi_demo']
@@ -363,6 +349,4 @@ The outputs will vary based on the interface. Here is the output of the last ter
     ![Output Screenshot](../images/custom_chat_output.png)
 
 
-The **FastAPI + Nats** Adapter in FastAgency provides a **highly scalable** and **flexible solution** for building distributed applications. By leveraging the power of [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} for building REST APIs and the [**Nats.io MQ**](https://nats.io/){target="_blank"} for asynchronous communication, you can create robust and efficient workflows that can handle high user demand and complex production setups.
-
-Whether you're building custom client applications, **scalable chat systems**, or applications that require **conversation auditing**, the **FastAPI + Nats Adapter** has you covered.
+The **FastAPI + Nats** Adapter in FastAgency provides a **highly scalable** and **flexible solution** for building distributed applications. By leveraging the power of [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} for building [**REST APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} and the [**Nats.io MQ**](https://nats.io/){target="_blank"} for asynchronous communication, you can create robust and efficient workflows that can handle high user demand and complex production setups.
