@@ -200,6 +200,8 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     This command installs FastAgency, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and running workflows.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ## Example: Student and Teacher Learning Chat
 
 === "Mesop"

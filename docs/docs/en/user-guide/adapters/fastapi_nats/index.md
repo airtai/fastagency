@@ -104,6 +104,8 @@ Now, it's time to see the [**`FastAPIAdapter`**](../../../api/fastagency/adapter
 
     This command installs FastAgency, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and independent workers communicating over [**Nats.io**](https://nats.io/){target="_blank"} protocol running workflows.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ## Example: Student and Teacher Learning Chat
 
 === "Mesop"

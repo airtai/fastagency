@@ -17,6 +17,8 @@ To get started, you need to install FastAgency with OpenAPI submodule. You can d
 pip install "fastagency[autogen,openapi]"
 ```
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ## Imports
 These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the `OpenAPI` Client and `UserProxyAgent`:
 

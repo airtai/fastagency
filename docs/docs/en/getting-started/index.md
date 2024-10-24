@@ -156,6 +156,8 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
     independent workers communicating over NATS.io protocol running workflows. This
     is the most scable setup and preferred way of running large workloads in production.
 
+Alternatively, you can use [**Cookiecutter**](../user-guide/cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 !!! note "Using older AutoGen version 0.2.x"
 
     In case you want to use an older version of AutoGen (`pyautogen` instead of `autogen` package ), please use the following pip command:

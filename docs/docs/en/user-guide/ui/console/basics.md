@@ -14,6 +14,8 @@ pip install "fastagency[autogen]"
 
 This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ## Example: Student and Teacher Learning Chat
 
 This example demonstrates how to create a workflow where a student agent interacts with a teacher agent. The student asks questions, and the teacher provides responses, simulating a learning environment. The interaction is facilitated through the console using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)**.

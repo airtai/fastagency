@@ -23,6 +23,8 @@ pip install "fastagency[autogen]"
 
 This command installs FastAgency with support for the Console interface and AutoGen framework.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ### Create Bing Web Search API Key
 To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.
 
