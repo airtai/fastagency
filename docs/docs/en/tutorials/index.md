@@ -11,7 +11,7 @@ In this series of tutorials, you'll learn how to use the **FastAgency** framewor
 In this tutorial, we will explore how to leverage the **FastAgency** framework to create a dynamic chatbot that integrates two powerful agents:
 
 - [**`WebSurferAgent`**](../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) – A web-scraping agent capable of retrieving relevant content from webpages.
-- **GiphyAgent** – An agent that interacts with the [Giphy API](https://giphy.com){target="_blank"} to fetch GIFs based on the user’s request.
+- **Giphy agent** – An agent that interacts with the [Giphy API](https://giphy.com){target="_blank"} to fetch GIFs based on the user’s request.
 
 ### When to Use Web Scraping and Giphy API Integration?
 - **API Integration**: Learn how to integrate external APIs like Giphy with FastAgency.
@@ -28,7 +28,7 @@ In this tutorial, we will explore how to leverage the **FastAgency** framework t
 In this tutorial, we will explore how to build a chatbot using the **FastAgency** framework that integrates two essential agents:
 
 - [**`WebSurferAgent`**](../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) – A web-scraping agent capable of retrieving content from websites.
-- **WhatsAppAgent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send messages via WhatsApp.
+- **WhatsApp agent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send messages via WhatsApp.
 
 ### When to Use WhatsApp API Integration and Web Scraping?
 - **API Integration**: Learn how to integrate the Infobip WhatsApp API using OpenAPI.
