@@ -107,7 +107,7 @@ jobs:
         env:
           COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
           CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
-      - name: Run Playwright tests
+      - name: Run Playwright tests without LLMs
         if: ${{ inputs.python-version != '3.9' }}
         run: npx playwright test -c "playwright.llm-sans.config.ts"
       - uses: actions/upload-artifact@v4
