@@ -907,6 +907,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/cli/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/user-guide/cookiecutter/</loc>
+        <lastmod>2024-10-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/cookiecutter/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/user-guide/runtimes/</loc>
         <lastmod>2024-10-24</lastmod>
         <changefreq>daily</changefreq>
