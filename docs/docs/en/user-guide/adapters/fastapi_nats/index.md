@@ -1,6 +1,6 @@
 # FastAPI + Nats.io
 
-Combining the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency offers the most scalable setup by harnessing the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework to build and expose workflows as [**REST APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}, along with the [**Nats.io**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This is the **preferred setup** for running large workloads in production.
+Combining the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency provides the most scalable setup. It harnesses the power of the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework to build and expose workflows as [**REST APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} while utilizing the [**Nats.io**](https://nats.io/){target="_blank"} message broker for scalable and asynchronous communication. This setup is **preferred** for running large workloads in production.
 
 ## Use Cases
 
@@ -16,7 +16,7 @@ This section outlines the scenarios where it is particularly beneficial to combi
 
 ## Architecture Overview
 
-The following section presents high-level architecture diagrams for the two available setups of using **FastAPI + Nats Adapter** with:
+The following section presents high-level architecture diagrams for the two available setups using the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) together with:
 
 - [**Mesop**](https://google.github.io/mesop/){target="_blank"} client using [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md), and
 
@@ -35,8 +35,6 @@ The following section presents high-level architecture diagrams for the two avai
     - [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md): A friendly web interface for users to interact with the workflows. It facilitates the communication with the user and the [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md).
     - [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md): A component that facilitates communication between the Mesop client and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
-    This app handles all client interactions and presents the results back to the user.
-
     #### 2. FastAPI App
 
     This application is part of our system's backend and consists of:
@@ -53,7 +51,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     - **AutoGen Workflows**: These workflows, defined using the AutoGen framework, embody the core logic and behavior of your application. They leverage agents to perform various tasks and accomplish specific goals.
 
-    This architecture promotes a clear separation of concerns between the user interface, the API layer, and the workflow execution logic, enhancing modularity and maintainability. The FastAPI framework provides a user-friendly and efficient REST API, while the NATS Adapter, combined with the [**Nats.io**](https://nats.io/){target="_blank"} message broker, ensures scalability and asynchronous communication.
+    This architecture promotes a clear separation of concerns between the user interface, the API layer, and the workflow execution logic, enhancing modularity and maintainability. The [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework provides a user-friendly and efficient [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}, while the NATS Adapter, combined with the [**Nats.io**](https://nats.io/){target="_blank"} message broker, ensures scalability and asynchronous communication.
 
 === "Custom REST API and WebSocket"
 
@@ -85,7 +83,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     For details on building a custom client that interacts with the FastAgency FastAPI backend, check out the guide [here](../fastapi/index.md#building-custom-client-applications). It covers the **routes, message types, and integration steps in detail**, helping you set up seamless communication with FastAgency’s FastAPI backend.
 
-Now, it's time to see the **FastAPI + Nats Adapter** using FastAgency in action. Let's dive into an example and learn how to use it!
+Now, it's time to see the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) in action together. Let's dive into an example and learn how to use it!
 
 ## Installation
 
@@ -115,7 +113,7 @@ Before getting started, ensure that FastAgency is installed with support for the
 
     ### Step-by-Step Breakdown
 
-    As shown in the [**architecture overview**](#architecture-overview), this setup requires **three** components (applications). Let's begin with the first component, the [NATS App](#3-nats-app).
+    As shown in the [**architecture overview**](#architecture-overview), this setup requires **three** components (applications). Let's begin our code walkthrough, starting with the [**NATS App**](#3-nats-app).
 
 === "Custom REST API and WebSocket"
 
@@ -170,7 +168,7 @@ Above, we created Nats.io provider that will start brokers waiting to consume in
         {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi.py [ln:1-22] !}
         ```
 
-    Finally, the third component is the [**Mesop Client App**](#1-mesop-client-app), which uses the [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) to communicate with both the user and the [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md).
+    Finally, the last component is the [**Mesop Client App**](#1-mesop-client-app), which uses the [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) to communicate with both the user and the [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md).
 
     !!! note "main_3_mesop.py"
         ```python hl_lines="7-9 11"
