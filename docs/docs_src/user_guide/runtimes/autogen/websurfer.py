@@ -41,6 +41,7 @@ def websurfer_workflow(
         summarizer_llm_config=llm_config,
         human_input_mode="NEVER",
         executor=user_agent,
+        bing_api_key=os.getenv("BING_API_KEY"),
     )
 
     chat_result = user_agent.initiate_chat(

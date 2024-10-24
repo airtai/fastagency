@@ -24,7 +24,7 @@ Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdap
 - **Simplified Production Setup**: Choose this adapter if you need a **simple and easy-to-manage** production setup for deploying your FastAgency workflows as a REST API.
 
 
-[Learn more about **FastAPI adapter** →](./fastapi/)
+[Learn more about **FastAPI adapter** →](./fastapi/index.md)
 
 ### FastAPI + Nats.io
 
@@ -36,7 +36,7 @@ The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.
 - **High User Demand**: When your application needs to handle a large number of users or messages and requires high scalability, the FastAPI + NATS Adapter is an excellent choice. It is well-suited for building **scalable custom chat applications for larger companies or external customers**.
 - **Conversation Auditing**: If you need the ability to **audit conversations**, the NATS Adapter provides the necessary infrastructure to enable this feature.
 
-[Learn more about **FastAPI + NATS.io adapter** →](./fastapi_nats/)
+[Learn more about **FastAPI + NATS.io adapter** →](./fastapi_nats/index.md)
 
 ### Nats.io
 
@@ -51,4 +51,4 @@ Utilize the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.m
 - **Conversation Auditing**: If you need the ability to **audit conversations**, the NATS Adapter provides the necessary infrastructure to enable this feature.
 
 
-[Learn more about **NATS.io adapter** →](./nats/)
+[Learn more about **NATS.io adapter** →](./nats/index.md)

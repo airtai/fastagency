@@ -6,20 +6,20 @@ Below is an overview of the supported UIs, with links to their respective pages 
 
 ## Available User Interfaces
 
-### 1. **[ConsoleUI](./console/basics/)**
+### 1. **[ConsoleUI](./console/basics.md)**
 The **ConsoleUI** provides a command-line interface for interacting with FastAgency's agent workflows. It’s an ideal choice for developers who need to quickly test and prototype workflows directly in the terminal.
 
-[Learn more about ConsoleUI →](./console/basics/)
+[Learn more about ConsoleUI →](./console/basics.md)
 
-### 2. **[MesopUI](./mesop/basics/)**
+### 2. **[MesopUI](./mesop/basics.md)**
 The **MesopUI** is a web-based interface that enables users to interact with agents through a browser. This UI is designed for applications that need a more graphical and interactive experience for users.
 
-[Learn more about MesopUI →](./mesop/basics/)
+[Learn more about MesopUI →](./mesop/basics.md)
 
-### 3. **[FastAPI UI (Coming Soon)](./fastapi/basics/)**
+### 3. **[FastAPI UI (Coming Soon)](./fastapi/basics.md)**
 FastAgency will soon introduce **FastAPI UI** support, which will allow you to build multi-agent systems with a FastAPI backend. This will enable seamless integration with RESTful APIs for modern web applications.
 
-[Learn more about FastAPI UI (Coming Soon) →](./fastapi/basics/)
+[Learn more about FastAPI UI (Coming Soon) →](./fastapi/basics.md)
 
 ---
 
