@@ -327,7 +327,7 @@ Please copy and paste the following code into the same folder, using the file na
     - Start **FastAPI** application using [**uvicorn**](https://www.uvicorn.org){target="_blank"}:
     !!! note "Terminal 1"
         ```
-        uvicorn main_fastapi_custom_client:app --host 0.0.0.0 --port 8008 --reload
+        uvicorn main_fastapi_custom_client:app --port 8008 --reload
         ```
 
 ### Output
