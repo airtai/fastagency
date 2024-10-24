@@ -45,7 +45,7 @@ The following section presents high-level architecture diagrams for the two avai
 
     This application serves as the frontend interface for the system. It includes:
 
-    - **Custom Client**: A client application built in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}) facilitates communication between the user and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
+    - **Custom Client**: A client application built in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}, [**Go**](https://go.dev/){target="_blank"}, [**Java**](https://www.java.com/en/){target="_blank"}, etc.) that  facilitates communication between the user and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
     This application handles all interactions with the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and presents the results back to the user.
 

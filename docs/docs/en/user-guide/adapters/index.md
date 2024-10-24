@@ -19,7 +19,7 @@ The [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.
 
 When to Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md):
 
-- **Custom Client Applications**: If you want to build your **own client applications** in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}), that interacts with your FastAgency workflows using [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"}.
+- **Custom Client Applications**: If you want to build your **own client applications** in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}, [**Go**](https://go.dev/){target="_blank"}, [**Java**](https://www.java.com/en/){target="_blank"}, etc.), that interacts with your FastAgency workflows using [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"}.
 
 - **Moderate User Demand**: This adapter is a good fit for scenarios where workflows need to be executed by [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to efficiently handle higher machine load.
 

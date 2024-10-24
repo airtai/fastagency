@@ -6,7 +6,7 @@ The [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapt
 
 When to Use the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md):
 
-- **Custom Client Applications**: If you want to build your **own client applications** in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}), that interacts with your FastAgency workflows using [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"}.
+- **Custom Client Applications**: If you want to build your **own client applications** in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}, [**Go**](https://go.dev/){target="_blank"}, [**Java**](https://www.java.com/en/){target="_blank"}, etc.), that interacts with your FastAgency workflows using [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"}.
 
 - **Moderate User Demand**: This adapter is a good fit for scenarios where workflows need to be executed by [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to efficiently handle higher machine load.
 
@@ -54,7 +54,7 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     This application serves as the frontend interface for the system. It includes:
 
-    - **Custom Client**: A client application built in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}) facilitates communication between the user and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
+    - **Custom Client**: A client application built in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}, [**Go**](https://go.dev/){target="_blank"}, [**Java**](https://www.java.com/en/){target="_blank"}, etc.) facilitates communication between the user and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
     This application handles all interactions with the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and presents the results back to the user.
 
