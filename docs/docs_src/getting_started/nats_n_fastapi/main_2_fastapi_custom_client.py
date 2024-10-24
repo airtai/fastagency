@@ -116,4 +116,4 @@ async def get() -> HTMLResponse:
 
 
 # start the provider with the following command
-# uvicorn main_2_fastapi_custom_client:app --host 0.0.0.0 --port 8008 --reload
+# uvicorn main_2_fastapi_custom_client:app --port 8008 --reload
