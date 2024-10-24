@@ -6,7 +6,7 @@ The [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapt
 
 When to Use the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md):
 
-- **Custom Client Applications**: If you want to build your **own client applications** in a language other than Python, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}), that interacts with your FastAgency workflows using [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"}.
+- **Custom Client Applications**: If you want to build your **own client applications** in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}), that interacts with your FastAgency workflows using [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"}.
 
 - **Moderate User Demand**: This adapter is a good fit for scenarios where workflows need to be executed by [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to efficiently handle higher machine load.
 
@@ -50,29 +50,29 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     The system consists of two main components:
 
-    #### Client App
+    #### Custom Client App
 
-    The Client App serves as the frontend interface for the system. It includes:
+    This application serves as the frontend interface for the system. It includes:
 
-    - **Custom Client**: A custom web interface for users to interact with the workflows. It facilitates the communication with the user and the **FastAPI App**.
+    - **Custom Client**: A client application built in a different language, (e.g., [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"}/[**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"}) facilitates communication between the user and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md).
 
-    This custom client app handles all interactions with the **FastAPI App** and presents the results back to the user.
+    This application handles all interactions with the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and presents the results back to the user.
 
     #### FastAPI App
 
     The FastAPI App forms the backend of our system and consists of:
 
     - **AutoGen Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
-    - [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with AutoGen, and implements routes and websocket for FastAPI.
-    - [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing AutoGen workflows via REST API.
+    - The [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"}, and implements routes and [**websocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} for [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}.
+    - [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
     #### Building Custom Client Applications
 
-    To write a custom application that interacts with FastAPI App, we first need to understand the **available server routes** and their purposes. This knowledge forms the foundation of our client-server interaction model.
+    To write a custom application that interacts with [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md), it's essential to first understand the available server routes it provides and their purposes. This knowledge forms the foundation of the [**client-server**](https://en.wikipedia.org/wiki/Client%E2%80%93server_model){target="_blank"} interaction model.
 
     ##### Available API Endpoints
 
-    FastAPI App provides three primary endpoints for building client applications:
+    [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) provides three primary endpoints for building client applications:
 
     | Route    | Method |Purpose |
     | -------- | ------- | ------- |
@@ -85,12 +85,12 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     ##### System Interaction Flow
 
-    The following sequence diagram illustrates the step-by-step process of how a **custom client application** interacts with the FastAgency FastAPI server:
+    The following sequence diagram illustrates the step-by-step process of how a **custom client application** interacts with the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md):
 
     ```mermaid
     sequenceDiagram
     participant Client as Custom Client Application
-    participant FastAPI as FastAPI App
+    participant FastAPI as FastAPIAdapter
 
     Note over Client,FastAPI: 1. Setup & Discovery Phase
     Client->>FastAPI: GET /fastagency/discovery
@@ -130,16 +130,16 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
     - **Selection**: User selects a workflow to execute.
     - **Initiation**: Client requests to start the chosen workflow.
     - **Connection**: WebSocket connection established for real-time communication. These includes:
-        - Server sending workflow message to the client
-        - Client sends optional response to server if previous server message requires user input
-        - Server processes and sends the next workflow message
+        - Server sending workflow message to the client.
+        - Client sends optional response to server if previous server message requires user input.
+        - Server processes and sends the next workflow message.
 
 
     ##### Message Types
 
-    Before diving into the implementation, we need to learn a bit about the **message types** that FastAgency FastAPI adapter provides. Understanding these will help us handle messages in our custom client and display them properly to the users.
+    Before diving into the implementation, we need to learn a bit about the **message types** that [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) provides. Understanding these will help us handle messages in our custom client and display them properly to the users.
 
-    FastAgency tags each message sent from the server to the client over WebSocket with a `type` attribute. This helps the client differentiate between different types of messages and handle them accordingly. Let’s break them down into two categories:
+    FastAgency tags each message sent from the server to the client over [**WebSockets**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} with a `type` attribute. This helps the client differentiate between different types of messages and handle them accordingly. Let’s break them down into two categories:
 
     **Messages for Display**:
 
@@ -159,14 +159,14 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     ##### Implementation Guide
 
-    In the following sections, we'll walk through the process of creating a custom client application that implements the flow we've just described. We'll build a simple web-based client that demonstrates how to interact with **FastAPI App** effectively.
+    In the following sections, we'll walk through the process of creating a custom client application that implements the flow we've just described. We'll build a simple web-based client that demonstrates how to interact with [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) effectively.
 
     Our implementation will cover these key aspects:
 
-    - Fetching and displaying available workflows
-    - Handling workflow initiation
-    - Managing WebSocket connections
-    - Processing real-time messages
+    - Fetching and displaying available workflows.
+    - Handling workflow initiation.
+    - Managing WebSockets connection.
+    - Processing real-time messages.
 
     !!! note
 
@@ -180,9 +180,9 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
 ## Installation
 
-Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, and **server** submodules by running the following command:
-
 === "Mesop"
+
+    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, and **server** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,mesop,fastapi,server]"
@@ -191,6 +191,8 @@ Before getting started, ensure that FastAgency is installed with support for the
     This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and running workflows.
 
 === "Custom REST API and Websocket"
+
+    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the **fastapi**, and **server** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,fastapi,server]"
@@ -206,7 +208,7 @@ Before getting started, ensure that FastAgency is installed with support for the
 
 === "Custom REST API and Websocket"
 
-    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll create a custom client using HTML and Javascript for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to expose the workflow as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll create a custom client using [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"} and [**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"} for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to expose the workflow as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ### Step-by-Step Breakdown
 
@@ -222,7 +224,7 @@ Before getting started, ensure that FastAgency is installed with support for the
 
 === "Custom REST API and Websocket"
 
-    To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the Custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a REST API.
+    To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
     ```python hl_lines="6 9"
     {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py [ln:1-10] !}
@@ -259,7 +261,7 @@ Create an instance of the [**`FastAPIAdapter`**](../../../api/fastagency/adapter
 
     #### 4. **Serving the Custom HTML Client**
 
-    Finally, use the HTML Response from FastAPI to serve the custom client code.
+    Finally, use the [**HTML Response**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} from FastAPI to serve the custom client code.
 
     ```python
     {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py [ln:12-98,146-148] !}
@@ -322,7 +324,7 @@ Please copy and paste the following code into the same folder, using the file na
 
     Once everything is set up, you can run your FastAgency application using the following command.
 
-    - Start **FastAPI** application using uvicorn:
+    - Start **FastAPI** application using [**uvicorn**](https://www.uvicorn.org){target="_blank"}:
     !!! note "Terminal 1"
         ```
         uvicorn main_fastapi_custom_client:app --host 0.0.0.0 --port 8008 --reload
