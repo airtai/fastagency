@@ -48,28 +48,22 @@ def patch_generate_code() -> None:
     @wraps(org_generate_code)
     def patched_generate_code(*args: Any, **kwargs: Any) -> Any:
         try:
-            input_text = kwargs.get("input_text", args[1] if len(args) > 1 else None)
+            input_text: str = kwargs["input_text"]
 
-            if input_text:
-                json_spec = json.loads(input_text)
+            json_spec = json.loads(input_text)
 
-                schemas_with_dots = [
-                    name
-                    for name in json_spec.get("components", {}).get("schemas", {})
-                    if "." in name
-                ]
+            schemas_with_dots = [
+                name
+                for name in json_spec.get("components", {}).get("schemas", {})
+                if "." in name
+            ]
 
-                for schema_name in schemas_with_dots:
-                    input_text = input_text.replace(
-                        schema_name, schema_name.replace(".", "_")
-                    )
+            for schema_name in schemas_with_dots:
+                input_text = input_text.replace(
+                    schema_name, schema_name.replace(".", "_")
+                )
 
-                if "input_text" in kwargs:
-                    kwargs["input_text"] = input_text
-                elif len(args) > 1:
-                    tmp_args = list(args)
-                    tmp_args[1] = input_text
-                    args = tuple(tmp_args)
+            kwargs["input_text"] = input_text
 
         except Exception as e:
             logger.info(
