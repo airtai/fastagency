@@ -1,8 +1,10 @@
+import json
 import re
 from functools import cached_property, wraps
 from typing import Any
 
 import stringcase
+from fastapi_code_generator import __main__ as fastapi_code_generator_main
 from fastapi_code_generator.parser import OpenAPIParser, Operation
 
 from ...logging import get_logger
@@ -37,3 +39,52 @@ def patch_function_name_parsing() -> None:
     Operation.function_name.__set_name__(Operation, "function_name")
 
     logger.info("Patched Operation.function_name")
+
+
+def patch_generate_code() -> None:
+    # Save reference to the original generate_code function
+    org_generate_code = fastapi_code_generator_main.generate_code
+
+    @wraps(org_generate_code)
+    def patched_generate_code(*args: Any, **kwargs: Any) -> Any:
+        try:
+            # Extract input_text from kwargs or args
+            input_text = kwargs.get("input_text", args[1] if len(args) > 1 else None)
+
+            if input_text:
+                json_spec = json.loads(input_text)
+
+                # Identify schema names with dots
+                schemas_with_dots = [
+                    name
+                    for name in json_spec.get("components", {}).get("schemas", {})
+                    if "." in name
+                ]
+
+                # Replace dot in schema names with underscores
+                for schema_name in schemas_with_dots:
+                    input_text = input_text.replace(
+                        schema_name, schema_name.replace(".", "_")
+                    )
+
+                # If input_text was in kwargs, update it
+                if "input_text" in kwargs:
+                    kwargs["input_text"] = input_text
+                # If input_text was in args, rebuild args with the modified input_text
+                elif len(args) > 1:
+                    tmp_args = list(args)  # Convert to list to allow modification
+                    tmp_args[1] = input_text
+                    args = tuple(tmp_args)  # Convert back to tuple
+
+        except Exception as e:
+            logger.info(
+                f"Patched fastapi_code_generator.__main__.generate_code raised: {e}, passing untouched arguments to original generate_code"
+            )
+
+        # Call the original function with modified arguments
+        return org_generate_code(*args, **kwargs)
+
+    # Patch the original function
+    fastapi_code_generator_main.generate_code = patched_generate_code
+
+    logger.info("Patched fastapi_code_generator_main.generate_code")
