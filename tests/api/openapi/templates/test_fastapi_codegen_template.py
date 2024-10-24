@@ -7,7 +7,7 @@ import pytest
 from datamodel_code_generator import DataModelType
 from fastapi_code_generator.__main__ import generate_code
 
-from fastagency.api.openapi import *
+from fastagency.api.openapi import *  # noqa: F403
 
 OPENAPI_FILE_PATHS = Path(__file__).parent.glob("*.json")
 TEMPLATE_DIR = Path(__file__).parents[4] / "templates"
