@@ -139,6 +139,8 @@ The installation process is exactly the same as in the [previous chapter](./inde
 pip install "fastagency[autogen,openapi]"
 ```
 
+Alternatively, you can use [**Cookiecutter**](../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ### Imports
 The imports are the same as in the [previous chapter](./index.md){.internal-link}, except here we also import `APIKeyHeader` to set the security value in the header:
 

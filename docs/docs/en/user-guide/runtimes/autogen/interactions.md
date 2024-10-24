@@ -11,6 +11,7 @@ To get started, you need to install FastAgency. You can do this using `pip`, Pyt
 pip install "fastagency[autogen]"
 ```
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
 
 ## Define Interaction
 

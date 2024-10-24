@@ -33,6 +33,8 @@ To get started, you need to install FastAgency with OpenAPI submodule. You can d
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
+Alternatively, you can use [**Cookiecutter**](../../user-guide/cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ### API Key Setup
 **WebSurferAgent** requires an **Bing Web Search** API key and **GiphyAgent** requires an API key to interact with Giphy's service. Follow these steps to create your API keys:
 

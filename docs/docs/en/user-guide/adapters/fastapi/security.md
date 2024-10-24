@@ -84,6 +84,8 @@ This command installs FastAgency with support for both the Console and [Mesop](h
 interfaces for [AutoGen](https://microsoft.github.io/autogen/) workflows, but with FastAPI both serving input requests
 and running workflows.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ### Step 1: Imports
 
 === "simple OAuth2"

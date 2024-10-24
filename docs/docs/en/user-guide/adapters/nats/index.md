@@ -57,6 +57,8 @@ pip install "fastagency[autogen,mesop,fastapi,server,nats]"
 
 This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows and the Nats Adapter for workflow execution.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ## Example: Student and Teacher Learning Chat
 
 In this example, we'll create a simple learning chat where a student agent asks questions and a teacher agent responds, simulating a learning environment.  We'll use MesopUI for the web interface and the Nats Adapter for workflow execution.

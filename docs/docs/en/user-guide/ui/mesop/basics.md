@@ -14,6 +14,8 @@ pip install "fastagency[autogen,mesop]"
 
 This command ensures that the required dependencies for both **AutoGen** and **Mesop** are installed.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ## Usage
 
 You can simply create Mesop based UI by importing and instantiating the `MesopUI` class with no parameters:

@@ -207,6 +207,8 @@ Before getting started, make sure you have installed FastAgency by running the f
 
     This command installs FastAgency, but with FastAPI serving input requests and running workflows.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+
 ## Example: Student and Teacher Learning Chat
 
 === "Mesop"
