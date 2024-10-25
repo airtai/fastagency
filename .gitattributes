@@ -7,3 +7,4 @@ docs/docs/en/tutorial/giphy/images/initial_message.png filter=lfs diff=lfs merge
 docs/docs/en/tutorial/giphy/images/scraped_info.png filter=lfs diff=lfs merge=lfs -text
 docs/docs/en/tutorial/giphy/images/scraping1.png filter=lfs diff=lfs merge=lfs -text
 docs/docs/en/tutorial/giphy/images/scraping2.png filter=lfs diff=lfs merge=lfs -text
+examples/openapi/whatsapp_openapi_complete.json filter=lfs diff=lfs merge=lfs -text

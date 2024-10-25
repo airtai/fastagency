@@ -52,16 +52,19 @@ def patch_generate_code() -> None:
 
             json_spec = json.loads(input_text)
 
-            schemas_with_dots = [
-                name
-                for name in json_spec.get("components", {}).get("schemas", {})
-                if "." in name
-            ]
+            schemas_with_dots = sorted(
+                [
+                    name
+                    for name in json_spec.get("components", {}).get("schemas", {})
+                    if "." in name
+                ],
+                key=len,
+                reverse=True,  # Sort by length in descending order
+            )
 
             for schema_name in schemas_with_dots:
-                input_text = input_text.replace(
-                    schema_name, schema_name.replace(".", "_")
-                )
+                new_schema_name = schema_name.replace(".", "_")
+                input_text = input_text.replace(schema_name, new_schema_name)
 
             kwargs["input_text"] = input_text
 

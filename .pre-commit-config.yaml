@@ -75,5 +75,6 @@ repos:
         exclude: |
           (?x)^(
               package.lock.json|
-              pnpm-lock.yaml
+              pnpm-lock.yaml|
+              examples/openapi/whatsapp_openapi_complete.json
           )$
