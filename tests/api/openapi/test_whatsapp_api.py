@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from typing import Annotated, Any, Optional
+from unittest.mock import MagicMock, patch
 
 import pytest
 from autogen import ConversableAgent, UserProxyAgent
@@ -389,9 +390,16 @@ def test_end2end(
 
 
 @pytest.mark.azureoai
+@patch("fastagency.api.openapi.client.requests.post")
 def test_real_whatsapp_end2end(
+    mock_post: MagicMock,
     azure_gpt35_turbo_16k_llm_config: dict[str, Any],
 ) -> None:
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {"status": "success"}
+    mock_post.return_value = mock_response
+
     file_path = (
         Path(__file__).parent.parent.parent.parent
         / "examples/openapi/whatsapp_openapi_complete.json"
@@ -433,10 +441,29 @@ def test_real_whatsapp_end2end(
     api._register_for_llm(agent, functions=functions)
     api._register_for_execution(user_proxy, functions=functions)
 
-    message = "I need to send a 'Hello, World!' from number 447860099299 to number 385911554755"
+    sender = "447860099299"
+    receiver = "38591152131"
+    text = "Hello, World!"
+    message = f"I need to send a '{text}' from number {sender} to number {receiver}"
     user_proxy.initiate_chat(
         agent,
         message=message,
         summary_method="reflection_with_llm",
         max_turns=3,
     )
+
+    kwargs = mock_post.call_args
+
+    expected_endpoint = ("https://api.infobip.com/whatsapp/1/message/text",)
+    assert kwargs[0] == expected_endpoint
+
+    expected_body = {
+        "from": sender,
+        "to": receiver,
+        "content": {"text": text},
+    }
+    kwargs_json = kwargs[1]["json"]
+
+    assert all(
+        item in kwargs_json.items() for item in expected_body.items()
+    ), "Incorrect request body"
