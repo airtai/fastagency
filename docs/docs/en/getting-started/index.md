@@ -206,7 +206,51 @@ There are two ways to setup you development environment and project:
         !!! danger "fix this"
 
         === "Console"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
         === "Mesop"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
         === "FastAPI + Mesop"
             ```console
             my_fastagency_app/
@@ -232,6 +276,31 @@ There are two ways to setup you development environment and project:
                 └── test_workflow.py
             ```
         === "NATS + FastAPI + Mesop"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            |   ├── nats_server.conf
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main_1_nats.py
+            │   ├── main_2_fastapi.py
+            │   ├── main_3_mesop.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
 
     5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
 
