@@ -21,7 +21,7 @@ def test_real_whatsapp_end2end(
         / "examples/openapi/whatsapp_openapi_complete.json"
     )
 
-    with file_path.open() as file:
+    with file_path.open(encoding="utf-8") as file:
         openapi_json = file.read()
 
     api = OpenAPI.create(openapi_json=openapi_json)
