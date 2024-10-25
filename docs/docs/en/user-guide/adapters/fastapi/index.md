@@ -200,6 +200,8 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     This command installs FastAgency, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and running workflows.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
 ## Example: Student and Teacher Learning Chat
 
 === "Mesop"
@@ -300,25 +302,57 @@ Please copy and paste the following code into the same folder, using the file na
 
 === "Mesop"
 
-    Once everything is set up, you can run your FastAgency application using the following commands. You need to run **two** commands in **separate** terminal windows:
+    In this setup, we need to run **two** commands in **separate** terminal windows:
 
-    - Start **FastAPI** application using [**uvicorn**](https://www.uvicorn.org){target="_blank"}:
-    !!! note "Terminal 1"
-        ```
-        uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
-        ```
+    === "Cookiecutter"
 
-    - Start **Mesop** web interface using [**gunicorn**](https://gunicorn.org){target="_blank"}:
-    !!! note "Terminal 2"
-        ```
-        gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
-        ```
+        - Start **FastAPI** application using uvicorn:
+        !!! note "Terminal 1"
+            ```
+            uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+            ```
 
-    !!! danger "Currently not working on **Windows**"
-        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-        ```
-        waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
-        ```
+        - Start **Mesop** web interface using gunicorn:
+        !!! note "Terminal 2"
+            ```
+            gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+            ```
+
+    === "env + pip"
+
+        First, install the package using package manager such as `pip` and then run it:
+
+        === "Linux/MacOS"
+
+            - Start **FastAPI** application using uvicorn:
+            !!! note "Terminal 1"
+                ```
+                pip install uvicorn
+                uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using gunicorn:
+            !!! note "Terminal 2"
+                ```
+                pip install gunicorn
+                gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+                ```
+
+        === "Windows"
+
+            - Start **FastAPI** application using uvicorn:
+            !!! note "Terminal 1"
+                ```
+                pip install uvicorn
+                uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using waitress:
+            !!! note "Terminal 2"
+                ```
+                pip install waitress
+                waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+                ```
 
 === "Custom REST API and Websocket"
 

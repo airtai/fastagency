@@ -1,18 +1,18 @@
 # Nats.io
 
-The [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) in FastAgency enables seamless integration of your workflows with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building [**distributed**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} applications.
+The [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency enables seamless integration of your workflows with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building [**distributed**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} applications.
 
 ## Use Cases
 
-When to Use the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter):
+When to Use the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md):
 
 - **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](../fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
 
-- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) provides the necessary infrastructure to enable this feature.
+- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) provides the necessary infrastructure to enable this feature.
 
 ## Architecture Overview
 
-The following diagram illustrates the high-level architecture of an application using the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) with [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) as its frontend:
+The following diagram illustrates the high-level architecture of an application using the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) with [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) as its frontend:
 
 
 ![Mesop Nats](../images/mesop_nats.png)
@@ -33,7 +33,7 @@ This application handles all client interactions and presents the results back t
 This application forms the backend of the system and consists of:
 
 - **AutoGen Workflows**: The workflows defined using the [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} framework. They are executed by the workers in the Nats Adapter.
-- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter): Communicates with AutoGen, and makes the workflow messages available on corresponding [**Nats topics**](https://docs.nats.io/nats-concepts/subjects){target="_blank"}.
+- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md): Communicates with AutoGen, and makes the workflow messages available on corresponding [**Nats topics**](https://docs.nats.io/nats-concepts/subjects){target="_blank"}.
 
 
 Now, it's time to see the Nats Adapter using FastAgency in action. Let's dive into an example and learn how to use it!
@@ -46,11 +46,13 @@ Before getting started, ensure that FastAgency is installed with support for the
 pip install "fastagency[autogen,mesop,fastapi,server,nats]"
 ```
 
-This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AutoGen workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for workflow execution.
+This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AutoGen workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
+
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Example: Student and Teacher Learning Chat
 
-In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) for the web interface and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for workflow execution.
+In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) for the web interface and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
 
 ### Step-by-Step Breakdown
 
@@ -123,37 +125,69 @@ Please copy and paste the following code into the same folder, using the file na
 
 ### Run Application
 
-Once everything is set up, you can run your FastAgency application using the following commands. You need to run **three** commands in **separate** terminal windows:
+=== "Cookiecutter"
 
-- 1. Start **Nats** Docker container:
-!!! note "Terminal 1"
-    ```
-    docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
-    ```
+    The **NATS** docker container is started automatically by Cookiecutter for this setup. In this setup, we need to run **two** commands in **separate** terminal windows:
 
-The above command starts a Nats container with the necessary ports exposed and configuration file mounted. It also sets the `FASTAGENCY_NATS_PASSWORD` environment variable for authentication.
+    - Start **FastAPI** application that provides a conversational workflow:
+    !!! note "Terminal 1"
+        ```
+        uvicorn main_1_nats:app --reload
+        ```
 
- - 2. Start **FastAPI** application that provides a conversational workflow:
-!!! note "Terminal 2"
-    ```
-    uvicorn main_1_nats:app --reload
-    ```
+    - Start **Mesop** web interface using gunicorn:
+    !!! note "Terminal 2"
+        ```
+        gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+        ```
 
-This command starts the FastAPI application using [**uvicorn**](https://www.uvicorn.org){target="_blank"}, a lightning-fast [**ASGI**](https://asgi.readthedocs.io/en/latest/){target="_blank"} server. The --reload flag enables auto-reloading, so any changes made to the code will be automatically reflected without needing to restart the server.
+=== "env + pip"
 
-- 3. Start **Mesop** web interface using [**gunicorn**](https://gunicorn.org){target="_blank"}:
-!!! note "Terminal 3"
-    ```
-    gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
-    ```
+    First, install the package using package manager such as `pip` and then run it. In this setup, we need to run **three** commands in **separate** terminal windows:
 
-!!! danger "Currently not working on **Windows**"
-    The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-    ```
-    waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
-    ```
+    === "Linux/MacOS"
 
-This command starts the Mesop web interface using [**gunicorn**](https://gunicorn.org){target="_blank"}, a production-grade [**WSGI server**](https://wsgi.readthedocs.io/en/latest/what.html){target="_blank"}. The -b flag specifies the binding address and port, and the --reload flag enables auto-reloading.
+        - Start **NATS** Docker container:
+        !!! note "Terminal 1"
+            ```
+            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+            ```
+
+        - Start **FastAPI** application that provides a conversational workflow:
+        !!! note "Terminal 2"
+            ```
+            pip install uvicorn
+            uvicorn main_1_nats:app --reload
+            ```
+
+        - Start **Mesop** web interface using gunicorn:
+        !!! note "Terminal 3"
+            ```
+            pip install gunicorn
+            gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+            ```
+
+    === "Windows"
+
+        - Start **NATS** Docker container:
+        !!! note "Terminal 1"
+            ```
+            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+            ```
+
+        - Start **FastAPI** application that provides a conversational workflow:
+        !!! note "Terminal 2"
+            ```
+            pip install uvicorn
+            uvicorn main_1_nats:app --reload
+            ```
+
+        - Start **Mesop** web interface using waitress:
+        !!! note "Terminal 3"
+            ```
+            pip install waitress
+            waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+            ```
 
 ### Output
 
