@@ -10,7 +10,7 @@ When to Use the `FastAPIAdapter` and `NATSAdapter` Together:
 
 - **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](../fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
 
-- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) provides the necessary infrastructure to enable this feature.
+- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) provides the necessary infrastructure to enable this feature.
 
 - **Security features of FastAPI**: If you want to leverage the [**security features**](https://fastapi.tiangolo.com/tutorial/security){target="_blank"} of FastAPI, such as authentication, authorization, along with the [**distributed architecture**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} of NATS, this setup is the most suitable option. Please check the [**securing your FastAPIAdapter**](../fastapi/security.md) documentation for more information.
 
@@ -78,7 +78,7 @@ This architecture promotes a clear separation of concerns between the user inter
 
     For details on building a custom client that interacts with the FastAPI backend, check out the guide [**here**](../fastapi/index.md#building-custom-client-applications). It covers the **routes, message types, and integration steps in detail**, helping you set up seamless communication with FastAPI backend.
 
-Now, it's time to see the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) in action together. Let's dive into an example and learn how to use it!
+Now, it's time to see the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) in action together. Let's dive into an example and learn how to use it!
 
 
 
@@ -110,11 +110,11 @@ Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), whic
 
 === "Mesop"
 
-    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for serving and executing the workflows.
+    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for serving and executing the workflows.
 
 === "Custom REST API and WebSocket"
 
-    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll create a custom client using [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"} and [**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"} for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for serving and executing the workflows.
+    In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll create a custom client using [**HTML**](https://en.wikipedia.org/wiki/HTML){target="_blank"} and [**JavaScript**](https://en.wikipedia.org/wiki/JavaScript){target="_blank"} for the web interface and the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for serving and executing the workflows.
 
 
 ### Step-by-Step Breakdown
