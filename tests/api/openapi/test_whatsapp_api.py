@@ -389,7 +389,7 @@ def test_end2end(
     assert message_existed, f"Expected message not found: {expected_message}"
 
 
-@pytest.mark.azureoai
+@pytest.mark.azure_oai
 @patch("fastagency.api.openapi.client.requests.post")
 def test_real_whatsapp_end2end(
     mock_post: MagicMock,
