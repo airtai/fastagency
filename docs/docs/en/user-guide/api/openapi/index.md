@@ -17,7 +17,7 @@ To get started, you need to install FastAgency with OpenAPI submodule. You can d
 pip install "fastagency[autogen,openapi]"
 ```
 
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Imports
 These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the `OpenAPI` Client and `UserProxyAgent`:

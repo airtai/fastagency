@@ -48,7 +48,7 @@ pip install "fastagency[autogen,mesop,fastapi,server,nats]"
 
 This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AutoGen workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
 
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Example: Student and Teacher Learning Chat
 
@@ -125,37 +125,69 @@ Please copy and paste the following code into the same folder, using the file na
 
 ### Run Application
 
-Once everything is set up, you can run your FastAgency application using the following commands. You need to run **three** commands in **separate** terminal windows:
+=== "Cookiecutter"
 
-- 1. Start **Nats** Docker container:
-!!! note "Terminal 1"
-    ```
-    docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
-    ```
+    The **NATS** docker container is started automatically by Cookiecutter for this setup. In this setup, we need to run **two** commands in **separate** terminal windows:
 
-The above command starts a Nats container with the necessary ports exposed and configuration file mounted. It also sets the `FASTAGENCY_NATS_PASSWORD` environment variable for authentication.
+    - Start **FastAPI** application that provides a conversational workflow:
+    !!! note "Terminal 1"
+        ```
+        uvicorn main_1_nats:app --reload
+        ```
 
- - 2. Start **FastAPI** application that provides a conversational workflow:
-!!! note "Terminal 2"
-    ```
-    uvicorn main_1_nats:app --reload
-    ```
+    - Start **Mesop** web interface using gunicorn:
+    !!! note "Terminal 2"
+        ```
+        gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+        ```
 
-This command starts the FastAPI application using [**uvicorn**](https://www.uvicorn.org){target="_blank"}, a lightning-fast [**ASGI**](https://asgi.readthedocs.io/en/latest/){target="_blank"} server. The --reload flag enables auto-reloading, so any changes made to the code will be automatically reflected without needing to restart the server.
+=== "env + pip"
 
-- 3. Start **Mesop** web interface using [**gunicorn**](https://gunicorn.org){target="_blank"}:
-!!! note "Terminal 3"
-    ```
-    gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
-    ```
+    First, install the package using package manager such as `pip` and then run it. In this setup, we need to run **three** commands in **separate** terminal windows:
 
-!!! danger "Currently not working on **Windows**"
-    The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-    ```
-    waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
-    ```
+    === "Linux/MacOS"
 
-This command starts the Mesop web interface using [**gunicorn**](https://gunicorn.org){target="_blank"}, a production-grade [**WSGI server**](https://wsgi.readthedocs.io/en/latest/what.html){target="_blank"}. The -b flag specifies the binding address and port, and the --reload flag enables auto-reloading.
+        - Start **NATS** Docker container:
+        !!! note "Terminal 1"
+            ```
+            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+            ```
+
+        - Start **FastAPI** application that provides a conversational workflow:
+        !!! note "Terminal 2"
+            ```
+            pip install uvicorn
+            uvicorn main_1_nats:app --reload
+            ```
+
+        - Start **Mesop** web interface using gunicorn:
+        !!! note "Terminal 3"
+            ```
+            pip install gunicorn
+            gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+            ```
+
+    === "Windows"
+
+        - Start **NATS** Docker container:
+        !!! note "Terminal 1"
+            ```
+            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+            ```
+
+        - Start **FastAPI** application that provides a conversational workflow:
+        !!! note "Terminal 2"
+            ```
+            pip install uvicorn
+            uvicorn main_1_nats:app --reload
+            ```
+
+        - Start **Mesop** web interface using waitress:
+        !!! note "Terminal 3"
+            ```
+            pip install waitress
+            waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+            ```
 
 ### Output
 

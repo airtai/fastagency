@@ -14,7 +14,7 @@ pip install "fastagency[autogen]"
 
 This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
 
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Example: Student and Teacher Learning Chat
 

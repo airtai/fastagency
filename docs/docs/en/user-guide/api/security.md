@@ -139,7 +139,7 @@ The installation process is exactly the same as in the [previous chapter](./inde
 pip install "fastagency[autogen,openapi]"
 ```
 
-Alternatively, you can use [**Cookiecutter**](../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+Alternatively, you can use [**Cookiecutter**](../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ### Imports
 The imports are the same as in the [previous chapter](./index.md){.internal-link}, except here we also import `APIKeyHeader` to set the security value in the header:

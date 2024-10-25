@@ -35,7 +35,7 @@ To get started, you need to install FastAgency with OpenAPI submodule. You can d
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-Alternatively, you can use [**Cookiecutter**](../../user-guide/cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
+Alternatively, you can use [**Cookiecutter**](../../user-guide/cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ### API Key Setup
 [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **WhatsAppAgent** requires an API key to interact with Infobip's WhatsApp service. Follow these steps to create your API keys:
@@ -177,83 +177,39 @@ For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/bas
 
 ## Running the Application
 
-Once the workflow is set up, you can run the application using the **FastAgency CLI**.
-There are two options of running a Mesop application:
+The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"} on Linux and Mac or [**Waitress**](https://docs.pylonsproject.org/projects/waitress/en/stable/){target="_blank"} on Windows.
 
-1. Using [`fastagency`](../../cli/cli.md){target="_blank"} command line:
-
-    !!! note "Terminal (using [fastagency](../../cli/cli.md){target="_blank"})"
-        ```
-        fastagency run
-        ```
-
-    !!! danger "Currently not working on **MacOS**"
-        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362)).
-
-2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
-
-    The preferred way to run the Mesop application is using a Python WSGI HTTP server like [Gunicorn](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
-
-    !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
-        ```
-        pip install gunicorn
+=== "Cookiecutter"
+    !!! note "Terminal"
+        ```console
         gunicorn main:app
         ```
+=== "env + pip"
 
-    !!! danger "Currently not working on **Windows**"
-        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-        ```
-        pip install waitress
-        waitress-serve --listen=0.0.0.0:8000 main:app
-        ```
+    First, install the package using package manager such as `pip` and then run it:
+
+    === "Linux/MacOS"
+        !!! note "Terminal"
+            ```console
+            pip install gunicorn
+            gunicorn main:app
+            ```
+
+    === "Windows"
+        !!! note "Terminal"
+            ```console
+            pip install waitress
+            waitress-serve --listen=0.0.0.0:8000 main:app
+            ```
 
 ```console
- ╭─ Python package file structure ──╮
- │                                  │
- │  📁 docs                         │
- │  ├── 🐍 __init__.py              │
- │  └── 📁 docs_src                 │
- │      ├── 🐍 __init__.py          │
- │      └── 📁 tutorial             │
- │          ├── 🐍 __init__.py      │
- │          └── 📁 whatsapp         │
- │              ├── 🐍 __init__.py  │
- │              └── 🐍 main.py      │
- │                                  │
- ╰──────────────────────────────────╯
-
-/home/vscode/.local/lib/python3.10/site-packages/pydantic/_internal/_config.py:341: UserWarning: Valid config keys have changed in V2:
-* 'keep_untouched' has been renamed to 'ignored_types'
-  warnings.warn(message, UserWarning)
-2024-10-22 10:04:31,524 [INFO] Patched OpenAPIParser.parse_schema
-2024-10-22 10:04:31,527 [INFO] Importing autogen.base.py
-2024-10-22 10:04:32,226 [INFO] Patching static file serving in Mesop
-/home/vscode/.local/lib/python3.10/site-packages/pydantic/main.py:214: UserWarning: A custom validator is returning a value other than `self`.
-Returning anything other than `self` from a top level model validator isn't supported when validating via `__init__`.
-See the `model_validator` docs (https://docs.pydantic.dev/latest/concepts/validators/#model-validators) for more details.
-  warnings.warn(
-2024-10-22 10:04:32,726 [INFO] Initializing MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0xffffb1122cb0>
-2024-10-22 10:04:32,731 [INFO] Initialized MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0xffffb1122cb0>
-2024-10-22 10:04:32,731 [INFO] Initializing FastAgency <FastAgency title=WhatsApp chat> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0xffff94c7e530> and UI: <fastagency.ui.mesop.mesop.MesopUI object at 0xffffb1122cb0>
-2024-10-22 10:04:32,731 [INFO] Initialized FastAgency: <FastAgency title=WhatsApp chat>
-
- ╭────────────── Importable FastAgency app ───────────────╮
- │                                                        │
- │  from docs.docs_src.tutorial.whatsapp.main import app  │
- │                                                        │
- ╰────────────────────────────────────────────────────────╯
-
-2024-10-22 10:04:32,755 [INFO] Creating MesopUI with import string: docs.docs_src.tutorial.whatsapp.main:app
-2024-10-22 10:04:32,755 [INFO] Starting MesopUI: import_string=docs.docs_src.tutorial.whatsapp.main:app, main_path=/tmp/tmp6jdunoni/main.py
-2024-10-22 10:04:32,757 [INFO] Configuring static file serving with patched method
-Running with hot reload:
-
-Running server on: http://localhost:32123
- * Serving Flask app 'mesop.server.server'
- * Debug mode: off
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8000 (23635)
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
+[2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
 ```
 
-The command will launch a web interface where users can input their requests and interact with the agents (in this case ***http://localhost:32123***)
+The command will launch a web interface where users can input their requests and interact with the agents (in this case ***http://localhost:8000***)
 
 !!! note
     Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.

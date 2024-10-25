@@ -594,7 +594,7 @@ Once everything is set up, you can run your FastAgency application using the fol
             ```
     === "env + pip"
 
-        First, you need to install it using package manager such as `pip` and then run it:
+        First, install the package using package manager such as `pip` and then run it:
 
         === "Linux/MacOS"
             !!! note "Terminal"
@@ -630,7 +630,7 @@ Once everything is set up, you can run your FastAgency application using the fol
 
     === "env + pip"
 
-        First, you need to install it using package manager such as `pip` and then run it:
+        First, install the package using package manager such as `pip` and then run it:
 
         === "Linux/MacOS"
 
