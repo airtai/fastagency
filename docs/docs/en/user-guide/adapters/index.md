@@ -34,23 +34,23 @@ Combining the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastA
 
 When to Use the [**`FastAPIAdapter`**](../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) Together
 
-- **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](../fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
+- **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
 
-- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter) provides the necessary infrastructure to enable this feature.
+- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) provides the necessary infrastructure to enable this feature.
 
-- **Security features of FastAPI**: If you want to leverage the [**security features**](https://fastapi.tiangolo.com/tutorial/security){target="_blank"} of FastAPI, such as authentication, authorization, along with the [**distributed architecture**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} of NATS, this setup is the most suitable option. Please check the [**securing your FastAPIAdapter**](../fastapi/security.md) documentation for more information.
+- **Security features of FastAPI**: If you want to leverage the [**security features**](https://fastapi.tiangolo.com/tutorial/security){target="_blank"} of FastAPI, such as authentication, authorization, along with the [**distributed architecture**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} of NATS, this setup is the most suitable option. Please check the [**securing your FastAPIAdapter**](fastapi/security.md) documentation for more information.
 
 [Learn more about **FastAPI + NATS.io adapter** →](./fastapi_nats/index.md)
 
 ### Nats.io
 
-The [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter) in FastAgency enables seamless integration of your workflows with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building [**distributed**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} applications.
+The [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency enables seamless integration of your workflows with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building [**distributed**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} applications.
 
-When to Use the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter):
+When to Use the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md):
 
-- **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](../fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
+- **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
 
-- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter) provides the necessary infrastructure to enable this feature.
+- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../api/fastagency/adapters/nats/NatsAdapter.md) provides the necessary infrastructure to enable this feature.
 
 
 [Learn more about **NATS.io adapter** →](./nats/index.md)
