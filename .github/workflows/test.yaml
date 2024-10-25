@@ -71,13 +71,14 @@ jobs:
           fi
 
       - uses: actions/checkout@v4
+        with:
+          lfs: true  # This enables Git LFS support
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ inputs.python-version }}
           cache: "pip"
           cache-dependency-path: pyproject.toml
-          lfs: true  # This enables Git LFS support
       - uses: actions/cache@v4
         id: cache
         with:
