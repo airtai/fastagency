@@ -231,7 +231,7 @@ There are two ways to setup you development environment and project:
         code my_fastagency_app
         ```
 
-    6. Once the project is openned, you will get the following option to reopen it in a devcontainer:
+    6. Once the project is opened, you will get the following option to reopen it in a devcontainer:
 
         <img src="./images/reopen-in-container.png" width="600" class="center">
 
