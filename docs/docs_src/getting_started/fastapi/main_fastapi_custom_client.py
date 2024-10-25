@@ -20,8 +20,8 @@ html = """
       <div id="workflows"></div>
       <ul id="messages"></ul>
       <script>
-         const API_URL = 'http://0.0.0.0:8008/fastagency';
-         const WS_URL = 'ws://0.0.0.0:8008/fastagency/ws'; // nosemgrep
+         const API_URL = 'http://127.0.0.1:8008/fastagency';
+         const WS_URL = 'ws://127.0.0.1:8008/fastagency/ws'; // nosemgrep
          let socket;
 
          async function fetchWorkflows() {
@@ -149,4 +149,4 @@ async def get() -> HTMLResponse:
 
 
 # start the provider with the following command
-# uvicorn main_fastapi_custom_client:app --host 0.0.0.0 --port 8008 --reload
+# uvicorn main_fastapi_custom_client:app --port 8008 --reload

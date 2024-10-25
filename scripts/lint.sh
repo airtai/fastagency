@@ -13,4 +13,4 @@ ruff format
 # black fastagency examples tests docs
 
 echo "Running codespell to find typos..."
-codespell
+codespell --skip="./node_modules,./playwright-report"

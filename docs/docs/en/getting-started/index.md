@@ -121,66 +121,270 @@ We will show you four different setups, two for development and two for producti
         In order to make such integrations easier, we will connect our [**NATS**](https://nats.io/){target="_blank"}-based message queue with the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application.
 
 
-### Install
+### Project setup
 
-To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
+There are two ways to setup you development environment and project:
 
-=== "Console"
-    ```console
-    pip install "fastagency[autogen]"
-    ```
+- [**Recommended**] Using [**Cookiecutter**](../user-guide/cookiecutter/index.md): This creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
-    This command installs FastAgency with support for the Console interface and AutoGen framework.
+- Using virtual environment, such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [**pip**](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
-=== "Mesop"
-    ```console
-    pip install "fastagency[autogen,mesop]"
-    ```
 
-=== "FastAPI + Mesop"
-    ```console
-    pip install "fastagency[autogen,mesop,fastapi,server]"
-    ```
 
-    This command installs FastAgency with support for both the Console and Mesop
-    interfaces for AutoGen workflows, but with FastAPI both serving input requests
-    and running workflows.
+=== "Cookiecutter"
 
-=== "NATS + FastAPI + Mesop"
-    ```console
-    pip install "fastagency[autogen,mesop,fastapi,server,nats]"
-    ```
+    1. Install Cookiecutter with the following command:
+       ```console
+       pip install cookiecutter
+       ```
 
-    This command installs FastAgency with support for both the Console and Mesop
-    interfaces for AutoGen workflows, but with FastAPI serving input requests and
-    independent workers communicating over NATS.io protocol running workflows. This
-    is the most scable setup and preferred way of running large workloads in production.
+    2. Run the `cookiecutter` command:
+       ```console
+       cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+       ```
 
-!!! note "Using older AutoGen version 0.2.x"
+    3. Depending on the type of the project, choose the appropriate option in step 3:
 
-    In case you want to use an older version of AutoGen (`pyautogen` instead of `autogen` package ), please use the following pip command:
+        === "Console"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1):
+            ```
 
-    === "Console"
+            This command installs FastAgency with support for the Console interface and the AutoGen framework.
+
+        === "Mesop"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1): 2
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
+
+        === "FastAPI + Mesop"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1): 3
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
+
+        === "NATS + FastAPI + Mesop"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1): 4
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
+
+    4. Executing the `cookiecutter` command will create the following file structure:
+
+        === "Console"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
+        === "Mesop"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
+        === "FastAPI + Mesop"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main_1_fastapi.py
+            │   ├── main_2_mesop.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
+        === "NATS + FastAPI + Mesop"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            |   ├── nats_server.conf
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main_1_nats.py
+            │   ├── main_2_fastapi.py
+            │   ├── main_3_mesop.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
+
+    5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
+
         ```console
-        pip install "fastagency[pyautogen]"
+        export OPENAI_API_KEY=openai_api_key_here
         ```
 
-    === "Mesop"
+        If you want to use a different LLM provider, follow [this guide](../user-guide/runtimes/autogen/using_non_openai_models.md).
+
+        Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
+
+    6. Open the generated project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} with the following command:
         ```console
-        pip install "fastagency[pyautogen,mesop]"
+        code my_fastagency_app
         ```
 
-    === "FastAPI + Mesop"
+    7. Once the project is opened, you will get the following option to reopen it in a devcontainer:
+
+        <img src="./images/reopen-in-container.png" width="600" class="center">
+
+    8. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
+
         ```console
-        pip install "fastagency[pyautogen,mesop,fastapi,server]"
+        pytest
         ```
 
-    === "NATS + FastAPI + Mesop"
+        You should get the following output if everything is correctly setup.
         ```console
-        pip install "fastagency[pyautogen,mesop,fastapi,server,nats]"
+        =================================== test session starts ===================================
+        platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+        rootdir: /workspaces/my_fastagency_app
+        configfile: pyproject.toml
+        plugins: asyncio-0.24.0, anyio-4.6.2.post1
+        asyncio: mode=Mode.STRICT, default_loop_scope=None
+        collected 1 item
+
+        tests/test_workflow.py .                                                            [100%]
+
+        ==================================== 1 passed in 1.02s ====================================
         ```
+
+
+
+=== "env + pip"
+
+    1. To install FastAgency, you will need `pip`, Python’s package installer. We will use a virtual environment to manage dependencies. Execute the following commands to create and activate a virtual environment:
+
+        ```console
+        python3.12 -m venv .venv
+        source .venv/bin/activate
+        ```
+
+    2. Install FastAgency using the following command, based on the interface you want to use:
+
+        === "Console"
+            ```console
+            pip install "fastagency[autogen]"
+            ```
+
+            This command installs FastAgency with support for the Console interface and the AutoGen framework.
+
+        === "Mesop"
+            ```console
+            pip install "fastagency[autogen,mesop]"
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
+
+        === "FastAPI + Mesop"
+            ```console
+            pip install "fastagency[autogen,mesop,fastapi,server]"
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
+
+        === "NATS + FastAPI + Mesop"
+            ```console
+            pip install "fastagency[autogen,mesop,fastapi,server,nats]"
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
+
+-----
 
 ### Imports
+
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
@@ -233,7 +437,6 @@ This code snippet sets up a simple learning chat between a student and a teacher
 === "Mesop"
     Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
-
     ```python hl_lines="1"
     {!> docs_src/getting_started/main_mesop.py [ln:54] !}
     ```
@@ -283,7 +486,6 @@ This code snippet sets up a simple learning chat between a student and a teacher
         {!> docs_src/getting_started/fastapi/main_2_mesop.py [ln:1-11] !}
         ```
 
-
 === "NATS + FastAPI + Mesop"
 
     Above, we created NATS.io provider that will start brokers waiting to consume
@@ -302,8 +504,8 @@ This code snippet sets up a simple learning chat between a student and a teacher
         {!> docs_src/getting_started/nats_n_fastapi/main_3_mesop.py [ln:1-11] !}
         ```
 
-
 ### Complete Application Code
+
 Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
 === "Console"
@@ -383,92 +585,168 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "Mesop"
 
-    There are two options of running a Mesop application:
+    The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"} on Linux and Mac or [**Waitress**](https://docs.pylonsproject.org/projects/waitress/en/stable/){target="_blank"} on Windows.
 
-    1. Using [`fastagency`](../cli/cli.md){target="_blank"} command line:
-
-        !!! note "Terminal (using [fastagency](../cli/cli.md){target="_blank"})"
-            ```
-            fastagency run
-            ```
-
-        !!! danger "Currently not working on **MacOS**"
-            The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
-
-    2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
-
-        The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
-
-        !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
-            ```
-            pip install gunicorn
+    === "Cookiecutter"
+        !!! note "Terminal"
+            ```console
             gunicorn main:app
             ```
+    === "env + pip"
 
-        !!! danger "Currently not working on **Windows**"
-            The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-            ```
-            pip install waitress
-            waitress-serve --listen=0.0.0.0:8000 main:app
-            ```
+        First, install the package using package manager such as `pip` and then run it:
+
+        === "Linux/MacOS"
+            !!! note "Terminal"
+                ```console
+                pip install gunicorn
+                gunicorn main:app
+                ```
+
+        === "Windows"
+            !!! note "Terminal"
+                ```console
+                pip install waitress
+                waitress-serve --listen=0.0.0.0:8000 main:app
+                ```
 
 === "FastAPI + Mesop"
 
     In this setup, we need to run **two** commands in **separate** terminal windows:
 
-    - Start **FastAPI** application using uvicorn:
-    !!! note "Terminal 1"
-        ```
-        uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
-        ```
+    === "Cookiecutter"
 
-    - Start **Mesop** web interface using gunicorn:
-    !!! note "Terminal 2"
-        ```
-        gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
-        ```
+        - Start **FastAPI** application using uvicorn:
+        !!! note "Terminal 1"
+            ```
+            uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+            ```
 
-    !!! danger "Currently not working on **Windows**"
-        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-        ```
-        pip install waitress
-        waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
-        ```
+        - Start **Mesop** web interface using gunicorn:
+        !!! note "Terminal 2"
+            ```
+            gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+            ```
+
+    === "env + pip"
+
+        First, install the package using package manager such as `pip` and then run it:
+
+        === "Linux/MacOS"
+
+            - Start **FastAPI** application using uvicorn:
+            !!! note "Terminal 1"
+                ```
+                pip install uvicorn
+                uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using gunicorn:
+            !!! note "Terminal 2"
+                ```
+                pip install gunicorn
+                gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+                ```
+
+        === "Windows"
+
+            - Start **FastAPI** application using uvicorn:
+            !!! note "Terminal 1"
+                ```
+                pip install uvicorn
+                uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using waitress:
+            !!! note "Terminal 2"
+                ```
+                pip install waitress
+                waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+                ```
 
 === "NATS + FastAPI + Mesop"
 
-    In this setup, we need to run **four** commands in **separate** terminal windows:
+    === "Cookiecutter"
 
-    - Start **NATS** Docker container:
-    !!! note "Terminal 1"
-        ```
-        docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
-        ```
+        The **NATS** docker container is started automatically by Cookiecutter for this setup. In this setup, we need to run **three** commands in **separate** terminal windows:
 
-    - Start **FastAPI** application that provides a conversational workflow:
-    !!! note "Terminal 2"
-        ```
-        uvicorn main_1_nats:app --reload
-        ```
+        - Start **FastAPI** application that provides a conversational workflow:
+        !!! note "Terminal 1"
+            ```
+            uvicorn main_1_nats:app --reload
+            ```
 
-    - Start **FastAPI** application integrated with a **NATS** messaging system:
-    !!! note "Terminal 3"
-        ```
-        uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
-        ```
+        - Start **FastAPI** application integrated with a **NATS** messaging system:
+        !!! note "Terminal 2"
+            ```
+            uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+            ```
 
-    - Start **Mesop** web interface using gunicorn:
-    !!! note "Terminal 4"
-        ```
-        gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
-        ```
+        - Start **Mesop** web interface using gunicorn:
+        !!! note "Terminal 3"
+            ```
+            gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
+            ```
 
-    !!! danger "Currently not working on **Windows**"
-        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-        ```
-        pip install waitress
-        waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
-        ```
+    === "env + pip"
+
+        First, install the package using package manager such as `pip` and then run it. In this setup, we need to run **four** commands in **separate** terminal windows:
+
+        === "Linux/MacOS"
+
+            - Start **NATS** Docker container:
+            !!! note "Terminal 1"
+                ```
+                docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+                ```
+
+            - Start **FastAPI** application that provides a conversational workflow:
+            !!! note "Terminal 2"
+                ```
+                pip install uvicorn
+                uvicorn main_1_nats:app --reload
+                ```
+
+            - Start **FastAPI** application integrated with a **NATS** messaging system:
+            !!! note "Terminal 3"
+                ```
+                uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using gunicorn:
+            !!! note "Terminal 4"
+                ```
+                pip install gunicorn
+                gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
+                ```
+
+        === "Windows"
+
+            - Start **NATS** Docker container:
+            !!! note "Terminal 1"
+                ```
+                docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+                ```
+
+            - Start **FastAPI** application that provides a conversational workflow:
+            !!! note "Terminal 2"
+                ```
+                pip install uvicorn
+                uvicorn main_1_nats:app --reload
+                ```
+
+            - Start **FastAPI** application integrated with a **NATS** messaging system:
+            !!! note "Terminal 3"
+                ```
+                uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using waitress:
+            !!! note "Terminal 4"
+                ```
+                pip install waitress
+                waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
+                ```
 
 ### Output
 
@@ -481,7 +759,6 @@ The outputs will vary based on the interface, here is the output of the last ter
     │  🐍 main.py          │
     │                      │
     ╰──────────────────────╯
-
 
     ╭─ Importable FastAgency app ─╮
     │                             │
