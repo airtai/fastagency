@@ -202,41 +202,48 @@ There are two ways to setup you development environment and project:
             This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
 
     4. Executing the `cookiecutter` command will create the following file structure:
-        ```console
-        my_fastagency_app/
-        ├── .devcontainer
-        │   ├── devcontainer.env
-        │   ├── devcontainer.json
-        │   ├── docker-compose.yml
-        │   └── setup.sh
-        ├── .github
-        │   └── workflows
-        │       └── test.yml
-        ├── LICENSE
-        ├── README.md
-        ├── my_fastagency_app
-        │   ├── __init__.py
-        │   ├── main_1_fastapi.py
-        │   ├── main_2_mesop.py
-        │   └── workflow.py
-        ├── pyproject.toml
-        └── tests
-            ├── __init__.py
-            ├── conftest.py
-            └── test_workflow.py
-        ```
 
-    5. To run the `FastAgency` application, you need an API key for any LLM. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
+        !!! danger "fix this"
+
+        === "Console"
+        === "Mesop"
+        === "FastAPI + Mesop"
+            ```console
+            my_fastagency_app/
+            ├── .devcontainer
+            │   ├── devcontainer.env
+            │   ├── devcontainer.json
+            │   ├── docker-compose.yml
+            │   └── setup.sh
+            ├── .github
+            │   └── workflows
+            │       └── test.yml
+            ├── LICENSE
+            ├── README.md
+            ├── my_fastagency_app
+            │   ├── __init__.py
+            │   ├── main_1_fastapi.py
+            │   ├── main_2_mesop.py
+            │   └── workflow.py
+            ├── pyproject.toml
+            └── tests
+                ├── __init__.py
+                ├── conftest.py
+                └── test_workflow.py
+            ```
+        === "NATS + FastAPI + Mesop"
+
+    5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
 
         ```console
-        export OPENAI_API_KEY=paste_openai_api_key_here
+        export OPENAI_API_KEY=openai_api_key_here
         ```
 
         If you want to use a different LLM provider, follow [this guide](../user-guide/runtimes/autogen/using_non_openai_models.md).
 
-        Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in `VSCode` using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
+        Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
 
-    6. Open the generated project in `Visual Studio Code` with the following command:
+    6. Open the generated project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} with the following command:
         ```console
         code my_fastagency_app
         ```
@@ -250,6 +257,23 @@ There are two ways to setup you development environment and project:
         ```console
         pytest
         ```
+
+        You should get the following output if everything is correctly setup.
+        ```console
+        =================================== test session starts ===================================
+        platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+        rootdir: /workspaces/my_fastagency_app
+        configfile: pyproject.toml
+        plugins: asyncio-0.24.0, anyio-4.6.2.post1
+        asyncio: mode=Mode.STRICT, default_loop_scope=None
+        collected 1 item
+
+        tests/test_workflow.py .                                                            [100%]
+
+        ==================================== 1 passed in 1.02s ====================================
+        ```
+
+
 
 === "env + pip"
 
@@ -494,36 +518,40 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "Mesop"
 
-    There are two options of running a Mesop application:
+    The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"} on Linux and Mac or [**Waitress**](https://docs.pylonsproject.org/projects/waitress/en/stable/){target="_blank"} on Windows.
 
-    1. Using [`fastagency`](../cli/cli.md){target="_blank"} command line:
-
-        !!! note "Terminal (using [fastagency](../cli/cli.md){target="_blank"})"
-            ```
-            fastagency run
-            ```
-
-        !!! danger "Currently not working on **MacOS**"
-            The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
-
-    2. Using [Gunicorn](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
-
-        The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
-
-        !!! note "Terminal (using [Gunicorn](https://gunicorn.org/){target="_blank"})"
-            ```
-            pip install gunicorn
+    === "Cookiecutter"
+        !!! note "Terminal"
+            ```console
             gunicorn main:app
             ```
+    === "env + pip"
 
-        !!! danger "Currently not working on **Windows**"
-            The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-            ```
-            pip install waitress
-            waitress-serve --listen=0.0.0.0:8000 main:app
-            ```
+        !!! danger "fix it"
+
+        === "Linux/MacOS"
+
+            First, you need to install it using package manager such as `pip` and then run it:
+
+            !!! note "Terminal"
+                ```console
+                pip install gunicorn
+                gunicorn main:app
+                ```
+
+        === "Windows"
+
+            First, you need to install it using package manager such as `pip`:
+
+            !!! note "Terminal"
+                ```console
+                pip install waitress
+                waitress-serve --listen=0.0.0.0:8000 main:app
+                ```
 
 === "FastAPI + Mesop"
+
+    !!! danger "fix it"
 
     In this setup, we need to run **two** commands in **separate** terminal windows:
 
@@ -547,6 +575,8 @@ Once everything is set up, you can run your FastAgency application using the fol
         ```
 
 === "NATS + FastAPI + Mesop"
+
+    !!! danger "fix it"
 
     In this setup, we need to run **four** commands in **separate** terminal windows:
 

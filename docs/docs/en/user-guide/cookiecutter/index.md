@@ -2,6 +2,8 @@
 
 Cookiecutter creates projects from cookiecutters (project templates), e.g. Python package projects from Python package templates. `FastAgency` provides a [cookiecutter template](https://github.com/airtai/cookiecutter-fastagency) to quickly setup environment and to quickly run the desired example.
 
+!!! danger "fix me using the text from Getting started"
+
 ### Using Cookiecutter Template
 
 1. Open your terminal.
