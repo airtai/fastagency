@@ -125,123 +125,115 @@ We will show you four different setups, two for development and two for producti
 
 There are two ways to setup you development environment and project:
 
-- [recommended] using [**Cookiecutter**](../user-guide/cookiecutter/index.md): it creates project folder structure, default workflow, automatically installs all the necessary requirements and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}, and
+- [**Recommended**] Using [**Cookiecutter**](../user-guide/cookiecutter/index.md): This creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
-- using a virtual environment such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"} and a python package manager such as [**pip**](https://en.wikipedia.org/wiki/Pip_(package_manager)).
+- Using virtual environment, such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [**pip**](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
 
 
 === "Cookiecutter"
 
-    First, you need to install Cookiecutter as follows:
+    1. Install Cookiecutter with the following command:
+       ```console
+       pip install cookiecutter
+       ```
 
-    ```console
-    pip install cookiecutter
-    ```
+    2. Run the `cookiecutter` command:
+       ```console
+       cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+       ```
 
-    Next, run the `cookiecutter` command:
-    ```console
-    cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
-    ```
+    3. Depending on the type of the project, choose the appropriate option in step 3:
 
-    Depending on the type of the project, choose the appropriate option in step 3:
+        === "Console"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1):
+            ```
 
-    === "Console"
+            This command installs FastAgency with support for the Console interface and the AutoGen framework.
+
+        === "Mesop"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1): 2
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
+
+        === "FastAPI + Mesop"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1): 3
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
+
+        === "NATS + FastAPI + Mesop"
+            ```console
+            [1/3] project_name (My FastAgency App):
+            [2/3] project_slug (my_fastagency_app):
+            [3/3] Select app_type
+                1 - fastapi+mesop
+                2 - mesop
+                3 - console
+                4 - nats+fastapi+mesop
+                Choose from [1/2/3/4] (1): 4
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
+
+    4. Executing the `cookiecutter` command will create the following file structure:
         ```console
-        [1/3] project_name (My FastAgency App):
-        [2/3] project_slug (my_fastagency_app):
-        [3/3] Select app_type
-            1 - fastapi+mesop
-            2 - mesop
-            3 - console
-            4 - nats+fastapi+mesop
-            Choose from [1/2/3/4] (1):
+        my_fastagency_app/
+        ├── .devcontainer
+        │   ├── devcontainer.env
+        │   ├── devcontainer.json
+        │   ├── docker-compose.yml
+        │   └── setup.sh
+        ├── .github
+        │   └── workflows
+        │       └── test.yml
+        ├── LICENSE
+        ├── README.md
+        ├── my_fastagency_app
+        │   ├── __init__.py
+        │   ├── main_1_fastapi.py
+        │   ├── main_2_mesop.py
+        │   └── workflow.py
+        ├── pyproject.toml
+        └── tests
+            ├── __init__.py
+            ├── conftest.py
+            └── test_workflow.py
         ```
 
-        This command installs FastAgency with support for the Console interface and AutoGen framework.
-
-    === "Mesop"
+    5. Open the generated project in `Visual Studio Code` with the following command:
         ```console
-        [1/3] project_name (My FastAgency App):
-        [2/3] project_slug (my_fastagency_app):
-        [3/3] Select app_type
-            1 - fastapi+mesop
-            2 - mesop
-            3 - console
-            4 - nats+fastapi+mesop
-            Choose from [1/2/3/4] (1): 2
+        code my_fastagency_app
         ```
 
-        This command installs FastAgency with support for both the Console and Mesop
-        interfaces for AutoGen workflows.
+    6. Once the project is openned, you will get the following option to reopen it in a devcontainer:
 
-    === "FastAPI + Mesop"
-        ```console
-        [1/3] project_name (My FastAgency App):
-        [2/3] project_slug (my_fastagency_app):
-        [3/3] Select app_type
-            1 - fastapi+mesop
-            2 - mesop
-            3 - console
-            4 - nats+fastapi+mesop
-            Choose from [1/2/3/4] (1): 3
-        ```
-
-        This command installs FastAgency with support for both the Console and Mesop
-        interfaces for AutoGen workflows, but with FastAPI both serving input requests
-        and running workflows.
-
-    === "NATS + FastAPI + Mesop"
-        ```console
-        [1/3] project_name (My FastAgency App):
-        [2/3] project_slug (my_fastagency_app):
-        [3/3] Select app_type
-            1 - fastapi+mesop
-            2 - mesop
-            3 - console
-            4 - nats+fastapi+mesop
-            Choose from [1/2/3/4] (1): 4
-        ```
-
-        This command installs FastAgency with support for both the Console and Mesop
-        interfaces for AutoGen workflows, but with FastAPI serving input requests and
-        independent workers communicating over NATS.io protocol running workflows. This
-        is the most scable setup and recommended way of running large workloads in production.
-
-    Executing this command will create the following file structure:
-    ```console
-    my_fastagency_app/
-    ├── .devcontainer
-    │   ├── devcontainer.env
-    │   ├── devcontainer.json
-    │   ├── docker-compose.yml
-    │   └── setup.sh
-    ├── .github
-    │   └── workflows
-    │       └── test.yml
-    ├── LICENSE
-    ├── README.md
-    ├── my_fastagency_app
-    │   ├── __init__.py
-    │   ├── main_1_fastapi.py
-    │   ├── main_2_mesop.py
-    │   └── workflow.py
-    ├── pyproject.toml
-    └── tests
-        ├── __init__.py
-        ├── conftest.py
-        └── test_workflow.py
-    ```
-
-    You can open the generated project now with the following command line:
-
-    ```console
-    code my_fastagency_app
-    ```
-
-    Once the project is openned, you will get the following option to reopen it in a devcontainer:
-
-    <img src="./images/reopen-in-container.png" width="600" class="center">
+        <img src="./images/reopen-in-container.png" width="600" class="center">
 
     !!! danger "todo"
 
@@ -251,49 +243,42 @@ There are two ways to setup you development environment and project:
 
 === "env + pip"
 
-    To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
+    1. To install FastAgency, you will need `pip`, Python’s package installer. We will use a virtual environment to manage dependencies. Execute the following commands to create and activate a virtual environment:
 
-    !!! warning "check this"
-
-    ```console
-    python3.12 -m venv .venv
-    source .venv/bin/activate
-    ```
-
-
-    === "Console"
         ```console
-        pip install "fastagency[autogen]"
+        python3.12 -m venv .venv
+        source .venv/bin/activate
         ```
 
-        This command installs FastAgency with support for the Console interface and AutoGen framework.
+    2. Install FastAgency using the following command, based on the interface you want to use:
 
-    === "Mesop"
-        ```console
-        pip install "fastagency[autogen,mesop]"
-        ```
+        === "Console"
+            ```console
+            pip install "fastagency[autogen]"
+            ```
 
-        This command installs FastAgency with support for both the Console and Mesop
-        interfaces for AutoGen workflows.
+            This command installs FastAgency with support for the Console interface and the AutoGen framework.
 
-    === "FastAPI + Mesop"
-        ```console
-        pip install "fastagency[autogen,mesop,fastapi,server]"
-        ```
+        === "Mesop"
+            ```console
+            pip install "fastagency[autogen,mesop]"
+            ```
 
-        This command installs FastAgency with support for both the Console and Mesop
-        interfaces for AutoGen workflows, but with FastAPI both serving input requests
-        and running workflows.
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
 
-    === "NATS + FastAPI + Mesop"
-        ```console
-        pip install "fastagency[autogen,mesop,fastapi,server,nats]"
-        ```
+        === "FastAPI + Mesop"
+            ```console
+            pip install "fastagency[autogen,mesop,fastapi,server]"
+            ```
 
-        This command installs FastAgency with support for both the Console and Mesop
-        interfaces for AutoGen workflows, but with FastAPI serving input requests and
-        independent workers communicating over NATS.io protocol running workflows. This
-        is the most scable setup and recommended way of running large workloads in production.
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
+
+        === "NATS + FastAPI + Mesop"
+            ```console
+            pip install "fastagency[autogen,mesop,fastapi,server,nats]"
+            ```
+
+            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
 
 -----
 
