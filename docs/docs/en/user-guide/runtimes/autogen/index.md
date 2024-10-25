@@ -14,6 +14,8 @@ pip install "fastagency[autogen,mesop,openapi]"
 
 These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
 ## Prerequisites
 
 Before you begin this guide, ensure you have:
@@ -121,34 +123,30 @@ Finally, we create the FastAgency application and launch it using the [**`mesop`
 
 ### Running the Application
 
-There are two options of running a Mesop application:
+The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"} on Linux and Mac or [**Waitress**](https://docs.pylonsproject.org/projects/waitress/en/stable/){target="_blank"} on Windows.
 
-1. Using [**`fastagency`**](../../cli/index.md) command:
-
-    !!! note "Terminal (using [**`fastagency`**](../../cli/index.md))"
-        ```
-        fastagency run
-        ```
-
-    !!! danger "Currently not working on **MacOS**"
-        The above command is currently not working on **MacOS**, please use the alternative way of starting the application from below ([#362](https://github.com/airtai/fastagency/issues/362){target="_blank"}).
-
-2. Using [**Gunicorn**](https://gunicorn.org/){target="_blank"} WSGI HTTP server:
-
-    The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"}. First, you need to install it using package manager such as `pip` and then run it as follows:
-
-    !!! note "Terminal (using [**Gunicorn**](https://gunicorn.org/){target="_blank"})"
-        ```
-        pip install gunicorn
+=== "Cookiecutter"
+    !!! note "Terminal"
+        ```console
         gunicorn main:app
         ```
+=== "env + pip"
 
-    !!! danger "Currently not working on **Windows**"
-        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-        ```
-        pip install waitress
-        waitress-serve --listen=0.0.0.0:8000 main:app
-        ```
+    First, install the package using package manager such as `pip` and then run it:
+
+    === "Linux/MacOS"
+        !!! note "Terminal"
+            ```console
+            pip install gunicorn
+            gunicorn main:app
+            ```
+
+    === "Windows"
+        !!! note "Terminal"
+            ```console
+            pip install waitress
+            waitress-serve --listen=0.0.0.0:8000 main:app
+            ```
 
 Ensure you have set your [**OpenAI API key**](https://platform.openai.com/api-keys){target="_blank"} in the environment and that the [**weather API**](https://weather.tools.fastagency.ai/docs){target="_blank"} URL is accessible. The command will launch a [**`mesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) interface where users can input their requests and interact with the weather agent.
 
