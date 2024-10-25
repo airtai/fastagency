@@ -1,0 +1,46 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "schema_with_frontslashes",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Local environment"
+        }
+    ],
+    "paths": {
+        "/items/ships/": {
+            "get": {
+                "summary": "Update Item",
+                "operationId": "get/item/items/item/id/ships/ship/get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {},
+        "securitySchemes": {
+            "APIKeyHeader": {
+                "type": "no_type",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}
