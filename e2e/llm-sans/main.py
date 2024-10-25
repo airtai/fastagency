@@ -106,7 +106,7 @@ def workflow_started(
     return "Completed OK"  # type: ignore[no-any-return]
 
 @wf.register(name="workflow_completed", description="Workflow completed")
-def workflow_started(
+def workflow_completed(
     ui: UI, params: dict[str, Any]
 ) -> str:
     ui.workflow_completed(
