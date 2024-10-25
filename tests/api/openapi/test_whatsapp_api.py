@@ -34,6 +34,7 @@ def test_real_whatsapp_end2end(
     user_proxy = UserProxyAgent(
         name="user_proxy",
         human_input_mode="NEVER",
+        code_execution_config=False,
     )
 
     functions = ["channels_whatsapp_send_whatsapp_text_message"]
