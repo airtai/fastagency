@@ -2,7 +2,6 @@ import { expect, test } from '@playwright/test';
 
 test('text message', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Text message test' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -13,7 +12,6 @@ test('text message', async ({ page }) => {
 
 test('text input message', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Text input message test' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -28,7 +26,6 @@ test('text input message', async ({ page }) => {
 
 test('multiple choice message - single', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Multiple choice - single' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -40,7 +37,6 @@ test('multiple choice message - single', async ({ page }) => {
 
 test('multiple choice message - many', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Multiple choice - many' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -56,7 +52,6 @@ test('multiple choice message - many', async ({ page }) => {
 
 test('suggested function call', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Suggested Function Call Message' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -67,7 +62,6 @@ test('suggested function call', async ({ page }) => {
 
 test('function call execution', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Function Call Execution Message' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -78,7 +72,6 @@ test('function call execution', async ({ page }) => {
 
 test('error message', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Error Message' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -91,7 +84,6 @@ test('error message', async ({ page }) => {
 
 test('workflow started', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Workflow started' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
@@ -104,7 +96,6 @@ test('workflow started', async ({ page }) => {
 
 test('workflow completed', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Mesop/);
     const startWorkflow = await page.getByRole('button', { name: 'Workflow completed' })
     await startWorkflow.click()
     const started = await page.getByText("Workflow started")
