@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Annotated, Any, Optional
 
@@ -7,6 +8,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field, StringConstraints, constr
 
 from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi.security import APIKeyHeader
 
 
 def create_whatsapp_fastapi_app(host: str, port: int) -> FastAPI:
@@ -387,7 +389,7 @@ def test_end2end(
 
 
 @pytest.mark.azureoai
-def testreal_whatsapp_end2end(
+def test_real_whatsapp_end2end(
     azure_gpt35_turbo_16k_llm_config: dict[str, Any],
 ) -> None:
     file_path = (
@@ -401,3 +403,40 @@ def testreal_whatsapp_end2end(
     api = OpenAPI.create(openapi_json=openapi_json)
 
     assert isinstance(api, OpenAPI)
+
+    header_authorization = "App "  # pragma: allowlist secret
+    header_authorization += os.getenv("WHATSAPP_API_KEY", "")
+    api.set_security_params(APIKeyHeader.Parameters(value=header_authorization))
+
+    system_message = """When sending the message, the Body must use the following format:
+{
+    "from": "447860099299",
+    "to": "receiverNumber",
+    "messageId": "test-message-randomInt",
+    "content": {
+        "text": "message"
+    },
+    "callbackData": "Callback data"
+}"""
+    agent = ConversableAgent(
+        name="agent",
+        system_message=system_message,
+        llm_config=azure_gpt35_turbo_16k_llm_config,
+    )
+    user_proxy = UserProxyAgent(
+        name="user_proxy",
+        llm_config=azure_gpt35_turbo_16k_llm_config,
+        human_input_mode="NEVER",
+    )
+
+    functions = ["channels_whatsapp_send_whatsapp_text_message"]
+    api._register_for_llm(agent, functions=functions)
+    api._register_for_execution(user_proxy, functions=functions)
+
+    message = "I need to send a 'Hello, World!' from number 447860099299 to number 385911554755"
+    user_proxy.initiate_chat(
+        agent,
+        message=message,
+        summary_method="reflection_with_llm",
+        max_turns=3,
+    )
