@@ -203,8 +203,6 @@ There are two ways to setup you development environment and project:
 
     4. Executing the `cookiecutter` command will create the following file structure:
 
-        !!! danger "fix this"
-
         === "Console"
             ```console
             my_fastagency_app/
@@ -596,12 +594,9 @@ Once everything is set up, you can run your FastAgency application using the fol
             ```
     === "env + pip"
 
-        !!! danger "fix it"
+        First, you need to install it using package manager such as `pip` and then run it:
 
         === "Linux/MacOS"
-
-            First, you need to install it using package manager such as `pip` and then run it:
-
             !!! note "Terminal"
                 ```console
                 pip install gunicorn
@@ -609,9 +604,6 @@ Once everything is set up, you can run your FastAgency application using the fol
                 ```
 
         === "Windows"
-
-            First, you need to install it using package manager such as `pip`:
-
             !!! note "Terminal"
                 ```console
                 pip install waitress
@@ -620,65 +612,141 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 === "FastAPI + Mesop"
 
-    !!! danger "fix it"
-
     In this setup, we need to run **two** commands in **separate** terminal windows:
 
-    - Start **FastAPI** application using uvicorn:
-    !!! note "Terminal 1"
-        ```
-        uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
-        ```
+    === "Cookiecutter"
 
-    - Start **Mesop** web interface using gunicorn:
-    !!! note "Terminal 2"
-        ```
-        gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
-        ```
+        - Start **FastAPI** application using uvicorn:
+        !!! note "Terminal 1"
+            ```
+            uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+            ```
 
-    !!! danger "Currently not working on **Windows**"
-        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-        ```
-        pip install waitress
-        waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
-        ```
+        - Start **Mesop** web interface using gunicorn:
+        !!! note "Terminal 2"
+            ```
+            gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+            ```
+
+    === "env + pip"
+
+        First, you need to install it using package manager such as `pip` and then run it:
+
+        === "Linux/MacOS"
+
+            - Start **FastAPI** application using uvicorn:
+            !!! note "Terminal 1"
+                ```
+                pip install uvicorn
+                uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using gunicorn:
+            !!! note "Terminal 2"
+                ```
+                pip install gunicorn
+                gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
+                ```
+
+        === "Windows"
+
+            - Start **FastAPI** application using uvicorn:
+            !!! note "Terminal 1"
+                ```
+                pip install uvicorn
+                uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using waitress:
+            !!! note "Terminal 2"
+                ```
+                pip install waitress
+                waitress-serve --listen=0.0.0.0:8888 main_2_mesop:app
+                ```
 
 === "NATS + FastAPI + Mesop"
 
-    !!! danger "fix it"
+    === "Cookiecutter"
 
-    In this setup, we need to run **four** commands in **separate** terminal windows:
+        The **NATS** docker container is started automatically by Cookiecutter for this setup. In this setup, we need to run **three** commands in **separate** terminal windows:
 
-    - Start **NATS** Docker container:
-    !!! note "Terminal 1"
-        ```
-        docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
-        ```
+        - Start **FastAPI** application that provides a conversational workflow:
+        !!! note "Terminal 1"
+            ```
+            uvicorn main_1_nats:app --reload
+            ```
 
-    - Start **FastAPI** application that provides a conversational workflow:
-    !!! note "Terminal 2"
-        ```
-        uvicorn main_1_nats:app --reload
-        ```
+        - Start **FastAPI** application integrated with a **NATS** messaging system:
+        !!! note "Terminal 2"
+            ```
+            uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+            ```
 
-    - Start **FastAPI** application integrated with a **NATS** messaging system:
-    !!! note "Terminal 3"
-        ```
-        uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
-        ```
+        - Start **Mesop** web interface using gunicorn:
+        !!! note "Terminal 3"
+            ```
+            gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
+            ```
 
-    - Start **Mesop** web interface using gunicorn:
-    !!! note "Terminal 4"
-        ```
-        gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
-        ```
+    === "env + pip"
 
-    !!! danger "Currently not working on **Windows**"
-        The above command is currently not working on **Windows**, because gunicorn is not supported. Please use the alternative method below to start the application:
-        ```
-        pip install waitress
-        waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
-        ```
+        First, install the package using package manager such as `pip` and then run it. In this setup, we need to run **four** commands in **separate** terminal windows:
+
+        === "Linux/MacOS"
+
+            - Start **NATS** Docker container:
+            !!! note "Terminal 1"
+                ```
+                docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+                ```
+
+            - Start **FastAPI** application that provides a conversational workflow:
+            !!! note "Terminal 2"
+                ```
+                pip install uvicorn
+                uvicorn main_1_nats:app --reload
+                ```
+
+            - Start **FastAPI** application integrated with a **NATS** messaging system:
+            !!! note "Terminal 3"
+                ```
+                uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using gunicorn:
+            !!! note "Terminal 4"
+                ```
+                pip install gunicorn
+                gunicorn main_3_mesop:app -b 0.0.0.0:8888 --reload
+                ```
+
+        === "Windows"
+
+            - Start **NATS** Docker container:
+            !!! note "Terminal 1"
+                ```
+                docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+                ```
+
+            - Start **FastAPI** application that provides a conversational workflow:
+            !!! note "Terminal 2"
+                ```
+                pip install uvicorn
+                uvicorn main_1_nats:app --reload
+                ```
+
+            - Start **FastAPI** application integrated with a **NATS** messaging system:
+            !!! note "Terminal 3"
+                ```
+                uvicorn main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+                ```
+
+            - Start **Mesop** web interface using waitress:
+            !!! note "Terminal 4"
+                ```
+                pip install waitress
+                waitress-serve --listen=0.0.0.0:8888 main_3_mesop:app
+                ```
 
 ### Output
 
