@@ -226,20 +226,30 @@ There are two ways to setup you development environment and project:
             └── test_workflow.py
         ```
 
-    5. Open the generated project in `Visual Studio Code` with the following command:
+    5. To run the `FastAgency` application, you need an API key for any LLM. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
+
+        ```console
+        export OPENAI_API_KEY=paste_openai_api_key_here
+        ```
+
+        If you want to use a different LLM provider, follow [this guide](../user-guide/runtimes/autogen/using_non_openai_models.md).
+
+        Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in `VSCode` using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
+
+    6. Open the generated project in `Visual Studio Code` with the following command:
         ```console
         code my_fastagency_app
         ```
 
-    6. Once the project is opened, you will get the following option to reopen it in a devcontainer:
+    7. Once the project is opened, you will get the following option to reopen it in a devcontainer:
 
         <img src="./images/reopen-in-container.png" width="600" class="center">
 
-    !!! danger "todo"
+    8. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
 
-    - set OPENAPI key
-
-    - run tests to make sure everything is fine<>
+        ```console
+        pytest
+        ```
 
 === "env + pip"
 
@@ -283,6 +293,7 @@ There are two ways to setup you development environment and project:
 -----
 
 ### Imports
+
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
@@ -335,7 +346,6 @@ This code snippet sets up a simple learning chat between a student and a teacher
 === "Mesop"
     Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
-
     ```python hl_lines="1"
     {!> docs_src/getting_started/main_mesop.py [ln:54] !}
     ```
@@ -385,7 +395,6 @@ This code snippet sets up a simple learning chat between a student and a teacher
         {!> docs_src/getting_started/fastapi/main_2_mesop.py [ln:1-11] !}
         ```
 
-
 === "NATS + FastAPI + Mesop"
 
     Above, we created NATS.io provider that will start brokers waiting to consume
@@ -404,8 +413,8 @@ This code snippet sets up a simple learning chat between a student and a teacher
         {!> docs_src/getting_started/nats_n_fastapi/main_3_mesop.py [ln:1-11] !}
         ```
 
-
 ### Complete Application Code
+
 Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
 === "Console"
@@ -583,7 +592,6 @@ The outputs will vary based on the interface, here is the output of the last ter
     │  🐍 main.py          │
     │                      │
     ╰──────────────────────╯
-
 
     ╭─ Importable FastAgency app ─╮
     │                             │
