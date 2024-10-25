@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Annotated, Any, Optional
 
 import pytest
@@ -383,3 +384,20 @@ def test_end2end(
             message_existed = True
             break
     assert message_existed, f"Expected message not found: {expected_message}"
+
+
+@pytest.mark.azureoai
+def testreal_whatsapp_end2end(
+    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
+) -> None:
+    file_path = (
+        Path(__file__).parent.parent.parent.parent
+        / "examples/openapi/whatsapp_openapi_complete.json"
+    )
+
+    with file_path.open() as file:
+        openapi_json = file.read()
+
+    api = OpenAPI.create(openapi_json=openapi_json)
+
+    assert isinstance(api, OpenAPI)

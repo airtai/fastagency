@@ -169,7 +169,7 @@ class OpenAPI:
 
     def _request(
         self,
-        method: Literal["put", "get", "post", "delete"],
+        method: Literal["put", "get", "post", "head", "delete"],
         path: str,
         description: Optional[str] = None,
         security: Optional[list[BaseSecurity]] = None,
@@ -221,6 +221,9 @@ class OpenAPI:
 
     def delete(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("delete", path, **kwargs)
+
+    def head(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
+        return self._request("head", path, **kwargs)
 
     @classmethod
     def _get_template_dir(cls) -> Path:
