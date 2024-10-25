@@ -1,18 +1,18 @@
 # Nats.io
 
-The [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) in FastAgency enables seamless integration of your workflows with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building [**distributed**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} applications.
+The [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency enables seamless integration of your workflows with the [**Nats.io MQ**](https://nats.io/){target="_blank"} message broker, providing a scalable and flexible solution for building [**distributed**](https://en.wikipedia.org/wiki/Distributed_computing){target="_blank"} applications.
 
 ## Use Cases
 
-When to Use the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter):
+When to Use the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md):
 
 - **High User Demand**: If you need to scale beyond what [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} of the [**FastAPIAdapter**](../fastapi/index.md) can achieve, you can use [**Nats.io**](https://nats.io/){target="_blank"} with a [**message queue**](https://en.wikipedia.org/wiki/Message_queue){target="_blank"} and [**multiple workers**](https://fastapi.tiangolo.com/deployment/server-workers/){target="_blank"} to consume and produce messages. This distributed message-queue architecture allows scaling not only across multiple workers but also across multiple machines and clusters.
 
-- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) provides the necessary infrastructure to enable this feature.
+- [**Observability**](https://en.wikipedia.org/wiki/Observability_(software)){target="_blank"}: If you need the ability to **audit workflow executions** both in realtime and retrospectively, the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) provides the necessary infrastructure to enable this feature.
 
 ## Architecture Overview
 
-The following diagram illustrates the high-level architecture of an application using the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) with [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) as its frontend:
+The following diagram illustrates the high-level architecture of an application using the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) with [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) as its frontend:
 
 
 ![Mesop Nats](../images/mesop_nats.png)
@@ -33,7 +33,7 @@ This application handles all client interactions and presents the results back t
 This application forms the backend of the system and consists of:
 
 - **AutoGen Workflows**: The workflows defined using the [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} framework. They are executed by the workers in the Nats Adapter.
-- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter): Communicates with AutoGen, and makes the workflow messages available on corresponding [**Nats topics**](https://docs.nats.io/nats-concepts/subjects){target="_blank"}.
+- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md): Communicates with AutoGen, and makes the workflow messages available on corresponding [**Nats topics**](https://docs.nats.io/nats-concepts/subjects){target="_blank"}.
 
 
 Now, it's time to see the Nats Adapter using FastAgency in action. Let's dive into an example and learn how to use it!
@@ -46,13 +46,13 @@ Before getting started, ensure that FastAgency is installed with support for the
 pip install "fastagency[autogen,mesop,fastapi,server,nats]"
 ```
 
-This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AutoGen workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for workflow execution.
+This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AutoGen workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
 
 Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. It automatically installs all the necessary requirements.
 
 ## Example: Student and Teacher Learning Chat
 
-In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) for the web interface and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter) for workflow execution.
+In this example, we'll create a simple learning [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} where a student agent asks questions and a teacher agent responds, simulating a learning environment. We'll use [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) for the web interface and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
 
 ### Step-by-Step Breakdown
 
