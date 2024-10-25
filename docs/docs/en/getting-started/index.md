@@ -154,7 +154,7 @@ There are two ways to setup you development environment and project:
                 2 - mesop
                 3 - console
                 4 - nats+fastapi+mesop
-                Choose from [1/2/3/4] (1):
+                Choose from [1/2/3/4] (1): 3
             ```
 
             This command installs FastAgency with support for the Console interface and the AutoGen framework.
@@ -182,7 +182,7 @@ There are two ways to setup you development environment and project:
                 2 - mesop
                 3 - console
                 4 - nats+fastapi+mesop
-                Choose from [1/2/3/4] (1): 3
+                Choose from [1/2/3/4] (1): 1
             ```
 
             This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
@@ -339,8 +339,6 @@ There are two ways to setup you development environment and project:
 
         ==================================== 1 passed in 1.02s ====================================
         ```
-
-
 
 === "env + pip"
 
