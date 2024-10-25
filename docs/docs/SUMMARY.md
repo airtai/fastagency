@@ -69,6 +69,7 @@ search:
                         - [patch_get_parameter_type](api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
                     - patch_fastapi_code_generator
                         - [patch_function_name_parsing](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_function_name_parsing.md)
+                        - [patch_generate_code](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_generate_code.md)
                         - [patch_parse_schema](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_parse_schema.md)
                     - security
                         - [APIKeyCookie](api/fastagency/api/openapi/security/APIKeyCookie.md)

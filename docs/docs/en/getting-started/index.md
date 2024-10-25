@@ -247,7 +247,7 @@ There are two ways to setup you development environment and project:
 
     - set OPENAPI key
 
-    - run tests to make sure everything is fine
+    - run tests to make sure everything is fine<>
 
 === "env + pip"
 
