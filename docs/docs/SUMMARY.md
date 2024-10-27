@@ -5,6 +5,7 @@ search:
 - Getting Started
     - [Getting Started](getting-started/index.md)
 - [User guide](user-guide/index.md)
+    - [Project setup](user-guide/cookiecutter/index.md)
     - [Runtimes](user-guide/runtimes/index.md)
         - [AutoGen](user-guide/runtimes/autogen/index.md)
             - Agents
@@ -18,16 +19,17 @@ search:
         - [FastAPI](user-guide/ui/fastapi/basics.md)
     - [Adapters](user-guide/adapters/index.md)
         - [FastAPI](user-guide/adapters/fastapi/index.md)
-        - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
         - [Nats.io](user-guide/adapters/nats/index.md)
+        - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
+        - [FastAPI Security](user-guide/adapters/fastapi/security.md)
     - [API-s](user-guide/api/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
     - [CLI](user-guide/cli/index.md)
-- [Tutorial](tutorial/index.md)
-    - [Giphy API & WebSurfer](tutorial/giphy/index.md)
-    - [Infobip WhatsApp API & WebSurfer](tutorial/whatsapp/index.md)
+- [Tutorials](tutorials/index.md)
+    - [Giphy API & WebSurfer](tutorials/giphy/index.md)
+    - [WhatsApp API & WebSurfer](tutorials/whatsapp/index.md)
     - [Playing chess](tutorial/chess/index.md)
 - Reference
     - API
@@ -67,6 +69,8 @@ search:
                         - [ArgumentWithDescription](api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                         - [patch_get_parameter_type](api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
                     - patch_fastapi_code_generator
+                        - [patch_function_name_parsing](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_function_name_parsing.md)
+                        - [patch_generate_code](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_generate_code.md)
                         - [patch_parse_schema](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_parse_schema.md)
                     - security
                         - [APIKeyCookie](api/fastagency/api/openapi/security/APIKeyCookie.md)
@@ -158,9 +162,9 @@ search:
                         - [Toolable](api/fastagency/runtimes/autogen/autogen/Toolable.md)
                     - tools
                         - [WebSurferTool](api/fastagency/runtimes/autogen/tools/WebSurferTool.md)
-                        - web_surfer
-                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferAnswer.md)
-                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/web_surfer/WebSurferTool.md)
+                        - websurfer
+                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferAnswer.md)
+                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)

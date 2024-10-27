@@ -102,6 +102,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true  # This enables Git LFS support
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -120,6 +122,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true  # This enables Git LFS support
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

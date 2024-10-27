@@ -362,7 +362,7 @@ class MessageProcessorMixin(ABC):
             return self.visit(message)
         except Exception as e:
             # log the error and return None
-            logger.error(f"Error processing message ({message}): {e}", stack_info=True)
+            logger.error(f"Error processing message ({message}): {e}", exc_info=True)
             return None
 
     def text_message(
@@ -605,12 +605,12 @@ class MessageProcessorMixin(ABC):
 
 class InputResponseModel(BaseModel):
     msg: str
-    question_id: Optional[UUID] = None
+    question_uuid: Optional[UUID] = None
     error: bool = False
 
 
 class InitiateWorkflowModel(BaseModel):
-    user_id: Optional[UUID] = None
+    user_id: Optional[str] = None
     workflow_uuid: UUID
     name: str
     params: dict[str, Any]

@@ -56,13 +56,6 @@ mesop = [
     "mesop>=0.12.7, <1; python_version >= '3.10'"
 ]
 
-pyautogen = [
-    "pyautogen[anthropic,together]>=0.2.35,<0.3",
-    "flaml==2.2.0,<2.3.0",
-    "together>=1.2.11",
-    "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
-]
-
 autogen = [
     "autogen[anthropic,together]>=0.3.0,<0.4",
     # ToDo: Autogen requires flaml but flaml 2.3.0 has issues with its optional dependencies
@@ -153,6 +146,8 @@ testing = [
     "watchfiles==0.24.0",
     "email-validator==2.2.0",
     "python-multipart>=0.0.12",
+    "PyJWT==2.9.0",
+    "passlib[bcrypt]==1.7.4",
 ]
 
 dev = [
@@ -336,5 +331,5 @@ extend-exclude = """
 """
 
 [tool.codespell]
-skip = "./venv*,./docs/site/*,./htmlcov"
-# ignore-words = ".codespell-whitelist.txt"
+skip = "./venv*,./docs/site/*,./htmlcov,./examples/openapi/whatsapp_openapi_complete.json"
+ignore-words = ".codespell-whitelist.txt"

@@ -1,8 +1,8 @@
 # Console
 
-**[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)** in FastAgency provides a text-based interface for interacting with multi-agent workflows directly from the command line. This interface allows developers to quickly test and prototype workflows without needing to set up a graphical or web-based interface, making it an excellent tool for early-stage development and debugging.
+**[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)** in FastAgency provides a text-based interface for interacting with multi-agent workflows directly from the command line. This interface allows developers to quickly test and prototype workflows without needing to set up a graphical or web-based interface, making it an excellent tool for early-stage development and debugging.
 
-Below is an example that demonstrates how to set up a simple learning conversation between a student and a teacher using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)**.
+Below is an example that demonstrates how to set up a simple learning conversation between a student and a teacher using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)**.
 
 ## Installation
 
@@ -14,9 +14,11 @@ pip install "fastagency[autogen]"
 
 This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
 
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
 ## Example: Student and Teacher Learning Chat
 
-This example demonstrates how to create a workflow where a student agent interacts with a teacher agent. The student asks questions, and the teacher provides responses, simulating a learning environment. The interaction is facilitated through the console using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)**.
+This example demonstrates how to create a workflow where a student agent interacts with a teacher agent. The student asks questions, and the teacher provides responses, simulating a learning environment. The interaction is facilitated through the console using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)**.
 
 ### Step-by-Step Breakdown
 
@@ -28,9 +30,9 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 ```
 
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
-- **[FastAgency](../../../../api/fastagency/FastAgency/)**: The core class responsible for orchestrating workflows and connecting them with UIs.
-- **[UI](../../../../api/fastagency/UI/)** and **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)**: These classes define the user interface for interaction, with ConsoleUI providing a text-based interface.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/AutoGenWorkflows/)**: Manages the creation and execution of multi-agent workflows.
+- **[FastAgency](../../../../api/fastagency/FastAgency.md)**: The core class responsible for orchestrating workflows and connecting them with UIs.
+- **[UI](../../../../api/fastagency/UI.md)** and **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)**: These classes define the user interface for interaction, with ConsoleUI providing a text-based interface.
+- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
 Next, we configure the language model that will power the agents. In this case, we're using **gpt-4o-mini**, and the API key is retrieved from the environment.
@@ -52,7 +54,7 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 - **Workflow Registration**: The workflow is registered under the name `simple_learning`. The **ConversableAgent** class is used to represent both the student and teacher agents, allowing them to communicate with each other up to 5 turns before summarizing the conversation using the `reflection_with_llm` method.
 
 #### 4. **Using ConsoleUI**
-Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)** to link the workflow to a text-based console interface. This allows the user to interact with the agents via the terminal.
+Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)** to link the workflow to a text-based console interface. This allows the user to interact with the agents via the terminal.
 
 ```python
 {! docs_src/getting_started/main_console.py [ln:54] !}
@@ -157,4 +159,4 @@ If you encounter issues running the application, ensure that:
 
 ---
 
-By using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI/)**, developers can rapidly test and deploy multi-agent workflows in a simple, text-based environment. The flexibility of this interface makes it ideal for prototyping agent interactions before scaling them into more complex applications. You can extend this workflow or modify the agents for various use cases, such as tutoring, customer support, or information retrieval.
+By using **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)**, developers can rapidly test and deploy multi-agent workflows in a simple, text-based environment. The flexibility of this interface makes it ideal for prototyping agent interactions before scaling them into more complex applications. You can extend this workflow or modify the agents for various use cases, such as tutoring, customer support, or information retrieval.

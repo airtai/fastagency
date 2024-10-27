@@ -26,4 +26,4 @@ fastagency run path/to/app.py --initial_message "Hello, let's start!"
 
 ---
 
-For more information, visit the [**CLI documentation**](../../cli/cli/).
+For more information, visit the [**CLI documentation**](../../cli/cli.md).

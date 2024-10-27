@@ -49,6 +49,7 @@ def websurfer_workflow(
         name_prefix="Web_Surfer",
         llm_config=llm_config,
         summarizer_llm_config=llm_config,
+        bing_api_key=os.getenv("BING_API_KEY"),
     )
 
     web_surfer.register(

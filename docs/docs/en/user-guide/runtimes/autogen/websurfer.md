@@ -13,7 +13,7 @@ In this guide, we'll demonstrate both methods with a real-world example. We’ll
 
 We’ll build agents and assign them the task: “Search for information about Microsoft AutoGen and summarize the results” to showcase its ability to browse and gather real-time data in action.
 
-## Installation
+## Installation & Setup
 
 Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
 
@@ -22,6 +22,27 @@ pip install "fastagency[autogen]"
 ```
 
 This command installs FastAgency with support for the Console interface and AutoGen framework.
+
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
+### Create Bing Web Search API Key
+To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.
+
+!!! note
+    You will need to create **Microsoft Azure** Account.
+
+#### Set Up Your API Key in the Environment
+
+You can set the Binga API key in your terminal as an environment variable:
+
+=== "Linux/macOS"
+    ```bash
+    export BING_API_KEY="your_bing_api_key"
+    ```
+=== "Windows"
+    ```bash
+    set BING_API_KEY="your_bing_api_key"
+    ```
 
 ## Example: Search for information about Microsoft AutoGen and summarize the results
 
@@ -80,8 +101,8 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     - **WebSurferTool**: The tool that gives the ConversableAgent the ability to browse the web after it has been registered.
 
-    ```python hl_lines="27-31"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-52] !}
+    ```python hl_lines="27-32"
+    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-53] !}
     ```
 
     Now, we need to register the WebSurferAgent with a caller and executor. This setup allows the caller to use the WebSurferAgent for performing real-time web interactions.
@@ -113,7 +134,7 @@ Here, the user agent starts a conversation with the websurfer agent, which perfo
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:56] !}
+{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:57] !}
 ```
 
 ### Complete Application Code
