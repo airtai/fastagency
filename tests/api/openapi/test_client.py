@@ -18,6 +18,10 @@ class TestOpenAPI:
         assert client is not None
         assert isinstance(client, OpenAPI)
 
+        assert client.servers == [
+            {"url": "http://localhost:8080", "description": "Local environment"}
+        ]
+
         assert len(client.registered_funcs) == 1, client.registered_funcs
         assert (
             client.registered_funcs[0].__name__
@@ -48,6 +52,19 @@ class TestOpenAPI:
             "show_pet_by_id",
         ]
         assert actual == expected, actual
+
+    def test_create_client_with_servers(self) -> None:
+        json_path = Path(__file__).parent / "templates" / "openapi.json"
+        assert json_path.exists(), json_path.resolve()
+
+        servers = [
+            {"url": "http://custom_server:8080", "description": "Local environment"}
+        ]
+
+        openapi_json = json_path.read_text()
+        client = OpenAPI.create(openapi_json=openapi_json, servers=servers)
+
+        assert client.servers == servers
 
     def test_get_functions(self) -> None:
         json_path = Path(__file__).parent / "templates" / "openapi.json"
