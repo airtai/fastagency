@@ -98,4 +98,5 @@ def test_setting_parameters_on_stub(
             UnsuportedSecurityStub.Parameters(value="supersecret"),
             name="get_hello_hello_get",
         )
-        assert str(e.value) == "Trying to set UnsuportedSecurityStub params"
+
+    assert str(e.value) == "Trying to set UnsuportedSecurityStub params"

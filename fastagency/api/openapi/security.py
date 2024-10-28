@@ -15,8 +15,12 @@ BaseSecurityType: TypeAlias = type["BaseSecurity"]
 class BaseSecurity(BaseModel):
     """Base class for security classes."""
 
-    type: ClassVar[Literal["apiKey", "http", "mutualTLS", "oauth2", "openIdConnect"]]
-    in_value: ClassVar[Literal["header", "query", "cookie", "bearer", "basic", "tls"]]
+    type: ClassVar[
+        Literal["apiKey", "http", "mutualTLS", "oauth2", "openIdConnect", "unsupported"]
+    ]
+    in_value: ClassVar[
+        Literal["header", "query", "cookie", "bearer", "basic", "tls", "unsupported"]
+    ]
     name: str
 
     @model_validator(mode="after")  # type: ignore[misc]
@@ -30,6 +34,7 @@ class BaseSecurity(BaseModel):
             "oauth2": ["bearer"],
             "openIdConnect": ["bearer"],
             "mutualTLS": ["tls"],
+            "unsupported": ["unsupported"],
         }
         if self.in_value not in valid_in_values[self.type]:
             raise ValueError(
@@ -79,8 +84,8 @@ class BaseSecurityParameters(Protocol):
 class UnsuportedSecurityStub(BaseSecurity):
     """Unsupported security stub class."""
 
-    type: ClassVar[Literal["apiKey"]] = "apiKey"
-    in_value: ClassVar[Literal["header"]] = "header"
+    type: ClassVar[Literal["unsupported"]] = "unsupported"
+    in_value: ClassVar[Literal["unsupported"]] = "unsupported"
 
     @classmethod
     def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
