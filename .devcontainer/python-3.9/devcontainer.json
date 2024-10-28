@@ -63,7 +63,8 @@
         // },
         "ghcr.io/devcontainers/features/git:1": {},
         "ghcr.io/devcontainers/features/git-lfs:1": {},
-        "ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {}
+        "ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
     },
     "updateContentCommand": "bash .devcontainer/setup.sh",
     "postCreateCommand": "npm install && npx playwright install-deps && npx playwright install",
