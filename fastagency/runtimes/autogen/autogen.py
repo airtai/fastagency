@@ -208,9 +208,14 @@ class CurrentMessage:
             body = kwargs.pop("body")
             sender = kwargs.get("sender")
             recipient = kwargs.get("recipient")
+            workflow_uuid = kwargs.get("workflow_uuid")
             retval = [
                 IOMessage.create(
-                    body=body, sender=sender, recipient=recipient, type="text_message"
+                    body=body,
+                    sender=sender,
+                    recipient=recipient,
+                    type="text_message",
+                    workflow_uuid=workflow_uuid,
                 )
             ]
 
@@ -324,7 +329,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
             except Exception as e:
                 logger.error(
                     f"Unhandled exception occurred when executing the workflow: {e}",
-                    stack_info=True,
+                    exc_info=True,
                 )
                 ui.error(
                     sender="AutoGenWorkflows",
