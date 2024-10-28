@@ -235,12 +235,24 @@ def test_end2end(
 
     assert "https://gif.example.com/gif1" in result.summary
 
-    result = user_proxy.initiate_chat(
+    user_proxy.initiate_chat(
         agent,
         message="I need the urls all gifs for 'topic' 'funny'. Within the summary, please include the 'url' for each gif.",
         summary_method="reflection_with_llm",
         max_turns=2,
     )
 
-    assert "https://gif.example.com/gif1?topic=funny" in result.summary
-    assert "https://gif.example.com/gif2?topic=funny" in result.summary
+    message_existed = False
+    expected_message_content = '[{"id": 1, "title": "Gif 1", "url": "https://gif.example.com/gif1?topic=funny"}, {"id": 2, "title": "Gif 2", "url": "https://gif.example.com/gif2?topic=funny"}]'
+    for message in agent.chat_messages[user_proxy]:
+        if (
+            isinstance(message, dict)
+            and "content" in message
+            and isinstance(message["content"], str)
+            and message["role"] == "tool"
+            and message["content"] == expected_message_content
+        ):
+            message_existed = True
+            break
+
+    assert message_existed, f"Expected message '{expected_message_content}' not found"
