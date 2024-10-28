@@ -362,7 +362,7 @@ class MessageProcessorMixin(ABC):
             return self.visit(message)
         except Exception as e:
             # log the error and return None
-            logger.error(f"Error processing message ({message}): {e}", stack_info=True)
+            logger.error(f"Error processing message ({message}): {e}", exc_info=True)
             return None
 
     def text_message(
