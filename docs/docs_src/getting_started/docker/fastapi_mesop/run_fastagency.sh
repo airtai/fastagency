@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Accept env variable for PORT, set 8888 as default port
+# Accept env variable for PORT
 FASTAPI_PORT=${FASTAPI_PORT:-8008}
 MESOP_PORT=${MESOP_PORT:-8888}
 
