@@ -11,7 +11,7 @@ RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
 
 USER appuser
 
-EXPOSE 8000
+EXPOSE 8008 8888
 
 COPY docs/docs_src/getting_started/docker/fastapi_mesop/run_fastagency.sh /app/run_fastagency.sh
 
