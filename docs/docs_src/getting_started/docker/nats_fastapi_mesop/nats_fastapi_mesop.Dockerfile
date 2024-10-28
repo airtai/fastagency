@@ -8,6 +8,10 @@ COPY docs/docs_src/getting_started/nats_n_fastapi/main_3_mesop.py /app/main_3_me
 
 RUN pip install fastagency[autogen,mesop,server,fastapi,nats]
 
+RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
+
+USER appuser
+
 EXPOSE 8000
 
 COPY docs/docs_src/getting_started/docker/nats_fastapi_mesop/run_fastagency.sh /app/run_fastagency.sh
