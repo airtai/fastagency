@@ -52,13 +52,11 @@ class BaseSecurity(BaseModel):
         for sub_class in sub_classes:
             if sub_class.is_supported(type, schema_parameters):
                 return sub_class
-        else:
-            logger.error(
-                f"Unsupported type '{type}' and schema_parameters '{schema_parameters}' combination"
-            )
-            raise ValueError(
-                f"Unsupported type '{type}' and schema_parameters '{schema_parameters}' combination"
-            )
+
+        logger.error(
+            f"Unsupported type '{type}' and schema_parameters '{schema_parameters}' combination"
+        )
+        return UnsuportedSecurityStub
 
     @classmethod
     def get_security_parameters(cls, schema_parameters: dict[str, Any]) -> str:
@@ -76,6 +74,31 @@ class BaseSecurityParameters(Protocol):
     ) -> None: ...
 
     def get_security_class(self) -> type[BaseSecurity]: ...
+
+
+class UnsuportedSecurityStub(BaseSecurity):
+    """Unsupported security stub class."""
+
+    type: ClassVar[Literal["apiKey"]] = "apiKey"
+    in_value: ClassVar[Literal["header"]] = "header"
+
+    @classmethod
+    def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
+        return False
+
+    class Parameters(BaseModel):  # BaseSecurityParameters
+        """API Key Header security parameters class."""
+
+        def apply(
+            self,
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
+            security: BaseSecurity,
+        ) -> None:
+            pass
+
+        def get_security_class(self) -> type[BaseSecurity]:
+            return UnsuportedSecurityStub
 
 
 class APIKeyHeader(BaseSecurity):

@@ -1,0 +1,81 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "security_schema",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Local environment"
+        }
+    ],
+    "paths": {
+        "/hello_both": {
+            "get": {
+                "summary": "Get Hello",
+                "operationId": "get_hello_hello_both_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
+                                    "type": "object",
+                                    "title": "Response Get Hello Hello Get"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "HTTPBearer": [],
+                        "Non-existent": []
+                    }
+                ]
+            }
+        },
+        "/hello_non_existent_security": {
+            "get": {
+                "summary": "Get Hello",
+                "operationId": "get_hello_hello_non_existant_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
+                                    "type": "object",
+                                    "title": "Response Get Hello Hello Get"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Non-existent": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "HTTPBearer": {
+                "type": "http",
+                "scheme": "bearer"
+            },
+            "Non-existent": {
+                "type": "non-existent"
+            }
+        }
+    }
+}
