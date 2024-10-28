@@ -86,6 +86,11 @@ class UnsuportedSecurityStub(BaseSecurity):
     def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
         return False
 
+    def accept(self, security_params: "BaseSecurityParameters") -> bool:
+        if isinstance(self, security_params.get_security_class()):
+            raise RuntimeError("Trying to set UnsuportedSecurityStub params")
+        return False
+
     class Parameters(BaseModel):  # BaseSecurityParameters
         """API Key Header security parameters class."""
 
