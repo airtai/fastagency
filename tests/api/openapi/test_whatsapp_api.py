@@ -27,7 +27,10 @@ def test_real_whatsapp_end2end(
     with file_path.open(encoding="utf-8") as file:
         openapi_json = file.read()
 
-    api = OpenAPI.create(openapi_json=openapi_json)
+    api = OpenAPI.create(
+        openapi_json=openapi_json,
+        client_source_path=".",    
+    )
 
     assert isinstance(api, OpenAPI)
 
