@@ -120,6 +120,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set up environment variables
+        run: |
+          # secrets
+          if (Test-Path Env:POSTMAN_API_KEY) {
+          echo "POSTMAN_API_KEY=$Env:POSTMAN_API_KEY" | Out-File -FilePath $Env:GITHUB_ENV -Append
+          }
+        shell: pwsh  # Run as PowerShell
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
