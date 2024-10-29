@@ -7,9 +7,15 @@ import typer
 from .. import __version__
 from ..exceptions import FastAgencyCLIError, FastAgencyCLIPythonVersionError
 from .discover import get_import_string
+from .docker_cli import docker_app
 from .logging import setup_logging
 
 app = typer.Typer(rich_markup_mode="rich")
+app.add_typer(
+    docker_app,
+    name="docker",
+    help="[bold]Docker[/bold] commands for [bold]FastAgency[/bold]",
+)
 
 setup_logging()
 logger = getLogger(__name__)
