@@ -48,7 +48,12 @@
 <span class=normal><a href=#__codelineno-0-216>216</a></span>
 <span class=normal><a href=#__codelineno-0-217>217</a></span>
 <span class=normal><a href=#__codelineno-0-218>218</a></span>
-<span class=normal><a href=#__codelineno-0-219>219</a></span></pre></div></td><td class=code><div><pre><span></span><code><a id=__codelineno-0-201 name=__codelineno-0-201></a><span class=k>def</span> <span class=nf>create_message</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>list</span><span class=p>[</span><span class=n>IOMessage</span><span class=p>]:</span>
+<span class=normal><a href=#__codelineno-0-219>219</a></span>
+<span class=normal><a href=#__codelineno-0-220>220</a></span>
+<span class=normal><a href=#__codelineno-0-221>221</a></span>
+<span class=normal><a href=#__codelineno-0-222>222</a></span>
+<span class=normal><a href=#__codelineno-0-223>223</a></span>
+<span class=normal><a href=#__codelineno-0-224>224</a></span></pre></div></td><td class=code><div><pre><span></span><code><a id=__codelineno-0-201 name=__codelineno-0-201></a><span class=k>def</span> <span class=nf>create_message</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>list</span><span class=p>[</span><span class=n>IOMessage</span><span class=p>]:</span>
 <a id=__codelineno-0-202 name=__codelineno-0-202></a>    <span class=n>retval</span><span class=p>:</span> <span class=nb>list</span><span class=p>[</span><span class=n>IOMessage</span><span class=p>]</span> <span class=o>=</span> <span class=p>[]</span>
 <a id=__codelineno-0-203 name=__codelineno-0-203></a>    <span class=n>kwargs</span> <span class=o>=</span> <span class=p>{</span><span class=n>k</span><span class=p>:</span> <span class=n>v</span> <span class=k>for</span> <span class=n>k</span><span class=p>,</span> <span class=n>v</span> <span class=ow>in</span> <span class=n>asdict</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=o>.</span><span class=n>items</span><span class=p>()</span> <span class=k>if</span> <span class=n>v</span> <span class=ow>is</span> <span class=ow>not</span> <span class=kc>None</span><span class=p>}</span>
 <a id=__codelineno-0-204 name=__codelineno-0-204></a>    <span class=k>if</span> <span class=p>(</span>
@@ -58,15 +63,20 @@
 <a id=__codelineno-0-208 name=__codelineno-0-208></a>        <span class=n>body</span> <span class=o>=</span> <span class=n>kwargs</span><span class=o>.</span><span class=n>pop</span><span class=p>(</span><span class=s2>&quot;body&quot;</span><span class=p>)</span>
 <a id=__codelineno-0-209 name=__codelineno-0-209></a>        <span class=n>sender</span> <span class=o>=</span> <span class=n>kwargs</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;sender&quot;</span><span class=p>)</span>
 <a id=__codelineno-0-210 name=__codelineno-0-210></a>        <span class=n>recipient</span> <span class=o>=</span> <span class=n>kwargs</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;recipient&quot;</span><span class=p>)</span>
-<a id=__codelineno-0-211 name=__codelineno-0-211></a>        <span class=n>retval</span> <span class=o>=</span> <span class=p>[</span>
-<a id=__codelineno-0-212 name=__codelineno-0-212></a>            <span class=n>IOMessage</span><span class=o>.</span><span class=n>create</span><span class=p>(</span>
-<a id=__codelineno-0-213 name=__codelineno-0-213></a>                <span class=n>body</span><span class=o>=</span><span class=n>body</span><span class=p>,</span> <span class=n>sender</span><span class=o>=</span><span class=n>sender</span><span class=p>,</span> <span class=n>recipient</span><span class=o>=</span><span class=n>recipient</span><span class=p>,</span> <span class=nb>type</span><span class=o>=</span><span class=s2>&quot;text_message&quot;</span>
-<a id=__codelineno-0-214 name=__codelineno-0-214></a>            <span class=p>)</span>
-<a id=__codelineno-0-215 name=__codelineno-0-215></a>        <span class=p>]</span>
-<a id=__codelineno-0-216 name=__codelineno-0-216></a>
-<a id=__codelineno-0-217 name=__codelineno-0-217></a>    <span class=n>retval</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>IOMessage</span><span class=o>.</span><span class=n>create</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>))</span>
-<a id=__codelineno-0-218 name=__codelineno-0-218></a>    <span class=c1># logger.info(f&quot;CurrentMessage.create_message(): {kwargs=}&quot;)</span>
-<a id=__codelineno-0-219 name=__codelineno-0-219></a>    <span class=k>return</span> <span class=n>retval</span>
+<a id=__codelineno-0-211 name=__codelineno-0-211></a>        <span class=n>workflow_uuid</span> <span class=o>=</span> <span class=n>kwargs</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;workflow_uuid&quot;</span><span class=p>)</span>
+<a id=__codelineno-0-212 name=__codelineno-0-212></a>        <span class=n>retval</span> <span class=o>=</span> <span class=p>[</span>
+<a id=__codelineno-0-213 name=__codelineno-0-213></a>            <span class=n>IOMessage</span><span class=o>.</span><span class=n>create</span><span class=p>(</span>
+<a id=__codelineno-0-214 name=__codelineno-0-214></a>                <span class=n>body</span><span class=o>=</span><span class=n>body</span><span class=p>,</span>
+<a id=__codelineno-0-215 name=__codelineno-0-215></a>                <span class=n>sender</span><span class=o>=</span><span class=n>sender</span><span class=p>,</span>
+<a id=__codelineno-0-216 name=__codelineno-0-216></a>                <span class=n>recipient</span><span class=o>=</span><span class=n>recipient</span><span class=p>,</span>
+<a id=__codelineno-0-217 name=__codelineno-0-217></a>                <span class=nb>type</span><span class=o>=</span><span class=s2>&quot;text_message&quot;</span><span class=p>,</span>
+<a id=__codelineno-0-218 name=__codelineno-0-218></a>                <span class=n>workflow_uuid</span><span class=o>=</span><span class=n>workflow_uuid</span><span class=p>,</span>
+<a id=__codelineno-0-219 name=__codelineno-0-219></a>            <span class=p>)</span>
+<a id=__codelineno-0-220 name=__codelineno-0-220></a>        <span class=p>]</span>
+<a id=__codelineno-0-221 name=__codelineno-0-221></a>
+<a id=__codelineno-0-222 name=__codelineno-0-222></a>    <span class=n>retval</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>IOMessage</span><span class=o>.</span><span class=n>create</span><span class=p>(</span><span class=o>**</span><span class=n>kwargs</span><span class=p>))</span>
+<a id=__codelineno-0-223 name=__codelineno-0-223></a>    <span class=c1># logger.info(f&quot;CurrentMessage.create_message(): {kwargs=}&quot;)</span>
+<a id=__codelineno-0-224 name=__codelineno-0-224></a>    <span class=k>return</span> <span class=n>retval</span>
 </code></pre></div></td></tr></table></div> </details> </div> </div> <div class="doc doc-object doc-function"> <h3 id=fastagency.runtimes.autogen.autogen.CurrentMessage.process_chunk class="doc doc-heading"> <code class="doc-symbol doc-symbol-heading doc-symbol-method"></code> <span class="doc doc-object-name doc-function-name">process_chunk</span> <a href=#fastagency.runtimes.autogen.autogen.CurrentMessage.process_chunk class=headerlink title="Permanent link">#</a></h3> <div class="doc-signature highlight"><pre><span></span><code><a id=__codelineno-0-1 name=__codelineno-0-1 href=#__codelineno-0-1></a><span class=nf>process_chunk</span><span class=p>(</span><span class=n>chunk</span><span class=p>:</span> <span class=n><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class=p>)</span> <span class=o>-&gt;</span> <span class=n><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
 </code></pre></div> <div class="doc doc-contents "> <details class=quote> <summary>Source code in <code>fastagency/runtimes/autogen/autogen.py</code></summary> <div class=highlight><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span></span><span class=normal><a href=#__codelineno-0-112>112</a></span>
 <span class=normal><a href=#__codelineno-0-113>113</a></span>
