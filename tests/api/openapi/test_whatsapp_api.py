@@ -27,6 +27,7 @@ def whatsapp_api_schema() -> str:
     return api_data["api"]["versions"][0]["schemas"][0]["content"]  # type: ignore [no-any-return]
 
 
+@pytest.mark.postman
 @patch("fastagency.api.openapi.client.requests.post")
 def test_real_whatsapp_end2end(
     mock_post: MagicMock,

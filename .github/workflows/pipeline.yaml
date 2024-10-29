@@ -113,7 +113,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
       - name: Test
-        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
+        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm or postman)"
 
   test-windows-latest:
     if: github.event.pull_request.draft == false
@@ -121,12 +121,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up environment variables
-        run: |
-          # secrets
-          if (Test-Path Env:POSTMAN_API_KEY) {
-          echo "POSTMAN_API_KEY=$Env:POSTMAN_API_KEY" | Out-File -FilePath $Env:GITHUB_ENV -Append
-          }
-        shell: pwsh  # Run as PowerShell
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -138,7 +132,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
       - name: Test
-        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
+        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm or postman)"
 
   coverage-combine:
     needs:
