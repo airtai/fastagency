@@ -339,7 +339,7 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
         try:
             return self.visit(message)
         except Exception as e:
-            logger.error(f"Error in process_message: {e}", stack_info=True)
+            logger.error(f"Error in process_message: {e}", exc_info=True)
             # do not reraise, we must go on
             if isinstance(message, AskingMessage):
                 return "Error: Something went wrong. Please check logs for details."

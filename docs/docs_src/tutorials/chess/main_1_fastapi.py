@@ -1,7 +1,6 @@
 import os
 
 from fastapi import FastAPI
-
 from workflow import wf as chess_wf
 
 from fastagency.adapters.fastapi import FastAPIAdapter
