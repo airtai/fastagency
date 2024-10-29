@@ -102,7 +102,7 @@ jobs:
     with:
       python-version: "3.9"
       environment: testing
-      use-postman: "postman"
+      use-postman: true
     secrets: inherit  # pragma: allowlist secret
 
   test-macos-latest:
