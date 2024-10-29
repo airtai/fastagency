@@ -292,6 +292,7 @@ class OpenAPI:
         openapi_json: Optional[str] = None,
         openapi_url: Optional[str] = None,
         client_source_path: Optional[str] = None,
+        servers: Optional[list[dict[str, Any]]] = None,
     ) -> "OpenAPI":
         if (openapi_json is None) == (openapi_url is None):
             raise ValueError("Either openapi_json or openapi_url should be provided")
@@ -317,6 +318,9 @@ class OpenAPI:
 
             client: OpenAPI = main.app  # type: ignore [attr-defined]
             client.set_globals(main, suffix=suffix)
+
+            if servers:
+                client.servers = servers
 
             return client
 
