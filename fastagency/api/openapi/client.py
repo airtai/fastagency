@@ -1,5 +1,6 @@
 import importlib
 import inspect
+import json
 import re
 import shutil
 import sys
@@ -292,6 +293,7 @@ class OpenAPI:
         openapi_json: Optional[str] = None,
         openapi_url: Optional[str] = None,
         client_source_path: Optional[str] = None,
+        servers: Optional[list[dict[str, Any]]] = None,
     ) -> "OpenAPI":
         if (openapi_json is None) == (openapi_url is None):
             raise ValueError("Either openapi_json or openapi_url should be provided")
@@ -300,6 +302,11 @@ class OpenAPI:
             with requests.get(openapi_url, timeout=10) as response:
                 response.raise_for_status()
                 openapi_json = response.text
+
+        if servers:
+            openapi_parsed = json.loads(openapi_json)  # type: ignore [arg-type]
+            openapi_parsed["servers"] = servers
+            openapi_json = json.dumps(openapi_parsed)
 
         with optional_temp_path(client_source_path) as td:
             suffix = td.name
