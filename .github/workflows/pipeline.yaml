@@ -97,6 +97,14 @@ jobs:
       use-llms: "llm"
     secrets: inherit  # pragma: allowlist secret
 
+  test-with-postman:
+    uses: ./.github/workflows/test.yaml
+    with:
+      python-version: "3.9"
+      environment: testing
+      use-postman: "postman"
+    secrets: inherit  # pragma: allowlist secret
+
   test-macos-latest:
     if: github.event.pull_request.draft == false
     runs-on: macos-latest
