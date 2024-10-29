@@ -16,9 +16,12 @@ def test_real_whatsapp_end2end(
     mock_response.json.return_value = {"status": "success"}
     mock_post.return_value = mock_response
 
+    # file_name = "whatsapp.json"
+    file_name = "whatsapp_simple.json"
+    # file_name = "whatsapp_openapi_complete.json"
+
     file_path = (
-        Path(__file__).parent.parent.parent.parent
-        / "examples/openapi/whatsapp_openapi_complete.json"
+        Path(__file__).parent.parent.parent.parent / f"examples/openapi/{file_name}"
     )
 
     with file_path.open(encoding="utf-8") as file:
