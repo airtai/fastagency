@@ -325,6 +325,9 @@ class OpenAPI:
             client: OpenAPI = main.app  # type: ignore [attr-defined]
             client.set_globals(main, suffix=suffix)
 
+            if servers:
+                client.servers = servers
+
             return client
 
     def _get_functions_to_register(
