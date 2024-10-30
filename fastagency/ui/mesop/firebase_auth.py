@@ -4,6 +4,8 @@ from typing import Literal
 
 import mesop as me
 
+from .data_model import State
+
 if typing.TYPE_CHECKING:
     from .auth import AuthProtocol
 
@@ -40,11 +42,27 @@ class FirebaseAuth:  # implements AuthProtocol
         self.config = config
 
     def create_security_policy(self, policy: me.SecurityPolicy) -> me.SecurityPolicy:
-        raise NotImplementedError
+        return me.SecurityPolicy(
+            dangerously_disable_trusted_types=True,
+            allowed_connect_srcs=list(
+                set(policy.allowed_connect_srcs or []) | {"*.googleapis.com"}
+            ),
+            allowed_script_srcs=list(
+                set(policy.allowed_script_srcs or [])
+                | {
+                    "*.google.com",
+                    "https://www.gstatic.com",
+                    "https://cdn.jsdelivr.net",
+                }
+            ),
+        )
 
     # maybe me.Component is wrong
     def login_component(self) -> me.component:
-        raise NotImplementedError
+        with me.box():
+            state = me.state(State)
+
+            me.text(f"state.authenticated_user: {state.authenticated_user or 'N/A' }")
 
     # maybe me.Component is wrong
     def logout_component(self) -> me.component:

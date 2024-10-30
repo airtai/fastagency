@@ -65,10 +65,26 @@ class MesopHomePage:
         self._params = params or MesopHomePageParams()
         self._styles = styles or MesopHomePageStyles()
         self.auth = auth
-        # relax the security policy if auth is not None
-        # _security_policy  = security_policy or DEFAULT_SECURITY_POLICY
-        # self._security_policy = _security_policy if auth is None else auth.relax_security_policy(_security_policy)
-        self._security_policy = security_policy or DEFAULT_SECURITY_POLICY
+        self._security_policy = self._create_security_policy(
+            base_policy=security_policy or DEFAULT_SECURITY_POLICY, auth=auth
+        )
+
+    def _create_security_policy(
+        self, base_policy: me.SecurityPolicy, auth: Optional[AuthProtocol]
+    ) -> me.SecurityPolicy:
+        """Create a security policy by combining the base policy with auth-specific policies.
+
+        Args:
+            base_policy: The base security policy to start with
+            auth: Optional authentication protocol implementation
+
+        Returns:
+            The final security policy
+        """
+        if auth is None:
+            return base_policy
+
+        return auth.create_security_policy(base_policy)
 
     def build(self) -> Callable[[], None]:
         @me.page(  # type: ignore[misc]
@@ -85,11 +101,14 @@ class MesopHomePage:
         try:
             state = me.state(State)
             with me.box(style=self._styles.root):
-                self.past_conversations_box()
-                if state.in_conversation:
-                    self.conversation_box()
+                if self.auth:
+                    self.auth.login_component()
                 else:
-                    self.conversation_starter_box()
+                    self.past_conversations_box()
+                    if state.in_conversation:
+                        self.conversation_box()
+                    else:
+                        self.conversation_starter_box()
         except Exception as e:
             logger.error(f"home_page(): Error rendering home page: {e}")
             me.text(text="Error: Something went wrong, please check logs for details.")
