@@ -1,5 +1,6 @@
 import importlib
 import inspect
+import json
 import re
 import shutil
 import sys
@@ -302,6 +303,11 @@ class OpenAPI:
                 response.raise_for_status()
                 openapi_json = response.text
 
+        if servers:
+            openapi_parsed = json.loads(openapi_json)  # type: ignore [arg-type]
+            openapi_parsed["servers"] = servers
+            openapi_json = json.dumps(openapi_parsed)
+
         with optional_temp_path(client_source_path) as td:
             suffix = td.name
 
@@ -318,9 +324,6 @@ class OpenAPI:
 
             client: OpenAPI = main.app  # type: ignore [attr-defined]
             client.set_globals(main, suffix=suffix)
-
-            if servers:
-                client.servers = servers
 
             return client
 
