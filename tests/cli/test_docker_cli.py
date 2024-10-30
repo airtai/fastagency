@@ -163,7 +163,7 @@ def test_docker_run_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
     "command,expected",  # noqa: PT006
     [
         (
-            ["docker", "deploy"],
+            ["docker", "deploy", "--openai-api-key", "dummy_key"],
             [
                 "fly",
                 "launch",
@@ -174,7 +174,7 @@ def test_docker_run_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
             ],
         ),
         (
-            ["docker", "deploy", "fly.prod.toml"],
+            ["docker", "deploy", "--openai-api-key", "dummy_key", "fly.prod.toml"],
             [
                 "fly",
                 "launch",
