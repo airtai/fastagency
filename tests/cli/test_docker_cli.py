@@ -65,23 +65,12 @@ def test_docker_build(
     assert " ".join(expected) in result.stdout
 
 
+@pytest.mark.skipif(
+    platform.system() == "Windows" or platform.system() == "Darwin",
+    reason="Docker not supported on Windows or macOS CI",
+)
 def test_docker_build_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
     command = ["docker", "build", "--invalid-argument", "."]
-
-    if platform.system() == "Windows" or platform.system() == "Darwin":
-
-        def patch_subprocess_run(*args: Any, **kwargs: Any) -> None:
-            raise subprocess.CalledProcessError(
-                returncode=1,
-                cmd=command,
-                output="Building FastAgency Docker image and Error: unknown flag: --invalid-argument",
-            )
-
-        monkeypatch.setattr(
-            subprocess,
-            "run",
-            patch_subprocess_run,
-        )
 
     result = runner.invoke(app, command)
     assert result.exit_code != 0
@@ -151,23 +140,12 @@ def test_docker_run(
     assert " ".join(expected) in result.stdout
 
 
+@pytest.mark.skipif(
+    platform.system() == "Windows" or platform.system() == "Darwin",
+    reason="Docker not supported on Windows or macOS CI",
+)
 def test_docker_run_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
     command = ["docker", "run", "--invalid-argument"]
-
-    if platform.system() == "Windows" or platform.system() == "Darwin":
-
-        def patch_subprocess_run(*args: Any, **kwargs: Any) -> None:
-            raise subprocess.CalledProcessError(
-                returncode=1,
-                cmd=command,
-                output="Running FastAgency Docker image and Error: unknown flag: --invalid-argument",
-            )
-
-        monkeypatch.setattr(
-            subprocess,
-            "run",
-            patch_subprocess_run,
-        )
 
     result = runner.invoke(app, command)
     assert result.exit_code != 0
