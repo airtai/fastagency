@@ -204,24 +204,24 @@ def deploy(
     ],
     ctx: typer.Context,
 ) -> None:
-    deploy_command = [
+    launc_command = [
         "fly",
-        "deploy",
+        "launch",
         "--config",
         config_file,
         "--copy-config",
         "--yes",
     ]
-    deploy_command += ctx.args
+    launc_command += ctx.args
 
     set_secret_command = ["fly", "secrets", "set", "OPENAI_API_KEY=" + openai_api_key]
     try:
         typer.echo(
-            f"Deploying FastAgency Docker image to Fly.io with the command: {' '.join(deploy_command)}"
+            f"Deploying FastAgency Docker image to Fly.io with the command: {' '.join(launc_command)}"
         )
         # Run the fly deploy command
         deploy_result = subprocess.run(  # nosec B603
-            deploy_command, check=True, capture_output=True, text=True
+            launc_command, check=True, capture_output=True, text=True
         )
         typer.echo(deploy_result.stdout)
 
