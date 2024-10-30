@@ -97,13 +97,19 @@ jobs:
       use-llms: "llm"
     secrets: inherit  # pragma: allowlist secret
 
+  test-with-postman:
+    uses: ./.github/workflows/test.yaml
+    with:
+      python-version: "3.9"
+      environment: testing
+      use-postman: true
+    secrets: inherit  # pragma: allowlist secret
+
   test-macos-latest:
     if: github.event.pull_request.draft == false
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          lfs: true  # This enables Git LFS support
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -115,15 +121,13 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
       - name: Test
-        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
+        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm or postman)"
 
   test-windows-latest:
     if: github.event.pull_request.draft == false
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          lfs: true  # This enables Git LFS support
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -135,7 +139,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[submodules,docs,testing]
       - name: Test
-        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
+        run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm or postman)"
 
   coverage-combine:
     needs:
