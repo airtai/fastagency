@@ -181,7 +181,7 @@ def run(
 
 
 @docker_app.command(
-    context_settings={"allow_extra_args": True, "ignore_unknown_options": True},
+    context_settings={"allow_extra_args": False, "ignore_unknown_options": False},
     help="Deploy the Docker container for the FastAgency app to Fly.io",
 )
 def deploy(
@@ -202,9 +202,9 @@ def deploy(
             show_default=False,
         ),
     ],
-    ctx: typer.Context,
+    # ctx: typer.Context,
 ) -> None:
-    launc_command = [
+    launch_command = [
         "fly",
         "launch",
         "--config",
@@ -212,16 +212,16 @@ def deploy(
         "--copy-config",
         "--yes",
     ]
-    launc_command += ctx.args
+    # launch_command += ctx.args
 
     set_secret_command = ["fly", "secrets", "set", "OPENAI_API_KEY=" + openai_api_key]
     try:
         typer.echo(
-            f"Deploying FastAgency Docker image to Fly.io with the command: {' '.join(launc_command)}"
+            f"Deploying FastAgency Docker image to Fly.io with the command: {' '.join(launch_command)}"
         )
         # Run the fly deploy command
         deploy_result = subprocess.run(  # nosec B603
-            launc_command, check=True, capture_output=True, text=True
+            launch_command, check=True, capture_output=True, text=True
         )
         typer.echo(deploy_result.stdout)
 
@@ -233,6 +233,7 @@ def deploy(
             set_secret_command, check=True, capture_output=True, text=True
         )
         typer.echo(set_secret_result.stdout)
+        typer.echo("Deployed FastAgency Docker image to Fly.io successfully!")
     except subprocess.CalledProcessError as e:
         typer.echo(f"Error: {e.stderr}", err=True)
         raise typer.Exit(code=1) from e

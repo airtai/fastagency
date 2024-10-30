@@ -151,3 +151,62 @@ def test_docker_run_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
     assert result.exit_code != 0
     assert "Running FastAgency Docker image" in result.stdout, result.stdout
     assert "Error: unknown flag: --invalid-argument" in result.stdout, result.stdout
+
+
+@pytest.mark.parametrize(
+    "command,expected",  # noqa: PT006
+    [
+        (
+            ["docker", "deploy"],
+            [
+                "fly",
+                "launch",
+                "--config",
+                "fly.toml",
+                "--copy-config",
+                "--yes",
+            ],
+        ),
+        (
+            ["docker", "deploy", "fly.prod.toml"],
+            [
+                "fly",
+                "launch",
+                "--config",
+                "fly.prod.toml",
+                "--copy-config",
+                "--yes",
+            ],
+        ),
+    ],
+)
+def test_docker_deploy(
+    command: list[str], expected: list[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def patch_subprocess_run(*args: Any, **kwargs: Any) -> subprocess.CompletedProcess:  # type: ignore[type-arg]
+        if args[0][1] == "launch":
+            assert args[0] == expected
+        elif args[0][1] == "secrets":
+            assert args[0][:3] == ["fly", "secrets", "set"]
+        assert kwargs["check"]
+        assert kwargs["capture_output"]
+        assert kwargs["text"]
+
+        return subprocess.CompletedProcess(
+            args=command, returncode=0, stdout="Dummy docker deploy output"
+        )
+
+    monkeypatch.setattr(subprocess, "run", patch_subprocess_run)
+
+    result = runner.invoke(app, command)
+    assert result.exit_code == 0, result.stdout
+    assert "Deploying FastAgency Docker image to Fly.io" in result.stdout
+    assert " ".join(expected) in result.stdout
+
+
+def test_docker_deploy_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
+    command = ["docker", "deploy", "--invalid-argument"]
+
+    result = runner.invoke(app, command)
+    assert result.exit_code != 0, result.stdout
+    assert "No such option: --invalid-argument" in result.stdout, result.stdout
