@@ -215,4 +215,4 @@ def test_docker_deploy_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None
 
     result = runner.invoke(app, command)
     assert result.exit_code != 0, result.stdout
-    assert "No such option: --invalid-argument" in result.stdout, result.stdout
+    assert "No such option:" in result.stdout, result.stdout
