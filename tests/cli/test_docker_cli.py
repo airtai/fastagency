@@ -1,3 +1,4 @@
+import platform
 import subprocess
 from typing import Any
 
@@ -64,8 +65,16 @@ def test_docker_build(
     assert " ".join(expected) in result.stdout
 
 
-def test_docker_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_docker_build_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
     command = ["docker", "build", "--invalid-argument", "."]
+
+    if platform.system() == "Windows" or platform.system() == "Darwin":
+        monkeypatch.setattr(
+            subprocess,
+            "run",
+            lambda *args,
+            **kwargs: "Building FastAgency Docker image and Error: unknown flag: --invalid-argument",
+        )
 
     result = runner.invoke(app, command)
     assert result.exit_code != 0
@@ -137,6 +146,14 @@ def test_docker_run(
 
 def test_docker_run_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
     command = ["docker", "run", "--invalid-argument"]
+
+    if platform.system() == "Windows" or platform.system() == "Darwin":
+        monkeypatch.setattr(
+            subprocess,
+            "run",
+            lambda *args,
+            **kwargs: "Running FastAgency Docker image and Error: unknown flag: --invalid-argument",
+        )
 
     result = runner.invoke(app, command)
     assert result.exit_code != 0
