@@ -153,6 +153,10 @@ def run(
     if publish:
         for port in publish:
             command.extend(["--publish", port])
+        if "8888:8888" not in publish:
+            command.extend(["--publish", "8888:8888"])
+    else:
+        command.extend(["--publish", "8888:8888"])
 
     if remove:
         command.append("--rm")

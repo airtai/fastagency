@@ -88,6 +88,8 @@ def test_docker_build_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
                 "run",
                 "--name",
                 "deploy_fastagency",
+                "--publish",
+                "8888:8888",
                 "--detach",
                 "deploy_fastagency",
             ],
@@ -99,6 +101,8 @@ def test_docker_build_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
                 "run",
                 "--name",
                 "deploy_fastagency",
+                "--publish",
+                "8888:8888",
                 "--rm",
                 "--detach",
                 "deploy_fastagency",
@@ -111,6 +115,8 @@ def test_docker_build_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
                 "run",
                 "--name",
                 "deploy_fastagency",
+                "--publish",
+                "8888:8888",
                 "--detach",
                 "--network",
                 "host",
@@ -135,7 +141,7 @@ def test_docker_run(
     monkeypatch.setattr(subprocess, "run", patch_subprocess_run)
 
     result = runner.invoke(app, command)
-    assert result.exit_code == 0
+    assert result.exit_code == 0, result.stdout
     assert "Running FastAgency Docker image" in result.stdout
     assert " ".join(expected) in result.stdout
 
