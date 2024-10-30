@@ -2,6 +2,7 @@
     "components": {
         "schemas": {
             "CustomContextVariable": {
+                "additionalProperties": false,
                 "oneOf": [
                     {
                         "$ref": "#/components/schemas/UserContextVariable"
@@ -11,13 +12,17 @@
                     }
                 ],
                 "properties": {
-                    "discriminator": {
-                        "propertyName": "type",
-                        "mapping": {
-                            "issue": "#/components/schemas/IssueContextVariable",
-                            "user": "#/components/schemas/UserContextVariable"
-                        }
+                    "type": {
+                        "description": "Type of custom context variable.",
+                        "type": "string"
                     }
+                },
+                "discriminator": {
+                    "mapping": {
+                        "issue": "#/components/schemas/IssueContextVariable",
+                        "user": "#/components/schemas/UserContextVariable"
+                    },
+                    "propertyName": "type"
                 },
                 "required": [
                     "type"
@@ -26,13 +31,17 @@
             },
             "IssueContextVariable": {
                 "properties": {
-                    "type": {
-                        "type": "string"
-                    },
                     "id": {
+                        "description": "The issue ID.",
+                        "format": "int64",
                         "type": "integer"
                     },
                     "key": {
+                        "description": "The issue key.",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Type of custom context variable.",
                         "type": "string"
                     }
                 },
@@ -43,30 +52,32 @@
             },
             "UserContextVariable": {
                 "properties": {
-                    "type": {
+                    "accountId": {
+                        "description": "The account ID of the user.",
                         "type": "string"
                     },
-                    "accountId": {
+                    "type": {
+                        "description": "Type of custom context variable.",
                         "type": "string"
                     }
                 },
                 "required": [
-                    "type",
-                    "accountId"
+                    "accountId",
+                    "type"
                 ],
                 "type": "object"
             }
         }
     },
-    "openapi": "3.0.1",
     "info": {
-        "title": "discriminator_inside_properties",
-        "version": "1.0.0"
+        "title": "discriminator_in_root_with_properties"
     },
+    "openapi": "3.0.1",
     "paths": {},
     "servers": [
         {
             "url": "https://your-domain.atlassian.net"
         }
-    ]
+    ],
+    "tags": []
 }

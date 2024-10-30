@@ -12,6 +12,12 @@ patch_parse_schema()
 patch_function_name_parsing()
 patch_generate_code()
 
+from .patch_datamodel_code_generator import (
+    patch_apply_discriminator_type
+)
+
+patch_apply_discriminator_type()
+
 from .client import OpenAPI  # noqa: E402
 
 __all__ = ["OpenAPI"]

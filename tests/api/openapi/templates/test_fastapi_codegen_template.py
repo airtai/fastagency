@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 from datamodel_code_generator import DataModelType
-from fastapi_code_generator.__main__ import generate_code
 
 from fastagency.api.openapi import OpenAPI
+from fastapi_code_generator.__main__ import generate_code
 
 OPENAPI_FILE_PATHS = list(Path(__file__).parent.glob("*.json"))
 TEMPLATE_DIR = Path(__file__).parents[4] / "templates"
@@ -15,10 +15,15 @@ TEMPLATE_DIR = Path(__file__).parents[4] / "templates"
 assert TEMPLATE_DIR.exists(), TEMPLATE_DIR
 
 
-@pytest.mark.parametrize("openapi_file_path", OPENAPI_FILE_PATHS)
+@pytest.mark.parametrize(
+        "openapi_file_path", 
+        OPENAPI_FILE_PATHS, 
+        ids=[p.name for p in OPENAPI_FILE_PATHS]
+)
 def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir)
+        #td = Path(__file__).parent / openapi_file_path.stem
 
         generate_code(
             input_name=openapi_file_path.name,
