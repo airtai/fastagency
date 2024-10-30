@@ -13,7 +13,8 @@ from datamodel_code_generator.model.base import (
     DataModel,
 )
 
-from datamodel_code_generator.parser.base import Parser
+#from datamodel_code_generator.parser import base
+from fastapi_code_generator.parser import OpenAPIParser
 
 from ...logging import get_logger
 
@@ -123,5 +124,12 @@ def patch_apply_discriminator_type():
                     if has_imported_literal:  # pragma: no cover
                         imports.append(literal)
 
-    Parser.__apply_discriminator_type = __apply_discriminator_type_patched
-    logger.info("Patched Parser.__apply_discriminator_type")
+    original_name = [name for name in dir(OpenAPIParser) if '__apply_discriminator_type' in name]
+    if original_name:
+        # Patch the method using the exact mangled name
+        setattr(OpenAPIParser, original_name[0], __apply_discriminator_type_patched)
+    else:
+        # Handle the case if the method does not exist (unexpected)
+        raise AttributeError("Method __apply_discriminator_type not found in base.Parser")
+    
+    logger.info(f"Patched Parser.__apply_discriminator_type, original name: {original_name}")

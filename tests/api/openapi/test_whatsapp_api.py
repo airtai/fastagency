@@ -32,31 +32,30 @@ def whatsapp_api_schema() -> str:
 @patch("fastagency.api.openapi.client.requests.post")
 def test_real_whatsapp_end2end(
     mock_post: MagicMock,
-    whatsapp_api_schema: str,
+    #whatsapp_api_schema: str,
 ) -> None:
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {"status": "success"}
     mock_post.return_value = mock_response
 
-    # file_name = "whatsapp_simple.json"
+    file_name = "whatsapp_simple.json"
 
-    # file_path = (
-    #     Path(__file__).parent.parent.parent.parent / f"examples/openapi/{file_name}"
-    # )
+    file_path = (
+        Path(__file__).parent.parent.parent.parent / f"examples/openapi/{file_name}"
+    )
 
-    # with file_path.open(encoding="utf-8") as file:
-    #     openapi_json = file.read()
-
-    # api = OpenAPI.create(
-    #     openapi_json=openapi_json,
-    #     client_source_path=".",
-    # )
+    with file_path.open(encoding="utf-8") as file:
+        openapi_json = file.read()
 
     api = OpenAPI.create(
-        openapi_json=whatsapp_api_schema,
-        servers=[{"url": "https://api.infobip.com"}],
+        openapi_json=openapi_json,
     )
+
+    # api = OpenAPI.create(
+    #     openapi_json=whatsapp_api_schema,
+    #     servers=[{"url": "https://api.infobip.com"}],
+    # )
 
     assert isinstance(api, OpenAPI)
 
