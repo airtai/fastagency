@@ -211,7 +211,11 @@ class CurrentMessage:
             workflow_uuid = kwargs.get("workflow_uuid")
             retval = [
                 IOMessage.create(
-                    body=body, sender=sender, recipient=recipient, type="text_message", workflow_uuid=workflow_uuid,
+                    body=body,
+                    sender=sender,
+                    recipient=recipient,
+                    type="text_message",
+                    workflow_uuid=workflow_uuid,
                 )
             ]
 

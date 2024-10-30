@@ -1,30 +1,47 @@
-from pathlib import Path
+from os import environ
 from unittest.mock import MagicMock, patch
 
+import pytest
+import requests
 from autogen import UserProxyAgent
 
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 
 
+@pytest.fixture(scope="session")
+def whatsapp_api_schema() -> str:
+    postman_api_key = environ.get("POSTMAN_API_KEY")
+    api_id = "348d2a2f-42dc-4e65-86c7-7c4b589a0693"
+    url = f"https://api.getpostman.com/apis/{api_id}"
+
+    # Define the headers for authentication
+    headers = {"X-Api-Key": postman_api_key}
+
+    # Make the GET request to download the collection
+    response = requests.get(url, headers=headers)
+
+    response.raise_for_status()
+    api_data = response.json()
+
+    return api_data["api"]["versions"][0]["schemas"][0]["content"]  # type: ignore [no-any-return]
+
+
+@pytest.mark.postman
 @patch("fastagency.api.openapi.client.requests.post")
 def test_real_whatsapp_end2end(
     mock_post: MagicMock,
+    whatsapp_api_schema: str,
 ) -> None:
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {"status": "success"}
     mock_post.return_value = mock_response
 
-    file_path = (
-        Path(__file__).parent.parent.parent.parent
-        / "examples/openapi/whatsapp_openapi_complete.json"
+    api = OpenAPI.create(
+        openapi_json=whatsapp_api_schema,
+        servers=[{"url": "https://api.infobip.com"}],
     )
-
-    with file_path.open(encoding="utf-8") as file:
-        openapi_json = file.read()
-
-    api = OpenAPI.create(openapi_json=openapi_json)
 
     assert isinstance(api, OpenAPI)
 

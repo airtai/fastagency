@@ -27,6 +27,13 @@ def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
             output_dir=td,
             template_dir=TEMPLATE_DIR,
             output_model_type=DataModelType.PydanticV2BaseModel,
+            custom_visitors=[
+                Path(__file__).parents[4]
+                / "fastagency"
+                / "api"
+                / "openapi"
+                / "security_schema_visitor.py"
+            ],
         )
 
         main_path = td / "main.py"
