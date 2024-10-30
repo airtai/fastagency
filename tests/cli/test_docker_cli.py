@@ -74,7 +74,7 @@ def test_docker_build_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
             "run",
             lambda *args, **kwargs: subprocess.CompletedProcess(
                 args=command,
-                returncode=0,
+                returncode=1,
                 stdout="Building FastAgency Docker image and Error: unknown flag: --invalid-argument",
             ),
         )
@@ -156,7 +156,7 @@ def test_docker_run_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
             "run",
             lambda *args, **kwargs: subprocess.CompletedProcess(
                 args=command,
-                returncode=0,
+                returncode=1,
                 stdout="Running FastAgency Docker image and Error: unknown flag: --invalid-argument",
             ),
         )
