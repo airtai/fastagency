@@ -178,3 +178,61 @@ def run(
     except subprocess.CalledProcessError as e:
         typer.echo(f"Error: {e.stderr}", err=True)
         raise typer.Exit(code=1) from e
+
+
+@docker_app.command(
+    context_settings={"allow_extra_args": True, "ignore_unknown_options": True},
+    help="Deploy the Docker container for the FastAgency app to Fly.io",
+)
+def deploy(
+    config_file: Annotated[
+        str,
+        typer.Argument(
+            ...,
+            help="The Fly.io configuration file",
+        ),
+    ] = "fly.toml",
+    *,
+    openai_api_key: Annotated[
+        str,
+        typer.Option(
+            "--openai-api-key",
+            help="OpenAI API key",
+            envvar="OPENAI_API_KEY",
+            show_default=False,
+        ),
+    ],
+    ctx: typer.Context,
+) -> None:
+    deploy_command = [
+        "fly",
+        "deploy",
+        "--config",
+        config_file,
+        "--copy-config",
+        "--yes",
+    ]
+    deploy_command += ctx.args
+
+    set_secret_command = ["fly", "secrets", "set", "OPENAI_API_KEY=" + openai_api_key]
+    try:
+        typer.echo(
+            f"Deploying FastAgency Docker image to Fly.io with the command: {' '.join(deploy_command)}"
+        )
+        # Run the fly deploy command
+        deploy_result = subprocess.run(  # nosec B603
+            deploy_command, check=True, capture_output=True, text=True
+        )
+        typer.echo(deploy_result.stdout)
+
+        typer.echo(
+            f"Setting OpenAI API key with the command: {' '.join(set_secret_command)}"
+        )
+        # Run the fly secrets set command
+        set_secret_result = subprocess.run(  # nosec B603
+            set_secret_command, check=True, capture_output=True, text=True
+        )
+        typer.echo(set_secret_result.stdout)
+    except subprocess.CalledProcessError as e:
+        typer.echo(f"Error: {e.stderr}", err=True)
+        raise typer.Exit(code=1) from e

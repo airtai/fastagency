@@ -84,6 +84,7 @@ $ fastagency docker [OPTIONS] COMMAND [ARGS]...
 **Commands**:
 
 * `build`: Build a Docker image for the FastAgency app
+* `deploy`: Deploy the Docker container for the...
 * `run`: Run a Docker container for the FastAgency app
 
 ### `fastagency docker build`
@@ -105,6 +106,25 @@ $ fastagency docker build [OPTIONS] [BUILD_CONTEXT]
 * `-f, --file TEXT`: Name of the Dockerfile  [default: docker/Dockerfile]
 * `-t, --tag TEXT`: Name and optionally a tag (format: "name:tag")  [default: deploy_fastagency]
 * `--progress TEXT`: Set type of progress output (auto, plain, tty, rawjson).  [default: plain]
+* `--help`: Show this message and exit.
+
+### `fastagency docker deploy`
+
+Deploy the Docker container for the FastAgency app to Fly.io
+
+**Usage**:
+
+```console
+$ fastagency docker deploy [OPTIONS] [CONFIG_FILE]
+```
+
+**Arguments**:
+
+* `[CONFIG_FILE]`: The Fly.io configuration file  [default: fly.toml]
+
+**Options**:
+
+* `--openai-api-key TEXT`: OpenAI API key  [env var: OPENAI_API_KEY; required]
 * `--help`: Show this message and exit.
 
 ### `fastagency docker run`

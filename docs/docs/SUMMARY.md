@@ -112,6 +112,7 @@ search:
                     - [import_from_string](api/fastagency/cli/discover/import_from_string.md)
                 - docker_cli
                     - [build](api/fastagency/cli/docker_cli/build.md)
+                    - [deploy](api/fastagency/cli/docker_cli/deploy.md)
                     - [run](api/fastagency/cli/docker_cli/run.md)
                 - logging
                     - [setup_logging](api/fastagency/cli/logging/setup_logging.md)
