@@ -1,0 +1,63 @@
+{
+    "components": {
+        "schemas": {
+            "CustomContextVariable": {
+                "additionalProperties": false,
+                "discriminator": {
+                    "mapping": {
+                        "issue": "#/components/schemas/IssueContextVariable"
+                    },
+                    "propertyName": "type"
+                },
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/UserContextVariable"
+                    }
+                ],
+                "properties": {
+                    "type": {
+                        "description": "Type of custom context variable.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type"
+                ],
+                "type": "object"
+            },
+            "IssueContextVariable": {
+                "description": "An [issue](https://developer.atlassian.com/cloud/jira/platform/jira-expressions-type-reference#issue) specified by ID or key. All the fields of the issue object are available in the Jira expression.",
+                "properties": {
+                    "id": {
+                        "description": "The issue ID.",
+                        "format": "int64",
+                        "type": "integer"
+                    },
+                    "key": {
+                        "description": "The issue key.",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Type of custom context variable.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type"
+                ],
+                "type": "object"
+            }
+        }
+    },
+    "info": {
+        "title": "discriminator_outside_properties"
+    },
+    "openapi": "3.0.1",
+    "paths": {},
+    "servers": [
+        {
+            "url": "https://your-domain.atlassian.net"
+        }
+    ],
+    "tags": []
+}
