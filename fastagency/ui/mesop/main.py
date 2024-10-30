@@ -8,11 +8,11 @@ import mesop as me
 from fastagency.base import ProviderProtocol
 
 from ...logging import get_logger
+from .components.auth import Auth
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
 from .styles import MesopHomePageStyles
-from .components.auth import Auth
 
 if TYPE_CHECKING:
     from .mesop import MesopUI
@@ -34,14 +34,9 @@ def create_home_page(
     *,
     styles: Optional[MesopHomePageStyles] = None,
     security_policy: Optional[me.SecurityPolicy] = None,
-    auth: Optional[Auth] = None
+    auth: Optional[Auth] = None,
 ) -> Callable[[], None]:
-    mhp = MesopHomePage(
-        ui, 
-        styles=styles, 
-        security_policy=security_policy,
-        auth=auth
-        )
+    mhp = MesopHomePage(ui, styles=styles, security_policy=security_policy, auth=auth)
 
     return mhp.build()
 
@@ -64,7 +59,7 @@ class MesopHomePage:
         params: Optional[MesopHomePageParams] = None,
         styles: Optional[MesopHomePageStyles] = None,
         security_policy: Optional[me.SecurityPolicy] = None,
-        auth: Optional[Auth] = None
+        auth: Optional[Auth] = None,
     ) -> None:
         self._ui = ui
         self._params = params or MesopHomePageParams()
