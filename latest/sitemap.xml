@@ -373,6 +373,24 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/cli/discover/import_from_string/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/cli/docker_cli/build/</loc>
+        <lastmod>2024-10-30</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/cli/docker_cli/build/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/cli/docker_cli/deploy/</loc>
+        <lastmod>2024-10-30</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/cli/docker_cli/deploy/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/cli/docker_cli/run/</loc>
+        <lastmod>2024-10-30</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/cli/docker_cli/run/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/cli/logging/setup_logging/</loc>
         <lastmod>2024-10-30</lastmod>
         <changefreq>daily</changefreq>
