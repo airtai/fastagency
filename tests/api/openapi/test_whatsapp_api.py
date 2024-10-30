@@ -1,6 +1,6 @@
 from os import environ
-from unittest.mock import MagicMock, patch
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
@@ -32,7 +32,7 @@ def whatsapp_api_schema() -> str:
 @patch("fastagency.api.openapi.client.requests.post")
 def test_real_whatsapp_end2end(
     mock_post: MagicMock,
-    #whatsapp_api_schema: str,
+    # whatsapp_api_schema: str,
 ) -> None:
     mock_response = MagicMock()
     mock_response.status_code = 200

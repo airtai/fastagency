@@ -1,44 +1,42 @@
-from typing import List
-#from functools import wraps
+# from functools import wraps
 
-from datamodel_code_generator.model import pydantic as pydantic_model
-from datamodel_code_generator.model import pydantic_v2 as pydantic_model_v2
 from datamodel_code_generator.imports import (
     IMPORT_LITERAL,
     IMPORT_LITERAL_BACKPORT,
     Imports,
 )
-
+from datamodel_code_generator.model import pydantic as pydantic_model
+from datamodel_code_generator.model import pydantic_v2 as pydantic_model_v2
 from datamodel_code_generator.model.base import (
     DataModel,
 )
 
-#from datamodel_code_generator.parser import base
+# from datamodel_code_generator.parser import base
 from fastapi_code_generator.parser import OpenAPIParser
 
 from ...logging import get_logger
 
 logger = get_logger(__name__)
 
+
 def patch_apply_discriminator_type():
+    #    org__apply_discriminator_type = Parser.__apply_discriminator_type
 
-#    org__apply_discriminator_type = Parser.__apply_discriminator_type
-
-#    @wraps(org__apply_discriminator_type)
+    #    @wraps(org__apply_discriminator_type)
     def __apply_discriminator_type_patched(
         self,
-        models: List[DataModel],
+        models: list[DataModel],
         imports: Imports,
     ) -> None:
         for model in models:
             for field in model.fields:
-                discriminator = field.extras.get('discriminator')
+                discriminator = field.extras.get("discriminator")
                 if not discriminator or not isinstance(discriminator, dict):
                     continue
-                property_name = discriminator.get('propertyName')
+                property_name = discriminator.get("propertyName")
                 if not property_name:  # pragma: no cover
                     continue
-                mapping = discriminator.get('mapping', {})
+                mapping = discriminator.get("mapping", {})
                 for data_type in field.data_type.data_types:
                     if not data_type.reference:  # pragma: no cover
                         continue
@@ -55,11 +53,16 @@ def patch_apply_discriminator_type():
                     def check_paths(model, mapping):
                         """Helper function to validate paths for a given model."""
                         for name, path in mapping.items():
-                            if model.path.split('#/')[-1] != path.split('#/')[-1]:
-                                if path.startswith('#/') or model.path[:-1] != path.split('/')[-1]:
-                                    t_path = path[str(path).find('/') + 1 :]
-                                    t_disc = model.path[: str(model.path).find('#')].lstrip('../')
-                                    t_disc_2 = '/'.join(t_disc.split('/')[1:])
+                            if model.path.split("#/")[-1] != path.split("#/")[-1]:
+                                if (
+                                    path.startswith("#/")
+                                    or model.path[:-1] != path.split("/")[-1]
+                                ):
+                                    t_path = path[str(path).find("/") + 1 :]
+                                    t_disc = model.path[
+                                        : str(model.path).find("#")
+                                    ].lstrip("../")
+                                    t_disc_2 = "/".join(t_disc.split("/")[1:])
                                     if t_path != t_disc and t_path != t_disc_2:
                                         continue
                             type_names.append(name)
@@ -73,10 +76,10 @@ def patch_apply_discriminator_type():
                             if base_class.reference and base_class.reference.path:
                                 check_paths(base_class.reference, mapping)
                     else:
-                        type_names = [discriminator_model.path.split('/')[-1]]
+                        type_names = [discriminator_model.path.split("/")[-1]]
                     if not type_names:  # pragma: no cover
                         raise RuntimeError(
-                            f'Discriminator type is not found. {data_type.reference.path}'
+                            f"Discriminator type is not found. {data_type.reference.path}"
                         )
                     has_one_literal = False
                     for discriminator_field in discriminator_model.fields:
@@ -124,12 +127,18 @@ def patch_apply_discriminator_type():
                     if has_imported_literal:  # pragma: no cover
                         imports.append(literal)
 
-    original_name = [name for name in dir(OpenAPIParser) if '__apply_discriminator_type' in name]
+    original_name = [
+        name for name in dir(OpenAPIParser) if "__apply_discriminator_type" in name
+    ]
     if original_name:
         # Patch the method using the exact mangled name
         setattr(OpenAPIParser, original_name[0], __apply_discriminator_type_patched)
     else:
         # Handle the case if the method does not exist (unexpected)
-        raise AttributeError("Method __apply_discriminator_type not found in base.Parser")
-    
-    logger.info(f"Patched Parser.__apply_discriminator_type, original name: {original_name}")
+        raise AttributeError(
+            "Method __apply_discriminator_type not found in base.Parser"
+        )
+
+    logger.info(
+        f"Patched Parser.__apply_discriminator_type, original name: {original_name}"
+    )
