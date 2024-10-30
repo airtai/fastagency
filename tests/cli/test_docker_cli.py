@@ -72,14 +72,17 @@ def test_docker_build_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setattr(
             subprocess,
             "run",
-            lambda *args,
-            **kwargs: "Building FastAgency Docker image and Error: unknown flag: --invalid-argument",
+            lambda *args, **kwargs: subprocess.CompletedProcess(
+                args=command,
+                returncode=0,
+                stdout="Building FastAgency Docker image and Error: unknown flag: --invalid-argument",
+            ),
         )
 
     result = runner.invoke(app, command)
     assert result.exit_code != 0
-    assert "Building FastAgency Docker image" in result.stdout
-    assert "Error: unknown flag: --invalid-argument" in result.stdout
+    assert "Building FastAgency Docker image" in result.stdout, result.stdout
+    assert "Error: unknown flag: --invalid-argument" in result.stdout, result.stdout
 
 
 @pytest.mark.parametrize(
@@ -151,11 +154,14 @@ def test_docker_run_invalid_argument(monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setattr(
             subprocess,
             "run",
-            lambda *args,
-            **kwargs: "Running FastAgency Docker image and Error: unknown flag: --invalid-argument",
+            lambda *args, **kwargs: subprocess.CompletedProcess(
+                args=command,
+                returncode=0,
+                stdout="Running FastAgency Docker image and Error: unknown flag: --invalid-argument",
+            ),
         )
 
     result = runner.invoke(app, command)
     assert result.exit_code != 0
-    assert "Running FastAgency Docker image" in result.stdout
-    assert "Error: unknown flag: --invalid-argument" in result.stdout
+    assert "Running FastAgency Docker image" in result.stdout, result.stdout
+    assert "Error: unknown flag: --invalid-argument" in result.stdout, result.stdout
