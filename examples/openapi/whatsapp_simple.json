@@ -424,17 +424,17 @@
                 "properties": {
                     "type": {
                         "$ref": "#/components/schemas/a4e0c51a24a360282e1a40c61554d239555404b786d84603912030fc4cdbb512.MediaType"
-                    },
-                    "discriminator": {
-                        "propertyName": "type",
-                        "mapping": {
-                            "IMAGE": "#/components/schemas/a4e0c51a24a360282e1a40c61554d239555404b786d84603912030fc4cdbb512.ReferralMediaImage",
-                            "VIDEO": "#/components/schemas/a4e0c51a24a360282e1a40c61554d239555404b786d84603912030fc4cdbb512.ReferralMediaVideo"
-                        }
-                    },
-                    "readOnly": false,
-                    "writeOnly": true
-                }
+                    }
+                },
+                "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                        "IMAGE": "#/components/schemas/a4e0c51a24a360282e1a40c61554d239555404b786d84603912030fc4cdbb512.ReferralMediaImage",
+                        "VIDEO": "#/components/schemas/a4e0c51a24a360282e1a40c61554d239555404b786d84603912030fc4cdbb512.ReferralMediaVideo"
+                    }
+                },
+                "readOnly": false,
+                "writeOnly": true
             },
             "a4e0c51a24a360282e1a40c61554d239555404b786d84603912030fc4cdbb512.ReferralMediaImage": {
                 "type": "object",
