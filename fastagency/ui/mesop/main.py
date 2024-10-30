@@ -12,6 +12,7 @@ from .data_model import Conversation, State
 from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
 from .styles import MesopHomePageStyles
+from .components.auth import Auth
 
 if TYPE_CHECKING:
     from .mesop import MesopUI
@@ -33,8 +34,14 @@ def create_home_page(
     *,
     styles: Optional[MesopHomePageStyles] = None,
     security_policy: Optional[me.SecurityPolicy] = None,
+    auth: Optional[Auth] = None
 ) -> Callable[[], None]:
-    mhp = MesopHomePage(ui, styles=styles, security_policy=security_policy)
+    mhp = MesopHomePage(
+        ui, 
+        styles=styles, 
+        security_policy=security_policy,
+        auth=auth
+        )
 
     return mhp.build()
 
@@ -57,10 +64,15 @@ class MesopHomePage:
         params: Optional[MesopHomePageParams] = None,
         styles: Optional[MesopHomePageStyles] = None,
         security_policy: Optional[me.SecurityPolicy] = None,
+        auth: Optional[Auth] = None
     ) -> None:
         self._ui = ui
         self._params = params or MesopHomePageParams()
         self._styles = styles or MesopHomePageStyles()
+        self.auth = auth
+        # relax the security policy if auth is not None
+        # _security_policy  = security_policy or DEFAULT_SECURITY_POLICY
+        # self._security_policy = _security_policy if auth is None else auth.relax_security_policy(_security_policy)
         self._security_policy = security_policy or DEFAULT_SECURITY_POLICY
 
     def build(self) -> Callable[[], None]:

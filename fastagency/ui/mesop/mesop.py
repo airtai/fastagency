@@ -33,6 +33,7 @@ from ...messages import (
 )
 from .styles import MesopHomePageStyles
 from .timer import configure_static_file_serving
+from .components.auth import Auth
 
 logger = get_logger(__name__)
 
@@ -59,6 +60,7 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         security_policy: Optional[me.SecurityPolicy] = None,
         styles: Optional[MesopHomePageStyles] = None,
         keep_alive: Optional[bool] = False,
+        auth: Optional[Auth] = None
     ) -> None:
         """Initialize the console UI object.
 
@@ -88,7 +90,12 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
             if MesopUI._me is None:
                 from .main import create_home_page, me
 
-                create_home_page(self, security_policy=security_policy, styles=styles)
+                create_home_page(
+                    self, 
+                    security_policy=security_policy, 
+                    styles=styles,
+                    auth = auth
+                )
                 MesopUI._me = me
 
         except Exception as e:
