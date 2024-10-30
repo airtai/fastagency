@@ -57,12 +57,24 @@ class FirebaseAuth:  # implements AuthProtocol
             ),
         )
 
+    @classmethod
+    def on_click(cls, event: me.ClickEvent) -> None:
+        # simulating login
+        # todo: replace the below code with firebase auth
+        import time
+
+        time.sleep(3)
+        me.state(State).authenticated_user = "some_user@gmail.com"
+
     # maybe me.Component is wrong
     def login_component(self) -> me.component:
         with me.box():
             state = me.state(State)
-
-            me.text(f"state.authenticated_user: {state.authenticated_user or 'N/A' }")
+            me.text(
+                f"state.authenticated_user: {state.authenticated_user or 'N/A' }",
+                style=me.Style(padding=me.Padding(bottom=12)),
+            )
+            me.button("Login", type="flat", on_click=FirebaseAuth.on_click)
 
     # maybe me.Component is wrong
     def logout_component(self) -> me.component:

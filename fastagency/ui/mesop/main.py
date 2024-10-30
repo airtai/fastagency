@@ -101,7 +101,7 @@ class MesopHomePage:
         try:
             state = me.state(State)
             with me.box(style=self._styles.root):
-                if self.auth:
+                if self.auth and state.authenticated_user is None:
                     self.auth.login_component()
                 else:
                     self.past_conversations_box()
