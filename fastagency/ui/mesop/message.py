@@ -39,7 +39,8 @@ def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
         state = me.state(State)
         handle_message(state, message)
         yield
-        me.scroll_into_view(key="end_of_messages")
+        if not isinstance(message.io_message, KeepAlive):
+            me.scroll_into_view(key="end_of_messages")
         yield
     yield
 
