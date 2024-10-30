@@ -20,6 +20,7 @@ $ fastagency [OPTIONS] COMMAND [ARGS]...
 **Commands**:
 
 * `dev`: Run a **FastAgency** app in <code>development</code> mode.
+* `docker`: **Docker** commands for...
 * `run`: Run a **FastAgency** app in <code>production</code> mode.
 * `version`: Display the version of FastAgency
 
@@ -64,6 +65,90 @@ $ fastagency dev [OPTIONS] [PATH]
 * `--app TEXT`: The name of the variable that contains the **** app in the imported module or package. If not provided, it is detected automatically.
 * `-w, --workflow TEXT`: The name of the workflow to run. If not provided, the default workflow will be run.
 * `--single-run`: If set, only a single workflow will be executed.
+* `--help`: Show this message and exit.
+
+## `fastagency docker`
+
+**Docker** commands for **FastAgency**
+
+**Usage**:
+
+```console
+$ fastagency docker [OPTIONS] COMMAND [ARGS]...
+```
+
+**Options**:
+
+* `--help`: Show this message and exit.
+
+**Commands**:
+
+* `build`: Build a Docker image for the FastAgency app
+* `deploy`: Deploy the Docker container for the...
+* `run`: Run a Docker container for the FastAgency app
+
+### `fastagency docker build`
+
+Build a Docker image for the FastAgency app
+
+**Usage**:
+
+```console
+$ fastagency docker build [OPTIONS] [BUILD_CONTEXT]
+```
+
+**Arguments**:
+
+* `[BUILD_CONTEXT]`: Docker build context  [default: .]
+
+**Options**:
+
+* `-f, --file TEXT`: Name of the Dockerfile  [default: docker/Dockerfile]
+* `-t, --tag TEXT`: Name and optionally a tag (format: "name:tag")  [default: deploy_fastagency]
+* `--progress TEXT`: Set type of progress output (auto, plain, tty, rawjson).  [default: plain]
+* `--help`: Show this message and exit.
+
+### `fastagency docker deploy`
+
+Deploy the Docker container for the FastAgency app to Fly.io
+
+**Usage**:
+
+```console
+$ fastagency docker deploy [OPTIONS] [CONFIG_FILE]
+```
+
+**Arguments**:
+
+* `[CONFIG_FILE]`: The Fly.io configuration file  [default: fly.toml]
+
+**Options**:
+
+* `--openai-api-key TEXT`: OpenAI API key  [env var: OPENAI_API_KEY; required]
+* `--help`: Show this message and exit.
+
+### `fastagency docker run`
+
+Run a Docker container for the FastAgency app
+
+**Usage**:
+
+```console
+$ fastagency docker run [OPTIONS] [IMAGE]
+```
+
+**Arguments**:
+
+* `[IMAGE]`: The Docker image to run  [default: deploy_fastagency]
+
+**Options**:
+
+* `--name TEXT`: Assign a name to the container  [default: deploy_fastagency]
+* `-e, --env TEXT`: Set environment variables
+* `-p, --publish TEXT`: Publish a container's port(s) to the host
+* `--rm`: Automatically remove the container and its associated anonymous volumes when it exits
+* `-d, --detach`: Run container in background and print container ID  [default: True]
+* `--network TEXT`: Connect a container to a network
 * `--help`: Show this message and exit.
 
 ## `fastagency run`
