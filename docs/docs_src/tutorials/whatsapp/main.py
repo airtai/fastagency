@@ -7,8 +7,8 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
-from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
 from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
@@ -92,7 +92,7 @@ def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
         human_input_mode="NEVER",
         executor=whatsapp_agent,
         is_termination_msg=is_termination_msg,
-        bing_api_key=os.getenv("BING_API_KEY")
+        bing_api_key=os.getenv("BING_API_KEY"),
     )
 
     register_function(
@@ -108,7 +108,7 @@ If you are presenting a completed task, last message should be a question: 'Do y
         api=whatsapp_api,
         callers=whatsapp_agent,
         executors=web_surfer,
-        functions = ["send_whatsapp_text_message"]
+        functions=["send_whatsapp_text_message"],
     )
 
     initial_message = ui.text_input(
