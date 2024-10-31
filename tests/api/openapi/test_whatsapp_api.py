@@ -93,7 +93,6 @@ def test_real_whatsapp_end2end_problematic(
 
     api = OpenAPI.create(
         openapi_json=openapi_json,
-        client_source_path=".",
     )
 
     assert isinstance(api, OpenAPI)

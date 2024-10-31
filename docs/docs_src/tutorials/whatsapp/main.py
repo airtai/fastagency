@@ -21,9 +21,11 @@ llm_config = {
     "temperature": 0.8,
 }
 
-openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/whatsapp_openapi.json"
+openapi_url = "https://dev.infobip.com/openapi/products/whatsapp.json"
+
 whatsapp_api = OpenAPI.create(
     openapi_url=openapi_url,
+    servers=[{"url": "https://api.infobip.com"}],
 )
 
 header_authorization = "App "  # pragma: allowlist secret
@@ -101,11 +103,12 @@ def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
         description="""Present completed task or ask question.
 If you are presenting a completed task, last message should be a question: 'Do yo need anything else?'""",
     )
-
+    
     wf.register_api(
         api=whatsapp_api,
         callers=whatsapp_agent,
         executors=web_surfer,
+        functions = ["send_whatsapp_text_message"]
     )
 
     initial_message = ui.text_input(
