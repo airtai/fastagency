@@ -225,7 +225,7 @@ class OpenAPI:
 
     def head(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("head", path, **kwargs)
-    
+
     def patch(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("patch", path, **kwargs)
 
