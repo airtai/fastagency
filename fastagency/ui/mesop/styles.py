@@ -93,6 +93,10 @@ STYLESHEETS = [
     "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
 ]
 
+FIREBASE_STYLESHEETS = [
+    "https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css"
+]
+
 MSG_DEFAULT_HEADER_MD_STYLE = me.Style(
     padding=me.Padding(top=8, right=16, left=16, bottom=8)
 )
@@ -262,7 +266,6 @@ MULTIPLE_CHOICE_CHECKBOX_STYLE = me.Style()
 LOGIN_BOX_STYLE = me.Style(display="flex", justify_content="center")
 
 LOGIN_BTN_BOX_STYLE = me.Style(text_align="center", margin=me.Margin(top=100))
-LOGIN_BTN_STYLE = me.Style(margin=me.Margin(top=24))
 LOGOUT_BTN_STYLE = me.Style(margin=me.Margin(top=16))
 
 
@@ -363,8 +366,10 @@ class MesopHomePageStyles:
     past_chats_conv: me.Style = field(default_factory=lambda: PAST_CHATS_CONV_STYLE)
     root: me.Style = field(default_factory=lambda: ROOT_BOX_STYLE)
     stylesheets: list[str] = field(default_factory=lambda: STYLESHEETS)
+    firebase_stylesheets: list[str] = field(
+        default_factory=lambda: FIREBASE_STYLESHEETS
+    )
     message: MesopMessagesStyles = field(default_factory=lambda: MesopMessagesStyles())
     login_box: me.Style = field(default_factory=lambda: LOGIN_BOX_STYLE)
     login_btn_container: me.Style = field(default_factory=lambda: LOGIN_BTN_BOX_STYLE)
-    login_btn: me.Style = field(default_factory=lambda: LOGIN_BTN_STYLE)
     logout_btn: me.Style = field(default_factory=lambda: LOGOUT_BTN_STYLE)

@@ -87,9 +87,15 @@ class MesopHomePage:
         return auth.create_security_policy(base_policy)
 
     def build(self) -> Callable[[], None]:
+        stylesheets = (
+            self._styles.stylesheets + self._styles.firebase_stylesheets
+            if self.auth
+            else self._styles.stylesheets
+        )
+
         @me.page(  # type: ignore[misc]
             path="/",
-            stylesheets=self._styles.stylesheets,
+            stylesheets=stylesheets,
             security_policy=self._security_policy,
         )
         def home_page() -> None:
@@ -101,7 +107,7 @@ class MesopHomePage:
         try:
             state = me.state(State)
             if self.auth and not state.authenticated_user:
-                self.auth.login_component()
+                self.auth.auth_component()
             else:
                 with me.box(style=self._styles.root):
                     self.past_conversations_box()
@@ -110,7 +116,7 @@ class MesopHomePage:
                     else:
                         self.conversation_starter_box()
                     if self.auth and state.authenticated_user:
-                        self.auth.logout_component()
+                        self.auth.auth_component()
         except Exception as e:
             logger.error(f"home_page(): Error rendering home page: {e}")
             me.text(text="Error: Something went wrong, please check logs for details.")
