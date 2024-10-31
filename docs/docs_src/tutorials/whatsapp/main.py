@@ -103,7 +103,7 @@ def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
         description="""Present completed task or ask question.
 If you are presenting a completed task, last message should be a question: 'Do yo need anything else?'""",
     )
-    
+
     wf.register_api(
         api=whatsapp_api,
         callers=whatsapp_agent,
