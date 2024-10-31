@@ -5,6 +5,7 @@ from typing import Literal
 import mesop as me
 
 from .data_model import State
+from .styles import MesopHomePageStyles
 
 if typing.TYPE_CHECKING:
     from .auth import AuthProtocol
@@ -58,7 +59,7 @@ class FirebaseAuth:  # implements AuthProtocol
         )
 
     @classmethod
-    def on_click(cls, event: me.ClickEvent) -> None:
+    def on_click_login(cls, event: me.ClickEvent) -> None:
         # simulating login
         # todo: replace the below code with firebase auth
         import time
@@ -66,16 +67,29 @@ class FirebaseAuth:  # implements AuthProtocol
         time.sleep(3)
         me.state(State).authenticated_user = "some_user@gmail.com"
 
+    @classmethod
+    def on_click_logout(cls, event: me.ClickEvent) -> None:
+        me.state(State).authenticated_user = None
+
     # maybe me.Component is wrong
     def login_component(self) -> me.component:
-        with me.box():
-            state = me.state(State)
-            me.text(
-                f"state.authenticated_user: {state.authenticated_user or 'N/A' }",
-                style=me.Style(padding=me.Padding(bottom=12)),
-            )
-            me.button("Login", type="flat", on_click=FirebaseAuth.on_click)
+        styles = MesopHomePageStyles()
+        with me.box(style=styles.login_box):  # noqa: SIM117
+            with me.box(style=styles.login_btn_container):
+                me.text("Sign in to your account", style=styles.header_text)
+                me.button(
+                    "Login",
+                    type="flat",
+                    on_click=FirebaseAuth.on_click_login,
+                    style=styles.login_btn,
+                )
 
     # maybe me.Component is wrong
     def logout_component(self) -> me.component:
-        raise NotImplementedError
+        styles = MesopHomePageStyles()
+        me.button(
+            "Logout",
+            type="flat",
+            on_click=FirebaseAuth.on_click_logout,
+            style=styles.logout_btn,
+        )

@@ -100,15 +100,17 @@ class MesopHomePage:
     def home_page(self) -> None:
         try:
             state = me.state(State)
-            with me.box(style=self._styles.root):
-                if self.auth and state.authenticated_user is None:
-                    self.auth.login_component()
-                else:
+            if self.auth and not state.authenticated_user:
+                self.auth.login_component()
+            else:
+                with me.box(style=self._styles.root):
                     self.past_conversations_box()
                     if state.in_conversation:
                         self.conversation_box()
                     else:
                         self.conversation_starter_box()
+                    if self.auth and state.authenticated_user:
+                        self.auth.logout_component()
         except Exception as e:
             logger.error(f"home_page(): Error rendering home page: {e}")
             me.text(text="Error: Something went wrong, please check logs for details.")
