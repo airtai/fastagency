@@ -21,7 +21,6 @@ assert TEMPLATE_DIR.exists(), TEMPLATE_DIR
 def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir)
-        # td = Path(__file__).parent / openapi_file_path.stem
 
         generate_code(
             input_name=openapi_file_path.name,
