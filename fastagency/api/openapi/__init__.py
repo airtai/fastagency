@@ -12,7 +12,7 @@ patch_parse_schema()
 patch_function_name_parsing()
 patch_generate_code()
 
-from .patch_datamodel_code_generator import patch_apply_discriminator_type
+from .patch_datamodel_code_generator import patch_apply_discriminator_type  # noqa: E402
 
 patch_apply_discriminator_type()
 

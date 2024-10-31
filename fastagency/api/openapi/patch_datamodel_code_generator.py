@@ -1,4 +1,4 @@
-# from functools import wraps
+from typing import Union
 
 from datamodel_code_generator.imports import (
     IMPORT_LITERAL,
@@ -10,6 +10,7 @@ from datamodel_code_generator.model import pydantic_v2 as pydantic_model_v2
 from datamodel_code_generator.model.base import (
     DataModel,
 )
+from datamodel_code_generator.reference import Reference
 
 # from datamodel_code_generator.parser import base
 from fastapi_code_generator.parser import OpenAPIParser
@@ -19,12 +20,9 @@ from ...logging import get_logger
 logger = get_logger(__name__)
 
 
-def patch_apply_discriminator_type():
-    #    org__apply_discriminator_type = Parser.__apply_discriminator_type
-
-    #    @wraps(org__apply_discriminator_type)
-    def __apply_discriminator_type_patched(
-        self,
+def patch_apply_discriminator_type() -> None:  # noqa: C901
+    def __apply_discriminator_type_patched(  # noqa: C901
+        self: OpenAPIParser,
         models: list[DataModel],
         imports: Imports,
     ) -> None:
@@ -48,23 +46,32 @@ def patch_apply_discriminator_type():
                     ):
                         continue  # pragma: no cover
 
-                    type_names = []
+                    type_names: list[str] = []
 
-                    def check_paths(model, mapping):
+                    def check_paths(
+                        model: Union[
+                            pydantic_model.BaseModel,
+                            pydantic_model_v2.BaseModel,
+                            Reference,
+                        ],
+                        mapping: dict[str, str],
+                        type_names: list[str] = type_names,
+                    ) -> None:
                         """Helper function to validate paths for a given model."""
                         for name, path in mapping.items():
-                            if model.path.split("#/")[-1] != path.split("#/")[-1]:
-                                if (
-                                    path.startswith("#/")
-                                    or model.path[:-1] != path.split("/")[-1]
-                                ):
-                                    t_path = path[str(path).find("/") + 1 :]
-                                    t_disc = model.path[
-                                        : str(model.path).find("#")
-                                    ].lstrip("../")
-                                    t_disc_2 = "/".join(t_disc.split("/")[1:])
-                                    if t_path != t_disc and t_path != t_disc_2:
-                                        continue
+                            if (
+                                model.path.split("#/")[-1] != path.split("#/")[-1]
+                            ) and (
+                                path.startswith("#/")
+                                or model.path[:-1] != path.split("/")[-1]
+                            ):
+                                t_path = path[str(path).find("/") + 1 :]
+                                t_disc = model.path[: str(model.path).find("#")].lstrip(  # noqa: B005
+                                    "../"
+                                )
+                                t_disc_2 = "/".join(t_disc.split("/")[1:])
+                                if t_path != t_disc and t_path != t_disc_2:
+                                    continue
                             type_names.append(name)
 
                     # Check the main discriminator model path
@@ -122,7 +129,8 @@ def patch_apply_discriminator_type():
                         else IMPORT_LITERAL_BACKPORT
                     )
                     has_imported_literal = any(
-                        literal == import_ for import_ in imports
+                        literal == import_  # type: ignore [comparison-overlap]
+                        for import_ in imports
                     )
                     if has_imported_literal:  # pragma: no cover
                         imports.append(literal)

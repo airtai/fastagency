@@ -1,4 +1,3 @@
-from os import environ
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -36,13 +35,9 @@ def test_real_whatsapp_end2end(
     functions = ["send_whatsapp_text_message"]
     api._register_for_execution(user_proxy, functions=functions)
 
-    assert tuple(user_proxy._function_map.keys()) == (
-        "send_whatsapp_text_message",
-    )
+    assert tuple(user_proxy._function_map.keys()) == ("send_whatsapp_text_message",)
 
-    send_whatsapp_text_message = user_proxy._function_map[
-        "send_whatsapp_text_message"
-    ]
+    send_whatsapp_text_message = user_proxy._function_map["send_whatsapp_text_message"]
 
     send_whatsapp_text_message(
         **{
