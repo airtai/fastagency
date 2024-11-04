@@ -137,7 +137,7 @@ testing = [
     "fastagency[submodules]",
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
-    "pydantic-settings==2.6.0",
+    "pydantic-settings==2.6.1",
     "PyYAML==6.0.2",
     "watchfiles==0.24.0",
     "email-validator==2.2.0",
