@@ -25,6 +25,7 @@ openapi_url = "https://dev.infobip.com/openapi/products/whatsapp.json"
 
 whatsapp_api = OpenAPI.create(
     openapi_url=openapi_url,
+    # this is an optional parameter, but specified here because servers are not specified in the OpenAPI specification
     servers=[{"url": "https://api.infobip.com"}],
 )
 

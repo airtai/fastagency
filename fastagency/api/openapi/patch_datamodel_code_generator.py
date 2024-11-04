@@ -19,6 +19,9 @@ from ...logging import get_logger
 
 logger = get_logger(__name__)
 
+# Save the original method before patching
+original_apply_discriminator_type = OpenAPIParser._Parser__apply_discriminator_type
+
 
 def patch_apply_discriminator_type() -> None:  # noqa: C901
     def __apply_discriminator_type_patched(  # noqa: C901
@@ -135,18 +138,7 @@ def patch_apply_discriminator_type() -> None:  # noqa: C901
                     if has_imported_literal:  # pragma: no cover
                         imports.append(literal)
 
-    original_name = [
-        name for name in dir(OpenAPIParser) if "__apply_discriminator_type" in name
-    ]
-    if original_name:
-        # Patch the method using the exact mangled name
-        setattr(OpenAPIParser, original_name[0], __apply_discriminator_type_patched)
-    else:
-        # Handle the case if the method does not exist (unexpected)
-        raise AttributeError(
-            "Method __apply_discriminator_type not found in base.Parser"
-        )
+    # Patch the method using the exact mangled name
+    OpenAPIParser._Parser__apply_discriminator_type = __apply_discriminator_type_patched
 
-    logger.info(
-        f"Patched Parser.__apply_discriminator_type, original name: {original_name}"
-    )
+    logger.info("Patched Parser.__apply_discriminator_type,")
