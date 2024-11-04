@@ -165,7 +165,7 @@ The outputs will vary based on the interface, here is the output of the last ter
 [2024-10-15 16:57:44 +0530] [36365] [INFO] Using worker: sync
 [2024-10-15 16:57:44 +0530] [36366] [INFO] Booting worker with pid: 36366
 ```
-![Initial message](../../../getting-started/images/chat.png)
+![Initial message](../../getting-started/images/chat.png)
 
 ## Debugging Tips
 If you encounter issues running the application, ensure that:

@@ -2,9 +2,9 @@
 search:
   exclude: true
 ---
-- Getting Started
-    - [Getting Started](getting-started/index.md)
+- [Features](features.md)
 - [User guide](user-guide/index.md)
+    - [Getting Started](user-guide/getting-started/index.md)
     - [Project setup](user-guide/cookiecutter/index.md)
     - [Runtimes](user-guide/runtimes/index.md)
         - [AutoGen](user-guide/runtimes/autogen/index.md)

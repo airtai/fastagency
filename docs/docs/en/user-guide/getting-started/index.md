@@ -4,8 +4,8 @@
 # 3 - Contributing
 # 5 - Template Page
 # 10 - Default
-hide:
-  - navigation
+# hide:
+#   - navigation
 
 search:
   boost: 10
@@ -13,86 +13,6 @@ search:
 
 # Getting Started with FastAgency
 
-
-<b>The fastest way to bring multi-agent workflows to production.</b>
-
-
----
-
-<p align="center">
-  <a href="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
-  </a>
-
-  <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
-      <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
-  </a>
-
-  <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
-    <img src="https://static.pepy.tech/personalized-badge/fastagency?period=month&units=international_system&left_color=grey&right_color=green&left_text=downloads/month" alt="Downloads"/>
-  </a>
-
-  <a href="https://pypi.org/project/fastagency" target="_blank">
-    <img src="https://img.shields.io/pypi/v/fastagency?label=PyPI" alt="Package version">
-  </a>
-
-  <a href="https://pypi.org/project/fastagency" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/fastagency.svg" alt="Supported Python versions">
-  </a>
-
-  <br/>
-
-  <a href="https://github.com/airtai/fastagency/actions/workflows/codeql.yml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/codeql.yml/badge.svg" alt="CodeQL">
-  </a>
-
-  <a href="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml/badge.svg" alt="Dependency Review">
-  </a>
-
-  <a href="https://github.com/airtai/fastagency/blob/main/LICENSE" target="_blank">
-    <img src="https://img.shields.io/github/license/airtai/fastagency.png" alt="License">
-  </a>
-
-  <a href="https://github.com/airtai/fastagency/blob/main/CODE_OF_CONDUCT.md" target="_blank">
-    <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Code of Conduct">
-  </a>
-
-  <a href="https://discord.gg/kJjSGWrknU" target="_blank">
-      <img alt="Discord" src="https://img.shields.io/discord/1247409549158121512?logo=discord">
-  </a>
-</p>
-
----
-
-## What is FastAgency?
-
-For start, FastAgency is not yet another agentic AI framework. There are many such
-frameworks available today, the most popular open-source ones being [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"}, [**CrewAI**](https://www.crewai.com/){target="_blank"}, [**Swarm**](https://github.com/openai/swarm){target="_blank"} and [**LangGraph**](https://github.com/langchain-ai/langgraph){target="_blank"}. FastAgency provides you with a unified programming interface for deploying agentic workflows written in above agentic frameworks in both development and productional settings (current version supports [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"} only, but other frameworks will be supported very soon). With only a few lines of code, you can create a web chat application or REST API service interacting with agents of your choice. If you need to scale-up your workloads, FastAgency can help you deploy a fully distributed system using internal message brokers coordinating multiple machines in multiple datacenters with just a few lines of code changed from your local development setup.
-
-In the rest of this guide, we will walk you through the initial setup and usage of FastAgency, using both development and production environments.
-
-### Supported Runtimes
-
-Currently, the only supported runtime is [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"}, with support for [**CrewAI**](https://www.crewai.com/){target="_blank"}, [**Swarm**](https://github.com/openai/swarm){target="_blank"} and [**LangGraph**](https://github.com/langchain-ai/langgraph){target="_blank"} coming soon.
-
-### Supported User Interfaces
-
-FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
-
-- **Console**: Use the [**`ConsoleUI`**](../api/fastagency/ui/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-
-- [**Mesop**](https://google.github.io/mesop/){target="_blank"}: Utilize [**`MesopUI`**](../api/fastagency/ui/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
-
-### Supported Network Adapters
-
-FastAgency can use chainable network adapters that can be used to easily create
-scalable, production ready architectures for serving your workflows. Currently, we
-support the following network adapters:
-
-- [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} via [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Use the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
-
-- [**NATS.io**](https://nats.io/){target="_blank"} via [**FastStream**](https://github.com/airtai/faststream){target="_blank"}: Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
 
 ## Quick start
 
@@ -125,7 +45,7 @@ We will show you four different setups, two for development and two for producti
 
 There are two ways to setup you development environment and project:
 
-- [**Recommended**] Using [**Cookiecutter**](../user-guide/cookiecutter/index.md): This creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+- [**Recommended**] Using [**Cookiecutter**](../cookiecutter/index.md): This creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 - Using virtual environment, such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [**pip**](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
@@ -608,31 +528,3 @@ The outputs will vary based on the interface, here is the output of the last ter
     ```
 
     ![Initial message](./images/chat.png)
-
-## Future Plans
-
-We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, other network provider and other UI frameworks.
-
----
-
-## Stay in touch
-
-Please show your support and stay in touch by:
-
-- giving our [GitHub repository](https://github.com/airtai/fastagency/){target="_blank"} a star, and
-
-- joining our [Discord server](https://discord.gg/kJjSGWrknU){target="_blank"}
-
-Your support helps us to stay in touch with you and encourages us to
-continue developing and improving the framework. Thank you for your
-support!
-
----
-
-## Contributors
-
-Thanks to all of these amazing people who made the project better!
-
-<a href="https://github.com/airtai/fastagency/graphs/contributors" target="_blank">
-  <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
-</a>
