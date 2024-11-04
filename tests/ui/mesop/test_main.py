@@ -16,7 +16,13 @@ if sys.version_info >= (3, 10):
 
     class TestMesopHomePage:
         @pytest.fixture
-        def firebase_auth(self):
+        def firebase_auth(self, monkeypatch):
+            # Ensure required environment variables are set mocked
+            monkeypatch.setenv(
+                "GOOGLE_APPLICATION_CREDENTIALS", "/path/to/credentials.json"
+            )
+            monkeypatch.setenv("AUTHORIZED_USER_EMAILS", "test@example.com")
+
             config = FirebaseConfig(
                 api_key="test-key",
                 auth_domain="test.firebaseapp.com",
