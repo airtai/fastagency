@@ -3,8 +3,6 @@ import sys
 import pytest
 
 from fastagency.logging import get_logger
-from fastagency.ui.mesop.firebase_auth import FirebaseAuth, FirebaseConfig
-from fastagency.ui.mesop.main import DEFAULT_SECURITY_POLICY, MesopHomePage
 
 logger = get_logger(__name__)
 
@@ -13,6 +11,8 @@ if sys.version_info >= (3, 10):
     import mesop as me
 
     from fastagency.ui.mesop import MesopUI
+    from fastagency.ui.mesop.firebase_auth import FirebaseAuth, FirebaseConfig
+    from fastagency.ui.mesop.main import DEFAULT_SECURITY_POLICY, MesopHomePage
 
     class TestMesopHomePage:
         @pytest.fixture
