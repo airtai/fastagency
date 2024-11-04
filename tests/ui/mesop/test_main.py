@@ -1,6 +1,5 @@
 import sys
 
-import mesop as me
 import pytest
 
 from fastagency.logging import get_logger
@@ -11,6 +10,8 @@ logger = get_logger(__name__)
 
 
 if sys.version_info >= (3, 10):
+    import mesop as me
+
     from fastagency.ui.mesop import MesopUI
 
     class TestMesopHomePage:
