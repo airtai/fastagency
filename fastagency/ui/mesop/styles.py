@@ -266,7 +266,7 @@ MULTIPLE_CHOICE_CHECKBOX_STYLE = me.Style()
 LOGIN_BOX_STYLE = me.Style(display="flex", justify_content="center")
 
 LOGIN_BTN_BOX_STYLE = me.Style(text_align="center", margin=me.Margin(top=100))
-LOGOUT_BTN_STYLE = me.Style(margin=me.Margin(top=16))
+LOGOUT_BTN_BOX_STYLE = me.Style(position="absolute", top="16px", right="16px")
 
 
 @dataclass
@@ -372,4 +372,4 @@ class MesopHomePageStyles:
     message: MesopMessagesStyles = field(default_factory=lambda: MesopMessagesStyles())
     login_box: me.Style = field(default_factory=lambda: LOGIN_BOX_STYLE)
     login_btn_container: me.Style = field(default_factory=lambda: LOGIN_BTN_BOX_STYLE)
-    logout_btn: me.Style = field(default_factory=lambda: LOGOUT_BTN_STYLE)
+    logout_btn_container: me.Style = field(default_factory=lambda: LOGOUT_BTN_BOX_STYLE)

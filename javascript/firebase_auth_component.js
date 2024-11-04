@@ -7,23 +7,7 @@ import "https://www.gstatic.com/firebasejs/10.0.0/firebase-app-compat.js";
 import "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth-compat.js";
 import "https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js";
 
-// TODO: replace this with your web app's Firebase configuration
-// Convert the keys from snake case to camel case and pass it to the firebaseConfig
-// const firebaseConfig = {
-//   apiKey: "****",
-//   authDomain: "****",
-//   projectId: "****",
-//   storageBucket: "****",
-//   messagingSenderId: "****",
-//   appId: "****",
-// };
-const firebaseConfig = "<REPLACE_WITH_FIREBASE_CONFIG_DICT>";
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
 const uiConfig = {
-  // TODO: change this to your Mesop page path.
   signInSuccessUrl: "/",
   signInFlow: "popup",
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -37,13 +21,18 @@ const uiConfig = {
   //   },
 };
 
-// Initialize the FirebaseUI Widget using Firebase.
-const ui = new firebaseui.auth.AuthUI(firebase.auth());
+let firebaseUI = null;
 
 class FirebaseAuthComponent extends LitElement {
   static properties = {
     isSignedIn: { type: Boolean },
     authChanged: { type: String },
+    apiKey: { type: String },
+    authDomain: { type: String },
+    projectId: { type: String },
+    storageBucket: { type: String },
+    messagingSenderId: { type: String },
+    appId: { type: String },
   };
 
   constructor() {
@@ -56,7 +45,34 @@ class FirebaseAuthComponent extends LitElement {
     return this;
   }
 
+  _initializeFirebase() {
+    const firebaseConfig = {
+      apiKey: this.apiKey,
+      authDomain: this.authDomain,
+      projectId: this.projectId,
+      storageBucket: this.storageBucket,
+      messagingSenderId: this.messagingSenderId,
+      appId: this.appId,
+    };
+
+    // Check if Firebase is already initialized
+    try {
+      firebase.app();
+    } catch {
+      firebase.initializeApp(firebaseConfig);
+    }
+  }
+
+  _initFirebaseUI() {
+    if (!firebaseUI) {
+      firebaseUI = new firebaseui.auth.AuthUI(firebase.auth());
+    }
+    firebaseUI.start("#firebaseui-auth-container", uiConfig);
+  }
+
   firstUpdated() {
+    this._initializeFirebase();
+
     firebase.auth().onAuthStateChanged(
       async (user) => {
         if (user) {
@@ -73,11 +89,15 @@ class FirebaseAuthComponent extends LitElement {
       }
     );
 
-    ui.start("#firebaseui-auth-container", uiConfig);
+    this._initFirebaseUI();
   }
 
   signOut() {
-    firebase.auth().signOut();
+    try {
+      firebase.auth().signOut();
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
   }
 
   render() {
@@ -95,7 +115,9 @@ class FirebaseAuthComponent extends LitElement {
           class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
           @click="${this.signOut}"
         >
-          <span class="firebaseui-idp-text firebaseui-idp-text-long"
+          <span
+            style="padding-left:0px"
+            class="firebaseui-idp-text firebaseui-idp-text-long"
             >Sign out</span
           >
         </button>

@@ -1,5 +1,4 @@
 import typing
-from dataclasses import dataclass
 from typing import Literal
 
 import firebase_admin
@@ -8,8 +7,10 @@ import mesop.labs as mel
 from firebase_admin import auth
 
 from .data_model import State
-from .firebase_auth_component import firebase_auth_component
+from .firebase_auth_component import FirebaseConfig, firebase_auth_component
 from .styles import MesopHomePageStyles
+
+__all__ = ["FirebaseConfig"]
 
 if typing.TYPE_CHECKING:
     from .auth import AuthProtocol
@@ -18,16 +19,6 @@ if typing.TYPE_CHECKING:
 # Avoid re-initializing firebase app (useful for avoiding warning message because of hot reloads).
 if firebase_admin._DEFAULT_APP_NAME not in firebase_admin._apps:
     default_app = firebase_admin.initialize_app()
-
-
-@dataclass
-class FirebaseConfig:
-    api_key: str
-    auth_domain: str
-    project_id: str
-    storage_bucket: str
-    messaging_sender_id: str
-    app_id: str
 
 
 class FirebaseAuth:  # implements AuthProtocol
@@ -85,11 +76,14 @@ class FirebaseAuth:  # implements AuthProtocol
         styles = MesopHomePageStyles()
         state = me.state(State)
         if state.authenticated_user:
-            firebase_auth_component(on_auth_changed=FirebaseAuth.on_auth_changed)
+            with me.box(style=styles.logout_btn_container):
+                firebase_auth_component(
+                    on_auth_changed=FirebaseAuth.on_auth_changed, config=self.config
+                )
         else:
             with me.box(style=styles.login_box):  # noqa: SIM117
                 with me.box(style=styles.login_btn_container):
                     me.text("Sign in to your account", style=styles.header_text)
                     firebase_auth_component(
-                        on_auth_changed=FirebaseAuth.on_auth_changed
+                        on_auth_changed=FirebaseAuth.on_auth_changed, config=self.config
                     )
