@@ -16,7 +16,9 @@ TEMPLATE_DIR = Path(__file__).parents[4] / "templates"
 assert TEMPLATE_DIR.exists(), TEMPLATE_DIR
 
 
-def test_datamodel_codegen_discriminator_stale_patch(monkeypatch) -> None:
+def test_datamodel_codegen_discriminator_stale_patch(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     """This test checks if a RuntimeError is raised due to a discriminator containing additional fields in the properties.
 
     If this error is not raised, it indicates that the original issue has been resolved,
