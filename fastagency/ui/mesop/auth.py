@@ -1,4 +1,4 @@
-from typing import Protocol
+from typing import Any, Protocol
 
 import mesop as me
 
@@ -12,3 +12,5 @@ class AuthProtocol(Protocol):
 
     # maybe me.Component is wrong
     def auth_component(self) -> me.component: ...
+
+    def is_authorized(self, token: dict[str, Any]) -> bool: ...

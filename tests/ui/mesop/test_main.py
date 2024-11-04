@@ -72,6 +72,51 @@ if sys.version_info >= (3, 10):
         class TestWithAuth:
             """Testing with auth provider, and with and without base security policy."""
 
+            def test_firebase_auth_without_credentials(self, monkeypatch):
+                """Test scenario: FirebaseAuth initialization without GOOGLE_APPLICATION_CREDENTIALS env variable.
+
+                Expected: Should raise EnvironmentError when GOOGLE_APPLICATION_CREDENTIALS is not set.
+                """
+                # Remove GOOGLE_APPLICATION_CREDENTIALS from environment if it exists
+                monkeypatch.delenv("GOOGLE_APPLICATION_CREDENTIALS", raising=False)
+
+                with pytest.raises(
+                    ValueError, match="A service account key is required."
+                ):
+                    FirebaseAuth(sign_in_methods={"google"}, config={})
+
+            def test_firebase_auth_without_authorized_emails(self, monkeypatch):
+                """Test scenario: FirebaseAuth initialization without AUTHORIZED_USER_EMAILS env variable.
+
+                Expected: Should raise EnvironmentError when AUTHORIZED_USER_EMAILS is not set.
+                """
+                # Set GOOGLE_APPLICATION_CREDENTIALS but remove AUTHORIZED_USER_EMAILS
+                monkeypatch.setenv(
+                    "GOOGLE_APPLICATION_CREDENTIALS", "/path/to/credentials.json"
+                )
+                monkeypatch.delenv("AUTHORIZED_USER_EMAILS", raising=False)
+
+                with pytest.raises(
+                    ValueError,
+                    match="rror: The `AUTHORIZED_USER_EMAILS` environment variable is not set.",
+                ):
+                    FirebaseAuth(sign_in_methods={"google"}, config={})
+
+            def test_firebase_config_null_values(self):
+                """Test scenario: FirebaseConfig initialization with null values.
+
+                Expected: Should raise ValueError when api_key or storage_bucket is None.
+                """
+                with pytest.raises(ValueError, match="['api_key', 'project_id']"):
+                    FirebaseConfig(
+                        api_key=None,
+                        auth_domain="test.firebaseapp.com",
+                        project_id=None,
+                        storage_bucket="test-bucket",
+                        messaging_sender_id="test-sender",
+                        app_id="test-app",
+                    )
+
             def test_with_security_policy(self, mesop_ui, firebase_auth, base_policy):
                 """Test scenario: Auth provider present, custom security policy provided.
 

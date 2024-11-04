@@ -1,5 +1,6 @@
+import os
 import typing
-from typing import Literal
+from typing import Any, Literal
 
 import firebase_admin
 import mesop as me
@@ -36,6 +37,21 @@ class FirebaseAuth:  # implements AuthProtocol
         # mypy check if self is AuthProtocol
         _self: AuthProtocol = self
 
+        if not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
+            raise ValueError(
+                "Error: A service account key is required. Please create one and set the JSON key file path in the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. For more information: https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments"
+            )
+
+        if not os.getenv("AUTHORIZED_USER_EMAILS"):
+            raise ValueError(
+                """Error: The `AUTHORIZED_USER_EMAILS` environment variable is not set. This variable is required to control access to the application.
+
+You can set it as:
+- A comma-separated list of authorized email addresses, e.g., AUTHORIZED_USER_EMAILS=me@example.com,you@example.com,them@example.com
+- Or, you can set it to "OPEN_ACCESS" to allow unrestricted access to all users.
+"""
+            )
+
         if not sign_in_methods:
             raise ValueError("At least one sign-in method must be specified")
 
@@ -58,18 +74,44 @@ class FirebaseAuth:  # implements AuthProtocol
             ),
         )
 
-    @classmethod
-    def on_auth_changed(cls, e: mel.WebEvent) -> None:
+    def is_authorized(self, token: dict[str, Any]) -> bool:
+        """Check if the email in the token is authorized.
+
+        The authorized emails are specified in the AUTHORIZED_USER_EMAILS environment variable. This variable should be a comma-separated list of email addresses or "OPEN_ACCESS". If the value is set to `OPEN_ACCESS`, it grants unrestricted access to anyone, regardless of their email address.
+
+        Args:
+            token (dict[str, Any]): The token to check, which must contain an 'email' key.
+
+        Returns:
+            bool: True if the email in the token is authorized, False otherwise.
+        """
+        # Retrieve the authorized emails from the environment variable and strip whitespace
+        authorized_emails = os.getenv("AUTHORIZED_USER_EMAILS", "").split(",")
+
+        # Check for open access
+        if authorized_emails == ["OPEN_ACCESS"]:
+            return True
+
+        # Check if the email in the token is among the authorized emails
+        return token.get("email") in [email.strip() for email in authorized_emails]
+
+    def on_auth_changed(self, e: mel.WebEvent) -> None:
+        state = me.state(State)
         firebase_auth_token = e.value
+
         if not firebase_auth_token:
-            me.state(State).authenticated_user = ""
+            state.authenticated_user = ""
             return
 
         decoded_token = auth.verify_id_token(firebase_auth_token)
-        # You can do an allowlist if needed.
-        # if decoded_token["email"] != "allowlisted.user@gmail.com":
-        #   raise me.MesopUserException("Invalid user: " + decoded_token["email"])
-        me.state(State).authenticated_user = decoded_token["email"]
+
+        if not self.is_authorized(decoded_token):
+            raise me.MesopUserException(
+                "You are not authorized to access this application. "
+                "Please contact the application administrators for access."
+            )
+
+        state.authenticated_user = decoded_token["email"]
 
     # maybe me.Component is wrong
     def auth_component(self) -> me.component:
@@ -78,12 +120,12 @@ class FirebaseAuth:  # implements AuthProtocol
         if state.authenticated_user:
             with me.box(style=styles.logout_btn_container):
                 firebase_auth_component(
-                    on_auth_changed=FirebaseAuth.on_auth_changed, config=self.config
+                    on_auth_changed=self.on_auth_changed, config=self.config
                 )
         else:
             with me.box(style=styles.login_box):  # noqa: SIM117
                 with me.box(style=styles.login_btn_container):
                     me.text("Sign in to your account", style=styles.header_text)
                     firebase_auth_component(
-                        on_auth_changed=FirebaseAuth.on_auth_changed, config=self.config
+                        on_auth_changed=self.on_auth_changed, config=self.config
                     )

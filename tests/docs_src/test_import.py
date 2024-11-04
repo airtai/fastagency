@@ -28,7 +28,10 @@ def test_list_submodules() -> None:
 def test_submodules(module: str) -> None:
     with add_to_sys_path(root_path):
         if sys.version_info < (3, 10):
-            if module == "docs_src.user_guide.ui.mesop.main_mesop":
+            if (
+                module == "docs_src.user_guide.ui.mesop.main_mesop"
+                or module == "docs_src.user_guide.ui.mesop.main_mesop_auth"
+            ):
                 with pytest.raises(
                     ModuleNotFoundError,
                     match="No module named 'mesop'",
