@@ -7,14 +7,14 @@ import mesop as me
 import mesop.labs as mel
 from firebase_admin import auth
 
-from .data_model import State
+from ...data_model import State
+from ...styles import MesopHomePageStyles
 from .firebase_auth_component import FirebaseConfig, firebase_auth_component
-from .styles import MesopHomePageStyles
 
 __all__ = ["FirebaseConfig"]
 
 if typing.TYPE_CHECKING:
-    from .auth import AuthProtocol
+    from ..auth import AuthProtocol
 
 
 # Avoid re-initializing firebase app (useful for avoiding warning message because of hot reloads).

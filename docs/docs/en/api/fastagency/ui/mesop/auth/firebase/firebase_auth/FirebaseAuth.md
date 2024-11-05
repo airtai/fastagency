@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.firebase_auth.FirebaseAuth
+::: fastagency.ui.mesop.auth.firebase.firebase_auth.FirebaseAuth

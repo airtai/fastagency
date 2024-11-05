@@ -31,7 +31,7 @@ from ...messages import (
     TextMessage,
     WorkflowCompleted,
 )
-from .auth import AuthProtocol
+from .auth.auth import AuthProtocol
 from .styles import MesopHomePageStyles
 from .timer import configure_static_file_serving
 
