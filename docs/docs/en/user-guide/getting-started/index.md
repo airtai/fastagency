@@ -56,53 +56,97 @@ Let's see how to setup project using cookiecutter:
 
 -----
 
-### Imports
+### Workflow Development
+
+#### Define the Workflow
+
+You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
+
+```python
+{! docs_src/getting_started/workflow.py [ln:1-51] !}
+```
+
+This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
+
+#### Run and Debug the Workflow
+
+To ensure that the workflow we have defined is working properly, we can test it locally using MesopUI. The code below imports the defined workflow and sets up MesopUI:
+
+```python
+{! docs_src/getting_started/main_mesop.py [ln:1-8] !}
+```
+
+Run MesopUI locally with the following command:
+
+=== "Linux/MacOS"
+    !!! note "Terminal"
+        ```console
+        gunicorn main_mesop:app
+        ```
+
+=== "Windows"
+    !!! note "Terminal"
+        ```console
+        waitress-serve --listen=0.0.0.0:8000 main_mesop:app
+        ```
+
+Open the MesopUI URL [http://localhost:8000](http://localhost:8000) in your browser. You can now use the graphical user interface to start, run, test and debug the autogen workflow manually.
+
+#### Run Workflow Tests
+
+We can also use pytest to test the autogen workflow automatically, instead of manually testing it using MesopUI.
+
+```python
+{! docs_src/getting_started/test_workflow.py [ln:1-31] !}
+```
+
+Run the test with the following command:
+
+```console
+pytest
+```
+
+Running the test could take up to 30 seconds, depending on latency and throughput of OpenAI (or other LLM providers).
+
+### Workflow Deployment
+
+#### Imports
 
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/main_console.py [ln:1-8] !}
+    ```python hl_lines="2"
+    {!> docs_src/getting_started/main_console.py [ln:1-4] !}
     ```
 
     For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 === "Mesop"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/main_mesop.py [ln:1-8] !}
+    ```python hl_lines="2"
+    {!> docs_src/getting_started/main_mesop.py [ln:1-4] !}
     ```
 
     For Mesop applications, import `MesopUI` to integrate with the Mesop web interface.
 
 === "FastAPI + Mesop"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:1-9] !}
+    ```python hl_lines="3"
+    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:1-5] !}
     ```
 
     For FastAPI applications, import `FastAPIAdapter` to expose your workflows as REST API.
 
 === "NATS + FastAPI + Mesop"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:1-9] !}
+    ```python hl_lines="5"
+    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:1-7] !}
     ```
 
-### Define Workflow
-
-You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
-
-```python
-{! docs_src/getting_started/main_console.py [ln:9-53] !}
-```
-
-This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
-
-### Define FastAgency Application
+#### Define FastAgency Application
 
 === "Console"
     Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
     ```python hl_lines="1"
-    {!> docs_src/getting_started/main_console.py [ln:54] !}
+    {!> docs_src/getting_started/main_console.py [ln:7] !}
     ```
 
     For Console applications, use `ConsoleUI` to handle user interaction via the command line.
@@ -111,7 +155,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
     Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
     ```python hl_lines="1"
-    {!> docs_src/getting_started/main_mesop.py [ln:54] !}
+    {!> docs_src/getting_started/main_mesop.py [ln:7] !}
     ```
 
     For Mesop applications, use `MesopUI` to enable web-based interactions.
@@ -121,7 +165,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
     The adapter will have all REST and Websocket routes for communicating with a client.
 
     ```python hl_lines="1 4"
-    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:55-58] !}
+    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:8-11] !}
     ```
 
 === "NATS + FastAPI + Mesop"
@@ -130,7 +174,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
     will have all REST and Websocket routes for communicating with a client.
 
     ```python hl_lines="5 7"
-    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:55-61] !}
+    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:10-16] !}
     ```
 
     The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
@@ -141,7 +185,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
 
     In the above NATS configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in NATS and configure NATS to serve via the appropriate ports.
 
-### Adapter Chaining
+#### Adapter Chaining
 
 === "Console"
     Not applicable for this setup as there are no adapters used.
@@ -184,6 +228,13 @@ Please copy and paste the following code into the same folder, using the file na
 === "Console"
 
     <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/workflow.py !}
+        ```
+    </details>
+
+    <details>
         <summary>main.py</summary>
         ```python
         {!> docs_src/getting_started/main_console.py !}
@@ -193,6 +244,13 @@ Please copy and paste the following code into the same folder, using the file na
 === "Mesop"
 
     <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/workflow.py !}
+        ```
+    </details>
+
+    <details>
         <summary>main.py</summary>
         ```python
         {!> docs_src/getting_started/main_mesop.py !}
@@ -200,6 +258,13 @@ Please copy and paste the following code into the same folder, using the file na
     </details>
 
 === "FastAPI + Mesop"
+
+    <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/fastapi/workflow.py !}
+        ```
+    </details>
 
     <details>
         <summary>main_1_fastapi.py</summary>
@@ -221,6 +286,13 @@ Please copy and paste the following code into the same folder, using the file na
         <summary>nats-server.conf</summary>
         ```python
         {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
+        ```
+    </details>
+
+    <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/workflow.py !}
         ```
     </details>
 
