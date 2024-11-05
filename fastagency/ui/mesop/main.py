@@ -8,7 +8,7 @@ import mesop as me
 from fastagency.base import ProviderProtocol
 
 from ...logging import get_logger
-from .auth.auth import AuthProtocol
+from .auth import AuthProtocol
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
