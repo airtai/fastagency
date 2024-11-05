@@ -13,6 +13,6 @@ search:
 
 # User Guide
 
-Table of content:
+Table of contents:
 
 - [Quick start](getting-started/index.md)
