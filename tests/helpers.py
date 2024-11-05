@@ -209,7 +209,7 @@ def list_submodules(
     """
     with add_to_sys_path(include_path):
         try:
-            module = importlib.import_module(module_name)
+            module = importlib.import_module(module_name)  # nosemgrep
         except Exception:
             return []
 

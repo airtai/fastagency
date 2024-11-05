@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
-from fastagency.ui.mesop.firebase_auth import FirebaseAuth, FirebaseConfig
+from fastagency.ui.mesop.auth.firebase import FirebaseAuth, FirebaseConfig
 from fastagency.ui.mesop.styles import (
     MesopHomePageStyles,
     MesopMessagesStyles,

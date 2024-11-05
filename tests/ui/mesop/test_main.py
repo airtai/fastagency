@@ -12,7 +12,10 @@ if sys.version_info >= (3, 10):
     import mesop as me
 
     from fastagency.ui.mesop import MesopUI
-    from fastagency.ui.mesop.firebase_auth import FirebaseAuth, FirebaseConfig
+    from fastagency.ui.mesop.auth.firebase.firebase_auth import (
+        FirebaseAuth,
+        FirebaseConfig,
+    )
     from fastagency.ui.mesop.main import DEFAULT_SECURITY_POLICY, MesopHomePage
 
     class TestMesopHomePage:
@@ -264,7 +267,7 @@ if sys.version_info >= (3, 10):
                 auth.is_authorized(valid_token)
 
         @pytest.mark.parametrize(
-            "test_input,expected_error,error_match",  # noqa: PT006
+            ("test_input", "expected_error", "error_match"),
             [
                 (None, TypeError, "allowed_users must be one of"),
                 (123, TypeError, "allowed_users must be one of"),

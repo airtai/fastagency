@@ -53,7 +53,7 @@ def test_submodules(module: str, monkeypatch: pytest.MonkeyPatch) -> None:
                     # Ensure required environment variables are set mocked
                     for key, value in MOCK_ENV_VARS.items():
                         monkeypatch.setenv(key, value)
-                importlib.import_module(module)
+                importlib.import_module(module)  # nosemgrep
                 return
 
         else:
@@ -63,7 +63,7 @@ def test_submodules(module: str, monkeypatch: pytest.MonkeyPatch) -> None:
                     ModuleNotFoundError,
                     match="No module named 'mesop'",
                 ):
-                    importlib.import_module(module)
+                    importlib.import_module(module)  # nosemgrep
                 return
             elif (
                 module.startswith("docs_src.user_guide.ui.mesop")
@@ -75,7 +75,7 @@ def test_submodules(module: str, monkeypatch: pytest.MonkeyPatch) -> None:
                     FastAgencyCLIPythonVersionError,
                     match="Mesop requires Python 3.10 or higher",
                 ):
-                    importlib.import_module(module)
+                    importlib.import_module(module)  # nosemgrep
                 return
 
-        importlib.import_module(module)
+        importlib.import_module(module)  # nosemgrep

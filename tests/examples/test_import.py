@@ -32,6 +32,6 @@ def test_submodules(module: str) -> None:
                 FastAgencyCLIPythonVersionError,
                 match="Mesop requires Python 3.10 or higher",
             ):
-                importlib.import_module(module)
+                importlib.import_module(module)  # nosemgrep
             return
-        importlib.import_module(module)
+        importlib.import_module(module)  # nosemgrep
