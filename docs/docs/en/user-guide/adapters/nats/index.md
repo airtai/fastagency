@@ -200,6 +200,6 @@ The outputs will vary based on the interface. Here is the output of the last ter
 [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
 ```
 
-![Initial message](../../../getting-started/images/chat.png)
+![Initial message](../../getting-started/images/chat.png)
 
 The [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) in FastAgency provides a powerful and flexible way to integrate your workflows with the [**Nats.io**](https://nats.io/){target="_blank"} message broker. By leveraging the scalability and distributed architecture of Nats, you can build highly scalable and production-ready applications. With its easy-to-use API and seamless integration with the [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md), the `NatsAdapter` simplifies the development process while enabling advanced features like conversation auditing.
