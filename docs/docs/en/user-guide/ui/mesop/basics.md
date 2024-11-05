@@ -123,6 +123,24 @@ You can pass a custom [SecurityPolicy](https://google.github.io/mesop/api/page/#
 ui = MesopUI(security_policy=security_policy)
 ```
 
+=== "Without Authentication"
+
+=== "With Authentication"
+
+    !!! info
+        To support [Firebase's JavaScript libraries](https://firebase.google.com/docs/web/learn-more){target="_blank"}, FastAgency internally adjusts its security policy to allow required resources. Here are the specific adjustments made:
+
+        - **Loosening Trusted Types**:
+            `dangerously_disable_trusted_types=True` is enabled. This setting relaxes certain restrictions on JavaScript code execution, allowing Firebase's libraries to function properly.
+
+        - **Allowing Connections to Firebase Resources**:
+            The `allowed_connect_srcs` setting is updated to include `*.googleapis.com`, which permits API calls to Firebase and related Google services.
+
+        - **Permitting Firebase Script Sources**:
+            The `allowed_script_srcs` setting is modified to allow scripts from `*.google.com`, `https://www.gstatic.com`, `https://cdn.jsdelivr.net`
+
+        These adjustments ensure that Firebase scripts and services can load without conflicts.
+
 Please see the [Mesop documentation](https://google.github.io/mesop/api/page/#mesop.security.security_policy.SecurityPolicy){target="_blank"} for details.
 
 ### Modifying styles
