@@ -17,11 +17,6 @@ on:
         required: false
         type: string
         default: ""
-      use-postman:
-        description: 'Use Postman API in the tests'
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   test:
@@ -75,9 +70,6 @@ jobs:
           if [ -n "${{ secrets.BING_API_KEY }}" ]; then
             echo "BING_API_KEY=${{ secrets.BING_API_KEY }}" >> $GITHUB_ENV
           fi
-          if [ -n "${{ secrets.POSTMAN_API_KEY }}" ]; then
-            echo "POSTMAN_API_KEY=${{ secrets.POSTMAN_API_KEY }}" >> $GITHUB_ENV
-          fi
 
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -105,23 +97,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Test without LLMs
-        if: ${{ inputs.use-llms == '' && !inputs.use-postman }}
-        run: bash scripts/test.sh -vv -m "not (anthropic or azure_oai or openai or togetherai or llm or postman)"
+        if: ${{ inputs.use-llms == ''}}
+        run: bash scripts/test.sh -vv -m "not (anthropic or azure_oai or openai or togetherai or llm)"
         env:
-          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}-${{ inputs.use-postman }}
-          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}-${{ inputs.use-postman }}
-      - name: Test with Postman
-        if: ${{ inputs.use-postman }}
-        run: bash scripts/test.sh -vv -m postman
-        env:
-          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}-${{ inputs.use-postman }}
-          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}-${{ inputs.use-postman }}
+          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
+          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Test with LLMs
         if: ${{ inputs.use-llms != '' }}
         run: bash scripts/test.sh -vv -m "${{ inputs.use-llms }}"
         env:
-          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}-${{ inputs.use-postman }}
-          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}-${{ inputs.use-postman }}
+          COVERAGE_FILE: coverage/.coverage.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
+          CONTEXT: ${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Run Playwright tests without LLMs
         if: ${{ inputs.python-version != '3.9' }}
         run: npx playwright test -c "playwright.llm-sans.config.ts"

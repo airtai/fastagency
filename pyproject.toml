@@ -266,7 +266,6 @@ markers = [
     "togetherai",
     "llm: mark test for use with LLMs",
     "flaky: mark test as flaky",
-    "postman",
 ]
 
 [tool.coverage.run]

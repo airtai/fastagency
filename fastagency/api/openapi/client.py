@@ -170,7 +170,7 @@ class OpenAPI:
 
     def _request(
         self,
-        method: Literal["put", "get", "post", "head", "delete"],
+        method: Literal["put", "get", "post", "head", "delete", "patch"],
         path: str,
         description: Optional[str] = None,
         security: Optional[list[BaseSecurity]] = None,
@@ -225,6 +225,9 @@ class OpenAPI:
 
     def head(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
         return self._request("head", path, **kwargs)
+
+    def patch(self, path: str, **kwargs: Any) -> Callable[..., dict[str, Any]]:
+        return self._request("patch", path, **kwargs)
 
     @classmethod
     def _get_template_dir(cls) -> Path:

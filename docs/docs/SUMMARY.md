@@ -67,6 +67,8 @@ search:
                     - fastapi_code_generator_helpers
                         - [ArgumentWithDescription](api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                         - [patch_get_parameter_type](api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
+                    - patch_datamodel_code_generator
+                        - [patch_apply_discriminator_type](api/fastagency/api/openapi/patch_datamodel_code_generator/patch_apply_discriminator_type.md)
                     - patch_fastapi_code_generator
                         - [patch_function_name_parsing](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_function_name_parsing.md)
                         - [patch_generate_code](api/fastagency/api/openapi/patch_fastapi_code_generator/patch_generate_code.md)
