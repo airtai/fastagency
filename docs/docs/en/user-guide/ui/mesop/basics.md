@@ -7,8 +7,8 @@ When creating a Mesop application, you can choose between two modes:
 - **Without Authentication**: Open access to all users.
 - **With Authentication**: Access restricted to authenticated users, using [**Firebase**](https://firebase.google.com){target="_blank"} as the authentication provider.
 
-!!! note
-    Currently, [**Firebase**](https://firebase.google.com){target="_blank"} is the only supported authentication provider, with Google as the available sign-in method. Future releases will introduce more sign-in options within Firebase and expand support for additional authentication providers.
+    !!! note
+        Currently, [**Firebase**](https://firebase.google.com){target="_blank"} is the only supported authentication provider, with Google as the available sign-in method. Future releases will introduce more sign-in options within Firebase and expand support for additional authentication providers.
 
 Below, we’ll walk through the steps to set up a basic student-teacher conversation with **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.md)**, highlighting the process for adding authentication.
 
