@@ -195,7 +195,7 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
     8. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
 
         ```console
-        pytest
+        pytest -s
         ```
 
         You should get the following output if everything is correctly setup.
@@ -212,3 +212,5 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
 
         ==================================== 1 passed in 1.02s ====================================
         ```
+
+        Running the test could take up to 30 seconds, depending on latency and throughput of OpenAI (or other LLM providers).
