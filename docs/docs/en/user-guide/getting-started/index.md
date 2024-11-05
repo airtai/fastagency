@@ -560,3 +560,49 @@ The outputs will vary based on the interface, here is the output of the last ter
     ```
 
     ![Initial message](./images/chat.png)
+
+### Building the Docker Image
+
+If you created the project using Cookiecutter, then building the Docker image is as simple as running the provided script, as shown below:
+
+```console
+./scripts/build_docker.sh
+```
+
+Alternatively, you can use the following command to build the Docker image:
+
+```console
+docker build -t deploy_fastagency -f docker/Dockerfile --progress plain .
+```
+
+### Running the Docker Image
+
+Similarly, running the Docker container is as simple as running the provided script, as shown below:
+
+```console
+./scripts/run_docker.sh
+```
+
+Alternatively, you can use the following command to run the Docker container using the Docker image built in the previous step:
+
+```console
+docker run -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY -p 8888:8888  deploy_fastagency
+```
+
+### Deploying to Fly.io
+
+If you created the project using Cookiecutter, there is a built-in script to deploy your workflow to [**Fly.io**](https://fly.io/). Run it as shown below:
+
+```console
+./scripts/deploy_to_fly_io.sh
+```
+
+Alternatively, you can run the following commands one by one to deploy your workflow to [**Fly.io**](https://fly.io/):
+
+```console
+fly auth login
+
+fly launch --config fly.toml --copy-config --yes
+
+fly secrets set OPENAI_API_KEY=$OPENAI_API_KEY
+```
