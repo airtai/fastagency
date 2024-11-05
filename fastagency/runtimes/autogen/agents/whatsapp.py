@@ -4,15 +4,10 @@ from autogen import AssistantAgent, ConversableAgent
 
 from ..tools import WhatsAppTool
 
-WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge to communicate with the user and WhatsAPP API.
-Always use 'present_completed_task_or_ask_question' to interact with the user.
-- make sure that the 'message' parameter contains all the necessary information for the user!
-Initially, the Web_Surfer_Agent will provide you with some content from the web.
-You should ask the user if he would like to receive the summary of the scraped page
-by using 'present_completed_task_or_ask_question'.
-- "If you want to receive the summary of the page as a WhatsApp message, please provide your number."
+WHATSAPP_SYSTEM_MESSAGE = """You are an agent in charge of communication with the WhatsAPP API.
 
-    When sending the message, the Body must use the following format:
+When sending the message, the Body must use the following format:
+
 {{
     "from": "{sender}",
     "to": "receiverNumber",

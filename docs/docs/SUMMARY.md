@@ -10,6 +10,7 @@ search:
         - [AutoGen](user-guide/runtimes/autogen/index.md)
             - Agents
                 - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
+                - [WhatsApp](user-guide/runtimes/autogen/whatsapp.md)
             - [User interaction](user-guide/runtimes/autogen/interactions.md)
             - [Using Non-OpenAI Models](user-guide/runtimes/autogen/using_non_openai_models.md)
         - [CrewAI](user-guide/runtimes/crewai/basics.md)
@@ -161,6 +162,8 @@ search:
                     - agents
                         - websurfer
                             - [WebSurferAgent](api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md)
+                        - whatsapp
+                            - [WhatsAppAgent](api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md)
                     - autogen
                         - [AutoGenWorkflows](api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md)
                         - [CurrentMessage](api/fastagency/runtimes/autogen/autogen/CurrentMessage.md)
@@ -168,9 +171,12 @@ search:
                         - [Toolable](api/fastagency/runtimes/autogen/autogen/Toolable.md)
                     - tools
                         - [WebSurferTool](api/fastagency/runtimes/autogen/tools/WebSurferTool.md)
+                        - [WhatsAppTool](api/fastagency/runtimes/autogen/tools/WhatsAppTool.md)
                         - websurfer
                             - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferAnswer.md)
                             - [WebSurferTool](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferTool.md)
+                        - whatsapp
+                            - [WhatsAppTool](api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
