@@ -50,49 +50,9 @@ There are two ways to setup you development environment and project:
 - Using virtual environment, such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [**pip**](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
 
+Let's see how to setup project using cookiecutter:
 
-=== "Cookiecutter"
-
-    {! docs/en/user-guide/cookiecutter/index.md[ln:8-214] !}
-
-=== "env + pip"
-
-    1. To install FastAgency, you will need `pip`, Python’s package installer. We will use a virtual environment to manage dependencies. Execute the following commands to create and activate a virtual environment:
-
-        ```console
-        python3.12 -m venv .venv
-        source .venv/bin/activate
-        ```
-
-    2. Install FastAgency using the following command, based on the interface you want to use:
-
-        === "Console"
-            ```console
-            pip install "fastagency[autogen]"
-            ```
-
-            This command installs FastAgency with support for the Console interface and the AutoGen framework.
-
-        === "Mesop"
-            ```console
-            pip install "fastagency[autogen,mesop]"
-            ```
-
-            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
-
-        === "FastAPI + Mesop"
-            ```console
-            pip install "fastagency[autogen,mesop,fastapi,server]"
-            ```
-
-            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
-
-        === "NATS + FastAPI + Mesop"
-            ```console
-            pip install "fastagency[autogen,mesop,fastapi,server,nats]"
-            ```
-
-            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
+{! docs/en/user-guide/cookiecutter/index.md[ln:6-214] !}
 
 -----
 
