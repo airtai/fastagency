@@ -18,39 +18,54 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
 
     === "Mesop"
         ```console
-        [1/3] project_name (My FastAgency App):
-        [2/3] project_slug (my_fastagency_app):
-        [3/3] Select app_type
+        [1/4] project_name (My FastAgency App):
+        [2/4] project_slug (my_fastagency_app):
+        [3/4] Select app_type
             1 - fastapi+mesop
             2 - mesop
             3 - nats+fastapi+mesop
             Choose from [1/2/3] (1): 2
+        [4/4] Select python_version
+            1 - 3.12
+            2 - 3.11
+            3 - 3.10
+            Choose from [1/2/3] (1):
         ```
 
         This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
 
     === "FastAPI + Mesop"
         ```console
-        [1/3] project_name (My FastAgency App):
-        [2/3] project_slug (my_fastagency_app):
-        [3/3] Select app_type
+        [1/4] project_name (My FastAgency App):
+        [2/4] project_slug (my_fastagency_app):
+        [3/4] Select app_type
             1 - fastapi+mesop
             2 - mesop
             3 - nats+fastapi+mesop
             Choose from [1/2/3] (1): 1
+        [4/4] Select python_version
+            1 - 3.12
+            2 - 3.11
+            3 - 3.10
+            Choose from [1/2/3] (1):
         ```
 
         This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
 
     === "NATS + FastAPI + Mesop"
         ```console
-        [1/3] project_name (My FastAgency App):
-        [2/3] project_slug (my_fastagency_app):
-        [3/3] Select app_type
+        [1/4] project_name (My FastAgency App):
+        [2/4] project_slug (my_fastagency_app):
+        [3/4] Select app_type
             1 - fastapi+mesop
             2 - mesop
             3 - nats+fastapi+mesop
             Choose from [1/2/3] (1): 3
+        [4/4] Select python_version
+            1 - 3.12
+            2 - 3.11
+            3 - 3.10
+            Choose from [1/2/3] (1):
         ```
 
         This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
