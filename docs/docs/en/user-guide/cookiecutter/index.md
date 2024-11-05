@@ -18,20 +18,6 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
 
     3. Depending on the type of the project, choose the appropriate option in step 3:
 
-        === "Console"
-            ```console
-            [1/3] project_name (My FastAgency App):
-            [2/3] project_slug (my_fastagency_app):
-            [3/3] Select app_type
-                1 - fastapi+mesop
-                2 - mesop
-                3 - console
-                4 - nats+fastapi+mesop
-                Choose from [1/2/3/4] (1): 3
-            ```
-
-            This command installs FastAgency with support for the Console interface and the AutoGen framework.
-
         === "Mesop"
             ```console
             [1/3] project_name (My FastAgency App):
@@ -76,29 +62,6 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
 
     4. Executing the `cookiecutter` command will create the following file structure:
 
-        === "Console"
-            ```console
-            my_fastagency_app/
-            ├── .devcontainer
-            │   ├── devcontainer.env
-            │   ├── devcontainer.json
-            │   ├── docker-compose.yml
-            │   └── setup.sh
-            ├── .github
-            │   └── workflows
-            │       └── test.yml
-            ├── LICENSE
-            ├── README.md
-            ├── my_fastagency_app
-            │   ├── __init__.py
-            │   ├── main.py
-            │   └── workflow.py
-            ├── pyproject.toml
-            └── tests
-                ├── __init__.py
-                ├── conftest.py
-                └── test_workflow.py
-            ```
         === "Mesop"
             ```console
             my_fastagency_app/
