@@ -36,3 +36,4 @@ class State:
     available_workflows: list[str] = field(default_factory=list)
     available_workflows_initialized = False
     available_workflows_exception = False
+    authenticated_user: Optional[str] = None
