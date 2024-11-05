@@ -1,0 +1,72 @@
+{
+    "components": {
+        "schemas": {
+            "CustomContextVariable": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/UserContextVariable"
+                    },
+                    {
+                        "$ref": "#/components/schemas/IssueContextVariable"
+                    }
+                ],
+                "properties": {
+                    "discriminator": {
+                        "propertyName": "type",
+                        "mapping": {
+                            "issue": "#/components/schemas/IssueContextVariable",
+                            "user": "#/components/schemas/UserContextVariable"
+                        }
+                    }
+                },
+                "required": [
+                    "type"
+                ],
+                "type": "object"
+            },
+            "IssueContextVariable": {
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "key": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type"
+                ],
+                "type": "object"
+            },
+            "UserContextVariable": {
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "accountId": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type",
+                    "accountId"
+                ],
+                "type": "object"
+            }
+        }
+    },
+    "openapi": "3.0.1",
+    "info": {
+        "title": "discriminator_inside_properties",
+        "version": "1.0.0"
+    },
+    "paths": {},
+    "servers": [
+        {
+            "url": "https://your-domain.atlassian.net"
+        }
+    ]
+}

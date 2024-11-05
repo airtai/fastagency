@@ -38,9 +38,6 @@
         },
         "BING_API_KEY": {
             "description": "This key is optional. The WebSurfer agent can work without it, but when added, it uses Bing's search and data services to improve information retrieval. You can always set it later as an environment variable in the codespace terminal."
-        },
-        "POSTMAN_API_KEY": {
-            "description": "This key is optional and only needed if you are testing OpenAPI code. Leave it blank if not required. You can always set it later as an environment variable in the codespace terminal."
         }
     },
     "shutdownAction": "stopCompose",

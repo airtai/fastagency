@@ -15,7 +15,9 @@ TEMPLATE_DIR = Path(__file__).parents[4] / "templates"
 assert TEMPLATE_DIR.exists(), TEMPLATE_DIR
 
 
-@pytest.mark.parametrize("openapi_file_path", OPENAPI_FILE_PATHS)
+@pytest.mark.parametrize(
+    "openapi_file_path", OPENAPI_FILE_PATHS, ids=[p.name for p in OPENAPI_FILE_PATHS]
+)
 def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir)

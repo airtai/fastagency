@@ -419,7 +419,7 @@ def create_item_items__post(
 @app.get(
     '/items/{item_id}',
     response_model=ItemsItemIdGetResponse,
-    description="Read an item by ID",
+    description="""Read an item by ID""",
     responses={'422': {'model': HTTPValidationError}},
 )
 def read_item_items__item_id__get(
@@ -435,7 +435,7 @@ def read_item_items__item_id__get(
 @app.put(
     '/items/{item_id}',
     response_model=ItemsItemIdPutResponse,
-    description="Update an item by ID",
+    description="""Update an item by ID""",
     responses={'422': {'model': HTTPValidationError}},
 )
 def update_item_items__item_id__put(
@@ -451,7 +451,7 @@ def update_item_items__item_id__put(
 @app.delete(
     '/items/{item_id}',
     response_model=ItemsItemIdDeleteResponse,
-    description="Delete an item by ID",
+    description="""Delete an item by ID""",
     responses={'422': {'model': HTTPValidationError}},
 )
 def delete_item_items__item_id__delete(
@@ -510,7 +510,7 @@ def create_item_items__post(
 @app.get(
     '/items/{item_id}',
     response_model=ItemsItemIdGetResponse,
-    description="Read an item by ID",
+    description="""Read an item by ID""",
     responses={'422': {'model': HTTPValidationError}},
 )
 def read_item_items__item_id__get(
@@ -526,7 +526,7 @@ def read_item_items__item_id__get(
 @app.put(
     '/items/{item_id}',
     response_model=ItemsItemIdPutResponse,
-    description="Update an item by ID",
+    description="""Update an item by ID""",
     responses={'422': {'model': HTTPValidationError}},
 )
 def update_item_items__item_id__put(
@@ -541,7 +541,7 @@ def update_item_items__item_id__put(
 @app.delete(
     '/items/{item_id}',
     response_model=ItemsItemIdDeleteResponse,
-    description="Delete an item by ID",
+    description="""Delete an item by ID""",
     responses={'422': {'model': HTTPValidationError}},
 )
 def delete_item_items__item_id__delete(
