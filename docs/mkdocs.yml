@@ -150,6 +150,9 @@ markdown_extensions:
   - pymdownx.inlinehilite        # inline code highlighting `#!python <code>`
   - pymdownx.tabbed:
       alternate_style: true      # create tabs group
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
   - attr_list                    # specify html attrs in markdown
   - md_in_html                   # render md wrapped to html tags
 
