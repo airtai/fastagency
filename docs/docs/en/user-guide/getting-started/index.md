@@ -52,7 +52,7 @@ There are two ways to setup you development environment and project:
 
 Let's see how to setup project using cookiecutter:
 
-{! docs/en/user-guide/cookiecutter/index.md[ln:6-214] !}
+{! docs/en/user-guide/cookiecutter/index.md[ln:6-226] !}
 
 -----
 
