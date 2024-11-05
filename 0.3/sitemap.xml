@@ -679,6 +679,60 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/MesopUI/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/AuthProtocol/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/AuthProtocol/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/auth/AuthProtocol/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/auth/AuthProtocol/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/FirebaseAuth/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/FirebaseAuth/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/FirebaseConfig/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/FirebaseConfig/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseAuth/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseAuth/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseConfig/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseConfig/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/FirebaseConfig/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/FirebaseConfig/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/firebase_auth_component/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/firebase_auth_component/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/components/helpers/darken_hex_color/</loc>
         <lastmod>2024-11-05</lastmod>
         <changefreq>daily</changefreq>
@@ -1007,12 +1061,6 @@
         <lastmod>2024-11-05</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/ui/console/basics/"/>
-    </url>
-    <url>
-        <loc>https://fastagency.ai/latest/user-guide/ui/fastapi/basics/</loc>
-        <lastmod>2024-11-05</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/ui/fastapi/basics/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/user-guide/ui/mesop/basics/</loc>
