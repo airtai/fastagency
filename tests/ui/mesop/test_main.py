@@ -25,7 +25,6 @@ if sys.version_info >= (3, 10):
             monkeypatch.setenv(
                 "GOOGLE_APPLICATION_CREDENTIALS", "/path/to/credentials.json"
             )
-            monkeypatch.setenv("AUTHORIZED_USER_EMAILS", "test@example.com")
 
             config = FirebaseConfig(
                 api_key="test-key",
@@ -161,11 +160,15 @@ if sys.version_info >= (3, 10):
 
         @pytest.fixture
         def auth_factory(
-            self, firebase_config: FirebaseConfig
+            self, firebase_config: FirebaseConfig, monkeypatch
         ) -> Callable[[Any], FirebaseAuth]:
             """Fixture for creating FirebaseAuth instances."""
 
             def _create_auth(allowed_users: Any) -> FirebaseAuth:
+                # Ensure required environment variables are set mocked
+                monkeypatch.setenv(
+                    "GOOGLE_APPLICATION_CREDENTIALS", "/path/to/credentials.json"
+                )
                 return FirebaseAuth(
                     sign_in_methods=["google"],
                     config=firebase_config,

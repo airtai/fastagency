@@ -99,7 +99,8 @@ firebase_config = FirebaseConfig(
 auth = FirebaseAuth(
     sign_in_methods=["google"],
     config=firebase_config,
-    allowed_users="all"
+    # TODO: Replace the emails in allowed_users with the desired ones
+    allowed_users=["harish@airt.ai", "davor@airt.ai"]
 )
 
 ui = MesopUI(security_policy=security_policy, styles=styles, auth=auth)
