@@ -197,15 +197,41 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
     - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
 === "With Authentication"
-    ```python hl_lines="29-36 39-42 44"
+    ```python hl_lines="29-36 39-44 46"
     {!> docs_src/user_guide/ui/mesop/main_mesop_auth.py [ln:60-107] !}
     ```
 
-    - **Create Firebase Configuration**: Initialize the [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseConfig.md) class by passing the necessary values from your Firebase configuration.
+    - **Create Firebase Configuration**:
 
-    - **Initialize Firebase Authentication**: Instiantiate the [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseAuth.md) with the chosen sign-in method and the Firebase configuration created in the previous step. This setup allows the application to handle user authentication via Google sign-in.
+        Initialize the [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseConfig.md) class by passing the necessary values from your Firebase configuration.
 
-    - **Configure the Mesop UI**: MesopUI is set up with a `security_policy`, `custom` styles, and the `auth` configuration. This step ensures that the user interface for the Mesop application is protected by the specified authentication method.
+    - **Initialize Firebase Authentication**:
+
+        Instiantiate the [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseAuth.md) with Google as the sign-in method and pass the Firebase configuration.
+
+        !!! note
+            Currently, [**Firebase**](https://firebase.google.com){target="_blank"} is the only supported authentication provider, with Google as the available sign-in method. Future releases will introduce more sign-in options within Firebase and expand support for additional authentication providers.
+
+        - The `**allowed_users**` parameter:
+
+            The `allowed_users` parameter controls access to the application, with the following options:
+
+            - String (`str`):
+
+                - To allow a single email address, set `allowed_users="user@example.com"`. Only this user will have access.
+                - To permit access for everyone, set `allowed_users="all"`.
+
+            - List of Strings (`list[str]`):
+
+                - Provide a list of authorized email addresses, e.g., `allowed_users=["user1@example.com", "user2@example.com"]`. Only users with these email addresses will be allowed access.
+
+            - Callable (`Callable[[dict[str, Any]], bool]`):
+
+                - This option provides maximum flexibility, allowing you to define custom validation logic. You can pass a function that takes a dictionary and returns a boolean to indicate whether access is granted. This setup supports more complex access checks, such as **database lookups**, **external API checks**, and **custom logic**.
+
+    - **Configure the Mesop UI**:
+
+        MesopUI is set up with a `security_policy`, `custom` styles, and the `auth` configuration. This step ensures that the user interface for the Mesop application is protected by the specified authentication method.
 
 
 ### Complete Application Code
