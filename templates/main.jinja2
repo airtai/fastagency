@@ -21,7 +21,7 @@ app = OpenAPI(
 {% for operation in operations %}
 @app.{{operation.type}}('{{operation.path}}', response_model={{operation.response}}
     {% if operation.description %}
-    , description="{{operation.description}}"
+    , description="""{{operation.description}}"""
     {% endif %}
     {% if operation.additional_responses %}
         , responses={
