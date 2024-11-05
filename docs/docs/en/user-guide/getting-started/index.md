@@ -4,8 +4,8 @@
 # 3 - Contributing
 # 5 - Template Page
 # 10 - Default
-hide:
-  - navigation
+# hide:
+#   - navigation
 
 search:
   boost: 10
@@ -13,86 +13,6 @@ search:
 
 # Getting Started with FastAgency
 
-
-<b>The fastest way to bring multi-agent workflows to production.</b>
-
-
----
-
-<p align="center">
-  <a href="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
-  </a>
-
-  <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
-      <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
-  </a>
-
-  <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
-    <img src="https://static.pepy.tech/personalized-badge/fastagency?period=month&units=international_system&left_color=grey&right_color=green&left_text=downloads/month" alt="Downloads"/>
-  </a>
-
-  <a href="https://pypi.org/project/fastagency" target="_blank">
-    <img src="https://img.shields.io/pypi/v/fastagency?label=PyPI" alt="Package version">
-  </a>
-
-  <a href="https://pypi.org/project/fastagency" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/fastagency.svg" alt="Supported Python versions">
-  </a>
-
-  <br/>
-
-  <a href="https://github.com/airtai/fastagency/actions/workflows/codeql.yml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/codeql.yml/badge.svg" alt="CodeQL">
-  </a>
-
-  <a href="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml/badge.svg" alt="Dependency Review">
-  </a>
-
-  <a href="https://github.com/airtai/fastagency/blob/main/LICENSE" target="_blank">
-    <img src="https://img.shields.io/github/license/airtai/fastagency.png" alt="License">
-  </a>
-
-  <a href="https://github.com/airtai/fastagency/blob/main/CODE_OF_CONDUCT.md" target="_blank">
-    <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Code of Conduct">
-  </a>
-
-  <a href="https://discord.gg/kJjSGWrknU" target="_blank">
-      <img alt="Discord" src="https://img.shields.io/discord/1247409549158121512?logo=discord">
-  </a>
-</p>
-
----
-
-## What is FastAgency?
-
-For start, FastAgency is not yet another agentic AI framework. There are many such
-frameworks available today, the most popular open-source ones being [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"}, [**CrewAI**](https://www.crewai.com/){target="_blank"}, [**Swarm**](https://github.com/openai/swarm){target="_blank"} and [**LangGraph**](https://github.com/langchain-ai/langgraph){target="_blank"}. FastAgency provides you with a unified programming interface for deploying agentic workflows written in above agentic frameworks in both development and productional settings (current version supports [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"} only, but other frameworks will be supported very soon). With only a few lines of code, you can create a web chat application or REST API service interacting with agents of your choice. If you need to scale-up your workloads, FastAgency can help you deploy a fully distributed system using internal message brokers coordinating multiple machines in multiple datacenters with just a few lines of code changed from your local development setup.
-
-In the rest of this guide, we will walk you through the initial setup and usage of FastAgency, using both development and production environments.
-
-### Supported Runtimes
-
-Currently, the only supported runtime is [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"}, with support for [**CrewAI**](https://www.crewai.com/){target="_blank"}, [**Swarm**](https://github.com/openai/swarm){target="_blank"} and [**LangGraph**](https://github.com/langchain-ai/langgraph){target="_blank"} coming soon.
-
-### Supported User Interfaces
-
-FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
-
-- **Console**: Use the [**`ConsoleUI`**](../api/fastagency/ui/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
-
-- [**Mesop**](https://google.github.io/mesop/){target="_blank"}: Utilize [**`MesopUI`**](../api/fastagency/ui/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
-
-### Supported Network Adapters
-
-FastAgency can use chainable network adapters that can be used to easily create
-scalable, production ready architectures for serving your workflows. Currently, we
-support the following network adapters:
-
-- [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} via [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Use the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
-
-- [**NATS.io**](https://nats.io/){target="_blank"} via [**FastStream**](https://github.com/airtai/faststream){target="_blank"}: Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
 
 ## Quick start
 
@@ -125,104 +45,108 @@ We will show you four different setups, two for development and two for producti
 
 There are two ways to setup you development environment and project:
 
-- [**Recommended**] Using [**Cookiecutter**](../user-guide/cookiecutter/index.md): This creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+- [**Recommended**] Using [**Cookiecutter**](../cookiecutter/index.md): This creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 - Using virtual environment, such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [**pip**](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
 
+Let's see how to setup project using cookiecutter:
 
-=== "Cookiecutter"
-
-    {! docs/en/user-guide/cookiecutter/index.md[ln:8-214] !}
-
-=== "env + pip"
-
-    1. To install FastAgency, you will need `pip`, Python’s package installer. We will use a virtual environment to manage dependencies. Execute the following commands to create and activate a virtual environment:
-
-        ```console
-        python3.12 -m venv .venv
-        source .venv/bin/activate
-        ```
-
-    2. Install FastAgency using the following command, based on the interface you want to use:
-
-        === "Console"
-            ```console
-            pip install "fastagency[autogen]"
-            ```
-
-            This command installs FastAgency with support for the Console interface and the AutoGen framework.
-
-        === "Mesop"
-            ```console
-            pip install "fastagency[autogen,mesop]"
-            ```
-
-            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
-
-        === "FastAPI + Mesop"
-            ```console
-            pip install "fastagency[autogen,mesop,fastapi,server]"
-            ```
-
-            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
-
-        === "NATS + FastAPI + Mesop"
-            ```console
-            pip install "fastagency[autogen,mesop,fastapi,server,nats]"
-            ```
-
-            This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
+{! docs/en/user-guide/cookiecutter/index.md[ln:6-226] !}
 
 -----
 
-### Imports
+### Workflow Development
+
+#### Define the Workflow
+
+You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
+
+```python
+{! docs_src/getting_started/workflow.py [ln:1-51] !}
+```
+
+This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
+
+#### Run and Debug the Workflow
+
+To ensure that the workflow we have defined is working properly, we can test it locally using MesopUI. The code below imports the defined workflow and sets up MesopUI:
+
+```python
+{! docs_src/getting_started/main_mesop.py [ln:1-8] !}
+```
+
+Run MesopUI locally with the following command:
+
+=== "Linux/MacOS"
+    !!! note "Terminal"
+        ```console
+        gunicorn main_mesop:app
+        ```
+
+=== "Windows"
+    !!! note "Terminal"
+        ```console
+        waitress-serve --listen=0.0.0.0:8000 main_mesop:app
+        ```
+
+Open the MesopUI URL [http://localhost:8000](http://localhost:8000) in your browser. You can now use the graphical user interface to start, run, test and debug the autogen workflow manually.
+
+#### Run Workflow Tests
+
+We can also use pytest to test the autogen workflow automatically, instead of manually testing it using MesopUI.
+
+```python
+{! docs_src/getting_started/test_workflow.py [ln:1-31] !}
+```
+
+Run the test with the following command:
+
+```console
+pytest
+```
+
+Running the test could take up to 30 seconds, depending on latency and throughput of OpenAI (or other LLM providers).
+
+### Workflow Deployment
+
+#### Imports
 
 Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
 
 === "Console"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/main_console.py [ln:1-8] !}
+    ```python hl_lines="2"
+    {!> docs_src/getting_started/main_console.py [ln:1-4] !}
     ```
 
     For Console applications, import `ConsoleUI` to handle command-line input and output.
 
 === "Mesop"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/main_mesop.py [ln:1-8] !}
+    ```python hl_lines="2"
+    {!> docs_src/getting_started/main_mesop.py [ln:1-4] !}
     ```
 
     For Mesop applications, import `MesopUI` to integrate with the Mesop web interface.
 
 === "FastAPI + Mesop"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:1-9] !}
+    ```python hl_lines="3"
+    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:1-5] !}
     ```
 
     For FastAPI applications, import `FastAPIAdapter` to expose your workflows as REST API.
 
 === "NATS + FastAPI + Mesop"
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:1-9] !}
+    ```python hl_lines="5"
+    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:1-7] !}
     ```
 
-### Define Workflow
-
-You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
-
-```python
-{! docs_src/getting_started/main_console.py [ln:9-53] !}
-```
-
-This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
-
-### Define FastAgency Application
+#### Define FastAgency Application
 
 === "Console"
     Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
     ```python hl_lines="1"
-    {!> docs_src/getting_started/main_console.py [ln:54] !}
+    {!> docs_src/getting_started/main_console.py [ln:7] !}
     ```
 
     For Console applications, use `ConsoleUI` to handle user interaction via the command line.
@@ -231,7 +155,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
     Next, define your FastAgency application. This ties together your workflow and the interface you chose:
 
     ```python hl_lines="1"
-    {!> docs_src/getting_started/main_mesop.py [ln:54] !}
+    {!> docs_src/getting_started/main_mesop.py [ln:7] !}
     ```
 
     For Mesop applications, use `MesopUI` to enable web-based interactions.
@@ -241,7 +165,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
     The adapter will have all REST and Websocket routes for communicating with a client.
 
     ```python hl_lines="1 4"
-    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:55-58] !}
+    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:8-11] !}
     ```
 
 === "NATS + FastAPI + Mesop"
@@ -250,7 +174,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
     will have all REST and Websocket routes for communicating with a client.
 
     ```python hl_lines="5 7"
-    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:55-61] !}
+    {!> docs_src/getting_started/nats_n_fastapi/main_1_nats.py [ln:10-16] !}
     ```
 
     The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [Docker](https://www.docker.com/){target="_blank"}. FastAgency uses the [JetStream](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
@@ -261,7 +185,7 @@ This code snippet sets up a simple learning chat between a student and a teacher
 
     In the above NATS configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in NATS and configure NATS to serve via the appropriate ports.
 
-### Adapter Chaining
+#### Adapter Chaining
 
 === "Console"
     Not applicable for this setup as there are no adapters used.
@@ -304,6 +228,13 @@ Please copy and paste the following code into the same folder, using the file na
 === "Console"
 
     <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/workflow.py !}
+        ```
+    </details>
+
+    <details>
         <summary>main.py</summary>
         ```python
         {!> docs_src/getting_started/main_console.py !}
@@ -313,6 +244,13 @@ Please copy and paste the following code into the same folder, using the file na
 === "Mesop"
 
     <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/workflow.py !}
+        ```
+    </details>
+
+    <details>
         <summary>main.py</summary>
         ```python
         {!> docs_src/getting_started/main_mesop.py !}
@@ -320,6 +258,13 @@ Please copy and paste the following code into the same folder, using the file na
     </details>
 
 === "FastAPI + Mesop"
+
+    <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/fastapi/workflow.py !}
+        ```
+    </details>
 
     <details>
         <summary>main_1_fastapi.py</summary>
@@ -341,6 +286,13 @@ Please copy and paste the following code into the same folder, using the file na
         <summary>nats-server.conf</summary>
         ```python
         {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
+        ```
+    </details>
+
+    <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/nats_n_fastapi/workflow.py !}
         ```
     </details>
 
@@ -609,30 +561,48 @@ The outputs will vary based on the interface, here is the output of the last ter
 
     ![Initial message](./images/chat.png)
 
-## Future Plans
+### Building the Docker Image
 
-We are actively working on expanding FastAgency’s capabilities. In addition to supporting AutoGen, we plan to integrate support for other frameworks, other network provider and other UI frameworks.
+If you created the project using Cookiecutter, then building the Docker image is as simple as running the provided script, as shown below:
 
----
+```console
+./scripts/build_docker.sh
+```
 
-## Stay in touch
+Alternatively, you can use the following command to build the Docker image:
 
-Please show your support and stay in touch by:
+```console
+docker build -t deploy_fastagency -f docker/Dockerfile --progress plain .
+```
 
-- giving our [GitHub repository](https://github.com/airtai/fastagency/){target="_blank"} a star, and
+### Running the Docker Image
 
-- joining our [Discord server](https://discord.gg/kJjSGWrknU){target="_blank"}
+Similarly, running the Docker container is as simple as running the provided script, as shown below:
 
-Your support helps us to stay in touch with you and encourages us to
-continue developing and improving the framework. Thank you for your
-support!
+```console
+./scripts/run_docker.sh
+```
 
----
+Alternatively, you can use the following command to run the Docker container using the Docker image built in the previous step:
 
-## Contributors
+```console
+docker run -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY -p 8888:8888  deploy_fastagency
+```
 
-Thanks to all of these amazing people who made the project better!
+### Deploying to Fly.io
 
-<a href="https://github.com/airtai/fastagency/graphs/contributors" target="_blank">
-  <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
-</a>
+If you created the project using Cookiecutter, there is a built-in script to deploy your workflow to [**Fly.io**](https://fly.io/). Run it as shown below:
+
+```console
+./scripts/deploy_to_fly_io.sh
+```
+
+Alternatively, you can run the following commands one by one to deploy your workflow to [**Fly.io**](https://fly.io/):
+
+```console
+fly auth login
+
+fly launch --config fly.toml --copy-config --yes
+
+fly secrets set OPENAI_API_KEY=$OPENAI_API_KEY
+```
