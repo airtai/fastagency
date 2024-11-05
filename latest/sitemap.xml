@@ -7,6 +7,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/features/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/features/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/release/</loc>
         <lastmod>2024-11-05</lastmod>
         <changefreq>daily</changefreq>
@@ -859,12 +865,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/contributing/docs/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/getting-started/</loc>
-        <lastmod>2024-11-05</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/getting-started/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/tutorials/</loc>
         <lastmod>2024-11-05</lastmod>
         <changefreq>daily</changefreq>
@@ -947,6 +947,12 @@
         <lastmod>2024-11-05</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/cookiecutter/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/user-guide/getting-started/</loc>
+        <lastmod>2024-11-05</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/getting-started/"/>
     </url>
     <url>
         <loc>https://fastagency.ai/latest/user-guide/runtimes/</loc>
