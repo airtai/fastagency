@@ -29,13 +29,6 @@ MESOP_EXCLUDED_MODULES = {
 # Mock Environment variables for Mesop Auth testing
 MOCK_ENV_VARS: dict[str, str] = {
     "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/credentials.json",
-    "AUTHORIZED_USER_EMAILS": "test@example.com",
-    "FIREBASE_API_KEY": "",
-    "FIREBASE_AUTH_DOMAIN": "",
-    "FIREBASE_PROJECT_ID": "",
-    "FIREBASE_STORAGE_BUCKET": "",
-    "FIREBASE_MESSAGING_SENDER_ID": "",
-    "FIREBASE_APP_ID": "",
 }
 
 

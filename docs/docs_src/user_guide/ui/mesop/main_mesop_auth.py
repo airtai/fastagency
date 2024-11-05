@@ -85,20 +85,21 @@ styles=MesopHomePageStyles(
     ),
 )
 
-# Create config
+# TODO: replace this with your web app's Firebase configuration
 firebase_config = FirebaseConfig(
-    api_key=os.getenv("FIREBASE_API_KEY"),
-    auth_domain=os.getenv("FIREBASE_AUTH_DOMAIN"),
-    project_id=os.getenv("FIREBASE_PROJECT_ID"),
-    storage_bucket=os.getenv("FIREBASE_STORAGE_BUCKET"),
-    messaging_sender_id=os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
-    app_id=os.getenv("FIREBASE_APP_ID")
+    api_key="<your_firebase_api_key>",
+    auth_domain="<your_firebase_auth_domain>",
+    project_id="<your_firebase_project_id>",
+    storage_bucket="<your_firebase_storage_bucket>",
+    messaging_sender_id="<your_firebase_messaging_sender_id>",
+    app_id="<your_firebase_app_id>"
 )
 
 # Initialize auth with Google sign-in
 auth = FirebaseAuth(
-    sign_in_methods={"google"},
-    config=firebase_config
+    sign_in_methods=["google"],
+    config=firebase_config,
+    allowed_users="all"
 )
 
 ui = MesopUI(security_policy=security_policy, styles=styles, auth=auth)

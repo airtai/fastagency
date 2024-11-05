@@ -1,4 +1,5 @@
 import sys
+from typing import Any, Callable
 
 import pytest
 
@@ -31,7 +32,9 @@ if sys.version_info >= (3, 10):
                 messaging_sender_id="test-sender",
                 app_id="test-app",
             )
-            return FirebaseAuth(sign_in_methods={"google"}, config=config)
+            return FirebaseAuth(
+                sign_in_methods=["google"], config=config, allowed_users="all"
+            )
 
         @pytest.fixture
         def mesop_ui(self):
@@ -89,38 +92,8 @@ if sys.version_info >= (3, 10):
                 with pytest.raises(
                     ValueError, match="A service account key is required."
                 ):
-                    FirebaseAuth(sign_in_methods={"google"}, config={})
-
-            def test_firebase_auth_without_authorized_emails(self, monkeypatch):
-                """Test scenario: FirebaseAuth initialization without AUTHORIZED_USER_EMAILS env variable.
-
-                Expected: Should raise EnvironmentError when AUTHORIZED_USER_EMAILS is not set.
-                """
-                # Set GOOGLE_APPLICATION_CREDENTIALS but remove AUTHORIZED_USER_EMAILS
-                monkeypatch.setenv(
-                    "GOOGLE_APPLICATION_CREDENTIALS", "/path/to/credentials.json"
-                )
-                monkeypatch.delenv("AUTHORIZED_USER_EMAILS", raising=False)
-
-                with pytest.raises(
-                    ValueError,
-                    match="rror: The `AUTHORIZED_USER_EMAILS` environment variable is not set.",
-                ):
-                    FirebaseAuth(sign_in_methods={"google"}, config={})
-
-            def test_firebase_config_null_values(self):
-                """Test scenario: FirebaseConfig initialization with null values.
-
-                Expected: Should raise ValueError when api_key or storage_bucket is None.
-                """
-                with pytest.raises(ValueError, match="['api_key', 'project_id']"):
-                    FirebaseConfig(
-                        api_key=None,
-                        auth_domain="test.firebaseapp.com",
-                        project_id=None,
-                        storage_bucket="test-bucket",
-                        messaging_sender_id="test-sender",
-                        app_id="test-app",
+                    FirebaseAuth(
+                        sign_in_methods=["google"], config={}, allowed_users="all"
                     )
 
             def test_with_security_policy(self, mesop_ui, firebase_auth, base_policy):
@@ -158,3 +131,153 @@ if sys.version_info >= (3, 10):
                     "https://www.gstatic.com",
                     "https://cdn.jsdelivr.net",
                 }
+
+    class TestFirebaseAuth:
+        """Test cases for Firebase authentication authorization checks."""
+
+        INVALID_FIREBASE_TOKEN_ERROR_MSG = (
+            "Invalid response from Firebase: `email` field is missing in the token"
+        )
+
+        @pytest.fixture
+        def valid_token(self) -> dict[str, Any]:
+            """Fixture for a valid token with email."""
+            return {"email": "user@example.com", "other_field": "value"}
+
+        @pytest.fixture
+        def firebase_config(self) -> FirebaseConfig:
+            """Fixture for Firebase configuration."""
+            return FirebaseConfig(
+                api_key="test-key",
+                auth_domain="test.firebaseapp.com",
+                project_id="test-project",
+                storage_bucket="test-bucket",
+                messaging_sender_id="test-sender",
+                app_id="test-app",
+            )
+
+        @pytest.fixture
+        def auth_factory(
+            self, firebase_config: FirebaseConfig
+        ) -> Callable[[Any], FirebaseAuth]:
+            """Fixture for creating FirebaseAuth instances."""
+
+            def _create_auth(allowed_users: Any) -> FirebaseAuth:
+                return FirebaseAuth(
+                    sign_in_methods=["google"],
+                    config=firebase_config,
+                    allowed_users=allowed_users,
+                )
+
+            return _create_auth
+
+        def test_token_validation(
+            self, auth_factory: Callable[[Any], FirebaseAuth]
+        ) -> None:
+            """Test token validation for missing email cases."""
+            auth = auth_factory(allowed_users="all")
+
+            # Test empty token
+            with pytest.raises(
+                ValueError, match=TestFirebaseAuth.INVALID_FIREBASE_TOKEN_ERROR_MSG
+            ):
+                auth.is_authorized({})
+
+            # Test missing email field
+            with pytest.raises(
+                ValueError, match=TestFirebaseAuth.INVALID_FIREBASE_TOKEN_ERROR_MSG
+            ):
+                auth.is_authorized({"other_field": "value"})
+
+        def test_all_access(
+            self, auth_factory: Callable[[Any], FirebaseAuth], valid_token: dict
+        ) -> None:
+            """Test 'all' access configuration."""
+            auth = auth_factory(allowed_users="all")
+            assert auth.is_authorized(valid_token) is True
+
+        def test_single_email_access(
+            self, auth_factory: Callable[[Any], FirebaseAuth], valid_token: dict
+        ) -> None:
+            """Test single email access configuration."""
+            # Test exact match
+            auth = auth_factory(allowed_users="user@example.com")
+            assert auth.is_authorized(valid_token) is True
+
+            # Test email mismatch
+            auth = auth_factory(allowed_users="other@example.com")
+            assert auth.is_authorized(valid_token) is False
+
+            # Test empty allowed email
+            auth = auth_factory(allowed_users="")
+            assert auth.is_authorized(valid_token) is False
+
+        def test_email_list_access(
+            self, auth_factory: Callable[[Any], FirebaseAuth], valid_token: dict
+        ) -> None:
+            """Test email list access configuration."""
+            # Test email in list
+            auth = auth_factory(
+                allowed_users=[
+                    "other@example.com",
+                    "user@example.com",
+                    "another@example.com",
+                ]
+            )
+            assert auth.is_authorized(valid_token) is True
+
+            # Test email not in list
+            auth = auth_factory(
+                allowed_users=["other@example.com", "another@example.com"]
+            )
+            assert auth.is_authorized(valid_token) is False
+
+            # Test empty list
+            auth = auth_factory(allowed_users=[])
+            assert auth.is_authorized(valid_token) is False
+
+            # Test list with empty values
+            auth = auth_factory(allowed_users=["", None, "user@example.com", "  "])
+            assert auth.is_authorized(valid_token) is True
+
+        def test_callable_access(
+            self, auth_factory: Callable[[Any], FirebaseAuth], valid_token: dict
+        ) -> None:
+            """Test callable access configuration."""
+            # Test callable returns True
+            auth = auth_factory(allowed_users=lambda token: True)
+            assert auth.is_authorized(valid_token) is True
+
+            # Test callable returns False
+            auth = auth_factory(allowed_users=lambda token: False)
+            assert auth.is_authorized(valid_token) is False
+
+            # Test callable raises exception
+            def raise_error(allowed_users=lambda _: dict) -> bool:
+                raise ValueError("Custom validation error")
+
+            auth = auth_factory(raise_error)
+            with pytest.raises(ValueError, match="Custom validation error"):
+                auth.is_authorized(valid_token)
+
+        @pytest.mark.parametrize(
+            "test_input,expected_error,error_match",
+            [
+                (None, TypeError, "allowed_users must be one of"),
+                (123, TypeError, "allowed_users must be one of"),
+                ({}, TypeError, "allowed_users must be one of"),
+                (set(), TypeError, "allowed_users must be one of"),
+            ],
+        )
+        def test_invalid_allowed_users(
+            self,
+            auth_factory: Callable[[Any], FirebaseAuth],
+            valid_token: dict,
+            test_input: Any,
+            expected_error: type[Exception],
+            error_match: str,
+        ) -> None:
+            """Test invalid allowed_users configurations."""
+            auth = auth_factory(allowed_users=test_input)
+            with pytest.raises(expected_error, match=error_match):
+                auth.is_authorized(valid_token)

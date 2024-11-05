@@ -16,7 +16,6 @@ search:
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
         - [Mesop](user-guide/ui/mesop/basics.md)
-        - [FastAPI](user-guide/ui/fastapi/basics.md)
     - [Adapters](user-guide/adapters/index.md)
         - [FastAPI](user-guide/adapters/fastapi/index.md)
         - [Nats.io](user-guide/adapters/nats/index.md)

@@ -46,74 +46,26 @@ Below, we’ll walk through the steps to set up a basic student-teacher conversa
             - Click **Add new provider**, select **Google**, and enable it.
             - Click **Save**
 
-    4. #### Set Up Environment Variables:
+    4. #### Set Up Environment Variable:
 
-        To use Firebase securely, store the configuration and credentials as [**environment variables**](https://en.wikipedia.org/wiki/Environment_variable){target="_blank"}. Run the following commands in the terminal where you’ll launch the FastAgency application. These variables are **essential for the application to function correctly**.
+        To securely integrate Firebase, you only need to set one [**environment variable**](https://en.wikipedia.org/wiki/Environment_variable){target="_blank"}, which points to the path of your Firebase service account credentials JSON file. This variable is essential for your FastAgency application to function correctly.
 
-        - **Firebase Configuration Env Variables**:
+        #### Firebase Service Account Key Env Variable:
 
-            Replace each placeholder with the corresponding values from your Firebase configuration
+        Set the path to your downloaded service account JSON file by running the following command in the terminal where you’ll launch the FastAgency application:
 
-            === "Linux/macOS"
-                ```bash
-                export FIREBASE_API_KEY="<your_firebase_api_key>"
-                export FIREBASE_AUTH_DOMAIN="<your_firebase_auth_domain>"
-                export FIREBASE_PROJECT_ID="<your_firebase_project_id>"
-                export FIREBASE_STORAGE_BUCKET="<your_firebase_storage_bucket>"
-                export FIREBASE_MESSAGING_SENDER_ID="<your_firebase_messaging_sender_id>"
-                export FIREBASE_APP_ID="<your_firebase_app_id>"
-                ```
-            === "Windows"
-                ```bash
-                set FIREBASE_API_KEY="<your_firebase_api_key>"
-                set FIREBASE_AUTH_DOMAIN="<your_firebase_auth_domain>"
-                set FIREBASE_PROJECT_ID="<your_firebase_project_id>"
-                set FIREBASE_STORAGE_BUCKET="<your_firebase_storage_bucket>"
-                set FIREBASE_MESSAGING_SENDER_ID="<your_firebase_messaging_sender_id>"
-                set FIREBASE_APP_ID="<your_firebase_app_id>"
-                ```
+        === "Linux/macOS"
+            ```bash
+            export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/serviceAccountKey.json
+            ```
 
-        - **Firebase Service Account Key Env Variable**:
+        === "Windows"
+            ```bash
+            set GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/serviceAccountKey.json
+            ```
 
-            Set the path to the downloaded service account JSON file:
-
-            === "Linux/macOS"
-                ```bash
-                export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/serviceAccountKey.json
-                ```
-
-            === "Windows"
-                ```bash
-                set GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/serviceAccountKey.json
-                ```
-
-        - **Application Access Env Variable**:
-
-            The `AUTHORIZED_USER_EMAILS` environment variable controls who can access your Mesop application. When a user signs in with their email, the application checks if this email is included in the authorized list. If the signed-in email isn’t on the list, the user will be denied access.
-
-            You can configure access in two ways:
-
-            - **Restricted Access**: Specify a comma-separated list of authorized email addresses. Only these emails will be allowed access:
-
-                === "Linux/macOS"
-                    ```bash
-                    export AUTHORIZED_USER_EMAILS=me@example.com,you@example.com,them@example.com
-                    ```
-                === "Windows"
-                    ```bash
-                    set AUTHORIZED_USER_EMAILS=me@example.com,you@example.com,them@example.com
-                    ```
-
-            - **Unrestricted Access**: To allow access for all users, set the variable to `OPEN_ACCESS`:
-
-                === "Linux/macOS"
-                    ```bash
-                    export AUTHORIZED_USER_EMAILS="OPEN_ACCESS"
-                    ```
-                === "Windows"
-                    ```bash
-                    set AUTHORIZED_USER_EMAILS="OPEN_ACCESS"
-                    ```
+        !!! danger
+            The service account JSON file must be kept secure and should never be committed to Git for security purposes. See [**Best practices**](https://cloud.google.com/iam/docs/best-practices-for-managing-service-account-keys){target="_blank"} for managing service account keys.
 
     With these configurations, you’re ready to add Firebase authentication to your Mesop application!
 
@@ -249,7 +201,7 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
     {!> docs_src/user_guide/ui/mesop/main_mesop_auth.py [ln:60-107] !}
     ```
 
-    - **Create Firebase Configuration**: Initiate the [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseConfig.md) instance with Firebase-specific settings, like api_key, auth_domain, project_id, etc., make sure to set the necessary environment cariables as mentioned [**here**](#set-up-environment-variables). These settings establish a secure connection between your application and Firebase.
+    - **Create Firebase Configuration**: Initialize the [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseConfig.md) class by passing the necessary values from your Firebase configuration.
 
     - **Initialize Firebase Authentication**: Instiantiate the [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseAuth.md) with the chosen sign-in method and the Firebase configuration created in the previous step. This setup allows the application to handle user authentication via Google sign-in.
 

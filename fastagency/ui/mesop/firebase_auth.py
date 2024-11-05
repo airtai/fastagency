@@ -1,6 +1,6 @@
 import os
 import typing
-from typing import Any, Literal
+from typing import Any, Callable, Literal, Union
 
 import firebase_admin
 import mesop as me
@@ -25,38 +25,59 @@ if firebase_admin._DEFAULT_APP_NAME not in firebase_admin._apps:
 class FirebaseAuth:  # implements AuthProtocol
     def __init__(
         self,
-        sign_in_methods: set[Literal["google"]],
+        sign_in_methods: list[Literal["google"]],
         config: FirebaseConfig,
+        allowed_users: Union[
+            list[str], Callable[[dict[str, Any]], bool], Literal["all"]
+        ],  # for callable -> pass the whole decoded token (dict)
     ) -> None:
         """Initialize the Firebase Auth provider.
 
         Args:
-            sign_in_methods (set[Literal["google"]]): The sign-in methods to enable.
-            config (FirebaseConfig): The Firebase configuration.
+            sign_in_methods: List of authentication methods to enable.
+                Currently only supports ["google"].
+            config: Firebase configuration containing project settings.
+            allowed_users: Specifies user access control:
+                - List[str]: List of allowed email addresses
+                - Callable: Function taking decoded token and returning boolean
+                - "all": Allows all authenticated users (default)
+
+        Raises:
+            TypeError: If sign_in_methods is not a list
+            ValueError: If no sign-in methods specified, unsupported methods provided,
+                or GOOGLE_APPLICATION_CREDENTIALS environment variable is missing
         """
         # mypy check if self is AuthProtocol
         _self: AuthProtocol = self
+
+        self.config = config
+        self.allowed_users = allowed_users
+
+        # Validate sign_in_methods type
+        if not isinstance(sign_in_methods, list):
+            raise TypeError(
+                "sign_in_methods must be a list. Example: sign_in_methods=['google']"
+            )
+
+        # 2. Remove duplicates
+        self.sign_in_methods = list(set(sign_in_methods))
+
+        # 3. Validate sign-in methods
+        if not self.sign_in_methods:
+            raise ValueError("At least one sign-in method must be specified")
+
+        unsupported_methods = [
+            method for method in self.sign_in_methods if method != "google"
+        ]
+        if unsupported_methods:
+            raise ValueError(
+                f"Unsupported sign-in method(s): {unsupported_methods}. Currently, only 'google' sign-in is supported."
+            )
 
         if not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
             raise ValueError(
                 "Error: A service account key is required. Please create one and set the JSON key file path in the `GOOGLE_APPLICATION_CREDENTIALS` environment variable. For more information: https://firebase.google.com/docs/admin/setup#initialize_the_sdk_in_non-google_environments"
             )
-
-        if not os.getenv("AUTHORIZED_USER_EMAILS"):
-            raise ValueError(
-                """Error: The `AUTHORIZED_USER_EMAILS` environment variable is not set. This variable is required to control access to the application.
-
-You can set it as:
-- A comma-separated list of authorized email addresses, e.g., AUTHORIZED_USER_EMAILS=me@example.com,you@example.com,them@example.com
-- Or, you can set it to "OPEN_ACCESS" to allow unrestricted access to all users.
-"""
-            )
-
-        if not sign_in_methods:
-            raise ValueError("At least one sign-in method must be specified")
-
-        self.sign_in_methods = sign_in_methods
-        self.config = config
 
     def create_security_policy(self, policy: me.SecurityPolicy) -> me.SecurityPolicy:
         return me.SecurityPolicy(
@@ -75,25 +96,50 @@ You can set it as:
         )
 
     def is_authorized(self, token: dict[str, Any]) -> bool:
-        """Check if the email in the token is authorized.
-
-        The authorized emails are specified in the AUTHORIZED_USER_EMAILS environment variable. This variable should be a comma-separated list of email addresses or "OPEN_ACCESS". If the value is set to `OPEN_ACCESS`, it grants unrestricted access to anyone, regardless of their email address.
+        """Check if the user is authorized based on the token and allowed_users configuration.
 
         Args:
-            token (dict[str, Any]): The token to check, which must contain an 'email' key.
+            token: The decoded Firebase JWT token containing user information.
+                Must include an 'email' field for validation.
 
         Returns:
-            bool: True if the email in the token is authorized, False otherwise.
+            bool: True if the user is authorized, False otherwise.
+
+        Raises:
+            TypeError: If allowed_users is not of type str, list, or Callable.
+            ValueError: If email field is missing in the Firebase token.
         """
-        # Retrieve the authorized emails from the environment variable and strip whitespace
-        authorized_emails = os.getenv("AUTHORIZED_USER_EMAILS", "").split(",")
+        # Check if the email is present in token
+        email = token.get("email")
+        if not email:
+            raise ValueError(
+                "Invalid response from Firebase: "
+                "`email` field is missing in the token"
+            )
 
-        # Check for open access
-        if authorized_emails == ["OPEN_ACCESS"]:
-            return True
+        # Handle string-based configuration ("all" or single email)
+        if isinstance(self.allowed_users, str):
+            if self.allowed_users == "all":
+                return True
+            return email == self.allowed_users
 
-        # Check if the email in the token is among the authorized emails
-        return token.get("email") in [email.strip() for email in authorized_emails]
+        # Handle list of allowed email addresses
+        if isinstance(self.allowed_users, list):
+            return email in {
+                addr.strip() if isinstance(addr, str) else addr
+                for addr in self.allowed_users
+            }
+
+        # Handle custom validation function
+        if callable(self.allowed_users):
+            return self.allowed_users(token)
+
+        raise TypeError(
+            "allowed_users must be one of: "
+            "str ('all' or email), "
+            "list of emails, "
+            "or callable taking token dict"
+        )
 
     def on_auth_changed(self, e: mel.WebEvent) -> None:
         state = me.state(State)

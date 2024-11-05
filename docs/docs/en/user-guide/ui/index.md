@@ -16,11 +16,6 @@ The **MesopUI** is a web-based interface that enables users to interact with age
 
 [Learn more about MesopUI →](./mesop/basics.md)
 
-### 3. **[FastAPI UI (Coming Soon)](./fastapi/basics.md)**
-FastAgency will soon introduce **FastAPI UI** support, which will allow you to build multi-agent systems with a FastAPI backend. This will enable seamless integration with RESTful APIs for modern web applications.
-
-[Learn more about FastAPI UI (Coming Soon) →](./fastapi/basics.md)
-
 ---
 
 Each of these UI options is designed to cater to different stages of the development lifecycle, providing flexibility whether you're prototyping or deploying a production-ready application. Stay tuned for updates, and if you have any questions or want to join the community, visit our [**Discord channel**](https://discord.gg/kJjSGWrknU).
