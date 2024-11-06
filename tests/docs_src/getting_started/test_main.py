@@ -17,7 +17,12 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", InputMock([INPUT_MESSAGE]))
 
     result = runner.invoke(
-        app, ["run", "docs/docs_src/getting_started/main_console.py", "--single-run"]
+        app,
+        [
+            "run",
+            "docs/docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/local/main_console.py",
+            "--single-run",
+        ],
     )
 
     assert result.exit_code == 0
