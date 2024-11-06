@@ -10,6 +10,7 @@ search:
         - [AutoGen](user-guide/runtimes/autogen/index.md)
             - Agents
                 - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
+                - [WhatsApp](user-guide/runtimes/autogen/whatsapp.md)
             - [User interaction](user-guide/runtimes/autogen/interactions.md)
             - [Using Non-OpenAI Models](user-guide/runtimes/autogen/using_non_openai_models.md)
         - [CrewAI](user-guide/runtimes/crewai/basics.md)
