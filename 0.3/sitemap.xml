@@ -955,12 +955,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorials/whatsapp/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/user-guide/</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/user-guide/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/user-guide/adapters/</loc>
         <lastmod>2024-11-06</lastmod>
         <changefreq>daily</changefreq>
