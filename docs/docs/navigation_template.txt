@@ -3,7 +3,7 @@ search:
   exclude: true
 ---
 - [Features](features.md)
-- [User guide](user-guide/index.md)
+- User guide
     - [Getting Started](user-guide/getting-started/index.md)
     - [Project setup](user-guide/cookiecutter/index.md)
     - [Runtimes](user-guide/runtimes/index.md)
