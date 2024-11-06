@@ -47,4 +47,4 @@ def simple_workflow(
         max_turns=3,
     )
 
-    return chat_result.summary
+    return str(chat_result.summary)

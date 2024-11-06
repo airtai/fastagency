@@ -1,4 +1,4 @@
-        fastapi/my_fastagency_app
+        fastapi_n_nats/my_fastagency_app
         ├── README.md
         ├── docker
         │   ├── Dockerfile

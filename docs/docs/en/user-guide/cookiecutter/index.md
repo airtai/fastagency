@@ -74,112 +74,15 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
 
     === "Mesop"
         ```console
-        my_fastagency_app/
-        ├── .devcontainer
-        │   ├── devcontainer.env
-        │   ├── devcontainer.json
-        │   ├── docker-compose.yml
-        │   └── setup.sh
-        ├── docker
-        │   ├── Dockerfile
-        │   └── run_fastagency.sh
-        ├── fly.toml
-        ├── .github
-        │   └── workflows
-        │       └── test.yml
-        ├── my_fastagency_app
-        │   ├── deployment
-        │   │   ├── __init__.py
-        │   │   └── main.py
-        │   ├── __init__.py
-        │   ├── local
-        │   │   ├── __init__.py
-        │   │   └── main_mesop.py
-        │   └── workflow.py
-        ├── pyproject.toml
-        ├── README.md
-        ├── scripts
-        │   ├── build_docker.sh
-        │   ├── deploy_to_fly_io.sh
-        │   └── run_docker.sh
-        └── tests
-            ├── __init__.py
-            ├── conftest.py
-            └── test_workflow.py
+{! docs_src/getting_started/mesop/folder_structure.txt !}
         ```
     === "FastAPI + Mesop"
         ```console
-        my_fastagency_app/
-        ├── .devcontainer
-        │   ├── devcontainer.env
-        │   ├── devcontainer.json
-        │   ├── docker-compose.yml
-        │   └── setup.sh
-        ├── docker
-        │   ├── Dockerfile
-        │   └── run_fastagency.sh
-        ├── fly.toml
-        ├── .github
-        │   └── workflows
-        │       └── test.yml
-        ├── my_fastagency_app
-        │   ├── deployment
-        │   │   ├── __init__.py
-        │   │   ├── main_1_fastapi.py
-        │   │   └── main_2_mesop.py
-        │   ├── __init__.py
-        │   ├── local
-        │   │   ├── __init__.py
-        │   │   └── main_mesop.py
-        │   └── workflow.py
-        ├── pyproject.toml
-        ├── README.md
-        ├── scripts
-        │   ├── build_docker.sh
-        │   ├── deploy_to_fly_io.sh
-        │   └── run_docker.sh
-        └── tests
-            ├── __init__.py
-            ├── conftest.py
-            └── test_workflow.py
+{! docs_src/getting_started/fastapi/folder_structure.txt !}
         ```
     === "NATS + FastAPI + Mesop"
         ```console
-        my_fastagency_app/
-        ├── .devcontainer
-        │   ├── devcontainer.env
-        │   ├── devcontainer.json
-        │   ├── docker-compose.yml
-        │   ├── nats_server.conf
-        │   └── setup.sh
-        ├── docker
-        │   ├── Dockerfile
-        │   └── run_fastagency.sh
-        ├── fly.toml
-        ├── .github
-        │   └── workflows
-        │       └── test.yml
-        ├── my_fastagency_app
-        │   ├── deployment
-        │   │   ├── __init__.py
-        │   │   ├── main_1_nats.py
-        │   │   ├── main_2_fastapi.py
-        │   │   └── main_3_mesop.py
-        │   ├── __init__.py
-        │   ├── local
-        │   │   ├── __init__.py
-        │   │   └── main_mesop.py
-        │   └── workflow.py
-        ├── pyproject.toml
-        ├── README.md
-        ├── scripts
-        │   ├── build_docker.sh
-        │   ├── deploy_to_fly_io.sh
-        │   └── run_docker.sh
-        └── tests
-            ├── __init__.py
-            ├── conftest.py
-            └── test_workflow.py
+{! docs_src/getting_started/nats_n_fastapi/folder_structure.txt !}
         ```
 
 5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
