@@ -41,7 +41,6 @@ def test_list_submodules() -> None:
     assert len(submodules) > 0
     assert "docs_src" in submodules
     assert "docs_src.getting_started" in submodules
-    assert "docs_src.getting_started.main_console" in submodules
 
 
 @pytest.mark.parametrize("module", list_submodules(module_name, include_path=root_path))

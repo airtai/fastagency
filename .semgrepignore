@@ -1,1 +1,4 @@
 docs/overrides/main.html
+docs/docs_src/getting_started/mesop/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/fastapi/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/docker-compose.yml

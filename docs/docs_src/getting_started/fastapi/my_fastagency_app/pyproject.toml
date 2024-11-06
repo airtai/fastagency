@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+
+version = "0.1.0"
+name = "my_fastagency_app"
+
+dependencies = [
+    "fastagency[autogen,mesop,server,fastapi]>=0.3.0",
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest==8.3.3",
+    "pytest-asyncio==0.24.0",
+]
+
+dev = ["my_fastagency_app[testing]"]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["my_fastagency_app"]
+
+[tool.pytest.ini_options]
+filterwarnings =["ignore::DeprecationWarning"]
+asyncio_default_fixture_loop_scope = "function"

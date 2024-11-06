@@ -7,14 +7,16 @@ repos:
       - id: trailing-whitespace
         exclude: |
           (?x)^(
-              ^docs/docs/en/user-guide/cli/.*
-          )$
+              ^docs/docs/en/user-guide/cli/.*|
+              ^docs/docs_src/getting_started
+          )
       - id: end-of-file-fixer
         exclude: |
           (?x)^(
-              docs/docs/SUMMARY.md|
-              docs/docs/en/api/.meta.yml
-          )$
+              ^docs/docs/SUMMARY.md|
+              ^docs/docs/en/api/.meta.yml|
+              ^docs/docs_src/getting_started
+          )
       - id: check-yaml
         exclude: "docs/mkdocs.yml"
       - id: check-added-large-files

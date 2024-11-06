@@ -109,6 +109,7 @@ devdocs = [
     "mkdocs-glightbox==0.4.0",  # img zoom
     "pillow==10.4.0,<11",  # ToDo: together 1.12 needs pillow <11
     "cairosvg==2.7.1",
+    "cookiecutter==2.6.0",
 ]
 
 lint = [
