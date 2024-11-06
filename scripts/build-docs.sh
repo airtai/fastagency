@@ -7,6 +7,7 @@ set -x
 
 # build docs/docs_src/getting_started
 cd docs/docs_src/getting_started && \
+    rm -rf fastapi mesop nats_n_fastapi; \
     cookiecutter -f -o mesop --no-input https://github.com/airtai/cookiecutter-fastagency.git app_type=mesop && \
     cd mesop && tree my_fastagency_app > folder_structure.txt && cd .. && \
     cookiecutter -f -o fastapi --no-input https://github.com/airtai/cookiecutter-fastagency.git app_type=fastapi+mesop && \
