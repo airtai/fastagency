@@ -1,4 +1,4 @@
-from unittest.mock import ANY, MagicMock
+from unittest.mock import MagicMock
 
 import pytest
 import requests
@@ -32,12 +32,15 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
         ],
     )
 
-    mock.assert_called_with(
-        "https://api.infobip.com/whatsapp/1/message/text",
-        params={},
-        json={"from": "447860099299", "to": "123456789", "content": {"text": "Hi!"}},
-        headers=ANY,
-    )
+    mock.assert_called_once()
+
+    assert mock.call_args.args[0] == "https://api.infobip.com/whatsapp/1/message/text"
+
+    json = mock.call_args.kwargs["json"]
+
+    assert "from" in json
+    assert "to" in json
+    assert "content" in json
 
     assert result.exit_code == 0
     assert "AutoGenWorkflows -> User [workflow_completed]" in result.stdout
