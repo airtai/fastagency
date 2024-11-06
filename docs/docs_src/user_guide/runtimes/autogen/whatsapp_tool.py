@@ -2,10 +2,11 @@ import os
 from typing import Any
 
 from autogen import UserProxyAgent
+from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.runtimes.autogen.agents.whatsapp import WhatsAppAgent
+from fastagency.runtimes.autogen.tools import WhatsAppTool
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -31,6 +32,7 @@ def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
         recipient="User",
         prompt="I can help you with sending a message over whatsapp, what would you like to send?",
     )
+
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent, when the message is successfully sent, you can end the conversation by sending 'TERMINATE'",
@@ -38,21 +40,25 @@ def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
         human_input_mode="NEVER",
         is_termination_msg=is_termination_msg,
     )
-
-    whatsapp_agent = WhatsAppAgent(
+    assistant_agent = ConversableAgent(
         name="Assistant_Agent",
+        system_message="You are a useful assistant for sending messages to whatsapp, use 447860099299 as your (sender) number.",
         llm_config=llm_config,
         human_input_mode="NEVER",
-        executor=user_agent,
-        # This is the default sender number for Infobip.
-        # If you want to use your own sender, please update the value below:
-        sender="447860099299",
-        whatsapp_api_key=os.getenv("WHATSAPP_API_KEY", ""),
         is_termination_msg=is_termination_msg,
     )
 
+    whatsapp = WhatsAppTool(
+        whatsapp_api_key=os.getenv("WHATSAPP_API_KEY", ""),
+    )
+
+    whatsapp.register(
+        caller=assistant_agent,
+        executor=user_agent,
+    )
+
     chat_result = user_agent.initiate_chat(
-        whatsapp_agent,
+        assistant_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=5,

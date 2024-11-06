@@ -1,217 +1,356 @@
-# WhatsApp Agent
+# WhatsApp agent
 
-The WhatsApp Agent within FastAgency allows users to send messages via WhatsApp by integrating it seamlessly with other agents, such as the WebSurfer Agent. This setup can help users retrieve web-based information and deliver summaries directly to their WhatsApp.
+FastAgency allows you to quickly create workflows with [WhatsApp](https://www.whatsapp.com/){target="_blank"} communication abilities, making it easy to integrate message sending.
 
 ## Adding WhatsApp Capabilities to Agents
 
-There are two main ways to integrate WhatsApp messaging:
+FastAgency provides two ways to add [WhatsApp](https://www.whatsapp.com/){target="_blank"} communication capabilities to agents. You can either:
 
-1. Use a **WhatsAppAgent** to send messages directly to WhatsApp (recommended).
-2. Combine it with other agents, such as a WebSurferAgent, to provide dynamic, web-enhanced WhatsApp interactions.
+1. Use a [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md), which comes with built-in WhatsApp message sending capabilities (recommended)
+2. Enhance an existing agent with WhatsApp capability using [**`WhatsAppTool`**](../../../api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md)
 
-In this guide, we’ll walk through a workflow where users can request a web page summary, which is then relayed to their WhatsApp.
+In this guide, we'll demonstrate both methods with a real-world example. We’ll create a workflow where a [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md) will help you send messages to your phone over WhatsApp.
+
+We’ll build agents and assign them the task: “Send 'Hi!' to *YOUR_NUMBER*” to showcase its ability to interact with [Infobip WhatsApp API](https://www.infobip.com/docs/whatsapp/api){target="_blank"}.
 
 ## Installation & Setup
 
-First, make sure you have FastAgency installed with the following command:
+Before getting started, make sure you have installed FastAgency with support for the [AutoGen](https://microsoft.github.io/autogen){target="_blank"} runtime by running the following command:
 
-\```bash
+```bash
 pip install "fastagency[autogen]"
-\```
+```
 
-This command installs FastAgency with Console and AutoGen runtime support.
+This command installs FastAgency with support for the Console interface and [AutoGen](https://microsoft.github.io/autogen){target="_blank"} framework.
 
-## Environment Setup
+Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
-You need to set up your API keys for Bing Web Search and WhatsApp. Ensure you have an account with **Microsoft Azure** to obtain a Bing API key and with your WhatsApp API provider.
+### Creating your WhatsApp API key
 
-### Set Up Your API Keys
+{! docs/en/tutorials/whatsapp/index.md[ln:49-76] !}
 
-You can set the API keys as environment variables in your terminal:
+#### Set Up Your API Key in the Environment
+
+You can set the WhatsApp API key in your terminal as an environment variable:
 
 === "Linux/macOS"
-    \```bash
-    export BING_API_KEY="your_bing_api_key"
+    ```bash
     export WHATSAPP_API_KEY="your_whatsapp_api_key"
-    \```
-
+    ```
 === "Windows"
-    \```bash
-    set BING_API_KEY="your_bing_api_key"
+    ```bash
     set WHATSAPP_API_KEY="your_whatsapp_api_key"
-    \```
+    ```
 
-## Example: Send a Web Summary to WhatsApp
+## Example: Create a workflow that will send a WhatsApp message to your phone
 
-### Step-by-Step Guide
+### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
+The example starts by importing the necessary modules from **AutoGen** and **FastAgency**. These imports lay the foundation for building and running multi-agent workflows.
 
-First, import the required modules from **AutoGen** and **FastAgency**. This example combines the **WhatsAppAgent** and **WebSurferAgent** to retrieve web information and send it via WhatsApp.
+=== "Using WhatsAppAgent"
+    ```
+    {!> docs_src/user_guide/runtimes/autogen/whatsapp.py [ln:1-9] !}
+    ```
 
-\```python
-import os
-from typing import Annotated, Any, Optional
+    To create a [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md), simply import [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md), which comes with built-in WhatsApp capabilities, and use it as needed.
 
-from autogen import GroupChat, GroupChatManager, register_function
-from autogen.agentchat import ConversableAgent
-from fastagency import UI, FastAgency
-from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
-from fastagency.runtimes.autogen.agents.whatsapp import WhatsAppAgent
-from fastagency.ui.mesop import MesopUI
-\```
+=== "Enhancing an existing agent"
+    ```
+    {!> docs_src/user_guide/runtimes/autogen/whatsapp_tool.py [ln:1-10] !}
+    ```
 
-#### 2. **Define the System Message for the Executor Agent**
+    To enhance existing agents with WhatsApp communication capability, import [**`WhatsAppTool`**](../../../api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md) from FastAgency and [**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} from [AutoGen](https://microsoft.github.io/autogen){target="_blank"}.
 
-The **Executor Agent** manages communication between the user, WhatsAppAgent, and WebSurferAgent.
+#### 2. **Configure the Language Model (LLM)**
+Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md) can interact effectively.
 
-\```python
-EXECUTOR_AGENT_SYSTEM_MESSAGE = """You are an agent in charge of communication with the user, the WhatsApp_Agent, and Web_Surfer_Agent.
-Always use 'present_completed_task_or_ask_question' to interact with the user.
-- Make sure that the 'message' parameter contains all the necessary information for the user.
-Initially, the Web_Surfer_Agent will provide you with some content from the web.
-You should ask the user if they would like to receive the summary of the scraped page.
-- "If you want to receive the summary of the page as a WhatsApp message, please provide your number."
-After that, relay the work to WhatsApp_Agent to send the message to the user."""
-\```
+```python
+{! docs_src/user_guide/runtimes/autogen/whatsapp.py [ln:11-19] !}
+```
 
-#### 3. **Configure the Language Model (LLM)**
+#### 3. **Define the Workflow and Agents**
 
-Define the LLM configuration with **gpt-4o-mini** model and retrieve the OpenAI API key from the environment.
+=== "Using WhatsAppAgent"
 
-\```python
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
-\```
+    In this step, we are going to create two agents and specify the initial message that will be displayed to users when the workflow starts:
 
-#### 4. **Define the Workflow**
+    - [**`UserProxyAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/user_proxy_agent/#userproxyagent){target="_blank"}: This agent simulates the user interacting with the system.
 
-Register a workflow to enable interaction with both WhatsApp and WebSurfer agents.
+    - [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md): This agent has built-in capability to communicate with [Infobip WhatsApp API](https://www.infobip.com/docs/whatsapp/api){target="_blank"}.
 
-\```python
-wf = AutoGenWorkflows()
+    ```python
+    {!> docs_src/user_guide/runtimes/autogen/whatsapp.py [ln:34-52] !}
+    ```
 
-@wf.register(name="whatsapp_and_websurfer", description="WhatsApp and WebSurfer chat")
-def whatsapp_and_websurfer_workflow(ui: UI, params: dict[str, Any]) -> str:
-    def is_termination_msg(msg: dict[str, Any]) -> bool:
-        return msg["content"] is not None and "TERMINATE" in msg["content"]
+    When initiating the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md), the executor parameter must be provided. This can be either a single instance of [**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} or a `list of `[**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} instances.
 
-    def present_completed_task_or_ask_question(
-        message: Annotated[str, "Message for user"],
-    ) -> Optional[str]:
-        try:
-            return ui.text_input(
-                sender="Executor_Agent",
-                recipient="User",
-                prompt=message,
-            )
-        except Exception as e:
-            return f"present_completed_task_or_ask_question() FAILED! {e}"
-\```
+    The [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md) relies on the executor agent(s) to execute the sending of WhatsApp messages. In this example, the `whatsapp_agent` agent will call the `user_agent` agent with the necessary instructions when contacting the WhatsApp API required, and the `user_agent` will execute those instructions.
 
-#### 5. **Set Up the Agents**
+=== "Enhancing an existing agent"
 
-Initialize the Executor Agent, WhatsApp Agent, and Web Surfer Agent.
+    In this step, we create two agents, a WhatsApp tool and set an initial message that will be displayed to users when the workflow starts:
 
-\```python
-    executor_agent = ConversableAgent(
-        name="Executor_Agent",
-        system_message=EXECUTOR_AGENT_SYSTEM_MESSAGE,
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-        is_termination_msg=is_termination_msg,
-    )
+    - [**`UserProxyAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/user_proxy_agent/#userproxyagent){target="_blank"}: This agent simulates the user interacting with the system.
 
-    whatsapp_agent = WhatsAppAgent(
-        name="WhatsApp_Agent",
-        sender="447860099299",  # default sender number for Infobip
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-        executor=executor_agent,
-        is_termination_msg=is_termination_msg,
-        whatsapp_api_key=os.getenv("WHATSAPP_API_KEY"),
-    )
+    - [**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"}: This is the conversable agent to which we will be adding WhatsApp capabilities.
 
-    web_surfer = WebSurferAgent(
-        name="Web_Surfer_Agent",
-        llm_config=llm_config,
-        summarizer_llm_config=llm_config,
-        human_input_mode="NEVER",
-        executor=executor_agent,
-        is_termination_msg=is_termination_msg,
-        bing_api_key=os.getenv("BING_API_KEY"),
-    )
-\```
+    - [**`WhatsAppTool`**](../../../api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md): The tool that gives the [**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} the ability to interact with WhatsApp.
 
-#### 6. **Register the Task Presentation Function**
+    ```python
+    {!> docs_src/user_guide/runtimes/autogen/whatsapp_tool.py [ln:36-53] !}
+    ```
 
-The **Executor Agent** uses this function to relay task information to the user.
+    Now, we need to register the [**`WhatsAppTool`**](../../../api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md) with a caller and executor. This setup allows the caller to use the [**`WhatsAppTool`**](../../../api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md) for performing real-time WhatsApp interactions.
 
-\```python
-    register_function(
-        present_completed_task_or_ask_question,
-        caller=executor_agent,
-        executor=web_surfer,
-        name="present_completed_task_or_ask_question",
-        description="""Present completed task or ask question.
-If you are presenting a completed task, last message should be a question: 'Do you need anything else?'""",
-    )
-\```
+    ```python
+    {!> docs_src/user_guide/runtimes/autogen/whatsapp_tool.py [ln:55-58] !}
+    ```
 
-#### 7. **Set Up the Initial Message and Group Chat**
+    The `executor` can be either a single instance of [**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} or a `list of `[**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} instances.
 
-The user can input the URL they’d like summarized, which the agents then process and deliver via WhatsApp.
+    The `caller` relies on the executor agent(s) to execute the WhatsApp tasks. In this example, the `assistant_agent` agent will call the `user_agent` agent with the necessary instructions when WhatsApp interaction is required, and the `user_agent` will execute those instructions.
 
-\```python
-    initial_message = ui.text_input(
-        sender="Workflow",
-        recipient="User",
-        prompt="For which website would you like to receive a summary?",
-    )
+#### 4. **Enable Agent Interaction and Chat**
+Here, the user agent starts a conversation with the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md), which will send a message to the specified number. The conversation is then summarized using a method provided by the LLM.
 
-    group_chat = GroupChat(
-        agents=[executor_agent, whatsapp_agent, web_surfer],
-        messages=[],
-        max_round=20,
-    )
+=== "Using WhatsAppAgent"
 
-    group_chat_manager = GroupChatManager(groupchat=group_chat, llm_config=llm_config)
+    ```python
+{! docs_src/user_guide/runtimes/autogen/whatsapp.py [ln:54-61] !}
+    ```
 
-    chat_result = executor_agent.initiate_chat(
-        group_chat_manager,
-        message=initial_message,
-        summary_method="reflection_with_llm",
-    )
+=== "Enhancing an existing agent"
 
-    return chat_result.summary
-\```
+    ```python
+{! docs_src/user_guide/runtimes/autogen/whatsapp_tool.py [ln:60-67] !}
+    ```
 
-#### 8. **Create and Run the Application**
+#### 5. **Create and Run the Application**
+Finally, we create the FastAgency application and launch it using the console interface.
 
-Finally, initialize the FastAgency application with the `whatsapp_and_websurfer_workflow` and launch the app.
+```python
+{! docs_src/user_guide/runtimes/autogen/whatsapp.py [ln:64] !}
+```
 
-\```python
-app = FastAgency(provider=wf, ui=MesopUI(), title="WhatsApp chat")
-\```
+### Complete Application Code
 
-## Running the Application
+=== "Using WhatsAppAgent"
 
-To start the application, run:
+    <details>
+        <summary>whatsapp_agent.py</summary>
+        ```python
+        {!> docs_src/user_guide/runtimes/autogen/whatsapp.py !}
+        ```
+    </details>
 
-\```bash
-fastagency run whatsapp_and_websurfer.py
-\```
+=== "Enhancing an existing agent"
 
-The system will prompt the user for a URL and process the request, with the summary sent directly to their WhatsApp.
+    <details>
+        <summary>whatsapp_tool.py</summary>
+        ```python
+        {!> docs_src/user_guide/runtimes/autogen/whatsapp_tool.py !}
+        ```
+    </details>
+
+
+### Running the Application
+
+
+=== "Using WhatsAppAgent"
+
+    ```bash
+    fastagency run whatsapp_agent.py
+    ```
+
+=== "Enhancing an existing agent"
+
+    ```bash
+    fastagency run whatsapp_tool.py
+    ```
+
+Ensure you have set your OpenAI API key in the environment. The command will launch a console interface where users can input their requests and interact with the whatsapp agent.
+
+### Output
+
+Once you run it, FastAgency automatically detects the appropriate app to execute and runs it. The application will then prompt you with: "I can help you with sending a message over whatsapp, what would you like to send?"
+
+=== "Using WhatsAppAgent"
+
+    ```console
+    ╭─── Python package file structure ────╮
+    │                                      │
+    │  📁 docs                             │
+    │  ├── 🐍 __init__.py                  │
+    │  └── 📁 docs_src                     │
+    │      ├── 🐍 __init__.py              │
+    │      └── 📁 user_guide               │
+    │          ├── 🐍 __init__.py          │
+    │          └── 📁 runtimes             │
+    │              ├── 🐍 __init__.py      │
+    │              └── 📁 autogen          │
+    │                  ├── 🐍 __init__.py  │
+    │                  └── 🐍 whatsapp.py  │
+    │                                      │
+    ╰──────────────────────────────────────╯
+
+    2024-11-06 12:05:31,205 [INFO] Importing autogen.base.py
+    /home/vscode/.local/lib/python3.10/site-packages/pydantic/_internal/_config.py:341: UserWarning: Valid config keys have changed in V2:
+    * 'keep_untouched' has been renamed to 'ignored_types'
+    warnings.warn(message, UserWarning)
+    2024-11-06 12:05:31,512 [INFO] Patched OpenAPIParser.parse_schema
+    2024-11-06 12:05:31,512 [INFO] Patched Operation.function_name
+    2024-11-06 12:05:31,512 [INFO] Patched fastapi_code_generator.__main__.generate_code
+    2024-11-06 12:05:31,512 [INFO] Patched Parser.__apply_discriminator_type,
+    2024-11-06 12:05:31,712 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0xffffafd51810> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffffa043ccd0>
+    2024-11-06 12:05:31,712 [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
+
+    ╭───────────────────── Importable FastAgency app ──────────────────────╮
+    │                                                                      │
+    │  from docs.docs_src.user_guide.runtimes.autogen.whatsapp import app  │
+    │                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────╯
+
+    ╭─ AutoGenWorkflows -> User [workflow_started] ────────────────────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "name": "simple_whatsapp",                                                 │
+    │   "description": "WhatsApp chat",                                            │
+    │                                                                              │
+    │ "params": {}                                                                 │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
+    │                                                                              │
+    │ I can help you with sending a message over whatsapp, what would you          │
+    │ like to send?:                                                               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+    ```
+
+=== "Enhancing an existing agent"
+
+    ```console
+    ╭────── Python package file structure ──────╮
+    │                                           │
+    │  📁 docs                                  │
+    │  ├── 🐍 __init__.py                       │
+    │  └── 📁 docs_src                          │
+    │      ├── 🐍 __init__.py                   │
+    │      └── 📁 user_guide                    │
+    │          ├── 🐍 __init__.py               │
+    │          └── 📁 runtimes                  │
+    │              ├── 🐍 __init__.py           │
+    │              └── 📁 autogen               │
+    │                  ├── 🐍 __init__.py       │
+    │                  └── 🐍 whatsapp_tool.py  │
+    │                                           │
+    ╰───────────────────────────────────────────╯
+
+    2024-11-06 12:01:55,921 [INFO] Importing autogen.base.py
+    /home/vscode/.local/lib/python3.10/site-packages/pydantic/_internal/_config.py:341: UserWarning: Valid config keys have changed in V2:
+    * 'keep_untouched' has been renamed to 'ignored_types'
+    warnings.warn(message, UserWarning)
+    2024-11-06 12:01:56,374 [INFO] Patched OpenAPIParser.parse_schema
+    2024-11-06 12:01:56,374 [INFO] Patched Operation.function_name
+    2024-11-06 12:01:56,374 [INFO] Patched fastapi_code_generator.__main__.generate_code
+    2024-11-06 12:01:56,374 [INFO] Patched Parser.__apply_discriminator_type,
+    2024-11-06 12:01:56,611 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0xffff88721840> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffff89e50760>
+    2024-11-06 12:01:56,611 [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
+
+    ╭──────────────────────── Importable FastAgency app ────────────────────────╮
+    │                                                                           │
+    │  from docs.docs_src.user_guide.runtimes.autogen.whatsapp_tool import app  │
+    │                                                                           │
+    ╰───────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ AutoGenWorkflows -> User [workflow_started] ────────────────────────────────╮
+    │                                                                              │
+    │ {                                                                            │
+    │   "name": "simple_whatsapp",                                                 │
+    │   "description": "WhatsApp chat",                                            │
+    │                                                                              │
+    │ "params": {}                                                                 │
+    │ }                                                                            │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+
+    ╭─ Workflow -> User [text_input] ──────────────────────────────────────────────╮
+    │                                                                              │
+    │ I can help you with sending a message over whatsapp, what would you          │
+    │ like to send?:                                                               │
+    ╰──────────────────────────────────────────────────────────────────────────────╯
+    ```
+
+In the prompt, type **Send "Hi!" to *YOUR-NUMBER*** and press Enter.
+
+This will initiate the task, allowing you to see the real-time conversation between the agents as they collaborate to complete it. Once the task is finished, you’ll see an output similar to the one below.
+
+```console
+╭─ User_Agent -> Assistant_Agent [text_message] ───────────────────────────────╮
+│                                                                              │
+│ Send "Hi!" to 123456789                                                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ Assistant_Agent -> User_Agent [suggested_function_call] ────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "function_name": "send_whatsapp_text_message",                             │
+│   "call_id":                                                                 │
+│ "call_NnptdiOOvZNjzHPb7grxwr9d",                                             │
+│   "arguments": {                                                             │
+│     "body": {                                                                │
+│                                                                              │
+│ "from": "447860099299",                                                      │
+│       "to": "123456789",                                                     │
+│       "messageId":                                                           │
+│  "test-message-12345",                                                       │
+│       "content": {                                                           │
+│         "text": "Hi!"                                                        │
+│                                                                              │
+│ },                                                                           │
+│       "callbackData": "User_Agent"                                           │
+│     }                                                                        │
+│   }                                                                          │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ User_Agent -> Assistant_Agent [function_call_execution] ────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "function_name": "send_whatsapp_text_message",                             │
+│   "call_id":                                                                 │
+│ "call_NnptdiOOvZNjzHPb7grxwr9d",                                             │
+│   "retval": "{\"to\":                                                        │
+│ \"123456789\", \"messageCount\": 1, \"messageId\": \"test-                   │
+│ message-12345\", \"status\": {\"groupId\": 1, \"groupName\":                 │
+│ \"PENDING\", \"id\": 7, \"name\": \"PENDING_ENROUTE\",                       │
+│ \"description\": \"Message sent to next instance\"}}\n"                      │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ Assistant_Agent -> User_Agent [text_message] ───────────────────────────────╮
+│                                                                              │
+│ The message "Hi!" has been sent to 123456789. The current status of          │
+│  the message is "PENDING."                                                   │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ User_Agent -> Assistant_Agent [text_message] ───────────────────────────────╮
+│                                                                              │
+│ TERMINATE                                                                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ AutoGenWorkflows -> User [workflow_completed] ──────────────────────────────╮
+│                                                                              │
+│ {                                                                            │
+│   "result": "The message \"Hi!\" was successfully sent to the number         │
+│  123456789, and its status is currently \"PENDING.\""                        │
+│ }                                                                            │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+If you configured your WHATSAPP_API_KEY correctly, you should get a message from your agent to your WhatsApp now.
 
 ---
 
-This example demonstrates how to leverage FastAgency’s AutoGen runtime to integrate WhatsApp and web-surfing functionalities, allowing for rich, real-time messaging experiences.
+This example highlights the capabilities of the [AutoGen](https://microsoft.github.io/autogen){target="_blank"} runtime within FastAgency, demonstrating how seamlessly LLM-powered agents can be integrated with [WhatsApp](https://www.whatsapp.com/){target="_blank"} for real-time, automated messaging. By using FastAgency, developers can rapidly build interactive, scalable applications that connect with external APIs—such as those for [WhatsApp](https://www.whatsapp.com/){target="_blank"} messaging, CRM systems, or custom data services—enabling the retrieval and delivery of dynamic content directly through [WhatsApp](https://www.whatsapp.com/){target="_blank"}. This setup empowers users to automate communication workflows, integrate live data, and facilitate on-demand, personalized interactions with end users.
