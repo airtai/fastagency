@@ -70,7 +70,11 @@ def test_submodules(module: str, monkeypatch: pytest.MonkeyPatch) -> None:
                 or module in MESOP_EXCLUDED_MODULES
             ):
                 pass
-            elif ("mesop" in module) or ("giphy" in module) or ("whatsapp" in module):
+            elif (
+                ("mesop" in module)
+                or ("tutorials.giphy" in module)
+                or ("tutorials.whatsapp" in module)
+            ):
                 with pytest.raises(
                     FastAgencyCLIPythonVersionError,
                     match="Mesop requires Python 3.10 or higher",
