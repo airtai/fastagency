@@ -20,7 +20,9 @@ wf = AutoGenWorkflows()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
+def simple_workflow(
+    ui: UI, params: dict[str, Any]
+) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
@@ -31,20 +33,18 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         name="Student_Agent",
         system_message="You are a student willing to learn.",
         llm_config=llm_config,
-        # human_input_mode="ALWAYS",
     )
     teacher_agent = ConversableAgent(
         name="Teacher_Agent",
         system_message="You are a math teacher.",
         llm_config=llm_config,
-        # human_input_mode="ALWAYS",
     )
 
     chat_result = student_agent.initiate_chat(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
-        max_turns=5,
+        max_turns=3,
     )
 
-    return chat_result.summary  # type: ignore[no-any-return]
+    return chat_result.summary
