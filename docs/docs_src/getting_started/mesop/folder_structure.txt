@@ -11,6 +11,7 @@ my_fastagency_app
 │   │   └── main.py
 │   ├── local
 │   │   ├── __init__.py
+│   │   ├── main_console.py
 │   │   └── main_mesop.py
 │   └── workflow.py
 ├── pyproject.toml
@@ -23,4 +24,4 @@ my_fastagency_app
     ├── conftest.py
     └── test_workflow.py
 
-7 directories, 17 files
+7 directories, 18 files

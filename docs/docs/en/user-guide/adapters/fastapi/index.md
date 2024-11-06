@@ -237,7 +237,7 @@ Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), whic
 Next, define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/getting_started/main_console.py [ln:9-53] !}
+{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/local/main_console.py [ln:9-53] !}
 ```
 
 #### 3. **Define FastAgency Application**
