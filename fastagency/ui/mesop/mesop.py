@@ -31,6 +31,7 @@ from ...messages import (
     TextMessage,
     WorkflowCompleted,
 )
+from .auth import AuthProtocol
 from .styles import MesopHomePageStyles
 from .timer import configure_static_file_serving
 
@@ -59,6 +60,7 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         security_policy: Optional[me.SecurityPolicy] = None,
         styles: Optional[MesopHomePageStyles] = None,
         keep_alive: Optional[bool] = False,
+        auth: Optional[AuthProtocol] = None,
     ) -> None:
         """Initialize the console UI object.
 
@@ -67,6 +69,7 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
             security_policy (Optional[me.SecurityPolicy], optional): The security policy. Defaults to None.
             styles (Optional[MesopHomePageStyles], optional): The styles. Defaults to None.
             keep_alive (Optional[bool]): If keep alive messages should be inserted, defaults to False`
+            auth (Optional[AuthProtocol]): The auth settings to use. Defaults to None.
         """
         logger.info(f"Initializing MesopUI: {self}")
         try:
@@ -88,7 +91,9 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
             if MesopUI._me is None:
                 from .main import create_home_page, me
 
-                create_home_page(self, security_policy=security_policy, styles=styles)
+                create_home_page(
+                    self, security_policy=security_policy, styles=styles, auth=auth
+                )
                 MesopUI._me = me
 
         except Exception as e:

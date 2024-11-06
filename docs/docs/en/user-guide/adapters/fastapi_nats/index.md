@@ -385,7 +385,7 @@ The outputs will vary based on the interface. Here is the output of the last ter
     [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
     ```
 
-    ![Initial message](../../../getting-started/images/chat.png)
+    ![Initial message](../../getting-started/images/chat.png)
 
 
 === "Custom REST API and WebSocket"

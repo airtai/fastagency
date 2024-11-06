@@ -2,9 +2,9 @@
 search:
   exclude: true
 ---
-- Getting Started
-    - [Getting Started](getting-started/index.md)
+- [Features](features.md)
 - [User guide](user-guide/index.md)
+    - [Getting Started](user-guide/getting-started/index.md)
     - [Project setup](user-guide/cookiecutter/index.md)
     - [Runtimes](user-guide/runtimes/index.md)
         - [AutoGen](user-guide/runtimes/autogen/index.md)
@@ -17,7 +17,6 @@ search:
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
         - [Mesop](user-guide/ui/mesop/basics.md)
-        - [FastAPI](user-guide/ui/fastapi/basics.md)
     - [Adapters](user-guide/adapters/index.md)
         - [FastAPI](user-guide/adapters/fastapi/index.md)
         - [Nats.io](user-guide/adapters/nats/index.md)
@@ -184,6 +183,20 @@ search:
                         - [ConsoleUI](api/fastagency/ui/console/console/ConsoleUI.md)
                 - mesop
                     - [MesopUI](api/fastagency/ui/mesop/MesopUI.md)
+                    - auth
+                        - [AuthProtocol](api/fastagency/ui/mesop/auth/AuthProtocol.md)
+                        - auth
+                            - [AuthProtocol](api/fastagency/ui/mesop/auth/auth/AuthProtocol.md)
+                        - firebase
+                            - [FirebaseAuth](api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md)
+                            - [FirebaseConfig](api/fastagency/ui/mesop/auth/firebase/FirebaseConfig.md)
+                            - [firebase_auth_component](api/fastagency/ui/mesop/auth/firebase/firebase_auth_component.md)
+                            - firebase_auth
+                                - [FirebaseAuth](api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseAuth.md)
+                                - [FirebaseConfig](api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseConfig.md)
+                            - firebase_auth_component
+                                - [FirebaseConfig](api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/FirebaseConfig.md)
+                                - [firebase_auth_component](api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/firebase_auth_component.md)
                     - components
                         - helpers
                             - [darken_hex_color](api/fastagency/ui/mesop/components/helpers/darken_hex_color.md)

@@ -8,6 +8,7 @@ import mesop as me
 from fastagency.base import ProviderProtocol
 
 from ...logging import get_logger
+from .auth import AuthProtocol
 from .data_model import Conversation, State
 from .message import consume_responses, message_box
 from .send_prompt import send_prompt_to_autogen
@@ -33,8 +34,9 @@ def create_home_page(
     *,
     styles: Optional[MesopHomePageStyles] = None,
     security_policy: Optional[me.SecurityPolicy] = None,
+    auth: Optional[AuthProtocol] = None,
 ) -> Callable[[], None]:
-    mhp = MesopHomePage(ui, styles=styles, security_policy=security_policy)
+    mhp = MesopHomePage(ui, styles=styles, security_policy=security_policy, auth=auth)
 
     return mhp.build()
 
@@ -57,16 +59,43 @@ class MesopHomePage:
         params: Optional[MesopHomePageParams] = None,
         styles: Optional[MesopHomePageStyles] = None,
         security_policy: Optional[me.SecurityPolicy] = None,
+        auth: Optional[AuthProtocol] = None,
     ) -> None:
         self._ui = ui
         self._params = params or MesopHomePageParams()
         self._styles = styles or MesopHomePageStyles()
-        self._security_policy = security_policy or DEFAULT_SECURITY_POLICY
+        self.auth = auth
+        self._security_policy = self._create_security_policy(
+            base_policy=security_policy or DEFAULT_SECURITY_POLICY, auth=auth
+        )
+
+    def _create_security_policy(
+        self, base_policy: me.SecurityPolicy, auth: Optional[AuthProtocol]
+    ) -> me.SecurityPolicy:
+        """Create a security policy by combining the base policy with auth-specific policies.
+
+        Args:
+            base_policy: The base security policy to start with
+            auth: Optional authentication protocol implementation
+
+        Returns:
+            The final security policy
+        """
+        if auth is None:
+            return base_policy
+
+        return auth.create_security_policy(base_policy)
 
     def build(self) -> Callable[[], None]:
+        stylesheets = (
+            self._styles.stylesheets + self._styles.firebase_stylesheets
+            if self.auth
+            else self._styles.stylesheets
+        )
+
         @me.page(  # type: ignore[misc]
             path="/",
-            stylesheets=self._styles.stylesheets,
+            stylesheets=stylesheets,
             security_policy=self._security_policy,
         )
         def home_page() -> None:
@@ -77,12 +106,17 @@ class MesopHomePage:
     def home_page(self) -> None:
         try:
             state = me.state(State)
-            with me.box(style=self._styles.root):
-                self.past_conversations_box()
-                if state.in_conversation:
-                    self.conversation_box()
-                else:
-                    self.conversation_starter_box()
+            if self.auth and not state.authenticated_user:
+                self.auth.auth_component()
+            else:
+                with me.box(style=self._styles.root):
+                    self.past_conversations_box()
+                    if state.in_conversation:
+                        self.conversation_box()
+                    else:
+                        self.conversation_starter_box()
+                    if self.auth and state.authenticated_user:
+                        self.auth.auth_component()
         except Exception as e:
             logger.error(f"home_page(): Error rendering home page: {e}")
             me.text(text="Error: Something went wrong, please check logs for details.")
