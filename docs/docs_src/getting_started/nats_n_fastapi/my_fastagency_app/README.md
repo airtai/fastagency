@@ -1,6 +1,6 @@
 # My FastAgency App
 
-This repository contains a [`FastAgency`](https://github.com/airtai/fastagency) application which uses [FastAPI](https://fastapi.tiangolo.com/), and [Mesop](https://google.github.io/mesop/). Below, you'll find a guide on how to run the application.
+This repository contains a [`FastAgency`](https://github.com/airtai/fastagency) application which uses [NATS](https://nats.io/), [FastAPI](https://fastapi.tiangolo.com/), and [Mesop](https://google.github.io/mesop/). Below, you'll find a guide on how to run the application.
 
 ## Running FastAgency Application
 
@@ -29,22 +29,28 @@ To run this [`FastAgency`](https://github.com/airtai/fastagency) application, fo
    Alternatively, you can open this repository in [GitHub Codespaces](https://github.com/features/codespaces).
 
 3. Press `Ctrl+Shift+P`(for windows/linux) or `Cmd+Shift+P`(for mac) and select the option `Dev Containers: Rebuild and Reopen in Container`. This will open the current repository in a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) using Docker and will install all the requirements to run the example application.
+4. This example needs `NATS` to be up and running. `NATS` is automatically started by the devcontainer.
+5. The `workflow.py` file defines the autogen workflows. It is imported and used in the files that define the `UI`.
 
-4. The `workflow.py` file defines the autogen workflows. It is imported and used in the files that define the `UI`.
-
-5. The `main_1_fastapi.py` file defines the `FastAPIAdapter`. In a devcontainer terminal(**Terminal 1**), run the following command:
-
-   ```bash
-   uvicorn my_fastagency_app.deployment.main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
-   ```
-
-6. The `main_2_mesop.py` file defines the `MesopUI`. In a new devcontainer terminal(**Terminal 2**), run the following command:
+6. The `main_1_nats.py` file defines the autogen workflows and includes the `NatsAdapter` to exchange the workflow conversation as messages via NATS. In a devcontainer terminal(**Terminal 1**), run the following command:
 
    ```bash
-   gunicorn my_fastagency_app.deployment.main_2_mesop:app -b 0.0.0.0:8888 --reload
+   uvicorn my_fastagency_app.deployment.main_1_nats:app --reload
    ```
 
-7. Open the Mesop UI URL [http://localhost:8888](http://localhost:8888) in your browser. You can now use the graphical user interface to start and run the autogen workflow.
+7. The `main_2_fastapi.py` file defines the `FastAPIAdapter`, which handles `NATS` messages using `NatsProvider`. In a new devcontainer terminal(**Terminal 2**), run the following command:
+
+   ```bash
+   uvicorn my_fastagency_app.deployment.main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload
+   ```
+
+8. Finally, the `main_3_mesop.py` file defines the `MesopUI`. In a new devcontainer terminal(**Terminal 3**), run the following command to start the mesop UI:
+
+   ```bash
+   gunicorn my_fastagency_app.deployment.main_3_mesop:app -b 0.0.0.0:8888 --reload
+   ```
+
+9. Open the Mesop UI URL [http://localhost:8888](http://localhost:8888) in your browser. You can now use the graphical user interface to start and run the autogen workflow.
 
 ## Running tests
 
@@ -67,7 +73,7 @@ This `FastAgency` project includes a Dockerfile for building and running a Docke
 2. Once the Docker image is built, you can run it using the following command:
 
    ```bash
-   docker run --rm -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY  -p 8008:8008 -p 8888:8888  deploy_fastagency
+   docker run --rm -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY -e NATS_URL=$NATS_URL -e FASTAGENCY_NATS_PASSWORD=$FASTAGENCY_NATS_PASSWORD -p 8000:8000 -p 8008:8008 -p 8888:8888 --network=host deploy_fastagency
    ```
 
 ## Deploying with Docker

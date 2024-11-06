@@ -21,4 +21,6 @@ CMD ["/app/run_fastagency.sh"]
 
 # Run the container
 
-# docker run --rm -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY  -p 8008:8008 -p 8888:8888  deploy_fastagency
+# NATS docker container should be running already
+
+# docker run --rm -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY -e NATS_URL=$NATS_URL -e FASTAGENCY_NATS_PASSWORD=$FASTAGENCY_NATS_PASSWORD -p 8000:8000 -p 8008:8008 -p 8888:8888 --network=host deploy_fastagency

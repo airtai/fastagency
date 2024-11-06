@@ -1,4 +1,4 @@
-        fastapi_n_nats/my_fastagency_app
+        my_fastagency_app
         ├── README.md
         ├── docker
         │   ├── Dockerfile
@@ -8,8 +8,9 @@
         │   ├── __init__.py
         │   ├── deployment
         │   │   ├── __init__.py
-        │   │   ├── main_1_fastapi.py
-        │   │   └── main_2_mesop.py
+        │   │   ├── main_1_nats.py
+        │   │   ├── main_2_fastapi.py
+        │   │   └── main_3_mesop.py
         │   ├── local
         │   │   ├── __init__.py
         │   │   └── main_mesop.py
@@ -24,4 +25,4 @@
             ├── conftest.py
             └── test_workflow.py
         
-        7 directories, 18 files
+        7 directories, 19 files

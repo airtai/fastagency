@@ -1,6 +1,6 @@
 # My FastAgency App
 
-This repository contains a [`FastAgency`](https://github.com/airtai/fastagency) application which uses [FastAPI](https://fastapi.tiangolo.com/), and [Mesop](https://google.github.io/mesop/). Below, you'll find a guide on how to run the application.
+This repository contains a [`FastAgency`](https://github.com/airtai/fastagency) application which uses [Mesop](https://google.github.io/mesop/). Below, you'll find a guide on how to run the application.
 
 ## Running FastAgency Application
 
@@ -32,19 +32,13 @@ To run this [`FastAgency`](https://github.com/airtai/fastagency) application, fo
 
 4. The `workflow.py` file defines the autogen workflows. It is imported and used in the files that define the `UI`.
 
-5. The `main_1_fastapi.py` file defines the `FastAPIAdapter`. In a devcontainer terminal(**Terminal 1**), run the following command:
+5. The `main.py` file defines the `MesopUI`. You can use any Python WSGI HTTP server like [gunicorn](https://gunicorn.org/) which is the preferred way to run the Mesop application. In a devcontainer terminal, run the following command:
 
    ```bash
-   uvicorn my_fastagency_app.deployment.main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
+   gunicorn my_fastagency_app.deployment.main:app
    ```
 
-6. The `main_2_mesop.py` file defines the `MesopUI`. In a new devcontainer terminal(**Terminal 2**), run the following command:
-
-   ```bash
-   gunicorn my_fastagency_app.deployment.main_2_mesop:app -b 0.0.0.0:8888 --reload
-   ```
-
-7. Open the Mesop UI URL [http://localhost:8888](http://localhost:8888) in your browser. You can now use the graphical user interface to start and run the autogen workflow.
+6. Open the Mesop UI URL [http://localhost:8888](http://localhost:8888) in your browser. You can now use the graphical user interface to start and run the autogen workflow.
 
 ## Running tests
 
@@ -67,7 +61,7 @@ This `FastAgency` project includes a Dockerfile for building and running a Docke
 2. Once the Docker image is built, you can run it using the following command:
 
    ```bash
-   docker run --rm -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY  -p 8008:8008 -p 8888:8888  deploy_fastagency
+   docker run --rm -d --name deploy_fastagency -e OPENAI_API_KEY=$OPENAI_API_KEY  -p 8888:8888  deploy_fastagency
    ```
 
 ## Deploying with Docker
