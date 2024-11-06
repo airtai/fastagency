@@ -1,0 +1,27 @@
+my_fastagency_app
+├── README.md
+├── docker
+│   ├── Dockerfile
+│   └── run_fastagency.sh
+├── fly.toml
+├── my_fastagency_app
+│   ├── __init__.py
+│   ├── deployment
+│   │   ├── __init__.py
+│   │   ├── main_1_fastapi.py
+│   │   └── main_2_mesop.py
+│   ├── local
+│   │   ├── __init__.py
+│   │   └── main_mesop.py
+│   └── workflow.py
+├── pyproject.toml
+├── scripts
+│   ├── build_docker.sh
+│   ├── deploy_to_fly_io.sh
+│   └── run_docker.sh
+└── tests
+    ├── __init__.py
+    ├── conftest.py
+    └── test_workflow.py
+
+7 directories, 18 files
