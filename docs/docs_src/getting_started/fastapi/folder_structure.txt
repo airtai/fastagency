@@ -1,6 +1,7 @@
 my_fastagency_app
 ├── docker
 │   ├── Dockerfile
+│   ├── nginx.conf.template
 │   └── run_fastagency.sh
 ├── my_fastagency_app
 │   ├── deployment
