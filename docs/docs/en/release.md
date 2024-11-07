@@ -12,6 +12,40 @@ hide:
 ---
 
 # Release Notes
+## v0.3.3
+
+### What's Changed
+
+* Polish tutorials by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#473](https://github.com/airtai/fastagency/pull/473){.external-link target="_blank"}
+* Add user guide on how to use cookiecutter by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#474](https://github.com/airtai/fastagency/pull/474){.external-link target="_blank"}
+* Update tutorial docs by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#479](https://github.com/airtai/fastagency/pull/479){.external-link target="_blank"}
+* Patch "Exception: modular references are not supported in this version" by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#478](https://github.com/airtai/fastagency/pull/478){.external-link target="_blank"}
+* Fix patching order by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#481](https://github.com/airtai/fastagency/pull/481){.external-link target="_blank"}
+* Update Adapter Docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#472](https://github.com/airtai/fastagency/pull/472){.external-link target="_blank"}
+* Add Playwright by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#469](https://github.com/airtai/fastagency/pull/469){.external-link target="_blank"}
+* Add cookiecutter as an alternative option by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#480](https://github.com/airtai/fastagency/pull/480){.external-link target="_blank"}
+* Fix: modular references are not supported in this version exception by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#484](https://github.com/airtai/fastagency/pull/484){.external-link target="_blank"}
+* Keep cookiecutter project setup in single place and embed it in getting started by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#485](https://github.com/airtai/fastagency/pull/485){.external-link target="_blank"}
+* Fix create message by adding workflow_uuid by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#486](https://github.com/airtai/fastagency/pull/486){.external-link target="_blank"}
+* Update giphy end2end test by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#502](https://github.com/airtai/fastagency/pull/502){.external-link target="_blank"}
+* Raise warning if openapi schema contains non supported security schema by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#499](https://github.com/airtai/fastagency/pull/499){.external-link target="_blank"}
+* Upgrade package versions by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#506](https://github.com/airtai/fastagency/pull/506){.external-link target="_blank"}
+* Define servers in openapi factory by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#501](https://github.com/airtai/fastagency/pull/501){.external-link target="_blank"}
+* Reroute whatsapp_e2e test by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#507](https://github.com/airtai/fastagency/pull/507){.external-link target="_blank"}
+* Add fastagency docker build and run commands by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#508](https://github.com/airtai/fastagency/pull/508){.external-link target="_blank"}
+* Mesop: do not scroll for keep alive by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#503](https://github.com/airtai/fastagency/pull/503){.external-link target="_blank"}
+* Update package versions by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#525](https://github.com/airtai/fastagency/pull/525){.external-link target="_blank"}
+* Fix parsing of Infobip whatsapp API schema by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#516](https://github.com/airtai/fastagency/pull/516){.external-link target="_blank"}
+* Fix docs by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#528](https://github.com/airtai/fastagency/pull/528){.external-link target="_blank"}
+* Add firebase authentication in Mesop by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#512](https://github.com/airtai/fastagency/pull/512){.external-link target="_blank"}
+* Polishing docs by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#530](https://github.com/airtai/fastagency/pull/530){.external-link target="_blank"}
+* Implement Whatsapp agent with infobip api integration by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#532](https://github.com/airtai/fastagency/pull/532){.external-link target="_blank"}
+* Fix failing test import by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#533](https://github.com/airtai/fastagency/pull/533){.external-link target="_blank"}
+* Update documentation with new features by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#534](https://github.com/airtai/fastagency/pull/534){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.3.2...v0.3.3](https://github.com/airtai/fastagency/compare/v0.3.2...v0.3.3){.external-link target="_blank"}
+
 ## v0.3.2
 
 ### What's Changed
