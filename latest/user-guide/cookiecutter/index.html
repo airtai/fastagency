@@ -48,81 +48,84 @@
 </code></pre></div> <p>This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.</p> </div> </div> </div> </li> <li> <p>Executing the <code>cookiecutter</code> command will create the following file structure:</p> <div class="tabbed-set tabbed-alternate" data-tabs=2:3><input checked=checked id=mesop_1 name=__tabbed_2 type=radio><input id=fastapi--mesop_1 name=__tabbed_2 type=radio><input id=nats--fastapi--mesop_1 name=__tabbed_2 type=radio><div class=tabbed-labels><label for=mesop_1>Mesop</label><label for=fastapi--mesop_1>FastAPI + Mesop</label><label for=nats--fastapi--mesop_1>NATS + FastAPI + Mesop</label></div> <div class=tabbed-content> <div class=tabbed-block> <div class=highlight><pre><span></span><code><a id=__codelineno-5-1 name=__codelineno-5-1 href=#__codelineno-5-1></a><span class=go>my_fastagency_app</span>
 <a id=__codelineno-5-2 name=__codelineno-5-2 href=#__codelineno-5-2></a><span class=go>├── docker</span>
 <a id=__codelineno-5-3 name=__codelineno-5-3 href=#__codelineno-5-3></a><span class=go>│   ├── Dockerfile</span>
-<a id=__codelineno-5-4 name=__codelineno-5-4 href=#__codelineno-5-4></a><span class=go>│   └── run_fastagency.sh</span>
-<a id=__codelineno-5-5 name=__codelineno-5-5 href=#__codelineno-5-5></a><span class=go>├── my_fastagency_app</span>
-<a id=__codelineno-5-6 name=__codelineno-5-6 href=#__codelineno-5-6></a><span class=go>│   ├── deployment</span>
-<a id=__codelineno-5-7 name=__codelineno-5-7 href=#__codelineno-5-7></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-5-8 name=__codelineno-5-8 href=#__codelineno-5-8></a><span class=go>│   │   └── main.py</span>
-<a id=__codelineno-5-9 name=__codelineno-5-9 href=#__codelineno-5-9></a><span class=go>│   ├── local</span>
-<a id=__codelineno-5-10 name=__codelineno-5-10 href=#__codelineno-5-10></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-5-11 name=__codelineno-5-11 href=#__codelineno-5-11></a><span class=go>│   │   ├── main_console.py</span>
-<a id=__codelineno-5-12 name=__codelineno-5-12 href=#__codelineno-5-12></a><span class=go>│   │   └── main_mesop.py</span>
-<a id=__codelineno-5-13 name=__codelineno-5-13 href=#__codelineno-5-13></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-5-14 name=__codelineno-5-14 href=#__codelineno-5-14></a><span class=go>│   └── workflow.py</span>
-<a id=__codelineno-5-15 name=__codelineno-5-15 href=#__codelineno-5-15></a><span class=go>├── scripts</span>
-<a id=__codelineno-5-16 name=__codelineno-5-16 href=#__codelineno-5-16></a><span class=go>│   ├── build_docker.sh</span>
-<a id=__codelineno-5-17 name=__codelineno-5-17 href=#__codelineno-5-17></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
-<a id=__codelineno-5-18 name=__codelineno-5-18 href=#__codelineno-5-18></a><span class=go>│   └── run_docker.sh</span>
-<a id=__codelineno-5-19 name=__codelineno-5-19 href=#__codelineno-5-19></a><span class=go>├── tests</span>
-<a id=__codelineno-5-20 name=__codelineno-5-20 href=#__codelineno-5-20></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-5-21 name=__codelineno-5-21 href=#__codelineno-5-21></a><span class=go>│   ├── conftest.py</span>
-<a id=__codelineno-5-22 name=__codelineno-5-22 href=#__codelineno-5-22></a><span class=go>│   └── test_workflow.py</span>
-<a id=__codelineno-5-23 name=__codelineno-5-23 href=#__codelineno-5-23></a><span class=go>├── README.md</span>
-<a id=__codelineno-5-24 name=__codelineno-5-24 href=#__codelineno-5-24></a><span class=go>├── fly.toml</span>
-<a id=__codelineno-5-25 name=__codelineno-5-25 href=#__codelineno-5-25></a><span class=go>└── pyproject.toml</span>
+<a id=__codelineno-5-4 name=__codelineno-5-4 href=#__codelineno-5-4></a><span class=go>│   ├── nginx.conf.template</span>
+<a id=__codelineno-5-5 name=__codelineno-5-5 href=#__codelineno-5-5></a><span class=go>│   └── run_fastagency.sh</span>
+<a id=__codelineno-5-6 name=__codelineno-5-6 href=#__codelineno-5-6></a><span class=go>├── my_fastagency_app</span>
+<a id=__codelineno-5-7 name=__codelineno-5-7 href=#__codelineno-5-7></a><span class=go>│   ├── deployment</span>
+<a id=__codelineno-5-8 name=__codelineno-5-8 href=#__codelineno-5-8></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-5-9 name=__codelineno-5-9 href=#__codelineno-5-9></a><span class=go>│   │   └── main.py</span>
+<a id=__codelineno-5-10 name=__codelineno-5-10 href=#__codelineno-5-10></a><span class=go>│   ├── local</span>
+<a id=__codelineno-5-11 name=__codelineno-5-11 href=#__codelineno-5-11></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-5-12 name=__codelineno-5-12 href=#__codelineno-5-12></a><span class=go>│   │   ├── main_console.py</span>
+<a id=__codelineno-5-13 name=__codelineno-5-13 href=#__codelineno-5-13></a><span class=go>│   │   └── main_mesop.py</span>
+<a id=__codelineno-5-14 name=__codelineno-5-14 href=#__codelineno-5-14></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-5-15 name=__codelineno-5-15 href=#__codelineno-5-15></a><span class=go>│   └── workflow.py</span>
+<a id=__codelineno-5-16 name=__codelineno-5-16 href=#__codelineno-5-16></a><span class=go>├── scripts</span>
+<a id=__codelineno-5-17 name=__codelineno-5-17 href=#__codelineno-5-17></a><span class=go>│   ├── build_docker.sh</span>
+<a id=__codelineno-5-18 name=__codelineno-5-18 href=#__codelineno-5-18></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
+<a id=__codelineno-5-19 name=__codelineno-5-19 href=#__codelineno-5-19></a><span class=go>│   └── run_docker.sh</span>
+<a id=__codelineno-5-20 name=__codelineno-5-20 href=#__codelineno-5-20></a><span class=go>├── tests</span>
+<a id=__codelineno-5-21 name=__codelineno-5-21 href=#__codelineno-5-21></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-5-22 name=__codelineno-5-22 href=#__codelineno-5-22></a><span class=go>│   ├── conftest.py</span>
+<a id=__codelineno-5-23 name=__codelineno-5-23 href=#__codelineno-5-23></a><span class=go>│   └── test_workflow.py</span>
+<a id=__codelineno-5-24 name=__codelineno-5-24 href=#__codelineno-5-24></a><span class=go>├── README.md</span>
+<a id=__codelineno-5-25 name=__codelineno-5-25 href=#__codelineno-5-25></a><span class=go>├── fly.toml</span>
+<a id=__codelineno-5-26 name=__codelineno-5-26 href=#__codelineno-5-26></a><span class=go>└── pyproject.toml</span>
 </code></pre></div> </div> <div class=tabbed-block> <div class=highlight><pre><span></span><code><a id=__codelineno-6-1 name=__codelineno-6-1 href=#__codelineno-6-1></a><span class=go>my_fastagency_app</span>
 <a id=__codelineno-6-2 name=__codelineno-6-2 href=#__codelineno-6-2></a><span class=go>├── docker</span>
 <a id=__codelineno-6-3 name=__codelineno-6-3 href=#__codelineno-6-3></a><span class=go>│   ├── Dockerfile</span>
-<a id=__codelineno-6-4 name=__codelineno-6-4 href=#__codelineno-6-4></a><span class=go>│   └── run_fastagency.sh</span>
-<a id=__codelineno-6-5 name=__codelineno-6-5 href=#__codelineno-6-5></a><span class=go>├── my_fastagency_app</span>
-<a id=__codelineno-6-6 name=__codelineno-6-6 href=#__codelineno-6-6></a><span class=go>│   ├── deployment</span>
-<a id=__codelineno-6-7 name=__codelineno-6-7 href=#__codelineno-6-7></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-6-8 name=__codelineno-6-8 href=#__codelineno-6-8></a><span class=go>│   │   ├── main_1_fastapi.py</span>
-<a id=__codelineno-6-9 name=__codelineno-6-9 href=#__codelineno-6-9></a><span class=go>│   │   └── main_2_mesop.py</span>
-<a id=__codelineno-6-10 name=__codelineno-6-10 href=#__codelineno-6-10></a><span class=go>│   ├── local</span>
-<a id=__codelineno-6-11 name=__codelineno-6-11 href=#__codelineno-6-11></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-6-12 name=__codelineno-6-12 href=#__codelineno-6-12></a><span class=go>│   │   ├── main_console.py</span>
-<a id=__codelineno-6-13 name=__codelineno-6-13 href=#__codelineno-6-13></a><span class=go>│   │   └── main_mesop.py</span>
-<a id=__codelineno-6-14 name=__codelineno-6-14 href=#__codelineno-6-14></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-6-15 name=__codelineno-6-15 href=#__codelineno-6-15></a><span class=go>│   └── workflow.py</span>
-<a id=__codelineno-6-16 name=__codelineno-6-16 href=#__codelineno-6-16></a><span class=go>├── scripts</span>
-<a id=__codelineno-6-17 name=__codelineno-6-17 href=#__codelineno-6-17></a><span class=go>│   ├── build_docker.sh</span>
-<a id=__codelineno-6-18 name=__codelineno-6-18 href=#__codelineno-6-18></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
-<a id=__codelineno-6-19 name=__codelineno-6-19 href=#__codelineno-6-19></a><span class=go>│   └── run_docker.sh</span>
-<a id=__codelineno-6-20 name=__codelineno-6-20 href=#__codelineno-6-20></a><span class=go>├── tests</span>
-<a id=__codelineno-6-21 name=__codelineno-6-21 href=#__codelineno-6-21></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-6-22 name=__codelineno-6-22 href=#__codelineno-6-22></a><span class=go>│   ├── conftest.py</span>
-<a id=__codelineno-6-23 name=__codelineno-6-23 href=#__codelineno-6-23></a><span class=go>│   └── test_workflow.py</span>
-<a id=__codelineno-6-24 name=__codelineno-6-24 href=#__codelineno-6-24></a><span class=go>├── README.md</span>
-<a id=__codelineno-6-25 name=__codelineno-6-25 href=#__codelineno-6-25></a><span class=go>├── fly.toml</span>
-<a id=__codelineno-6-26 name=__codelineno-6-26 href=#__codelineno-6-26></a><span class=go>└── pyproject.toml</span>
+<a id=__codelineno-6-4 name=__codelineno-6-4 href=#__codelineno-6-4></a><span class=go>│   ├── nginx.conf.template</span>
+<a id=__codelineno-6-5 name=__codelineno-6-5 href=#__codelineno-6-5></a><span class=go>│   └── run_fastagency.sh</span>
+<a id=__codelineno-6-6 name=__codelineno-6-6 href=#__codelineno-6-6></a><span class=go>├── my_fastagency_app</span>
+<a id=__codelineno-6-7 name=__codelineno-6-7 href=#__codelineno-6-7></a><span class=go>│   ├── deployment</span>
+<a id=__codelineno-6-8 name=__codelineno-6-8 href=#__codelineno-6-8></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-6-9 name=__codelineno-6-9 href=#__codelineno-6-9></a><span class=go>│   │   ├── main_1_fastapi.py</span>
+<a id=__codelineno-6-10 name=__codelineno-6-10 href=#__codelineno-6-10></a><span class=go>│   │   └── main_2_mesop.py</span>
+<a id=__codelineno-6-11 name=__codelineno-6-11 href=#__codelineno-6-11></a><span class=go>│   ├── local</span>
+<a id=__codelineno-6-12 name=__codelineno-6-12 href=#__codelineno-6-12></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-6-13 name=__codelineno-6-13 href=#__codelineno-6-13></a><span class=go>│   │   ├── main_console.py</span>
+<a id=__codelineno-6-14 name=__codelineno-6-14 href=#__codelineno-6-14></a><span class=go>│   │   └── main_mesop.py</span>
+<a id=__codelineno-6-15 name=__codelineno-6-15 href=#__codelineno-6-15></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-6-16 name=__codelineno-6-16 href=#__codelineno-6-16></a><span class=go>│   └── workflow.py</span>
+<a id=__codelineno-6-17 name=__codelineno-6-17 href=#__codelineno-6-17></a><span class=go>├── scripts</span>
+<a id=__codelineno-6-18 name=__codelineno-6-18 href=#__codelineno-6-18></a><span class=go>│   ├── build_docker.sh</span>
+<a id=__codelineno-6-19 name=__codelineno-6-19 href=#__codelineno-6-19></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
+<a id=__codelineno-6-20 name=__codelineno-6-20 href=#__codelineno-6-20></a><span class=go>│   └── run_docker.sh</span>
+<a id=__codelineno-6-21 name=__codelineno-6-21 href=#__codelineno-6-21></a><span class=go>├── tests</span>
+<a id=__codelineno-6-22 name=__codelineno-6-22 href=#__codelineno-6-22></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-6-23 name=__codelineno-6-23 href=#__codelineno-6-23></a><span class=go>│   ├── conftest.py</span>
+<a id=__codelineno-6-24 name=__codelineno-6-24 href=#__codelineno-6-24></a><span class=go>│   └── test_workflow.py</span>
+<a id=__codelineno-6-25 name=__codelineno-6-25 href=#__codelineno-6-25></a><span class=go>├── README.md</span>
+<a id=__codelineno-6-26 name=__codelineno-6-26 href=#__codelineno-6-26></a><span class=go>├── fly.toml</span>
+<a id=__codelineno-6-27 name=__codelineno-6-27 href=#__codelineno-6-27></a><span class=go>└── pyproject.toml</span>
 </code></pre></div> </div> <div class=tabbed-block> <div class=highlight><pre><span></span><code><a id=__codelineno-7-1 name=__codelineno-7-1 href=#__codelineno-7-1></a><span class=go>my_fastagency_app</span>
 <a id=__codelineno-7-2 name=__codelineno-7-2 href=#__codelineno-7-2></a><span class=go>├── docker</span>
 <a id=__codelineno-7-3 name=__codelineno-7-3 href=#__codelineno-7-3></a><span class=go>│   ├── Dockerfile</span>
-<a id=__codelineno-7-4 name=__codelineno-7-4 href=#__codelineno-7-4></a><span class=go>│   └── run_fastagency.sh</span>
-<a id=__codelineno-7-5 name=__codelineno-7-5 href=#__codelineno-7-5></a><span class=go>├── my_fastagency_app</span>
-<a id=__codelineno-7-6 name=__codelineno-7-6 href=#__codelineno-7-6></a><span class=go>│   ├── deployment</span>
-<a id=__codelineno-7-7 name=__codelineno-7-7 href=#__codelineno-7-7></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-7-8 name=__codelineno-7-8 href=#__codelineno-7-8></a><span class=go>│   │   ├── main_1_nats.py</span>
-<a id=__codelineno-7-9 name=__codelineno-7-9 href=#__codelineno-7-9></a><span class=go>│   │   ├── main_2_fastapi.py</span>
-<a id=__codelineno-7-10 name=__codelineno-7-10 href=#__codelineno-7-10></a><span class=go>│   │   └── main_3_mesop.py</span>
-<a id=__codelineno-7-11 name=__codelineno-7-11 href=#__codelineno-7-11></a><span class=go>│   ├── local</span>
-<a id=__codelineno-7-12 name=__codelineno-7-12 href=#__codelineno-7-12></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-7-13 name=__codelineno-7-13 href=#__codelineno-7-13></a><span class=go>│   │   ├── main_console.py</span>
-<a id=__codelineno-7-14 name=__codelineno-7-14 href=#__codelineno-7-14></a><span class=go>│   │   └── main_mesop.py</span>
-<a id=__codelineno-7-15 name=__codelineno-7-15 href=#__codelineno-7-15></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-7-16 name=__codelineno-7-16 href=#__codelineno-7-16></a><span class=go>│   └── workflow.py</span>
-<a id=__codelineno-7-17 name=__codelineno-7-17 href=#__codelineno-7-17></a><span class=go>├── scripts</span>
-<a id=__codelineno-7-18 name=__codelineno-7-18 href=#__codelineno-7-18></a><span class=go>│   ├── build_docker.sh</span>
-<a id=__codelineno-7-19 name=__codelineno-7-19 href=#__codelineno-7-19></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
-<a id=__codelineno-7-20 name=__codelineno-7-20 href=#__codelineno-7-20></a><span class=go>│   └── run_docker.sh</span>
-<a id=__codelineno-7-21 name=__codelineno-7-21 href=#__codelineno-7-21></a><span class=go>├── tests</span>
-<a id=__codelineno-7-22 name=__codelineno-7-22 href=#__codelineno-7-22></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-7-23 name=__codelineno-7-23 href=#__codelineno-7-23></a><span class=go>│   ├── conftest.py</span>
-<a id=__codelineno-7-24 name=__codelineno-7-24 href=#__codelineno-7-24></a><span class=go>│   └── test_workflow.py</span>
-<a id=__codelineno-7-25 name=__codelineno-7-25 href=#__codelineno-7-25></a><span class=go>├── README.md</span>
-<a id=__codelineno-7-26 name=__codelineno-7-26 href=#__codelineno-7-26></a><span class=go>├── fly.toml</span>
-<a id=__codelineno-7-27 name=__codelineno-7-27 href=#__codelineno-7-27></a><span class=go>└── pyproject.toml</span>
+<a id=__codelineno-7-4 name=__codelineno-7-4 href=#__codelineno-7-4></a><span class=go>│   ├── nginx.conf.template</span>
+<a id=__codelineno-7-5 name=__codelineno-7-5 href=#__codelineno-7-5></a><span class=go>│   └── run_fastagency.sh</span>
+<a id=__codelineno-7-6 name=__codelineno-7-6 href=#__codelineno-7-6></a><span class=go>├── my_fastagency_app</span>
+<a id=__codelineno-7-7 name=__codelineno-7-7 href=#__codelineno-7-7></a><span class=go>│   ├── deployment</span>
+<a id=__codelineno-7-8 name=__codelineno-7-8 href=#__codelineno-7-8></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-7-9 name=__codelineno-7-9 href=#__codelineno-7-9></a><span class=go>│   │   ├── main_1_nats.py</span>
+<a id=__codelineno-7-10 name=__codelineno-7-10 href=#__codelineno-7-10></a><span class=go>│   │   ├── main_2_fastapi.py</span>
+<a id=__codelineno-7-11 name=__codelineno-7-11 href=#__codelineno-7-11></a><span class=go>│   │   └── main_3_mesop.py</span>
+<a id=__codelineno-7-12 name=__codelineno-7-12 href=#__codelineno-7-12></a><span class=go>│   ├── local</span>
+<a id=__codelineno-7-13 name=__codelineno-7-13 href=#__codelineno-7-13></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-7-14 name=__codelineno-7-14 href=#__codelineno-7-14></a><span class=go>│   │   ├── main_console.py</span>
+<a id=__codelineno-7-15 name=__codelineno-7-15 href=#__codelineno-7-15></a><span class=go>│   │   └── main_mesop.py</span>
+<a id=__codelineno-7-16 name=__codelineno-7-16 href=#__codelineno-7-16></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-7-17 name=__codelineno-7-17 href=#__codelineno-7-17></a><span class=go>│   └── workflow.py</span>
+<a id=__codelineno-7-18 name=__codelineno-7-18 href=#__codelineno-7-18></a><span class=go>├── scripts</span>
+<a id=__codelineno-7-19 name=__codelineno-7-19 href=#__codelineno-7-19></a><span class=go>│   ├── build_docker.sh</span>
+<a id=__codelineno-7-20 name=__codelineno-7-20 href=#__codelineno-7-20></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
+<a id=__codelineno-7-21 name=__codelineno-7-21 href=#__codelineno-7-21></a><span class=go>│   └── run_docker.sh</span>
+<a id=__codelineno-7-22 name=__codelineno-7-22 href=#__codelineno-7-22></a><span class=go>├── tests</span>
+<a id=__codelineno-7-23 name=__codelineno-7-23 href=#__codelineno-7-23></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-7-24 name=__codelineno-7-24 href=#__codelineno-7-24></a><span class=go>│   ├── conftest.py</span>
+<a id=__codelineno-7-25 name=__codelineno-7-25 href=#__codelineno-7-25></a><span class=go>│   └── test_workflow.py</span>
+<a id=__codelineno-7-26 name=__codelineno-7-26 href=#__codelineno-7-26></a><span class=go>├── README.md</span>
+<a id=__codelineno-7-27 name=__codelineno-7-27 href=#__codelineno-7-27></a><span class=go>├── fly.toml</span>
+<a id=__codelineno-7-28 name=__codelineno-7-28 href=#__codelineno-7-28></a><span class=go>└── pyproject.toml</span>
 </code></pre></div> </div> </div> </div> </li> <li> <p>To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is <a href=https://platform.openai.com/docs/models>OpenAI</a>. To use it, create an <a href=https://openai.com/index/openai-api/ >OpenAI API Key</a> and set it as an environment variable in the terminal using the following command:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-8-1 name=__codelineno-8-1 href=#__codelineno-8-1></a><span class=go>export OPENAI_API_KEY=openai_api_key_here</span>
 </code></pre></div> <p>If you want to use a different LLM provider, follow <a href=https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/ >this guide</a>.</p> <p>Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in <a href=https://code.visualstudio.com/ target=_blank>Visual Studio Code</a> using GUI, you will need to manually set the environment variable in the devcontainer's terminal.</p> </li> <li> <p>Open the generated project in <a href=https://code.visualstudio.com/ target=_blank>Visual Studio Code</a> with the following command: <div class=highlight><pre><span></span><code><a id=__codelineno-9-1 name=__codelineno-9-1 href=#__codelineno-9-1></a><span class=go>code my_fastagency_app</span>
 </code></pre></div></p> </li> <li> <p>Once the project is opened, you will get the following option to reopen it in a devcontainer:</p> <p><a class=glightbox href=../getting-started/images/reopen-in-container.png data-type=image data-width=auto data-height=auto data-desc-position=bottom><img src=../getting-started/images/reopen-in-container.png width=600 class=center></a></p> </li> <li> <p>After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-10-1 name=__codelineno-10-1 href=#__codelineno-10-1></a><span class=go>pytest -s</span>
