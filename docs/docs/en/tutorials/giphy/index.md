@@ -96,7 +96,7 @@ The following lines shows hot to initializes the Giphy API by loading the OpenAP
 
 Also, we configure the **Giphy API** with the __*GIPHY_API_KEY*__ using __*set_security_params*__ to authenticate our requests.
 ```python
-{! docs_src/tutorials/giphy/main.py [ln:25-29] !}
+{! docs_src/tutorials/giphy/main.py [ln:23-27] !}
 ```
 
 For more information, visit [**API Integration User Guide**](../../user-guide/api/index.md){target="_blank"}.
@@ -106,14 +106,14 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"giphy_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both Giphy agent and WebSurferAgent.
 
 ```python
-{! docs_src/tutorials/giphy/main.py [ln:58-61] !}
+{! docs_src/tutorials/giphy/main.py [ln:56-59] !}
 ```
 
 ### Interaction with the user
 This is a core function used by the **Giphy agent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
 
 ```python
-{! docs_src/tutorials/giphy/main.py [ln:65-76] !}
+{! docs_src/tutorials/giphy/main.py [ln:63-73] !}
 ```
 
 ### Creating the Giphy and WebSurfer Agents
@@ -122,7 +122,7 @@ This is a core function used by the **Giphy agent** to either present the task r
 - **WebSurferAgent**: The *[**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md)* is responsible for scraping web content and passes the retrieved data to the **Giphy agent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer.md){target="_blank"}.
 
 ```python
-{! docs_src/tutorials/giphy/main.py [ln:77-92] !}
+{! docs_src/tutorials/giphy/main.py [ln:75-90] !}
 ```
 
 ### Registering Functions
@@ -130,12 +130,12 @@ This is a core function used by the **Giphy agent** to either present the task r
 The function ***present_completed_task_or_ask_question*** is registered to allow the **Giphy agent** to ask questions or present completed tasks after receiving data from the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
 
 ```python
-{! docs_src/tutorials/giphy/main.py [ln:94-101] !}
+{! docs_src/tutorials/giphy/main.py [ln:92-99] !}
 ```
 
 We specify which Giphy API functions can be used by the **Giphy agent**: *random_gif*, *search_gifs*, and *trending_gifs*. These functions allow the agent to generate GIFs based on user input or trending content.
 ```python
-{! docs_src/tutorials/giphy/main.py [ln:103-109] !}
+{! docs_src/tutorials/giphy/main.py [ln:101-107] !}
 ```
 
 ### Initiating the Chat
@@ -145,7 +145,7 @@ We initiate the conversation between the user, [**`WebSurferAgent`**](../../api/
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorials/giphy/main.py [ln:117-124] !}
+{! docs_src/tutorials/giphy/main.py [ln:115-122] !}
 ```
 
 ### Starting the Application
