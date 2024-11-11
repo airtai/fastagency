@@ -63,14 +63,18 @@
 <a id=__codelineno-5-16 name=__codelineno-5-16 href=#__codelineno-5-16></a><span class=go>├── scripts</span>
 <a id=__codelineno-5-17 name=__codelineno-5-17 href=#__codelineno-5-17></a><span class=go>│   ├── build_docker.sh</span>
 <a id=__codelineno-5-18 name=__codelineno-5-18 href=#__codelineno-5-18></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
-<a id=__codelineno-5-19 name=__codelineno-5-19 href=#__codelineno-5-19></a><span class=go>│   └── run_docker.sh</span>
-<a id=__codelineno-5-20 name=__codelineno-5-20 href=#__codelineno-5-20></a><span class=go>├── tests</span>
-<a id=__codelineno-5-21 name=__codelineno-5-21 href=#__codelineno-5-21></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-5-22 name=__codelineno-5-22 href=#__codelineno-5-22></a><span class=go>│   ├── conftest.py</span>
-<a id=__codelineno-5-23 name=__codelineno-5-23 href=#__codelineno-5-23></a><span class=go>│   └── test_workflow.py</span>
-<a id=__codelineno-5-24 name=__codelineno-5-24 href=#__codelineno-5-24></a><span class=go>├── README.md</span>
-<a id=__codelineno-5-25 name=__codelineno-5-25 href=#__codelineno-5-25></a><span class=go>├── fly.toml</span>
-<a id=__codelineno-5-26 name=__codelineno-5-26 href=#__codelineno-5-26></a><span class=go>└── pyproject.toml</span>
+<a id=__codelineno-5-19 name=__codelineno-5-19 href=#__codelineno-5-19></a><span class=go>│   ├── lint-pre-commit.sh</span>
+<a id=__codelineno-5-20 name=__codelineno-5-20 href=#__codelineno-5-20></a><span class=go>│   ├── lint.sh</span>
+<a id=__codelineno-5-21 name=__codelineno-5-21 href=#__codelineno-5-21></a><span class=go>│   ├── run_docker.sh</span>
+<a id=__codelineno-5-22 name=__codelineno-5-22 href=#__codelineno-5-22></a><span class=go>│   ├── static-analysis.sh</span>
+<a id=__codelineno-5-23 name=__codelineno-5-23 href=#__codelineno-5-23></a><span class=go>│   └── static-pre-commit.sh</span>
+<a id=__codelineno-5-24 name=__codelineno-5-24 href=#__codelineno-5-24></a><span class=go>├── tests</span>
+<a id=__codelineno-5-25 name=__codelineno-5-25 href=#__codelineno-5-25></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-5-26 name=__codelineno-5-26 href=#__codelineno-5-26></a><span class=go>│   ├── conftest.py</span>
+<a id=__codelineno-5-27 name=__codelineno-5-27 href=#__codelineno-5-27></a><span class=go>│   └── test_workflow.py</span>
+<a id=__codelineno-5-28 name=__codelineno-5-28 href=#__codelineno-5-28></a><span class=go>├── README.md</span>
+<a id=__codelineno-5-29 name=__codelineno-5-29 href=#__codelineno-5-29></a><span class=go>├── fly.toml</span>
+<a id=__codelineno-5-30 name=__codelineno-5-30 href=#__codelineno-5-30></a><span class=go>└── pyproject.toml</span>
 </code></pre></div> </div> <div class=tabbed-block> <div class=highlight><pre><span></span><code><a id=__codelineno-6-1 name=__codelineno-6-1 href=#__codelineno-6-1></a><span class=go>my_fastagency_app</span>
 <a id=__codelineno-6-2 name=__codelineno-6-2 href=#__codelineno-6-2></a><span class=go>├── docker</span>
 <a id=__codelineno-6-3 name=__codelineno-6-3 href=#__codelineno-6-3></a><span class=go>│   ├── Dockerfile</span>
@@ -90,14 +94,18 @@
 <a id=__codelineno-6-17 name=__codelineno-6-17 href=#__codelineno-6-17></a><span class=go>├── scripts</span>
 <a id=__codelineno-6-18 name=__codelineno-6-18 href=#__codelineno-6-18></a><span class=go>│   ├── build_docker.sh</span>
 <a id=__codelineno-6-19 name=__codelineno-6-19 href=#__codelineno-6-19></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
-<a id=__codelineno-6-20 name=__codelineno-6-20 href=#__codelineno-6-20></a><span class=go>│   └── run_docker.sh</span>
-<a id=__codelineno-6-21 name=__codelineno-6-21 href=#__codelineno-6-21></a><span class=go>├── tests</span>
-<a id=__codelineno-6-22 name=__codelineno-6-22 href=#__codelineno-6-22></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-6-23 name=__codelineno-6-23 href=#__codelineno-6-23></a><span class=go>│   ├── conftest.py</span>
-<a id=__codelineno-6-24 name=__codelineno-6-24 href=#__codelineno-6-24></a><span class=go>│   └── test_workflow.py</span>
-<a id=__codelineno-6-25 name=__codelineno-6-25 href=#__codelineno-6-25></a><span class=go>├── README.md</span>
-<a id=__codelineno-6-26 name=__codelineno-6-26 href=#__codelineno-6-26></a><span class=go>├── fly.toml</span>
-<a id=__codelineno-6-27 name=__codelineno-6-27 href=#__codelineno-6-27></a><span class=go>└── pyproject.toml</span>
+<a id=__codelineno-6-20 name=__codelineno-6-20 href=#__codelineno-6-20></a><span class=go>│   ├── lint-pre-commit.sh</span>
+<a id=__codelineno-6-21 name=__codelineno-6-21 href=#__codelineno-6-21></a><span class=go>│   ├── lint.sh</span>
+<a id=__codelineno-6-22 name=__codelineno-6-22 href=#__codelineno-6-22></a><span class=go>│   ├── run_docker.sh</span>
+<a id=__codelineno-6-23 name=__codelineno-6-23 href=#__codelineno-6-23></a><span class=go>│   ├── static-analysis.sh</span>
+<a id=__codelineno-6-24 name=__codelineno-6-24 href=#__codelineno-6-24></a><span class=go>│   └── static-pre-commit.sh</span>
+<a id=__codelineno-6-25 name=__codelineno-6-25 href=#__codelineno-6-25></a><span class=go>├── tests</span>
+<a id=__codelineno-6-26 name=__codelineno-6-26 href=#__codelineno-6-26></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-6-27 name=__codelineno-6-27 href=#__codelineno-6-27></a><span class=go>│   ├── conftest.py</span>
+<a id=__codelineno-6-28 name=__codelineno-6-28 href=#__codelineno-6-28></a><span class=go>│   └── test_workflow.py</span>
+<a id=__codelineno-6-29 name=__codelineno-6-29 href=#__codelineno-6-29></a><span class=go>├── README.md</span>
+<a id=__codelineno-6-30 name=__codelineno-6-30 href=#__codelineno-6-30></a><span class=go>├── fly.toml</span>
+<a id=__codelineno-6-31 name=__codelineno-6-31 href=#__codelineno-6-31></a><span class=go>└── pyproject.toml</span>
 </code></pre></div> </div> <div class=tabbed-block> <div class=highlight><pre><span></span><code><a id=__codelineno-7-1 name=__codelineno-7-1 href=#__codelineno-7-1></a><span class=go>my_fastagency_app</span>
 <a id=__codelineno-7-2 name=__codelineno-7-2 href=#__codelineno-7-2></a><span class=go>├── docker</span>
 <a id=__codelineno-7-3 name=__codelineno-7-3 href=#__codelineno-7-3></a><span class=go>│   ├── Dockerfile</span>
@@ -118,14 +126,18 @@
 <a id=__codelineno-7-18 name=__codelineno-7-18 href=#__codelineno-7-18></a><span class=go>├── scripts</span>
 <a id=__codelineno-7-19 name=__codelineno-7-19 href=#__codelineno-7-19></a><span class=go>│   ├── build_docker.sh</span>
 <a id=__codelineno-7-20 name=__codelineno-7-20 href=#__codelineno-7-20></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
-<a id=__codelineno-7-21 name=__codelineno-7-21 href=#__codelineno-7-21></a><span class=go>│   └── run_docker.sh</span>
-<a id=__codelineno-7-22 name=__codelineno-7-22 href=#__codelineno-7-22></a><span class=go>├── tests</span>
-<a id=__codelineno-7-23 name=__codelineno-7-23 href=#__codelineno-7-23></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-7-24 name=__codelineno-7-24 href=#__codelineno-7-24></a><span class=go>│   ├── conftest.py</span>
-<a id=__codelineno-7-25 name=__codelineno-7-25 href=#__codelineno-7-25></a><span class=go>│   └── test_workflow.py</span>
-<a id=__codelineno-7-26 name=__codelineno-7-26 href=#__codelineno-7-26></a><span class=go>├── README.md</span>
-<a id=__codelineno-7-27 name=__codelineno-7-27 href=#__codelineno-7-27></a><span class=go>├── fly.toml</span>
-<a id=__codelineno-7-28 name=__codelineno-7-28 href=#__codelineno-7-28></a><span class=go>└── pyproject.toml</span>
+<a id=__codelineno-7-21 name=__codelineno-7-21 href=#__codelineno-7-21></a><span class=go>│   ├── lint-pre-commit.sh</span>
+<a id=__codelineno-7-22 name=__codelineno-7-22 href=#__codelineno-7-22></a><span class=go>│   ├── lint.sh</span>
+<a id=__codelineno-7-23 name=__codelineno-7-23 href=#__codelineno-7-23></a><span class=go>│   ├── run_docker.sh</span>
+<a id=__codelineno-7-24 name=__codelineno-7-24 href=#__codelineno-7-24></a><span class=go>│   ├── static-analysis.sh</span>
+<a id=__codelineno-7-25 name=__codelineno-7-25 href=#__codelineno-7-25></a><span class=go>│   └── static-pre-commit.sh</span>
+<a id=__codelineno-7-26 name=__codelineno-7-26 href=#__codelineno-7-26></a><span class=go>├── tests</span>
+<a id=__codelineno-7-27 name=__codelineno-7-27 href=#__codelineno-7-27></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-7-28 name=__codelineno-7-28 href=#__codelineno-7-28></a><span class=go>│   ├── conftest.py</span>
+<a id=__codelineno-7-29 name=__codelineno-7-29 href=#__codelineno-7-29></a><span class=go>│   └── test_workflow.py</span>
+<a id=__codelineno-7-30 name=__codelineno-7-30 href=#__codelineno-7-30></a><span class=go>├── README.md</span>
+<a id=__codelineno-7-31 name=__codelineno-7-31 href=#__codelineno-7-31></a><span class=go>├── fly.toml</span>
+<a id=__codelineno-7-32 name=__codelineno-7-32 href=#__codelineno-7-32></a><span class=go>└── pyproject.toml</span>
 </code></pre></div> </div> </div> </div> </li> <li> <p>To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is <a href=https://platform.openai.com/docs/models>OpenAI</a>. To use it, create an <a href=https://openai.com/index/openai-api/ >OpenAI API Key</a> and set it as an environment variable in the terminal using the following command:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-8-1 name=__codelineno-8-1 href=#__codelineno-8-1></a><span class=go>export OPENAI_API_KEY=openai_api_key_here</span>
 </code></pre></div> <p>If you want to use a different LLM provider, follow <a href=https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/ >this guide</a>.</p> <p>Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in <a href=https://code.visualstudio.com/ target=_blank>Visual Studio Code</a> using GUI, you will need to manually set the environment variable in the devcontainer's terminal.</p> </li> <li> <p>Open the generated project in <a href=https://code.visualstudio.com/ target=_blank>Visual Studio Code</a> with the following command: <div class=highlight><pre><span></span><code><a id=__codelineno-9-1 name=__codelineno-9-1 href=#__codelineno-9-1></a><span class=go>code my_fastagency_app</span>
 </code></pre></div></p> </li> <li> <p>Once the project is opened, you will get the following option to reopen it in a devcontainer:</p> <p><a class=glightbox href=../getting-started/images/reopen-in-container.png data-type=image data-width=auto data-height=auto data-desc-position=bottom><img src=../getting-started/images/reopen-in-container.png width=600 class=center></a></p> </li> <li> <p>After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-10-1 name=__codelineno-10-1 href=#__codelineno-10-1></a><span class=go>pytest -s</span>
@@ -147,63 +159,59 @@
 <a id=__codelineno-12-5 name=__codelineno-12-5 href=#__codelineno-12-5></a><span class=kn>from</span> <span class=nn>fastagency</span> <span class=kn>import</span> <span class=n>UI</span>
 <a id=__codelineno-12-6 name=__codelineno-12-6 href=#__codelineno-12-6></a><span class=kn>from</span> <span class=nn>fastagency.runtimes.autogen</span> <span class=kn>import</span> <span class=n>AutoGenWorkflows</span>
 <a id=__codelineno-12-7 name=__codelineno-12-7 href=#__codelineno-12-7></a>
-<a id=__codelineno-12-8 name=__codelineno-12-8 href=#__codelineno-12-8></a>
-<a id=__codelineno-12-9 name=__codelineno-12-9 href=#__codelineno-12-9></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
-<a id=__codelineno-12-10 name=__codelineno-12-10 href=#__codelineno-12-10></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
-<a id=__codelineno-12-11 name=__codelineno-12-11 href=#__codelineno-12-11></a>        <span class=p>{</span>
-<a id=__codelineno-12-12 name=__codelineno-12-12 href=#__codelineno-12-12></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-13 name=__codelineno-12-13 href=#__codelineno-12-13></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
-<a id=__codelineno-12-14 name=__codelineno-12-14 href=#__codelineno-12-14></a>        <span class=p>}</span>
-<a id=__codelineno-12-15 name=__codelineno-12-15 href=#__codelineno-12-15></a>    <span class=p>],</span>
-<a id=__codelineno-12-16 name=__codelineno-12-16 href=#__codelineno-12-16></a>    <span class=s2>&quot;temperature&quot;</span><span class=p>:</span> <span class=mf>0.8</span><span class=p>,</span>
-<a id=__codelineno-12-17 name=__codelineno-12-17 href=#__codelineno-12-17></a><span class=p>}</span>
-<a id=__codelineno-12-18 name=__codelineno-12-18 href=#__codelineno-12-18></a>
-<a id=__codelineno-12-19 name=__codelineno-12-19 href=#__codelineno-12-19></a><span class=n>wf</span> <span class=o>=</span> <span class=n>AutoGenWorkflows</span><span class=p>()</span>
+<a id=__codelineno-12-8 name=__codelineno-12-8 href=#__codelineno-12-8></a><span class=n>llm_config</span> <span class=o>=</span> <span class=p>{</span>
+<a id=__codelineno-12-9 name=__codelineno-12-9 href=#__codelineno-12-9></a>    <span class=s2>&quot;config_list&quot;</span><span class=p>:</span> <span class=p>[</span>
+<a id=__codelineno-12-10 name=__codelineno-12-10 href=#__codelineno-12-10></a>        <span class=p>{</span>
+<a id=__codelineno-12-11 name=__codelineno-12-11 href=#__codelineno-12-11></a>            <span class=s2>&quot;model&quot;</span><span class=p>:</span> <span class=s2>&quot;gpt-4o-mini&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-12 name=__codelineno-12-12 href=#__codelineno-12-12></a>            <span class=s2>&quot;api_key&quot;</span><span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>getenv</span><span class=p>(</span><span class=s2>&quot;OPENAI_API_KEY&quot;</span><span class=p>),</span>
+<a id=__codelineno-12-13 name=__codelineno-12-13 href=#__codelineno-12-13></a>        <span class=p>}</span>
+<a id=__codelineno-12-14 name=__codelineno-12-14 href=#__codelineno-12-14></a>    <span class=p>],</span>
+<a id=__codelineno-12-15 name=__codelineno-12-15 href=#__codelineno-12-15></a>    <span class=s2>&quot;temperature&quot;</span><span class=p>:</span> <span class=mf>0.8</span><span class=p>,</span>
+<a id=__codelineno-12-16 name=__codelineno-12-16 href=#__codelineno-12-16></a><span class=p>}</span>
+<a id=__codelineno-12-17 name=__codelineno-12-17 href=#__codelineno-12-17></a>
+<a id=__codelineno-12-18 name=__codelineno-12-18 href=#__codelineno-12-18></a><span class=n>wf</span> <span class=o>=</span> <span class=n>AutoGenWorkflows</span><span class=p>()</span>
+<a id=__codelineno-12-19 name=__codelineno-12-19 href=#__codelineno-12-19></a>
 <a id=__codelineno-12-20 name=__codelineno-12-20 href=#__codelineno-12-20></a>
-<a id=__codelineno-12-21 name=__codelineno-12-21 href=#__codelineno-12-21></a>
-<a id=__codelineno-12-22 name=__codelineno-12-22 href=#__codelineno-12-22></a><span class=nd>@wf</span><span class=o>.</span><span class=n>register</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s2>&quot;simple_learning&quot;</span><span class=p>,</span> <span class=n>description</span><span class=o>=</span><span class=s2>&quot;Student and teacher learning chat&quot;</span><span class=p>)</span>
-<a id=__codelineno-12-23 name=__codelineno-12-23 href=#__codelineno-12-23></a><span class=k>def</span> <span class=nf>simple_workflow</span><span class=p>(</span>
-<a id=__codelineno-12-24 name=__codelineno-12-24 href=#__codelineno-12-24></a>    <span class=n>ui</span><span class=p>:</span> <span class=n>UI</span><span class=p>,</span> <span class=n>params</span><span class=p>:</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>]</span>
-<a id=__codelineno-12-25 name=__codelineno-12-25 href=#__codelineno-12-25></a><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
-<a id=__codelineno-12-26 name=__codelineno-12-26 href=#__codelineno-12-26></a>    <span class=n>initial_message</span> <span class=o>=</span> <span class=n>ui</span><span class=o>.</span><span class=n>text_input</span><span class=p>(</span>
-<a id=__codelineno-12-27 name=__codelineno-12-27 href=#__codelineno-12-27></a>        <span class=n>sender</span><span class=o>=</span><span class=s2>&quot;Workflow&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-28 name=__codelineno-12-28 href=#__codelineno-12-28></a>        <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;User&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-29 name=__codelineno-12-29 href=#__codelineno-12-29></a>        <span class=n>prompt</span><span class=o>=</span><span class=s2>&quot;I can help you learn about mathematics. What subject you would like to explore?&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-30 name=__codelineno-12-30 href=#__codelineno-12-30></a>    <span class=p>)</span>
-<a id=__codelineno-12-31 name=__codelineno-12-31 href=#__codelineno-12-31></a>
-<a id=__codelineno-12-32 name=__codelineno-12-32 href=#__codelineno-12-32></a>    <span class=n>student_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
-<a id=__codelineno-12-33 name=__codelineno-12-33 href=#__codelineno-12-33></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Student_Agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-34 name=__codelineno-12-34 href=#__codelineno-12-34></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a student willing to learn.&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-35 name=__codelineno-12-35 href=#__codelineno-12-35></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
-<a id=__codelineno-12-36 name=__codelineno-12-36 href=#__codelineno-12-36></a>    <span class=p>)</span>
-<a id=__codelineno-12-37 name=__codelineno-12-37 href=#__codelineno-12-37></a>    <span class=n>teacher_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
-<a id=__codelineno-12-38 name=__codelineno-12-38 href=#__codelineno-12-38></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Teacher_Agent&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-39 name=__codelineno-12-39 href=#__codelineno-12-39></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a math teacher.&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-40 name=__codelineno-12-40 href=#__codelineno-12-40></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
-<a id=__codelineno-12-41 name=__codelineno-12-41 href=#__codelineno-12-41></a>    <span class=p>)</span>
-<a id=__codelineno-12-42 name=__codelineno-12-42 href=#__codelineno-12-42></a>
-<a id=__codelineno-12-43 name=__codelineno-12-43 href=#__codelineno-12-43></a>    <span class=n>chat_result</span> <span class=o>=</span> <span class=n>student_agent</span><span class=o>.</span><span class=n>initiate_chat</span><span class=p>(</span>
-<a id=__codelineno-12-44 name=__codelineno-12-44 href=#__codelineno-12-44></a>        <span class=n>teacher_agent</span><span class=p>,</span>
-<a id=__codelineno-12-45 name=__codelineno-12-45 href=#__codelineno-12-45></a>        <span class=n>message</span><span class=o>=</span><span class=n>initial_message</span><span class=p>,</span>
-<a id=__codelineno-12-46 name=__codelineno-12-46 href=#__codelineno-12-46></a>        <span class=n>summary_method</span><span class=o>=</span><span class=s2>&quot;reflection_with_llm&quot;</span><span class=p>,</span>
-<a id=__codelineno-12-47 name=__codelineno-12-47 href=#__codelineno-12-47></a>        <span class=n>max_turns</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span>
-<a id=__codelineno-12-48 name=__codelineno-12-48 href=#__codelineno-12-48></a>    <span class=p>)</span>
-<a id=__codelineno-12-49 name=__codelineno-12-49 href=#__codelineno-12-49></a>
-<a id=__codelineno-12-50 name=__codelineno-12-50 href=#__codelineno-12-50></a>    <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=n>chat_result</span><span class=o>.</span><span class=n>summary</span><span class=p>)</span>
+<a id=__codelineno-12-21 name=__codelineno-12-21 href=#__codelineno-12-21></a><span class=nd>@wf</span><span class=o>.</span><span class=n>register</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=s2>&quot;simple_learning&quot;</span><span class=p>,</span> <span class=n>description</span><span class=o>=</span><span class=s2>&quot;Student and teacher learning chat&quot;</span><span class=p>)</span>  <span class=c1># type: ignore[misc]</span>
+<a id=__codelineno-12-22 name=__codelineno-12-22 href=#__codelineno-12-22></a><span class=k>def</span> <span class=nf>simple_workflow</span><span class=p>(</span><span class=n>ui</span><span class=p>:</span> <span class=n>UI</span><span class=p>,</span> <span class=n>params</span><span class=p>:</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>])</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<a id=__codelineno-12-23 name=__codelineno-12-23 href=#__codelineno-12-23></a>    <span class=n>initial_message</span> <span class=o>=</span> <span class=n>ui</span><span class=o>.</span><span class=n>text_input</span><span class=p>(</span>
+<a id=__codelineno-12-24 name=__codelineno-12-24 href=#__codelineno-12-24></a>        <span class=n>sender</span><span class=o>=</span><span class=s2>&quot;Workflow&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-25 name=__codelineno-12-25 href=#__codelineno-12-25></a>        <span class=n>recipient</span><span class=o>=</span><span class=s2>&quot;User&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-26 name=__codelineno-12-26 href=#__codelineno-12-26></a>        <span class=n>prompt</span><span class=o>=</span><span class=s2>&quot;I can help you learn about mathematics. What subject you would like to explore?&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-27 name=__codelineno-12-27 href=#__codelineno-12-27></a>    <span class=p>)</span>
+<a id=__codelineno-12-28 name=__codelineno-12-28 href=#__codelineno-12-28></a>
+<a id=__codelineno-12-29 name=__codelineno-12-29 href=#__codelineno-12-29></a>    <span class=n>student_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
+<a id=__codelineno-12-30 name=__codelineno-12-30 href=#__codelineno-12-30></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Student_Agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-31 name=__codelineno-12-31 href=#__codelineno-12-31></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a student willing to learn.&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-32 name=__codelineno-12-32 href=#__codelineno-12-32></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
+<a id=__codelineno-12-33 name=__codelineno-12-33 href=#__codelineno-12-33></a>    <span class=p>)</span>
+<a id=__codelineno-12-34 name=__codelineno-12-34 href=#__codelineno-12-34></a>    <span class=n>teacher_agent</span> <span class=o>=</span> <span class=n>ConversableAgent</span><span class=p>(</span>
+<a id=__codelineno-12-35 name=__codelineno-12-35 href=#__codelineno-12-35></a>        <span class=n>name</span><span class=o>=</span><span class=s2>&quot;Teacher_Agent&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-36 name=__codelineno-12-36 href=#__codelineno-12-36></a>        <span class=n>system_message</span><span class=o>=</span><span class=s2>&quot;You are a math teacher.&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-37 name=__codelineno-12-37 href=#__codelineno-12-37></a>        <span class=n>llm_config</span><span class=o>=</span><span class=n>llm_config</span><span class=p>,</span>
+<a id=__codelineno-12-38 name=__codelineno-12-38 href=#__codelineno-12-38></a>    <span class=p>)</span>
+<a id=__codelineno-12-39 name=__codelineno-12-39 href=#__codelineno-12-39></a>
+<a id=__codelineno-12-40 name=__codelineno-12-40 href=#__codelineno-12-40></a>    <span class=n>chat_result</span> <span class=o>=</span> <span class=n>student_agent</span><span class=o>.</span><span class=n>initiate_chat</span><span class=p>(</span>
+<a id=__codelineno-12-41 name=__codelineno-12-41 href=#__codelineno-12-41></a>        <span class=n>teacher_agent</span><span class=p>,</span>
+<a id=__codelineno-12-42 name=__codelineno-12-42 href=#__codelineno-12-42></a>        <span class=n>message</span><span class=o>=</span><span class=n>initial_message</span><span class=p>,</span>
+<a id=__codelineno-12-43 name=__codelineno-12-43 href=#__codelineno-12-43></a>        <span class=n>summary_method</span><span class=o>=</span><span class=s2>&quot;reflection_with_llm&quot;</span><span class=p>,</span>
+<a id=__codelineno-12-44 name=__codelineno-12-44 href=#__codelineno-12-44></a>        <span class=n>max_turns</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span>
+<a id=__codelineno-12-45 name=__codelineno-12-45 href=#__codelineno-12-45></a>    <span class=p>)</span>
+<a id=__codelineno-12-46 name=__codelineno-12-46 href=#__codelineno-12-46></a>
+<a id=__codelineno-12-47 name=__codelineno-12-47 href=#__codelineno-12-47></a>    <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=n>chat_result</span><span class=o>.</span><span class=n>summary</span><span class=p>)</span>
 </code></pre></div> <p>This code snippet sets up a simple learning chat between a student and a teacher. It defines the agents and how they should interact and specify how the conversation should be summarized.</p> <h3 id=run-and-debug-the-workflow>Run and Debug the Workflow<a class=headerlink href=#run-and-debug-the-workflow title="Permanent link">#</a></h3> <p>To ensure that the workflow we have defined is working properly, we can test it locally using MesopUI. The code below can be found under <code>my_fastagency_app/local/main_mesop.py</code> and imports the defined workflow and sets up MesopUI:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-13-1 name=__codelineno-13-1 href=#__codelineno-13-1></a><span class=kn>from</span> <span class=nn>fastagency</span> <span class=kn>import</span> <span class=n>FastAgency</span>
 <a id=__codelineno-13-2 name=__codelineno-13-2 href=#__codelineno-13-2></a><span class=kn>from</span> <span class=nn>fastagency.ui.mesop</span> <span class=kn>import</span> <span class=n>MesopUI</span>
 <a id=__codelineno-13-3 name=__codelineno-13-3 href=#__codelineno-13-3></a>
 <a id=__codelineno-13-4 name=__codelineno-13-4 href=#__codelineno-13-4></a><span class=kn>from</span> <span class=nn>..workflow</span> <span class=kn>import</span> <span class=n>wf</span>
 <a id=__codelineno-13-5 name=__codelineno-13-5 href=#__codelineno-13-5></a>
-<a id=__codelineno-13-6 name=__codelineno-13-6 href=#__codelineno-13-6></a>
-<a id=__codelineno-13-7 name=__codelineno-13-7 href=#__codelineno-13-7></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
-<a id=__codelineno-13-8 name=__codelineno-13-8 href=#__codelineno-13-8></a>    <span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span>
-<a id=__codelineno-13-9 name=__codelineno-13-9 href=#__codelineno-13-9></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
-<a id=__codelineno-13-10 name=__codelineno-13-10 href=#__codelineno-13-10></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
-<a id=__codelineno-13-11 name=__codelineno-13-11 href=#__codelineno-13-11></a><span class=p>)</span>
-<a id=__codelineno-13-12 name=__codelineno-13-12 href=#__codelineno-13-12></a>
-<a id=__codelineno-13-13 name=__codelineno-13-13 href=#__codelineno-13-13></a><span class=c1># start the fastagency app with the following command</span>
-<a id=__codelineno-13-14 name=__codelineno-13-14 href=#__codelineno-13-14></a><span class=c1># gunicorn my_fastagency_app.local.main_mesop:app</span>
+<a id=__codelineno-13-6 name=__codelineno-13-6 href=#__codelineno-13-6></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
+<a id=__codelineno-13-7 name=__codelineno-13-7 href=#__codelineno-13-7></a>    <span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span>
+<a id=__codelineno-13-8 name=__codelineno-13-8 href=#__codelineno-13-8></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
+<a id=__codelineno-13-9 name=__codelineno-13-9 href=#__codelineno-13-9></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
+<a id=__codelineno-13-10 name=__codelineno-13-10 href=#__codelineno-13-10></a><span class=p>)</span>
+<a id=__codelineno-13-11 name=__codelineno-13-11 href=#__codelineno-13-11></a>
+<a id=__codelineno-13-12 name=__codelineno-13-12 href=#__codelineno-13-12></a><span class=c1># start the fastagency app with the following command</span>
+<a id=__codelineno-13-13 name=__codelineno-13-13 href=#__codelineno-13-13></a><span class=c1># gunicorn my_fastagency_app.local.main_mesop:app</span>
 </code></pre></div> <p>Run MesopUI locally with the following command:</p> <div class="tabbed-set tabbed-alternate" data-tabs=3:2><input checked=checked id=linuxmacos name=__tabbed_3 type=radio><input id=windows name=__tabbed_3 type=radio><div class=tabbed-labels><label for=linuxmacos>Linux/MacOS</label><label for=windows>Windows</label></div> <div class=tabbed-content> <div class=tabbed-block> <div class="admonition note"> <p class=admonition-title>Terminal</p> <div class=highlight><pre><span></span><code><a id=__codelineno-14-1 name=__codelineno-14-1 href=#__codelineno-14-1></a><span class=go>gunicorn my_fastagency_app.local.main_mesop:app</span>
 </code></pre></div> </div> </div> <div class=tabbed-block> <div class="admonition note"> <p class=admonition-title>Terminal</p> <div class=highlight><pre><span></span><code><a id=__codelineno-15-1 name=__codelineno-15-1 href=#__codelineno-15-1></a><span class=go>waitress-serve --listen=0.0.0.0:8000 my_fastagency_app.local.main_mesop:app</span>
 </code></pre></div> </div> </div> </div> </div> <p>Open the MesopUI URL <a href=http://localhost:8000>http://localhost:8000</a> in your browser. You can now use the graphical user interface to start, run, test and debug the autogen workflow manually.</p> <p><a class=glightbox href=images/chat-init.png data-type=image data-width=auto data-height=auto data-desc-position=bottom><img alt="Initial message" src=images/chat-init.png></a></p> <h3 id=run-workflow-tests>Run Workflow Tests<a class=headerlink href=#run-workflow-tests title="Permanent link">#</a></h3> <p>We can also use pytest to test the autogen workflow automatically, instead of manually testing it using MesopUI by using the generated <code>pytest</code> test found under <code>tests/test_workflow.py</code>.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-16-1 name=__codelineno-16-1 href=#__codelineno-16-1></a><span class=kn>from</span> <span class=nn>uuid</span> <span class=kn>import</span> <span class=n>uuid4</span>
@@ -230,64 +238,60 @@
 <a id=__codelineno-18-3 name=__codelineno-18-3 href=#__codelineno-18-3></a>
 <a id=__codelineno-18-4 name=__codelineno-18-4 href=#__codelineno-18-4></a><span class=kn>from</span> <span class=nn>..workflow</span> <span class=kn>import</span> <span class=n>wf</span>
 <a id=__codelineno-18-5 name=__codelineno-18-5 href=#__codelineno-18-5></a>
-<a id=__codelineno-18-6 name=__codelineno-18-6 href=#__codelineno-18-6></a>
-<a id=__codelineno-18-7 name=__codelineno-18-7 href=#__codelineno-18-7></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
-<a id=__codelineno-18-8 name=__codelineno-18-8 href=#__codelineno-18-8></a>    <span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span>
-<a id=__codelineno-18-9 name=__codelineno-18-9 href=#__codelineno-18-9></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
-<a id=__codelineno-18-10 name=__codelineno-18-10 href=#__codelineno-18-10></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
-<a id=__codelineno-18-11 name=__codelineno-18-11 href=#__codelineno-18-11></a><span class=p>)</span>
-<a id=__codelineno-18-12 name=__codelineno-18-12 href=#__codelineno-18-12></a>
-<a id=__codelineno-18-13 name=__codelineno-18-13 href=#__codelineno-18-13></a><span class=c1># start the fastagency app with the following command</span>
-<a id=__codelineno-18-14 name=__codelineno-18-14 href=#__codelineno-18-14></a><span class=c1># gunicorn my_fastagency_app.deployment.main:app</span>
-</code></pre></div> </div> <div class=tabbed-block> <p>In the case of FastAPI application, we will create an <code>FastAPIAdapter</code> and then include a router to the <code>FastAPI</code> application. The adapter will have all REST and Websocket routes for communicating with a client.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-19-1 name=__codelineno-19-1 href=#__codelineno-19-1></a><span class=kn>import</span> <span class=nn>os</span>
-<a id=__codelineno-19-2 name=__codelineno-19-2 href=#__codelineno-19-2></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>Any</span>
-<a id=__codelineno-19-3 name=__codelineno-19-3 href=#__codelineno-19-3></a>
+<a id=__codelineno-18-6 name=__codelineno-18-6 href=#__codelineno-18-6></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
+<a id=__codelineno-18-7 name=__codelineno-18-7 href=#__codelineno-18-7></a>    <span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span>
+<a id=__codelineno-18-8 name=__codelineno-18-8 href=#__codelineno-18-8></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
+<a id=__codelineno-18-9 name=__codelineno-18-9 href=#__codelineno-18-9></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
+<a id=__codelineno-18-10 name=__codelineno-18-10 href=#__codelineno-18-10></a><span class=p>)</span>
+<a id=__codelineno-18-11 name=__codelineno-18-11 href=#__codelineno-18-11></a>
+<a id=__codelineno-18-12 name=__codelineno-18-12 href=#__codelineno-18-12></a><span class=c1># start the fastagency app with the following command</span>
+<a id=__codelineno-18-13 name=__codelineno-18-13 href=#__codelineno-18-13></a><span class=c1># gunicorn my_fastagency_app.deployment.main:app</span>
+</code></pre></div> </div> <div class=tabbed-block> <p>In the case of FastAPI application, we will create an <code>FastAPIAdapter</code> and then include a router to the <code>FastAPI</code> application. The adapter will have all REST and Websocket routes for communicating with a client.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-19-1 name=__codelineno-19-1 href=#__codelineno-19-1></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>Any</span>
+<a id=__codelineno-19-2 name=__codelineno-19-2 href=#__codelineno-19-2></a>
+<a id=__codelineno-19-3 name=__codelineno-19-3 href=#__codelineno-19-3></a><span class=kn>from</span> <span class=nn>fastagency.adapters.fastapi</span> <span class=kn>import</span> <span class=n>FastAPIAdapter</span>
 <a id=__codelineno-19-4 name=__codelineno-19-4 href=#__codelineno-19-4></a><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
-<a id=__codelineno-19-5 name=__codelineno-19-5 href=#__codelineno-19-5></a><span class=kn>from</span> <span class=nn>fastagency.adapters.fastapi</span> <span class=kn>import</span> <span class=n>FastAPIAdapter</span>
-<a id=__codelineno-19-6 name=__codelineno-19-6 href=#__codelineno-19-6></a>
-<a id=__codelineno-19-7 name=__codelineno-19-7 href=#__codelineno-19-7></a><span class=kn>from</span> <span class=nn>..workflow</span> <span class=kn>import</span> <span class=n>wf</span>
-<a id=__codelineno-19-8 name=__codelineno-19-8 href=#__codelineno-19-8></a>
+<a id=__codelineno-19-5 name=__codelineno-19-5 href=#__codelineno-19-5></a>
+<a id=__codelineno-19-6 name=__codelineno-19-6 href=#__codelineno-19-6></a><span class=kn>from</span> <span class=nn>..workflow</span> <span class=kn>import</span> <span class=n>wf</span>
+<a id=__codelineno-19-7 name=__codelineno-19-7 href=#__codelineno-19-7></a>
+<a id=__codelineno-19-8 name=__codelineno-19-8 href=#__codelineno-19-8></a><span class=n>adapter</span> <span class=o>=</span> <span class=n>FastAPIAdapter</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>)</span>
 <a id=__codelineno-19-9 name=__codelineno-19-9 href=#__codelineno-19-9></a>
-<a id=__codelineno-19-10 name=__codelineno-19-10 href=#__codelineno-19-10></a><span class=n>adapter</span> <span class=o>=</span> <span class=n>FastAPIAdapter</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>)</span>
-<a id=__codelineno-19-11 name=__codelineno-19-11 href=#__codelineno-19-11></a>
-<a id=__codelineno-19-12 name=__codelineno-19-12 href=#__codelineno-19-12></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>()</span>
-<a id=__codelineno-19-13 name=__codelineno-19-13 href=#__codelineno-19-13></a><span class=n>app</span><span class=o>.</span><span class=n>include_router</span><span class=p>(</span><span class=n>adapter</span><span class=o>.</span><span class=n>router</span><span class=p>)</span>
-<a id=__codelineno-19-14 name=__codelineno-19-14 href=#__codelineno-19-14></a>
-<a id=__codelineno-19-15 name=__codelineno-19-15 href=#__codelineno-19-15></a>
-<a id=__codelineno-19-16 name=__codelineno-19-16 href=#__codelineno-19-16></a><span class=c1># this is optional, but we would like to see the list of available workflows</span>
-<a id=__codelineno-19-17 name=__codelineno-19-17 href=#__codelineno-19-17></a><span class=nd>@app</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>)</span>
-<a id=__codelineno-19-18 name=__codelineno-19-18 href=#__codelineno-19-18></a><span class=k>def</span> <span class=nf>list_workflows</span><span class=p>()</span> <span class=o>-&gt;</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>]:</span>
-<a id=__codelineno-19-19 name=__codelineno-19-19 href=#__codelineno-19-19></a>    <span class=k>return</span> <span class=p>{</span><span class=s2>&quot;Workflows&quot;</span><span class=p>:</span> <span class=p>{</span><span class=n>name</span><span class=p>:</span> <span class=n>wf</span><span class=o>.</span><span class=n>get_description</span><span class=p>(</span><span class=n>name</span><span class=p>)</span> <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>wf</span><span class=o>.</span><span class=n>names</span><span class=p>}}</span>
-<a id=__codelineno-19-20 name=__codelineno-19-20 href=#__codelineno-19-20></a>
-<a id=__codelineno-19-21 name=__codelineno-19-21 href=#__codelineno-19-21></a>
-<a id=__codelineno-19-22 name=__codelineno-19-22 href=#__codelineno-19-22></a><span class=c1># start the adapter with the following command</span>
-<a id=__codelineno-19-23 name=__codelineno-19-23 href=#__codelineno-19-23></a><span class=c1># uvicorn my_fastagency_app.deployment.main_1_fastapi:app --reload</span>
+<a id=__codelineno-19-10 name=__codelineno-19-10 href=#__codelineno-19-10></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>()</span>
+<a id=__codelineno-19-11 name=__codelineno-19-11 href=#__codelineno-19-11></a><span class=n>app</span><span class=o>.</span><span class=n>include_router</span><span class=p>(</span><span class=n>adapter</span><span class=o>.</span><span class=n>router</span><span class=p>)</span>
+<a id=__codelineno-19-12 name=__codelineno-19-12 href=#__codelineno-19-12></a>
+<a id=__codelineno-19-13 name=__codelineno-19-13 href=#__codelineno-19-13></a>
+<a id=__codelineno-19-14 name=__codelineno-19-14 href=#__codelineno-19-14></a><span class=c1># this is optional, but we would like to see the list of available workflows</span>
+<a id=__codelineno-19-15 name=__codelineno-19-15 href=#__codelineno-19-15></a><span class=nd>@app</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>)</span>
+<a id=__codelineno-19-16 name=__codelineno-19-16 href=#__codelineno-19-16></a><span class=k>def</span> <span class=nf>list_workflows</span><span class=p>()</span> <span class=o>-&gt;</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>]:</span>
+<a id=__codelineno-19-17 name=__codelineno-19-17 href=#__codelineno-19-17></a>    <span class=k>return</span> <span class=p>{</span><span class=s2>&quot;Workflows&quot;</span><span class=p>:</span> <span class=p>{</span><span class=n>name</span><span class=p>:</span> <span class=n>wf</span><span class=o>.</span><span class=n>get_description</span><span class=p>(</span><span class=n>name</span><span class=p>)</span> <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>wf</span><span class=o>.</span><span class=n>names</span><span class=p>}}</span>
+<a id=__codelineno-19-18 name=__codelineno-19-18 href=#__codelineno-19-18></a>
+<a id=__codelineno-19-19 name=__codelineno-19-19 href=#__codelineno-19-19></a>
+<a id=__codelineno-19-20 name=__codelineno-19-20 href=#__codelineno-19-20></a><span class=c1># start the adapter with the following command</span>
+<a id=__codelineno-19-21 name=__codelineno-19-21 href=#__codelineno-19-21></a><span class=c1># uvicorn my_fastagency_app.deployment.main_1_fastapi:app --reload</span>
 </code></pre></div> </div> <div class=tabbed-block> <p>In the case of NATS.io application, we will create an <code>NatsAdapter</code> and then add it to a <code>FastAPI</code> application using the <code>lifespan</code> parameter. The adapter will have all REST and Websocket routes for communicating with a client.</p> <p><div class=highlight><pre><span></span><code><a id=__codelineno-20-1 name=__codelineno-20-1 href=#__codelineno-20-1></a><span class=kn>import</span> <span class=nn>os</span>
 <a id=__codelineno-20-2 name=__codelineno-20-2 href=#__codelineno-20-2></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>Any</span>
 <a id=__codelineno-20-3 name=__codelineno-20-3 href=#__codelineno-20-3></a>
-<a id=__codelineno-20-4 name=__codelineno-20-4 href=#__codelineno-20-4></a><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
-<a id=__codelineno-20-5 name=__codelineno-20-5 href=#__codelineno-20-5></a><span class=kn>from</span> <span class=nn>fastagency.adapters.nats</span> <span class=kn>import</span> <span class=n>NatsAdapter</span>
+<a id=__codelineno-20-4 name=__codelineno-20-4 href=#__codelineno-20-4></a><span class=kn>from</span> <span class=nn>fastagency.adapters.nats</span> <span class=kn>import</span> <span class=n>NatsAdapter</span>
+<a id=__codelineno-20-5 name=__codelineno-20-5 href=#__codelineno-20-5></a><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
 <a id=__codelineno-20-6 name=__codelineno-20-6 href=#__codelineno-20-6></a>
 <a id=__codelineno-20-7 name=__codelineno-20-7 href=#__codelineno-20-7></a><span class=kn>from</span> <span class=nn>..workflow</span> <span class=kn>import</span> <span class=n>wf</span>
 <a id=__codelineno-20-8 name=__codelineno-20-8 href=#__codelineno-20-8></a>
-<a id=__codelineno-20-9 name=__codelineno-20-9 href=#__codelineno-20-9></a>
-<a id=__codelineno-20-10 name=__codelineno-20-10 href=#__codelineno-20-10></a><span class=n>nats_url</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;NATS_URL&quot;</span><span class=p>,</span> <span class=s2>&quot;nats://localhost:4222&quot;</span><span class=p>)</span>
-<a id=__codelineno-20-11 name=__codelineno-20-11 href=#__codelineno-20-11></a><span class=n>user</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;fastagency&quot;</span>
-<a id=__codelineno-20-12 name=__codelineno-20-12 href=#__codelineno-20-12></a><span class=n>password</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;FASTAGENCY_NATS_PASSWORD&quot;</span><span class=p>,</span> <span class=s2>&quot;fastagency_nats_password&quot;</span><span class=p>)</span>
-<a id=__codelineno-20-13 name=__codelineno-20-13 href=#__codelineno-20-13></a>
-<a id=__codelineno-20-14 name=__codelineno-20-14 href=#__codelineno-20-14></a><span class=n>adapter</span> <span class=o>=</span> <span class=n>NatsAdapter</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span> <span class=n>nats_url</span><span class=o>=</span><span class=n>nats_url</span><span class=p>,</span> <span class=n>user</span><span class=o>=</span><span class=n>user</span><span class=p>,</span> <span class=n>password</span><span class=o>=</span><span class=n>password</span><span class=p>)</span>
-<a id=__codelineno-20-15 name=__codelineno-20-15 href=#__codelineno-20-15></a>
-<a id=__codelineno-20-16 name=__codelineno-20-16 href=#__codelineno-20-16></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>(</span><span class=n>lifespan</span><span class=o>=</span><span class=n>adapter</span><span class=o>.</span><span class=n>lifespan</span><span class=p>)</span>
+<a id=__codelineno-20-9 name=__codelineno-20-9 href=#__codelineno-20-9></a><span class=n>nats_url</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;NATS_URL&quot;</span><span class=p>,</span> <span class=s2>&quot;nats://localhost:4222&quot;</span><span class=p>)</span>
+<a id=__codelineno-20-10 name=__codelineno-20-10 href=#__codelineno-20-10></a><span class=n>user</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;FASTAGENCY_NATS_USER&quot;</span><span class=p>,</span> <span class=s2>&quot;fastagency&quot;</span><span class=p>)</span>
+<a id=__codelineno-20-11 name=__codelineno-20-11 href=#__codelineno-20-11></a><span class=n>password</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=n>os</span><span class=o>.</span><span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;FASTAGENCY_NATS_PASSWORD&quot;</span><span class=p>,</span> <span class=s2>&quot;fastagency_nats_password&quot;</span><span class=p>)</span>
+<a id=__codelineno-20-12 name=__codelineno-20-12 href=#__codelineno-20-12></a>
+<a id=__codelineno-20-13 name=__codelineno-20-13 href=#__codelineno-20-13></a><span class=n>adapter</span> <span class=o>=</span> <span class=n>NatsAdapter</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span> <span class=n>nats_url</span><span class=o>=</span><span class=n>nats_url</span><span class=p>,</span> <span class=n>user</span><span class=o>=</span><span class=n>user</span><span class=p>,</span> <span class=n>password</span><span class=o>=</span><span class=n>password</span><span class=p>)</span>
+<a id=__codelineno-20-14 name=__codelineno-20-14 href=#__codelineno-20-14></a>
+<a id=__codelineno-20-15 name=__codelineno-20-15 href=#__codelineno-20-15></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>(</span><span class=n>lifespan</span><span class=o>=</span><span class=n>adapter</span><span class=o>.</span><span class=n>lifespan</span><span class=p>)</span>
+<a id=__codelineno-20-16 name=__codelineno-20-16 href=#__codelineno-20-16></a>
 <a id=__codelineno-20-17 name=__codelineno-20-17 href=#__codelineno-20-17></a>
-<a id=__codelineno-20-18 name=__codelineno-20-18 href=#__codelineno-20-18></a>
-<a id=__codelineno-20-19 name=__codelineno-20-19 href=#__codelineno-20-19></a><span class=c1># this is optional, but we would like to see the list of available workflows</span>
-<a id=__codelineno-20-20 name=__codelineno-20-20 href=#__codelineno-20-20></a><span class=nd>@app</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>)</span>
-<a id=__codelineno-20-21 name=__codelineno-20-21 href=#__codelineno-20-21></a><span class=k>def</span> <span class=nf>list_workflows</span><span class=p>()</span> <span class=o>-&gt;</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>]:</span>
-<a id=__codelineno-20-22 name=__codelineno-20-22 href=#__codelineno-20-22></a>    <span class=k>return</span> <span class=p>{</span><span class=s2>&quot;Workflows&quot;</span><span class=p>:</span> <span class=p>{</span><span class=n>name</span><span class=p>:</span> <span class=n>wf</span><span class=o>.</span><span class=n>get_description</span><span class=p>(</span><span class=n>name</span><span class=p>)</span> <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>wf</span><span class=o>.</span><span class=n>names</span><span class=p>}}</span>
+<a id=__codelineno-20-18 name=__codelineno-20-18 href=#__codelineno-20-18></a><span class=c1># this is optional, but we would like to see the list of available workflows</span>
+<a id=__codelineno-20-19 name=__codelineno-20-19 href=#__codelineno-20-19></a><span class=nd>@app</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>)</span>
+<a id=__codelineno-20-20 name=__codelineno-20-20 href=#__codelineno-20-20></a><span class=k>def</span> <span class=nf>list_workflows</span><span class=p>()</span> <span class=o>-&gt;</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=n>Any</span><span class=p>]:</span>
+<a id=__codelineno-20-21 name=__codelineno-20-21 href=#__codelineno-20-21></a>    <span class=k>return</span> <span class=p>{</span><span class=s2>&quot;Workflows&quot;</span><span class=p>:</span> <span class=p>{</span><span class=n>name</span><span class=p>:</span> <span class=n>wf</span><span class=o>.</span><span class=n>get_description</span><span class=p>(</span><span class=n>name</span><span class=p>)</span> <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>wf</span><span class=o>.</span><span class=n>names</span><span class=p>}}</span>
+<a id=__codelineno-20-22 name=__codelineno-20-22 href=#__codelineno-20-22></a>
 <a id=__codelineno-20-23 name=__codelineno-20-23 href=#__codelineno-20-23></a>
-<a id=__codelineno-20-24 name=__codelineno-20-24 href=#__codelineno-20-24></a>
-<a id=__codelineno-20-25 name=__codelineno-20-25 href=#__codelineno-20-25></a><span class=c1># start the adapter with the following command</span>
-<a id=__codelineno-20-26 name=__codelineno-20-26 href=#__codelineno-20-26></a><span class=c1># uvicorn my_fastagency_app.deployment.main_1_nats:app --reload</span>
+<a id=__codelineno-20-24 name=__codelineno-20-24 href=#__codelineno-20-24></a><span class=c1># start the adapter with the following command</span>
+<a id=__codelineno-20-25 name=__codelineno-20-25 href=#__codelineno-20-25></a><span class=c1># uvicorn my_fastagency_app.deployment.main_1_nats:app --reload</span>
 </code></pre></div> The <code>NatsAdapter</code> requires a running NATS server. The easiest way to start the NATS server is by using <a href=https://www.docker.com/ target=_blank>Docker</a>. FastAgency uses the <a href=https://docs.nats.io/nats-concepts/jetstream target=_blank>JetStream</a> feature of NATS and also utilizes authentication.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-21-1 name=__codelineno-21-1 href=#__codelineno-21-1></a>websocket {
 <a id=__codelineno-21-2 name=__codelineno-21-2 href=#__codelineno-21-2></a>    # listen: localhost:9222
 <a id=__codelineno-21-3 name=__codelineno-21-3 href=#__codelineno-21-3></a>    port: 9222
@@ -339,37 +343,36 @@
 <a id=__codelineno-22-18 name=__codelineno-22-18 href=#__codelineno-22-18></a><span class=c1># gunicorn my_fastagency_app.deployment.main_2_mesop:app -b 0.0.0.0:8888 --reload</span>
 </code></pre></div> </div> <div class=tabbed-block> <p>Above, we created NATS.io provider that will start brokers waiting to consume initiate workflow messages from the message broker. Now, we create FastAPI service interacting with NATS.io provider:</p> <div class="admonition note"> <p class=admonition-title>main_2_fastapi.py</p> <div class=highlight><pre><span></span><code><a id=__codelineno-23-1 name=__codelineno-23-1 href=#__codelineno-23-1></a><span class=kn>from</span> <span class=nn>os</span> <span class=kn>import</span> <span class=n>environ</span>
 <a id=__codelineno-23-2 name=__codelineno-23-2 href=#__codelineno-23-2></a>
-<a id=__codelineno-23-3 name=__codelineno-23-3 href=#__codelineno-23-3></a><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
-<a id=__codelineno-23-4 name=__codelineno-23-4 href=#__codelineno-23-4></a>
-<a id=__codelineno-23-5 name=__codelineno-23-5 href=#__codelineno-23-5></a><span class=kn>from</span> <span class=nn>fastagency.adapters.fastapi</span> <span class=kn>import</span> <span class=n>FastAPIAdapter</span>
-<a id=__codelineno-23-6 name=__codelineno-23-6 href=#__codelineno-23-6></a><span class=kn>from</span> <span class=nn>fastagency.adapters.nats</span> <span class=kn>import</span> <span class=n>NatsAdapter</span>
-<a id=__codelineno-23-7 name=__codelineno-23-7 href=#__codelineno-23-7></a>
-<a id=__codelineno-23-8 name=__codelineno-23-8 href=#__codelineno-23-8></a><span class=n>nats_url</span> <span class=o>=</span> <span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;NATS_URL&quot;</span><span class=p>,</span> <span class=s2>&quot;nats://localhost:4222&quot;</span><span class=p>)</span>
-<a id=__codelineno-23-9 name=__codelineno-23-9 href=#__codelineno-23-9></a><span class=n>nats_user</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;fastagency&quot;</span>
-<a id=__codelineno-23-10 name=__codelineno-23-10 href=#__codelineno-23-10></a><span class=n>nats_password</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;FASTAGENCY_NATS_PASSWORD&quot;</span><span class=p>,</span> <span class=s2>&quot;fastagency_nats_password&quot;</span><span class=p>)</span>
-<a id=__codelineno-23-11 name=__codelineno-23-11 href=#__codelineno-23-11></a>
-<a id=__codelineno-23-12 name=__codelineno-23-12 href=#__codelineno-23-12></a><span class=n>provider</span> <span class=o>=</span> <span class=n>NatsAdapter</span><span class=o>.</span><span class=n>create_provider</span><span class=p>(</span>
-<a id=__codelineno-23-13 name=__codelineno-23-13 href=#__codelineno-23-13></a>    <span class=n>nats_url</span><span class=o>=</span><span class=n>nats_url</span><span class=p>,</span> <span class=n>user</span><span class=o>=</span><span class=n>nats_user</span><span class=p>,</span> <span class=n>password</span><span class=o>=</span><span class=n>nats_password</span>
-<a id=__codelineno-23-14 name=__codelineno-23-14 href=#__codelineno-23-14></a><span class=p>)</span>
-<a id=__codelineno-23-15 name=__codelineno-23-15 href=#__codelineno-23-15></a>
-<a id=__codelineno-23-16 name=__codelineno-23-16 href=#__codelineno-23-16></a><span class=n>adapter</span> <span class=o>=</span> <span class=n>FastAPIAdapter</span><span class=p>(</span>
-<a id=__codelineno-23-17 name=__codelineno-23-17 href=#__codelineno-23-17></a>    <span class=n>provider</span><span class=o>=</span><span class=n>provider</span><span class=p>,</span>
-<a id=__codelineno-23-18 name=__codelineno-23-18 href=#__codelineno-23-18></a><span class=p>)</span>
-<a id=__codelineno-23-19 name=__codelineno-23-19 href=#__codelineno-23-19></a>
-<a id=__codelineno-23-20 name=__codelineno-23-20 href=#__codelineno-23-20></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>()</span>
-<a id=__codelineno-23-21 name=__codelineno-23-21 href=#__codelineno-23-21></a><span class=n>app</span><span class=o>.</span><span class=n>include_router</span><span class=p>(</span><span class=n>adapter</span><span class=o>.</span><span class=n>router</span><span class=p>)</span>
+<a id=__codelineno-23-3 name=__codelineno-23-3 href=#__codelineno-23-3></a><span class=kn>from</span> <span class=nn>fastagency.adapters.fastapi</span> <span class=kn>import</span> <span class=n>FastAPIAdapter</span>
+<a id=__codelineno-23-4 name=__codelineno-23-4 href=#__codelineno-23-4></a><span class=kn>from</span> <span class=nn>fastagency.adapters.nats</span> <span class=kn>import</span> <span class=n>NatsAdapter</span>
+<a id=__codelineno-23-5 name=__codelineno-23-5 href=#__codelineno-23-5></a><span class=kn>from</span> <span class=nn>fastapi</span> <span class=kn>import</span> <span class=n>FastAPI</span>
+<a id=__codelineno-23-6 name=__codelineno-23-6 href=#__codelineno-23-6></a>
+<a id=__codelineno-23-7 name=__codelineno-23-7 href=#__codelineno-23-7></a><span class=n>nats_url</span> <span class=o>=</span> <span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;NATS_URL&quot;</span><span class=p>,</span> <span class=s2>&quot;nats://localhost:4222&quot;</span><span class=p>)</span>
+<a id=__codelineno-23-8 name=__codelineno-23-8 href=#__codelineno-23-8></a><span class=n>nats_user</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=s2>&quot;fastagency&quot;</span>
+<a id=__codelineno-23-9 name=__codelineno-23-9 href=#__codelineno-23-9></a><span class=n>nats_password</span><span class=p>:</span> <span class=nb>str</span> <span class=o>=</span> <span class=n>environ</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;FASTAGENCY_NATS_PASSWORD&quot;</span><span class=p>,</span> <span class=s2>&quot;fastagency_nats_password&quot;</span><span class=p>)</span>
+<a id=__codelineno-23-10 name=__codelineno-23-10 href=#__codelineno-23-10></a>
+<a id=__codelineno-23-11 name=__codelineno-23-11 href=#__codelineno-23-11></a><span class=n>provider</span> <span class=o>=</span> <span class=n>NatsAdapter</span><span class=o>.</span><span class=n>create_provider</span><span class=p>(</span>
+<a id=__codelineno-23-12 name=__codelineno-23-12 href=#__codelineno-23-12></a>    <span class=n>nats_url</span><span class=o>=</span><span class=n>nats_url</span><span class=p>,</span> <span class=n>user</span><span class=o>=</span><span class=n>nats_user</span><span class=p>,</span> <span class=n>password</span><span class=o>=</span><span class=n>nats_password</span>
+<a id=__codelineno-23-13 name=__codelineno-23-13 href=#__codelineno-23-13></a><span class=p>)</span>
+<a id=__codelineno-23-14 name=__codelineno-23-14 href=#__codelineno-23-14></a>
+<a id=__codelineno-23-15 name=__codelineno-23-15 href=#__codelineno-23-15></a><span class=n>adapter</span> <span class=o>=</span> <span class=n>FastAPIAdapter</span><span class=p>(</span>
+<a id=__codelineno-23-16 name=__codelineno-23-16 href=#__codelineno-23-16></a>    <span class=n>provider</span><span class=o>=</span><span class=n>provider</span><span class=p>,</span>
+<a id=__codelineno-23-17 name=__codelineno-23-17 href=#__codelineno-23-17></a><span class=p>)</span>
+<a id=__codelineno-23-18 name=__codelineno-23-18 href=#__codelineno-23-18></a>
+<a id=__codelineno-23-19 name=__codelineno-23-19 href=#__codelineno-23-19></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAPI</span><span class=p>()</span>
+<a id=__codelineno-23-20 name=__codelineno-23-20 href=#__codelineno-23-20></a><span class=n>app</span><span class=o>.</span><span class=n>include_router</span><span class=p>(</span><span class=n>adapter</span><span class=o>.</span><span class=n>router</span><span class=p>)</span>
+<a id=__codelineno-23-21 name=__codelineno-23-21 href=#__codelineno-23-21></a>
 <a id=__codelineno-23-22 name=__codelineno-23-22 href=#__codelineno-23-22></a>
-<a id=__codelineno-23-23 name=__codelineno-23-23 href=#__codelineno-23-23></a>
-<a id=__codelineno-23-24 name=__codelineno-23-24 href=#__codelineno-23-24></a><span class=c1># this is optional, but we would like to see the list of available workflows</span>
-<a id=__codelineno-23-25 name=__codelineno-23-25 href=#__codelineno-23-25></a><span class=nd>@app</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>)</span>
-<a id=__codelineno-23-26 name=__codelineno-23-26 href=#__codelineno-23-26></a><span class=k>def</span> <span class=nf>read_root</span><span class=p>()</span> <span class=o>-&gt;</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>str</span><span class=p>]]:</span>
-<a id=__codelineno-23-27 name=__codelineno-23-27 href=#__codelineno-23-27></a>    <span class=k>return</span> <span class=p>{</span>
-<a id=__codelineno-23-28 name=__codelineno-23-28 href=#__codelineno-23-28></a>        <span class=s2>&quot;Workflows&quot;</span><span class=p>:</span> <span class=p>{</span><span class=n>name</span><span class=p>:</span> <span class=n>provider</span><span class=o>.</span><span class=n>get_description</span><span class=p>(</span><span class=n>name</span><span class=p>)</span> <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>provider</span><span class=o>.</span><span class=n>names</span><span class=p>}</span>
-<a id=__codelineno-23-29 name=__codelineno-23-29 href=#__codelineno-23-29></a>    <span class=p>}</span>
+<a id=__codelineno-23-23 name=__codelineno-23-23 href=#__codelineno-23-23></a><span class=c1># this is optional, but we would like to see the list of available workflows</span>
+<a id=__codelineno-23-24 name=__codelineno-23-24 href=#__codelineno-23-24></a><span class=nd>@app</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s2>&quot;/&quot;</span><span class=p>)</span>
+<a id=__codelineno-23-25 name=__codelineno-23-25 href=#__codelineno-23-25></a><span class=k>def</span> <span class=nf>read_root</span><span class=p>()</span> <span class=o>-&gt;</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>dict</span><span class=p>[</span><span class=nb>str</span><span class=p>,</span> <span class=nb>str</span><span class=p>]]:</span>
+<a id=__codelineno-23-26 name=__codelineno-23-26 href=#__codelineno-23-26></a>    <span class=k>return</span> <span class=p>{</span>
+<a id=__codelineno-23-27 name=__codelineno-23-27 href=#__codelineno-23-27></a>        <span class=s2>&quot;Workflows&quot;</span><span class=p>:</span> <span class=p>{</span><span class=n>name</span><span class=p>:</span> <span class=n>provider</span><span class=o>.</span><span class=n>get_description</span><span class=p>(</span><span class=n>name</span><span class=p>)</span> <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>provider</span><span class=o>.</span><span class=n>names</span><span class=p>}</span>
+<a id=__codelineno-23-28 name=__codelineno-23-28 href=#__codelineno-23-28></a>    <span class=p>}</span>
+<a id=__codelineno-23-29 name=__codelineno-23-29 href=#__codelineno-23-29></a>
 <a id=__codelineno-23-30 name=__codelineno-23-30 href=#__codelineno-23-30></a>
-<a id=__codelineno-23-31 name=__codelineno-23-31 href=#__codelineno-23-31></a>
-<a id=__codelineno-23-32 name=__codelineno-23-32 href=#__codelineno-23-32></a><span class=c1># start the provider with the following command</span>
-<a id=__codelineno-23-33 name=__codelineno-23-33 href=#__codelineno-23-33></a><span class=c1># uvicorn my_fastagency_app.deployment.main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload</span>
+<a id=__codelineno-23-31 name=__codelineno-23-31 href=#__codelineno-23-31></a><span class=c1># start the provider with the following command</span>
+<a id=__codelineno-23-32 name=__codelineno-23-32 href=#__codelineno-23-32></a><span class=c1># uvicorn my_fastagency_app.deployment.main_2_fastapi:app --host 0.0.0.0 --port 8008 --reload</span>
 </code></pre></div> </div> <p>Finally, we create Mesop app communicating with the FastAPI application:</p> <div class="admonition note"> <p class=admonition-title>main_3_mesop.py</p> <div class=highlight><pre><span></span><code><a id=__codelineno-24-1 name=__codelineno-24-1 href=#__codelineno-24-1></a><span class=kn>from</span> <span class=nn>fastagency.adapters.fastapi</span> <span class=kn>import</span> <span class=n>FastAPIAdapter</span>
 <a id=__codelineno-24-2 name=__codelineno-24-2 href=#__codelineno-24-2></a><span class=kn>from</span> <span class=nn>fastagency.app</span> <span class=kn>import</span> <span class=n>FastAgency</span>
 <a id=__codelineno-24-3 name=__codelineno-24-3 href=#__codelineno-24-3></a><span class=kn>from</span> <span class=nn>fastagency.ui.mesop</span> <span class=kn>import</span> <span class=n>MesopUI</span>
