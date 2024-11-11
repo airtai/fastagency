@@ -18,4 +18,5 @@ cd docs/docs_src/getting_started && \
 
 
 # build docs
+rm -rf docs/docs/en/api docs/docs/en/cli
 cd docs; python docs.py build
