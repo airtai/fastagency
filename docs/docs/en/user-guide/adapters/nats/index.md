@@ -56,20 +56,20 @@ In this example, we'll create a simple learning [**chatbot**](https://en.wikiped
 
 ### Step-by-Step Breakdown
 
-#### 1. **Import Required Modules**
-
-To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md). Additionally, import the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) class for workflow execution.
-
-```python hl_lines="9"
-{!> docs_src/getting_started/nats/main_1_nats.py [ln:1-11] !}
-```
-
-#### 2. **Define Workflow**
+#### 1. **Define Workflow**
 
 Define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's an example workflow definition:
 
 ```python
-{!> docs_src/getting_started/nats/main_1_nats.py [ln:3-57] !}
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-47] !}
+```
+
+#### 2. **Import Required Modules**
+
+Next, import the required modules from the **FastAgency**. These imports provide the essential building blocks for integrating [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md). Additionally, import the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) class for workflow execution.
+
+```python hl_lines="4"
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:1-7] !}
 ```
 
 #### 3. **Configure the Nats Adapter**
@@ -77,7 +77,7 @@ Define the workflow that your application will use. This is where you specify ho
 Create an instance of the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and pass your workflow to it. The adapter will handle the communication with the [**`NatsProvider`**](../../../api/fastagency/adapters/nats/NatsProvider.md) and distribute workflow execution to the workers.
 
 ```python
-{!> docs_src/getting_started/nats/main_1_nats.py [ln:59-64] !}
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:9-13] !}
 ```
 
 #### 4. **Define FastAgency Application**
@@ -85,14 +85,14 @@ Create an instance of the [**`NatsAdapter`**](../../../api/fastagency/adapters/n
 Create a [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and then add it to a [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application using the [**lifespan parameter**](https://fastapi.tiangolo.com/advanced/events/){target="_blank"}. The adapter will have all [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} routes for communicating with a client.
 
 ```python
-{!> docs_src/getting_started/nats/main_1_nats.py [ln:66] !}
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:15] !}
 ```
 
 #### 5. **Nats server setup**
 
 The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [**Docker**](https://www.docker.com/){target="_blank"}. FastAgency leverages the [**JetStream**](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
 
-```python hl_lines="1 3 6 11 17"
+```python hl_lines="1 3 8 14"
 {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf !}
 ```
 
@@ -110,16 +110,23 @@ Please copy and paste the following code into the same folder, using the file na
 </details>
 
 <details>
+    <summary>workflow.py</summary>
+    ```python
+    {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
+    ```
+</details>
+
+<details>
     <summary>main_1_nats.py</summary>
     ```python
-    {!> docs_src/getting_started/nats/main_1_nats.py !}
+    {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py !}
     ```
 </details>
 
 <details>
     <summary>main_2_mesop.py</summary>
     ```python
-    {!> docs_src/getting_started/nats/main_2_mesop.py !}
+    {!> docs_src/getting_started/nats_n_fastapi/main_2_mesop.py !}
     ```
 </details>
 
