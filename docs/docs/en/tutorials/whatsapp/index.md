@@ -30,7 +30,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
 
 
 === "Cookiecutter"
-    
+
     1. Install Cookiecutter with the following command:
         ```console
         pip install cookiecutter
@@ -68,30 +68,30 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
         ```
 
     5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
-    
+
         ```console
         export OPENAI_API_KEY=openai_api_key_here
         ```
-    
+
         If you want to use a different LLM provider, follow [this guide](https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/).
-    
+
         Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
-    
+
     6. Open the generated project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} with the following command:
         ```console
         code my_fastagency_app
         ```
-    
+
     7. Once the project is opened, you will get the following option to reopen it in a devcontainer:
-    
+
         <img src="../getting-started/images/reopen-in-container.png" width="600" class="center">
-    
+
     8. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
-    
+
         ```console
         pytest -s
         ```
-    
+
         You should get the following output if everything is correctly setup.
         ```console
         =================================== test session starts ===================================
@@ -101,14 +101,14 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
         plugins: asyncio-0.24.0, anyio-4.6.2.post1
         asyncio: mode=Mode.STRICT, default_loop_scope=None
         collected 1 item
-    
+
         tests/test_workflow.py .                                                            [100%]
-    
+
         ==================================== 1 passed in 1.02s ====================================
         ```
-    
+
         Running the test could take up to 30 seconds, depending on latency and throughput of OpenAI (or other LLM providers).
-    
+
 
     9. Install additional dependencies which will be needed for this tutorial:
         ```bash
@@ -184,12 +184,12 @@ You can set the API keys in your terminal as an environment variable:
 
 ## Complete Application Code
 
-### Complete Workflow Code
+### Workflow Code
 You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do.
 === "Cookiecutter"
-    Workflow will be generated within the `my_fastagency_app/workflow.py` folder. You will need to replace the existing `workflow.py` with the code bellow.
+    Workflow will be generated within the `my_fastagency_app/workflow.py` folder. You will need to replace the existing `workflow.py` with the code below.
 === "env + pip"
-    Create `workflow.py` and paste the code bellow inside.
+    Create `workflow.py` and paste the code below inside.
 
 <details>
 <summary>workflow.py</summary>
@@ -200,9 +200,9 @@ You need to define the workflow that your application will use. This is where yo
 
 ### Deployment Code
 === "Cookiecutter"
-    Deployment files will be generated under `my_fastagency_app/deployment` folder. You will need to replace the existing `main.py` with the code bellow.
+    Deployment files will be generated under `my_fastagency_app/deployment` folder. Generated `main.py` should be the same as the code below. You don't need change anything.
 === "env + pip"
-    Create `deployment/main.py` and paste the code bellow inside.
+    Create `deployment/main.py` and paste the code below inside.
 
 <details>
 <summary>main.py</summary>
