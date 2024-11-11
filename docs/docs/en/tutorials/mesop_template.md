@@ -96,7 +96,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
         If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
 
 
-=== "Using Virtual Environment"
+=== "env + pip"
 
     To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
 

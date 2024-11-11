@@ -22,7 +22,9 @@ We will walk through setting up each agent, handling API security, and creating 
 
 Let’s dive into creating a powerful interactive agent system with **FastAgency**!
 
-{! docs/en/tutorials/mesop_template.md[ln:1-105] !}
+## Project setup
+
+{! docs/en/tutorials/mesop_template.md[ln:3-105] !}
 
 
 ### API Key Setup
