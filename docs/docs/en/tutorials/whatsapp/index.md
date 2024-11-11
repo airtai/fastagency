@@ -29,55 +29,104 @@ We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for
 You could also use virtual environment managers such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
 
-### a) Using Cookiecutter (**Recommended**)
+=== "Cookiecutter"
+    
+    1. Install Cookiecutter with the following command:
+        ```console
+        pip install cookiecutter
+        ```
 
-{! docs/en/user-guide/cookiecutter/index.md[ln:6-16] !}
+    2. Run the `cookiecutter` command:
+        ```console
+        cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+        ```
 
-3. Depending on the type of the project, choose the appropriate option in step 3:
+    3. Depending on the type of the project, choose the appropriate option in step 3:
 
-    ```console
-    [1/4] project_name (My FastAgency App):
-    [2/4] project_slug (my_fastagency_app):
-    [3/4] Select app_type
-        1 - fastapi+mesop
-        2 - mesop
-        3 - nats+fastapi+mesop
-        Choose from [1/2/3] (1): 2
-    [4/4] Select python_version
-        1 - 3.12
-        2 - 3.11
-        3 - 3.10
-        Choose from [1/2/3] (1):
-    ```
+        ```console
+        [1/4] project_name (My FastAgency App):
+        [2/4] project_slug (my_fastagency_app):
+        [3/4] Select app_type
+            1 - fastapi+mesop
+            2 - mesop
+            3 - nats+fastapi+mesop
+            Choose from [1/2/3] (1): 2
+        [4/4] Select python_version
+            1 - 3.12
+            2 - 3.11
+            3 - 3.10
+            Choose from [1/2/3] (1):
+        ```
 
-    This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
+        This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
 
 
-4. Executing the `cookiecutter` command will create the following file structure:
+    4. Executing the `cookiecutter` command will create the following file structure:
 
-    ```console
-    {!> docs_src/getting_started/mesop/folder_structure.txt !}
-    ```
+        ```console
+        {!> docs_src/getting_started/mesop/folder_structure.txt !}
+        ```
 
-{! docs/en/user-guide/cookiecutter/index.md[ln:88-129] !}
+    5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
+    
+        ```console
+        export OPENAI_API_KEY=openai_api_key_here
+        ```
+    
+        If you want to use a different LLM provider, follow [this guide](https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/).
+    
+        Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
+    
+    6. Open the generated project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} with the following command:
+        ```console
+        code my_fastagency_app
+        ```
+    
+    7. Once the project is opened, you will get the following option to reopen it in a devcontainer:
+    
+        <img src="../getting-started/images/reopen-in-container.png" width="600" class="center">
+    
+    8. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
+    
+        ```console
+        pytest -s
+        ```
+    
+        You should get the following output if everything is correctly setup.
+        ```console
+        =================================== test session starts ===================================
+        platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+        rootdir: /workspaces/my_fastagency_app
+        configfile: pyproject.toml
+        plugins: asyncio-0.24.0, anyio-4.6.2.post1
+        asyncio: mode=Mode.STRICT, default_loop_scope=None
+        collected 1 item
+    
+        tests/test_workflow.py .                                                            [100%]
+    
+        ==================================== 1 passed in 1.02s ====================================
+        ```
+    
+        Running the test could take up to 30 seconds, depending on latency and throughput of OpenAI (or other LLM providers).
+    
 
-9. Install additional dependencies which will be needed for this tutorial:
+    9. Install additional dependencies which will be needed for this tutorial:
+        ```bash
+        pip install "fastagency[openapi]"
+        ```
+
+
+    !!! info
+        If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
+
+
+=== "Using Virtual Environment"
+
+    To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
+
     ```bash
-    pip install "fastagency[openapi]"
+    pip install "fastagency[autogen,mesop,openapi]"
     ```
-
-
-!!! info
-    If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
-
-
-### b) Using Virtual Environment (**Alternative**)
-
-To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
-
-```bash
-pip install "fastagency[autogen,mesop,openapi]"
-```
 
 ### API Key Setup
 [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **WhatsAppAgent** requires an API key to interact with Infobip's WhatsApp service. Follow these steps to create your API keys:
