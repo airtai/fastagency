@@ -122,7 +122,7 @@ You can set the API keys in your terminal as an environment variable:
 ## Complete Application Code
 
 ### Complete Workflow Code
-You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. 
+You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do.
 === "Cookiecutter"
     Workflow will be generated within the `my_fastagency_app/workflow.py` folder. You will need to replace the existing `workflow.py` with the code bellow.
 === "env + pip"
