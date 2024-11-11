@@ -15,15 +15,17 @@ We’ll build agents and assign them the task: “Search for information about M
 
 ## Installation & Setup
 
-Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
+You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
+
+Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
 
 ```bash
 pip install "fastagency[autogen]"
 ```
 
 This command installs FastAgency with support for the Console interface and AutoGen framework.
-
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ### Create Bing Web Search API Key
 To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.

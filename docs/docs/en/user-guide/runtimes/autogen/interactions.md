@@ -5,13 +5,15 @@ In this example, we'll demonstrate how to create custom interaction with the use
 
 ## Install
 
-To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer.
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
+You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
+
+Alternatively, you can use **pip + venv**. Before getting started, you need to install FastAgency. You can do this using `pip`, Python's package installer.
 
 ```console
 pip install "fastagency[autogen]"
 ```
-
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Define Interaction
 

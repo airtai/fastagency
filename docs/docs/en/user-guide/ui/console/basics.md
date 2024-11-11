@@ -6,15 +6,17 @@ Below is an example that demonstrates how to set up a simple learning conversati
 
 ## Installation
 
-Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
+You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
+
+Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
 
 ```bash
 pip install "fastagency[autogen]"
 ```
 
 This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
-
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Example: Student and Teacher Learning Chat
 
