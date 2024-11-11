@@ -178,7 +178,7 @@ jobs:
       - run: pip install coverage[toml]
 
       - run: ls -la coverage
-      - run: coverage combine coverage
+      - run: coverage combine coverage -i
       - run: coverage report -i
       - run: coverage html -i --show-contexts --title "FastAgency coverage for ${{ github.sha }}"
 
