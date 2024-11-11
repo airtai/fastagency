@@ -60,7 +60,7 @@ jobs:
   test-playwright-without-llms:
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12"]
       fail-fast: false
     uses: ./.github/workflows/test-playwright.yaml
     with:
