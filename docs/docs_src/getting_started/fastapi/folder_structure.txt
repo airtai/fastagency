@@ -1,8 +1,13 @@
 my_fastagency_app
+├── deployment
+│   └── firebase
+│       ├── allowed_users.yaml
+│       └── firebase_config.yaml
 ├── docker
-│   ├── Dockerfile
-│   ├── nginx.conf.template
-│   └── run_fastagency.sh
+│   ├── content
+│   │   ├── nginx.conf.template
+│   │   └── run_fastagency.sh
+│   └── Dockerfile
 ├── my_fastagency_app
 │   ├── deployment
 │   │   ├── __init__.py
