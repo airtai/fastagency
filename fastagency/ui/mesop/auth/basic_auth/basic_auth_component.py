@@ -2,9 +2,7 @@ from typing import Any, Callable, Optional
 
 import mesop.labs as mel
 
-MEL_WEB_COMPONENT_PATH = (
-    "/__fast_agency_internal__/javascript/basic_auth_component.js"
-)
+MEL_WEB_COMPONENT_PATH = "/__fast_agency_internal__/javascript/basic_auth_component.js"
 
 
 @mel.web_component(path=MEL_WEB_COMPONENT_PATH)  # type: ignore[misc]

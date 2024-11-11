@@ -31,7 +31,7 @@ class BasicAuth:  # implements AuthProtocol
     def create_security_policy(self, policy: me.SecurityPolicy) -> me.SecurityPolicy:
         return policy
 
-    def _verify_password(self, password: str, password_hash: bytes) -> bool:
+    def _verify_password(self, password: str, password_hash: str) -> bool:
         """Verify a password against its hash."""
         return bcrypt.checkpw(password.encode("utf-8"), password_hash.encode("utf-8"))
 
@@ -39,7 +39,7 @@ class BasicAuth:  # implements AuthProtocol
         if username not in self.allowed_users:
             raise ValueError("Invalid username or password")
 
-        password_hash = self.allowed_users.get(username)
+        password_hash = self.allowed_users[username]
         if not self._verify_password(password, password_hash):
             raise ValueError("Invalid username or password")
 
