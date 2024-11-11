@@ -76,7 +76,11 @@ Below, we’ll walk through the steps to set up a basic student-teacher conversa
 
 ## Installation
 
-To install **FastAgency** with MesopUI support, use the following command:
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
+You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
+
+Alternatively, you can use **pip + venv**. To install **FastAgency** with MesopUI support, use the following command:
 
 === "No Authentication"
 
@@ -97,8 +101,6 @@ To install **FastAgency** with MesopUI support, use the following command:
     ```
 
 This command ensures that the required dependencies for both **AutoGen** and **Mesop** are installed.
-
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Usage
 

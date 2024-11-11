@@ -11,7 +11,7 @@ from ...data_model import State
 from ...styles import MesopHomePageStyles
 from .firebase_auth_component import FirebaseConfig, firebase_auth_component
 
-__all__ = ["FirebaseConfig"]
+__all__ = ["FirebaseAuth"]
 
 if typing.TYPE_CHECKING:
     from ..auth import AuthProtocol

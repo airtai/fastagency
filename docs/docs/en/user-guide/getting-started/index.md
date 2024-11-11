@@ -42,7 +42,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
 {! docs/en/user-guide/cookiecutter/index.md[ln:6-226] !}
 
 !!! info
-    If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
+    If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application-locally)), you will need to replace `my_fastagency_app` with your `project_slug` name.
 -----
 
 ## Workflow Development

@@ -200,7 +200,6 @@ search:
                             - [firebase_auth_component](api/fastagency/ui/mesop/auth/firebase/firebase_auth_component.md)
                             - firebase_auth
                                 - [FirebaseAuth](api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseAuth.md)
-                                - [FirebaseConfig](api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseConfig.md)
                             - firebase_auth_component
                                 - [FirebaseConfig](api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/FirebaseConfig.md)
                                 - [firebase_auth_component](api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/firebase_auth_component.md)

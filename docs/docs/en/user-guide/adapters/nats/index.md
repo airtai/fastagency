@@ -40,15 +40,17 @@ Now, it's time to see the Nats Adapter using FastAgency in action. Let's dive in
 
 ## Installation
 
-Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server** and **nats** submodules by running the following command:
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
+You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
+
+Alternatively, you can use **pip + venv**. Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server** and **nats** submodules by running the following command:
 
 ```bash
 pip install "fastagency[autogen,mesop,fastapi,server,nats]"
 ```
 
 This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AutoGen workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
-
-Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ## Example: Student and Teacher Learning Chat
 

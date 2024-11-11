@@ -1,6 +1,6 @@
 ## Project setup
 
-We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} for development.
+We **strongly recommend** using [**Cookiecutter**](../../user-guide/cookiecutter/index.md) for setting up the project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} for development.
 
 You could also use virtual environment managers such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
@@ -93,7 +93,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
 
 
     !!! info
-        If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
+        If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#running-the-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
 
 
 === "env + pip"
