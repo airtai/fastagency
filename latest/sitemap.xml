@@ -943,6 +943,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorials/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/tutorials/mesop_template/</loc>
+        <lastmod>2024-11-11</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/tutorials/mesop_template/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/tutorials/giphy/</loc>
         <lastmod>2024-11-11</lastmod>
         <changefreq>daily</changefreq>
