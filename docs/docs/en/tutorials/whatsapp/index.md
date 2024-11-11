@@ -22,20 +22,48 @@ We will walk through setting up each agent, handling API security, and creating 
 
 Let’s dive into creating a powerful interactive agent system with **FastAgency**!
 
+## Project setup
 
-## Installation and API Key Setup
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} for development.
 
-Before we dive into building our agents, let’s go over the necessary setup. We will guide you through installing the **FastAgency** framework and obtaining the API key needed for the **Infobip WhatsApp API** integration.
+You could also use virtual environment managers such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
-### Installing FastAgency
 
-To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
+{! docs/en/user-guide/cookiecutter/index.md[ln:6-16] !}
 
-```bash
-pip install "fastagency[autogen,mesop,openapi]"
-```
+3. Depending on the type of the project, choose the appropriate option in step 3:
 
-Alternatively, you can use [**Cookiecutter**](../../user-guide/cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+    ```console
+    [1/4] project_name (My FastAgency App):
+    [2/4] project_slug (my_fastagency_app):
+    [3/4] Select app_type
+        1 - fastapi+mesop
+        2 - mesop
+        3 - nats+fastapi+mesop
+        Choose from [1/2/3] (1): 2
+    [4/4] Select python_version
+        1 - 3.12
+        2 - 3.11
+        3 - 3.10
+        Choose from [1/2/3] (1):
+    ```
+
+    This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
+
+
+4. Executing the `cookiecutter` command will create the following file structure:
+
+    ```console
+    {!> docs_src/getting_started/mesop/folder_structure.txt !}
+    ```
+
+{! docs/en/user-guide/cookiecutter/index.md[ln:88-129] !}
+
+
+!!! info
+    If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
+-----
+
 
 ### API Key Setup
 [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **WhatsAppAgent** requires an API key to interact with Infobip's WhatsApp service. Follow these steps to create your API keys:
