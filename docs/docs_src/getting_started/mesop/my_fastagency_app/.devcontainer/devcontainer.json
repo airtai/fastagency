@@ -14,7 +14,7 @@
         },
         "ANTHROPIC_API_KEY": {
             "description": "This key is optional and only needed if you are working with Anthropic API-related code. Leave it blank if not required. You can always set it later as an environment variable in the codespace terminal."
-        },
+        }
     },
     "shutdownAction": "stopCompose",
     "workspaceFolder": "/workspaces/my_fastagency_app",

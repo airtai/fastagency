@@ -7,6 +7,8 @@ fastapi_url = "http://localhost:8008"
 provider = FastAPIAdapter.create_provider(
     fastapi_url=fastapi_url,
 )
+ui = MesopUI()
+
 
 app = FastAgency(
     provider=provider,
