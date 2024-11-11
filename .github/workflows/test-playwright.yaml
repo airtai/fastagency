@@ -100,14 +100,17 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Start fastagency
+        id: fastagency-start
         run: |
             # Start fastagency and grab its pid
             nohup fastagency run e2e/llm-sans/main.py &
             # Get the process ID (PID)
             FAST_PID=$!
             echo "Started fastagency with PID: $FAST_PID"
+            echo "FAST_PID=$FAST_PID" >> $GITHUB_OUTPUT
         env:
             COVERAGE_PROCESS_START: e2e/playwright.coverage.cfg
+      - run: echo "obtained FAST_PID" ${{ steps.fastagency-start.outputs.FAST_PID}}
       - name: Run Playwright tests without LLMs
         if: ${{ inputs.python-version != '3.9' }}
         run: npx playwright test -c "playwright.llm-sans.config.ts"
@@ -121,10 +124,10 @@ jobs:
       - name: Kill the program
         run: |
             # Send SIGTERM to the program (graceful shutdown)
-            echo "killing the fastagency:" $FAST_PID
-            kill -s SIGTERM $FAST_PID
-            # Wait for the program to exit (timeout after 10 seconds)
-            wait -f $FAST_PID || timeout 100 kill -9 $FAST_PID
+            echo "killing the fastagency:" ${{ steps.fastagency-start.outputs.FAST_PID}}
+            kill -s SIGTERM ${{ steps.fastagency-start.outputs.FAST_PID}}
+            # Wait for the program to exit (timeout after 100 seconds)
+            wait -f ${{ steps.fastagency-start.outputs.FAST_PID}} || timeout 100 kill -9 ${{ steps.fastagency-start.outputs.FAST_PID}}
             echo "Fastagncy killed and exited."
 
       - run: ls -al .coverage
