@@ -123,14 +123,26 @@ jobs:
 
       - name: Kill the program
         run: |
+            PID="${{ steps.fastagency-start.outputs.FAST_PID}}"
             # Send SIGTERM to the program (graceful shutdown)
-            echo "killing the fastagency:" ${{ steps.fastagency-start.outputs.FAST_PID}}
-            kill -s SIGTERM ${{ steps.fastagency-start.outputs.FAST_PID}}
-            # Wait for the program to exit (timeout after 100 seconds)
-            wait -f ${{ steps.fastagency-start.outputs.FAST_PID}} || timeout 100 kill -9 ${{ steps.fastagency-start.outputs.FAST_PID}}
-            echo "Fastagncy killed and exited."
+            echo "killing the fastagency:" $PID
+            kill -s SIGTERM $PID
+
+            wait_count=0
+            while ps -p "$PID" > /dev/null && ((wait_count < 5)); do
+              echo "Fastagency with PID $PID is still running..."
+              sleep 10
+              wait_count=$((wait_count + 1))
+            done
+            if ((wait_count == 5)); then
+              echo "Fastagency with PID $PID did not exit after 5 timeouts.  Terminating..."
+              kill -9 $PID
+            else
+              echo "Fastagency with PID $PID has exited."
+            fi
 
       - run: ls -al .coverage
+      - run: ls
       - name: Move coverage file
         run: mv .coverage .coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Check coverage file
