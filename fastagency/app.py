@@ -39,6 +39,7 @@ class FastAgency:  # Runnable
             description (Optional[str], optional): The description of the FastAgency. If None, the default string will be used. Defaults to None.
         """
         # check if we need to start coverage
+        logger.info("Checking if coverage is needed.")
         coverage_process_start = os.environ.get("COVERAGE_PROCESS_START")
         if coverage_process_start:
             logger.info(f"Coverage process start detected: {coverage_process_start}")
