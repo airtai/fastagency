@@ -121,11 +121,32 @@ You can set the API keys in your terminal as an environment variable:
 
 ## Complete Application Code
 
+### Complete Workflow Code
+You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. 
+=== "Cookiecutter"
+    Workflow will be generated within the `my_fastagency_app/workflow.py` folder. You will need to replace the existing `workflow.py` with the code bellow.
+=== "env + pip"
+    Create `workflow.py` and paste the code bellow inside.
+
+<details>
+<summary>workflow.py</summary>
+```python
+{! docs_src/tutorials/whatsapp/main.py [ln:1-127] !}
+```
+</details>
+
+### Deployment Code
+=== "Cookiecutter"
+    Deployment files will be generated under `my_fastagency_app/deployment` folder. You will need to replace the existing `main.py` with the code bellow.
+=== "env + pip"
+    Create `deployment/main.py` and paste the code bellow inside.
+
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/tutorials/whatsapp/main.py !}
+{!> docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py !}
 ```
+
 </details>
 
 
@@ -211,7 +232,7 @@ The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target
 === "Cookiecutter"
     !!! note "Terminal"
         ```console
-        gunicorn main:app
+        gunicorn my_fastagency_app.deployment.main:app
         ```
 === "env + pip"
 
