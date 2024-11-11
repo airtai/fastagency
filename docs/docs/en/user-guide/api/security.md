@@ -133,13 +133,15 @@ For this tutorial, the [weather API](https://weather.tools.fastagency.ai/docs) p
 
 ### Install
 
-The installation process is exactly the same as in the [previous chapter](./index.md){.internal-link}.
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
+
+You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
+
+Alternatively, you can use **pip + venv**. The installation process is exactly the same as in the [previous chapter](./index.md){.internal-link}.
 
 ```console
 pip install "fastagency[autogen,openapi]"
 ```
-
-Alternatively, you can use [**Cookiecutter**](../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ### Imports
 The imports are the same as in the [previous chapter](./index.md){.internal-link}, except here we also import `APIKeyHeader` to set the security value in the header:
