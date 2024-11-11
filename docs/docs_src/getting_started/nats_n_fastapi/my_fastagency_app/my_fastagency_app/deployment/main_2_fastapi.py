@@ -1,9 +1,8 @@
 from os import environ
 
-from fastapi import FastAPI
-
 from fastagency.adapters.fastapi import FastAPIAdapter
 from fastagency.adapters.nats import NatsAdapter
+from fastapi import FastAPI
 
 nats_url = environ.get("NATS_URL", "nats://localhost:4222")
 nats_user: str = "fastagency"
