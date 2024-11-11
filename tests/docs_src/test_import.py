@@ -14,6 +14,7 @@ module_name = "docs_src"
 # Constants for module paths
 MESOP_AUTH_MODULES = {
     "docs_src.user_guide.ui.mesop.main_mesop_firebase_auth",
+    "docs_src.user_guide.ui.mesop.main_mesop_basic_auth",
 }
 
 MESOP_NON_AUTH_MODULES = {

@@ -40,10 +40,7 @@ class BasicAuth:  # implements AuthProtocol
             return False
 
         password_hash = self.allowed_users[username]
-        if not self._verify_password(password, password_hash):
-            return False
-
-        return True
+        return self._verify_password(password, password_hash)
 
     def on_auth_changed(self, e: mel.WebEvent) -> None:
         state = me.state(State)
