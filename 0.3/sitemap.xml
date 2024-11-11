@@ -733,12 +733,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseAuth/"/>
     </url>
     <url>
-        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseConfig/</loc>
-        <lastmod>2024-11-11</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth/FirebaseConfig/"/>
-    </url>
-    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/firebase_auth_component/FirebaseConfig/</loc>
         <lastmod>2024-11-11</lastmod>
         <changefreq>daily</changefreq>
