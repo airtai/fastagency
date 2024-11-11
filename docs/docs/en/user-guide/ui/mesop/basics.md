@@ -2,23 +2,28 @@
 
 [**`MesopUI`**](../../../../api/fastagency/ui/mesop/MesopUI.md) in FastAgency offers a web-based interface for interacting with [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"}. Unlike the [**`ConsoleUI`**](../../../../api/fastagency/ui/console/ConsoleUI.md), which is text-based and runs in the command line, MesopUI provides a user-friendly browser interface, making it ideal for applications that need a more engaging, graphical interaction. MesopUI is perfect for building interactive web applications and enabling users to interact with agents in a more intuitive way.
 
-When creating a Mesop application, you can choose between two modes:
+When creating a Mesop application, you can choose between the following modes:
 
-- **Without Authentication**: Open access to all users.
-- **With Authentication**: Access restricted to authenticated users, using [**Firebase**](https://firebase.google.com){target="_blank"} as the authentication provider.
+- **No Authentication**: Open access to all users.
+- **Basic Authentication**: Simple username and password authentication for rapid prototyping. Not recommended for production.
+- **Firebase Authentication**: A more robust authentication mechanism that uses [**Firebase**](https://firebase.google.com){target="_blank"} as the provider for authenticating users.
 
     !!! note
-        Currently, [**Firebase**](https://firebase.google.com){target="_blank"} is the only supported authentication provider, with Google as the available sign-in method. Future releases will introduce more sign-in options within Firebase and expand support for additional authentication providers.
+        Currently, [**Firebase**](https://firebase.google.com){target="_blank"} authentication supports only Google as sign-in method. Future releases will introduce more sign-in options within Firebase.
 
 Below, we’ll walk through the steps to set up a basic student-teacher conversation with **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.md)**, highlighting the process for adding authentication.
 
 ## Prerequisites
 
-=== "Without Authentication"
+=== "No Authentication"
 
     No prerequisites are required for this mode
 
-=== "With Authentication"
+=== "Basic Authentication"
+
+    No prerequisites are required for this mode
+
+=== "Firebase Authentication"
 
     To enable Firebase authentication,  follow these steps to set up your Firebase project and configure access:
 
@@ -73,13 +78,19 @@ Below, we’ll walk through the steps to set up a basic student-teacher conversa
 
 To install **FastAgency** with MesopUI support, use the following command:
 
-=== "Without Authentication"
+=== "No Authentication"
 
     ```bash
     pip install "fastagency[autogen,mesop]"
     ```
 
-=== "With Authentication"
+=== "Basic Authentication"
+
+    ```bash
+    pip install "fastagency[autogen,mesop,basic_auth]"
+    ```
+
+=== "Firebase Authentication"
 
     ```bash
     pip install "fastagency[autogen,mesop,firebase]"
@@ -123,9 +134,11 @@ You can pass a custom [SecurityPolicy](https://google.github.io/mesop/api/page/#
 ui = MesopUI(security_policy=security_policy)
 ```
 
-=== "Without Authentication"
+=== "No Authentication"
 
-=== "With Authentication"
+=== "Basic Authentication"
+
+=== "Firebase Authentication"
 
     !!! info
         To support [Firebase's JavaScript libraries](https://firebase.google.com/docs/web/learn-more){target="_blank"}, FastAgency internally adjusts its security policy to allow required resources. Here are the specific adjustments made:
@@ -141,7 +154,7 @@ ui = MesopUI(security_policy=security_policy)
 
         These adjustments ensure that Firebase scripts and services can load without conflicts.
 
-Please see the [Mesop documentation](https://google.github.io/mesop/api/page/#mesop.security.security_policy.SecurityPolicy){target="_blank"} for details.
+For more details on configuring security, see the official [Mesop documentation](https://google.github.io/mesop/api/page/#mesop.security.security_policy.SecurityPolicy){target="_blank"}.
 
 ### Modifying styles
 
@@ -166,16 +179,24 @@ This example shows how to create a simple learning chat where a student agent in
 #### 1. **Import Required Modules**
 We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.
 
-=== "Without Authentication"
+=== "No Authentication"
 
     ```python
     {!> docs_src/user_guide/ui/mesop/main_mesop.py [ln:1-14] !}
     ```
 
-=== "With Authentication"
+=== "Basic Authentication"
 
     ```python
-    {!> docs_src/user_guide/ui/mesop/main_mesop_auth.py [ln:1-15] !}
+    {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:1-15] !}
+    ```
+
+    - [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md): This class is used to add simple username/password authentication for a Mesop application, where the username is the email and the password is stored as a hashed value.
+
+=== "Firebase Authentication"
+
+    ```python
+    {!> docs_src/user_guide/ui/mesop/main_mesop_firebase_auth.py [ln:1-15] !}
     ```
 
     - [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md) and [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/auth/firebase/FirebaseConfig.md): These classes enable you to integrate Firebase authentication into your Mesop application.
@@ -207,16 +228,27 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 #### 4. **Using MesopUI**
 Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.md)** to link the workflow to a web-based interface. This allows the user to interact with the agents through a web browser.
 
-=== "Without Authentication"
+=== "No Authentication"
     ```python
     {!> docs_src/user_guide/ui/mesop/main_mesop.py [ln:59-90] !}
     ```
 
     - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
-=== "With Authentication"
+=== "Basic Authentication"
+    ```python hl_lines="29-36 38"
+    {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:61-100] !}
+    ```
+
+    - The `allowed_users` dictionary maps email addresses to their corresponding bcrypt-hashed passwords. You can generate these hashed passwords using online tools like [**bcrypt.online**](https://bcrypt.online){target="_blank"}.
+
+    In the provided example, the emails `harish@airt.ai` and `davor@airt.ai` are linked with their hashed passwords. You can replace these with your desired email-password pairs, ensuring the passwords are securely hashed.
+
+    The **[`MesopUI`](../../../../api/fastagency/ui/mesop/MesopUI.md)** instance is initialized with the [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) object, along with a custom security policy and styles, to complete the setup for authentication.
+
+=== "Firebase Authentication"
     ```python hl_lines="29-36 39-44 46"
-    {!> docs_src/user_guide/ui/mesop/main_mesop_auth.py [ln:60-107] !}
+    {!> docs_src/user_guide/ui/mesop/main_mesop_firebase_auth.py [ln:60-107] !}
     ```
 
     - **Create Firebase Configuration**:
@@ -228,11 +260,9 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
         Instiantiate the [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md) with Google as the sign-in method and pass the Firebase configuration.
 
         !!! note
-            Currently, [**Firebase**](https://firebase.google.com){target="_blank"} is the only supported authentication provider, with Google as the available sign-in method. Future releases will introduce more sign-in options within Firebase and expand support for additional authentication providers.
+            Currently, [**Firebase**](https://firebase.google.com){target="_blank"} is the only supported authentication provider, with Google as the available sign-in method. Future releases will introduce more sign-in options within Firebase.
 
-        - The `**allowed_users**` parameter:
-
-            The `allowed_users` parameter controls access to the application, with the following options:
+        - The `allowed_users` parameter controls access to the application, with the following options:
 
             - String (`str`):
 
@@ -254,7 +284,7 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
 
 ### Complete Application Code
 
-=== "Without Authentication"
+=== "No Authentication"
 
     <details>
         <summary>main.py</summary>
@@ -263,12 +293,21 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
         ```
     </details>
 
-=== "With Authentication"
+=== "Basic Authentication"
 
     <details>
         <summary>main.py</summary>
         ```python
-        {!> docs_src/user_guide/ui/mesop/main_mesop_auth.py !}
+        {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py !}
+        ```
+    </details>
+
+=== "Firebase Authentication"
+
+    <details>
+        <summary>main.py</summary>
+        ```python
+        {!> docs_src/user_guide/ui/mesop/main_mesop_firebase_auth.py !}
         ```
     </details>
 
@@ -315,11 +354,16 @@ The outputs will vary based on the interface, here is the output of the last ter
 [2024-10-15 16:57:44 +0530] [36365] [INFO] Using worker: sync
 [2024-10-15 16:57:44 +0530] [36366] [INFO] Booting worker with pid: 36366
 ```
-=== "Without Authentication"
+=== "No Authentication"
 
     ![Initial message](../../getting-started/images/chat.png)
 
-=== "With Authentication"
+=== "Basic Authentication"
+
+    ![Initial message](./images/basic_auth_login.png)
+    ![Initial message](./images/basic_auth_chat.png)
+
+=== "Firebase Authentication"
 
     ![Initial message](./images/auth_login.png)
     ![Initial message](./images/auth_chat.png)
