@@ -2,13 +2,23 @@ FROM python:3.12
 
 WORKDIR /app
 
+# Install nginx
+RUN apt-get update && apt-get install -y --no-install-recommends nginx gettext \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY my_fastagency_app /app/my_fastagency_app
 
-COPY pyproject.toml README.md docker/run_fastagency.sh /app/
+COPY pyproject.toml README.md /app/
+COPY docker/content/* /app/
+
 
 RUN pip install --upgrade pip && pip install --no-cache-dir -e "."
 
-RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
+# Add user appuser with root permissions
+RUN adduser --disabled-password --gecos '' appuser \
+    && chown -R appuser /app \
+    && chown -R appuser:appuser /etc/nginx/conf.d /var/log/nginx /var/lib/nginx \
+    && touch /run/nginx.pid && chown -R appuser:appuser /run/nginx.pid
 
 USER appuser
 

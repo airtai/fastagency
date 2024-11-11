@@ -54,7 +54,7 @@ The example starts by importing the necessary modules from **AutoGen** and **Fas
     {!> docs_src/user_guide/runtimes/autogen/whatsapp.py [ln:1-9] !}
     ```
 
-    To create a [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md), simply import [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md), which comes with built-in WhatsApp capabilities, and use it as needed.
+    To create a [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md), simply import [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md), which comes with built-in WhatsApp capabilities, and use it as needed.
 
 === "Enhancing an existing agent"
     ```
@@ -64,7 +64,7 @@ The example starts by importing the necessary modules from **AutoGen** and **Fas
     To enhance existing agents with WhatsApp communication capability, import [**`WhatsAppTool`**](../../../api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md) from FastAgency and [**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} from [AutoGen](https://microsoft.github.io/autogen){target="_blank"}.
 
 #### 2. **Configure the Language Model (LLM)**
-Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md) can interact effectively.
+Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md) can interact effectively.
 
 ```python
 {! docs_src/user_guide/runtimes/autogen/whatsapp.py [ln:11-19] !}
@@ -86,7 +86,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     When initiating the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md), the executor parameter must be provided. This can be either a single instance of [**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} or a `list of `[**`ConversableAgent`**](https://microsoft.github.io/autogen/docs/reference/agentchat/conversable_agent/){target="_blank"} instances.
 
-    The [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md) relies on the executor agent(s) to execute the sending of WhatsApp messages. In this example, the `whatsapp_agent` agent will call the `user_agent` agent with the necessary instructions when contacting the WhatsApp API required, and the `user_agent` will execute those instructions.
+    The [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md) relies on the executor agent(s) to execute the sending of WhatsApp messages. In this example, the `whatsapp_agent` agent will call the `user_agent` agent with the necessary instructions when contacting the WhatsApp API required, and the `user_agent` will execute those instructions.
 
 === "Enhancing an existing agent"
 
@@ -113,7 +113,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     The `caller` relies on the executor agent(s) to execute the WhatsApp tasks. In this example, the `assistant_agent` agent will call the `user_agent` agent with the necessary instructions when WhatsApp interaction is required, and the `user_agent` will execute those instructions.
 
 #### 4. **Enable Agent Interaction and Chat**
-Here, the user agent starts a conversation with the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgentt.md), which will send a message to the specified number. The conversation is then summarized using a method provided by the LLM.
+Here, the user agent starts a conversation with the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md), which will send a message to the specified number. The conversation is then summarized using a method provided by the LLM.
 
 === "Using WhatsAppAgent"
 
