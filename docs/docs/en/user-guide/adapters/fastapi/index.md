@@ -214,38 +214,38 @@ Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), whic
 
 ### Step-by-Step Breakdown
 
-#### 1. **Import Required Modules**
+#### 1. **Define Workflow**
+
+To get started, define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
+
+```python
+{! docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-47] !}
+```
+
+#### 2. **Import Required Modules**
 
 === "Mesop"
 
-    To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md). Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+    Next, import the required modules from the **FastAgency**. Import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
-    ```python hl_lines="8"
-    {!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:1-9] !}
+    ```python hl_lines="3"
+    {!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_fastapi.py [ln:1-4] !}
     ```
 
 === "Custom REST API and Websocket"
 
-    To get started, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+    Next, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
     ```python hl_lines="6 9"
     {!> docs_src/getting_started/fastapi/main_fastapi_custom_client.py [ln:1-10] !}
     ```
-
-#### 2. **Define Workflow**
-
-Next, define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
-
-```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/local/main_console.py [ln:9-53] !}
-```
 
 #### 3. **Define FastAgency Application**
 
 Create an instance of the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and pass your workflow to it. Then, include a router to the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application. The adapter will have all [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"} and [**WebSocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} routes for communicating with the client.
 
 ```python hl_lines="1 4"
-{!> docs_src/getting_started/fastapi/main_1_fastapi.py [ln:55-58] !}
+{!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_fastapi.py [ln:8-11] !}
 ```
 
 === "Mesop"
@@ -256,7 +256,7 @@ Create an instance of the [**`FastAPIAdapter`**](../../../api/fastagency/adapter
 
     !!! note "main_2_mesop.py"
         ```python
-        {!> docs_src/getting_started/fastapi/main_2_mesop.py [ln:1-11] !}
+        {!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_mesop.py [ln:1-15] !}
         ```
 
 === "Custom REST API and Websocket"
@@ -276,16 +276,23 @@ Please copy and paste the following code into the same folder, using the file na
 === "Mesop"
 
     <details>
+        <summary>workflow.py</summary>
+        ```python
+        {!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
+        ```
+    </details>
+
+    <details>
         <summary>main_1_fastapi.py</summary>
         ```python
-        {!> docs_src/getting_started/fastapi/main_1_fastapi.py !}
+        {!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_fastapi.py !}
         ```
     </details>
 
     <details>
         <summary>main_2_mesop.py</summary>
         ```python
-        {!> docs_src/getting_started/fastapi/main_2_mesop.py !}
+        {!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_mesop.py !}
         ```
     </details>
 

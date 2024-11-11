@@ -1,8 +1,13 @@
 my_fastagency_app
+├── deployment
+│   └── firebase
+│       ├── allowed_users.yaml
+│       └── firebase_config.yaml
 ├── docker
-│   ├── Dockerfile
-│   ├── nginx.conf.template
-│   └── run_fastagency.sh
+│   ├── content
+│   │   ├── nginx.conf.template
+│   │   └── run_fastagency.sh
+│   └── Dockerfile
 ├── my_fastagency_app
 │   ├── deployment
 │   │   ├── __init__.py
@@ -18,7 +23,11 @@ my_fastagency_app
 ├── scripts
 │   ├── build_docker.sh
 │   ├── deploy_to_fly_io.sh
-│   └── run_docker.sh
+│   ├── lint-pre-commit.sh
+│   ├── lint.sh
+│   ├── run_docker.sh
+│   ├── static-analysis.sh
+│   └── static-pre-commit.sh
 ├── tests
 │   ├── __init__.py
 │   ├── conftest.py

@@ -1,0 +1,8 @@
+# You can find the guide for getting the config values here:
+# https://support.google.com/firebase/answer/7015592?hl=en#web&zippy=%2Cin-this-article
+api_key: "<put your api_key here>"
+auth_domain: "<put your auth_domain here>"
+project_id: "<put your project_id here>"
+storage_bucket: "<put your storage_bucket here>"
+messaging_sender_id: "<put your messaging_sender_id here>"
+app_id: "<put your app_id here>"

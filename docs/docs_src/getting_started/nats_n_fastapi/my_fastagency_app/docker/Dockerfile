@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends nginx gettext \
 
 COPY my_fastagency_app /app/my_fastagency_app
 
-COPY pyproject.toml README.md docker/run_fastagency.sh docker/nginx.conf.template /app/
+COPY pyproject.toml README.md /app/
+COPY docker/content/* /app/
+
 
 RUN pip install --upgrade pip && pip install --no-cache-dir -e "."
 

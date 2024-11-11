@@ -178,7 +178,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
     {!> docs_src/user_guide/ui/mesop/main_mesop_auth.py [ln:1-15] !}
     ```
 
-    - [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseAuth.md) and [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseConfig.md): These classes enable you to integrate Firebase authentication into your Mesop application.
+    - [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md) and [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/auth/firebase/FirebaseConfig.md): These classes enable you to integrate Firebase authentication into your Mesop application.
 
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency.md)**: The core class responsible for orchestrating workflows and connecting them with UIs.
@@ -221,11 +221,11 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
 
     - **Create Firebase Configuration**:
 
-        Initialize the [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseConfig.md) class by passing the necessary values from your Firebase configuration.
+        Initialize the [**`FirebaseConfig`**](../../../../api/fastagency/ui/mesop/auth/firebase/FirebaseConfig.md) class by passing the necessary values from your Firebase configuration.
 
     - **Initialize Firebase Authentication**:
 
-        Instiantiate the [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/firebase_auth/FirebaseAuth.md) with Google as the sign-in method and pass the Firebase configuration.
+        Instiantiate the [**`FirebaseAuth`**](../../../../api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md) with Google as the sign-in method and pass the Firebase configuration.
 
         !!! note
             Currently, [**Firebase**](https://firebase.google.com){target="_blank"} is the only supported authentication provider, with Google as the available sign-in method. Future releases will introduce more sign-in options within Firebase and expand support for additional authentication providers.
@@ -317,7 +317,7 @@ The outputs will vary based on the interface, here is the output of the last ter
 ```
 === "Without Authentication"
 
-    ![Initial message](../../../getting-started/images/chat.png)
+    ![Initial message](../../getting-started/images/chat.png)
 
 === "With Authentication"
 
