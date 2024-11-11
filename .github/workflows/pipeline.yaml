@@ -57,6 +57,19 @@ jobs:
       use-llms: ""
     secrets: inherit  # pragma: allowlist secret
 
+  test-playwright-without-llms:
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+      fail-fast: false
+    uses: ./.github/workflows/test-playwright.yaml
+    with:
+      python-version: ${{ matrix.python-version }}
+      environment: null
+      use-llms: ""
+    secrets: inherit  # pragma: allowlist secret
+
+
   test-with-anthropic:
     uses: ./.github/workflows/test.yaml
     with:
@@ -137,6 +150,7 @@ jobs:
     needs:
       - test-without-llms
       - test-with-llm
+      - test-playwright-without-llms
       - test-with-anthropic
       - test-with-azure_oai
       - test-with-openai
@@ -165,8 +179,8 @@ jobs:
 
       - run: ls -la coverage
       - run: coverage combine coverage
-      - run: coverage report
-      - run: coverage html --show-contexts --title "FastAgency coverage for ${{ github.sha }}"
+      - run: coverage report -i
+      - run: coverage html -i --show-contexts --title "FastAgency coverage for ${{ github.sha }}"
 
       - name: Store coverage html
         uses: actions/upload-artifact@v4

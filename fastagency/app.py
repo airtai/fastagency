@@ -1,5 +1,6 @@
 __all__ = ["FastAgency"]
 
+import os
 from collections.abc import Awaitable, Generator
 from contextlib import contextmanager
 from typing import Any, Callable, Optional, Union
@@ -37,6 +38,13 @@ class FastAgency:  # Runnable
             title (Optional[str], optional): The title of the FastAgency. If None, the default string will be used. Defaults to None.
             description (Optional[str], optional): The description of the FastAgency. If None, the default string will be used. Defaults to None.
         """
+        # check if we need to start coverage
+        coverage_process_start = os.environ.get("COVERAGE_PROCESS_START")
+        if coverage_process_start:
+            logger.info(f"Coverage process start detected: {coverage_process_start}")
+            import coverage
+
+            coverage.process_startup()
         _self: Runnable = self
         self._title = title or "FastAgency application"
         self._description = description or "FastAgency application"

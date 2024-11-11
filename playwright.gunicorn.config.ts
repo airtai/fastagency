@@ -3,7 +3,7 @@ import { defineConfig } from "./e2e/playwright.base.config.ts";
 
 export default defineConfig(
     {
-        testDir: './e2e/llm',
+        testDir: './e2e/llm-sans',
         use: {
             /* Base URL to use in actions like `await page.goto('/')`. */
             baseURL: 'http://127.0.0.1:8000',

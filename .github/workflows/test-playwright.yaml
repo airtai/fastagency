@@ -1,0 +1,143 @@
+name: Internal test runner
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment to run the tests in'
+        required: false
+        default: null
+        type: string
+      python-version:
+        description: 'Python version to run the tests in'
+        required: true
+        type: string
+      use-llms:
+        description: 'Use LLM in the tests'
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ${{ inputs.environment }}
+    services:
+      nats:
+        image: diementros/nats:js
+        ports:
+          - 4222:4222
+    env:
+      NATS_URL: nats://localhost:4222
+    steps:
+      - name: Set up environment variables
+        run: |
+          # check if an environment var or secret is defined and set env var to its value
+
+          # vars
+
+          if [ -n "${{ vars.AZURE_API_VERSION }}" ]; then
+            echo "AZURE_API_VERSION=${{ vars.AZURE_API_VERSION }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ vars.AZURE_API_ENDPOINT }}" ]; then
+            echo "AZURE_API_ENDPOINT=${{ vars.AZURE_API_ENDPOINT }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ vars.AZURE_GPT35_MODEL }}" ]; then
+            echo "AZURE_GPT35_MODEL=${{ vars.AZURE_GPT35_MODEL }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ vars.AZURE_GPT4_MODEL }}" ]; then
+            echo "AZURE_GPT4_MODEL=${{ vars.AZURE_GPT4_MODEL }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ vars.AZURE_GPT4o_MODEL }}" ]; then
+            echo "AZURE_GPT4o_MODEL=${{ vars.AZURE_GPT4o_MODEL }}" >> $GITHUB_ENV
+          fi
+
+          # secrets
+
+          if [ -n "${{ secrets.AZURE_OPENAI_API_KEY }}" ]; then
+            echo "AZURE_OPENAI_API_KEY=${{ secrets.AZURE_OPENAI_API_KEY }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ secrets.TOGETHER_API_KEY }}" ]; then
+            echo "TOGETHER_API_KEY=${{ secrets.TOGETHER_API_KEY }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ secrets.OPENAI_API_KEY }}" ]; then
+            echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+            echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ secrets.BING_API_KEY }}" ]; then
+            echo "BING_API_KEY=${{ secrets.BING_API_KEY }}" >> $GITHUB_ENV
+          fi
+          if [ -n "${{ secrets.POSTMAN_API_KEY }}" ]; then
+            echo "POSTMAN_API_KEY=${{ secrets.POSTMAN_API_KEY }}" >> $GITHUB_ENV
+          fi
+
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: "pip"
+          cache-dependency-path: pyproject.toml
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test-v03
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pip install .[docs,testing]
+      - name: Install Pydantic v2
+        run: pip install --pre "pydantic>=2,<3"
+      - run: mkdir coverage
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Start fastagency
+        run: |
+            # Start fastagency and grab its pid
+            nohup fastagency run e2e/llm-sans/main.py &
+            # Get the process ID (PID)
+            FAST_PID=$!
+            echo "Started fastagency with PID: $FAST_PID"
+        env:
+            COVERAGE_PROCESS_START: e2e/playwright.coverage.cfg
+      - name: Run Playwright tests without LLMs
+        if: ${{ inputs.python-version != '3.9' }}
+        run: npx playwright test -c "playwright.llm-sans.config.ts"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Kill the program
+        run: |
+            # Send SIGTERM to the program (graceful shutdown)
+            echo "killing the fastagency:", $FAST_PID
+            kill $FAST_PID
+            # Wait for the program to exit (timeout after 10 seconds)
+            wait -f $PID || timeout 50 kill -9 $PID
+            echo "Fastagncy killed and exited."
+
+      - run: ls -al .coverage
+      - name: Move coverage file
+        run: mv .coverage .coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
+      - name: Check coverage file
+        run: ls -al coverage
+      - name: Store coverage files
+        if: ${{ inputs.python-version != '3.9' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: .coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
+          path: coverage/.coverage.playwright.*
+          if-no-files-found: error
+          overwrite: true
+          include-hidden-files: true

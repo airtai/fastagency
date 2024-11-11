@@ -17,10 +17,13 @@ import { devices, defineConfig as originalDefineConfig, PlaywrightTestConfig } f
  * See https://playwright.dev/docs/test-configuration.
  */
 
+//const testEnv = { ...process.env, COVERAGE_PROCESS_START: 'playwright.coverage.cfg' } as { [key: string]: string }
+
+
 const baseConfig: PlaywrightTestConfig = {
     testDir: './e2e',
     /* Run tests in files in parallel */
-    fullyParallel: true,
+    fullyParallel: false,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
     /* Retry on CI only */
@@ -80,7 +83,10 @@ const baseConfig: PlaywrightTestConfig = {
     webServer: {
         command: 'fastagency run e2e/llm-sans/main.py',
         url: 'http://127.0.0.1:32123',
-        reuseExistingServer: !process.env.CI,
+        //        env: testEnv,
+        reuseExistingServer: true,
+        //reuseExistingServer: !process.env.CI,
+        //reuseExistingServer: false,
     },
 }
 
