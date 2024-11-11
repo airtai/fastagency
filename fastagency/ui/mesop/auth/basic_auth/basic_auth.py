@@ -37,11 +37,11 @@ class BasicAuth:  # implements AuthProtocol
 
     def is_authorized(self, username: str, password: str) -> bool:
         if username not in self.allowed_users:
-            raise ValueError("Invalid username or password")
+            return False
 
         password_hash = self.allowed_users[username]
         if not self._verify_password(password, password_hash):
-            raise ValueError("Invalid username or password")
+            return False
 
         return True
 
@@ -54,14 +54,8 @@ class BasicAuth:  # implements AuthProtocol
 
         username, password = e.value["username"], e.value["password"]
 
-        try:
-            if not self.is_authorized(username, password):
-                raise me.MesopUserException(
-                    "You are not authorized to access this application. "
-                    "Please contact the application administrators for access."
-                )
-        except ValueError as e:
-            raise me.MesopUserException(str(e)) from e
+        if not self.is_authorized(username, password):
+            raise me.MesopUserException("Invalid username or password")
 
         state.authenticated_user = username
 
@@ -78,7 +72,6 @@ class BasicAuth:  # implements AuthProtocol
         else:
             with me.box(style=styles.login_box):  # noqa: SIM117
                 with me.box(style=styles.login_btn_container):
-                    me.text("Sign in to your account", style=styles.header_text)
                     basic_auth_component(
                         on_auth_changed=self.on_auth_changed,
                         authenticated_user=state.authenticated_user,
