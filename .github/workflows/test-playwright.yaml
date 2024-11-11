@@ -121,10 +121,10 @@ jobs:
       - name: Kill the program
         run: |
             # Send SIGTERM to the program (graceful shutdown)
-            echo "killing the fastagency:", $FAST_PID
-            kill $FAST_PID
+            echo "killing the fastagency:" $FAST_PID
+            kill -s SIGTERM $FAST_PID
             # Wait for the program to exit (timeout after 10 seconds)
-            wait -f $PID || timeout 50 kill -9 $PID
+            wait -f $FAST_PID || timeout 100 kill -9 $FAST_PID
             echo "Fastagncy killed and exited."
 
       - run: ls -al .coverage
