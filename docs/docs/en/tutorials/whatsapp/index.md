@@ -22,20 +22,10 @@ We will walk through setting up each agent, handling API security, and creating 
 
 Let’s dive into creating a powerful interactive agent system with **FastAgency**!
 
+## Project setup
 
-## Installation and API Key Setup
+{! docs/en/tutorials/mesop_template.md[ln:3-105] !}
 
-Before we dive into building our agents, let’s go over the necessary setup. We will guide you through installing the **FastAgency** framework and obtaining the API key needed for the **Infobip WhatsApp API** integration.
-
-### Installing FastAgency
-
-To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
-
-```bash
-pip install "fastagency[autogen,mesop,openapi]"
-```
-
-Alternatively, you can use [**Cookiecutter**](../../user-guide/cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.
 
 ### API Key Setup
 [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **WhatsAppAgent** requires an API key to interact with Infobip's WhatsApp service. Follow these steps to create your API keys:
@@ -93,12 +83,18 @@ You can set the API keys in your terminal as an environment variable:
 
 ## Complete Application Code
 
+### Workflow Code
+{! docs/en/tutorials/mesop_template.md[ln:108-112] !}
+
 <details>
-<summary>main.py</summary>
+<summary>workflow.py</summary>
 ```python
 {! docs_src/tutorials/whatsapp/main.py !}
 ```
 </details>
+
+### Deployment Code
+{! docs/en/tutorials/mesop_template.md[ln:116-127] !}
 
 
 ## Code Walkthrough
@@ -121,7 +117,7 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"whatsapp_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both WhatsAppAgent and WebSurferAgent.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:61-65] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:63-64] !}
     ...
 ```
 
@@ -129,7 +125,7 @@ Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register i
 This is a core function used by the **WhatsAppAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:69-79] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:68-78] !}
 ```
 
 ### Creating the WhatsApp and WebSurfer Agents
@@ -138,7 +134,7 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 - [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md): The [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer.md).
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:81-97] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:80-97] !}
 ```
 
 
@@ -147,13 +143,13 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 The function ***present_completed_task_or_ask_question*** is registered to allow the **WhatsAppAgent** to ask questions or present completed tasks after receiving data from the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:99-106] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:98-106] !}
 ```
 
 
 We register the WhatsApp API, which allows the **WhatsAppAgent** to handle tasks like suggesting messages that will be sent to the user.
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:108-113] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:107-113] !}
 ```
 
 ### Initiating the Chat
@@ -163,57 +159,17 @@ We initiate the conversation between the user, [**`WebSurferAgent`**](../../api/
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:121-126] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:120-127] !}
 ```
 
 ### Starting the Application
 
-The FastAgency app is created, using the registered workflows (**`wf`**) and web-based user interface ([**`MesopUI`**](../../api/fastagency/ui/mesop/MesopUI.md)). This makes the conversation between agents and the user interactive.
-
-```python
-{! docs_src/tutorials/whatsapp/main.py [ln:131] !}
-```
-
-For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics.md){target="_blank"}.
+{! docs/en/tutorials/mesop_template.md[ln:132-138] !}
 
 ## Running the Application
 
-The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target="_blank"} application is using a Python WSGI HTTP server like [**Gunicorn**](https://gunicorn.org/){target="_blank"} on Linux and Mac or [**Waitress**](https://docs.pylonsproject.org/projects/waitress/en/stable/){target="_blank"} on Windows.
+{! docs/en/tutorials/mesop_template.md[ln:143-178] !}
 
-=== "Cookiecutter"
-    !!! note "Terminal"
-        ```console
-        gunicorn main:app
-        ```
-=== "env + pip"
-
-    First, install the package using package manager such as `pip` and then run it:
-
-    === "Linux/MacOS"
-        !!! note "Terminal"
-            ```console
-            pip install gunicorn
-            gunicorn main:app
-            ```
-
-    === "Windows"
-        !!! note "Terminal"
-            ```console
-            pip install waitress
-            waitress-serve --listen=0.0.0.0:8000 main:app
-            ```
-
-```console
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8000 (23635)
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
-[2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
-```
-
-The command will launch a web interface where users can input their requests and interact with the agents (in this case ***http://localhost:8000***)
-
-!!! note
-    Ensure that your OpenAI API key is set in the environment, as the agents rely on it to interact using GPT-4o. If the API key is not correctly configured, the application may fail to retrieve LLM-powered responses.
 
 ## Chat Example
 In this scenario, the user instructs the agents to scrape [BBC Sport](https://www.bbc.com/sport) for the latest sports news.

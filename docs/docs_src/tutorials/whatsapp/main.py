@@ -4,12 +4,11 @@ from typing import Annotated, Any, Optional
 from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
-from fastagency import UI, FastAgency
+from fastagency import UI
 from fastagency.api.openapi.client import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
-from fastagency.ui.mesop import MesopUI
 
 llm_config = {
     "config_list": [
@@ -126,6 +125,3 @@ If you are presenting a completed task, last message should be a question: 'Do y
     )
 
     return chat_result.summary  # type: ignore[no-any-return]
-
-
-app = FastAgency(provider=wf, ui=MesopUI(), title="WhatsApp chat")
