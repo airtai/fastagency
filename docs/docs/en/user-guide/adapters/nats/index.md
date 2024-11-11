@@ -93,7 +93,7 @@ Create a [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.m
 The `NatsAdapter` requires a running NATS server. The easiest way to start the NATS server is by using [**Docker**](https://www.docker.com/){target="_blank"}. FastAgency leverages the [**JetStream**](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
 
 ```python hl_lines="1 3 6 11 17"
-{!> docs_src/getting_started/nats_n_fastapi/nats-server.conf [ln:1-23]!}
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf !}
 ```
 
 In the above Nats configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in Nats and configure Nats to serve via the appropriate ports.
@@ -103,9 +103,9 @@ In the above Nats configuration, we define a user called `fastagency`, and its p
 Please copy and paste the following code into the same folder, using the file names exactly as mentioned below.
 
 <details>
-    <summary>nats-server.conf</summary>
+    <summary>nats_server.conf</summary>
     ```python
-    {!> docs_src/getting_started/nats_n_fastapi/nats-server.conf !}
+    {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf !}
     ```
 </details>
 
@@ -150,7 +150,7 @@ Please copy and paste the following code into the same folder, using the file na
         - Start **NATS** Docker container:
         !!! note "Terminal 1"
             ```
-            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats_server.conf:/etc/nats/nats_server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats_server.conf
             ```
 
         - Start **FastAPI** application that provides a conversational workflow:
@@ -172,7 +172,7 @@ Please copy and paste the following code into the same folder, using the file na
         - Start **NATS** Docker container:
         !!! note "Terminal 1"
             ```
-            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats-server.conf:/etc/nats/nats-server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats-server.conf
+            docker run -d --name nats-fastagency --rm -p 4222:4222 -p 9222:9222 -p 8222:8222 -v $(pwd)/nats_server.conf:/etc/nats/nats_server.conf -e FASTAGENCY_NATS_PASSWORD='fastagency_nats_password' nats:latest -c /etc/nats/nats_server.conf
             ```
 
         - Start **FastAPI** application that provides a conversational workflow:
