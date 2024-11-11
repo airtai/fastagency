@@ -6,13 +6,13 @@ import mesop.labs as mel
 
 from ...data_model import State
 from ...styles import MesopHomePageStyles
-from .username_password_auth_component import username_password_auth_component
+from .basic_auth_component import basic_auth_component
 
 if typing.TYPE_CHECKING:
     from ..auth import AuthProtocol
 
 
-class UsernamePasswordAuth:  # implements AuthProtocol
+class BasicAuth:  # implements AuthProtocol
     def __init__(self, allowed_users: dict[str, str]) -> None:
         """Initialize the authentication component with allowed users.
 
@@ -21,32 +21,26 @@ class UsernamePasswordAuth:  # implements AuthProtocol
 
         Initializes:
         _self (AuthProtocol): Ensures the instance conforms to the AuthProtocol interface.
-        _user_hashes (dict[str, str]): A dictionary where the keys are usernames and the values are hashed passwords.
+        allowed_users (dict[str, str]): A dictionary where the keys are usernames and the values are hashed passwords.
         """
         # mypy check if self is AuthProtocol
         _self: AuthProtocol = self
 
-        self._user_hashes = {
-            username: self._hash_password(password)
-            for username, password in allowed_users.items()
-        }
-
-    def _hash_password(self, password: str) -> bytes:
-        """Hash a password using bcrypt."""
-        return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+        self.allowed_users = allowed_users
 
     def create_security_policy(self, policy: me.SecurityPolicy) -> me.SecurityPolicy:
         return policy
 
     def _verify_password(self, password: str, password_hash: bytes) -> bool:
         """Verify a password against its hash."""
-        return bcrypt.checkpw(password.encode("utf-8"), password_hash)
+        return bcrypt.checkpw(password.encode("utf-8"), password_hash.encode("utf-8"))
 
     def is_authorized(self, username: str, password: str) -> bool:
-        if username not in self._user_hashes:
+        if username not in self.allowed_users:
             raise ValueError("Invalid username or password")
 
-        if not self._verify_password(password, self._user_hashes[username]):
+        password_hash = self.allowed_users.get(username)
+        if not self._verify_password(password, password_hash):
             raise ValueError("Invalid username or password")
 
         return True
@@ -77,7 +71,7 @@ class UsernamePasswordAuth:  # implements AuthProtocol
         state = me.state(State)
         if state.authenticated_user:
             with me.box(style=styles.logout_btn_container):
-                username_password_auth_component(
+                basic_auth_component(
                     on_auth_changed=self.on_auth_changed,
                     authenticated_user=state.authenticated_user,
                 )
@@ -85,7 +79,7 @@ class UsernamePasswordAuth:  # implements AuthProtocol
             with me.box(style=styles.login_box):  # noqa: SIM117
                 with me.box(style=styles.login_btn_container):
                     me.text("Sign in to your account", style=styles.header_text)
-                    username_password_auth_component(
+                    basic_auth_component(
                         on_auth_changed=self.on_auth_changed,
                         authenticated_user=state.authenticated_user,
                     )

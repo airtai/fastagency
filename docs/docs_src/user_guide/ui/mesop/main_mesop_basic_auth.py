@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.runtimes.autogen import AutoGenWorkflows
 from fastagency.ui.mesop import MesopUI
-from fastagency.ui.mesop.auth.username_password import UsernamePasswordAuth 
+from fastagency.ui.mesop.auth.basic_auth import BasicAuth
 from fastagency.ui.mesop.styles import (
     MesopHomePageStyles,
     MesopMessagesStyles,
@@ -86,11 +86,11 @@ styles=MesopHomePageStyles(
 )
 
 # Initialize auth with username and password
-auth = UsernamePasswordAuth(
+auth = BasicAuth(
     # TODO: Replace the emails and passwords in allowed_users with the desired ones
     allowed_users={
-        "harish@airt.ai": "someStrongPassword",
-        "davor@airt.ai": "someotherStrongPassword"
+        "harish@airt.ai": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG",
+        "davor@airt.ai": "$2y$10$Yz9GuF/bWmRFmnXFkauOwePT/U.VSUHdpMOX7GPB8GiklJE4HJZmG"
     }
 )
 

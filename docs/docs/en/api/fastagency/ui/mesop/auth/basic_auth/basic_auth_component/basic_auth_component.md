@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.ui.mesop.auth.username_password.UsernamePasswordAuth
+::: fastagency.ui.mesop.auth.basic_auth.basic_auth_component.basic_auth_component

@@ -3,7 +3,7 @@ import {
   html,
 } from "https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js";
 
-class UserNamePasswordAuthComponent extends LitElement {
+class BasicAuthComponent extends LitElement {
   static properties = {
     isSignedIn: { type: Boolean },
     authChanged: { type: String },
@@ -151,4 +151,4 @@ class UserNamePasswordAuthComponent extends LitElement {
   }
 }
 
-customElements.define("username-password-auth-component", UserNamePasswordAuthComponent);
+customElements.define("basic-auth-component", BasicAuthComponent);
