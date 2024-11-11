@@ -140,7 +140,6 @@ jobs:
             else
               echo "Fastagency with PID $PID has exited."
             fi
-            sleep 100
 
       - run: ls -al .coverage
       - run: ls
