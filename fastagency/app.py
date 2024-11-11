@@ -45,6 +45,9 @@ class FastAgency:  # Runnable
             import coverage
 
             coverage.process_startup()
+        else:
+            logger.info("Coverage process start NOT detected")
+
         _self: Runnable = self
         self._title = title or "FastAgency application"
         self._description = description or "FastAgency application"
