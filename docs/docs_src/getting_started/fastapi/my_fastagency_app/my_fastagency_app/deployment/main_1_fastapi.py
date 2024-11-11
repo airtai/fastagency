@@ -1,11 +1,9 @@
-import os
 from typing import Any
 
-from fastapi import FastAPI
 from fastagency.adapters.fastapi import FastAPIAdapter
+from fastapi import FastAPI
 
 from ..workflow import wf
-
 
 adapter = FastAPIAdapter(provider=wf)
 
