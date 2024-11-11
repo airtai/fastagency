@@ -13,7 +13,7 @@ search:
 
 # Quick start
 
-You can try out FastAgency to build and deploy your multi-agent application in less than one hour by following this guide. You will learn how to write you workflow, test and debug it and finally deploy it on cloud. The deployed application will have chat interface and be secured with SSO authentication and a whitelist of users alloped to access it.
+You can try out FastAgency to build and deploy your multi-agent application in less than one hour by following this guide. You will learn how to write you workflow, test and debug it and finally deploy it on cloud. The deployed application will have chat interface.
 
 You can use three different setups, depending on how scalable solution you need:
 
@@ -34,7 +34,7 @@ You can use three different setups, depending on how scalable solution you need:
 
 ## Project setup
 
-We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up the project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} for development.
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up a FastAgency project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} for development.
 
 You could also use virtual environment managers such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
@@ -154,9 +154,9 @@ In case we used network adapters in the step above, we can chain additional netw
     to connect to the `FastAPIAdapter`
 
     !!! note "main_2_mesop.py"
-    ```python
-    {!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_mesop.py !}
-    ```
+        ```python
+        {!> docs_src/getting_started/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_mesop.py !}
+        ```
 
 === "NATS + FastAPI + Mesop"
 
@@ -234,36 +234,15 @@ Once everything is set up, you can run your FastAgency application using the fol
 
 The outputs will vary based on the interface, here is the output of the last terminal starting UI:
 
-=== "Mesop"
-    ```console
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8000 (23635)
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
-    [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
-    ```
+```console
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8000 (23635)
+[2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
+[2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
+```
 
-    ![Initial message](./images/chat-init.png)
+![Initial message](./images/chat-init.png)
 
-=== "FastAPI + Mesop"
-    ```console
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8888 (23635)
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
-    [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
-    ```
-
-    ![Initial message](./images/chat-init.png)
-
-=== "NATS + FastAPI + Mesop"
-
-    ```console
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8888 (23635)
-    [2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
-    [2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
-    ```
-
-    ![Initial message](./images/chat-init.png)
 
 ## Deployment
 
