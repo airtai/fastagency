@@ -97,10 +97,10 @@ submodules = [
 devdocs = [
     "mkdocs==1.6.1",
     "mkdocs-autorefs==1.2.0",  # mkdocs build fails if upgraded
-    "mkdocs-material==9.5.42",
+    "mkdocs-material==9.5.44",
     "mkdocs-static-i18n==1.2.3",
     "mdx-include==1.4.2",
-    "mkdocstrings[python]==0.26.2",
+    "mkdocstrings[python]==0.27.0",
     "mkdocs-literate-nav==0.6.1",
     "mkdocs-git-revision-date-localized-plugin==1.3.0",
     "mike==2.1.3",  # versioning
@@ -118,11 +118,11 @@ lint = [
     "types-ujson",
     "types-Pygments",
     "types-docutils",
-    "mypy==1.12.1",
+    "mypy==1.13.0",
     "ruff==0.7.2",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.10",
-    "semgrep==1.95.0",
+    "semgrep==1.96.0",
     "codespell==2.3.0",
     "pytest-mypy-plugins==3.1.2",
 ]
