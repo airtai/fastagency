@@ -3,7 +3,9 @@
 
 # FastAgency
 
+
 <b>The fastest way to bring multi-agent workflows to production.</b>
+
 
 ---
 
@@ -58,7 +60,27 @@
 For start, FastAgency is not yet another agentic AI framework. There are many such
 frameworks available today, the most popular open-source ones being [**AutoGen**](https://github.com/microsoft/autogen), [**CrewAI**](https://www.crewai.com/), [**Swarm**](https://github.com/openai/swarm) and [**LangGraph**](https://github.com/langchain-ai/langgraph). FastAgency provides you with a unified programming interface for deploying agentic workflows written in above agentic frameworks in both development and productional settings (current version supports [**AutoGen**](https://github.com/microsoft/autogen) only, but other frameworks will be supported very soon). With only a few lines of code, you can create a web chat application or REST API service interacting with agents of your choice. If you need to scale-up your workloads, FastAgency can help you deploy a fully distributed system using internal message brokers coordinating multiple machines in multiple datacenters with just a few lines of code changed from your local development setup.
 
-In the rest of this guide, we will walk you through the initial setup and usage of FastAgency, using both development and production environments.
+**FastAgency** is an open-source framework designed to accelerate the transition from prototype to production for multi-agent AI workflows. For developers who use the AutoGen framework, FastAgency enables you to seamlessly scale Jupyter notebook prototypes into a fully functional, production-ready applications. With multi-framework support, a unified programming interface, and powerful API integration capabilities, FastAgency streamlines the deployment process, saving time and effort while maintaining flexibility and performance.
+
+Whether you're orchestrating complex AI agents or integrating external APIs into workflows, FastAgency provides the tools necessary to quickly transition from concept to production, reducing development cycles and allowing you to focus on optimizing your multi-agent systems.
+
+## Key Features
+
+- [**Multi-Runtime Support**](user-guide/runtimes/index.md): FastAgency supports multiple agentic [runtimes](user-guide/runtimes/index.md) to provide maximum flexibility. Currently, it supports **AutoGen** and plans to extend support to [CrewAI](https://www.crewai.com/). This ensures that as the AI ecosystem evolves, FastAgency remains a reliable and adaptable framework, capable of leveraging emerging agentic technologies. Developers can easily switch between frameworks, choosing the best one for their project's specific needs.
+
+- [**Unified Programming Interface Across UIs**](user-guide/ui/index.md): FastAgency features a **common programming interface** that enables you to develop your core workflows once and reuse them across various user interfaces without rewriting code. This includes support for both **console-based applications** via `ConsoleUI` and **web-based applications** via `MesopUI`. Whether you need a command-line tool or a fully interactive web app, FastAgency allows you to deploy the same underlying workflows across environments, saving development time and ensuring consistency.
+
+- [**Seamless External API Integration**](user-guide/api/index.md): One of FastAgency's standout features is its ability to easily integrate external APIs into your agent workflows. With just a **few lines of code**, you can import an OpenAPI specification, and in only one more line, you can connect it to your agents. This dramatically simplifies the process of enhancing AI agents with real-time data, external processing, or third-party services. For example, you can easily integrate a weather API to provide dynamic, real-time weather updates to your users, making your application more interactive and useful with minimal effort.
+
+- [**Tester Class for Continuous Integration**](user-guide/testing/index.md): FastAgency also provides a **Tester Class** that enables developers to write and execute tests for their multi-agent workflows. This feature is crucial for maintaining the reliability and robustness of your application, allowing you to automatically verify agent behavior and interactions. The Tester Class is designed to integrate smoothly with **continuous integration (CI)** pipelines, helping you catch bugs early and ensure that your workflows remain functional as they scale into production.
+
+- [**Command-Line Interface (CLI) for Orchestration**](user-guide/cli/index.md): FastAgency includes a powerful **command-line interface (CLI)** for orchestrating and managing multi-agent applications directly from the terminal. The CLI allows developers to quickly run workflows, pass parameters, and monitor agent interactions without needing a full GUI. This is especially useful for automating deployments and integrating workflows into broader DevOps pipelines, enabling developers to maintain control and flexibility in how they manage AI-driven applications.
+
+## Why FastAgency?
+
+FastAgency bridges the gap between rapid prototyping and production-ready deployment, empowering developers to bring their multi-agent systems to life quickly and efficiently. By integrating familiar frameworks like AutoGen, providing powerful API integration, and offering robust CI testing tools, FastAgency reduces the complexity and overhead typically associated with deploying AI agents in real-world applications.
+
+Whether you’re building interactive console tools, developing fully-featured web apps, or orchestrating large-scale multi-agent systems, FastAgency is built to help you deploy faster, more reliably, and with greater flexibility.
 
 ### Supported Runtimes
 
@@ -68,9 +90,9 @@ Currently, the only supported runtime is [**AutoGen**](https://github.com/micros
 
 FastAgency currently supports workflows defined using AutoGen and provides options for different types of applications:
 
-- **Console**: Use the [**`ConsoleUI`**](https://fastagency.ai/0.3/api/fastagency/ui/console/ConsoleUI/) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
+- **Console**: Use the [**`ConsoleUI`**](../api/fastagency/ui/console/ConsoleUI.md) interface for command-line based interaction. This is ideal for developing and testing workflows in a text-based environment.
 
-- [**Mesop**](https://google.github.io/mesop/): Utilize [**`MesopUI`**](https://fastagency.ai/0.3/api/fastagency/ui/mesop/MesopUI/) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
+- [**Mesop**](https://google.github.io/mesop/): Utilize [**`MesopUI`**](../api/fastagency/ui/mesop/MesopUI.md) for web-based applications. This interface is suitable for creating web applications with a user-friendly interface.
 
 ### Supported Network Adapters
 
@@ -78,75 +100,98 @@ FastAgency can use chainable network adapters that can be used to easily create
 scalable, production ready architectures for serving your workflows. Currently, we
 support the following network adapters:
 
-- [**REST API**](https://en.wikipedia.org/wiki/REST) via [**FastAPI**](https://fastapi.tiangolo.com/): Use the [**`FastAPIAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/fastapi/FastAPIAdapter/) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/) server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
+- [**REST API**](https://en.wikipedia.org/wiki/REST) via [**FastAPI**](https://fastapi.tiangolo.com/): Use the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/) server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
 
-- [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/airtai/faststream): Utilize the [**`NatsAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/nats/NatsAdapter/) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](https://fastagency.ai/0.3/api/fastagency/adapters/fastapi/FastAPIAdapter/) to serve public workflows in an authenticated, secure manner.
-
-## Quick start
-
-There are four different setups, two for development and two for production workloads:
-
-- Development setups
-
-    - **Console**: This setup uses console for interactively executing your workflow.
-        It is also very useful for automating testing and integration with CI/CD.
+- [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/airtai/faststream): Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
 
 
-    - **Mesop**: This setup uses [**Mesop**](https://google.github.io/mesop/)
-        to build a web application for interacting with our workflow. It supports
-        a single-worker deployments only, limiting its scalability. However, it
-        is the fastest way to debug your application.
+## Quick Start
 
-- Production setups
+### Project setup
 
-    - **FastAPI + Mesop**: This is fairly scalable setup using [**FastAPI**](https://fastapi.tiangolo.com/)
-         to execute your workflows and [**Mesop**](https://google.github.io/mesop/) for interactive web application. [**FastAPI**](https://fastapi.tiangolo.com/) supports execution with multiple workers with each workflowe being executed in the context of a websocket connection. [**Mesop**](https://google.github.io/mesop/) is still limited to a single worker, although there is much less load of it due to workflows being executed in the [**FastAPI**](https://fastapi.tiangolo.com/) workers.
+We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up a FastAgency project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) that can be used with [Visual Studio Code](https://code.visualstudio.com/) for development.
 
-    - **NATS + FastAPI + Mesop**: This is the most scalable setup using a distributed message broker
-        [**NATS.io MQ**](https://nats.io/). Workflows are being executed with
-        multiple workers that attach to the MQ waiting for initiate workflow messages. Such workers
-        can be running on different machines or even different data centers/cloud providers.
-        Message queues are highly scalable, but more difficult to integrate with end-clients.
-        In order to make such integrations easier, we will connect our [**NATS**](https://nats.io/)-based message queue with the [**FastAPI**](https://fastapi.tiangolo.com/)
-         application.
+1. Install Cookiecutter with the following command:
+    ```console
+    pip install cookiecutter
+    ```
 
-We will show you how to deploy your workflow using the **FastAPI + Mesop** combination below.
+2. Run the `cookiecutter` command:
+    ```console
+    cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+    ```
 
-### Install
+3. Assuming that you used the default values, you should get the following output:
+    ```console
+    [1/4] project_name (My FastAgency App):
+    [2/4] project_slug (my_fastagency_app):
+    [3/4] Select app_type
+        1 - fastapi+mesop
+        2 - mesop
+        3 - nats+fastapi+mesop
+        Choose from [1/2/3] (1): 1
+    [4/4] Select python_version
+        1 - 3.12
+        2 - 3.11
+        3 - 3.10
+        Choose from [1/2/3] (1):
+    [5/5] Select authentication
+        1 - none
+        2 - google
+        Choose from [1/2] (1):
+    ```
 
-To get started, you need to install FastAgency. You can do this using `pip`, Python's package installer. Choose the installation command based on the interface you want to use:
+4. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
 
-```console
-pip install "fastagency[autogen,mesop,fastapi,server]"
-```
+    ```console
+    export OPENAI_API_KEY=openai_api_key_here
+    ```
 
-This command installs FastAgency with support for both the Console and Mesop
-interfaces for AutoGen workflows, but with FastAPI both serving input requests
-and running workflows.
+5. Open the generated project in [Visual Studio Code](https://code.visualstudio.com/) with the following command:
+    ```console
+    code my_fastagency_app
+    ```
 
+6. Once the project is opened, you will get the following option to reopen it in a devcontainer:
 
-### Imports
-Depending on the interface you choose, you'll need to import different modules. These imports set up the necessary components for your application:
+    <img src="https://fastagency.ai/0.3/user-guide/getting-started/images/reopen-in-container.png" width="600" class="center">
+
+7. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
+
+    ```console
+    pytest -s
+    ```
+
+    You should get the following output if everything is correctly setup.
+    ```console
+    =================================== test session starts ===================================
+    platform linux -- Python 3.12.7, pytest-8.3.3, pluggy-1.5.0
+    rootdir: /workspaces/my_fastagency_app
+    configfile: pyproject.toml
+    plugins: asyncio-0.24.0, anyio-4.6.2.post1
+    asyncio: mode=Mode.STRICT, default_loop_scope=None
+    collected 1 item
+
+    tests/test_workflow.py .                                                            [100%]
+
+    ==================================== 1 passed in 1.02s ====================================
+    ```
+-----
+
+### Workflow Development
+
+#### Define the Workflow
+
+You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition as it is generated by the cookie cutter under `my_fastagency_app/workflow.py`:
 
 ```python
 import os
 from typing import Any
 
 from autogen.agentchat import ConversableAgent
-from fastapi import FastAPI
-
 from fastagency import UI
-from fastagency.adapters.fastapi import FastAPIAdapter
 from fastagency.runtimes.autogen import AutoGenWorkflows
-```
 
-For FastAPI applications, import `FastAPIAdapter` to expose your workflows as REST API.
-
-### Define Workflow
-
-You need to define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
-
-```python
 llm_config = {
     "config_list": [
         {
@@ -160,10 +205,8 @@ llm_config = {
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(
-    ui: UI, params: dict[str, Any]
-) -> str:
+@wf.register(name="simple_learning", description="Student and teacher learning chat")  # type: ignore[misc]
+def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
     initial_message = ui.text_input(
         sender="Workflow",
         recipient="User",
@@ -188,166 +231,56 @@ def simple_workflow(
         max_turns=3,
     )
 
-    return chat_result.summary
+    return str(chat_result.summary)
 ```
 
-This code snippet sets up a simple learning chat between a student and a teacher. You define the agents and how they should interact, specifying how the conversation should be summarized.
+This code snippet sets up a simple learning chat between a student and a teacher. It defines the agents and how they should interact and specify how the conversation should be summarized.
 
-### Define FastAgency Application
+#### Run and Debug the Workflow
 
+To ensure that the workflow we have defined is working properly, we can test it locally using MesopUI. The code below can be found under `my_fastagency_app/local/main_mesop.py` and imports the defined workflow and sets up MesopUI.
 
-In the case of FastAPI application, we will create an `FastAPIAdapter` and then include a router to the `FastAPI` application.
-The adapter will have all REST and Websocket routes for communicating with a client.
-
-```python
-adapter = FastAPIAdapter(provider=wf)
-
-app = FastAPI()
-app.include_router(adapter.router)
-```
-
-### Adapter Chaining
-
-There is an additional specification file for an application using `MesopUI`
-to connect to the `FastAPIAdapter`
-
-#### `main_2_mesop.py`
-```python
-from fastagency.adapters.fastapi import FastAPIAdapter
-from fastagency.app import FastAgency
-from fastagency.ui.mesop import MesopUI
-
-fastapi_url = "http://localhost:8008"
-
-provider = FastAPIAdapter.create_provider(
-    fastapi_url=fastapi_url,
-)
-
-app = FastAgency(provider=provider, ui=MesopUI())
-```
-
-
-### Complete Application Code
-
-#### `main_1_fastapi.py`
-
-```python
-import os
-from typing import Any
-
-from autogen.agentchat import ConversableAgent
-from fastapi import FastAPI
-
-from fastagency import UI
-from fastagency.adapters.fastapi import FastAPIAdapter
-from fastagency.runtimes.autogen import AutoGenWorkflows
-
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
-
-wf = AutoGenWorkflows()
-
-
-@wf.register(name="simple_learning", description="Student and teacher learning chat")
-def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
-    initial_message = ui.text_input(
-        sender="Workflow",
-        recipient="User",
-        prompt="I can help you learn about mathematics. What subject you would like to explore?",
-    )
-
-    student_agent = ConversableAgent(
-        name="Student_Agent",
-        system_message="You are a student willing to learn.",
-        llm_config=llm_config,
-        # human_input_mode="ALWAYS",
-    )
-    teacher_agent = ConversableAgent(
-        name="Teacher_Agent",
-        system_message="You are a math teacher.",
-        llm_config=llm_config,
-        # human_input_mode="ALWAYS",
-    )
-
-    chat_result = student_agent.initiate_chat(
-        teacher_agent,
-        message=initial_message,
-        summary_method="reflection_with_llm",
-        max_turns=5,
-    )
-
-    return chat_result.summary  # type: ignore[no-any-return]
-
-
-adapter = FastAPIAdapter(provider=wf)
-
-app = FastAPI()
-app.include_router(adapter.router)
-
-
-# this is optional, but we would like to see the list of available workflows
-@app.get("/")
-def read_root() -> dict[str, dict[str, str]]:
-    return {"Workflows": {name: wf.get_description(name) for name in wf.names}}
-
-
-# start the provider with the following command
-# uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
-```
-
-#### `main_2_mesop.py`
-
-```python
-from fastagency.adapters.fastapi import FastAPIAdapter
-from fastagency.app import FastAgency
-from fastagency.ui.mesop import MesopUI
-
-fastapi_url = "http://localhost:8008"
-
-provider = FastAPIAdapter.create_provider(
-    fastapi_url=fastapi_url,
-)
-
-app = FastAgency(provider=provider, ui=MesopUI())
-
-# start the provider with the following command
-# gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
-```
-
-### Run Application
-
-In this setup, we need to run **two** commands in **separate** terminal windows:
-
-**Terminal 1** - Start **FastAPI** application using uvicorn
-```
-uvicorn main_1_fastapi:app --host 0.0.0.0 --port 8008 --reload
-```
-
-**Terminal 2** - Start **Mesop** web interface using gunicorn
-```
-gunicorn main_2_mesop:app -b 0.0.0.0:8888 --reload
-```
-
-### Output
-
-The outputs will vary based on the interface, here is the output of the last terminal starting UI:
+You can run the Mesop application locally with the following command on Linux and MacOS:
 
 ```console
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Starting gunicorn 23.0.0
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Listening at: http://127.0.0.1:8888 (23635)
-[2024-10-10 13:19:18 +0530] [23635] [INFO] Using worker: sync
-[2024-10-10 13:19:18 +0530] [23645] [INFO] Booting worker with pid: 23645
+gunicorn my_fastagency_app.local.main_mesop:app
 ```
 
-![Initial message](https://fastagency.ai/0.3/getting-started/images/chat.png?v20241015)
+On Windows, please use the following command:
+```console
+waitress-serve --listen=0.0.0.0:8000 my_fastagency_app.local.main_mesop:app
+```
 
+Open the MesopUI URL [http://localhost:8000](http://localhost:8000) in your browser. You can now use the graphical user interface to start, run, test and debug the autogen workflow manually.
+
+![Initial message](https://fastagency.ai/latest/user-guide/getting-started/images/chat-init.png)
+
+
+## Deployment
+
+### Building the Docker Image
+
+If you created the project using Cookiecutter, then building the Docker image is as simple as running the provided script, as shown below:
+
+```console
+./scripts/build_docker.sh
+```
+
+### Running the Docker Image
+
+Similarly, running the Docker container is as simple as running the provided script, as shown below:
+
+```console
+./scripts/run_docker.sh
+```
+
+### Deploying to Fly.io
+
+If you created the project using Cookiecutter, there is a built-in script to deploy your workflow to [**Fly.io**](https://fly.io/). Run it as shown below:
+
+```console
+./scripts/deploy_to_fly_io.sh
+```
 
 ## Future Plans
 
@@ -355,13 +288,12 @@ We are actively working on expanding FastAgency’s capabilities. In addition to
 
 ---
 
-## Stay in touch
+## ⭐⭐⭐ Stay in touch ⭐⭐⭐
 
-Please show your support and stay in touch by:
+Stay up to date with new features and integrations by following our documentation and community updates on our [**Discord server**](https://discord.gg/kJjSGWrknU). FastAgency is continually evolving to support new frameworks, APIs, and deployment strategies, ensuring you remain at the forefront of AI-driven development.
 
-- giving our [GitHub repository](https://github.com/airtai/fastagency/) a star, and
+Last but not least, show us your support by giving a star to our [**GitHub repository**](https://github.com/airtai/fastagency/).
 
-- joining our [Discord server](https://discord.gg/kJjSGWrknU)
 
 Your support helps us to stay in touch with you and encourages us to
 continue developing and improving the framework. Thank you for your
