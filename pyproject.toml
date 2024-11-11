@@ -85,12 +85,16 @@ server = [
     "waitress>=3.0.0 ; platform_system == 'Windows'",
 ]
 
+basic_auth = [
+    "bcrypt>=4.2.0"
+]
+
 firebase = [
     "firebase-admin>=6.5.0"
 ]
 
 submodules = [
-    "fastagency[mesop,autogen,openapi,fastapi,nats,server,firebase]"
+    "fastagency[mesop,autogen,openapi,fastapi,nats,server,firebase,basic_auth]"
 ]
 
 # dev dependencies
