@@ -3,6 +3,8 @@ from typing import Any, Callable
 
 import mesop.labs as mel
 
+__all__ = ["firebase_auth_component"]
+
 MEL_WEB_COMPONENT_PATH = (
     "/__fast_agency_internal__/javascript/firebase_auth_component.js"
 )
