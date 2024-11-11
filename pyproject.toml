@@ -118,7 +118,7 @@ lint = [
     "types-ujson",
     "types-Pygments",
     "types-docutils",
-    "mypy==1.12.1",
+    "mypy==1.13.0",
     "ruff==0.7.2",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.10",
