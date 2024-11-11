@@ -29,6 +29,8 @@ We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for
 You could also use virtual environment managers such as [venv](https://docs.python.org/3/library/venv.html){target="_blank"}, and a Python package manager, such as [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)).
 
 
+### a) Using Cookiecutter (**Recommended**)
+
 {! docs/en/user-guide/cookiecutter/index.md[ln:6-16] !}
 
 3. Depending on the type of the project, choose the appropriate option in step 3:
@@ -59,11 +61,23 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
 
 {! docs/en/user-guide/cookiecutter/index.md[ln:88-129] !}
 
+9. Install additional dependencies which will be needed for this tutorial:
+    ```bash
+    pip install "fastagency[openapi]"
+    ```
+
 
 !!! info
     If you used a different `project_slug` than the default `my_fastagency_app` this will be reflected in the project module naming. Keep this in mind when running the commands further in this guide (in [Run Application](#run-application)), you will need to replace `my_fastagency_app` with your `project_slug` name.
------
 
+
+### b) Using Virtual Environment (**Alternative**)
+
+To get started, you need to install FastAgency with OpenAPI submodule. You can do this using `pip`, Python's package installer.
+
+```bash
+pip install "fastagency[autogen,mesop,openapi]"
+```
 
 ### API Key Setup
 [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **WhatsAppAgent** requires an API key to interact with Infobip's WhatsApp service. Follow these steps to create your API keys:
@@ -144,7 +158,7 @@ You need to define the workflow that your application will use. This is where yo
 <details>
 <summary>main.py</summary>
 ```python
-{!> docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py !}
+{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:1-10] !}
 ```
 
 </details>
@@ -170,7 +184,7 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"whatsapp_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both WhatsAppAgent and WebSurferAgent.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:61-65] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:63-64] !}
     ...
 ```
 
@@ -178,7 +192,7 @@ Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register i
 This is a core function used by the **WhatsAppAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:69-79] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:68-78] !}
 ```
 
 ### Creating the WhatsApp and WebSurfer Agents
@@ -187,7 +201,7 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 - [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md): The [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer.md).
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:81-97] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:80-97] !}
 ```
 
 
@@ -196,13 +210,13 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 The function ***present_completed_task_or_ask_question*** is registered to allow the **WhatsAppAgent** to ask questions or present completed tasks after receiving data from the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:99-106] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:98-106] !}
 ```
 
 
 We register the WhatsApp API, which allows the **WhatsAppAgent** to handle tasks like suggesting messages that will be sent to the user.
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:108-113] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:107-113] !}
 ```
 
 ### Initiating the Chat
@@ -212,7 +226,7 @@ We initiate the conversation between the user, [**`WebSurferAgent`**](../../api/
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:121-126] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:120-127] !}
 ```
 
 ### Starting the Application
@@ -220,7 +234,7 @@ Once the conversation ends, the summary is returned to the user, wrapping up the
 The FastAgency app is created, using the registered workflows (**`wf`**) and web-based user interface ([**`MesopUI`**](../../api/fastagency/ui/mesop/MesopUI.md)). This makes the conversation between agents and the user interactive.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:131] !}
+{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:6-10] !}
 ```
 
 For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics.md){target="_blank"}.
@@ -242,14 +256,14 @@ The preferred way to run the [**Mesop**](https://google.github.io/mesop/){target
         !!! note "Terminal"
             ```console
             pip install gunicorn
-            gunicorn main:app
+            gunicorn deployment.main:app
             ```
 
     === "Windows"
         !!! note "Terminal"
             ```console
             pip install waitress
-            waitress-serve --listen=0.0.0.0:8000 main:app
+            waitress-serve --listen=0.0.0.0:8000 deployment.main:app
             ```
 
 ```console
