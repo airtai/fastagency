@@ -24,6 +24,7 @@ my_fastagency_app
 │   ├── lint-pre-commit.sh
 │   ├── lint.sh
 │   ├── run_docker.sh
+│   ├── run_mesop_locally.sh
 │   ├── static-analysis.sh
 │   └── static-pre-commit.sh
 ├── tests
