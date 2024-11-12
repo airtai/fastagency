@@ -7,6 +7,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/example/</loc>
+        <lastmod>2024-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/example/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/features/</loc>
         <lastmod>2024-11-12</lastmod>
         <changefreq>daily</changefreq>
