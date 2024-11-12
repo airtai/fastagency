@@ -126,7 +126,8 @@ jobs:
             PID="${{ steps.fastagency-start.outputs.FAST_PID}}"
             # Send SIGTERM to the program (graceful shutdown)
             echo "killing the fastagency:" $PID
-            kill -s SIGINT $PID
+            ps -ef | grep $PID
+            kill -s SIGTERM $PID
 
             wait_count=0
             while ps -p "$PID" > /dev/null && ((wait_count < 5)); do
