@@ -87,7 +87,7 @@ jobs:
           path: ${{ env.pythonLocation }}
           key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test-v03
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit != 'XXXtrue'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: pip install .[docs,testing]
       - name: Install Pydantic v2
         run: pip install --pre "pydantic>=2,<3"
