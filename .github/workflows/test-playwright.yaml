@@ -105,7 +105,7 @@ jobs:
         run: |
             # Start fastagency and grab its pid
             export COVERAGE_PROCESS_START
-            nohup fastagency run e2e/llm-sans/main.py >nohup.txt 2>nohup-error.txt &
+            nohup gunicorn --workers=1  e2e.llm-sans.main:app >nohup.txt 2>nohup-error.txt &
             # Get the process ID (PID)
             FAST_PID=$!
             echo "Started fastagency with PID: $FAST_PID"
@@ -117,7 +117,7 @@ jobs:
       - run: echo "obtained FAST_PID" ${{ steps.fastagency-start.outputs.FAST_PID}}
       - name: Run Playwright tests without LLMs
         if: ${{ inputs.python-version != '3.9' }}
-        run: npx playwright test -c "playwright.llm-sans.config.ts"
+        run: npx playwright test -c "playwright.coverage.config.ts"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
