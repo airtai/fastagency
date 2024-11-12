@@ -18,11 +18,18 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -e "."
 RUN adduser --disabled-password --gecos '' appuser \
     && chown -R appuser /app \
     && chown -R appuser:appuser /etc/nginx/conf.d /var/log/nginx /var/lib/nginx \
-    && touch /run/nginx.pid && chown -R appuser:appuser /run/nginx.pid
+    && touch /run/nginx.pid && chown -R appuser:appuser /run/nginx.pid \
+    # Allow binding to ports > 1024 without root
+    && sed -i 's/listen 80/listen 9999/g' /etc/nginx/sites-available/default \
+    && sed -i 's/listen \[::\]:80/listen \[::\]:9999/g' /etc/nginx/sites-available/default \
+    # Create required directories with correct permissions
+    && mkdir -p /var/cache/nginx /var/run \
+    && chown -R appuser:appuser /var/cache/nginx /var/run
 
 USER appuser
 
-EXPOSE 8000 8008 8888
+# ToDo: Fix exposing ports
+# EXPOSE 8000 8008 8888
 
 CMD ["/app/run_fastagency.sh"]
 
