@@ -20,6 +20,7 @@ do
     sed -i "5i\    server 127.0.0.1:$PORT;" nginx.conf.template
 done
 envsubst '${MESOP_PORT}' < nginx.conf.template >/etc/nginx/conf.d/default.conf
+echo "Nginx config:"
 cat /etc/nginx/conf.d/default.conf
 
 # Start nginx
