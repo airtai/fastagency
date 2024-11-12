@@ -103,14 +103,11 @@ jobs:
         id: fastagency-start
         run: |
             # Start fastagency and grab its pid
-            # export COVERAGE_PROCESS_START
             nohup gunicorn --workers=1  e2e.llm-sans.main:app >nohup.txt 2>nohup-error.txt &
             # Get the process ID (PID)
             FAST_PID=$!
             echo "Started fastagency with PID: $FAST_PID"
             echo "FAST_PID=$FAST_PID" >> $GITHUB_OUTPUT
-            echo "Sleeping for 5 seconds to let fastagency start up..."
-            sleep 5
         env:
             COVERAGE_PROCESS_START: "e2e/playwright.coverage.cfg"
       - run: echo "obtained FAST_PID" ${{ steps.fastagency-start.outputs.FAST_PID}}
