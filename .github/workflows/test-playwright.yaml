@@ -108,6 +108,7 @@ jobs:
             FAST_PID=$!
             echo "Started fastagency with PID: $FAST_PID"
             echo "FAST_PID=$FAST_PID" >> $GITHUB_OUTPUT
+            ls -al .coverage*
         env:
             COVERAGE_PROCESS_START: "e2e/playwright.coverage.cfg"
       - run: echo "obtained FAST_PID" ${{ steps.fastagency-start.outputs.FAST_PID}}
