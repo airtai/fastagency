@@ -253,7 +253,7 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
 
     1. User Setup:
 
-        - The **`allowed_users`** parameter accepts a dictionary that maps usernames (e.g., emails) to their [**bcrypt-hashed**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} passwords.
+        - The **`allowed_users`** parameter accepts a dictionary that maps usernames to their [**bcrypt-hashed**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} passwords.
         - Only bcrypt hashing is supported; other hashing algorithms (like MD5 or SHA-256) will not work with [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) class.
 
     2. Hashing Passwords with Bcrypt:
@@ -274,15 +274,15 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
 
     ```py
     allowed_users = {
-        "harish@airt.ai": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG"  # nosemgrep
+        "harish": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG"  # nosemgrep
     }
     ```
 
-    In this example, the hash is generated from `someStrongPassword` for the user `harish@airt.ai`.
+    In this example, the hash is generated from `someStrongPassword` for the user `harish`.
 
     **Authenticating in the Mesop Web App**
 
-    To log in, users should enter their **original passwords** (e.g., `someStrongPassword` for  `harish@airt.ai`) on the Mesop application’s login screen. The `BasicAuth` class then verifies the password by comparing its bcrypt hash with the stored hash in `allowed_users`. If the hashes match, the user is successfully authenticated.
+    To log in, users should enter their **original passwords** (e.g., `someStrongPassword` for  `harish`) on the Mesop application’s login screen. The `BasicAuth` class then verifies the password by comparing its bcrypt hash with the stored hash in `allowed_users`. If the hashes match, the user is successfully authenticated.
 
 === "Firebase Authentication"
     ```python hl_lines="29-36 39-44 46"
