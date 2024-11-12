@@ -11,6 +11,8 @@ search:
   boost: 10
 ---
 
+<!-- README starts here -->
+
 # FastAgency
 
 
@@ -70,7 +72,7 @@ search:
 For start, FastAgency is not yet another agentic AI framework. There are many such
 frameworks available today, the most popular open-source ones being [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"}, [**CrewAI**](https://www.crewai.com/){target="_blank"}, [**Swarm**](https://github.com/openai/swarm){target="_blank"} and [**LangGraph**](https://github.com/langchain-ai/langgraph){target="_blank"}. FastAgency provides you with a unified programming interface for deploying agentic workflows written in above agentic frameworks in both development and productional settings (current version supports [**AutoGen**](https://github.com/microsoft/autogen){target="_blank"} only, but other frameworks will be supported very soon). With only a few lines of code, you can create a web chat application or REST API service interacting with agents of your choice. If you need to scale-up your workloads, FastAgency can help you deploy a fully distributed system using internal message brokers coordinating multiple machines in multiple datacenters with just a few lines of code changed from your local development setup.
 
-**FastAgency** is an open-source framework designed to accelerate the transition from prototype to production for multi-agent AI workflows. For developers who use the AutoGen framework, FastAgency enables you to seamlessly scale Jupyter notebook prototypes into fully functional, production-ready applications. With multi-framework support, a unified programming interface, and powerful API integration capabilities, FastAgency streamlines the deployment process, saving time and effort while maintaining flexibility and performance.
+**FastAgency** is an open-source framework designed to accelerate the transition from prototype to production for multi-agent AI workflows. For developers who use the AutoGen framework, FastAgency enables you to seamlessly scale Jupyter notebook prototypes into a fully functional, production-ready applications. With multi-framework support, a unified programming interface, and powerful API integration capabilities, FastAgency streamlines the deployment process, saving time and effort while maintaining flexibility and performance.
 
 Whether you're orchestrating complex AI agents or integrating external APIs into workflows, FastAgency provides the tools necessary to quickly transition from concept to production, reducing development cycles and allowing you to focus on optimizing your multi-agent systems.
 
@@ -80,7 +82,7 @@ Whether you're orchestrating complex AI agents or integrating external APIs into
 
 - [**Unified Programming Interface Across UIs**](user-guide/ui/index.md): FastAgency features a **common programming interface** that enables you to develop your core workflows once and reuse them across various user interfaces without rewriting code. This includes support for both **console-based applications** via `ConsoleUI` and **web-based applications** via `MesopUI`. Whether you need a command-line tool or a fully interactive web app, FastAgency allows you to deploy the same underlying workflows across environments, saving development time and ensuring consistency.
 
-- [**Seamless External API Integration**](user-guide/api/index.md): One of FastAgency's standout features is its ability to easily integrate external APIs into your agent workflows. With just a **single line of code**, you can import an OpenAPI specification, and in only one more line, you can connect it to your agents. This dramatically simplifies the process of enhancing AI agents with real-time data, external processing, or third-party services. For example, you can easily integrate a weather API to provide dynamic, real-time weather updates to your users, making your application more interactive and useful with minimal effort.
+- [**Seamless External API Integration**](user-guide/api/index.md): One of FastAgency's standout features is its ability to easily integrate external APIs into your agent workflows. With just a **few lines of code**, you can import an OpenAPI specification, and in only one more line, you can connect it to your agents. This dramatically simplifies the process of enhancing AI agents with real-time data, external processing, or third-party services. For example, you can easily integrate a weather API to provide dynamic, real-time weather updates to your users, making your application more interactive and useful with minimal effort.
 
 - [**Tester Class for Continuous Integration**](user-guide/testing/index.md): FastAgency also provides a **Tester Class** that enables developers to write and execute tests for their multi-agent workflows. This feature is crucial for maintaining the reliability and robustness of your application, allowing you to automatically verify agent behavior and interactions. The Tester Class is designed to integrate smoothly with **continuous integration (CI)** pipelines, helping you catch bugs early and ensure that your workflows remain functional as they scale into production.
 
@@ -115,6 +117,7 @@ support the following network adapters:
 - [**NATS.io**](https://nats.io/){target="_blank"} via [**FastStream**](https://github.com/airtai/faststream){target="_blank"}: Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/){target="_blank"} message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
 
 
+<!-- README insert example here -->
 
 ## Future Plans
 
