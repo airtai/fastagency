@@ -9,7 +9,6 @@ name = "my_fastagency_app"
 
 dependencies = [
     "fastagency[autogen,mesop,server]>=0.3.0",
-
 ]
 
 [project.optional-dependencies]
