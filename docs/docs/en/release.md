@@ -12,6 +12,28 @@ hide:
 ---
 
 # Release Notes
+## 0.3.4
+
+### What's Changed
+
+* Skip whatsapp agent e2e tests, add whatsapp unit tests by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#540](https://github.com/airtai/fastagency/pull/540){.external-link target="_blank"}
+* Fix broken docs code and links by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#549](https://github.com/airtai/fastagency/pull/549){.external-link target="_blank"}
+* Updated packages and cookiecutter by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#550](https://github.com/airtai/fastagency/pull/550){.external-link target="_blank"}
+* Fix broken docs code by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#551](https://github.com/airtai/fastagency/pull/551){.external-link target="_blank"}
+* Polishing of Getting started by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#552](https://github.com/airtai/fastagency/pull/552){.external-link target="_blank"}
+* Update tutorials to use cookiecutter by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#553](https://github.com/airtai/fastagency/pull/553){.external-link target="_blank"}
+* Recommed cookiecutter as default option and pip+venv as alternative by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#554](https://github.com/airtai/fastagency/pull/554){.external-link target="_blank"}
+* Polishing docs by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#557](https://github.com/airtai/fastagency/pull/557){.external-link target="_blank"}
+* Update cookiecutter generated files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#559](https://github.com/airtai/fastagency/pull/559){.external-link target="_blank"}
+* Create new readme file by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#558](https://github.com/airtai/fastagency/pull/558){.external-link target="_blank"}
+* Update deploy docs by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#561](https://github.com/airtai/fastagency/pull/561){.external-link target="_blank"}
+* Add simple username/password authentication by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#556](https://github.com/airtai/fastagency/pull/556){.external-link target="_blank"}
+* Update docs by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#563](https://github.com/airtai/fastagency/pull/563){.external-link target="_blank"}
+* Implement HTTPBasic security by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#564](https://github.com/airtai/fastagency/pull/564){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.3.3...0.3.4](https://github.com/airtai/fastagency/compare/v0.3.3...0.3.4){.external-link target="_blank"}
+
 ## v0.3.3
 
 ### What's Changed
