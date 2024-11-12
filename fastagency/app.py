@@ -42,7 +42,8 @@ class FastAgency:  # Runnable
         logger.info("Checking if coverage is needed.")
         coverage_process_start = os.environ.get("COVERAGE_PROCESS_START")
         if coverage_process_start:
-            logger.info(f"Coverage process start detected: {coverage_process_start}")
+            logger.info("Coverage process start detected")
+            logger.info(f"Coverage configuration file: {coverage_process_start}")
             import coverage
 
             coverage.process_startup()
