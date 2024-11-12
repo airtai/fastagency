@@ -188,6 +188,13 @@ search:
                         - [AuthProtocol](api/fastagency/ui/mesop/auth/AuthProtocol.md)
                         - auth
                             - [AuthProtocol](api/fastagency/ui/mesop/auth/auth/AuthProtocol.md)
+                        - basic_auth
+                            - [BasicAuth](api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md)
+                            - [basic_auth_component](api/fastagency/ui/mesop/auth/basic_auth/basic_auth_component.md)
+                            - basic_auth
+                                - [BasicAuth](api/fastagency/ui/mesop/auth/basic_auth/basic_auth/BasicAuth.md)
+                            - basic_auth_component
+                                - [basic_auth_component](api/fastagency/ui/mesop/auth/basic_auth/basic_auth_component/basic_auth_component.md)
                         - firebase
                             - [FirebaseAuth](api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md)
                             - [FirebaseConfig](api/fastagency/ui/mesop/auth/firebase/FirebaseConfig.md)
