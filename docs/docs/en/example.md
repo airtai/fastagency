@@ -2,7 +2,7 @@
 
 ### Project setup
 
-We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for setting up a FastAgency project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} for development.
+We **strongly recommend** using [**Cookiecutter**](./user-guide/cookiecutter/index.md) for setting up a FastAgency project. It creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} for development.
 
 1. Install Cookiecutter with the following command:
     ```console
