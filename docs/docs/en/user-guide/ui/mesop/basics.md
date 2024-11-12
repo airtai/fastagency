@@ -243,15 +243,46 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
     {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:61-101] !}
     ```
 
-    The [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) class accepts an **`allowed_user`** parameter, which is a dictionary mapping usernames to their [**bcrypt-hashed**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} passwords. Only the usernames listed in this dictionary are permitted to interact with the Mesop application.
+    The [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) class allows you to define a set of allowed users with [**bcrypt-hashed**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} passwords, providing secure access to your Mesop application. Only users listed in the **`allowed_users`** dictionary can successfully authenticate.
 
     !!! note
 
-        Only the [**bcrypt**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} algorithm is supported for password hashing. Other algorithms, like MD5 or SHA-256, won’t work with this BasicAuth class. Ensure the passwords are hashed using bcrypt while using the [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) authentication. One way to generate bcrypt-hashed passwords is by using online tools such as [**https://bcrypt.online**](https://bcrypt.online){target="_blank"}
+        Only the [**bcrypt**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} algorithm is supported for password hashing. Other algorithms, like **MD5** or **SHA-256**, won’t work with this [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) class. Ensure all passwords are hashed using bcrypt.
 
-    In the provided example, the emails `harish@airt.ai` and `davor@airt.ai` are linked with their bcrypt-hashed passwords. You can replace these with your desired email-password pairs, ensuring the passwords are securely hashed.
+    **BasicAuth Configuration:**
 
-    The **[`MesopUI`](../../../../api/fastagency/ui/mesop/MesopUI.md)** instance is initialized with the [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) object, along with a custom security policy and styles, to complete the setup for authentication.
+    1. User Setup:
+
+        - The **`allowed_users`** parameter accepts a dictionary that maps usernames (e.g., emails) to their [**bcrypt-hashed**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} passwords.
+        - Only bcrypt hashing is supported; other hashing algorithms (like MD5 or SHA-256) will not work with [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) class.
+
+    2. Hashing Passwords with Bcrypt:
+
+        - For each user, generate a bcrypt hash of their password using tools like the [**Bcrypt Hash Generator**](https://bcrypt.online){target="_blank"}.
+
+    **Generating Bcrypt-Hashed Passwords**
+
+    To quickly create a bcrypt hash for a password, follow these steps:
+
+    1. Open the [**Bcrypt Hash Generator**](https://bcrypt.online){target="_blank"}.
+    2. In the `Plain Text Input` field, enter the password `(e.g., someStrongPassword)`.
+    3. Set the `Cost Factor` to `10` (default).
+    4. Click `GENERATE HASH`.
+    5. Copy the hash, which will start with `$2y$...`, and use it as the password for the corresponding user.
+
+    For Example:
+
+    ```py
+    allowed_users = {
+        "harish@airt.ai": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG"
+    }
+    ```
+
+    In this example, the hash is generated from `someStrongPassword` for the user `harish@airt.ai`.
+
+    **Authenticating in the Mesop Web App**
+
+    To log in, users should enter their **original passwords** (e.g., `someStrongPassword` for  `harish@airt.ai`) on the Mesop application’s login screen. The `BasicAuth` class then verifies the password by comparing its bcrypt hash with the stored hash in `allowed_users`. If the hashes match, the user is successfully authenticated.
 
 === "Firebase Authentication"
     ```python hl_lines="29-36 39-44 46"

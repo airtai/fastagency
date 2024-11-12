@@ -253,8 +253,8 @@ class BasicAuthComponent extends LitElement {
 
         <div class="input-group">
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Username"
             .value="${this.username}"
             @input="${this.handleUsernameChange}"
             required
