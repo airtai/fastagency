@@ -99,12 +99,11 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - run: cat package-lock.json
       - name: Start fastagency
         id: fastagency-start
         run: |
             # Start fastagency and grab its pid
-            export COVERAGE_PROCESS_START
+            # export COVERAGE_PROCESS_START
             nohup gunicorn --workers=1  e2e.llm-sans.main:app >nohup.txt 2>nohup-error.txt &
             # Get the process ID (PID)
             FAST_PID=$!
@@ -147,7 +146,6 @@ jobs:
             fi
 
       - run: ls -al .coverage
-      - run: ls
       - run: cat nohup.txt
       - run: cat nohup-error.txt
       - name: Report
