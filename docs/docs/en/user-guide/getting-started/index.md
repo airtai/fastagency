@@ -256,39 +256,42 @@ If you created the project using Cookiecutter, then building the Docker image is
 
 Running the above command will build the Docker image. If the build is successful, you will see output similar to the following:
 
-```console
-Building fastagency docker image
-#0 building with "default" instance using docker driver
+<details>
+    <summary>Output</summary>
+    ```console
+    Building fastagency docker image
+    #0 building with "default" instance using docker driver
 
-#1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 1.41kB done
-#1 DONE 0.0s
+    #1 [internal] load build definition from Dockerfile
+    #1 transferring dockerfile: 1.41kB done
+    #1 DONE 0.0s
 
-#2 [internal] load metadata for docker.io/library/python:3.12
-#2 DONE 1.6s
+    #2 [internal] load metadata for docker.io/library/python:3.12
+    #2 DONE 1.6s
 
-#3 [internal] load .dockerignore
-#3 transferring context: 34B done
-#3 DONE 0.0s
+    #3 [internal] load .dockerignore
+    #3 transferring context: 34B done
+    #3 DONE 0.0s
 
-#4 [internal] load build context
-#4 transferring context: 14.06kB done
-#4 DONE 0.0s
+    #4 [internal] load build context
+    #4 transferring context: 14.06kB done
+    #4 DONE 0.0s
 
-#5 [1/8] FROM docker.io/library/python:3.12@sha256:fccc38d7080ff9883ee85a65a340384d04eb1c148a7222439b3dc5d4f0f72025
-...
-...
-...
-#12 DONE 0.2s
+    #5 [1/8] FROM docker.io/library/python:3.12@sha256:fccc38d7080ff9883ee85a65a340384d04eb1c148a7222439b3dc5d4f0f72025
+    ...
+    ...
+    ...
+    #12 DONE 0.2s
 
-#13 exporting to image
-#13 exporting layers
-#13 exporting layers 0.9s done
-#13 writing image sha256:d5b5432294fa293e3f8d5a2128c2ff012faa640fb552c43ce5faf240bce8bc0f done
-#13 naming to docker.io/library/deploy_fastagency done
-#13 DONE 0.9s
-Successfully built fastagency docker image
-```
+    #13 exporting to image
+    #13 exporting layers
+    #13 exporting layers 0.9s done
+    #13 writing image sha256:d5b5432294fa293e3f8d5a2128c2ff012faa640fb552c43ce5faf240bce8bc0f done
+    #13 naming to docker.io/library/deploy_fastagency done
+    #13 DONE 0.9s
+    Successfully built fastagency docker image
+    ```
+</details>
 
 ### Running the Docker Image
 
@@ -300,63 +303,66 @@ Similarly, running the Docker container is as simple as running the provided scr
 
 Running the above command will start the Docker container in the foreground with the following output:
 
-```console
-Number of workers: 1
-Nginx config:
-upstream mesop_backend {
-    # Enable sticky sessions with IP hash
-    ip_hash;
+<details>
+    <summary>Output</summary>
+    ```console
+    Number of workers: 1
+    Nginx config:
+    upstream mesop_backend {
+        # Enable sticky sessions with IP hash
+        ip_hash;
 
-    server 127.0.0.1:8889;
+        server 127.0.0.1:8889;
 
-}
-
-server {
-    listen 8888;
-    server_name localhost;
-
-    # Security headers
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options "nosniff";
-    add_header X-XSS-Protection "1; mode=block";
-
-    location / {
-        proxy_pass http://mesop_backend;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_redirect off;
-        proxy_buffering off;
-
-        # WSGI support
-        proxy_set_header X-Forwarded-Host $server_name;
-
-        # WebSocket support
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
     }
-}
-Starting gunicorn on port 8889
-2024/11/12 07:52:47 [warn] 10#10: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
-[2024-11-12 07:52:47 +0000] [12] [INFO] Starting gunicorn 23.0.0
-[2024-11-12 07:52:47 +0000] [12] [INFO] Listening at: http://0.0.0.0:8889 (12)
-[2024-11-12 07:52:47 +0000] [12] [INFO] Using worker: sync
-[2024-11-12 07:52:47 +0000] [29] [INFO] Booting worker with pid: 29
-flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.
-2024-11-12 07:52:49,054 [INFO] Patching static file serving in Mesop
-2024-11-12 07:52:49,055 [INFO] Initializing MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b4128986b0>
-2024-11-12 07:52:49,059 [INFO] Initialized MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b4128986b0>
-2024-11-12 07:52:49,059 [INFO] Initializing MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b403fffb30>
-2024-11-12 07:52:49,059 [INFO] Initialized MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b403fffb30>
-2024-11-12 07:52:49,059 [INFO] Initializing FastAgency <FastAgency title=Write FastAgency Docs> with workflows: <fastagency.adapters.fastapi.base.FastAPIProvider object at 0x74b416f21010> and UI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b403fffb30>
-2024-11-12 07:52:49,059 [INFO] Initialized FastAgency: <FastAgency title=Write FastAgency Docs>
-2024-11-12 07:52:49,068 [INFO] Importing autogen.base.py
-INFO:     Started server process [11]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8008 (Press CTRL+C to quit)
-```
+
+    server {
+        listen 8888;
+        server_name localhost;
+
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-Content-Type-Options "nosniff";
+        add_header X-XSS-Protection "1; mode=block";
+
+        location / {
+            proxy_pass http://mesop_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_redirect off;
+            proxy_buffering off;
+
+            # WSGI support
+            proxy_set_header X-Forwarded-Host $server_name;
+
+            # WebSocket support
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+    }
+    Starting gunicorn on port 8889
+    2024/11/12 07:52:47 [warn] 10#10: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
+    [2024-11-12 07:52:47 +0000] [12] [INFO] Starting gunicorn 23.0.0
+    [2024-11-12 07:52:47 +0000] [12] [INFO] Listening at: http://0.0.0.0:8889 (12)
+    [2024-11-12 07:52:47 +0000] [12] [INFO] Using worker: sync
+    [2024-11-12 07:52:47 +0000] [29] [INFO] Booting worker with pid: 29
+    flaml.automl is not available. Please install flaml[automl] to enable AutoML functionalities.
+    2024-11-12 07:52:49,054 [INFO] Patching static file serving in Mesop
+    2024-11-12 07:52:49,055 [INFO] Initializing MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b4128986b0>
+    2024-11-12 07:52:49,059 [INFO] Initialized MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b4128986b0>
+    2024-11-12 07:52:49,059 [INFO] Initializing MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b403fffb30>
+    2024-11-12 07:52:49,059 [INFO] Initialized MesopUI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b403fffb30>
+    2024-11-12 07:52:49,059 [INFO] Initializing FastAgency <FastAgency title=Write FastAgency Docs> with workflows: <fastagency.adapters.fastapi.base.FastAPIProvider object at 0x74b416f21010> and UI: <fastagency.ui.mesop.mesop.MesopUI object at 0x74b403fffb30>
+    2024-11-12 07:52:49,059 [INFO] Initialized FastAgency: <FastAgency title=Write FastAgency Docs>
+    2024-11-12 07:52:49,068 [INFO] Importing autogen.base.py
+    INFO:     Started server process [11]
+    INFO:     Waiting for application startup.
+    INFO:     Application startup complete.
+    INFO:     Uvicorn running on http://0.0.0.0:8008 (Press CTRL+C to quit)
+    ```
+</details>
 
 ### Deploying to Fly.io
 
@@ -378,66 +384,69 @@ Waiting for session...
 
 After logging in, the script will deploy your application to Fly.io without any further input. The output will look like this:
 
-```console
-successfully logged in
-Deploying to fly.io
-An existing fly.toml file was found for app write-fastagency-docs-cool-dew-7193
-Using build strategies '[the "docker/Dockerfile" dockerfile]'. Remove [build] from fly.toml to force a rescan
-Creating app in /workspaces/write_fastagency_docs
-We're about to launch your app on Fly.io. Here's what you're getting:
+<details>
+    <summary>Output</summary>
+    ```console
+    successfully logged in
+    Deploying to fly.io
+    An existing fly.toml file was found for app write-fastagency-docs-cool-dew-7193
+    Using build strategies '[the "docker/Dockerfile" dockerfile]'. Remove [build] from fly.toml to force a rescan
+    Creating app in /workspaces/write_fastagency_docs
+    We're about to launch your app on Fly.io. Here's what you're getting:
 
-Organization: Organization Name                             (fly launch defaults to the personal org)
-Name:         write-fastagency-docs-delicate-waterfall-7272 (generated)
-Region:       Amsterdam, Netherlands                        (from your fly.toml)
-App Machines: shared-cpu-1x, 1GB RAM                        (from your fly.toml)
-Postgres:     <none>                                        (not requested)
-Redis:        <none>                                        (not requested)
-Tigris:       <none>                                        (not requested)
+    Organization: Organization Name                             (fly launch defaults to the personal org)
+    Name:         write-fastagency-docs-delicate-waterfall-7272 (generated)
+    Region:       Amsterdam, Netherlands                        (from your fly.toml)
+    App Machines: shared-cpu-1x, 1GB RAM                        (from your fly.toml)
+    Postgres:     <none>                                        (not requested)
+    Redis:        <none>                                        (not requested)
+    Tigris:       <none>                                        (not requested)
 
-Created app 'write-fastagency-docs-delicate-waterfall-7272' in organization 'personal'
-Admin URL: https://fly.io/apps/write-fastagency-docs-delicate-waterfall-7272
-Hostname: write-fastagency-docs-delicate-waterfall-7272.fly.dev
-Wrote config file fly.toml
-Validating /workspaces/write_fastagency_docs/fly.toml
-✓ Configuration is valid
-==> Building image
-==> Building image with Depot
---> build:  (​)
-[+] Building 15.2s (13/13) FINISHED
-...
-...
-...
---> Build Summary:  (​)
---> Building image done
-image: registry.fly.io/write-fastagency-docs-delicate-waterfall-7272:deployment-01JCFQP31QFJWA9HVVYPZYH1QN
-image size: 498 MB
+    Created app 'write-fastagency-docs-delicate-waterfall-7272' in organization 'personal'
+    Admin URL: https://fly.io/apps/write-fastagency-docs-delicate-waterfall-7272
+    Hostname: write-fastagency-docs-delicate-waterfall-7272.fly.dev
+    Wrote config file fly.toml
+    Validating /workspaces/write_fastagency_docs/fly.toml
+    ✓ Configuration is valid
+    ==> Building image
+    ==> Building image with Depot
+    --> build:  (​)
+    [+] Building 15.2s (13/13) FINISHED
+    ...
+    ...
+    ...
+    --> Build Summary:  (​)
+    --> Building image done
+    image: registry.fly.io/write-fastagency-docs-delicate-waterfall-7272:deployment-01JCFQP31QFJWA9HVVYPZYH1QN
+    image size: 498 MB
 
-Watch your deployment at https://fly.io/apps/write-fastagency-docs-delicate-waterfall-7272/monitoring
+    Watch your deployment at https://fly.io/apps/write-fastagency-docs-delicate-waterfall-7272/monitoring
 
-Provisioning ips for write-fastagency-docs-delicate-waterfall-7272
-  Dedicated ipv6: 2a09:8280:1::4f:f553:0
-  Shared ipv4: 66.241.124.140
-  Add a dedicated ipv4 with: fly ips allocate-v4
+    Provisioning ips for write-fastagency-docs-delicate-waterfall-7272
+    Dedicated ipv6: 2a09:8280:1::4f:f553:0
+    Shared ipv4: 66.241.124.140
+    Add a dedicated ipv4 with: fly ips allocate-v4
 
-This deployment will:
- * create 2 "app" machines
+    This deployment will:
+    * create 2 "app" machines
 
-No machines in group app, launching a new machine
-Creating a second machine to increase service availability
-Finished launching new machines
--------
-NOTE: The machines for [app] have services with 'auto_stop_machines = "stop"' that will be stopped when idling
+    No machines in group app, launching a new machine
+    Creating a second machine to increase service availability
+    Finished launching new machines
+    -------
+    NOTE: The machines for [app] have services with 'auto_stop_machines = "stop"' that will be stopped when idling
 
--------
-Checking DNS configuration for write-fastagency-docs-delicate-waterfall-7272.fly.dev
+    -------
+    Checking DNS configuration for write-fastagency-docs-delicate-waterfall-7272.fly.dev
 
-Visit your newly deployed app at https://write-fastagency-docs-delicate-waterfall-7272.fly.dev/
-Setting secrets
-Updating existing machines in 'write-fastagency-docs-delicate-waterfall-7272' with rolling strategy
+    Visit your newly deployed app at https://write-fastagency-docs-delicate-waterfall-7272.fly.dev/
+    Setting secrets
+    Updating existing machines in 'write-fastagency-docs-delicate-waterfall-7272' with rolling strategy
 
--------
- ✔ [1/2] Machine 48e2764ce93e58 [app] update succeeded
- ✔ [2/2] Machine e825942c739518 [app] update succeeded
--------
-Checking DNS configuration for write-fastagency-docs-delicate-waterfall-7272.fly.dev
-```
+    -------
+    ✔ [1/2] Machine 48e2764ce93e58 [app] update succeeded
+    ✔ [2/2] Machine e825942c739518 [app] update succeeded
+    -------
+    Checking DNS configuration for write-fastagency-docs-delicate-waterfall-7272.fly.dev
+    ```
+</details>
