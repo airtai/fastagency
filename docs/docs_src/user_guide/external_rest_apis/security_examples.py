@@ -70,3 +70,14 @@ def configure_http_bearer_client(
     api_client.set_security_params(HTTPBearer.Parameters(value=api_key)) # API key
 
     return api_client
+
+def configure_http_basic_client(
+    openapi_url: str, username: str, password: str
+) -> OpenAPI:
+    from fastagency.api.openapi import OpenAPI
+    from fastagency.api.openapi.security import HTTPBasic
+
+    api_client = OpenAPI.create(openapi_url=openapi_url) # API openapi specification url
+    api_client.set_security_params(HTTPBasic.Parameters(username=username, password=password)) # username/password
+
+    return api_client
