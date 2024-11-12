@@ -715,6 +715,30 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/auth/AuthProtocol/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/BasicAuth/</loc>
+        <lastmod>2024-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/BasicAuth/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/basic_auth_component/</loc>
+        <lastmod>2024-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/basic_auth_component/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/basic_auth/BasicAuth/</loc>
+        <lastmod>2024-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/basic_auth/BasicAuth/"/>
+    </url>
+    <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/basic_auth_component/basic_auth_component/</loc>
+        <lastmod>2024-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/basic_auth/basic_auth_component/basic_auth_component/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/ui/mesop/auth/firebase/FirebaseAuth/</loc>
         <lastmod>2024-11-12</lastmod>
         <changefreq>daily</changefreq>
