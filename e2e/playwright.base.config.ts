@@ -79,15 +79,15 @@ const baseConfig: PlaywrightTestConfig = {
         // },
     ],
 
-    /* Run your local dev server before starting the tests */
-    webServer: {
-        command: 'fastagency run e2e/llm-sans/main.py',
-        url: 'http://127.0.0.1:32123',
-        //        env: testEnv,
-        reuseExistingServer: true,
-        //reuseExistingServer: !process.env.CI,
-        //reuseExistingServer: false,
-    },
+    // /* Run your local dev server before starting the tests */
+    // webServer: {
+    //     command: 'fastagency run e2e/llm-sans/main.py',
+    //     url: 'http://127.0.0.1:32123',
+    //     //        env: testEnv,
+    //     reuseExistingServer: true,
+    //     //reuseExistingServer: !process.env.CI,
+    //     //reuseExistingServer: false,
+    // },
 }
 
 export function defineConfig(config: PlaywrightTestConfig): PlaywrightTestConfig {
