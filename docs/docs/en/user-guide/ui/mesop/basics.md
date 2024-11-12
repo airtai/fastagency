@@ -274,7 +274,7 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
 
     ```py
     allowed_users = {
-        "harish@airt.ai": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG"
+        "harish@airt.ai": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG"  # nosemgrep
     }
     ```
 
