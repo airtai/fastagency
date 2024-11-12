@@ -103,7 +103,7 @@ jobs:
         id: fastagency-start
         run: |
             # Start fastagency and grab its pid
-            nohup fastagency run e2e/llm-sans/main.py &
+            nohup fastagency run e2e/llm-sans/main.py >nohup.txt 2>nohup-error.txt &
             # Get the process ID (PID)
             FAST_PID=$!
             echo "Started fastagency with PID: $FAST_PID"
@@ -144,7 +144,6 @@ jobs:
 
       - run: ls -al .coverage
       - run: ls
-      - run: cat nohup.out
       - name: Move coverage file
         run: mv .coverage coverage/.coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Check coverage file
