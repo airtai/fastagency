@@ -224,6 +224,9 @@ class BasicAuthComponent extends LitElement {
       if (form) {
         form.reset();
       }
+
+      // Refresh the browser
+      window.location.reload();
     } catch (error) {
       console.error("Sign out error:", error);
     }

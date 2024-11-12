@@ -91,7 +91,7 @@ auth = BasicAuth(
     # bcrypt-hashed passwords. One way to generate bcrypt-hashed passwords
     # is by using online tools such as https://bcrypt.online
     allowed_users={
-        "harish@airt.ai": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG",  # nosemgrep
+        "harish": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG",  # nosemgrep
         "davor@airt.ai": "$2y$10$Yz9GuF/bWmRFmnXFkauOwePT/U.VSUHdpMOX7GPB8GiklJE4HJZmG"  # nosemgrep
     }
 )
