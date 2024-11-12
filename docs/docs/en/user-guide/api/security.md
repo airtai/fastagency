@@ -9,13 +9,16 @@ FastAgency currently supports the following security schemas:
 1. **HTTP Bearer Token**
    An HTTP authentication scheme using Bearer tokens, commonly used for securing RESTful APIs.
 
-2. **API Key**
+2. **HTTP Basic Auth**
+   HTTP authenticcation scheme using username/password pair.
+
+3. **API Key**
    API keys can be provided in:
     - HTTP header
     - Query parameters
     - Cookies
 
-3. **OAuth2 (Password Flow)**
+4. **OAuth2 (Password Flow)**
    A flow where the token authority and API service reside on the same address. This is useful for scenarios where the client credentials are exchanged for a token directly.
 
 ## Defining Security Schemas in OpenAPI
@@ -31,6 +34,21 @@ In your OpenAPI schema:
       "BearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      }
+    }
+  }
+}
+```
+
+### HTTP Basic auth
+In your OpenAPI schema:
+```json
+{
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
       }
     }
   }
@@ -94,6 +112,12 @@ FastAgency will automatically generate the necessary authentication functions fr
 To configure bearer token authentication, provide the token when initializing the API client:
 ```python hl_lines="5"
 {! docs_src/user_guide/external_rest_apis/security_examples.py [ln:66-70] !}
+```
+
+### Using HTTP Basic Auth
+To configure basic authentication, provide the username and password when initializing the API client:
+```python hl_lines="5"
+{! docs_src/user_guide/external_rest_apis/security_examples.py [ln:77-81] !}
 ```
 
 ### Using API Key (in Header, Query, or Cookie)

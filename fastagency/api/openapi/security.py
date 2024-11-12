@@ -1,3 +1,4 @@
+import base64
 import logging
 from typing import Any, ClassVar, Literal, Optional, Protocol
 
@@ -227,6 +228,42 @@ class HTTPBearer(BaseSecurity):
 
         def get_security_class(self) -> type[BaseSecurity]:
             return HTTPBearer
+
+
+class HTTPBasic(BaseSecurity):
+    """HTTP Bearer security class."""
+
+    type: ClassVar[Literal["http"]] = "http"
+    in_value: ClassVar[Literal["basic"]] = "basic"
+
+    @classmethod
+    def is_supported(cls, type: str, schema_parameters: dict[str, Any]) -> bool:
+        return cls.type == type and cls.in_value == schema_parameters.get("scheme")
+
+    class Parameters(BaseModel):  # BaseSecurityParameters
+        """HTTP Basic security parameters class."""
+
+        username: str
+        password: str
+
+        def apply(
+            self,
+            q_params: dict[str, Any],
+            body_dict: dict[str, Any],
+            security: BaseSecurity,
+        ) -> None:
+            if "headers" not in body_dict:
+                body_dict["headers"] = {}
+
+            credentials = f"{self.username}:{self.password}"
+            encoded_credentials = base64.b64encode(credentials.encode("utf-8")).decode(
+                "utf-8"
+            )
+
+            body_dict["headers"]["Authorization"] = f"Basic {encoded_credentials}"
+
+        def get_security_class(self) -> type[BaseSecurity]:
+            return HTTPBasic
 
 
 class OAuth2PasswordBearer(BaseSecurity):

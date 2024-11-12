@@ -79,6 +79,7 @@ search:
                         - [APIKeyQuery](api/fastagency/api/openapi/security/APIKeyQuery.md)
                         - [BaseSecurity](api/fastagency/api/openapi/security/BaseSecurity.md)
                         - [BaseSecurityParameters](api/fastagency/api/openapi/security/BaseSecurityParameters.md)
+                        - [HTTPBasic](api/fastagency/api/openapi/security/HTTPBasic.md)
                         - [HTTPBearer](api/fastagency/api/openapi/security/HTTPBearer.md)
                         - [OAuth2PasswordBearer](api/fastagency/api/openapi/security/OAuth2PasswordBearer.md)
                         - [UnsuportedSecurityStub](api/fastagency/api/openapi/security/UnsuportedSecurityStub.md)
