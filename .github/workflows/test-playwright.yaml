@@ -144,6 +144,8 @@ jobs:
 
       - run: ls -al .coverage
       - run: ls
+      - run: cat nohup.txt
+      - run: cat nohup-error.txt
       - name: Move coverage file
         run: mv .coverage coverage/.coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Check coverage file
