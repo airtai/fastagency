@@ -22,7 +22,7 @@ hide:
 * Fix broken docs code by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#551](https://github.com/airtai/fastagency/pull/551){.external-link target="_blank"}
 * Polishing of Getting started by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#552](https://github.com/airtai/fastagency/pull/552){.external-link target="_blank"}
 * Update tutorials to use cookiecutter by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#553](https://github.com/airtai/fastagency/pull/553){.external-link target="_blank"}
-* Recommed cookiecutter as default option and pip+venv as alternative by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#554](https://github.com/airtai/fastagency/pull/554){.external-link target="_blank"}
+* Recommend cookiecutter as default option and pip+venv as alternative by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#554](https://github.com/airtai/fastagency/pull/554){.external-link target="_blank"}
 * Polishing docs by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#557](https://github.com/airtai/fastagency/pull/557){.external-link target="_blank"}
 * Update cookiecutter generated files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#559](https://github.com/airtai/fastagency/pull/559){.external-link target="_blank"}
 * Create new readme file by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#558](https://github.com/airtai/fastagency/pull/558){.external-link target="_blank"}
