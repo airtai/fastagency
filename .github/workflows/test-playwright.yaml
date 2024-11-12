@@ -151,7 +151,7 @@ jobs:
       - run: cat nohup.txt
       - run: cat nohup-error.txt
       - name: Report
-        run: coverage report -i --no-skip-covered
+        run: coverage report  --no-skip-covered
       - name: Move coverage file
         run: mv .coverage coverage/.coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Check coverage file
