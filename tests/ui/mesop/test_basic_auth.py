@@ -15,7 +15,7 @@ if sys.version_info >= (3, 10):
         def basic_auth(self):
             """Fixture to create a BasicAuth instance with test users."""
             # Create test users with hashed passwords
-            test_password = "test_password"
+            test_password = "test_password"  # pragma: allowlist secret
             hashed_password = bcrypt.hashpw(
                 test_password.encode("utf-8"), bcrypt.gensalt()
             ).decode("utf-8")
