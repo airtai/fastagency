@@ -99,6 +99,7 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+      - run: cat package-lock.json
       - name: Start fastagency
         id: fastagency-start
         run: |
