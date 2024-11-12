@@ -229,6 +229,12 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/BaseSecurityParameters/"/>
     </url>
     <url>
+        <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/HTTPBasic/</loc>
+        <lastmod>2024-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://fastagency.ai/latest/api/fastagency/api/openapi/security/HTTPBasic/"/>
+    </url>
+    <url>
         <loc>https://fastagency.ai/latest/api/fastagency/api/openapi/security/HTTPBearer/</loc>
         <lastmod>2024-11-12</lastmod>
         <changefreq>daily</changefreq>
