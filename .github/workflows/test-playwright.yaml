@@ -111,7 +111,6 @@ jobs:
         env:
             COVERAGE_PROCESS_START: "e2e/playwright.coverage.cfg"
       - run: echo "obtained FAST_PID" ${{ steps.fastagency-start.outputs.FAST_PID}}
-      - run: ls -al .cov*
       - name: Run Playwright tests without LLMs
         if: ${{ inputs.python-version != '3.9' }}
         run: npx playwright test -c "playwright.llm-sans.config.ts"
@@ -145,6 +144,7 @@ jobs:
 
       - run: ls -al .coverage
       - run: ls
+      - run: cat nohup.out
       - name: Move coverage file
         run: mv .coverage coverage/.coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
       - name: Check coverage file
