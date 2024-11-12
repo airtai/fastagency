@@ -2,7 +2,7 @@
 
 [**`MesopUI`**](../../../../api/fastagency/ui/mesop/MesopUI.md) in FastAgency offers a web-based interface for interacting with [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"}. Unlike the [**`ConsoleUI`**](../../../../api/fastagency/ui/console/ConsoleUI.md), which is text-based and runs in the command line, MesopUI provides a user-friendly browser interface, making it ideal for applications that need a more engaging and rich user experience.
 
-When creating a Mesop application, you can choose between the following modes:
+When creating a [**Mesop**](https://google.github.io/mesop/){target="_blank"} application, you can choose between the following modes:
 
 - **No Authentication**: Open access to all users.
 - **Basic Authentication**: Simple username and password authentication for rapid prototyping. Not recommended for production.
@@ -193,7 +193,8 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
     {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:1-15] !}
     ```
 
-    - [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md): This class is used to add simple username/password authentication for a Mesop application, where the username is the email and the password is stored as a hashed value.
+    - [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md): This class
+    enables you to integrate basic username/password authentication into your Mesop application.
 
 === "Firebase Authentication"
 
@@ -238,13 +239,17 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
     - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
 === "Basic Authentication"
-    ```python hl_lines="29-36 38"
-    {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:61-100] !}
+    ```python hl_lines="29-37 39"
+    {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:61-101] !}
     ```
 
-    - The `allowed_users` dictionary maps email addresses to their corresponding bcrypt-hashed passwords. You can generate these hashed passwords using online tools like [**bcrypt.online**](https://bcrypt.online){target="_blank"}.
+    The [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) class accepts an **`allowed_user`** parameter, which is a dictionary mapping usernames to their [**bcrypt-hashed**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} passwords. Only the usernames listed in this dictionary are permitted to interact with the Mesop application.
 
-    In the provided example, the emails `harish@airt.ai` and `davor@airt.ai` are linked with their hashed passwords. You can replace these with your desired email-password pairs, ensuring the passwords are securely hashed.
+    !!! note
+
+        Only the [**bcrypt**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} algorithm is supported for password hashing. Other algorithms, like MD5 or SHA-256, won’t work with this BasicAuth class. Ensure the passwords are hashed using bcrypt while using the [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) authentication. One way to generate bcrypt-hashed passwords is by using online tools such as [**https://bcrypt.online**](https://bcrypt.online){target="_blank"}
+
+    In the provided example, the emails `harish@airt.ai` and `davor@airt.ai` are linked with their bcrypt-hashed passwords. You can replace these with your desired email-password pairs, ensuring the passwords are securely hashed.
 
     The **[`MesopUI`](../../../../api/fastagency/ui/mesop/MesopUI.md)** instance is initialized with the [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) object, along with a custom security policy and styles, to complete the setup for authentication.
 

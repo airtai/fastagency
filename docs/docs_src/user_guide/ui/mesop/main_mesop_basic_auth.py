@@ -87,8 +87,9 @@ styles=MesopHomePageStyles(
 
 # Initialize auth with username and password
 auth = BasicAuth(
-    # TODO: Replace the allowed_users with the desired usernames and hashed passwords
-    # The hashed passwords can be generated using online tools like https://bcrypt.online
+    # TODO: Replace `allowed_users` with the desired usernames and their
+    # bcrypt-hashed passwords. One way to generate bcrypt-hashed passwords
+    # is by using online tools such as https://bcrypt.online
     allowed_users={
         "harish@airt.ai": "$2y$10$4aH/.C.WritjZAYskA0Dq.htlFDJTa49UuxSVUlp9JCa2K3PgUkaG",  # nosemgrep
         "davor@airt.ai": "$2y$10$Yz9GuF/bWmRFmnXFkauOwePT/U.VSUHdpMOX7GPB8GiklJE4HJZmG"  # nosemgrep
