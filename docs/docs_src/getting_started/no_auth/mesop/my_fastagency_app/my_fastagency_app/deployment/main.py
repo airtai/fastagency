@@ -3,9 +3,12 @@ from fastagency.ui.mesop import MesopUI
 
 from ..workflow import wf
 
+ui = MesopUI()
+
+
 app = FastAgency(
     provider=wf,
-    ui=MesopUI(),
+    ui=ui,
     title="My FastAgency App",
 )
 
