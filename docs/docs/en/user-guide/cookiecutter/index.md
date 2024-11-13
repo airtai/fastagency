@@ -86,15 +86,15 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
 
     === "Mesop"
         ```console
-        {!> docs_src/getting_started/mesop/folder_structure.txt !}
+        {!> docs_src/getting_started/no_auth/mesop/folder_structure.txt !}
         ```
     === "FastAPI + Mesop"
         ```console
-        {!> docs_src/getting_started/fastapi/folder_structure.txt !}
+        {!> docs_src/getting_started/no_auth/fastapi/folder_structure.txt !}
         ```
     === "NATS + FastAPI + Mesop"
         ```console
-        {!> docs_src/getting_started/nats_n_fastapi/folder_structure.txt !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/folder_structure.txt !}
         ```
 
 5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
