@@ -37,3 +37,4 @@ class State:
     available_workflows_initialized = False
     available_workflows_exception = False
     authenticated_user: Optional[str] = None
+    auth_error: Optional[str] = None
