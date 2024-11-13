@@ -176,6 +176,32 @@ In case we used network adapters in the step above, we can chain additional netw
         {!> docs_src/getting_started/basic_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py !}
         ```
 
+### Authentication
+
+FastAgency provides three types of authentication mechanisms: [**Basic Authentication**](../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md), [**Firebase Authentication**](../../api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md) and no authentication (more will be added soon). The default authentication mechanism is [**Basic Authentication**](../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md). You can choose the type of authentication while setting up the project with Cookiecutter.
+
+To use Basic Authentication, configure the desired usernames and their bcrypt hashed passwords in the BasicAuth class and apply the authentication object to the MesopUI object.
+
+=== "Mesop"
+
+    !!! note "main.py"
+        ```python
+        {!> docs_src/getting_started/basic_auth/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py !}
+        ```
+
+=== "FastAPI + Mesop"
+
+    !!! note "main_2_mesop.py"
+        ```python
+        {!> docs_src/getting_started/basic_auth/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_mesop.py !}
+        ```
+
+=== "NATS + FastAPI + Mesop"
+
+    !!! note "main_3_mesop.py"
+        ```python
+        {!> docs_src/getting_started/basic_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py !}
+        ```
 
 ## Run Application Locally
 
