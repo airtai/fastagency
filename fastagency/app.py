@@ -44,6 +44,9 @@ class FastAgency:  # Runnable
         if coverage_process_start:
             logger.info("Coverage process start detected")
             logger.info(f"Coverage configuration file: {coverage_process_start}")
+            logger.info(
+                "To ensure coverage is written out, terminate this program with SIGTERM"
+            )
             import coverage
 
             coverage.process_startup()
