@@ -265,17 +265,32 @@
 </code></pre></div> <p>Run the test with the following command:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-17-1 name=__codelineno-17-1 href=#__codelineno-17-1></a><span class=go>pytest -s</span>
 </code></pre></div> <p>Running the test could take up to 30 seconds, depending on latency and throughput of OpenAI (or other LLM providers).</p> <h2 id=deployment-files>Deployment files<a class=headerlink href=#deployment-files title="Permanent link">#</a></h2> <p>Depending on the interface you choose when setting up the project with<code>cookiecutter</code>, appropriate deployment files will be generated under <code>my_fastagency_app/deployment</code> folder. We'll quickly explain what they contain and how to use them.</p> <h3 id=registering-workflow-with-a-ui-or-a-provider>Registering workflow with a UI or a provider<a class=headerlink href=#registering-workflow-with-a-ui-or-a-provider title="Permanent link">#</a></h3> <p>The workflow definition will be registered either directly with an UI object or a network provider that will propagate messages back and forth over a network protocol.</p> <div class="tabbed-set tabbed-alternate" data-tabs=4:3><input checked=checked id=mesop_2 name=__tabbed_4 type=radio><input id=fastapi--mesop_2 name=__tabbed_4 type=radio><input id=nats--fastapi--mesop_2 name=__tabbed_4 type=radio><div class=tabbed-labels><label for=mesop_2>Mesop</label><label for=fastapi--mesop_2>FastAPI + Mesop</label><label for=nats--fastapi--mesop_2>NATS + FastAPI + Mesop</label></div> <div class=tabbed-content> <div class=tabbed-block> <p>In the case of a simple Mesop application, will register the workflow directly with <code>MesopUI</code> object and run it in the same process.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-18-1 name=__codelineno-18-1 href=#__codelineno-18-1></a><span class=kn>from</span> <span class=nn>fastagency</span> <span class=kn>import</span> <span class=n>FastAgency</span>
 <a id=__codelineno-18-2 name=__codelineno-18-2 href=#__codelineno-18-2></a><span class=kn>from</span> <span class=nn>fastagency.ui.mesop</span> <span class=kn>import</span> <span class=n>MesopUI</span>
-<a id=__codelineno-18-3 name=__codelineno-18-3 href=#__codelineno-18-3></a>
-<a id=__codelineno-18-4 name=__codelineno-18-4 href=#__codelineno-18-4></a><span class=kn>from</span> <span class=nn>..workflow</span> <span class=kn>import</span> <span class=n>wf</span>
-<a id=__codelineno-18-5 name=__codelineno-18-5 href=#__codelineno-18-5></a>
-<a id=__codelineno-18-6 name=__codelineno-18-6 href=#__codelineno-18-6></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
-<a id=__codelineno-18-7 name=__codelineno-18-7 href=#__codelineno-18-7></a>    <span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span>
-<a id=__codelineno-18-8 name=__codelineno-18-8 href=#__codelineno-18-8></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
-<a id=__codelineno-18-9 name=__codelineno-18-9 href=#__codelineno-18-9></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
-<a id=__codelineno-18-10 name=__codelineno-18-10 href=#__codelineno-18-10></a><span class=p>)</span>
-<a id=__codelineno-18-11 name=__codelineno-18-11 href=#__codelineno-18-11></a>
-<a id=__codelineno-18-12 name=__codelineno-18-12 href=#__codelineno-18-12></a><span class=c1># start the fastagency app with the following command</span>
-<a id=__codelineno-18-13 name=__codelineno-18-13 href=#__codelineno-18-13></a><span class=c1># gunicorn my_fastagency_app.deployment.main:app</span>
+<a id=__codelineno-18-3 name=__codelineno-18-3 href=#__codelineno-18-3></a><span class=kn>from</span> <span class=nn>fastagency.ui.mesop.auth.basic_auth</span> <span class=kn>import</span> <span class=n>BasicAuth</span>
+<a id=__codelineno-18-4 name=__codelineno-18-4 href=#__codelineno-18-4></a>
+<a id=__codelineno-18-5 name=__codelineno-18-5 href=#__codelineno-18-5></a><span class=kn>from</span> <span class=nn>..workflow</span> <span class=kn>import</span> <span class=n>wf</span>
+<a id=__codelineno-18-6 name=__codelineno-18-6 href=#__codelineno-18-6></a>
+<a id=__codelineno-18-7 name=__codelineno-18-7 href=#__codelineno-18-7></a><span class=n>auth</span> <span class=o>=</span> <span class=n>BasicAuth</span><span class=p>(</span>
+<a id=__codelineno-18-8 name=__codelineno-18-8 href=#__codelineno-18-8></a>    <span class=c1># TODO: Replace `allowed_users` with the desired usernames and their</span>
+<a id=__codelineno-18-9 name=__codelineno-18-9 href=#__codelineno-18-9></a>    <span class=c1># bcrypt-hashed passwords. One way to generate bcrypt-hashed passwords</span>
+<a id=__codelineno-18-10 name=__codelineno-18-10 href=#__codelineno-18-10></a>    <span class=c1># is by using online tools such as https://bcrypt.online</span>
+<a id=__codelineno-18-11 name=__codelineno-18-11 href=#__codelineno-18-11></a>    <span class=c1># Default password for all users is `password`</span>
+<a id=__codelineno-18-12 name=__codelineno-18-12 href=#__codelineno-18-12></a>    <span class=n>allowed_users</span><span class=o>=</span><span class=p>{</span>
+<a id=__codelineno-18-13 name=__codelineno-18-13 href=#__codelineno-18-13></a>        <span class=s2>&quot;admin&quot;</span><span class=p>:</span> <span class=s2>&quot;$2y$10$ZgcGQlsvMoMRmmW4Y.nUVuVHc.vOJsOA7iXAPXWPFy9DX2S7oeTDa&quot;</span><span class=p>,</span>  <span class=c1># nosemgrep: generic.secrets.security.detected-bcrypt-hash.detected-bcrypt-hash</span>
+<a id=__codelineno-18-14 name=__codelineno-18-14 href=#__codelineno-18-14></a>        <span class=s2>&quot;user@example.com&quot;</span><span class=p>:</span> <span class=s2>&quot;$2y$10$ZgcGQlsvMoMRmmW4Y.nUVuVHc.vOJsOA7iXAPXWPFy9DX2S7oeTDa&quot;</span><span class=p>,</span>  <span class=c1># nosemgrep: generic.secrets.security.detected-bcrypt-hash.detected-bcrypt-hash</span>
+<a id=__codelineno-18-15 name=__codelineno-18-15 href=#__codelineno-18-15></a>    <span class=p>},</span>
+<a id=__codelineno-18-16 name=__codelineno-18-16 href=#__codelineno-18-16></a><span class=p>)</span>
+<a id=__codelineno-18-17 name=__codelineno-18-17 href=#__codelineno-18-17></a>
+<a id=__codelineno-18-18 name=__codelineno-18-18 href=#__codelineno-18-18></a><span class=n>ui</span> <span class=o>=</span> <span class=n>MesopUI</span><span class=p>(</span><span class=n>auth</span><span class=o>=</span><span class=n>auth</span><span class=p>)</span>
+<a id=__codelineno-18-19 name=__codelineno-18-19 href=#__codelineno-18-19></a>
+<a id=__codelineno-18-20 name=__codelineno-18-20 href=#__codelineno-18-20></a>
+<a id=__codelineno-18-21 name=__codelineno-18-21 href=#__codelineno-18-21></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
+<a id=__codelineno-18-22 name=__codelineno-18-22 href=#__codelineno-18-22></a>    <span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span>
+<a id=__codelineno-18-23 name=__codelineno-18-23 href=#__codelineno-18-23></a>    <span class=n>ui</span><span class=o>=</span><span class=n>ui</span><span class=p>,</span>
+<a id=__codelineno-18-24 name=__codelineno-18-24 href=#__codelineno-18-24></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
+<a id=__codelineno-18-25 name=__codelineno-18-25 href=#__codelineno-18-25></a><span class=p>)</span>
+<a id=__codelineno-18-26 name=__codelineno-18-26 href=#__codelineno-18-26></a>
+<a id=__codelineno-18-27 name=__codelineno-18-27 href=#__codelineno-18-27></a><span class=c1># start the fastagency app with the following command</span>
+<a id=__codelineno-18-28 name=__codelineno-18-28 href=#__codelineno-18-28></a><span class=c1># gunicorn my_fastagency_app.deployment.main:app</span>
 </code></pre></div> </div> <div class=tabbed-block> <p>In the case of FastAPI application, we will create an <code>FastAPIAdapter</code> and then include a router to the <code>FastAPI</code> application. The adapter will have all REST and Websocket routes for communicating with a client.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-19-1 name=__codelineno-19-1 href=#__codelineno-19-1></a><span class=kn>from</span> <span class=nn>typing</span> <span class=kn>import</span> <span class=n>Any</span>
 <a id=__codelineno-19-2 name=__codelineno-19-2 href=#__codelineno-19-2></a>
 <a id=__codelineno-19-3 name=__codelineno-19-3 href=#__codelineno-19-3></a><span class=kn>from</span> <span class=nn>fastagency.adapters.fastapi</span> <span class=kn>import</span> <span class=n>FastAPIAdapter</span>
@@ -379,7 +394,7 @@
 <a id=__codelineno-22-24 name=__codelineno-22-24 href=#__codelineno-22-24></a>
 <a id=__codelineno-22-25 name=__codelineno-22-25 href=#__codelineno-22-25></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
 <a id=__codelineno-22-26 name=__codelineno-22-26 href=#__codelineno-22-26></a>    <span class=n>provider</span><span class=o>=</span><span class=n>provider</span><span class=p>,</span>
-<a id=__codelineno-22-27 name=__codelineno-22-27 href=#__codelineno-22-27></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
+<a id=__codelineno-22-27 name=__codelineno-22-27 href=#__codelineno-22-27></a>    <span class=n>ui</span><span class=o>=</span><span class=n>ui</span><span class=p>,</span>
 <a id=__codelineno-22-28 name=__codelineno-22-28 href=#__codelineno-22-28></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
 <a id=__codelineno-22-29 name=__codelineno-22-29 href=#__codelineno-22-29></a><span class=p>)</span>
 <a id=__codelineno-22-30 name=__codelineno-22-30 href=#__codelineno-22-30></a>
@@ -443,7 +458,7 @@
 <a id=__codelineno-24-24 name=__codelineno-24-24 href=#__codelineno-24-24></a>
 <a id=__codelineno-24-25 name=__codelineno-24-25 href=#__codelineno-24-25></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
 <a id=__codelineno-24-26 name=__codelineno-24-26 href=#__codelineno-24-26></a>    <span class=n>provider</span><span class=o>=</span><span class=n>provider</span><span class=p>,</span>
-<a id=__codelineno-24-27 name=__codelineno-24-27 href=#__codelineno-24-27></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
+<a id=__codelineno-24-27 name=__codelineno-24-27 href=#__codelineno-24-27></a>    <span class=n>ui</span><span class=o>=</span><span class=n>ui</span><span class=p>,</span>
 <a id=__codelineno-24-28 name=__codelineno-24-28 href=#__codelineno-24-28></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
 <a id=__codelineno-24-29 name=__codelineno-24-29 href=#__codelineno-24-29></a><span class=p>)</span>
 <a id=__codelineno-24-30 name=__codelineno-24-30 href=#__codelineno-24-30></a>

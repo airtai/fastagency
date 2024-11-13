@@ -117,7 +117,7 @@ deactivate FastAPI</code></pre> <p>To better understand this diagram, let's brea
 <a id=__codelineno-6-12 name=__codelineno-6-12 href=#__codelineno-6-12></a>
 <a id=__codelineno-6-13 name=__codelineno-6-13 href=#__codelineno-6-13></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
 <a id=__codelineno-6-14 name=__codelineno-6-14 href=#__codelineno-6-14></a>    <span class=n>provider</span><span class=o>=</span><span class=n>provider</span><span class=p>,</span>
-<a id=__codelineno-6-15 name=__codelineno-6-15 href=#__codelineno-6-15></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
+<a id=__codelineno-6-15 name=__codelineno-6-15 href=#__codelineno-6-15></a>    <span class=n>ui</span><span class=o>=</span><span class=n>ui</span><span class=p>,</span>
 </code></pre></div> </div> </div> <div class=tabbed-block> <h4 id=4-serving-the-custom-html-client>4. <strong>Serving the Custom HTML Client</strong><a class=headerlink href=#4-serving-the-custom-html-client title="Permanent link">#</a></h4> <p>Finally, use the <a href=https://fastapi.tiangolo.com/advanced/custom-response/#html-response target=_blank><strong>HTML Response</strong></a> from FastAPI to serve the custom client code.</p> <div class=highlight><pre><span></span><code><a id=__codelineno-7-1 name=__codelineno-7-1 href=#__codelineno-7-1></a><span class=n>html</span> <span class=o>=</span> <span class=s2>&quot;&quot;&quot;</span>
 <a id=__codelineno-7-2 name=__codelineno-7-2 href=#__codelineno-7-2></a><span class=s2>&lt;!DOCTYPE html&gt;</span>
 <a id=__codelineno-7-3 name=__codelineno-7-3 href=#__codelineno-7-3></a><span class=s2>&lt;html&gt;</span>
@@ -290,7 +290,7 @@ deactivate FastAPI</code></pre> <p>To better understand this diagram, let's brea
 <a id=__codelineno-10-12 name=__codelineno-10-12 href=#__codelineno-10-12></a>
 <a id=__codelineno-10-13 name=__codelineno-10-13 href=#__codelineno-10-13></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span>
 <a id=__codelineno-10-14 name=__codelineno-10-14 href=#__codelineno-10-14></a>    <span class=n>provider</span><span class=o>=</span><span class=n>provider</span><span class=p>,</span>
-<a id=__codelineno-10-15 name=__codelineno-10-15 href=#__codelineno-10-15></a>    <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>(),</span>
+<a id=__codelineno-10-15 name=__codelineno-10-15 href=#__codelineno-10-15></a>    <span class=n>ui</span><span class=o>=</span><span class=n>ui</span><span class=p>,</span>
 <a id=__codelineno-10-16 name=__codelineno-10-16 href=#__codelineno-10-16></a>    <span class=n>title</span><span class=o>=</span><span class=s2>&quot;My FastAgency App&quot;</span><span class=p>,</span>
 <a id=__codelineno-10-17 name=__codelineno-10-17 href=#__codelineno-10-17></a><span class=p>)</span>
 <a id=__codelineno-10-18 name=__codelineno-10-18 href=#__codelineno-10-18></a>
