@@ -1,0 +1,130 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+
+version = "0.1.0"
+name = "my_fastagency_app"
+
+dependencies = [
+    "fastagency[autogen,mesop,server,fastapi,basic_auth]>=0.3.0",
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest==8.3.3",
+    "pytest-asyncio==0.24.0",
+]
+
+# dev dependencies
+lint = [
+    "types-PyYAML",
+    "types-setuptools",
+    "types-ujson",
+    "types-Pygments",
+    "types-docutils",
+    "mypy==1.12.1",
+    "ruff==0.7.2",
+    "pyupgrade-directories==0.3.0",
+    "bandit==1.7.10",
+    "semgrep==1.95.0",
+    "codespell==2.3.0",
+    "pytest-mypy-plugins==3.1.2",
+]
+
+dev = [
+    "my_fastagency_app[testing,lint]",
+    "pre-commit==4.0.1",
+    "detect-secrets==1.5.0",
+]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["my_fastagency_app"]
+
+[tool.pytest.ini_options]
+filterwarnings =["ignore::DeprecationWarning"]
+asyncio_default_fixture_loop_scope = "function"
+testpaths = [
+    "tests",
+]
+
+[tool.mypy]
+
+files = ["my_fastagency_app", "tests"]
+
+strict = true
+python_version = "3.12"
+ignore_missing_imports = true
+install_types = true
+non_interactive = true
+plugins = [
+    "pydantic.mypy",
+]
+
+# from https://blog.wolt.com/engineering/2021/09/30/professional-grade-mypy-configuration/
+disallow_untyped_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+show_error_codes = true
+warn_unused_ignores = false
+
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+disallow_any_unimported = false
+
+[tool.ruff]
+fix = true
+line-length = 88
+include = ["my_fastagency_app/**/*.py", "my_fastagency_app/**/*.pyi", "pyproject.toml"]
+exclude = []
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors     https://docs.astral.sh/ruff/rules/#error-e
+    "W",     # pycodestyle warnings   https://docs.astral.sh/ruff/rules/#warning-w
+    "C90",   # mccabe                 https://docs.astral.sh/ruff/rules/#mccabe-c90
+    "N",     # pep8-naming            https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "D",     # pydocstyle             https://docs.astral.sh/ruff/rules/#pydocstyle-d
+    "I",     # isort                  https://docs.astral.sh/ruff/rules/#isort-i
+    "F",     # pyflakes               https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "ASYNC", # flake8-async           https://docs.astral.sh/ruff/rules/#flake8-async-async
+    "C4",    # flake8-comprehensions  https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "B",     # flake8-bugbear         https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+    "Q",     # flake8-quotes          https://docs.astral.sh/ruff/rules/#flake8-quotes-q
+    "T20",   # flake8-print           https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "SIM",   # flake8-simplify        https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+    "PT",    # flake8-pytest-style    https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+    "PTH",   # flake8-use-pathlib     https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+    "TCH",   # flake8-type-checking   https://docs.astral.sh/ruff/rules/#flake8-type-checking-tch
+    "RUF",   # Ruff-specific rules    https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+    "PERF",  # Perflint               https://docs.astral.sh/ruff/rules/#perflint-perf
+]
+
+ignore = [
+    "E501",  # line too long, handled by formatter later
+    "D100", "D101", "D102", "D103", "D104",
+#     "C901",  # too complex
+]
+
+[tool.ruff.lint.isort]
+case-sensitive = true
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-bugbear]
+
+[tool.bandit]
+
+[tool.black]
+
+line-length = 88
+
+[tool.codespell]
+skip = "./venv*"
+ignore-words = ".codespell-whitelist.txt"

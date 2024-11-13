@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  # nosemgrep: yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service
+  python-3.12-my_fastagency_app:
+    image: mcr.microsoft.com/devcontainers/python:3.12
+    container_name: my_fastagency_app-${USER}-python-3.12
+    volumes:
+      - ../:/workspaces/my_fastagency_app:cached
+    command: sleep infinity
+
+    env_file:
+      - ./devcontainer.env
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - my_fastagency_app-network
+
+networks:
+  my_fastagency_app-network:
+    name: my_fastagency_app-${USER}-network
