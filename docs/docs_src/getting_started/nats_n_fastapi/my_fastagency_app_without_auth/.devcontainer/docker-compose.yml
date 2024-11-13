@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  # nosemgrep: yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service
+  python-3.12-my_fastagency_app_without_auth:
+    image: mcr.microsoft.com/devcontainers/python:3.12
+    container_name: my_fastagency_app_without_auth-${USER}-python-3.12
+    volumes:
+      - ../:/workspaces/my_fastagency_app_without_auth:cached
+    command: sleep infinity
+
+    environment:
+      - NATS_URL=nats://my_fastagency_app_without_auth-${USER}-nats-py312:4222
+
+    env_file:
+      - ./devcontainer.env
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - my_fastagency_app_without_auth-network
+
+  # nosemgrep: yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service
+  nats-my_fastagency_app_without_auth:
+    image: nats:latest
+    container_name: my_fastagency_app_without_auth-${USER}-nats-py312
+    # ports:
+      # - "${PORT_PREFIX}4222:4222"
+      # - "${PORT_PREFIX}9222:9222"
+    volumes:
+      - ./nats_server.conf:/etc/nats/server.conf
+    command: [ "--config", "/etc/nats/server.conf" ]
+    env_file:
+      - ./devcontainer.env
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - my_fastagency_app_without_auth-network
+
+networks:
+  my_fastagency_app_without_auth-network:
+    name: my_fastagency_app_without_auth-${USER}-network

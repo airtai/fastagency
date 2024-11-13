@@ -1,0 +1,1 @@
+gunicorn my_fastagency_app_without_auth.local.main_mesop:app

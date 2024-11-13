@@ -5,10 +5,10 @@ build-backend = "hatchling.build"
 [project]
 
 version = "0.1.0"
-name = "my_fastagency_app"
+name = "my_fastagency_app_without_auth"
 
 dependencies = [
-    "fastagency[autogen,mesop,server,fastapi,basic_auth]>=0.3.0",
+    "fastagency[autogen,mesop,server,fastapi]>=0.3.0",
 ]
 
 [project.optional-dependencies]
@@ -34,13 +34,13 @@ lint = [
 ]
 
 dev = [
-    "my_fastagency_app[testing,lint]",
+    "my_fastagency_app_without_auth[testing,lint]",
     "pre-commit==4.0.1",
     "detect-secrets==1.5.0",
 ]
 
 [tool.hatch.build.targets.wheel]
-only-include = ["my_fastagency_app"]
+only-include = ["my_fastagency_app_without_auth"]
 
 [tool.pytest.ini_options]
 filterwarnings =["ignore::DeprecationWarning"]
@@ -51,7 +51,7 @@ testpaths = [
 
 [tool.mypy]
 
-files = ["my_fastagency_app", "tests"]
+files = ["my_fastagency_app_without_auth", "tests"]
 
 strict = true
 python_version = "3.12"
@@ -77,7 +77,7 @@ disallow_any_unimported = false
 [tool.ruff]
 fix = true
 line-length = 88
-include = ["my_fastagency_app/**/*.py", "my_fastagency_app/**/*.pyi", "pyproject.toml"]
+include = ["my_fastagency_app_without_auth/**/*.py", "my_fastagency_app_without_auth/**/*.pyi", "pyproject.toml"]
 exclude = []
 
 [tool.ruff.lint]
