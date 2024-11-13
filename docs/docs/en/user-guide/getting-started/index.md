@@ -178,10 +178,11 @@ In case we used network adapters in the step above, we can chain additional netw
 
 ### Authentication
 
-FastAgency provides three types of authentication mechanisms: Basic Authentication, Firebase Authentication and no authentication(more will be added soon). The default authentication mechanism is Basic Authentication. You can choose the type of authentication while setting up the project with Cookiecutter.
+FastAgency provides three types of authentication mechanisms: [**Basic Authentication**](../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md), [**Firebase Authentication**](../../api/fastagency/ui/mesop/auth/firebase/FirebaseAuth.md) and no authentication (more will be added soon). The default authentication mechanism is [**Basic Authentication**](../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md). You can choose the type of authentication while setting up the project with Cookiecutter.
+
+To use Basic Authentication, configure the desired usernames and their bcrypt hashed passwords in the BasicAuth class and apply the authentication object to the MesopUI object.
 
 === "Mesop"
-    Not applicable for this setup as there are no adapters used.
 
     !!! note "main.py"
         ```python
@@ -190,26 +191,12 @@ FastAgency provides three types of authentication mechanisms: Basic Authenticati
 
 === "FastAPI + Mesop"
 
-    There is an additional specification file for an application using `MesopUI`
-    to connect to the `FastAPIAdapter`
-
     !!! note "main_2_mesop.py"
         ```python
         {!> docs_src/getting_started/basic_auth/fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_mesop.py !}
         ```
 
 === "NATS + FastAPI + Mesop"
-
-    Above, we created NATS.io provider that will start brokers waiting to consume
-    initiate workflow messages from the message broker. Now, we create FastAPI
-    service interacting with NATS.io provider:
-
-    !!! note "main_2_fastapi.py"
-        ```python
-        {!> docs_src/getting_started/basic_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_fastapi.py !}
-        ```
-
-    Finally, we create Mesop app communicating with the FastAPI application:
 
     !!! note "main_3_mesop.py"
         ```python
