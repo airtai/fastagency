@@ -55,7 +55,6 @@ class FirebaseAuth:  # implements AuthProtocol
 
         self.config = config
         self.allowed_users = allowed_users
-        self._is_unauthorized_user = False
 
         # Validate sign_in_methods type
         if not isinstance(sign_in_methods, list):
@@ -151,15 +150,16 @@ class FirebaseAuth:  # implements AuthProtocol
 
         if not firebase_auth_token:
             state.authenticated_user = ""
-            self._is_unauthorized_user = False
+            state.auth_error = None
             return
 
         decoded_token = auth.verify_id_token(firebase_auth_token)
-
-        if not self.is_authorized(decoded_token):
-            self._is_unauthorized_user = True
-        else:
+        if self.is_authorized(decoded_token):
             state.authenticated_user = decoded_token["email"]
+            state.auth_error = None
+        else:
+            state.authenticated_user = ""
+            state.auth_error = FirebaseAuth.UN_AUTHORIZED_ERROR_MESSAGE
 
     # maybe me.Component is wrong
     def auth_component(self) -> me.component:
@@ -173,11 +173,7 @@ class FirebaseAuth:  # implements AuthProtocol
         else:
             with me.box(style=styles.login_box):  # noqa: SIM117
                 with me.box(style=styles.login_btn_container):
-                    message = (
-                        FirebaseAuth.UN_AUTHORIZED_ERROR_MESSAGE
-                        if self._is_unauthorized_user
-                        else FirebaseAuth.SIGN_IN_MESSAGE
-                    )
+                    message = state.auth_error or FirebaseAuth.SIGN_IN_MESSAGE
                     me.text(message, style=styles.header_text)
                     firebase_auth_component(
                         on_auth_changed=self.on_auth_changed, config=self.config

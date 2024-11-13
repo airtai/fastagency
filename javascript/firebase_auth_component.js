@@ -95,8 +95,6 @@ class FirebaseAuthComponent extends LitElement {
   signOut() {
     try {
       firebase.auth().signOut();
-      this.isSignedIn = false;
-      this.dispatchEvent(new MesopEvent(this.authChanged, ""));
     } catch (error) {
       console.error("Sign out error:", error);
     }
