@@ -28,7 +28,7 @@ This example demonstrates how to create a workflow where a student agent interac
 We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating the ConsoleUI.
 
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-6] !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/workflow.py [ln:1-6] !}
 ```
 
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
@@ -40,7 +40,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 Next, we configure the language model that will power the agents. In this case, we're using **gpt-4o-mini**, and the API key is retrieved from the environment.
 
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/workflow.py [ln:9-17] !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/workflow.py [ln:9-17] !}
 ```
 
 - **Explanation**: The configuration specifies the LLM model and API key used for powering the conversation between agents. The temperature is set to `0.0` to ensure deterministic responses from the agents, making interactions consistent and reliable. This is particularly useful for scenarios where repeatability and predictability are required, such as testing.
@@ -49,7 +49,7 @@ Next, we configure the language model that will power the agents. In this case, 
 Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
 
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/workflow.py [ln:22-51] !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/workflow.py [ln:22-51] !}
 ```
 
 - **Agent Overview**: The **Student Agent** is configured with a system message, "You are a student willing to learn," and will initiate questions during the interaction. The **Teacher Agent**, on the other hand, is set up as a math teacher and will respond to the student's questions.
@@ -59,7 +59,7 @@ Here, we define a simple workflow where the **Student Agent** interacts with the
 Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)** to link the workflow to a text-based console interface. This allows the user to interact with the agents via the terminal.
 
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/local/main_console.py [ln:1-12] !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/local/main_console.py [ln:1-12] !}
 ```
 
 - **Explanation**: Here, we set up the **ConsoleUI** as the user interface for the workflow, which will allow the entire agent interaction to take place within the terminal.
@@ -70,14 +70,14 @@ Finally, we instantiate **[ConsoleUI](../../../../api/fastagency/ui/console/Cons
 <details>
 <summary>workflow.py</summary>
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/workflow.py !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/workflow.py !}
 ```
 </details>
 
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/local/main_console.py !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/local/main_console.py !}
 ```
 </details>
 

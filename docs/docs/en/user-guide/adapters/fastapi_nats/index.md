@@ -130,7 +130,7 @@ As shown in the [**architecture overview**](#architecture-overview), this setup 
 To get started, define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-47] !}
+{! docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/workflow.py [ln:1-47] !}
 ```
 
 #### 2. **Import Required Modules**
@@ -138,7 +138,7 @@ To get started, define the workflow that your application will use. This is wher
 Next, import the required modules from the **FastAgency**. These imports provide the essential building blocks for integrating with the client. Additionally, import the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) class for workflow execution.
 
 ```python hl_lines="4"
-{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:1-7] !}
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_1_nats.py [ln:1-7] !}
 ```
 
 #### 3. **Configure the `NatsAdapter`**
@@ -146,7 +146,7 @@ Next, import the required modules from the **FastAgency**. These imports provide
 Create an instance of the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and pass your workflow to it. The adapter will handle the communication with the [**`NatsProvider`**](../../../api/fastagency/adapters/nats/NatsProvider.md) and distribute workflow execution to the workers.
 
 ```python hl_lines="5"
-{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:9-13] !}
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_1_nats.py [ln:9-13] !}
 ```
 
 #### 4. **Define FastAgency Application**
@@ -154,7 +154,7 @@ Create an instance of the [**`NatsAdapter`**](../../../api/fastagency/adapters/n
 Create a [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and then add it to the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application using the [**lifespan parameter**](https://fastapi.tiangolo.com/advanced/events/){target="_blank"}.
 
 ```python
-{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:15] !}
+{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_1_nats.py [ln:15] !}
 ```
 
 #### 5. **Adapter Chaining**
@@ -167,14 +167,14 @@ Next, we set up a FastAPI service to interact with the NATS.io provider. This in
 
     !!! note "main_2_fastapi.py"
         ```python hl_lines="15-17 19-20"
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_fastapi.py [ln:1-20] !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_2_fastapi.py [ln:1-20] !}
         ```
 
     Finally, the last component is the [**Mesop Client App**](#1-mesop-client-app), which uses the [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) to communicate with both the user and the [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md).
 
     !!! note "main_3_mesop.py"
         ```python hl_lines="7-9 11-15"
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py [ln:1-15] !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_3_mesop.py [ln:1-15] !}
         ```
 
 === "Custom REST API and WebSocket"
@@ -224,28 +224,28 @@ Please copy and paste the following code into the same folder, using the file na
     <details>
         <summary>workflow.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/workflow.py !}
         ```
     </details>
 
     <details>
         <summary>main_1_nats.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_1_nats.py !}
         ```
     </details>
 
     <details>
         <summary>main_2_fastapi.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_fastapi.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_2_fastapi.py !}
         ```
     </details>
 
     <details>
         <summary>main_3_mesop.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_3_mesop.py !}
         ```
     </details>
 
@@ -261,14 +261,14 @@ Please copy and paste the following code into the same folder, using the file na
     <details>
         <summary>workflow.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/workflow.py !}
         ```
     </details>
 
     <details>
         <summary>main_1_nats.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py !}
+        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main_1_nats.py !}
         ```
     </details>
 

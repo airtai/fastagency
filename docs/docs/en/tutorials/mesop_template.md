@@ -121,7 +121,7 @@ You need to define the workflow that your application will use. This is where yo
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:1-10] !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main.py [ln:1-10] !}
 ```
 
 </details>
@@ -132,7 +132,7 @@ You need to define the workflow that your application will use. This is where yo
 The FastAgency app is created, using the registered workflows (**`wf`**) and web-based user interface ([**`MesopUI`**](../../api/fastagency/ui/mesop/MesopUI.md)). This makes the conversation between agents and the user interactive.
 
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:6-10] !}
+{! docs_src/getting_started/mesop/my_fastagency_app_without_auth/my_fastagency_app_without_auth/deployment/main.py [ln:6-10] !}
 ```
 
 For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics.md){target="_blank"}.
