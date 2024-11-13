@@ -24,7 +24,7 @@ ui = MesopUI(auth=auth)
 
 app = FastAgency(
     provider=provider,
-    ui=MesopUI(),
+    ui=ui,
     title="My FastAgency App",
 )
 
