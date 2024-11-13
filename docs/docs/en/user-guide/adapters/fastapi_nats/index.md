@@ -130,7 +130,7 @@ As shown in the [**architecture overview**](#architecture-overview), this setup 
 To get started, define the workflow that your application will use. This is where you specify how the agents interact and what they do. Here's a simple example of a workflow definition:
 
 ```python
-{! docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-47] !}
+{! docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-47] !}
 ```
 
 #### 2. **Import Required Modules**
@@ -138,7 +138,7 @@ To get started, define the workflow that your application will use. This is wher
 Next, import the required modules from the **FastAgency**. These imports provide the essential building blocks for integrating with the client. Additionally, import the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) class for workflow execution.
 
 ```python hl_lines="4"
-{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:1-7] !}
+{!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:1-7] !}
 ```
 
 #### 3. **Configure the `NatsAdapter`**
@@ -146,7 +146,7 @@ Next, import the required modules from the **FastAgency**. These imports provide
 Create an instance of the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and pass your workflow to it. The adapter will handle the communication with the [**`NatsProvider`**](../../../api/fastagency/adapters/nats/NatsProvider.md) and distribute workflow execution to the workers.
 
 ```python hl_lines="5"
-{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:9-13] !}
+{!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:9-13] !}
 ```
 
 #### 4. **Define FastAgency Application**
@@ -154,7 +154,7 @@ Create an instance of the [**`NatsAdapter`**](../../../api/fastagency/adapters/n
 Create a [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) and then add it to the [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} application using the [**lifespan parameter**](https://fastapi.tiangolo.com/advanced/events/){target="_blank"}.
 
 ```python
-{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:15] !}
+{!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py [ln:15] !}
 ```
 
 #### 5. **Adapter Chaining**
@@ -167,21 +167,21 @@ Next, we set up a FastAPI service to interact with the NATS.io provider. This in
 
     !!! note "main_2_fastapi.py"
         ```python hl_lines="15-17 19-20"
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_fastapi.py [ln:1-20] !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_fastapi.py [ln:1-20] !}
         ```
 
     Finally, the last component is the [**Mesop Client App**](#1-mesop-client-app), which uses the [**`MesopUI`**](../../../api/fastagency/ui/mesop/MesopUI.md) to communicate with both the user and the [**`FastAPIProvider`**](../../../api/fastagency/adapters/fastapi/FastAPIProvider.md).
 
     !!! note "main_3_mesop.py"
         ```python hl_lines="7-9 11-15"
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py [ln:1-15] !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py [ln:1-15] !}
         ```
 
 === "Custom REST API and WebSocket"
 
     !!! note "main_fastapi_custom_client.py"
         ```python hl_lines="17-19 22-23"
-        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi_custom_client.py [ln:1-8,96-110] !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/main_2_fastapi_custom_client.py [ln:1-8,96-110] !}
         ```
 
     Finally, for simplicity, we will serve our custom HTML client as part of the same [**FastAPI App**](#2-fastapi-app) using FastAPI's [**HTMLResponse**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"}.
@@ -194,7 +194,7 @@ Next, we set up a FastAPI service to interact with the NATS.io provider. This in
 
     !!! note "main_fastapi_custom_client.py"
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi_custom_client.py [ln:9-95,113-115] !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/main_2_fastapi_custom_client.py [ln:9-95,113-115] !}
         ```
 
 
@@ -203,7 +203,7 @@ Next, we set up a FastAPI service to interact with the NATS.io provider. This in
 The [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) requires a running NATS server. The easiest way to start the NATS server is by using [**Docker**](https://www.docker.com/){target="_blank"}. FastAgency leverages the [**JetStream**](https://docs.nats.io/nats-concepts/jetstream){target="_blank"} feature of NATS and also utilizes authentication.
 
 ```python hl_lines="1 3 8 14"
-{!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf [ln:1-31]!}
+{!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf [ln:1-31]!}
 ```
 
 In the above Nats configuration, we define a user called `fastagency`, and its password is read from the environment variable `FASTAGENCY_NATS_PASSWORD`. We also enable JetStream in Nats and configure Nats to serve via the appropriate ports.
@@ -217,35 +217,35 @@ Please copy and paste the following code into the same folder, using the file na
     <details>
         <summary>nats_server.conf</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf !}
         ```
     </details>
 
     <details>
         <summary>workflow.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
         ```
     </details>
 
     <details>
         <summary>main_1_nats.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py !}
         ```
     </details>
 
     <details>
         <summary>main_2_fastapi.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_fastapi.py !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_2_fastapi.py !}
         ```
     </details>
 
     <details>
         <summary>main_3_mesop.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_3_mesop.py !}
         ```
     </details>
 
@@ -254,28 +254,28 @@ Please copy and paste the following code into the same folder, using the file na
     <details>
         <summary>nats_server.conf</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/.devcontainer/nats_server.conf !}
         ```
     </details>
 
     <details>
         <summary>workflow.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/workflow.py !}
         ```
     </details>
 
     <details>
         <summary>main_1_nats.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/my_fastagency_app/deployment/main_1_nats.py !}
         ```
     </details>
 
     <details>
         <summary>main_2_fastapi_custom_client.py</summary>
         ```python
-        {!> docs_src/getting_started/nats_n_fastapi/main_2_fastapi_custom_client.py !}
+        {!> docs_src/getting_started/no_auth/nats_n_fastapi/main_2_fastapi_custom_client.py !}
         ```
     </details>
 

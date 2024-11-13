@@ -1,4 +1,7 @@
 docs/overrides/main.html
-docs/docs_src/getting_started/mesop/my_fastagency_app/.devcontainer/docker-compose.yml
-docs/docs_src/getting_started/fastapi/my_fastagency_app/.devcontainer/docker-compose.yml
-docs/docs_src/getting_started/nats_n_fastapi/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/no_auth/mesop/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/no_auth/fastapi/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/no_auth/nats_n_fastapi/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/basic_auth/mesop/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/basic_auth/fastapi/my_fastagency_app/.devcontainer/docker-compose.yml
+docs/docs_src/getting_started/basic_auth/nats_n_fastapi/my_fastagency_app/.devcontainer/docker-compose.yml
