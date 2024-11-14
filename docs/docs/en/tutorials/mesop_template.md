@@ -60,7 +60,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
 
     7. Once the project is opened, you will get the following option to reopen it in a devcontainer:
 
-        <img src="../getting-started/images/reopen-in-container.png" width="600" class="center">
+         <img src="../../user-guide/getting-started/images/reopen-in-container.png" width="600" class="center">
 
     8. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
 
