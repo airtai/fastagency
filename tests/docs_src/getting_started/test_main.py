@@ -20,7 +20,7 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
         app,
         [
             "run",
-            "docs/docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/local/main_console.py",
+            "docs/docs_src/getting_started/no_auth/mesop/my_fastagency_app/my_fastagency_app/local/main_console.py",
             "--single-run",
         ],
     )

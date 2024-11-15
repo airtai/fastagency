@@ -108,11 +108,11 @@ class FirebaseAuthComponent extends LitElement {
       ></div>
       <div
         class="firebaseui-container firebaseui-page-provider-sign-in firebaseui-id-page-provider-sign-in firebaseui-use-spinner"
-        style="${this.isSignedIn ? "" : "display: none"}"
+        style="${this.isSignedIn ? "" : "display: none"} ; text-align:center"
       >
         <button
-          style="background-color:#ffffff"
-          class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
+          style="background-color:#ffffff;margin-top:10px;"
+          class=" mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
           @click="${this.signOut}"
         >
           <span

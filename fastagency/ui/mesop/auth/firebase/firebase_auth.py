@@ -23,6 +23,9 @@ if firebase_admin._DEFAULT_APP_NAME not in firebase_admin._apps:
 
 
 class FirebaseAuth:  # implements AuthProtocol
+    SIGN_IN_MESSAGE = "Sign in to your account"
+    UN_AUTHORIZED_ERROR_MESSAGE = """You are not authorized to access this application. Please contact the application administrators for access."""
+
     def __init__(
         self,
         sign_in_methods: list[Literal["google"]],
@@ -147,17 +150,16 @@ class FirebaseAuth:  # implements AuthProtocol
 
         if not firebase_auth_token:
             state.authenticated_user = ""
+            state.auth_error = None
             return
 
         decoded_token = auth.verify_id_token(firebase_auth_token)
-
-        if not self.is_authorized(decoded_token):
-            raise me.MesopUserException(
-                "You are not authorized to access this application. "
-                "Please contact the application administrators for access."
-            )
-
-        state.authenticated_user = decoded_token["email"]
+        if self.is_authorized(decoded_token):
+            state.authenticated_user = decoded_token["email"]
+            state.auth_error = None
+        else:
+            state.authenticated_user = ""
+            state.auth_error = FirebaseAuth.UN_AUTHORIZED_ERROR_MESSAGE
 
     # maybe me.Component is wrong
     def auth_component(self) -> me.component:
@@ -171,7 +173,8 @@ class FirebaseAuth:  # implements AuthProtocol
         else:
             with me.box(style=styles.login_box):  # noqa: SIM117
                 with me.box(style=styles.login_btn_container):
-                    me.text("Sign in to your account", style=styles.header_text)
+                    message = state.auth_error or FirebaseAuth.SIGN_IN_MESSAGE
+                    me.text(message, style=styles.header_text)
                     firebase_auth_component(
                         on_auth_changed=self.on_auth_changed, config=self.config
                     )

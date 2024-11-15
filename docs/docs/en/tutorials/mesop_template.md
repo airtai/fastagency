@@ -40,7 +40,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
     4. Executing the `cookiecutter` command will create the following file structure:
 
         ```console
-        {!> docs_src/getting_started/mesop/folder_structure.txt !}
+        {!> docs_src/getting_started/no_auth/mesop/folder_structure.txt !}
         ```
 
     5. To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
@@ -60,7 +60,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
 
     7. Once the project is opened, you will get the following option to reopen it in a devcontainer:
 
-        <img src="../getting-started/images/reopen-in-container.png" width="600" class="center">
+        <img src="../../user-guide/getting-started/images/reopen-in-container.png" width="600" class="center">
 
     8. After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:
 
@@ -121,7 +121,7 @@ You need to define the workflow that your application will use. This is where yo
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:1-10] !}
+{! docs_src/getting_started/no_auth/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:1-10] !}
 ```
 
 </details>
@@ -132,7 +132,7 @@ You need to define the workflow that your application will use. This is where yo
 The FastAgency app is created, using the registered workflows (**`wf`**) and web-based user interface ([**`MesopUI`**](../../api/fastagency/ui/mesop/MesopUI.md)). This makes the conversation between agents and the user interactive.
 
 ```python
-{! docs_src/getting_started/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:6-10] !}
+{! docs_src/getting_started/no_auth/mesop/my_fastagency_app/my_fastagency_app/deployment/main.py [ln:6-10] !}
 ```
 
 For more information, visit [**Mesop User Guide**](../../user-guide/ui/mesop/basics.md){target="_blank"}.

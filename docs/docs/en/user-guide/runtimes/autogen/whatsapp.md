@@ -29,7 +29,7 @@ This command installs FastAgency with support for the Console interface and [Aut
 
 ### Creating your WhatsApp API key
 
-{! docs/en/tutorials/whatsapp/index.md[ln:49-76] !}
+{! docs/en/snippets/creating_whatsapp_api_key.md !}
 
 #### Set Up Your API Key in the Environment
 
