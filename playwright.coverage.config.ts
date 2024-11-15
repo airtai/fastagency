@@ -11,10 +11,5 @@ export default defineConfig(
             /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
             trace: 'on-first-retry',
         },
-        webServer: {
-            command: 'gunicorn e2e.llm-sans.main:app',
-            url: 'http://127.0.0.1:8000',
-            reuseExistingServer: !process.env.CI,
-        }
     }
 )
