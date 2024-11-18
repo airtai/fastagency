@@ -149,7 +149,7 @@ testing = [
     "watchfiles==0.24.0",
     "email-validator==2.2.0",
     "python-multipart>=0.0.12",
-    "PyJWT==2.9.0",
+    "PyJWT==2.10.0",
     "passlib[bcrypt]==1.7.4",
 ]
 
