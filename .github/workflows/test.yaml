@@ -12,6 +12,10 @@ on:
         description: 'Python version to run the tests in'
         required: true
         type: string
+      runtime:
+        description: 'Runtime to run the tests in (autogen, ag2, autogen-04dev)'
+        required: true
+        type: string
       use-llms:
         description: 'Use LLM in the tests'
         required: false
