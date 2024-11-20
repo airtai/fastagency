@@ -276,11 +276,30 @@ Similarly, running the Docker container is as simple as running the provided scr
 
 ### Deploying to Fly.io
 
-If you created the project using Cookiecutter, there is a built-in script to deploy your workflow to [**Fly.io**](https://fly.io/). Run it as shown below:
+If you created the project using Cookiecutter, there are built-in scripts to deploy your workflow to [**Fly.io**](https://fly.io/). In Fly.io, the application namespace is global, so the application name you chose might already be taken. To check your application's name availability and to reserve it, you can run the following script:
+
+```console
+./scripts/register_to_fly_io.sh
+```
+
+Once you have reserved your application name, you can test whether you can deploy your application to Fly.io using the following script:
 
 ```console
 ./scripts/deploy_to_fly_io.sh
 ```
+
+This is only for testing purposes. You should deploy using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} as explained below.
+
+Cookiecutter generated all the necessary files to deploy your application to Fly.io using [**GitHub Actions**](https://github.com/features/actions). Simply push your code to your github repository's **main** branch and GitHub Actions will automatically deploy your application to Fly.io. For this, you need to set the following secrets in your GitHub repository:
+
+- `FLY_API_TOKEN`
+- `OPENAI_API_KEY`
+
+To learn how to create keys and add them as secrets, use the following links:
+
+  - [**Creating a Fly.io API token**](https://fly.io/docs/security/tokens/#manage-tokens-in-the-dashboard)
+  - [**Creating an OpenAI API key**](https://platform.openai.com/api-keys)
+  - [**Adding secrets to your GitHub repository**](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)
 
 ## Future Plans
 
