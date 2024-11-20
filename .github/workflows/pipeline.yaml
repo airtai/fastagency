@@ -79,7 +79,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
-      runtime: "autogen"
+      runtime: "ag2"
       environment: testing
       use-llms: "anthropic"
     secrets: inherit  # pragma: allowlist secret
@@ -88,7 +88,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
-      runtime: "autogen"
+      runtime: "ag2"
       environment: testing
       use-llms: "azure_oai"
     secrets: inherit  # pragma: allowlist secret
@@ -97,7 +97,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
-      runtime: "autogen"
+      runtime: "ag2"
       environment: testing
       use-llms: "openai"
     secrets: inherit  # pragma: allowlist secret
@@ -106,7 +106,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
-      runtime: "autogen"
+      runtime: "ag2"
       environment: testing
       use-llms: "togetherai"
     secrets: inherit  # pragma: allowlist secret
@@ -134,7 +134,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pip install .[autogen,submodules,docs,testing]
+        run: pip install .[ag2,submodules,docs,testing]
       - name: Test
         run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
 
@@ -152,7 +152,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pip install .[autogen,submodules,docs,testing]
+        run: pip install .[ag2,submodules,docs,testing]
       - name: Test
         run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
 
