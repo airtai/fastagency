@@ -76,7 +76,7 @@ repos:
         entry: "scripts/devcontainer-build-pre-commit.sh"
         language: python
         #language_version: python3.10
-        files: ^.devcontainer/build_devcontainers.py
+        files: ^.devcontainer
         require_serial: true
         verbose: true
 
