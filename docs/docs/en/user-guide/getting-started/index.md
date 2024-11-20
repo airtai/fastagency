@@ -486,11 +486,12 @@ This script will deploy your application to Fly.io without any further input. Th
     ```
 </details>
 
-The preferred way to deploy the FastAgency application to Fly.io is by using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} which is explained in the next section.
+
+This is only for testing purposes. You should deploy using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} as explained in the next section.
 
 #### Deploying to Fly.io using GitHub Actions
 
-The preferred way to deploy your application to Fly.io is by using [**GitHub Actions**](https://github.com/features/actions){target="_blank"}. You can deploy using Github Actions by following these steps:
+Cookiecutter generated all the necessary files to deploy your application to Fly.io using [**GitHub Actions**](https://github.com/features/actions){target="_blank"}. Github Actions deployment worfkow will not work unless you follow these steps:
 
 1. Create a [**new GitHub repository**](https://github.com/new){target="_blank"} with your FastAgency project name.
 
@@ -519,6 +520,3 @@ The preferred way to deploy your application to Fly.io is by using [**GitHub Act
     Make sure to replace `<username>` and `<repo-name>` with your GitHub username and repository name, respectively.
 
 Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Fly.io. And continue to do so every time you push changes to your repository's **main** branch.
-
-!!! danger
-    If you skip these steps, the GitHub Actions workflow will **fail** when changes are pushed to the repository's **main** branch.

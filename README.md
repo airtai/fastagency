@@ -288,7 +288,9 @@ Once you have reserved your application name, you can test whether you can deplo
 ./scripts/deploy_to_fly_io.sh
 ```
 
-The preferred way to deploy your application to Fly.io is by using [**GitHub Actions**](https://github.com/features/actions). Simply push your code to your github repository's **main** branch and GitHub Actions will automatically deploy your application to Fly.io. For this, you need to set the following secrets in your GitHub repository:
+This is only for testing purposes. You should deploy using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} as explained below.
+
+Cookiecutter generated all the necessary files to deploy your application to Fly.io using [**GitHub Actions**](https://github.com/features/actions). Simply push your code to your github repository's **main** branch and GitHub Actions will automatically deploy your application to Fly.io. For this, you need to set the following secrets in your GitHub repository:
 
 - `FLY_API_TOKEN`
 - `OPENAI_API_KEY`
