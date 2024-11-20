@@ -22,9 +22,12 @@ my_fastagency_app
 │   └── workflow.py
 ├── scripts
 │   ├── build_docker.sh
+│   ├── check-registered-app-pre-commit.sh
+│   ├── check-registered-app.sh
 │   ├── deploy_to_fly_io.sh
 │   ├── lint-pre-commit.sh
 │   ├── lint.sh
+│   ├── register_to_fly_io.sh
 │   ├── run_docker.sh
 │   ├── run_mesop_locally.sh
 │   ├── static-analysis.sh

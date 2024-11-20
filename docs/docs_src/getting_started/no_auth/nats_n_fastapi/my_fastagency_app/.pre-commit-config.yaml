@@ -36,3 +36,12 @@ repos:
     hooks:
       - id: detect-secrets
         args: ["--baseline", ".secrets.baseline"]
+
+  - repo: local
+    hooks:
+      - id: check-registered-app
+        name: Check if the app name is registered in fly.io
+        entry: "scripts/check-registered-app-pre-commit.sh"
+        language: python
+        require_serial: true
+        verbose: true
