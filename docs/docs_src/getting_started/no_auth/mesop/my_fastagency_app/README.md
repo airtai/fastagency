@@ -71,19 +71,19 @@ This `FastAgency` project includes a `fly.toml` file for deployment to [fly.io](
 1. Login into fly.io:
 
    ```bash
-   fly auth login
+   flyctl auth login
    ```
 
 2. Launch the fly.io app:
 
    ```bash
-   fly launch --config fly.toml --copy-config --yes
+   flyctl launch --config fly.toml --copy-config --yes
    ```
 
 3. Set necessary LLM API key(for example, OPENAI_API_KEY) as a secret:
 
    ```bash
-   fly secrets set OPENAI_API_KEY=paste_openai_api_key_here
+   flyctl secrets set OPENAI_API_KEY=paste_openai_api_key_here
    ```
 
 ## What's Next?

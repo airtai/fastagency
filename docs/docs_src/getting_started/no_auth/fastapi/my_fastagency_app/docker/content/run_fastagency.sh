@@ -11,13 +11,17 @@ export MESOP_PORT=${MESOP_PORT:-8888}
 WORKERS=${WORKERS:-1}
 echo "Number of workers: $WORKERS"
 
+# Check FLY_MACHINE_ID is set, if not set, set it to dummy value
+export FLY_MACHINE_ID=${FLY_MACHINE_ID:-dummy_fly_machine_id_value}
+echo "Fly machine ID: $FLY_MACHINE_ID"
+
 # Generate nginx config
 for ((i=1; i<$WORKERS+1; i++))
 do
 	PORT=$((MESOP_PORT + i))
     sed -i "5i\    server 127.0.0.1:$PORT;" nginx.conf.template
 done
-envsubst '${MESOP_PORT}' < nginx.conf.template >/etc/nginx/conf.d/default.conf
+envsubst '${MESOP_PORT},${FLY_MACHINE_ID}' < nginx.conf.template >/etc/nginx/conf.d/default.conf
 echo "Nginx config:"
 cat /etc/nginx/conf.d/default.conf
 

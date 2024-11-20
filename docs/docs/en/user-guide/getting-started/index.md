@@ -392,15 +392,16 @@ Running the above command will start the Docker container in the foreground with
 
 ### Deploying to Fly.io
 
-If you created the project using Cookiecutter, there is a built-in script to deploy your workflow to [**Fly.io**](https://fly.io/). Run it as shown below:
+If you created the project using Cookiecutter, there are built-in scripts to deploy your workflow to [**Fly.io**](https://fly.io/). In Fly.io, the application namespace is global, so the application name you chose might already be taken. To check your application's name availability and to reserve it, you can run the following script:
 
 ```console
-./scripts/deploy_to_fly_io.sh
+./scripts/register_to_fly_io.sh
 ```
 
 Running the above command will prompt you to log in to your Fly.io account (if not already logged in) by opening a fly.io URL in your browser. The login prompt will look like this:
 
 ```console
+Checking if already logged into fly.io
 Logging into fly.io
 failed opening browser. Copy the url (https://fly.io/app/auth/cli/78366a6d347a377a6e346465776167726f6b693537666a333674346978626d37) into a browser and continue
 Opening https://fly.io/app/auth/cli/78366a6d347a377a6e346465776167726f6b693537666a333674346978626d37 ...
@@ -408,32 +409,38 @@ Opening https://fly.io/app/auth/cli/78366a6d347a377a6e346465776167726f6b69353766
 Waiting for session...
 ```
 
-After logging in, the script will deploy your application to Fly.io without any further input. The output will look like this:
+After logging in, the script will check if the application name is available and reserve it if it is. The reserved app domain for Fly.io is saved in a file called "registered_app_domain.txt". The output of running the script will look like this:
 
 <details>
     <summary>Output</summary>
     ```console
     successfully logged in
+    Registering app name in fly.io
+    New app created: test-registration
+    App name registered successfully
+    Registered app name is:
+    test-registration.fly.dev
+    ```
+</details>
+
+Once you have reserved your application name, you can deploy your application to Fly.io using the following script:
+
+```console
+./scripts/deploy_to_fly_io.sh
+```
+
+This script will deploy your application to Fly.io without any further input. The output will look like this:
+
+<details>
+    <summary>Output</summary>
+    ```console
+    Checking if already logged into fly.io
+    Already logged into fly.io
     Deploying to fly.io
-    An existing fly.toml file was found for app write-fastagency-docs-cool-dew-7193
-    Using build strategies '[the "docker/Dockerfile" dockerfile]'. Remove [build] from fly.toml to force a rescan
-    Creating app in /workspaces/write_fastagency_docs
-    We're about to launch your app on Fly.io. Here's what you're getting:
-
-    Organization: Organization Name                             (fly launch defaults to the personal org)
-    Name:         write-fastagency-docs-delicate-waterfall-7272 (generated)
-    Region:       Amsterdam, Netherlands                        (from your fly.toml)
-    App Machines: shared-cpu-1x, 1GB RAM                        (from your fly.toml)
-    Postgres:     <none>                                        (not requested)
-    Redis:        <none>                                        (not requested)
-    Tigris:       <none>                                        (not requested)
-
-    Created app 'write-fastagency-docs-delicate-waterfall-7272' in organization 'personal'
-    Admin URL: https://fly.io/apps/write-fastagency-docs-delicate-waterfall-7272
-    Hostname: write-fastagency-docs-delicate-waterfall-7272.fly.dev
-    Wrote config file fly.toml
-    Validating /workspaces/write_fastagency_docs/fly.toml
+    ==> Verifying app config
+    Validating fly.toml
     ✓ Configuration is valid
+    --> Verified app config
     ==> Building image
     ==> Building image with Depot
     --> build:  (​)
