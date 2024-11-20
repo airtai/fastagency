@@ -12,6 +12,10 @@ on:
         description: 'Python version to run the tests in'
         required: true
         type: string
+      runtime:
+        description: 'Runtime to run the tests in (autogen, ag2, autogen-04dev)'
+        required: true
+        type: string
       use-llms:
         description: 'Use LLM in the tests'
         required: false
@@ -88,7 +92,7 @@ jobs:
           key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-test-v03
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pip install .[docs,testing]
+        run: pip install .[${{ inputs.runtime }},docs,testing]
       - name: Install Pydantic v2
         run: pip install --pre "pydantic>=2,<3"
       - run: mkdir coverage
