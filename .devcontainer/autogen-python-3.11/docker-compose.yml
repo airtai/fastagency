@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  python-3.11-fastagency:  # nosemgrep
+    image: mcr.microsoft.com/devcontainers/python:3.11
+    container_name: fastagency-${USER}-python-3.11
+    volumes:
+      - ../../:/workspaces/fastagency:cached
+    command: sleep infinity
+    environment:
+      - NATS_URL=nats://fastagency-${USER}-nats-py3.11:4222
+    env_file:
+      - ../devcontainer.env
+    networks:
+      - fastagency-network
+  nats-fastagency:  # nosemgrep
+    image: nats:latest
+    container_name: fastagency-${USER}-nats-py3.11
+    # ports:
+      # - "${PORT_PREFIX}4222:4222"
+      # - "${PORT_PREFIX}9222:9222"
+    volumes:
+      - ../nats_server.conf:/etc/nats/server.conf
+    command: [ "--config", "/etc/nats/server.conf" ]
+    env_file:
+      - ../devcontainer.env
+    networks:
+      - fastagency-network
+
+networks:
+  fastagency-network:
+    name: fastagency-${USER}-network
