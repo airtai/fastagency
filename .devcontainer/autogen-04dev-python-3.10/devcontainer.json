@@ -1,5 +1,5 @@
 {
-    "name": "ag2-python-3.10",
+    "name": "autogen-04dev-python-3.10",
     // "image": "mcr.microsoft.com/devcontainers/python:3.10",
     "dockerComposeFile": [
         "./docker-compose.yml"

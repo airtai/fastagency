@@ -1,5 +1,5 @@
 {
-    "name": "ag2-python-3.9",
+    "name": "autogen-04dev-python-3.9",
     // "image": "mcr.microsoft.com/devcontainers/python:3.9",
     "dockerComposeFile": [
         "./docker-compose.yml"

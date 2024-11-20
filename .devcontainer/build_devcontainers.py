@@ -39,7 +39,7 @@ networks:
 """
 
 devcontainer = """{{
-    "name": "ag2-python-{python}",
+    "name": "{runtime}-python-{python}",
     // "image": "mcr.microsoft.com/devcontainers/python:{python}",
     "dockerComposeFile": [
         "./docker-compose.yml"
