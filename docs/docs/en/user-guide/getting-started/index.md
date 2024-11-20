@@ -521,4 +521,4 @@ The preferred way to deploy your application to Fly.io is by using [**GitHub Act
 Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Fly.io. And continue to do so every time you push changes to your repository's **main** branch.
 
 !!! danger
-    If you skip these steps, the GitHub Actions workflow will fail when changes are pushed to the repository's **main** branch.
+    If you skip these steps, the GitHub Actions workflow will **fail** when changes are pushed to the repository's **main** branch.
