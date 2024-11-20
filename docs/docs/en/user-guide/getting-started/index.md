@@ -423,7 +423,9 @@ After logging in, the script will check if the application name is available and
     ```
 </details>
 
-Once you have reserved your application name, you can deploy your application to Fly.io using the following script:
+#### Deploying to Fly.io manually
+
+Once you have reserved your application name, you can test whether you can deploy your application to Fly.io using the following script:
 
 ```console
 ./scripts/deploy_to_fly_io.sh
@@ -483,3 +485,38 @@ This script will deploy your application to Fly.io without any further input. Th
     Checking DNS configuration for write-fastagency-docs-delicate-waterfall-7272.fly.dev
     ```
 </details>
+
+
+This is only for testing purposes. You should deploy using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} as explained in the next section.
+
+#### Deploying to Fly.io using GitHub Actions
+
+Cookiecutter generated all the necessary files to deploy your application to Fly.io using [**GitHub Actions**](https://github.com/features/actions){target="_blank"}. Github Actions deployment worfkow will not work unless you follow these steps:
+
+1. Create a [**new GitHub repository**](https://github.com/new){target="_blank"} with your FastAgency project name.
+
+2. Add the following secrets to your GitHub repository:
+
+    - `FLY_API_TOKEN`: Your Fly.io API token.
+    - `OPENAI_API_KEY`: Your OpenAI API key.
+
+    To learn how to create keys and add them as secrets, use the following links:
+
+    - [**Creating a Fly.io API token**](https://fly.io/docs/security/tokens/#manage-tokens-in-the-dashboard){target="_blank"}
+    - [**Creating an OpenAI API key**](https://platform.openai.com/api-keys){target="_blank"}
+    - [**Adding secrets to your GitHub repository**](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository){target="_blank"}
+
+3. In your devcontainer's terminal, run the following commands to commit and push your project to the new GitHub repository:
+
+    ```console
+    git init
+    git add .
+    git commit -m "Initial commit"
+    git remote add origin https://github.com/<username>/<repo-name>.git
+    git branch -M main
+    git push -u origin main
+    ```
+
+    Make sure to replace `<username>` and `<repo-name>` with your GitHub username and repository name, respectively.
+
+Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Fly.io. And continue to do so every time you push changes to your repository's **main** branch.
