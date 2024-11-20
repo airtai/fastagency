@@ -105,7 +105,7 @@ devcontainer = """{{
         "ghcr.io/devcontainers/features/git-lfs:1": {{}},
         "ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {{}}
     }},
-    "updateContentCommand": "bash .devcontainer/setup-ag2.sh",
+    "updateContentCommand": "bash .devcontainer/setup-{runtime}.sh",
     "postCreateCommand": "npm install && npx playwright install-deps && npx playwright install",
     "customizations": {{
         "vscode": {{
