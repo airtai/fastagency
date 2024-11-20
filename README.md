@@ -282,16 +282,22 @@ If you created the project using Cookiecutter, there are built-in scripts to dep
 ./scripts/register_to_fly_io.sh
 ```
 
-Follow it by running the following script to deploy your application to Fly.io:
+Once you have reserved your application name, you can test whether you can deploy your application to Fly.io using the following script:
 
 ```console
 ./scripts/deploy_to_fly_io.sh
 ```
 
-Or, you can push your code to github, where [**GitHub Actions**](https://github.com/features/actions) will automatically deploy your application to Fly.io. For this, you need to set the following secrets in your GitHub repository:
+The preferred way to deploy your application to Fly.io is by using [**GitHub Actions**](https://github.com/features/actions). Simply push your code to your github repository's **main** branch and GitHub Actions will automatically deploy your application to Fly.io. For this, you need to set the following secrets in your GitHub repository:
 
 - `FLY_API_TOKEN`
 - `OPENAI_API_KEY`
+
+To learn how to create keys and add them as secrets, use the following links:
+
+  - [**Creating a Fly.io API token**](https://fly.io/docs/security/tokens/#manage-tokens-in-the-dashboard)
+  - [**Creating an OpenAI API key**](https://platform.openai.com/api-keys)
+  - [**Adding secrets to your GitHub repository**](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)
 
 ## Future Plans
 

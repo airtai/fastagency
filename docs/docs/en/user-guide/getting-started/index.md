@@ -425,7 +425,7 @@ After logging in, the script will check if the application name is available and
 
 #### Deploying to Fly.io manually
 
-Once you have reserved your application name, you can deploy your application to Fly.io using the following script:
+Once you have reserved your application name, you can test whether you can deploy your application to Fly.io using the following script:
 
 ```console
 ./scripts/deploy_to_fly_io.sh
@@ -486,11 +486,13 @@ This script will deploy your application to Fly.io without any further input. Th
     ```
 </details>
 
+The preferred way to deploy the FastAgency application to Fly.io is by using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} which is explained in the next section.
+
 #### Deploying to Fly.io using GitHub Actions
 
-If you prefer to deploy your application to Fly.io using GitHub Actions, you can do so by following these steps:
+The preferred way to deploy your application to Fly.io is by using [**GitHub Actions**](https://github.com/features/actions){target="_blank"}. You can deploy using Github Actions by following these steps:
 
-1. Create a [**new GitHub repository**](https://github.com/new) with your FastAgency project name.
+1. Create a [**new GitHub repository**](https://github.com/new){target="_blank"} with your FastAgency project name.
 
 2. Add the following secrets to your GitHub repository:
 
@@ -499,9 +501,9 @@ If you prefer to deploy your application to Fly.io using GitHub Actions, you can
 
     To learn how to create keys and add them as secrets, use the following links:
 
-    - [**Creating a Fly.io API token**](https://fly.io/docs/security/tokens/#manage-tokens-in-the-dashboard)
-    - [**Creating an OpenAI API key**](https://platform.openai.com/api-keys)
-    - [**Adding secrets to your GitHub repository**](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)
+    - [**Creating a Fly.io API token**](https://fly.io/docs/security/tokens/#manage-tokens-in-the-dashboard){target="_blank"}
+    - [**Creating an OpenAI API key**](https://platform.openai.com/api-keys){target="_blank"}
+    - [**Adding secrets to your GitHub repository**](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository){target="_blank"}
 
 3. In your devcontainer's terminal, run the following commands to commit and push your project to the new GitHub repository:
 
@@ -514,4 +516,9 @@ If you prefer to deploy your application to Fly.io using GitHub Actions, you can
     git push -u origin main
     ```
 
-Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Fly.io. And continue to do so every time you push changes to your repository.
+    Make sure to replace `<username>` and `<repo-name>` with your GitHub username and repository name, respectively.
+
+Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Fly.io. And continue to do so every time you push changes to your repository's **main** branch.
+
+!!! danger
+    If you skip these steps, the GitHub Actions workflow will fail when changes are pushed to the repository's **main** branch.
