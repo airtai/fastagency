@@ -55,6 +55,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: ${{ matrix.python-version }}
+      runtime: ${{ matrix.runtime }}
       environment: null
       use-llms: ""
     secrets: inherit  # pragma: allowlist secret
