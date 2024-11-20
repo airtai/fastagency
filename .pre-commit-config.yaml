@@ -69,6 +69,17 @@ repos:
         require_serial: true
         verbose: true
 
+  - repo: local
+    hooks:
+      - id: devcontainer
+        name: Build devcontainers
+        entry: "scripts/devcontainer-build-pre-commit.sh"
+        language: python
+        #language_version: python3.10
+        files: ^.devcontainer/build_devcontainers.py
+        require_serial: true
+        verbose: true
+
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
