@@ -276,11 +276,22 @@ Similarly, running the Docker container is as simple as running the provided scr
 
 ### Deploying to Fly.io
 
-If you created the project using Cookiecutter, there is a built-in script to deploy your workflow to [**Fly.io**](https://fly.io/). Run it as shown below:
+If you created the project using Cookiecutter, there are built-in scripts to deploy your workflow to [**Fly.io**](https://fly.io/). In Fly.io, the application namespace is global, so the application name you chose might already be taken. To check your application's name availability and to reserve it, you can run the following script:
+
+```console
+./scripts/register_to_fly_io.sh
+```
+
+Follow it by running the following script to deploy your application to Fly.io:
 
 ```console
 ./scripts/deploy_to_fly_io.sh
 ```
+
+Or, you can push your code to github, where [**GitHub Actions**](https://github.com/features/actions) will automatically deploy your application to Fly.io. For this, you need to set the following secrets in your GitHub repository:
+
+- `FLY_API_TOKEN`
+- `OPENAI_API_KEY`
 
 ## Future Plans
 
