@@ -71,7 +71,7 @@ openapi = [
 fastapi = [
     "asyncer==0.0.8",
     "fastapi>=0.112,<1",
-    "websockets>=13,<14",
+    "websockets>=13,<15",
 ]
 
 nats = [
@@ -126,7 +126,7 @@ lint = [
     "ruff==0.7.4",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.10",
-    "semgrep==1.96.0",
+    "semgrep==1.97.0",
     "codespell==2.3.0",
     "pytest-mypy-plugins==3.1.2",
 ]
