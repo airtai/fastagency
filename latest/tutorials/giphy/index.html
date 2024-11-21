@@ -22,44 +22,40 @@
 <a id=__codelineno-2-11 name=__codelineno-2-11 href=#__codelineno-2-11></a><span class=go>    3 - 3.10</span>
 <a id=__codelineno-2-12 name=__codelineno-2-12 href=#__codelineno-2-12></a><span class=go>    Choose from [1/2/3] (1):</span>
 </code></pre></div> <p>This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.</p> </li> <li> <p>Executing the <code>cookiecutter</code> command will create the following file structure:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-3-1 name=__codelineno-3-1 href=#__codelineno-3-1></a><span class=go>my_fastagency_app</span>
-<a id=__codelineno-3-2 name=__codelineno-3-2 href=#__codelineno-3-2></a><span class=go>├── deployment</span>
-<a id=__codelineno-3-3 name=__codelineno-3-3 href=#__codelineno-3-3></a><span class=go>│   └── firebase</span>
-<a id=__codelineno-3-4 name=__codelineno-3-4 href=#__codelineno-3-4></a><span class=go>│       ├── allowed_users.yaml</span>
-<a id=__codelineno-3-5 name=__codelineno-3-5 href=#__codelineno-3-5></a><span class=go>│       └── firebase_config.yaml</span>
-<a id=__codelineno-3-6 name=__codelineno-3-6 href=#__codelineno-3-6></a><span class=go>├── docker</span>
-<a id=__codelineno-3-7 name=__codelineno-3-7 href=#__codelineno-3-7></a><span class=go>│   ├── content</span>
-<a id=__codelineno-3-8 name=__codelineno-3-8 href=#__codelineno-3-8></a><span class=go>│   │   ├── nginx.conf.template</span>
-<a id=__codelineno-3-9 name=__codelineno-3-9 href=#__codelineno-3-9></a><span class=go>│   │   └── run_fastagency.sh</span>
-<a id=__codelineno-3-10 name=__codelineno-3-10 href=#__codelineno-3-10></a><span class=go>│   └── Dockerfile</span>
-<a id=__codelineno-3-11 name=__codelineno-3-11 href=#__codelineno-3-11></a><span class=go>├── my_fastagency_app</span>
-<a id=__codelineno-3-12 name=__codelineno-3-12 href=#__codelineno-3-12></a><span class=go>│   ├── deployment</span>
-<a id=__codelineno-3-13 name=__codelineno-3-13 href=#__codelineno-3-13></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-3-14 name=__codelineno-3-14 href=#__codelineno-3-14></a><span class=go>│   │   └── main.py</span>
-<a id=__codelineno-3-15 name=__codelineno-3-15 href=#__codelineno-3-15></a><span class=go>│   ├── local</span>
-<a id=__codelineno-3-16 name=__codelineno-3-16 href=#__codelineno-3-16></a><span class=go>│   │   ├── __init__.py</span>
-<a id=__codelineno-3-17 name=__codelineno-3-17 href=#__codelineno-3-17></a><span class=go>│   │   ├── main_console.py</span>
-<a id=__codelineno-3-18 name=__codelineno-3-18 href=#__codelineno-3-18></a><span class=go>│   │   └── main_mesop.py</span>
-<a id=__codelineno-3-19 name=__codelineno-3-19 href=#__codelineno-3-19></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-3-20 name=__codelineno-3-20 href=#__codelineno-3-20></a><span class=go>│   └── workflow.py</span>
-<a id=__codelineno-3-21 name=__codelineno-3-21 href=#__codelineno-3-21></a><span class=go>├── scripts</span>
-<a id=__codelineno-3-22 name=__codelineno-3-22 href=#__codelineno-3-22></a><span class=go>│   ├── build_docker.sh</span>
-<a id=__codelineno-3-23 name=__codelineno-3-23 href=#__codelineno-3-23></a><span class=go>│   ├── check-registered-app-pre-commit.sh</span>
-<a id=__codelineno-3-24 name=__codelineno-3-24 href=#__codelineno-3-24></a><span class=go>│   ├── check-registered-app.sh</span>
-<a id=__codelineno-3-25 name=__codelineno-3-25 href=#__codelineno-3-25></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
-<a id=__codelineno-3-26 name=__codelineno-3-26 href=#__codelineno-3-26></a><span class=go>│   ├── lint-pre-commit.sh</span>
-<a id=__codelineno-3-27 name=__codelineno-3-27 href=#__codelineno-3-27></a><span class=go>│   ├── lint.sh</span>
-<a id=__codelineno-3-28 name=__codelineno-3-28 href=#__codelineno-3-28></a><span class=go>│   ├── register_to_fly_io.sh</span>
-<a id=__codelineno-3-29 name=__codelineno-3-29 href=#__codelineno-3-29></a><span class=go>│   ├── run_docker.sh</span>
-<a id=__codelineno-3-30 name=__codelineno-3-30 href=#__codelineno-3-30></a><span class=go>│   ├── run_mesop_locally.sh</span>
-<a id=__codelineno-3-31 name=__codelineno-3-31 href=#__codelineno-3-31></a><span class=go>│   ├── static-analysis.sh</span>
-<a id=__codelineno-3-32 name=__codelineno-3-32 href=#__codelineno-3-32></a><span class=go>│   └── static-pre-commit.sh</span>
-<a id=__codelineno-3-33 name=__codelineno-3-33 href=#__codelineno-3-33></a><span class=go>├── tests</span>
-<a id=__codelineno-3-34 name=__codelineno-3-34 href=#__codelineno-3-34></a><span class=go>│   ├── __init__.py</span>
-<a id=__codelineno-3-35 name=__codelineno-3-35 href=#__codelineno-3-35></a><span class=go>│   ├── conftest.py</span>
-<a id=__codelineno-3-36 name=__codelineno-3-36 href=#__codelineno-3-36></a><span class=go>│   └── test_workflow.py</span>
-<a id=__codelineno-3-37 name=__codelineno-3-37 href=#__codelineno-3-37></a><span class=go>├── README.md</span>
-<a id=__codelineno-3-38 name=__codelineno-3-38 href=#__codelineno-3-38></a><span class=go>├── fly.toml</span>
-<a id=__codelineno-3-39 name=__codelineno-3-39 href=#__codelineno-3-39></a><span class=go>└── pyproject.toml</span>
+<a id=__codelineno-3-2 name=__codelineno-3-2 href=#__codelineno-3-2></a><span class=go>├── docker</span>
+<a id=__codelineno-3-3 name=__codelineno-3-3 href=#__codelineno-3-3></a><span class=go>│   ├── content</span>
+<a id=__codelineno-3-4 name=__codelineno-3-4 href=#__codelineno-3-4></a><span class=go>│   │   ├── nginx.conf.template</span>
+<a id=__codelineno-3-5 name=__codelineno-3-5 href=#__codelineno-3-5></a><span class=go>│   │   └── run_fastagency.sh</span>
+<a id=__codelineno-3-6 name=__codelineno-3-6 href=#__codelineno-3-6></a><span class=go>│   └── Dockerfile</span>
+<a id=__codelineno-3-7 name=__codelineno-3-7 href=#__codelineno-3-7></a><span class=go>├── my_fastagency_app</span>
+<a id=__codelineno-3-8 name=__codelineno-3-8 href=#__codelineno-3-8></a><span class=go>│   ├── deployment</span>
+<a id=__codelineno-3-9 name=__codelineno-3-9 href=#__codelineno-3-9></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-3-10 name=__codelineno-3-10 href=#__codelineno-3-10></a><span class=go>│   │   └── main.py</span>
+<a id=__codelineno-3-11 name=__codelineno-3-11 href=#__codelineno-3-11></a><span class=go>│   ├── local</span>
+<a id=__codelineno-3-12 name=__codelineno-3-12 href=#__codelineno-3-12></a><span class=go>│   │   ├── __init__.py</span>
+<a id=__codelineno-3-13 name=__codelineno-3-13 href=#__codelineno-3-13></a><span class=go>│   │   ├── main_console.py</span>
+<a id=__codelineno-3-14 name=__codelineno-3-14 href=#__codelineno-3-14></a><span class=go>│   │   └── main_mesop.py</span>
+<a id=__codelineno-3-15 name=__codelineno-3-15 href=#__codelineno-3-15></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-3-16 name=__codelineno-3-16 href=#__codelineno-3-16></a><span class=go>│   └── workflow.py</span>
+<a id=__codelineno-3-17 name=__codelineno-3-17 href=#__codelineno-3-17></a><span class=go>├── scripts</span>
+<a id=__codelineno-3-18 name=__codelineno-3-18 href=#__codelineno-3-18></a><span class=go>│   ├── build_docker.sh</span>
+<a id=__codelineno-3-19 name=__codelineno-3-19 href=#__codelineno-3-19></a><span class=go>│   ├── check-registered-app-pre-commit.sh</span>
+<a id=__codelineno-3-20 name=__codelineno-3-20 href=#__codelineno-3-20></a><span class=go>│   ├── check-registered-app.sh</span>
+<a id=__codelineno-3-21 name=__codelineno-3-21 href=#__codelineno-3-21></a><span class=go>│   ├── deploy_to_fly_io.sh</span>
+<a id=__codelineno-3-22 name=__codelineno-3-22 href=#__codelineno-3-22></a><span class=go>│   ├── lint-pre-commit.sh</span>
+<a id=__codelineno-3-23 name=__codelineno-3-23 href=#__codelineno-3-23></a><span class=go>│   ├── lint.sh</span>
+<a id=__codelineno-3-24 name=__codelineno-3-24 href=#__codelineno-3-24></a><span class=go>│   ├── register_to_fly_io.sh</span>
+<a id=__codelineno-3-25 name=__codelineno-3-25 href=#__codelineno-3-25></a><span class=go>│   ├── run_docker.sh</span>
+<a id=__codelineno-3-26 name=__codelineno-3-26 href=#__codelineno-3-26></a><span class=go>│   ├── run_mesop_locally.sh</span>
+<a id=__codelineno-3-27 name=__codelineno-3-27 href=#__codelineno-3-27></a><span class=go>│   ├── static-analysis.sh</span>
+<a id=__codelineno-3-28 name=__codelineno-3-28 href=#__codelineno-3-28></a><span class=go>│   └── static-pre-commit.sh</span>
+<a id=__codelineno-3-29 name=__codelineno-3-29 href=#__codelineno-3-29></a><span class=go>├── tests</span>
+<a id=__codelineno-3-30 name=__codelineno-3-30 href=#__codelineno-3-30></a><span class=go>│   ├── __init__.py</span>
+<a id=__codelineno-3-31 name=__codelineno-3-31 href=#__codelineno-3-31></a><span class=go>│   ├── conftest.py</span>
+<a id=__codelineno-3-32 name=__codelineno-3-32 href=#__codelineno-3-32></a><span class=go>│   └── test_workflow.py</span>
+<a id=__codelineno-3-33 name=__codelineno-3-33 href=#__codelineno-3-33></a><span class=go>├── README.md</span>
+<a id=__codelineno-3-34 name=__codelineno-3-34 href=#__codelineno-3-34></a><span class=go>├── fly.toml</span>
+<a id=__codelineno-3-35 name=__codelineno-3-35 href=#__codelineno-3-35></a><span class=go>└── pyproject.toml</span>
 </code></pre></div> </li> <li> <p>To run LLM-based applications, you need an API key for the LLM used. The most commonly used LLM is <a href=https://platform.openai.com/docs/models>OpenAI</a>. To use it, create an <a href=https://openai.com/index/openai-api/ >OpenAI API Key</a> and set it as an environment variable in the terminal using the following command:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-4-1 name=__codelineno-4-1 href=#__codelineno-4-1></a><span class=go>export OPENAI_API_KEY=openai_api_key_here</span>
 </code></pre></div> <p>If you want to use a different LLM provider, follow <a href=https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/ >this guide</a>.</p> <p>Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in <a href=https://code.visualstudio.com/ target=_blank>Visual Studio Code</a> using GUI, you will need to manually set the environment variable in the devcontainer's terminal.</p> </li> <li> <p>Open the generated project in <a href=https://code.visualstudio.com/ target=_blank>Visual Studio Code</a> with the following command: <div class=highlight><pre><span></span><code><a id=__codelineno-5-1 name=__codelineno-5-1 href=#__codelineno-5-1></a><span class=go>code my_fastagency_app</span>
 </code></pre></div></p> </li> <li> <p>Once the project is opened, you will get the following option to reopen it in a devcontainer:</p> <p><a class=glightbox href=../../user-guide/getting-started/images/reopen-in-container.png data-type=image data-width=auto data-height=auto data-desc-position=bottom><img src=../../user-guide/getting-started/images/reopen-in-container.png width=600 class=center></a></p> </li> <li> <p>After reopening the project in devcontainer, you can verify that the setup is correct by running the provided tests with the following command:</p> <div class=highlight><pre><span></span><code><a id=__codelineno-6-1 name=__codelineno-6-1 href=#__codelineno-6-1></a><span class=go>pytest -s</span>
