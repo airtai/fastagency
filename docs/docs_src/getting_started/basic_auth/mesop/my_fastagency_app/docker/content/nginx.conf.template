@@ -20,7 +20,7 @@ map $fly_machine_id $sticky_action {
 
 # Main server block
 server {
-    listen $MESOP_PORT;
+    listen $SERVICE_PORT;
     server_name localhost;
 
     # Security headers
