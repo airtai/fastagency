@@ -123,7 +123,7 @@ lint = [
     "types-Pygments",
     "types-docutils",
     "mypy==1.13.0",
-    "ruff==0.7.2",
+    "ruff==0.7.4",
     "pyupgrade-directories==0.3.0",
     "bandit==1.7.10",
     "semgrep==1.96.0",
@@ -132,7 +132,7 @@ lint = [
 ]
 
 test-core = [
-    "coverage[toml]==7.6.4",
+    "coverage[toml]==7.6.7",
     "pytest==8.3.3",
     "pytest-asyncio==0.24.0",
     "dirty-equals==0.8.0",
@@ -149,7 +149,7 @@ testing = [
     "watchfiles==0.24.0",
     "email-validator==2.2.0",
     "python-multipart>=0.0.12",
-    "PyJWT==2.9.0",
+    "PyJWT==2.10.0",
     "passlib[bcrypt]==1.7.4",
 ]
 
