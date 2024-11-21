@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - 0.4-dev
     paths:
       - docs/**
       - .github/workflows/deploy-docs.yaml
