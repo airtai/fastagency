@@ -19,6 +19,7 @@ import openai
 import pytest
 import uvicorn
 from fastapi import FastAPI, Path
+from packaging.version import Version
 from pydantic import BaseModel
 from pydantic import __version__ as version_of_pydantic
 
@@ -263,8 +264,8 @@ def fastapi_openapi_url(request: pytest.FixtureRequest) -> Iterator[str]:
 
 
 @pytest.fixture
-def pydantic_version() -> float:
-    return float(".".join(version_of_pydantic.split(".")[:2]))
+def pydantic_version() -> Version:
+    return Version(version_of_pydantic)
 
 
 ################################################################################
