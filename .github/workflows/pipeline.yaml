@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
-        runtime: ["autogen", "ag2", "autogen-04dev"]
+        runtime: ["ag2", "autogen-04dev"]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +50,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
-        runtime: ["autogen", "ag2", "autogen-04dev"]
+        runtime: ["ag2"]
       fail-fast: false
     uses: ./.github/workflows/test.yaml
     with:
@@ -115,7 +115,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
-      runtime: "autogen"
+      runtime: "ag2"
       environment: testing
       use-llms: "llm"
     secrets: inherit  # pragma: allowlist secret

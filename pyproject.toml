@@ -56,12 +56,6 @@ mesop = [
     "mesop>=0.12.7, <1; python_version >= '3.10'"
 ]
 
-autogen = [
-    "autogen-agentchat[anthropic,together,websurfer]>=0.2.0,<0.3",
-    "together>=1.2.11,<1.3", # ToDo: together 1.3.0 has issues with our dev dependencies
-    "markdownify==0.13.1", # Needed by autogen.WebSurferAgent but not included
-]
-
 autogen-04dev = [
     "autogen-agentchat==0.4.0.dev6",
 ]
