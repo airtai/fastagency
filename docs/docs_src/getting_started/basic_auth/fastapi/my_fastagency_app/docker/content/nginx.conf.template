@@ -1,3 +1,17 @@
+upstream nats_fastapi_backend {
+    # Enable sticky sessions with IP hash
+    ip_hash;
+
+
+}
+
+upstream fastapi_backend {
+    # Enable sticky sessions with IP hash
+    ip_hash;
+
+
+}
+
 upstream mesop_backend {
     # Enable sticky sessions with IP hash
     ip_hash;
@@ -18,9 +32,47 @@ map $fly_machine_id $sticky_action {
     default "replay";      # Cookie exists but doesn't match - need to replay
 }
 
-# Main server block
+# Fastapi server block
 server {
-    listen $SERVICE_PORT;
+    listen $FASTAPI_PORT;
+    server_name localhost;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-XSS-Protection "1; mode=block";
+
+    location / {
+        # Handle cookie setting
+        if ($sticky_action = "set_cookie") {
+            add_header Set-Cookie "fly-machine-id=$FLY_MACHINE_ID; Max-Age=518400; Path=/";
+        }
+
+        # Handle replay
+        if ($sticky_action = "replay") {
+            add_header Fly-Replay "instance=$fly_machine_id";
+            return 307;
+        }
+
+        proxy_pass http://fastapi_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_redirect off;
+        proxy_buffering off;
+
+        # WSGI support
+        proxy_set_header X-Forwarded-Host $server_name;
+
+        # WebSocket support
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+# Mesop server block
+server {
+    listen $MESOP_PORT;
     server_name localhost;
 
     # Security headers
