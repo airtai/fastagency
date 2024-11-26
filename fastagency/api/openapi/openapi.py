@@ -47,14 +47,14 @@ class OpenAPI:
         self, servers: list[dict[str, Any]], title: Optional[str] = None, **kwargs: Any
     ) -> None:
         """Proxy class to generate client from OpenAPI schema."""
-        self.servers = servers
-        self.title = title
-        self.kwargs = kwargs
-        self.registered_funcs: list[Callable[..., Any]] = []
-        self.globals: dict[str, Any] = {}
+        self._servers = servers
+        self._title = title
+        self._kwargs = kwargs
+        self._registered_funcs: list[Callable[..., Any]] = []
+        self._globals: dict[str, Any] = {}
 
-        self.security: dict[str, list[BaseSecurity]] = {}
-        self.security_params: dict[Optional[str], BaseSecurityParameters] = {}
+        self._security: dict[str, list[BaseSecurity]] = {}
+        self._security_params: dict[Optional[str], BaseSecurityParameters] = {}
 
     @staticmethod
     def _convert_camel_case_within_braces_to_snake(text: str) -> str:
@@ -97,7 +97,7 @@ class OpenAPI:
 
         expanded_path = path.format(**{p: kwargs[p] for p in path_params})
 
-        url = self.servers[0]["url"] + expanded_path
+        url = self._servers[0]["url"] + expanded_path
 
         body_dict = {}
         if body and body in kwargs:
@@ -122,7 +122,7 @@ class OpenAPI:
         self, security_params: BaseSecurityParameters, name: Optional[str] = None
     ) -> None:
         if name is not None:
-            security = self.security.get(name)
+            security = self._security.get(name)
             if security is None:
                 raise ValueError(f"Security is not set for '{name}'")
 
@@ -134,7 +134,7 @@ class OpenAPI:
                     f"Security parameters {security_params} do not match security {security}"
                 )
 
-        self.security_params[name] = security_params
+        self._security_params[name] = security_params
 
     def _get_matching_security(
         self, security: list[BaseSecurity], security_params: BaseSecurityParameters
@@ -151,14 +151,14 @@ class OpenAPI:
         self, name: str
     ) -> tuple[Optional[BaseSecurityParameters], Optional[BaseSecurity]]:
         # check if security is set for the method
-        security = self.security.get(name)
+        security = self._security.get(name)
         if not security:
             return None, None
 
-        security_params = self.security_params.get(name)
+        security_params = self._security_params.get(name)
         if security_params is None:
             # check if default security parameters are set
-            security_params = self.security_params.get(None)
+            security_params = self._security_params.get(None)
             if security_params is None:
                 raise ValueError(
                     f"Security parameters are not set for {name} and there are no default security parameters"
@@ -180,13 +180,13 @@ class OpenAPI:
             name = func.__name__
 
             if security is not None:
-                self.security[name] = security
+                self._security[name] = security
 
             @wraps(func)
             def wrapper(*args: Any, **kwargs: Any) -> dict[str, Any]:
                 url, params, body_dict = self._process_params(path, func, **kwargs)
 
-                security = self.security.get(name)
+                security = self._security.get(name)
                 if security is not None:
                     security_params, matched_security = self._get_security_params(name)
                     if security_params is None:
@@ -205,7 +205,7 @@ class OpenAPI:
                 else None
             )
 
-            self.registered_funcs.append(wrapper)
+            self._registered_funcs.append(wrapper)
 
             return wrapper
 
@@ -283,7 +283,7 @@ class OpenAPI:
 
     def set_globals(self, main: ModuleType, suffix: str) -> None:
         xs = {k: v for k, v in main.__dict__.items() if not k.startswith("__")}
-        self.globals = {
+        self._globals = {
             k: v
             for k, v in xs.items()
             if hasattr(v, "__module__")
@@ -293,6 +293,7 @@ class OpenAPI:
     @classmethod
     def create(
         cls,
+        *,
         openapi_json: Optional[str] = None,
         openapi_url: Optional[str] = None,
         client_source_path: Optional[str] = None,
@@ -338,7 +339,7 @@ class OpenAPI:
     ) -> dict[Callable[..., Any], dict[str, Union[str, None]]]:
         if functions is None:
             return {
-                f: {"name": None, "description": None} for f in self.registered_funcs
+                f: {"name": None, "description": None} for f in self._registered_funcs
             }
 
         functions_with_name_desc: dict[str, dict[str, Union[str, None]]] = {}
@@ -361,7 +362,7 @@ class OpenAPI:
 
         funcs_to_register: dict[Callable[..., Any], dict[str, Union[str, None]]] = {
             f: functions_with_name_desc[f.__name__]
-            for f in self.registered_funcs
+            for f in self._registered_funcs
             if f.__name__ in functions_with_name_desc
         }
         missing_functions = set(functions_with_name_desc.keys()) - {
@@ -415,7 +416,7 @@ class OpenAPI:
     ) -> None:
         funcs_to_register = self._get_functions_to_register(functions)
 
-        with add_to_globals(self.globals):
+        with add_to_globals(self._globals):
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
 
@@ -436,4 +437,32 @@ class OpenAPI:
             agent.register_for_execution(name=v["name"])(f)
 
     def get_functions(self) -> list[str]:
-        return [f.__name__ for f in self.registered_funcs]
+        raise DeprecationWarning(
+            "Use function_names property instead of get_functions method"
+        )
+
+    @property
+    def function_names(self) -> list[str]:
+        return [f.__name__ for f in self._registered_funcs]
+
+    def get_function(self, name: str) -> Callable[..., dict[str, Any]]:
+        for f in self._registered_funcs:
+            if f.__name__ == name:
+                return f
+        raise ValueError(f"Function {name} not found")
+
+    def set_function(self, name: str, func: Callable[..., dict[str, Any]]) -> None:
+        for i, f in enumerate(self._registered_funcs):
+            if f.__name__ == name:
+                self._registered_funcs[i] = func
+                return
+
+        raise ValueError(f"Function {name} not found")
+
+    def inject_parameters(self, name: str, **kwargs: Any) -> None:
+        raise NotImplementedError("Injecting parameters is not implemented yet")
+        # for f in self._registered_funcs:
+        #     if f.__name__ == name:
+        #         return
+
+        # raise ValueError(f"Function {name} not found")

@@ -701,14 +701,14 @@ class HTTPValidationError(BaseModel):
 
     @pytest.fixture
     def client(self, openapi_schema: dict[str, Any]) -> OpenAPI:
-        client = OpenAPI.create(json.dumps(openapi_schema))
+        client = OpenAPI.create(openapi_json=json.dumps(openapi_schema))
         return client
 
     def test_client(self, client: OpenAPI) -> None:
         assert client is not None
         assert isinstance(client, OpenAPI)
 
-        assert len(client.registered_funcs) == 4, client.registered_funcs
+        assert len(client._registered_funcs) == 4, client._registered_funcs
 
         expected_func_desc = {
             "create_item_items__post": "Create Item",
@@ -718,7 +718,7 @@ class HTTPValidationError(BaseModel):
         }
         func_desc = {
             func.__name__: func._description  # type: ignore[attr-defined]
-            for func in client.registered_funcs
+            for func in client._registered_funcs
         }
         assert func_desc == expected_func_desc
 

@@ -4,7 +4,7 @@ from typing import Any
 import pytest
 from autogen import ConversableAgent, UserProxyAgent
 
-from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi import OpenAPI
 
 from ...conftest import create_gify_fastapi_app
 
@@ -150,7 +150,7 @@ def test_openapi_schema(openapi_schema: dict[str, Any]) -> None:
 @pytest.fixture
 def api(openapi_schema: dict[str, Any]) -> OpenAPI:
     # print(f"{openapi_schema=}")
-    client = OpenAPI.create(json.dumps(openapi_schema))
+    client = OpenAPI.create(openapi_json=json.dumps(openapi_schema))
     return client
 
 

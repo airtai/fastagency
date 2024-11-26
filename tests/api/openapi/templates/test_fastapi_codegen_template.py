@@ -62,7 +62,7 @@ def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
             sys.path = original_sys_path
 
         app = main.app
-        assert app.title == openapi_file_path.stem
+        assert app._title == openapi_file_path.stem
 
 
 @pytest.mark.parametrize("openapi_file_path", OPENAPI_FILE_PATHS)

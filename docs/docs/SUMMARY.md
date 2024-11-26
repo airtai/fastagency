@@ -61,12 +61,12 @@ search:
             - api
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
-                    - client
-                        - [OpenAPI](api/fastagency/api/openapi/client/OpenAPI.md)
-                        - [add_to_globals](api/fastagency/api/openapi/client/add_to_globals.md)
                     - fastapi_code_generator_helpers
                         - [ArgumentWithDescription](api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                         - [patch_get_parameter_type](api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
+                    - openapi
+                        - [OpenAPI](api/fastagency/api/openapi/openapi/OpenAPI.md)
+                        - [add_to_globals](api/fastagency/api/openapi/openapi/add_to_globals.md)
                     - patch_datamodel_code_generator
                         - [patch_apply_discriminator_type](api/fastagency/api/openapi/patch_datamodel_code_generator/patch_apply_discriminator_type.md)
                     - patch_fastapi_code_generator

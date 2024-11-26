@@ -80,7 +80,7 @@ def test_import_and_call_generate_client(secure_fastapi_url: str) -> None:
         from main_gen import app as generated_client_app
         from main_gen import read_items_items__get
 
-        assert generated_client_app.security != {}, generated_client_app.security
+        assert generated_client_app._security != {}, generated_client_app._security
 
         api_key = "super secret key"  # pragma: allowlist secret
 

@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.api.openapi.client.add_to_globals
+::: fastagency.api.openapi.openapi.OpenAPI
