@@ -1,8 +1,7 @@
 import os
 from typing import Annotated, Any, Literal
 
-from autogen import register_function
-from autogen import UserProxyAgent
+from autogen import UserProxyAgent, register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
@@ -26,7 +25,11 @@ bank_tokens_amount_dict = {
     "rba": rba_tokens_amount_dict,
 }
 
-def get_savings(bank: Annotated[Literal["erste", "rba"], "Bank name: 'erste' or 'rba'"], token: Annotated[str, "Token"]) -> str:
+
+def get_savings(
+    bank: Annotated[Literal["erste", "rba"], "Bank name: 'erste' or 'rba'"],
+    token: Annotated[str, "Token"],
+) -> str:
     if token not in bank_tokens_amount_dict[bank]:
         raise ValueError("Token not found")
     return f"Your savings: {bank_tokens_amount_dict[bank][token]}$"
@@ -45,10 +48,9 @@ llm_config = {
 
 wf = AutoGenWorkflows()
 
-@wf.register(name="simple_weather", description="Weather chat")
-def weather_workflow(
-    ui: UI, params: dict[str, str]
-) -> str:
+
+@wf.register(name="banking_chat", description="Banking chat")
+def banking_workflow(ui: UI, params: dict[str, str]) -> str:
     bank = ui.text_input(
         sender="Workflow",
         recipient="User",
