@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.agents.whatsapp.WhatsAppAgent
+::: fastagency.runtimes.ag2.tools.whatsapp.WhatsAppTool

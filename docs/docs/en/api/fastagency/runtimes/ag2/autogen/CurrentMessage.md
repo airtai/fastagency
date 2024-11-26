@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.tools.WebSurferTool
+::: fastagency.runtimes.ag2.autogen.CurrentMessage

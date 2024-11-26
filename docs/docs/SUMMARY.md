@@ -156,27 +156,27 @@ search:
                 - [WorkflowCompleted](api/fastagency/messages/WorkflowCompleted.md)
                 - [WorkflowStarted](api/fastagency/messages/WorkflowStarted.md)
             - runtimes
-                - autogen
-                    - [AutoGenWorkflows](api/fastagency/runtimes/autogen/AutoGenWorkflows.md)
-                    - [IOStreamAdapter](api/fastagency/runtimes/autogen/IOStreamAdapter.md)
+                - ag2
+                    - [AutoGenWorkflows](api/fastagency/runtimes/ag2/AutoGenWorkflows.md)
+                    - [IOStreamAdapter](api/fastagency/runtimes/ag2/IOStreamAdapter.md)
                     - agents
                         - websurfer
-                            - [WebSurferAgent](api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md)
+                            - [WebSurferAgent](api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md)
                         - whatsapp
-                            - [WhatsAppAgent](api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md)
+                            - [WhatsAppAgent](api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md)
                     - autogen
-                        - [AutoGenWorkflows](api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md)
-                        - [CurrentMessage](api/fastagency/runtimes/autogen/autogen/CurrentMessage.md)
-                        - [IOStreamAdapter](api/fastagency/runtimes/autogen/autogen/IOStreamAdapter.md)
-                        - [Toolable](api/fastagency/runtimes/autogen/autogen/Toolable.md)
+                        - [AutoGenWorkflows](api/fastagency/runtimes/ag2/autogen/AutoGenWorkflows.md)
+                        - [CurrentMessage](api/fastagency/runtimes/ag2/autogen/CurrentMessage.md)
+                        - [IOStreamAdapter](api/fastagency/runtimes/ag2/autogen/IOStreamAdapter.md)
+                        - [Toolable](api/fastagency/runtimes/ag2/autogen/Toolable.md)
                     - tools
-                        - [WebSurferTool](api/fastagency/runtimes/autogen/tools/WebSurferTool.md)
-                        - [WhatsAppTool](api/fastagency/runtimes/autogen/tools/WhatsAppTool.md)
+                        - [WebSurferTool](api/fastagency/runtimes/ag2/tools/WebSurferTool.md)
+                        - [WhatsAppTool](api/fastagency/runtimes/ag2/tools/WhatsAppTool.md)
                         - websurfer
-                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferAnswer.md)
-                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferTool.md)
+                            - [WebSurferAnswer](api/fastagency/runtimes/ag2/tools/websurfer/WebSurferAnswer.md)
+                            - [WebSurferTool](api/fastagency/runtimes/ag2/tools/websurfer/WebSurferTool.md)
                         - whatsapp
-                            - [WhatsAppTool](api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md)
+                            - [WhatsAppTool](api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)

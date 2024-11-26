@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.autogen.AutoGenWorkflows
+::: fastagency.runtimes.ag2.autogen.Toolable

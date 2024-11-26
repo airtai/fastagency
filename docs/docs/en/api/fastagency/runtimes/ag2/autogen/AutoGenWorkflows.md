@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.IOStreamAdapter
+::: fastagency.runtimes.ag2.autogen.AutoGenWorkflows

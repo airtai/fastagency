@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.autogen.IOStreamAdapter
+::: fastagency.runtimes.ag2.tools.WhatsAppTool

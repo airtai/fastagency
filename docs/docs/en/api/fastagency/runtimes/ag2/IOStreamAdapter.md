@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.tools.websurfer.WebSurferAnswer
+::: fastagency.runtimes.ag2.IOStreamAdapter

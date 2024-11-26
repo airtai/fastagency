@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.autogen.agents.websurfer.WebSurferAgent
+::: fastagency.runtimes.ag2.tools.WebSurferTool

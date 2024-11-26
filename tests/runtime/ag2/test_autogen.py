@@ -9,8 +9,8 @@ from openai import InternalServerError
 
 from fastagency.api.openapi import OpenAPI
 from fastagency.base import UI
-from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.runtimes.autogen.autogen import _findall, _match
+from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2.autogen import _findall, _match
 from fastagency.ui.console import ConsoleUI
 from tests.conftest import InputMock
 

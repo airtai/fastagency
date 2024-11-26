@@ -3,8 +3,8 @@ from typing import Any
 import pytest
 from autogen import ConversableAgent, UserProxyAgent
 
-from fastagency.runtimes.autogen.autogen import Toolable
-from fastagency.runtimes.autogen.tools import WebSurferTool
+from fastagency.runtimes.ag2.autogen import Toolable
+from fastagency.runtimes.ag2.tools import WebSurferTool
 
 
 class TestWebSurferTool:
