@@ -1,29 +1,19 @@
-from functools import wraps
-from inspect import signature, Parameter
-from typing import Annotated
+from inspect import signature
+from typing import Annotated, Any
 
 from fastagency.api.code_injection import inject_params
 
 
 def test_code_injection() -> None:
-    def f(city: Annotated[str, "City name"], date: Annotated[str, "Date"]) -> Annotated[str, "Weather"]:
-        return f"{city} {date}"
+    def f(
+        city: Annotated[str, "City name"],
+        date: Annotated[str, "Date"],
+        user_id: Annotated[int, "User ID"],
+    ) -> Annotated[str, "Weather"]:
+        return f"User {user_id}: {city} {date}"
 
-    # how to remove the city parameter from the signature of g?
-    @wraps(f)
-    def g(*args, **kwargs):
-        return f(city="Zagreb", **kwargs)
-
-    # Update the signature of g to remove the city parameter
-    sig = signature(f)
-    new_params = [param for name, param in sig.parameters.items() if name != "city"]
-    g.__signature__ = sig.replace(parameters=new_params)
-
-    assert list(signature(g).parameters.keys()) == ["date"]
-
-    city="Zagreb"
-    ctx = {"city": city, "whatever": "whatever"}
+    ctx: dict[str, Any] = {"user_id": 123}
     g = inject_params(f, ctx)
-    city = "Split"
-    assert list(signature(g).parameters.keys()) == ["date"]
-    assert g(date="2021-01-01") == 'Zagreb 2021-01-01'
+    assert list(signature(g).parameters.keys()) == ["city", "date"]
+    kwargs: dict[str, Any] = {"city": "Zagreb", "date": "2021-01-01"}
+    assert g(**kwargs) == "User 123: Zagreb 2021-01-01"

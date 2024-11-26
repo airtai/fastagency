@@ -59,6 +59,8 @@ search:
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
             - api
+                - code_injection
+                    - [inject_params](api/fastagency/api/code_injection/inject_params.md)
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
                     - fastapi_code_generator_helpers
