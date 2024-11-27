@@ -23,15 +23,11 @@ These imports are similar to the imports section we have already covered, with t
 {! docs_src/user_guide/code_injection/mesop_main.py [ln:1-11] !}
 ```
 
-## Define Bank Savings Function
+## Define the Bank Savings Function
 
-The `get_savings` function is the core of this workflow. It retrieves the user's savings based on the provided **bank** name and a **token**.
+The `get_savings` function is central to this workflow. It retrieves the user's savings based on the provided **bank** name and **token**.
 
-### Key Idea
-- The **bank name** is passed to the **LLM** for reasoning and decision-making.
-- **Tokens**, which are sensitive pieces of information, are **NEVER shared with the LLM**. Instead, they will be securely injected into the function later in the workflow using the `inject_params` mechanism.
-
-This ensures that the function can access the required data without compromising the token's confidentiality.
+The key consideration here is that the **token** should NEVER be exposed to the LLM. Instead, the **token** will be securely injected into the `get_savings` function later in the workflow using the `inject_params` mechanism, ensuring that sensitive information remains confidential while still allowing the function to access the required data.
 
 ```python
 {! docs_src/user_guide/code_injection/mesop_main.py [ln:12-35] !}
