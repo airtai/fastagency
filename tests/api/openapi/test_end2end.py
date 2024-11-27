@@ -880,6 +880,23 @@ class HTTPValidationError(BaseModel):
             expected_tools, cls=JSONEncoder
         )
 
+    def test_client_get_function(self, client: OpenAPI) -> None:
+        f = client.get_function("create_item_items__post")
+        assert f is not None
+
+    def test_client_get_function_not_found(self, client: OpenAPI) -> None:
+        function_name = "create_item_items__post__not_found"
+        with pytest.raises(
+            expected_exception=ValueError, match=f"Function {function_name} not found"
+        ):
+            client.get_function(function_name)
+
+    def test_set_function(self, client: OpenAPI) -> None:
+        def create_item_items__post() -> dict[str, Any]:
+            return {"item_id": 1}
+
+        client.set_function(create_item_items__post.__name__, create_item_items__post)
+
     def test_register_for_execution(
         self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
     ) -> None:
