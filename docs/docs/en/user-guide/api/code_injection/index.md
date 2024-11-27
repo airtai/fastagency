@@ -17,7 +17,7 @@ pip install "fastagency[autogen,mesop]"
 ```
 
 ## Imports
-These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the `inject_params` function:
+These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md) function:
 
 ```python hl_lines="8"
 {! docs_src/user_guide/code_injection/mesop_main.py [ln:1-11] !}
@@ -27,7 +27,7 @@ These imports are similar to the imports section we have already covered, with t
 
 The `get_savings` function is central to this workflow. It retrieves the user's savings based on the provided **bank** name and **token**.
 
-The key consideration here is that the **token** should NEVER be exposed to the LLM. Instead, the **token** will be securely injected into the `get_savings` function later in the workflow using the `inject_params` mechanism, ensuring that sensitive information remains confidential while still allowing the function to access the required data.
+The key consideration here is that the **token** should NEVER be exposed to the LLM. Instead, the **token** will be securely injected into the `get_savings` function later in the workflow using the [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md) mechanism, ensuring that sensitive information remains confidential while still allowing the function to access the required data.
 
 ```python
 {! docs_src/user_guide/code_injection/mesop_main.py [ln:12-35] !}
@@ -64,7 +64,7 @@ The `banking_workflow` handles user interaction and integrates agents to retriev
 The token provided by the user is stored securely in a **context dictionary (`ctx`)**.
 This token is **never shared with the LLM** and is only used internally within the workflow.
 
-Using `inject_params`, the sensitive `token` from the `ctx` dictionary is injected into the `get_savings` function.
+Using [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md), the sensitive `token` from the `ctx` dictionary is injected into the `get_savings` function.
 
 ```python
 {! docs_src/user_guide/code_injection/mesop_main.py [ln:78-79] !}
@@ -115,7 +115,7 @@ At the beginning, the user is asked to provide the **bank name** and **token**.
 ![User Input](./images/user_input.png)
 
 Once the user provides the information, the agent executes the `get_savings` function with the **bank name** as a parameter.
-The **token** is securely injected into the function using the `inject_params` mechanism, ensuring the token is not exposed to the LLM.
+The **token** is securely injected into the function using the [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md) mechanism, ensuring the token is not exposed to the LLM.
 
 The agent processes the request, retrieves the user's savings information, and provides a summary of the results without compromising sensitive data.
 
