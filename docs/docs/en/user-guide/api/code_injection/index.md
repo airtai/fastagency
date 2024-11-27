@@ -49,25 +49,78 @@ Here, the large language model is configured to use the `gpt-4o-mini` model, and
 
 The `banking_workflow` handles user interaction and integrates agents to retrieve savings securely.
 
-### Step-by-Step Process:
 
 1. **User Input Collection**:
     - At the beginning of the workflow, the user is prompted to provide:
         - **Bank Name**: The workflow asks, *"Enter your bank"*.
         - **Token**: The workflow then asks, *"Enter your token"*.
 
-2. **Sensitive Data Handling**:
-    - The token provided by the user is stored securely in a **context dictionary (`ctx`)**.
-    - This token is **never shared with the LLM** and is only used internally within the workflow.
-
-3. **Parameter Injection**:
-    - Using `inject_params`, the sensitive `token` from the `ctx` dictionary is injected into the `get_savings` function.
-
-4. **Agent Setup**:
+2. **Agent Setup**:
     - Two agents are created to handle the workflow:
         - **UserProxyAgent**: Simulates the user's perspective, facilitating secure communication.
         - **ConversableAgent**: Acts as the banker agent, retrieving savings information based on the user's input.
 
 ```python
-{! docs_src/user_guide/code_injection/mesop_main.py [ln:49-79] !}
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:49-76] !}
 ```
+
+## Code Injection
+The token provided by the user is stored securely in a **context dictionary (`ctx`)**.
+This token is **never shared with the LLM** and is only used internally within the workflow.
+
+Using `inject_params`, the sensitive `token` from the `ctx` dictionary is injected into the `get_savings` function.
+
+```python
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:78-79] !}
+```
+
+## Register Function with the Agents
+In this step, we register the `get_savings_with_params`
+```python
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:80-85] !}
+```
+
+## Enable Agent Interaction and Chat
+Here, the user agent initiates a chat with the banker agent, which retrieves information about the savings. The conversation is summarized using a method provided by the LLM.
+
+```python
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:87-95] !}
+```
+
+## Define FastAgency Application
+
+Next, define your FastAgency application.
+
+```python
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:98] !}
+```
+
+## Complete Application Code
+
+<details>
+<summary>main.py</summary>
+```python
+{! docs_src/user_guide/code_injection/mesop_main.py !}
+```
+</details>
+
+
+## Run Application
+
+You can run this chapter's FastAgency application using the following command:
+
+```console
+fastagency run
+```
+
+## Output
+At the beginning, the user is asked to provide the **bank name** and **token**.
+
+![User Input](./images/user_input.png)
+
+Once the user provides the information, the agent executes the `get_savings` function with the **bank name** as a parameter.
+The **token** is securely injected into the function using the `inject_params` mechanism, ensuring the token is not exposed to the LLM.
+
+The agent processes the request, retrieves the user's savings information, and provides a summary of the results without compromising sensitive data.
+
+![Result](./images/result.png)

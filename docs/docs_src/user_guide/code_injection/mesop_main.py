@@ -54,16 +54,13 @@ def banking_workflow(ui: UI, params: dict[str, str]) -> str:
     bank = ui.text_input(
         sender="Workflow",
         recipient="User",
-        prompt="Enter your bank",
+        prompt="Enter your bank:",
     )
     token = ui.text_input(
         sender="Workflow",
         recipient="User",
-        prompt="Enter your token",
+        prompt="Enter your token:",
     )
-
-    ctx: dict[str, Any] = {"token": token}
-    get_savings_with_params = inject_params(get_savings, ctx)
 
     user_agent = UserProxyAgent(
         name="User_Agent",
@@ -77,6 +74,9 @@ def banking_workflow(ui: UI, params: dict[str, str]) -> str:
         llm_config=llm_config,
         human_input_mode="NEVER",
     )
+
+    ctx: dict[str, Any] = {"token": token}
+    get_savings_with_params = inject_params(get_savings, ctx)
     register_function(
         f=get_savings_with_params,
         caller=banker_agent,
