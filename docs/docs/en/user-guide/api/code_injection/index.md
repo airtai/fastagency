@@ -19,7 +19,7 @@ pip install "fastagency[autogen,mesop]"
 ## Imports
 These imports are similar to the imports section we have already covered, with the only difference being the additional imports of the `inject_params` function:
 
-```python hl_lines="9"
+```python hl_lines="8"
 {! docs_src/user_guide/code_injection/mesop_main.py [ln:1-11] !}
 ```
 
@@ -27,11 +27,47 @@ These imports are similar to the imports section we have already covered, with t
 
 The `get_savings` function is the core of this workflow. It retrieves the user's savings based on the provided **bank** name and a **token**.
 
-### Key Idea:
+### Key Idea
 - The **bank name** is passed to the **LLM** for reasoning and decision-making.
-- **Tokens**, which are sensitive pieces of information, are **never shared with the LLM**. Instead, they are securely injected into the function using the `inject_params` mechanism.
+- **Tokens**, which are sensitive pieces of information, are **NEVER shared with the LLM**. Instead, they will be securely injected into the function later in the workflow using the `inject_params` mechanism.
+
 This ensures that the function can access the required data without compromising the token's confidentiality.
 
 ```python
-{! docs_src/user_guide/code_injection/mesop_main.py [ln:13-32] !}
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:12-35] !}
+```
+
+
+## Configure the Language Model (LLM)
+Here, the large language model is configured to use the `gpt-4o-mini` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
+
+```python
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:38-46] !}
+```
+
+## Define the Workflow and Agents
+
+The `banking_workflow` handles user interaction and integrates agents to retrieve savings securely.
+
+### Step-by-Step Process:
+
+1. **User Input Collection**:
+    - At the beginning of the workflow, the user is prompted to provide:
+        - **Bank Name**: The workflow asks, *"Enter your bank"*.
+        - **Token**: The workflow then asks, *"Enter your token"*.
+
+2. **Sensitive Data Handling**:
+    - The token provided by the user is stored securely in a **context dictionary (`ctx`)**.
+    - This token is **never shared with the LLM** and is only used internally within the workflow.
+
+3. **Parameter Injection**:
+    - Using `inject_params`, the sensitive `token` from the `ctx` dictionary is injected into the `get_savings` function.
+
+4. **Agent Setup**:
+    - Two agents are created to handle the workflow:
+        - **UserProxyAgent**: Simulates the user's perspective, facilitating secure communication.
+        - **ConversableAgent**: Acts as the banker agent, retrieving savings information based on the user's input.
+
+```python
+{! docs_src/user_guide/code_injection/mesop_main.py [ln:49-79] !}
 ```
