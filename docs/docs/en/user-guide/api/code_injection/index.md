@@ -67,7 +67,7 @@ These imports are similar to the imports section we have already covered, with t
 
 ### Define the Bank Savings Function
 
-The `get_balance` function is central to this workflow. It retrieves the user's balance based on the provided **username** name and **password**.
+The `get_balance` function is central to this workflow. It retrieves the user's balance based on the provided **username** and **password**.
 
 The key consideration here is that both username and password should **NEVER** be exposed to the LLM. Instead, they will be securely injected into the `get_balance` function later in the workflow using the [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md) mechanism, ensuring that sensitive information remains confidential while still allowing the function to access the required data.
 
@@ -103,10 +103,10 @@ The `bank_workflow` handles user interaction and integrates agents to retrieve b
 ```
 
 ### Code Injection
-The token provided by the user is stored securely in a **context dictionary (`ctx`)**.
-This token is **never shared with the LLM** and is only used internally within the workflow.
+Username and password provided by the user are stored securely in a **context dictionary (`ctx`)**.
+These parameters are **never shared with the LLM** and they are only used internally within the workflow.
 
-Using [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md), the sensitive `token` from the `ctx` dictionary is injected into the `get_balance` function.
+Using [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md), the sensitive parameters from the `ctx` dictionary are injected into the `get_balance` function.
 
 ```python
 {! docs_src/user_guide/code_injection/workflow.py [ln:65-69] !}
@@ -138,7 +138,7 @@ At the beginning, the user is asked to provide the **username** and **password**
 
 ![User Input](./images/user_input.png)
 
-Once the user provides the information, the agent executes the `get_balance` function with both parameters securely injected into the function using the [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md) mechanism, ensuring the token is not exposed to the LLM.
+Once the user provide them, the agent executes the `get_balance` function with both parameters securely injected into the function using the [**`inject_params`**](../../../api/fastagency/api/code_injection/inject_params.md) mechanism, ensuring these parameters are not exposed to the LLM.
 
 The agent processes the request, retrieves the user's balance, and provides a summary of the results without compromising sensitive data.
 
