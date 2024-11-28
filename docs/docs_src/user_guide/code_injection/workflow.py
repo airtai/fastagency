@@ -1,38 +1,26 @@
 import os
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any
 
 from autogen import UserProxyAgent, register_function
 from autogen.agentchat import ConversableAgent
-
-from fastagency import UI, FastAgency
+from fastagency import UI
 from fastagency.api.code_injection import inject_params
 from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.ui.mesop import MesopUI
 
-erste_tokens_amount_dict = {
-    "token-1-c": 100,
-    "token-1-f": 200,
-}
-
-rba_tokens_amount_dict = {
-    "token-1-a": 1_000,
-    "token-1-b": 20_000,
-    "token-2-a": -200,
-}
-
-bank_tokens_amount_dict = {
-    "erste": erste_tokens_amount_dict,
-    "rba": rba_tokens_amount_dict,
+account_ballace_dict = {
+    ("alice", "password123"): 100,
+    ("bob", "password456"): 200,
+    ("charlie", "password789"): 300,
 }
 
 
-def get_savings(
-    bank: Annotated[Literal["erste", "rba"], "Bank name: 'erste' or 'rba'"],
-    token: Annotated[str, "Token"],
+def get_balance(
+    username: Annotated[str, "Username"],
+    password: Annotated[str, "Password"],
 ) -> str:
-    if token not in bank_tokens_amount_dict[bank]:
-        raise ValueError("Token not found")
-    return f"Your savings: {bank_tokens_amount_dict[bank][token]}$"
+    if (username.lower(), password) not in account_ballace_dict:
+        return "Invalid username or password"
+    return f"Your balance is {account_ballace_dict[(username, password)]}$"
 
 
 llm_config = {
@@ -45,21 +33,20 @@ llm_config = {
     "temperature": 0.8,
 }
 
-
 wf = AutoGenWorkflows()
 
 
-@wf.register(name="banking_chat", description="Banking chat")
-def banking_workflow(ui: UI, params: dict[str, str]) -> str:
-    bank = ui.text_input(
+@wf.register(name="bank_chat", description="Bank chat")  # type: ignore[misc]
+def bank_workflow(ui: UI, params: dict[str, str]) -> str:
+    username = ui.text_input(
         sender="Workflow",
         recipient="User",
-        prompt="Enter your bank:",
+        prompt="Enter your username:",
     )
-    token = ui.text_input(
+    password = ui.text_input(
         sender="Workflow",
         recipient="User",
-        prompt="Enter your token:",
+        prompt="Enter your password:",
     )
 
     user_agent = UserProxyAgent(
@@ -75,24 +62,23 @@ def banking_workflow(ui: UI, params: dict[str, str]) -> str:
         human_input_mode="NEVER",
     )
 
-    ctx: dict[str, Any] = {"token": token}
-    get_savings_with_params = inject_params(get_savings, ctx)
+    ctx: dict[str, Any] = {
+        "username": username,
+        "password": password,
+    }
+    get_balance_with_params = inject_params(get_balance, ctx)
     register_function(
-        f=get_savings_with_params,
+        f=get_balance_with_params,
         caller=banker_agent,
         executor=user_agent,
         description="Get savings",
     )
 
-    initial_message = f"We need to get user's savings for {bank}"
     chat_result = user_agent.initiate_chat(
         banker_agent,
-        message=initial_message,
+        message="We need to get user's balance.",
         summary_method="reflection_with_llm",
         max_turns=3,
     )
 
     return chat_result.summary  # type: ignore[no-any-return]
-
-
-app = FastAgency(provider=wf, ui=MesopUI())
