@@ -897,6 +897,13 @@ class HTTPValidationError(BaseModel):
 
         client.set_function(create_item_items__post.__name__, create_item_items__post)
 
+    def test_get_functions(self, client: OpenAPI) -> None:
+        with pytest.raises(
+            expected_exception=DeprecationWarning,
+            match="Use function_names property instead of get_functions method",
+        ):
+            client.get_functions()
+
     def test_register_for_execution(
         self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
     ) -> None:
