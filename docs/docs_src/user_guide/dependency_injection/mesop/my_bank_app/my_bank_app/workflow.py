@@ -18,7 +18,7 @@ def get_balance(
     username: Annotated[str, "Username"],
     password: Annotated[str, "Password"],
 ) -> str:
-    if (username.lower(), password) not in account_ballace_dict:
+    if (username, password) not in account_ballace_dict:
         return "Invalid username or password"
     return f"Your balance is {account_ballace_dict[(username, password)]}$"
 
@@ -71,7 +71,7 @@ def bank_workflow(ui: UI, params: dict[str, str]) -> str:
         f=get_balance_with_params,
         caller=banker_agent,
         executor=user_agent,
-        description="Get savings",
+        description="Get balance",
     )
 
     chat_result = user_agent.initiate_chat(

@@ -36,7 +36,7 @@ We will use [**Cookiecutter**](../../../user-guide/cookiecutter/index.md) for se
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-In this example, we’ll create a **Mesop** application **without authentication**. The generated project will follow this structure:
+In this example, we’ll create a **Mesop** application **without authentication**. The generated project will have the following files:
 
 ```console
 {! docs_src/user_guide/dependency_injection/mesop/folder_structure.txt !}
