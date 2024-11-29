@@ -16,14 +16,3 @@ venv*
 htmlcov
 token
 .DS_Store
-
-docs/site/
-docs/site_build/
-faststream.log
-tmp.env
-.pnpm-store/
-node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
