@@ -2,6 +2,7 @@
 - sync: Ag2Workflows
 - async: AutogenChatWorkflows
 	- agents need run methods not just declarations -> callable u konstruktoru?
+	- treba mogucnost biranje wrste teama
 
 ## FastApiAdapter
 - u konstruktoru moze primiti sync i async workflow, i prilagoditi ce se tome (potencijalno vratiti odgovarajucu vrstu objekta, ili mozemo imati razlicite Adapter klase)
