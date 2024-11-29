@@ -23,7 +23,7 @@ search:
         - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
         - [FastAPI Security](user-guide/adapters/fastapi/security.md)
     - [API-s](user-guide/api/index.md)
-        - [Code Injection](user-guide/api/code_injection/index.md)
+        - [Dependency Injection](user-guide/api/dependency_injection/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
@@ -60,8 +60,8 @@ search:
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
             - api
-                - code_injection
-                    - [inject_params](api/fastagency/api/code_injection/inject_params.md)
+                - dependency_injection
+                    - [inject_params](api/fastagency/api/dependency_injection/inject_params.md)
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
                     - fastapi_code_generator_helpers

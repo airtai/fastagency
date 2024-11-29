@@ -1,10 +1,10 @@
 from inspect import signature
 from typing import Annotated, Any
 
-from fastagency.api.code_injection import inject_params
+from fastagency.api.dependency_injection import inject_params
 
 
-def test_code_injection() -> None:
+def test_dependency_injection() -> None:
     def f(
         city: Annotated[str, "City name"],
         date: Annotated[str, "Date"],

@@ -4,7 +4,7 @@ from typing import Annotated, Any
 from autogen import UserProxyAgent, register_function
 from autogen.agentchat import ConversableAgent
 from fastagency import UI
-from fastagency.api.code_injection import inject_params
+from fastagency.api.dependency_injection import inject_params
 from fastagency.runtimes.autogen import AutoGenWorkflows
 
 account_ballace_dict = {

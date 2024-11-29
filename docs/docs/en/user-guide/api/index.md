@@ -6,10 +6,10 @@ Currently, FastAgency supports importing API functionality from [**OpenAPI**](ht
 
 ## API Features in FastAgency
 
-### 1. **[Code Injection](./code_injection/index.md)**
-FastAgency offers a secure way to manage sensitive data using code injection. With the [**`inject_params`**](../../api/fastagency/api/code_injection/inject_params.md) function, sensitive information, such as tokens, is injected directly into functions without being exposed to the LLM. This ensures that sensitive data remains private while allowing agents to perform the required tasks. The process helps maintain data security and confidentiality while still enabling the proper execution of functions within the workflow.
+### 1. **[Dependency Injection](./dependency_injection/index.md)**
+FastAgency offers a secure way to manage sensitive data using dependency injection. With the [**`inject_params`**](../../api/fastagency/api/dependency_injection/inject_params.md) function, sensitive information, such as tokens, is injected directly into functions without being exposed to the LLM. This ensures that sensitive data remains private while allowing agents to perform the required tasks. The process helps maintain data security and confidentiality while still enabling the proper execution of functions within the workflow.
 
-[Learn more about Code Injection →](./code_injection/index.md)
+[Learn more about Dependency Injection →](./dependency_injection/index.md)
 
 
 ### 2. **[OpenAPI Import](./openapi/index.md)**
