@@ -23,6 +23,7 @@ search:
         - [FastAPI + Nats.io](user-guide/adapters/fastapi_nats/index.md)
         - [FastAPI Security](user-guide/adapters/fastapi/security.md)
     - [API-s](user-guide/api/index.md)
+        - [Dependency Injection](user-guide/api/dependency_injection/index.md)
         - [OpenAPI](user-guide/api/openapi/index.md)
         - [Security](user-guide/api/security.md)
     - [Testing](user-guide/testing/index.md)
@@ -59,14 +60,16 @@ search:
                         - [NatsAdapter](api/fastagency/adapters/nats/base/NatsAdapter.md)
                         - [NatsProvider](api/fastagency/adapters/nats/base/NatsProvider.md)
             - api
+                - dependency_injection
+                    - [inject_params](api/fastagency/api/dependency_injection/inject_params.md)
                 - openapi
                     - [OpenAPI](api/fastagency/api/openapi/OpenAPI.md)
-                    - client
-                        - [OpenAPI](api/fastagency/api/openapi/client/OpenAPI.md)
-                        - [add_to_globals](api/fastagency/api/openapi/client/add_to_globals.md)
                     - fastapi_code_generator_helpers
                         - [ArgumentWithDescription](api/fastagency/api/openapi/fastapi_code_generator_helpers/ArgumentWithDescription.md)
                         - [patch_get_parameter_type](api/fastagency/api/openapi/fastapi_code_generator_helpers/patch_get_parameter_type.md)
+                    - openapi
+                        - [OpenAPI](api/fastagency/api/openapi/openapi/OpenAPI.md)
+                        - [add_to_globals](api/fastagency/api/openapi/openapi/add_to_globals.md)
                     - patch_datamodel_code_generator
                         - [patch_apply_discriminator_type](api/fastagency/api/openapi/patch_datamodel_code_generator/patch_apply_discriminator_type.md)
                     - patch_fastapi_code_generator

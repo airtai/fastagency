@@ -5,7 +5,7 @@ from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI
-from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.runtimes.autogen.agents.websurfer import WebSurferAgent
 from fastagency.runtimes.autogen import AutoGenWorkflows
