@@ -36,31 +36,14 @@ We will use [**Cookiecutter**](../../../user-guide/cookiecutter/index.md) for se
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-In this example, we will create Mesop application without authentication. To do so, select the following settings after running the `cookiecutter` command:
+In this example, we’ll create a **Mesop** application **without authentication**. The generated project will follow this structure:
 
 ```console
-  [1/5] project_name (My FastAgency App): My Bank App
-  [2/5] project_slug (my_bank_app):
-  [3/5] Select app_type
-    1 - fastapi+mesop
-    2 - mesop
-    3 - nats+fastapi+mesop
-    4 - fastapi
-    Choose from [1/2/3/4] (1): 2
-  [4/5] Select python_version
-    1 - 3.12
-    2 - 3.11
-    3 - 3.10
-    Choose from [1/2/3] (1): 2
-  [5/5] Select authentication
-    1 - basic
-    2 - google
-    3 - none
-    Choose from [1/2/3] (1): 3
+{! docs_src/user_guide/dependency_injection/mesop/folder_structure.txt !}
 ```
 
 ## Complete Workflow Code
-The only file you need to modify to run the application is `my_bank_app/workflow.py`. Simply copy and paste the following content into the file:
+The only file you need to modify to run the application is `my_bank_app/my_bank_app/workflow.py`. Simply copy and paste the following content into the file:
 
 <details>
 <summary>workflow.py</summary>
