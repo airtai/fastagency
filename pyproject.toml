@@ -101,7 +101,7 @@ submodules = [
 devdocs = [
     "mkdocs==1.6.1",
     "mkdocs-autorefs==1.2.0",  # mkdocs build fails if upgraded
-    "mkdocs-material==9.5.44",
+    "mkdocs-material==9.5.47",
     "mkdocs-static-i18n==1.2.3",
     "mdx-include==1.4.2",
     "mkdocstrings[python]==0.27.0",
