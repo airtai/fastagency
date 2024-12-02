@@ -1,17 +1,3 @@
-upstream nats_fastapi_backend {
-    # Enable sticky sessions with IP hash
-    ip_hash;
-
-
-}
-
-upstream fastapi_backend {
-    # Enable sticky sessions with IP hash
-    ip_hash;
-
-
-}
-
 upstream mesop_backend {
     # Enable sticky sessions with IP hash
     ip_hash;
@@ -32,9 +18,9 @@ map $fly_machine_id $sticky_action {
     default "replay";      # Cookie exists but doesn't match - need to replay
 }
 
-# Mesop server block
+# Main server block
 server {
-    listen $MESOP_PORT;
+    listen $SERVICE_PORT;
     server_name localhost;
 
     # Security headers

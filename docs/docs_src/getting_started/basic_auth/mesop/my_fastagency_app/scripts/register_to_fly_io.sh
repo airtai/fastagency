@@ -17,7 +17,7 @@ else
     echo -e "\033[0;32mAlready logged into fly.io\033[0m"
 fi
 
-export FLY_APP_NAME=$(grep "^app = " fly.toml | awk -F"'" '{print $2}')
+export FLY_APP_NAME=my-fastagency-app
 
 echo -e "\033[0;32mRegistering app name in fly.io\033[0m"
 if flyctl apps create $FLY_APP_NAME; then
@@ -27,6 +27,6 @@ if flyctl apps create $FLY_APP_NAME; then
     cat registered_app_domain.txt
 else
     echo -e "\033[1;31mError: App name is not available.\033[0m"
-    echo -e "\033[1;31mPlease change the app name in fly.toml and run this script again.\033[0m"
+    echo -e "\033[1;31mPlease change the app name in fly.toml and scripts/register_to_fly_io.sh and run this script again.\033[0m"
     exit 1
 fi

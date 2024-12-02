@@ -21,30 +21,3 @@ primary_region = 'ams'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-
-[[services]]
-  http_checks = []
-  internal_port = 8008
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-
-  [services.concurrency]
-    type = "connections"
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 8008
-[[services]]
-  http_checks = []
-  internal_port = 8888
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-
-  [services.concurrency]
-    type = "connections"
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 8888

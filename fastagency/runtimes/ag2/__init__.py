@@ -1,6 +1,6 @@
 from ...helpers import check_imports
 
-check_imports(["autogen"], "autogen")
+check_imports(["autogen"], "ag2")
 
 
 from .autogen import AutoGenWorkflows, IOStreamAdapter  # noqa: E402
