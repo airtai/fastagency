@@ -5,8 +5,8 @@ from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtimes.autogen import AutoGenWorkflows
-from fastagency.runtimes.autogen.tools import WebSurferTool
+from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2.tools import WebSurferTool
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {

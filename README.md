@@ -190,7 +190,7 @@ from typing import Any
 
 from autogen.agentchat import ConversableAgent
 from fastagency import UI
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import AutoGenWorkflows
 
 llm_config = {
     "config_list": [

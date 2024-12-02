@@ -24,7 +24,8 @@ MESOP_NON_AUTH_MODULES = {
 MESOP_EXCLUDED_MODULES = {
     "docs_src.tutorials.giphy",
     "docs_src.tutorials.whatsapp",
-    "docs_src.user_guide.runtimes.autogen.mesop",
+    "docs_src.user_guide.runtimes.ag2.mesop",
+    "docs_src.user_guide.dependency_injection",
 }
 
 # Mock Environment variables for Mesop Auth testing

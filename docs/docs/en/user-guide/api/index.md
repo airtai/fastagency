@@ -6,12 +6,18 @@ Currently, FastAgency supports importing API functionality from [**OpenAPI**](ht
 
 ## API Features in FastAgency
 
-### 1. **[OpenAPI Import](./openapi/index.md)**
+### 1. **[Dependency Injection](./dependency_injection/index.md)**
+FastAgency offers a secure way to manage sensitive data using dependency injection. With the [**`inject_params`**](../../api/fastagency/api/dependency_injection/inject_params.md) function, sensitive information, such as tokens, is injected directly into functions without being exposed to the LLM. This ensures that sensitive data remains private while allowing agents to perform the required tasks. The process helps maintain data security and confidentiality while still enabling the proper execution of functions within the workflow.
+
+[Learn more about Dependency Injection →](./dependency_injection/index.md)
+
+
+### 2. **[OpenAPI Import](./openapi/index.md)**
 FastAgency can automatically generate API functions from OpenAPI specifications, streamlining the process of connecting agents to external services. With just a few lines of code, you can import an API specification, and FastAgency will handle the function generation and LLM integration, making it simple for agents to call external APIs.
 
 [Learn more about OpenAPI Import →](./openapi/index.md)
 
-### 2. **[API Security](./security.md)**
+### 3. **[API Security](./security.md)**
 FastAgency supports different types of security for REST APIs, including OAuth, API keys, and more. This ensures that your API integrations are secure and can handle sensitive data. Our API security mechanisms are flexible, allowing you to configure and manage secure communication between your agents and external APIs.
 
 [Learn more about API Security →](./security.md)

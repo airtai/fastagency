@@ -2,11 +2,11 @@ from unittest.mock import MagicMock, patch
 
 from autogen import UserProxyAgent
 
-from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 
 
-@patch("fastagency.api.openapi.client.requests.post")
+@patch("fastagency.api.openapi.openapi.requests.post")
 def test_real_whatsapp_end2end(
     mock_post: MagicMock,
 ) -> None:

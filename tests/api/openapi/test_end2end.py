@@ -701,14 +701,14 @@ class HTTPValidationError(BaseModel):
 
     @pytest.fixture
     def client(self, openapi_schema: dict[str, Any]) -> OpenAPI:
-        client = OpenAPI.create(json.dumps(openapi_schema))
+        client = OpenAPI.create(openapi_json=json.dumps(openapi_schema))
         return client
 
     def test_client(self, client: OpenAPI) -> None:
         assert client is not None
         assert isinstance(client, OpenAPI)
 
-        assert len(client.registered_funcs) == 4, client.registered_funcs
+        assert len(client._registered_funcs) == 4, client._registered_funcs
 
         expected_func_desc = {
             "create_item_items__post": "Create Item",
@@ -718,7 +718,7 @@ class HTTPValidationError(BaseModel):
         }
         func_desc = {
             func.__name__: func._description  # type: ignore[attr-defined]
-            for func in client.registered_funcs
+            for func in client._registered_funcs
         }
         assert func_desc == expected_func_desc
 
@@ -879,6 +879,30 @@ class HTTPValidationError(BaseModel):
         assert json.dumps(tools, cls=JSONEncoder) == json.dumps(
             expected_tools, cls=JSONEncoder
         )
+
+    def test_client_get_function(self, client: OpenAPI) -> None:
+        f = client.get_function("create_item_items__post")
+        assert f is not None
+
+    def test_client_get_function_not_found(self, client: OpenAPI) -> None:
+        function_name = "create_item_items__post__not_found"
+        with pytest.raises(
+            expected_exception=ValueError, match=f"Function {function_name} not found"
+        ):
+            client.get_function(function_name)
+
+    def test_set_function(self, client: OpenAPI) -> None:
+        def create_item_items__post() -> dict[str, Any]:
+            return {"item_id": 1}
+
+        client.set_function(create_item_items__post.__name__, create_item_items__post)
+
+    def test_get_functions(self, client: OpenAPI) -> None:
+        with pytest.raises(
+            expected_exception=DeprecationWarning,
+            match="Use function_names property instead of get_functions method",
+        ):
+            client.get_functions()
 
     def test_register_for_execution(
         self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: dict[str, Any]

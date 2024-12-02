@@ -191,7 +191,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     ╰─────────────────────────╯
 
     [INFO] Importing autogen.base.py
-    [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.  autogen.AutoGenWorkflows object at 0x109a51610> and UI: <fastagency.ui.console.console.ConsoleUI object at 0x109adced0>
+    [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.  autogen.AutoGenWorkflows object at 0x109a51610> and UI: <fastagency.ui.console.console.ConsoleUI object at 0x109adced0>
     [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭──── Importable FastAgency app ────╮
@@ -226,7 +226,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     ╰────────────────────────╯
 
     [INFO] Importing autogen.base.py
-    [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0x11368cbd0> and UI: <fastagency.ui.console.console.ConsoleUI object at 0x13441c510>
+    [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.autogen.AutoGenWorkflows object at 0x11368cbd0> and UI: <fastagency.ui.console.console.ConsoleUI object at 0x13441c510>
     [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭─── Importable FastAgency app ────╮

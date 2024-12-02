@@ -5,7 +5,7 @@ import pytest
 
 from fastagency.app import FastAgency
 from fastagency.base import UI
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI
 
 
