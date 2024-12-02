@@ -205,7 +205,7 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     )
     assert json_path.exists()
     openapi_json = json_path.read_text()
-    client = OpenAPI.create(openapi_json)
+    client = OpenAPI.create(openapi_json=openapi_json)
 
     wf = AutoGenWorkflows()
     function_to_register = "update_item_items__item_id__ships__ship__put"

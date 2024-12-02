@@ -4,7 +4,7 @@ from typing import Any
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 
 from fastagency import UI, FastAgency
-from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 from fastagency.runtimes.ag2 import AutoGenWorkflows
 from fastagency.ui.console import ConsoleUI

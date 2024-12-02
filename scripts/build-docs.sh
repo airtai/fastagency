@@ -27,6 +27,14 @@ cd docs/docs_src/getting_started/basic_auth/ && \
     cd nats_n_fastapi && tree --noreport --dirsfirst my_fastagency_app > folder_structure.txt && cd .. && \
     cd ../../../..
 
+# build docs/docs_src/user_guide/dependency_injection
+cd docs/docs_src/user_guide/dependency_injection && \
+    rm -rf mesop/my_bank_app/; \
+    cookiecutter -f -o mesop --no-input https://github.com/airtai/cookiecutter-fastagency.git project_name="My Bank App" app_type=mesop authentication=none && \
+    cd mesop && tree --noreport --dirsfirst my_bank_app > folder_structure.txt && cd .. && \
+    cp workflow.py mesop/my_bank_app/my_bank_app
+    cd ../../../..
+
 # build docs
 rm -rf docs/docs/en/api docs/docs/en/cli
 cd docs; python docs.py build

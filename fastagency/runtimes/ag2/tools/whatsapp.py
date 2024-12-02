@@ -2,7 +2,7 @@ from typing import Union
 
 from autogen import ConversableAgent
 
-from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 from fastagency.runtimes.ag2.autogen import Toolable
 

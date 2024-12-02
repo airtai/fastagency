@@ -5,7 +5,7 @@ from autogen import ConversableAgent, UserProxyAgent
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from fastagency.api.openapi.client import OpenAPI
+from fastagency.api.openapi import OpenAPI
 
 
 def create_fastapi_app_with_body(host: str, port: int) -> FastAPI:

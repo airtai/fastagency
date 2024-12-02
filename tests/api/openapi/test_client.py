@@ -13,22 +13,22 @@ class TestOpenAPI:
         assert json_path.exists(), json_path.resolve()
 
         openapi_json = json_path.read_text()
-        client = OpenAPI.create(openapi_json)
+        client = OpenAPI.create(openapi_json=openapi_json)
 
         assert client is not None
         assert isinstance(client, OpenAPI)
 
-        assert client.servers == [
+        assert client._servers == [
             {"url": "http://localhost:8080", "description": "Local environment"}
         ]
 
-        assert len(client.registered_funcs) == 1, client.registered_funcs
+        assert len(client._registered_funcs) == 1, client._registered_funcs
         assert (
-            client.registered_funcs[0].__name__
+            client._registered_funcs[0].__name__
             == "update_item_items__item_id__ships__ship__put"
         )
         assert (
-            client.registered_funcs[0].__doc__
+            client._registered_funcs[0].__doc__
             == """
     Update Item
     """
@@ -38,14 +38,14 @@ class TestOpenAPI:
         assert json2_path.exists(), json2_path.resolve()
 
         openapi2_json = json2_path.read_text()
-        client2 = OpenAPI.create(openapi2_json)
+        client2 = OpenAPI.create(openapi_json=openapi2_json)
 
         assert client2 is not None
         assert isinstance(client2, OpenAPI)
 
-        assert len(client2.registered_funcs) == 3, client2.registered_funcs
+        assert len(client2._registered_funcs) == 3, client2._registered_funcs
 
-        actual = [x.__name__ for x in client2.registered_funcs]
+        actual = [x.__name__ for x in client2._registered_funcs]
         expected = [
             "list_pets",
             "create_pets",
@@ -64,29 +64,29 @@ class TestOpenAPI:
         openapi_json = json_path.read_text()
         client = OpenAPI.create(openapi_json=openapi_json, servers=servers)
 
-        assert client.servers == servers
+        assert client._servers == servers
 
     def test_get_functions(self) -> None:
         json_path = Path(__file__).parent / "templates" / "openapi.json"
         openapi_json = json_path.read_text()
-        client = OpenAPI.create(openapi_json)
+        client = OpenAPI.create(openapi_json=openapi_json)
 
-        functions = client.get_functions()
+        function_names = client.function_names
         expected = ["update_item_items__item_id__ships__ship__put"]
-        assert functions == expected, functions
+        assert function_names == expected, function_names
 
         json2_path = Path(__file__).parent / "templates" / "openapi2.json"
         openapi2_json = json2_path.read_text()
-        client2 = OpenAPI.create(openapi2_json)
+        client2 = OpenAPI.create(openapi_json=openapi2_json)
 
-        functions2 = client2.get_functions()
+        function_names2 = client2.function_names
         expected2 = ["list_pets", "create_pets", "show_pet_by_id"]
-        assert functions2 == expected2, functions2
+        assert function_names2 == expected2, function_names2
 
     def test_get_functions_to_register(self) -> None:
         json_path = Path(__file__).parent / "templates" / "openapi.json"
         openapi_json = json_path.read_text()
-        client = OpenAPI.create(openapi_json)
+        client = OpenAPI.create(openapi_json=openapi_json)
 
         functions = client._get_functions_to_register(
             ["update_item_items__item_id__ships__ship__put"]
@@ -102,7 +102,7 @@ class TestOpenAPI:
 
         json2_path = Path(__file__).parent / "templates" / "openapi2.json"
         openapi2_json = json2_path.read_text()
-        client2 = OpenAPI.create(openapi2_json)
+        client2 = OpenAPI.create(openapi_json=openapi2_json)
 
         functions2 = client2._get_functions_to_register(["list_pets"])
         expected2 = ["list_pets"]

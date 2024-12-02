@@ -288,6 +288,9 @@ markers = [
     "flaky: mark test as flaky",
 ]
 
+# Add filterwarnings to suppress the specific UserWarning
+filterwarnings = "ignore:.*custom validator is returning a value other than `self`.*:UserWarning"
+
 [tool.coverage.run]
 parallel = true
 branch = true
