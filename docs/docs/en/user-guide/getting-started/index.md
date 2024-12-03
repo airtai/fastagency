@@ -520,3 +520,122 @@ Cookiecutter generated all the necessary files to deploy your application to Fly
     Make sure to replace `<username>` and `<repo-name>` with your GitHub username and repository name, respectively.
 
 Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Fly.io. And continue to do so every time you push changes to your repository's **main** branch.
+
+### Deploying to Azure
+
+If you created the project using Cookiecutter, there are built-in scripts to deploy your workflow to Azure using [**Azure Container Apps**](https://azure.microsoft.com/en-us/products/container-apps). Please read the following sections to learn how to deploy your application to Azure.
+
+#### Deploying to Azure manually
+
+You can test whether you can deploy your application to Azure using the following script:
+
+```console
+./scripts/deploy_to_azure.sh
+```
+
+Running the above command will prompt you to log in to your Azure account (if not already logged in) by opening a azure login URL in your browser. The login prompt will look like this:
+
+```console
+Retrieving tenants and subscriptions for the selection...
+
+[Tenant and subscription selection]
+
+No     Subscription name                     Subscription ID                       Tenant
+-----  ------------------------------------  ------------------------------------  ------------------------
+[1] *  Subscription 1                        18a56427-c3d6-4bd8-96fe-c99d96d5f1ef  airt technologies d.o.o.
+[2]    Subscription 2                        66699c06-f666-471f-b390-9d6af1f1b522  airt technologies d.o.o.
+
+The default is marked with an *; the default tenant is 'airt technologies d.o.o.' and subscription is 'Subscription 1' (18a56427-c3d6-4bd8-96fe-c99d96d5f1ef).
+```
+
+If you have multiple subscriptions, you will be prompted to select the subscription you want to use. After selecting the subscription, the script will deploy your application to Azure without any further input. The output will look like this:
+
+<details>
+    <summary>Output</summary>
+    ```console
+    Creating resource group if it doesn't exists already
+    ...
+    Creating azure container registry if it doesn't exists already
+    ...
+    Login Succeeded
+    Building and pushing docker image to azure container registry
+    [+] Building 41.0s (13/13) FINISHED                                                                                                                     docker:default
+    => [internal] load build definition from Dockerfile                                                                                                              0.0s
+    => => transferring dockerfile: 1.42kB                                                                                                                            0.0s
+    => [internal] load metadata for docker.io/library/python:3.12                                                                                                    2.6s
+    => [internal] load .dockerignore                                                                                                                                 0.0s
+    => => transferring context: 34B                                                                                                                                  0.0s
+    => [internal] load build context                                                                                                                                 0.0s
+    => => transferring context: 16.56kB                                                                                                                              0.0s
+    => [1/8] FROM docker.io/library/python:3.12@sha256:949f3c91300ba0a4db28f04797cbff9bd743a7a0f39e570b9e8d9d7a25dd0334                                             11.0s
+    ...
+    => [8/8] RUN adduser --disabled-password --gecos '' appuser     && chown -R appuser /app     && chown -R appuser:appuser /etc/nginx/conf.d /var/log/nginx /var/  0.2s
+    => exporting to image                                                                                                                                            0.9s
+    => => exporting layers                                                                                                                                           0.9s
+    => => writing image sha256:760c47963dd21c224c0a582b7b0dbf9baa73436a3909207a775ceb4161a5b6dd                                                                      0.0s
+    => => naming to deployazurefastagencyacr.azurecr.io/deploy-azure-fastagency:latest                                                                               0.0s
+    The push refers to repository [deployazurefastagencyacr.azurecr.io/deploy-azure-fastagency]
+    ...
+    latest: digest: sha256:fd693c8cd40be2a889bed8c4c3e83957b1c2c46d9ddc8908a6805f789f34ba58 size: 3259
+    Checking if container app environment exists
+    Creating vnet for container app environment
+    ...
+    Creating container app environment
+    ...
+    Creating container app
+    No credential was provided to access Azure Container Registry. Trying to look up credentials...
+    Adding registry password as a secret with name "deployazurefastagencyacrazurecrio-deployazurefastagencyacr"
+
+    Container app created. Access your app at https://deploy-azure-fastagency.purplemoss-8d30e9f2.westeurope.azurecontainerapps.io/
+
+    "deploy-azure-fastagency.purplemoss-8d30e9f2.westeurope.azurecontainerapps.io"
+    Updating container app to expose all the service ports
+    ...
+    Setting up session affinity
+    ...
+    Fetching your Azure Container App's hosted URL
+    Your Azure Container App's hosted URL is: https://deploy-azure-fastagency.purplemoss-8d30e9f2.westeurope.azurecontainerapps.io
+    ```
+</details>
+
+This is only for testing purposes. You should deploy using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} as explained in the next section.
+
+#### Deploying to Azure using GitHub Actions
+
+Cookiecutter generated all the necessary files to deploy your application to Azure using [**GitHub Actions**](https://github.com/features/actions){target="_blank"}. Github Actions deployment worfkow will not work unless you follow these steps:
+
+1. Create a [**new GitHub repository**](https://github.com/new){target="_blank"} with your FastAgency project name.
+
+2. Add the following secrets to your GitHub repository:
+
+    - `AZURE_CREDENTIALS`: Azure service principal credentials in the following format:
+        ```json
+        {
+            "clientId": "<Client ID>",
+            "clientSecret": "<Client Secret>",
+            "subscriptionId": "<Subscription ID>",
+            "tenantId": "<Tenant ID>"
+        }
+        ```
+    - `OPENAI_API_KEY`: Your OpenAI API key.
+
+    To learn how to create keys and add them as secrets, use the following links:
+
+    - [**Creating Azure service principal credentials**](https://learn.microsoft.com/en-us/entra/identity-platform/howto-create-service-principal-portal){target="_blank"}
+    - [**Creating an OpenAI API key**](https://platform.openai.com/api-keys){target="_blank"}
+    - [**Adding secrets to your GitHub repository**](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository){target="_blank"}
+
+3. In your devcontainer's terminal, run the following commands to commit and push your project to the new GitHub repository:
+
+    ```console
+    git init
+    git add .
+    git commit -m "Initial commit"
+    git remote add origin https://github.com/<username>/<repo-name>.git
+    git branch -M main
+    git push -u origin main
+    ```
+
+    Make sure to replace `<username>` and `<repo-name>` with your GitHub username and repository name, respectively.
+
+Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Azure using Azure Container Apps. And continue to do so every time you push changes to your repository's **main** branch.
