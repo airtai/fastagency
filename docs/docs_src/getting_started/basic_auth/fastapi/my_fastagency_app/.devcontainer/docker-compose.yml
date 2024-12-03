@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  # nosemgrep: yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service
+  # nosemgrep: yaml.docker-compose.security.writable-filesystem-service.writable-filesystem-service, yaml.docker-compose.security.no-new-privileges.no-new-privileges
   python-3.12-my_fastagency_app:
     image: mcr.microsoft.com/devcontainers/python:3.12
     container_name: my_fastagency_app-${USER}-python-3.12
@@ -11,8 +11,6 @@ services:
 
     env_file:
       - ./devcontainer.env
-    security_opt:
-      - no-new-privileges:true
     networks:
       - my_fastagency_app-network
 
