@@ -31,6 +31,7 @@ search:
 - [Tutorials](tutorials/index.md)
     - [Giphy API & WebSurfer](tutorials/giphy/index.md)
     - [WhatsApp API & WebSurfer](tutorials/whatsapp/index.md)
+    - [Agentic testing for prompt leakage security](tutorials/prompt_leakage_probing/index.md)
 - Reference
     - API
         - fastagency
