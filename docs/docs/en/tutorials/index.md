@@ -37,3 +37,16 @@ In this tutorial, we will explore how to build a chatbot using the **FastAgency*
 - **Security**: Handle secure API credentials using [**`APIKeyHeader`**](../api/fastagency/api/openapi/security/APIKeyHeader.md) and ensure safe communication.
 
 [Let’s dive into WhatsApp API Integration and Web Scraping →](whatsapp/index.md)
+
+### 3. Agentic testing for prompt leakage security
+
+This tutorial introduces the **Prompt Leakage Probing Framework**, a tool designed to assess the security of Large Language Models (LLMs) against prompt leakage vulnerabilities. By leveraging modular and extensible components, the framework allows users to simulate various scenarios that expose sensitive information embedded in system prompts.
+
+### When to Use the Prompt Leakage Probing Framework?
+
+- **Evaluate Prompt Leakage Risks**: Analyze LLM responses for unintentional exposure of confidential information.
+- **Test Hardened Models**: Compare the robustness of LLM configurations with and without security measures.
+- **Simulate Scenarios**: Create realistic attacks, such as Base64 encoding or targeted probing, to test LLM security.
+- **Enhance Security Workflows**: Use the framework’s automated detection capabilities to refine defense mechanisms for production-ready LLMs.
+
+[Let’s take a closer look at prompt leakage probing →](prompt_leakage_probing/index.md)
