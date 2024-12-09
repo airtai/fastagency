@@ -29,4 +29,4 @@ pip install --editable ".[dev-ag2]" \
 # Note that we do not use --ignore-missing-imports,
 # as this can give us false confidence in our results.
 # mypy fastagency
-./scripts/test-no-llm.sh
+python scripts/build_devcontainers.py

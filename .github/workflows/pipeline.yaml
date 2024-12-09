@@ -20,6 +20,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
+        runtime: ["ag2", "autogen-04dev"]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -49,10 +50,12 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12"]
+        runtime: ["ag2"]
       fail-fast: false
     uses: ./.github/workflows/test.yaml
     with:
       python-version: ${{ matrix.python-version }}
+      runtime: ${{ matrix.runtime }}
       environment: null
       use-llms: ""
     secrets: inherit  # pragma: allowlist secret
@@ -61,10 +64,12 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
+        runtime: ["ag2"]
       fail-fast: false
     uses: ./.github/workflows/test-playwright.yaml
     with:
       python-version: ${{ matrix.python-version }}
+      runtime: ${{ matrix.runtime }}
       environment: null
       use-llms: ""
     secrets: inherit  # pragma: allowlist secret
@@ -74,6 +79,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
+      runtime: "ag2"
       environment: testing
       use-llms: "anthropic"
     secrets: inherit  # pragma: allowlist secret
@@ -82,6 +88,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
+      runtime: "ag2"
       environment: testing
       use-llms: "azure_oai"
     secrets: inherit  # pragma: allowlist secret
@@ -90,6 +97,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
+      runtime: "ag2"
       environment: testing
       use-llms: "openai"
     secrets: inherit  # pragma: allowlist secret
@@ -98,6 +106,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
+      runtime: "ag2"
       environment: testing
       use-llms: "togetherai"
     secrets: inherit  # pragma: allowlist secret
@@ -106,6 +115,7 @@ jobs:
     uses: ./.github/workflows/test.yaml
     with:
       python-version: "3.9"
+      runtime: "ag2"
       environment: testing
       use-llms: "llm"
     secrets: inherit  # pragma: allowlist secret
@@ -124,7 +134,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pip install .[submodules,docs,testing]
+        run: pip install .[ag2,submodules,docs,testing]
       - name: Test
         run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
 
@@ -142,7 +152,7 @@ jobs:
 
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pip install .[submodules,docs,testing]
+        run: pip install .[ag2,submodules,docs,testing]
       - name: Test
         run: bash scripts/test.sh -m "not (nats or anthropic or azure_oai or openai or togetherai or llm)"
 
