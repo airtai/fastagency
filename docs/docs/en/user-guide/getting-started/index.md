@@ -639,3 +639,112 @@ Cookiecutter generated all the necessary files to deploy your application to Azu
     Make sure to replace `<username>` and `<repo-name>` with your GitHub username and repository name, respectively.
 
 Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to Azure using Azure Container Apps. And continue to do so every time you push changes to your repository's **main** branch.
+
+### Deploying to AWS
+
+If you created the project using Cookiecutter, there are built-in scripts to deploy your workflow to AWS using [**AWS Elastic Beanstalk**](https://aws.amazon.com/elasticbeanstalk/). Please read the following sections to learn how to deploy your application to AWS.
+
+#### Deploying to AWS manually
+
+You can test whether you can deploy your application to AWS using the following script:
+
+```console
+./scripts/deploy_to_aws.sh
+```
+
+Running the above command will first check whether you have already logged in to AWS or not. if not, you can login either by setting up the following [**AWS keys**](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html){target="_blank"} as environment variables:
+
+```console
+export AWS_ACCESS_KEY_ID=<Your AWS Access Key ID>
+export AWS_SECRET_ACCESS_KEY=<Your AWS Secret Access Key>
+export AWS_REGION=<Your AWS Region>
+```
+
+Or by running the following command:
+
+```console
+aws configure
+```
+
+After logging in to AWS, the script will deploy your application to AWS without any further input. The output will look like this:
+
+<details>
+    <summary>Output</summary>
+    ```console
+    Checking if AWS CLI is configured
+    AWS CLI is configured.
+    Ensuring role is correctly attached to instance profile
+    ✅ Instance profile successfully configured
+    Logging into Amazon ECR
+    ...
+    Login Succeeded
+    Building Docker image
+    [+] Building 2.0s (13/13) FINISHED                                                                                                                               docker:default
+    => [internal] load build definition from Dockerfile                                                                                                                       0.0s
+    => => transferring dockerfile: 1.42kB                                                                                                                                     0.0s
+    => [internal] load metadata for docker.io/library/python:3.12                                                                                                             1.9s
+    => [internal] load .dockerignore                                                                                                                                          0.0s
+    => => transferring context: 34B                                                                                                                                           0.0s
+    => [1/8] FROM docker.io/library/python:3.12@sha256:752ce4a954589eb94d32849db7ede17ce120945cb71f6feabab3697550932ff9                                                       0.0s
+    ...
+    => CACHED [8/8] RUN adduser --disabled-password --gecos '' appuser     && chown -R appuser /app     && chown -R appuser:appuser /etc/nginx/conf.d /var/log/nginx /var/li  0.0s
+    => exporting to image                                                                                                                                                     0.0s
+    ...
+    => => naming to docker.io/library/aws-fastagency-deploy:latest                                                                                                            0.0s
+    Tagging and pushing Docker image to ECR
+    The push refers to repository [617504802562.dkr.ecr.eu-central-1.amazonaws.com/aws-fastagency-deploy]
+    ...
+    latest: digest: sha256:6a24263dba170b67e2adf7dd029c188b0d894bcd9001125264173b8371e74764 size: 3259
+    617504802562.dkr.ecr.eu-central-1.amazonaws.com/aws-fastagency-deploy
+    Creating/Updating Elastic Beanstalk Application
+    ...
+    Creating Dockerrun.aws.json
+    Packaging Dockerrun.aws.json into app-deployment.zip
+    ...
+    Uploading app-deployment.zip to S3 bucket aws-fastagency-deploy
+    ...
+    Creating new application version: v20241213093740
+    Creating/Updating Elastic Beanstalk Environment
+    ...
+    Waiting for environment to be ready
+    Setting environment variables
+    Waiting for environment to be ready
+    Your AWS Elastic Beanstalk application is deployed at: http://aws-fastagency-deploy-env.eba-ej2gjxf3.eu-central-1.elasticbeanstalk.com
+    ```
+</details>
+
+This is only for testing purposes. You should deploy using [**GitHub Actions**](https://github.com/features/actions){target="_blank"} as explained in the next section.
+
+#### Deploying to AWS using GitHub Actions
+
+Cookiecutter generated all the necessary files to deploy your application to AWS using [**GitHub Actions**](https://github.com/features/actions){target="_blank"}. Github Actions deployment worfkow will not work unless you follow these steps:
+
+1. Create a [**new GitHub repository**](https://github.com/new){target="_blank"} with your FastAgency project name.
+
+2. Add the following secrets to your GitHub repository:
+
+    - `AWS_ACCESS_KEY_ID`: Your AWS access key ID.
+    - `AWS_SECRET_ACCESS_KEY`: Your AWS secret access key
+    - `AWS_REGION`: The AWS region where you want to deploy your application.
+    - `OPENAI_API_KEY`: Your OpenAI API key.
+
+    To learn how to create keys and add them as secrets, use the following links:
+
+    - [**Creating AWS access keys**](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html){target="_blank"}
+    - [**Creating an OpenAI API key**](https://platform.openai.com/api-keys){target="_blank"}
+    - [**Adding secrets to your GitHub repository**](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository){target="_blank"}
+
+3. In your devcontainer's terminal, run the following commands to commit and push your project to the new GitHub repository:
+
+    ```console
+    git init
+    git add .
+    git commit -m "Initial commit"
+    git remote add origin https://github.com/<username>/<repo-name>.git
+    git branch -M main
+    git push -u origin main
+    ```
+
+    Make sure to replace `<username>` and `<repo-name>` with your GitHub username and repository name, respectively.
+
+Once these steps are complete, the GitHub Actions workflow will automatically deploy your application to AWS using AWS Elastic Beanstalk. And continue to do so every time you push changes to your repository's **main** branch.
