@@ -125,7 +125,7 @@ lint = [
     "mypy==1.13.0",
     "ruff==0.7.4",
     "pyupgrade-directories==0.3.0",
-    "bandit==1.7.10",
+    "bandit==1.8.0",
     "semgrep==1.97.0",
     "codespell==2.3.0",
     "pytest-mypy-plugins==3.1.2",
