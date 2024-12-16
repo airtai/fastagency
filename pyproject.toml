@@ -136,7 +136,7 @@ test-core = [
     "pytest==8.3.3",
     "pytest-asyncio==0.24.0",
     "dirty-equals==0.8.0",
-    "pytest-rerunfailures==14.0",
+    "pytest-rerunfailures==15.0",
     "jsondiff==2.2.1",
 ]
 
