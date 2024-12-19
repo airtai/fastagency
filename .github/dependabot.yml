@@ -10,8 +10,17 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    # https://til.simonwillison.net/github/dependabot-python-setup
+    groups:
+      github-actions:
+        patterns:
+          - "*"
   # Python
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    groups:
+      pip:
+        patterns:
+          - "*"
