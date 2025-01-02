@@ -1,12 +1,12 @@
 {
-    "name": "python-3.9",
+    "name": "autogen-04dev-python-3.9",
     // "image": "mcr.microsoft.com/devcontainers/python:3.9",
     "dockerComposeFile": [
         "./docker-compose.yml"
     ],
     "service": "python-3.9-fastagency",
     "forwardPorts": [
-        "fastagency-${containerEnv:CONTAINER_PREFIX}-nats-py39:9222"
+        "fastagency-${containerEnv:CONTAINER_PREFIX}-nats-py3.9:9222"
     ],
     "secrets": {
         "OPENAI_API_KEY": {
@@ -65,7 +65,7 @@
         "ghcr.io/devcontainers/features/git-lfs:1": {},
         "ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {}
     },
-    "updateContentCommand": "bash .devcontainer/setup.sh",
+    "updateContentCommand": "bash .devcontainer/setup-autogen-04dev.sh",
     "postCreateCommand": "npm install && npx playwright install-deps && npx playwright install",
     "customizations": {
         "vscode": {
