@@ -57,13 +57,13 @@ mesop = [
 ]
 
 autogen = [
-    "autogen[anthropic,together]>=0.3.0,<0.4",
-    "together>=1.2.11,<1.3", # ToDo: together 1.3.0 has issues with our dev dependencies
+    "autogen[anthropic,together]>=0.3.0,<0.7",
+    "together>=1.2.11,<1.4", # ToDo: together 1.3.0 has issues with our dev dependencies
     "markdownify==0.14.1", # Needed by autogen.WebSurferAgent but not included
 ]
 
 openapi = [
-    "fastapi-code-generator==0.5.1",
+    "fastapi-code-generator==0.5.2",
     "fastapi>=0.112,<1",
     "requests",  # do not pin it
 ]
@@ -71,7 +71,7 @@ openapi = [
 fastapi = [
     "asyncer==0.0.8",
     "fastapi>=0.112,<1",
-    "websockets>=13,<14",
+    "websockets>=13,<15",
 ]
 
 nats = [
@@ -101,7 +101,7 @@ submodules = [
 devdocs = [
     "mkdocs==1.6.1",
     "mkdocs-autorefs==1.2.0",  # mkdocs build fails if upgraded
-    "mkdocs-material==9.5.48",
+    "mkdocs-material==9.5.49",
     "mkdocs-static-i18n==1.2.3",
     "mdx-include==1.4.2",
     "mkdocstrings[python]==0.27.0",
@@ -111,7 +111,7 @@ devdocs = [
     "mkdocs-minify-plugin==0.8.0",
     "mkdocs-macros-plugin==1.3.7",  # includes with variables
     "mkdocs-glightbox==0.4.0",  # img zoom
-    "pillow==10.4.0,<11",  # ToDo: together 1.12 needs pillow <11
+    "pillow==11.1.0",  # ToDo: together 1.12 needs pillow <11
     "cairosvg==2.7.1",
     "cookiecutter==2.6.0",
 ]
@@ -122,21 +122,21 @@ lint = [
     "types-ujson",
     "types-Pygments",
     "types-docutils",
-    "mypy==1.13.0",
-    "ruff==0.7.4",
+    "mypy==1.14.1",
+    "ruff==0.8.6",
     "pyupgrade-directories==0.3.0",
-    "bandit==1.7.10",
-    "semgrep==1.97.0",
+    "bandit==1.8.0",
+    "semgrep==1.101.0",
     "codespell==2.3.0",
-    "pytest-mypy-plugins==3.1.2",
+    "pytest-mypy-plugins==3.2.0",
 ]
 
 test-core = [
-    "coverage[toml]==7.6.9",
-    "pytest==8.3.3",
-    "pytest-asyncio==0.24.0",
+    "coverage[toml]==7.6.10",
+    "pytest==8.3.4",
+    "pytest-asyncio==0.25.1",
     "dirty-equals==0.8.0",
-    "pytest-rerunfailures==14.0",
+    "pytest-rerunfailures==15.0",
     "jsondiff==2.2.1",
 ]
 
@@ -144,12 +144,12 @@ testing = [
     "fastagency[submodules]",
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
-    "pydantic-settings==2.6.1",
+    "pydantic-settings==2.7.1",
     "PyYAML==6.0.2",
-    "watchfiles==0.24.0",
+    "watchfiles==1.0.3",
     "email-validator==2.2.0",
     "python-multipart>=0.0.12",
-    "PyJWT==2.10.0",
+    "PyJWT==2.10.1",
     "passlib[bcrypt]==1.7.4",
 ]
 
