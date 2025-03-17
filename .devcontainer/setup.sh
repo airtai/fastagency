@@ -1,5 +1,5 @@
 # update pip
-pip install --upgrade pip
+pip install --upgrade pip uv
 
 # install dev packages
 pip install -e ".[dev]"

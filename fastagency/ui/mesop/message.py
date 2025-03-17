@@ -201,9 +201,9 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
 
     def visit_system_message(self, message: SystemMessage) -> None:
         content = (
-            f"""#### **{message.message['heading']}**
+            f"""#### **{message.message["heading"]}**
 
-{message.message['body']}
+{message.message["body"]}
 """
             if "heading" in message.message and "body" in message.message
             else json.dumps(message.message)

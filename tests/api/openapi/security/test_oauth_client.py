@@ -279,5 +279,5 @@ def test_generate_oauth2_client_wrong_password(fastapi_openapi_url: str) -> None
 
     assert (
         str(e.value)
-        == f'400 Client Error: Bad Request for url: {fastapi_openapi_url.split("/openapi.json")[0]}/token'
+        == f"400 Client Error: Bad Request for url: {fastapi_openapi_url.split('/openapi.json')[0]}/token"
     )

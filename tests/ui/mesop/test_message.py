@@ -29,9 +29,9 @@ else:
 def assert_called_with_one_of(
     mock: MagicMock, *args: str, key: Union[int, str] = 0
 ) -> None:
-    assert mock.call_count == len(
-        args
-    ), f"Expected {len(args)} calls, got {mock.call_count}"
+    assert mock.call_count == len(args), (
+        f"Expected {len(args)} calls, got {mock.call_count}"
+    )
     for call in mock.call_args_list:
         i = 0 if isinstance(key, int) else 1
         assert call[i][key] in args, f"Parameter '{call[i][key]}' not in {args}"

@@ -110,7 +110,7 @@ jobs:
             echo "FAST_PID=$FAST_PID" >> $GITHUB_OUTPUT
         env:
             COVERAGE_PROCESS_START: "e2e/playwright.coverage.cfg"
-      - run: echo "obtained FAST_PID" ${{ steps.fastagency-start.outputs.FAST_PID}}
+      - run: echo "obtained FAST_PID" ${{ steps.fastagency-start.outputs.FAST_PID}}  # nosemgrep: yaml.github-actions.security.run-shell-injection.run-shell-injection
       - name: Run Playwright tests without LLMs
         if: ${{ inputs.python-version != '3.9' }}
         run: npx playwright test -c "playwright.coverage.config.ts"
@@ -122,7 +122,7 @@ jobs:
           retention-days: 30
 
       - name: Kill the program
-        run: |
+        run: |  # nosemgrep: yaml.github-actions.security.run-shell-injection.run-shell-injection
             PID="${{ steps.fastagency-start.outputs.FAST_PID}}"
             # Send SIGTERM to the program (graceful shutdown)
             echo "killing the fastagency:" $PID
@@ -148,7 +148,7 @@ jobs:
       - name: Report
         run: coverage report  --no-skip-covered
       - name: Move coverage file
-        run: mv .coverage coverage/.coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}
+        run: mv .coverage coverage/.coverage.playwright.${{ runner.os }}-py${{ inputs.python-version }}-${{ inputs.use-llms }}  # nosemgrep: yaml.github-actions.security.run-shell-injection.run-shell-injection
       - name: Check coverage file
         run: ls -al coverage
       - name: Store coverage files

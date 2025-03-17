@@ -19,15 +19,15 @@ if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
+    "ASGIProtocol",
+    "AdapterProtocol",
+    "Agent",
+    "ProviderProtocol",
+    "Runnable",
     "UIBase",
     "WSGIProtocol",
-    "ASGIProtocol",
-    "ProviderProtocol",
-    "WorkflowsProtocol",
-    "AdapterProtocol",
-    "Runnable",
     "Workflow",
-    "Agent",
+    "WorkflowsProtocol",
 ]
 
 logger = get_logger(__name__)

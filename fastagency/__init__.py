@@ -14,7 +14,7 @@ from .messages import (
 )
 
 __all__ = [
-    "UIBase",
+    "UI",
     "FastAgency",
     "FunctionCallExecution",
     "IOMessage",
@@ -23,8 +23,8 @@ __all__ = [
     "SuggestedFunctionCall",
     "TextInput",
     "TextMessage",
-    "WorkflowsProtocol",
+    "UIBase",
     "Workflow",
-    "UI",
+    "WorkflowsProtocol",
     "__version__",
 ]
