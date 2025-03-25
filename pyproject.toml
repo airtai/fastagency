@@ -142,7 +142,7 @@ test-core = [
 ]
 
 testing = [
-    "ag2[openai]",
+    "ag2[openai,websurfer]",
     "fastagency[submodules]",
     "fastagency[test-core]",
     "fastagency[server]", # Uvicorn is needed for testing
