@@ -142,7 +142,7 @@ def openapi_oauth2_schema() -> dict[str, Any]:
                     "properties": {
                         "grant_type": {
                             "anyOf": [
-                                {"type": "string", "pattern": "password"},
+                                {"type": "string", "pattern": "^password$"},
                                 {"type": "null"},
                             ],
                             "title": "Grant Type",

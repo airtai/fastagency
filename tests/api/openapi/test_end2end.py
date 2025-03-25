@@ -546,7 +546,7 @@ def update_item_items__item_id__put(
     responses={'422': {'model': HTTPValidationError}},
 )
 def delete_item_items__item_id__delete(
-    item_id: Annotated[int, """The ID of the item to delete"""]
+    item_id: Annotated[int, """The ID of the item to delete"""],
 ) -> Union[ItemsItemIdDeleteResponse, HTTPValidationError]:
     """
     Delete Item

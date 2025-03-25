@@ -29,7 +29,7 @@ app = OpenAPI(
     ],
 )
 def read_items_items__get(
-    city: Annotated[str, """city for which forecast is requested"""]
+    city: Annotated[str, """city for which forecast is requested"""],
 ) -> Union[Any, HTTPValidationError]:
     """
     Read Items
