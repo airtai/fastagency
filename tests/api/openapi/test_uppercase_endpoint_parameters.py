@@ -176,7 +176,7 @@ def test_register_for_llm(
         {
             "type": "function",
             "function": {
-                "description": "Get GIFs for a topic.",
+                "description": "\n    Get Gifs For Topic\n    ",
                 "name": "get_gifs_for_topic_gifs_get",
                 "parameters": {
                     "type": "object",
@@ -188,7 +188,7 @@ def test_register_for_llm(
         {
             "type": "function",
             "function": {
-                "description": "Get GIF by Id.",
+                "description": "\n    Get Gif By Id\n    ",
                 "name": "get_gif_by_id_gifs__gif_id__get",
                 "parameters": {
                     "type": "object",
