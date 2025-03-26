@@ -27,4 +27,4 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert result.exit_code == 0
     assert INPUT_MESSAGE in result.stdout
-    assert "Teacher_Agent -> Student_Agent" in result.stdout
+    assert "Teacher_Agent (to Student_Agent)" in result.stdout
