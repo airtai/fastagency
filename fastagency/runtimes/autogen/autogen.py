@@ -31,8 +31,9 @@ from ...messages import (
 )
 
 if TYPE_CHECKING:
-    from fastagency.api.openapi import OpenAPI
     from autogen.messages import BaseMessage
+
+    from fastagency.api.openapi import OpenAPI
 
 __all__ = [
     "AutoGenWorkflows",
