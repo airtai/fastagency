@@ -3,11 +3,10 @@ on:
   push:
     branches:
       - main
-      - fix-failing-deploy-docs
-    # paths:
-    #   - docs/**
-    #   - .github/workflows/deploy-docs.yaml
-    #   - fastagency/__about__.py
+    paths:
+      - docs/**
+      - .github/workflows/deploy-docs.yaml
+      - fastagency/__about__.py
 
 permissions:
   contents: write
