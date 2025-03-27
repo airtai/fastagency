@@ -115,6 +115,8 @@ devdocs = [
     "pillow==10.4.0,<11",  # ToDo: together 1.12 needs pillow <11
     "cairosvg==2.7.1",
     "cookiecutter==2.6.0",
+    # __all__ = ["me"] line not working in fastagency/ui/mesop/main.py, if griffe>=1.6.0 is used
+    "griffe<1.6.0",
 ]
 
 lint = [
