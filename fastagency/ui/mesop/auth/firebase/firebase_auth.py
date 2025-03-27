@@ -116,8 +116,7 @@ class FirebaseAuth:  # implements AuthProtocol
         email = token.get("email")
         if not email:
             raise ValueError(
-                "Invalid response from Firebase: "
-                "`email` field is missing in the token"
+                "Invalid response from Firebase: `email` field is missing in the token"
             )
 
         # Handle string-based configuration ("all" or single email)

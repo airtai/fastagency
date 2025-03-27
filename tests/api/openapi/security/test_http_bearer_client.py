@@ -90,6 +90,7 @@ def test_openapi_schema(fastapi_openapi_url: str) -> None:
     assert openapi_json == expected_schema
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize(
     "fastapi_openapi_url",
     [
@@ -114,6 +115,7 @@ def test_http_bearer_token_correct(fastapi_openapi_url: str) -> None:
     assert response == {"message": "Hello, authenticated user!"}
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize(
     "fastapi_openapi_url",
     [

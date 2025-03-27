@@ -61,6 +61,7 @@ def test_generate_client(secure_fastapi_url: str) -> None:
         assert actual_models_gen == expected_models_gen
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_import_and_call_generate_client(secure_fastapi_url: str) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir) / "gen"
@@ -105,6 +106,7 @@ def test_import_and_call_generate_client(secure_fastapi_url: str) -> None:
         assert client_resp == {"api_key": api_key}
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_get_matching_security(secure_fastapi_url: str) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         td = Path(temp_dir) / "gen"

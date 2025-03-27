@@ -31,6 +31,8 @@ from ...messages import (
 )
 
 if TYPE_CHECKING:
+    from autogen.messages import BaseMessage
+
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
@@ -259,6 +261,9 @@ class IOStreamAdapter:  # IOStream
         for i in range(-num_to_send, 0, 1):
             message = self.messages[i]
             self.ui.process_message(message)
+
+    def send(self, message: "BaseMessage") -> None:
+        message.print()
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")

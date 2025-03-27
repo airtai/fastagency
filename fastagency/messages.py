@@ -9,20 +9,20 @@ from pydantic import BaseModel
 from .logging import get_logger
 
 __all__ = [
-    "IOMessage",
-    "TextMessage",
-    "SuggestedFunctionCall",
-    "FunctionCallExecution",
-    "TextInput",
-    "MultipleChoice",
-    "SystemMessage",
-    "KeepAlive",
-    "WorkflowStarted",
-    "WorkflowCompleted",
     "Error",
-    "MessageType",
-    "MessageProcessorProtocol",
+    "FunctionCallExecution",
+    "IOMessage",
+    "KeepAlive",
     "MessageProcessorMixin",
+    "MessageProcessorProtocol",
+    "MessageType",
+    "MultipleChoice",
+    "SuggestedFunctionCall",
+    "SystemMessage",
+    "TextInput",
+    "TextMessage",
+    "WorkflowCompleted",
+    "WorkflowStarted",
 ]
 
 

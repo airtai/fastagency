@@ -15,6 +15,7 @@ TEMPLATE_DIR = Path(__file__).parents[4] / "templates"
 assert TEMPLATE_DIR.exists(), TEMPLATE_DIR
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize(
     "openapi_file_path", OPENAPI_FILE_PATHS, ids=[p.name for p in OPENAPI_FILE_PATHS]
 )
@@ -65,6 +66,7 @@ def test_fastapi_codegen_template(openapi_file_path: Path) -> None:
         assert app._title == openapi_file_path.stem
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize("openapi_file_path", OPENAPI_FILE_PATHS)
 def test_fastapi_codegen_template_openapi(openapi_file_path: Path) -> None:
     app = OpenAPI.create(openapi_json=openapi_file_path.read_text())

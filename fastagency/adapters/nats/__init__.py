@@ -5,7 +5,7 @@ from .base import (
 )
 
 __all__ = [
-    "NatsAdapter",
     "JETSTREAM",
+    "NatsAdapter",
     "NatsProvider",
 ]

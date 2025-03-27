@@ -66,7 +66,7 @@ class BaseSecurity(BaseModel):
 
     @classmethod
     def get_security_parameters(cls, schema_parameters: dict[str, Any]) -> str:
-        return f"{cls.__name__}(name=\"{schema_parameters.get('name')}\")"
+        return f'{cls.__name__}(name="{schema_parameters.get("name")}")'
 
 
 class BaseSecurityParameters(Protocol):
@@ -280,7 +280,7 @@ class OAuth2PasswordBearer(BaseSecurity):
     @classmethod
     def get_security_parameters(cls, schema_parameters: dict[str, Any]) -> str:
         name = schema_parameters.get("name")
-        token_url = f'{schema_parameters.get("server_url")}/{schema_parameters["flows"]["password"]["tokenUrl"]}'
+        token_url = f"{schema_parameters.get('server_url')}/{schema_parameters['flows']['password']['tokenUrl']}"
         return f'{cls.__name__}(name="{name}", token_url="{token_url}")'
 
     class Parameters(BaseModel):  # BaseSecurityParameters

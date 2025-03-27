@@ -18,7 +18,7 @@ def check_imports(package_names: list[str], target_name: str) -> None:
     ]
     if len(not_importable) > 0:
         raise ImportError(
-            f"Package(s) {', '.join(not_importable)} not found. Please install it with:\n\npip install \"fastagency[{target_name}]\"\n"
+            f'Package(s) {", ".join(not_importable)} not found. Please install it with:\n\npip install "fastagency[{target_name}]"\n'
         )
 
 

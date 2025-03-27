@@ -73,10 +73,10 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
         title = f"{console_msg.sender} -> {console_msg.recipient} {heading}"[:74]
 
-        s = f"""╭─ {title} {'─' * (74 - len(title))}─╮
+        s = f"""╭─ {title} {"─" * (74 - len(title))}─╮
 │
-{textwrap.indent(textwrap.fill(console_msg.body if console_msg.body else '', replace_whitespace=False, drop_whitespace=False), '│ ', predicate=lambda line: True)}
-╰{'─' * 78}╯
+{textwrap.indent(textwrap.fill(console_msg.body if console_msg.body else "", replace_whitespace=False, drop_whitespace=False), "│ ", predicate=lambda line: True)}
+╰{"─" * 78}╯
 """
         # remove empty lines
         s = "\n".join([line for line in s.split("\n") if line.strip()])

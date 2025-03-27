@@ -1,7 +1,7 @@
 from typing import Any, Optional, Union
 
+import pytest
 import requests
-from _pytest.monkeypatch import MonkeyPatch
 from pydantic import BaseModel, Field
 
 from fastagency.api.openapi import OpenAPI
@@ -26,11 +26,13 @@ class HTTPValidationError(BaseModel):
     detail: Optional[list[ValidationError]] = Field(None, title="Detail")
 
 
-app = OpenAPI(
-    title="FastAPI",
-    version="0.1.0",
-    servers=[{"url": "http://localhost:8080", "description": "Local environment"}],
-)
+@pytest.fixture
+def app() -> OpenAPI:
+    return OpenAPI(
+        title="FastAPI",
+        version="0.1.0",
+        servers=[{"url": "http://localhost:8080", "description": "Local environment"}],
+    )
 
 
 class MockResponse:
@@ -46,7 +48,8 @@ class MockResponse:
         return self.json_data
 
 
-def test_process_params_with_query_params_and_path_params() -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_process_params_with_query_params_and_path_params(app: OpenAPI) -> None:
     @app.put(
         "/items/{item_id}/ships/{ship}",
         response_model=Any,
@@ -83,7 +86,8 @@ def test_process_params_with_query_params_and_path_params() -> None:
     }
 
 
-def test_process_params_with_query_params_only() -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_process_params_with_query_params_only(app: OpenAPI) -> None:
     @app.get(
         "/items",
         response_model=Any,
@@ -116,7 +120,8 @@ def test_process_params_with_query_params_only() -> None:
     }
 
 
-def test_process_params_with_path_params_only() -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_process_params_with_path_params_only(app: OpenAPI) -> None:
     @app.post(
         "/items/{item_id}/ships/{ship}",
         response_model=Any,
@@ -149,7 +154,8 @@ def test_process_params_with_path_params_only() -> None:
     }
 
 
-def test_process_params_with_no_query_params_or_path_params() -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_process_params_with_no_query_params_or_path_params(app: OpenAPI) -> None:
     @app.delete(
         "/items",
         response_model=Any,
@@ -164,7 +170,8 @@ def test_process_params_with_no_query_params_or_path_params() -> None:
     assert body_dict == {"headers": {"Content-Type": "application/json"}}
 
 
-def test_client_put(monkeypatch: MonkeyPatch) -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_client_put(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.put(
         "/items/{item_id}/ships/{ship}",
         response_model=Item,
@@ -207,7 +214,8 @@ def test_client_put(monkeypatch: MonkeyPatch) -> None:
     }
 
 
-def test_client_post(monkeypatch: MonkeyPatch) -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_client_post(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.post(
         "/items/{item_id}/ships/{ship}",
         response_model=Item,
@@ -248,7 +256,8 @@ def test_client_post(monkeypatch: MonkeyPatch) -> None:
     }
 
 
-def test_client_get(monkeypatch: MonkeyPatch) -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_client_get(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.get(
         "/items",
         response_model=list[Item],
@@ -295,7 +304,8 @@ def test_client_get(monkeypatch: MonkeyPatch) -> None:
     ]
 
 
-def test_client_delete(monkeypatch: MonkeyPatch) -> None:
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
+def test_client_delete(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.delete(
         "/item",
         response_model=None,

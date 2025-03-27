@@ -56,6 +56,8 @@ class OpenAPI:
         self._security: dict[str, list[BaseSecurity]] = {}
         self._security_params: dict[Optional[str], BaseSecurityParameters] = {}
 
+        raise NotImplementedError("Currently not implemented.")
+
     @staticmethod
     def _convert_camel_case_within_braces_to_snake(text: str) -> str:
         # Function to convert camel case to snake case

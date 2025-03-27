@@ -33,12 +33,12 @@ def _import_fixture(
 from unittest.mock import MagicMock
 from fastagency.ui.console import ConsoleUI
 from fastagency.runtimes.autogen import AutoGenWorkflows
-{'frim' if syntax_error else 'from'} fastagency import FastAgency
+{"frim" if syntax_error else "from"} fastagency import FastAgency
 
 
 wf = AutoGenWorkflows()
 
-app = {'FastAgency(provider=wf, ui=ConsoleUI())' if not mock_app else 'MagicMock()'}
+app = {"FastAgency(provider=wf, ui=ConsoleUI())" if not mock_app else "MagicMock()"}
 
 """
 
@@ -132,9 +132,9 @@ class TestGetAppName:
                 app_name, app = get_app_name(mod_data=mod_data)
             assert app_name == "app"
             assert app is not None, "The app should be imported successfully."
-            assert isinstance(
-                app, FastAgency
-            ), "The imported object should be a FastAgency object."
+            assert isinstance(app, FastAgency), (
+                "The imported object should be a FastAgency object."
+            )
 
     def test_get_app_name_syntax_error(
         self, import_fixture_syntax_error: dict[str, Any]
@@ -176,9 +176,9 @@ class TestGetImportString:
         mod_name = import_fixture["mod_name"]
         assert import_string == f"{mod_name}.test_app:app"
         assert app is not None, "The app should be imported successfully."
-        assert isinstance(
-            app, FastAgency
-        ), "The imported object should be a FastAgency object."
+        assert isinstance(app, FastAgency), (
+            "The imported object should be a FastAgency object."
+        )
 
     @pytest.mark.skip("This test is not working as expected.")
     def test_get_import_string_default_path_success(
@@ -190,9 +190,9 @@ class TestGetImportString:
         import_string, app = get_import_string()
         assert import_string == "main:app"
         assert app is not None, "The app should be imported successfully."
-        assert isinstance(
-            app, FastAgency
-        ), "The imported object should be a FastAgency object."
+        assert isinstance(app, FastAgency), (
+            "The imported object should be a FastAgency object."
+        )
 
     def test_get_import_string_missing_path(self) -> None:
         """Test that the import string is correct."""
@@ -210,9 +210,9 @@ class TestGetImportString:
 
         assert import_string == f"{mod_name}.test_app:app"
         assert app is not None, "The app should be imported successfully."
-        assert isinstance(
-            app, FastAgency
-        ), "The imported object should be a FastAgency object."
+        assert isinstance(app, FastAgency), (
+            "The imported object should be a FastAgency object."
+        )
 
     def test_get_import_string_missing_init(
         self, import_fixture_missing_init: dict[str, Any]
@@ -245,9 +245,9 @@ class TestGetImportString:
         mod_name = import_fixture["mod_name"]
         assert import_string == f"{mod_name}:app"
         assert app is not None, "The app should be imported successfully."
-        assert isinstance(
-            app, FastAgency
-        ), "The imported object should be a FastAgency object."
+        assert isinstance(app, FastAgency), (
+            "The imported object should be a FastAgency object."
+        )
 
     def test_get_import_dir(self, import_fixture: dict[str, Any]) -> None:
         """Test that the import string is correct."""
@@ -258,9 +258,9 @@ class TestGetImportString:
         mod_name = import_fixture["mod_name"]
         assert import_string == f"{mod_name}:app"
         assert app is not None, "The app should be imported successfully."
-        assert isinstance(
-            app, FastAgency
-        ), "The imported object should be a FastAgency object."
+        assert isinstance(app, FastAgency), (
+            "The imported object should be a FastAgency object."
+        )
 
 
 class TestImportFromString:
