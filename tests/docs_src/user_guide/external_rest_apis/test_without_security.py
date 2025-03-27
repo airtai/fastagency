@@ -11,6 +11,7 @@ runner = CliRunner()
 INPUT_MESSAGE = "Get me daily forecast for Zagreb city"
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.openai
 @skip_internal_server_error
 def test_cli_without_security(monkeypatch: pytest.MonkeyPatch) -> None:

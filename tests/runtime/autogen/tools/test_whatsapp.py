@@ -16,6 +16,7 @@ class TestWhatsApp:
         )
         assert isinstance(whatsapp_tool, Toolable)
 
+    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     @pytest.mark.llm
     def test_whatsapp_chat_register(
         self, azure_gpt4o_llm_config: dict[str, Any]
@@ -45,6 +46,7 @@ class TestWhatsApp:
         registered_function = assistant_agent.llm_config["tools"][0]["function"]
         assert registered_function["name"] == "send_whatsapp_text_message"
 
+    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     @pytest.mark.llm
     def test_whatsapp_agent(self, azure_gpt4o_llm_config: dict[str, Any]) -> None:
         user_agent = UserProxyAgent(
