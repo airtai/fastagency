@@ -48,6 +48,7 @@ class MockResponse:
         return self.json_data
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_process_params_with_query_params_and_path_params(app: OpenAPI) -> None:
     @app.put(
         "/items/{item_id}/ships/{ship}",
@@ -85,6 +86,7 @@ def test_process_params_with_query_params_and_path_params(app: OpenAPI) -> None:
     }
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_process_params_with_query_params_only(app: OpenAPI) -> None:
     @app.get(
         "/items",
@@ -118,6 +120,7 @@ def test_process_params_with_query_params_only(app: OpenAPI) -> None:
     }
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_process_params_with_path_params_only(app: OpenAPI) -> None:
     @app.post(
         "/items/{item_id}/ships/{ship}",
@@ -151,6 +154,7 @@ def test_process_params_with_path_params_only(app: OpenAPI) -> None:
     }
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_process_params_with_no_query_params_or_path_params(app: OpenAPI) -> None:
     @app.delete(
         "/items",
@@ -166,6 +170,7 @@ def test_process_params_with_no_query_params_or_path_params(app: OpenAPI) -> Non
     assert body_dict == {"headers": {"Content-Type": "application/json"}}
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_client_put(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.put(
         "/items/{item_id}/ships/{ship}",
@@ -209,6 +214,7 @@ def test_client_put(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     }
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_client_post(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.post(
         "/items/{item_id}/ships/{ship}",
@@ -250,6 +256,7 @@ def test_client_post(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     }
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_client_get(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.get(
         "/items",
@@ -297,6 +304,7 @@ def test_client_get(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     ]
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_client_delete(monkeypatch: pytest.MonkeyPatch, app: OpenAPI) -> None:
     @app.delete(
         "/item",

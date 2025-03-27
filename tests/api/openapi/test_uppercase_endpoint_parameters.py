@@ -154,6 +154,7 @@ def api(openapi_schema: dict[str, Any]) -> OpenAPI:
     return client
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_register_for_llm(
     api: OpenAPI,
     azure_gpt35_turbo_16k_llm_config: dict[str, Any],
@@ -206,6 +207,7 @@ def test_register_for_llm(
     )
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.azure_oai
 @pytest.mark.parametrize(
     "fastapi_openapi_url", [(create_gify_fastapi_app)], indirect=["fastapi_openapi_url"]

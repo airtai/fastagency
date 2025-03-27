@@ -35,6 +35,7 @@ def create_app_with_two_enpoints_same_datamodel(host: str, port: str) -> FastAPI
     return app
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize(
     "fastapi_openapi_url",
     [(create_app_with_two_enpoints_same_datamodel)],

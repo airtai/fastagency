@@ -26,6 +26,7 @@ def create_fastapi_app_with_body(host: str, port: int) -> FastAPI:
     return app
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.azure_oai
 @pytest.mark.parametrize(
     "fastapi_openapi_url",

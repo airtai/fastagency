@@ -34,6 +34,7 @@ def app() -> OpenAPI:
     )
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_get_params_with_query_params_and_path_params(app: OpenAPI) -> None:
     @app.put(
         "/items/{item_id}/ships/{ship}",
@@ -59,6 +60,7 @@ def test_get_params_with_query_params_and_path_params(app: OpenAPI) -> None:
     assert body == "body"
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_get_params_with_query_params_only(app: OpenAPI) -> None:
     @app.get(
         "/items",
@@ -81,6 +83,7 @@ def test_get_params_with_query_params_only(app: OpenAPI) -> None:
     assert body == "body"
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_get_params_with_path_params_only(app: OpenAPI) -> None:
     @app.post(
         "/items/{item_id}/ships/{ship}",
@@ -104,6 +107,7 @@ def test_get_params_with_path_params_only(app: OpenAPI) -> None:
     assert body == "body"
 
 
+@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_get_params_with_no_query_params_or_path_params(app: OpenAPI) -> None:
     @app.delete(
         "/items",

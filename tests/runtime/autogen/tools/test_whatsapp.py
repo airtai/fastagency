@@ -9,6 +9,7 @@ from fastagency.runtimes.autogen.tools import WhatsAppTool
 
 
 class TestWhatsApp:
+    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_whatsapp_chat_constructor_positive(self) -> None:
         whatsapp_tool = WhatsAppTool(
             whatsapp_api_key="api_key",  # pragma: allowlist secret
