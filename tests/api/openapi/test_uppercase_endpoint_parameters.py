@@ -2,7 +2,7 @@ import json
 from typing import Any
 
 import pytest
-from autogen import ConversableAgent, UserProxyAgent
+from autogen import ConversableAgent, LLMConfig, UserProxyAgent
 
 from fastagency.api.openapi import OpenAPI
 
@@ -156,8 +156,7 @@ def api(openapi_schema: dict[str, Any]) -> OpenAPI:
 
 @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_register_for_llm(
-    api: OpenAPI,
-    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
+    api: OpenAPI, azure_gpt35_turbo_16k_llm_config: LLMConfig
 ) -> None:
     agent = ConversableAgent(name="agent", llm_config=azure_gpt35_turbo_16k_llm_config)
 
@@ -214,7 +213,7 @@ def test_register_for_llm(
 )
 def test_end2end(
     fastapi_openapi_url: str,
-    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
+    azure_gpt35_turbo_16k_llm_config: LLMConfig,
 ) -> None:
     api = OpenAPI.create(openapi_url=fastapi_openapi_url)
 

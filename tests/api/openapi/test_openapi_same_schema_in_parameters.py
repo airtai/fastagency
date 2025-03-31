@@ -1,6 +1,7 @@
-from typing import Annotated, Any, Optional
+from typing import Annotated, Optional
 
 import pytest
+from autogen import LLMConfig
 from autogen.agentchat import ConversableAgent
 from fastapi import FastAPI
 
@@ -42,8 +43,7 @@ def create_app_with_two_enpoints_same_datamodel(host: str, port: str) -> FastAPI
     indirect=["fastapi_openapi_url"],
 )
 def test_openapi_same_schema_in_parameters_register_for_llm(
-    fastapi_openapi_url: str,
-    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
+    fastapi_openapi_url: str, azure_gpt35_turbo_16k_llm_config: LLMConfig
 ) -> None:
     from fastagency.api.openapi import OpenAPI
 

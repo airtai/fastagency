@@ -1,5 +1,6 @@
 from typing import Annotated, Any, Optional, Union
 
+from autogen import LLMConfig
 from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
 from autogen.agentchat import ConversableAgent as AutoGenConversableAgent
 from autogen.agentchat.chat import ChatResult
@@ -49,8 +50,8 @@ class WebSurferTool:  # implements Toolable
         self,
         *,
         name_prefix: str,
-        llm_config: dict[str, Any],
-        summarizer_llm_config: dict[str, Any],
+        llm_config: LLMConfig,
+        summarizer_llm_config: LLMConfig,
         viewport_size: int = 4096,
         bing_api_key: Optional[str] = None,
         max_consecutive_auto_reply: int = 30,

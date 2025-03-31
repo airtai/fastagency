@@ -1,6 +1,6 @@
 from typing import Any, Optional, Union
 
-from autogen import AssistantAgent, ConversableAgent
+from autogen import AssistantAgent, ConversableAgent, LLMConfig
 
 from ..tools import WebSurferTool
 
@@ -10,8 +10,8 @@ class WebSurferAgent(AssistantAgent):  # type: ignore[misc]
         self,
         *args: Any,
         name: str,
-        llm_config: dict[str, Any],
-        summarizer_llm_config: dict[str, Any],
+        llm_config: LLMConfig,
+        summarizer_llm_config: LLMConfig,
         executor: Union[ConversableAgent, list[ConversableAgent]],
         system_message: str = "You are a web surfer",
         bing_api_key: Optional[str] = None,

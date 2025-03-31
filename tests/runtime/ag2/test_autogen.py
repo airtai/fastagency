@@ -4,6 +4,7 @@ from typing import Annotated, Any
 from uuid import uuid4
 
 import pytest
+from autogen import LLMConfig
 from autogen.agentchat import ConversableAgent, UserProxyAgent
 from openai import InternalServerError
 
@@ -136,7 +137,7 @@ class TestPatternMatching:
 
 @pytest.mark.openai
 @pytest.mark.xfail(strict=False, raises=InternalServerError)
-def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
+def test_simple(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
     wf = Workflow()
 
     @wf.register(
@@ -191,7 +192,7 @@ def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 @pytest.mark.skipif(
     sys.platform == "darwin", reason="Test fails on macOS due to docker usage settings"
 )
-def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
+def test_register_api(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
     user_proxy = UserProxyAgent(
         name="User_Proxy",
         human_input_mode="ALWAYS",
@@ -226,7 +227,7 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 @pytest.mark.xfail(strict=False, raises=InternalServerError)
 class TestWorkflowWithHumanInputAlways:
     @pytest.fixture
-    def wf(self, openai_gpt4o_mini_llm_config: dict[str, Any]) -> Workflow:
+    def wf(self, openai_gpt4o_mini_llm_config: LLMConfig) -> Workflow:
         wf = Workflow()
 
         @wf.register(

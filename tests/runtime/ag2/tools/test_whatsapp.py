@@ -1,7 +1,5 @@
-from typing import Any
-
 import pytest
-from autogen import ConversableAgent, UserProxyAgent
+from autogen import ConversableAgent, LLMConfig, UserProxyAgent
 
 from fastagency.runtimes.ag2.ag2 import Toolable
 from fastagency.runtimes.ag2.agents.whatsapp import WhatsAppAgent
@@ -18,9 +16,7 @@ class TestWhatsApp:
 
     @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     @pytest.mark.llm
-    def test_whatsapp_chat_register(
-        self, azure_gpt4o_llm_config: dict[str, Any]
-    ) -> None:
+    def test_whatsapp_chat_register(self, azure_gpt4o_llm_config: LLMConfig) -> None:
         user_agent = UserProxyAgent(
             name="User_Agent",
             system_message="You are a user agent",
@@ -48,7 +44,7 @@ class TestWhatsApp:
 
     @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     @pytest.mark.llm
-    def test_whatsapp_agent(self, azure_gpt4o_llm_config: dict[str, Any]) -> None:
+    def test_whatsapp_agent(self, azure_gpt4o_llm_config: LLMConfig) -> None:
         user_agent = UserProxyAgent(
             name="User_Agent",
             system_message="You are a user agent",

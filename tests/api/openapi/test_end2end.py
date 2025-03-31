@@ -7,6 +7,7 @@ from typing import Annotated, Any, Optional
 import fastapi
 import jsondiff
 import pytest
+from autogen import LLMConfig
 from autogen.agentchat import ConversableAgent
 from fastapi import Body, FastAPI, Query
 from packaging.version import Version
@@ -746,7 +747,7 @@ class HTTPValidationError(BaseModel):
     def test_register_for_llm(
         self,
         client: OpenAPI,
-        azure_gpt35_turbo_16k_llm_config: dict[str, Any],
+        azure_gpt35_turbo_16k_llm_config: LLMConfig,
         pydantic_version: Version,
     ) -> None:
         class JSONEncoder(json.JSONEncoder):
@@ -931,7 +932,7 @@ class HTTPValidationError(BaseModel):
 
     @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_register_for_execution(
-        self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: dict[str, Any]
+        self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: LLMConfig
     ) -> None:
         expected_keys = {
             "create_item_items__post",
