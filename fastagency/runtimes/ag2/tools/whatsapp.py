@@ -4,7 +4,7 @@ from autogen import ConversableAgent
 
 from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
-from fastagency.runtimes.autogen.autogen import Toolable
+from fastagency.runtimes.ag2.ag2 import Toolable
 
 WHATSAPP_OPENAPI_URL = "https://dev.infobip.com/openapi/products/whatsapp.json"
 WHATSAPP_API_SERVER = "https://api.infobip.com"

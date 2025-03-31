@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse
 
 from fastagency import UI
 from fastagency.adapters.fastapi import FastAPIAdapter
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import AutoGenWorkflows
 
 html = """
 <!DOCTYPE html>

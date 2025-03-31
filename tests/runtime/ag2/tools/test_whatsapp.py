@@ -3,9 +3,9 @@ from typing import Any
 import pytest
 from autogen import ConversableAgent, UserProxyAgent
 
-from fastagency.runtimes.autogen.agents.whatsapp import WhatsAppAgent
-from fastagency.runtimes.autogen.autogen import Toolable
-from fastagency.runtimes.autogen.tools import WhatsAppTool
+from fastagency.runtimes.ag2.agents.whatsapp import WhatsAppAgent
+from fastagency.runtimes.ag2.ag2 import Toolable
+from fastagency.runtimes.ag2.tools import WhatsAppTool
 
 
 class TestWhatsApp:

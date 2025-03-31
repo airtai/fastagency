@@ -60,7 +60,7 @@ The example starts by importing the necessary modules from **AG2** and **FastAge
 
 === "Enhancing an existing agent"
     ```
-    {!> docs_src/user_guide/runtimes/autogen/whatsapp_tool.py [ln:1-10] !}
+    {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:1-10] !}
     ```
 
     To enhance existing agents with WhatsApp communication capability, import [**`WhatsAppTool`**](../../../api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md) from FastAgency and [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} from [AG2](https://docs.ag2.ai/){target="_blank"}.
@@ -205,12 +205,12 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     2024-11-06 12:05:31,512 [INFO] Patched Operation.function_name
     2024-11-06 12:05:31,512 [INFO] Patched fastapi_code_generator.__main__.generate_code
     2024-11-06 12:05:31,512 [INFO] Patched Parser.__apply_discriminator_type,
-    2024-11-06 12:05:31,712 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0xffffafd51810> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffffa043ccd0>
+    2024-11-06 12:05:31,712 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.ag2.AutoGenWorkflows object at 0xffffafd51810> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffffa043ccd0>
     2024-11-06 12:05:31,712 [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭───────────────────── Importable FastAgency app ──────────────────────╮
     │                                                                      │
-    │  from docs.docs_src.user_guide.runtimes.autogen.whatsapp import app  │
+    │  from docs.docs_src.user_guide.runtimes.ag2.whatsapp import app  │
     │                                                                      │
     ╰──────────────────────────────────────────────────────────────────────╯
 
@@ -258,12 +258,12 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     2024-11-06 12:01:56,374 [INFO] Patched Operation.function_name
     2024-11-06 12:01:56,374 [INFO] Patched fastapi_code_generator.__main__.generate_code
     2024-11-06 12:01:56,374 [INFO] Patched Parser.__apply_discriminator_type,
-    2024-11-06 12:01:56,611 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.autogen.autogen.AutoGenWorkflows object at 0xffff88721840> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffff89e50760>
+    2024-11-06 12:01:56,611 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.ag2.AutoGenWorkflows object at 0xffff88721840> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffff89e50760>
     2024-11-06 12:01:56,611 [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭──────────────────────── Importable FastAgency app ────────────────────────╮
     │                                                                           │
-    │  from docs.docs_src.user_guide.runtimes.autogen.whatsapp_tool import app  │
+    │  from docs.docs_src.user_guide.runtimes.ag2.whatsapp_tool import app  │
     │                                                                           │
     ╰───────────────────────────────────────────────────────────────────────────╯
 

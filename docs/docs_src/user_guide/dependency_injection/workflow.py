@@ -5,7 +5,7 @@ from autogen import UserProxyAgent, register_function
 from autogen.agentchat import ConversableAgent
 from fastagency import UI
 from fastagency.api.dependency_injection import inject_params
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import AutoGenWorkflows
 
 account_ballace_dict = {
     ("alice", "password123"): 100,

@@ -7,12 +7,12 @@ search:
     - [Getting Started](user-guide/getting-started/index.md)
     - [Project setup](user-guide/cookiecutter/index.md)
     - [Runtimes](user-guide/runtimes/index.md)
-        - [AutoGen](user-guide/runtimes/autogen/index.md)
+        - [AG2](user-guide/runtimes/ag2/index.md)
             - Agents
-                - [WebSurfer](user-guide/runtimes/autogen/websurfer.md)
-                - [WhatsApp](user-guide/runtimes/autogen/whatsapp.md)
-            - [User interaction](user-guide/runtimes/autogen/interactions.md)
-            - [Using Non-OpenAI Models](user-guide/runtimes/autogen/using_non_openai_models.md)
+                - [WebSurfer](user-guide/runtimes/ag2/websurfer.md)
+                - [WhatsApp](user-guide/runtimes/ag2/whatsapp.md)
+            - [User interaction](user-guide/runtimes/ag2/interactions.md)
+            - [Using Non-OpenAI Models](user-guide/runtimes/ag2/using_non_openai_models.md)
     - [UI](user-guide/ui/index.md)
         - [Console](user-guide/ui/console/basics.md)
         - [Mesop](user-guide/ui/mesop/basics.md)
@@ -158,28 +158,6 @@ search:
                 - [TextMessage](api/fastagency/messages/TextMessage.md)
                 - [WorkflowCompleted](api/fastagency/messages/WorkflowCompleted.md)
                 - [WorkflowStarted](api/fastagency/messages/WorkflowStarted.md)
-            - runtimes
-                - autogen
-                    - [AutoGenWorkflows](api/fastagency/runtimes/autogen/AutoGenWorkflows.md)
-                    - [IOStreamAdapter](api/fastagency/runtimes/autogen/IOStreamAdapter.md)
-                    - agents
-                        - websurfer
-                            - [WebSurferAgent](api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md)
-                        - whatsapp
-                            - [WhatsAppAgent](api/fastagency/runtimes/autogen/agents/whatsapp/WhatsAppAgent.md)
-                    - autogen
-                        - [AutoGenWorkflows](api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md)
-                        - [CurrentMessage](api/fastagency/runtimes/autogen/autogen/CurrentMessage.md)
-                        - [IOStreamAdapter](api/fastagency/runtimes/autogen/autogen/IOStreamAdapter.md)
-                        - [Toolable](api/fastagency/runtimes/autogen/autogen/Toolable.md)
-                    - tools
-                        - [WebSurferTool](api/fastagency/runtimes/autogen/tools/WebSurferTool.md)
-                        - [WhatsAppTool](api/fastagency/runtimes/autogen/tools/WhatsAppTool.md)
-                        - websurfer
-                            - [WebSurferAnswer](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferAnswer.md)
-                            - [WebSurferTool](api/fastagency/runtimes/autogen/tools/websurfer/WebSurferTool.md)
-                        - whatsapp
-                            - [WhatsAppTool](api/fastagency/runtimes/autogen/tools/whatsapp/WhatsAppTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)
