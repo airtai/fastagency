@@ -1,7 +1,6 @@
-from typing import Any
-
 import pytest
-from autogen import ConversableAgent, UserProxyAgent
+from autogen import ConversableAgent, LLMConfig, UserProxyAgent
+from pydantic import ValidationError
 
 from fastagency.runtimes.ag2.ag2 import Toolable
 from fastagency.runtimes.ag2.tools import WebSurferTool
@@ -9,7 +8,7 @@ from fastagency.runtimes.ag2.tools import WebSurferTool
 
 class TestWebSurferTool:
     def test_web_surfer_chat_constructor_positive(
-        self, azure_gpt4o_llm_config: dict[str, Any]
+        self, azure_gpt4o_llm_config: LLMConfig
     ) -> None:
         web_surfer_tool = WebSurferTool(
             name_prefix="test",
@@ -22,8 +21,8 @@ class TestWebSurferTool:
         self,
     ) -> None:
         with pytest.raises(
-            ValueError,
-            match="When using OpenAI or Azure OpenAI endpoints, specify a non-empty 'model' either in 'llm_config' or in each config of 'config_list'.",
+            ValidationError,
+            match="Field required",
         ):
             WebSurferTool(
                 name_prefix="test",
@@ -32,9 +31,7 @@ class TestWebSurferTool:
             )
 
     @pytest.mark.llm
-    def test_web_surfer_chat_register(
-        self, azure_gpt4o_llm_config: dict[str, Any]
-    ) -> None:
+    def test_web_surfer_chat_register(self, azure_gpt4o_llm_config: LLMConfig) -> None:
         user_agent = UserProxyAgent(
             name="User_Agent",
             system_message="You are a user agent",
@@ -75,7 +72,7 @@ class TestWebSurferTool:
     @pytest.mark.openai
     @pytest.mark.xfail(strict=False)
     def test_web_surfer_chat_simple_task(
-        self, openai_gpt4o_mini_llm_config: dict[str, Any], task: str, answer: str
+        self, openai_gpt4o_mini_llm_config: LLMConfig, task: str, answer: str
     ) -> None:
         user_agent = UserProxyAgent(
             name="User_Agent",

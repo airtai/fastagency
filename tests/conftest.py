@@ -18,6 +18,7 @@ import fastapi
 import openai
 import pytest
 import uvicorn
+from autogen import LLMConfig
 from fastapi import FastAPI, Path
 from packaging.version import Version
 from pydantic import BaseModel
@@ -43,7 +44,7 @@ def pytest_sessionfinish(session: Any, exitstatus: int) -> None:
 ################################################################################
 
 
-def azure_model_llm_config(model_env_name: str) -> dict[str, Any]:
+def azure_model_llm_config(model_env_name: str) -> LLMConfig:
     api_key = os.getenv("AZURE_OPENAI_API_KEY", default="*" * 64)
     api_base = os.getenv(
         "AZURE_API_ENDPOINT", default="https://my-deployment.openai.azure.com"
@@ -80,28 +81,28 @@ def azure_model_llm_config(model_env_name: str) -> dict[str, Any]:
         "temperature": 0.8,
     }
 
-    return llm_config
+    return LLMConfig(**llm_config)
 
 
 @tag("llm_config")
 @pytest.fixture
-def azure_gpt35_turbo_16k_llm_config() -> dict[str, Any]:
+def azure_gpt35_turbo_16k_llm_config() -> LLMConfig:
     return azure_model_llm_config("AZURE_GPT35_MODEL")
 
 
 @tag("llm_config")
 @pytest.fixture
-def azure_gpt4_llm_config() -> dict[str, Any]:
+def azure_gpt4_llm_config() -> LLMConfig:
     return azure_model_llm_config("AZURE_GPT4_MODEL")
 
 
 @tag("llm_config")
 @pytest.fixture
-def azure_gpt4o_llm_config() -> dict[str, Any]:
+def azure_gpt4o_llm_config() -> LLMConfig:
     return azure_model_llm_config("AZURE_GPT4o_MODEL")
 
 
-def openai_llm_config(model: str) -> dict[str, Any]:
+def openai_llm_config(model: str) -> LLMConfig:
     zeros = "0" * 20
     api_key = os.getenv("OPENAI_API_KEY", default=f"sk-{zeros}T3BlbkFJ{zeros}")
 
@@ -117,24 +118,24 @@ def openai_llm_config(model: str) -> dict[str, Any]:
         "temperature": 0.8,
     }
 
-    return llm_config
+    return LLMConfig(**llm_config)
 
 
 @tag("llm_config")
 @pytest.fixture
-def openai_gpt35_turbo_16k_llm_config() -> dict[str, Any]:
+def openai_gpt35_turbo_16k_llm_config() -> LLMConfig:
     return openai_llm_config("gpt-3.5-turbo")
 
 
 @tag("llm_config")
 @pytest.fixture
-def openai_gpt4o_llm_config() -> dict[str, Any]:
+def openai_gpt4o_llm_config() -> LLMConfig:
     return openai_llm_config("gpt-4o")
 
 
 @tag("llm_config")
 @pytest.fixture
-def openai_gpt4o_mini_llm_config() -> dict[str, Any]:
+def openai_gpt4o_mini_llm_config() -> LLMConfig:
     return openai_llm_config("gpt-4o-mini")
 
 

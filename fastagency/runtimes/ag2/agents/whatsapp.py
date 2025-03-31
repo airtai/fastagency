@@ -1,6 +1,6 @@
 from typing import Any, Union
 
-from autogen import AssistantAgent, ConversableAgent
+from autogen import AssistantAgent, ConversableAgent, LLMConfig
 
 from ..tools import WhatsAppTool
 
@@ -27,7 +27,7 @@ class WhatsAppAgent(AssistantAgent):  # type: ignore[misc]
         self,
         *args: Any,
         name: str,
-        llm_config: dict[str, Any],
+        llm_config: LLMConfig,
         executor: Union[ConversableAgent, list[ConversableAgent]],
         sender: str,
         whatsapp_api_key: str,

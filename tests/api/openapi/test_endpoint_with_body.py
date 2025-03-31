@@ -1,7 +1,5 @@
-from typing import Any
-
 import pytest
-from autogen import ConversableAgent, UserProxyAgent
+from autogen import ConversableAgent, LLMConfig, UserProxyAgent
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -34,8 +32,7 @@ def create_fastapi_app_with_body(host: str, port: int) -> FastAPI:
     indirect=["fastapi_openapi_url"],
 )
 def test_end2end(
-    fastapi_openapi_url: str,
-    azure_gpt35_turbo_16k_llm_config: dict[str, Any],
+    fastapi_openapi_url: str, azure_gpt35_turbo_16k_llm_config: LLMConfig
 ) -> None:
     api = OpenAPI.create(openapi_url=fastapi_openapi_url)
 
