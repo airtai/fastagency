@@ -106,7 +106,7 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
     export OPENAI_API_KEY=openai_api_key_here
     ```
 
-    If you want to use a different LLM provider, follow [this guide](https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/).
+    If you want to use a different LLM provider, follow [this guide](https://fastagency.ai/latest/user-guide/runtimes/ag2/using_non_openai_models/).
 
     Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in [Visual Studio Code](https://code.visualstudio.com/){target="_blank"} using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
 

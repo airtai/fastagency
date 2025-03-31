@@ -1,6 +1,6 @@
 # Using Non-OpenAI Models with FastAgency
 
-FastAgency makes it simple to work with **non-OpenAI models** through its [**AG2**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime. You can do this in a couple of ways:
+FastAgency makes it simple to work with **non-OpenAI models** through its [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime. You can do this in a couple of ways:
 
 - Using a [**proxy server that provides an OpenAI-compatible API**](https://docs.ag2.ai/docs/user-guide/models/litellm-proxy-server/installation){target="_blank"} or
 - By [**using a custom model client class**](https://docs.ag2.ai/docs/blog/2024-01-26-Custom-Models/index){target="_blank"}, which lets you define and load your own models.
@@ -23,7 +23,7 @@ Alternatively, you can use **pip + venv**. Before getting started, ensure that y
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-This command installs the FastAgency library along with the  [**AG2**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+This command installs the FastAgency library along with the  [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ## Prerequisites
 
@@ -98,7 +98,7 @@ Next, add two parameters: `api_type` and `hide_tools`.
     Set the `api_type` to `together` to instruct FastAgency to use Together AI Cloud for model inference.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/mesop/using_non_openai_models.py [ln:12-22] !}
+{! docs_src/user_guide/runtimes/ag2/mesop/using_non_openai_models.py [ln:12-22] !}
 ```
 
 #### 2. Update the System Message
@@ -106,7 +106,7 @@ Next, add two parameters: `api_type` and `hide_tools`.
 The system message has been adjusted to work optimally with the **meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo** model. You may need to experiment with the system prompt if you are using a different model.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/mesop/using_non_openai_models.py [ln:27-32] !}
+{! docs_src/user_guide/runtimes/ag2/mesop/using_non_openai_models.py [ln:27-32] !}
 ```
 
 ### Complete Application Code
@@ -114,7 +114,7 @@ The system message has been adjusted to work optimally with the **meta-llama/Met
 <details>
 <summary>main.py</summary>
 ```python
-{! docs_src/user_guide/runtimes/autogen/mesop/using_non_openai_models.py !}
+{! docs_src/user_guide/runtimes/ag2/mesop/using_non_openai_models.py !}
 ```
 </details>
 
@@ -158,4 +158,4 @@ Once you run the command above, FastAgency will start a [**Mesop**](https://goog
 
 ![Initial message](./images/weather_chat.png)
 
-This example demonstrates the power of [**AG2**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime in FastAgency, highlighting how easily you can use **non-OpenAI models** with just a few changes in the code. With FastAgency, developers can **quickly build interactive**, **scalable applications** that work with live data sources.
+This example demonstrates the power of [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime in FastAgency, highlighting how easily you can use **non-OpenAI models** with just a few changes in the code. With FastAgency, developers can **quickly build interactive**, **scalable applications** that work with live data sources.

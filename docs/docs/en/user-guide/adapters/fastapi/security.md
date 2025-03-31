@@ -100,7 +100,7 @@ Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), whic
         {!> docs_src/user_guide/adapters/fastapi/security/main_1_jwt.py [ln:1-14]!}
     ```
 
-- `wf`: [**`AutoGenWorkflows`**](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) object that manages and registers workflows. Here, we have a workflow with the one simple_workflow registered under the name "simple_learning".
+- `wf`: [**`AutoGenWorkflows`**](../../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md) object that manages and registers workflows. Here, we have a workflow with the one simple_workflow registered under the name "simple_learning".
 
 - [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): We'll attach the adapter to the FastAPI app. It exposes the workflows as REST APIs.
 

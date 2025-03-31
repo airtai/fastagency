@@ -22,7 +22,7 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
         app,
         [
             "run",
-            "docs/docs_src/user_guide/runtimes/autogen/websurfer.py",
+            "docs/docs_src/user_guide/runtimes/ag2/websurfer.py",
             "--single-run",
         ],
     )

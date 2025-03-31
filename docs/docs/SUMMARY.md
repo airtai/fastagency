@@ -158,6 +158,28 @@ search:
                 - [TextMessage](api/fastagency/messages/TextMessage.md)
                 - [WorkflowCompleted](api/fastagency/messages/WorkflowCompleted.md)
                 - [WorkflowStarted](api/fastagency/messages/WorkflowStarted.md)
+            - runtimes
+                - ag2
+                    - [AutoGenWorkflows](api/fastagency/runtimes/ag2/AutoGenWorkflows.md)
+                    - [IOStreamAdapter](api/fastagency/runtimes/ag2/IOStreamAdapter.md)
+                    - ag2
+                        - [AutoGenWorkflows](api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md)
+                        - [CurrentMessage](api/fastagency/runtimes/ag2/ag2/CurrentMessage.md)
+                        - [IOStreamAdapter](api/fastagency/runtimes/ag2/ag2/IOStreamAdapter.md)
+                        - [Toolable](api/fastagency/runtimes/ag2/ag2/Toolable.md)
+                    - agents
+                        - websurfer
+                            - [WebSurferAgent](api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md)
+                        - whatsapp
+                            - [WhatsAppAgent](api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md)
+                    - tools
+                        - [WebSurferTool](api/fastagency/runtimes/ag2/tools/WebSurferTool.md)
+                        - [WhatsAppTool](api/fastagency/runtimes/ag2/tools/WhatsAppTool.md)
+                        - websurfer
+                            - [WebSurferAnswer](api/fastagency/runtimes/ag2/tools/websurfer/WebSurferAnswer.md)
+                            - [WebSurferTool](api/fastagency/runtimes/ag2/tools/websurfer/WebSurferTool.md)
+                        - whatsapp
+                            - [WhatsAppTool](api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md)
             - ui
                 - console
                     - [ConsoleUI](api/fastagency/ui/console/ConsoleUI.md)

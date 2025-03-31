@@ -28,7 +28,7 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
         app,
         [
             "run",
-            "docs/docs_src/user_guide/runtimes/autogen/whatsapp.py",
+            "docs/docs_src/user_guide/runtimes/ag2/whatsapp.py",
             "--single-run",
         ],
     )

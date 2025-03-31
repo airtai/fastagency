@@ -2,7 +2,7 @@
 
 In this tutorial, we will explore how to leverage the **FastAgency** framework to create a dynamic and interactive chatbot that integrates two powerful agents:
 
-1. [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md): A web-scraping agent capable of retrieving relevant content from webpages (learn more [here](../../user-guide/runtimes/autogen/websurfer.md)).
+1. [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md): A web-scraping agent capable of retrieving relevant content from webpages (learn more [here](../../user-guide/runtimes/ag2/websurfer.md)).
 
 2. **WhatsApp agent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send WhatsApp messages based on the user’s request. It will be created using the standard [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} from [AG2](https://docs.ag2.ai/){target="_blank"} and the [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md) object instantiated with an OpenAPI [specification](https://dev.infobip.com/openapi/products/whatsapp.json){target="_blank"} of Infobip's [REST API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"}.
 
@@ -13,8 +13,8 @@ The chat system will operate between these two agents and the user, allowing the
 By the end of this tutorial, you will understand how to:
 
 1. Integrate external APIs like [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} using [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md).
-2. Build and register agents that autonomously scrape the web for relevant information using [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
-3. Use [**`AutoGenWorkflows`**](../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) to manage agent interactions and user input.
+2. Build and register agents that autonomously scrape the web for relevant information using [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md).
+3. Use [**`AutoGenWorkflows`**](../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md) to manage agent interactions and user input.
 4. Present scraped content to the user and offer sending that content via WhatsApp.
 5. Handle secure API credentials and ensure safe communication between agents using [**`APIKeyHeader`**](../../api/fastagency/api/openapi/security/APIKeyHeader.md).
 
@@ -28,7 +28,7 @@ Let’s dive into creating a powerful interactive agent system with **FastAgency
 
 
 ### API Key Setup
-[**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **WhatsAppAgent** requires an API key to interact with Infobip's WhatsApp service. Follow these steps to create your API keys:
+[**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md) requires an **Bing Web Search** API key and **WhatsAppAgent** requires an API key to interact with Infobip's WhatsApp service. Follow these steps to create your API keys:
 
 #### Create Bing Web Search API Key
 To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.
@@ -74,7 +74,7 @@ You can set the API keys in your terminal as an environment variable:
 
 ## Code Walkthrough
 
-Now we will go over each key part of the code, explaining its function and purpose within the FastAgency framework. Understanding these components is crucial for building a dynamic interaction between the user, the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md), and the **WhatsAppAgent**.
+Now we will go over each key part of the code, explaining its function and purpose within the FastAgency framework. Understanding these components is crucial for building a dynamic interaction between the user, the [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md), and the **WhatsAppAgent**.
 
 ### Creating the WhatsApp API Instance
 The following lines shows how to initializes the WhatsApp API by loading the OpenAPI specification from a URL. The OpenAPI spec defines how to interact with the WhatsApp API, including endpoints, parameters, and security details.
@@ -106,7 +106,7 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 ### Creating the WhatsApp and WebSurfer Agents
 
 - **WhatsAppAgent**: A [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} is created with the name "WhatsApp_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
-- [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md): The [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/autogen/websurfer.md).
+- [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md): The [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md) is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/ag2/websurfer.md).
 
 ```python
 {! docs_src/tutorials/whatsapp/main.py [ln:80-97] !}
@@ -115,7 +115,7 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 
 ### Registering Functions
 
-The function ***present_completed_task_or_ask_question*** is registered to allow the **WhatsAppAgent** to ask questions or present completed tasks after receiving data from the [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
+The function ***present_completed_task_or_ask_question*** is registered to allow the **WhatsAppAgent** to ask questions or present completed tasks after receiving data from the [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md).
 
 ```python
 {! docs_src/tutorials/whatsapp/main.py [ln:98-106] !}
@@ -129,7 +129,7 @@ We register the WhatsApp API, which allows the **WhatsAppAgent** to handle tasks
 
 ### Initiating the Chat
 
-We initiate the conversation between the user, [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md), and **WhatsAppAgent**. The user’s initial message is provided, and the system is configured to handle up to 10 turns of interaction. The conversation is summarized using the ***reflection_with_llm*** method, which uses a language model to summarize the chat.
+We initiate the conversation between the user, [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md), and **WhatsAppAgent**. The user’s initial message is provided, and the system is configured to handle up to 10 turns of interaction. The conversation is summarized using the ***reflection_with_llm*** method, which uses a language model to summarize the chat.
 
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
@@ -151,7 +151,7 @@ In this scenario, the user instructs the agents to scrape [BBC Sport](https://ww
 
 ![Initial message](./images/initial_message.png)
 
-Upon receiving the request, [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) initiates the process by scraping the webpage for relevant updates.
+Upon receiving the request, [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md) initiates the process by scraping the webpage for relevant updates.
 
 ![Scraping](./images/scraping.png)
 
@@ -169,4 +169,4 @@ Finally, the results are delivered to the user through a WhatsApp message.
 
 ## Conclusion
 
-In summary, connecting **FastAgency** with the **Infobip WhatsApp API** lets you create chat systems that can gather web data and send it straight to users on WhatsApp. By using two agents — [**`WebSurferAgent`**](../../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md) to pull web content and **WhatsAppAgent** for messaging, you can build engaging experiences for users. This tutorial covered the essential steps to set up these agents, secure the API, and manage user interactions. With this setup, you can enhance your chatbot’s capabilities, providing real-time information and smooth communication across different platforms.
+In summary, connecting **FastAgency** with the **Infobip WhatsApp API** lets you create chat systems that can gather web data and send it straight to users on WhatsApp. By using two agents — [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md) to pull web content and **WhatsAppAgent** for messaging, you can build engaging experiences for users. This tutorial covered the essential steps to set up these agents, secure the API, and manage user interactions. With this setup, you can enhance your chatbot’s capabilities, providing real-time information and smooth communication across different platforms.

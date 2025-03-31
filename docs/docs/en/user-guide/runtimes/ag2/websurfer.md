@@ -55,14 +55,14 @@ The example starts by importing the necessary modules from **AG2** and **FastAge
 
 === "Using WebSurferAgent"
     ```python hl_lines="8"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer.py [ln:1-9] !}
+    {!> docs_src/user_guide/runtimes/ag2/websurfer.py [ln:1-9] !}
     ```
 
     To create a new web surfing agent, simply import `WebSurferAgent`, which comes with built-in web surfing capabilities, and use it as needed.
 
 === "Enhancing an existing agent"
     ```python hl_lines="4 9"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:1-10] !}
+    {!> docs_src/user_guide/runtimes/ag2/websurfer_tool.py [ln:1-10] !}
     ```
 
     To enhance existing agents with web surfing capability, import `WebSurferTool` from FastAgency and `ConversableAgent` from AG2.
@@ -72,7 +72,7 @@ The example starts by importing the necessary modules from **AG2** and **FastAge
 Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and websurfer agents can interact effectively.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:10-19] !}
+{! docs_src/user_guide/runtimes/ag2/websurfer.py [ln:10-19] !}
 ```
 
 #### 3. **Define the Workflow and Agents**
@@ -86,7 +86,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     - **WebSurferAgent**: This agent functions as a web surfer, with built-in capability to browse the web and fetch real-time data as required.
 
     ```python hl_lines="18-25"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer.py [ln:20-45] !}
+    {!> docs_src/user_guide/runtimes/ag2/websurfer.py [ln:20-45] !}
     ```
 
     When initiating the `WebSurferAgent`, the executor parameter must be provided. This can be either a single instance of `ConversableAgent` or a `list of ConversableAgent` instances.
@@ -104,13 +104,13 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     - **WebSurferTool**: The tool that gives the ConversableAgent the ability to browse the web after it has been registered.
 
     ```python hl_lines="27-32"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:21-53] !}
+    {!> docs_src/user_guide/runtimes/ag2/websurfer_tool.py [ln:21-53] !}
     ```
 
     Now, we need to register the WebSurferAgent with a caller and executor. This setup allows the caller to use the WebSurferAgent for performing real-time web interactions.
 
     ```python  hl_lines="2 3"
-    {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:54-58] !}
+    {!> docs_src/user_guide/runtimes/ag2/websurfer_tool.py [ln:54-58] !}
     ```
 
     The `executor` can be either a single instance of `ConversableAgent` or a `list of ConversableAgent` instances.
@@ -123,20 +123,20 @@ Here, the user agent starts a conversation with the websurfer agent, which perfo
 === "Using WebSurferAgent"
 
     ```python
-    {! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:46-53] !}
+    {! docs_src/user_guide/runtimes/ag2/websurfer.py [ln:46-53] !}
     ```
 
 === "Enhancing an existing agent"
 
     ```python
-    {! docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:59-68] !}
+    {! docs_src/user_guide/runtimes/ag2/websurfer_tool.py [ln:59-68] !}
     ```
 
 #### 5. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtimes/autogen/websurfer.py [ln:57] !}
+{! docs_src/user_guide/runtimes/ag2/websurfer.py [ln:57] !}
 ```
 
 ### Complete Application Code
@@ -146,7 +146,7 @@ Finally, we create the FastAgency application and launch it using the console in
     <details>
         <summary>websurfer_agent.py</summary>
         ```python
-        {!> docs_src/user_guide/runtimes/autogen/websurfer.py !}
+        {!> docs_src/user_guide/runtimes/ag2/websurfer.py !}
         ```
     </details>
 
@@ -155,7 +155,7 @@ Finally, we create the FastAgency application and launch it using the console in
     <details>
         <summary>websurfer_tool.py</summary>
         ```python
-        {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py !}
+        {!> docs_src/user_guide/runtimes/ag2/websurfer_tool.py !}
         ```
     </details>
 

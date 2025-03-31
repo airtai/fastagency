@@ -34,7 +34,7 @@ We begin by importing the necessary modules from **FastAgency** and **AG2**. The
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency.md)**: The core class responsible for orchestrating workflows and connecting them with UIs.
 - **[UI](../../../../api/fastagency/UI.md)** and **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)**: These classes define the user interface for interaction, with ConsoleUI providing a text-based interface.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md)**: Manages the creation and execution of multi-agent workflows.
+- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
 Next, we configure the language model that will power the agents. In this case, we're using **gpt-4o-mini**, and the API key is retrieved from the environment.
