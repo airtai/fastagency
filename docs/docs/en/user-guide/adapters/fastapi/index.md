@@ -238,7 +238,7 @@ To get started, define the workflow that your application will use. This is wher
 
 === "Custom REST API and Websocket"
 
-    Next, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+    Next, import the required modules from the **FastAgency** and **AG2**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
     ```python hl_lines="6 9"
     {!> docs_src/getting_started/no_auth/fastapi/main_fastapi_custom_client.py [ln:1-10] !}

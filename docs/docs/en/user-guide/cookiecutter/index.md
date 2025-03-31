@@ -37,7 +37,7 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
             Choose from [1/2/3] (1):
         ```
 
-        This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
+        This command installs FastAgency with support for both the Console and Mesop interfaces for AG2 workflows.
 
     === "FastAPI + Mesop"
         ```console
@@ -60,7 +60,7 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
             Choose from [1/2/3] (1):
         ```
 
-        This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI handling input requests and workflow execution.
+        This command installs FastAgency with support for both the Console and Mesop interfaces for AG2 workflows, with FastAPI handling input requests and workflow execution.
 
     === "NATS + FastAPI + Mesop"
         ```console
@@ -83,7 +83,7 @@ Cookiecutter creates projects from cookiecutters (project templates), e.g. Pytho
             Choose from [1/2/3] (1):
         ```
 
-        This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
+        This command installs FastAgency with support for both the Console and Mesop interfaces for AG2 workflows, with FastAPI serving input and independent workers communicating over the NATS.io protocol workflows. This is the most scable setup, recommended for large production workloads.
 
 4. Executing the `cookiecutter` command will create the following file structure:
 

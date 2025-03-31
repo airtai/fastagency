@@ -49,7 +49,7 @@ You can set the WhatsApp API key in your terminal as an environment variable:
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-The example starts by importing the necessary modules from **AutoGen** and **FastAgency**. These imports lay the foundation for building and running multi-agent workflows.
+The example starts by importing the necessary modules from **AG2** and **FastAgency**. These imports lay the foundation for building and running multi-agent workflows.
 
 === "Using WhatsAppAgent"
     ```
@@ -355,4 +355,4 @@ If you configured your WHATSAPP_API_KEY correctly, you should get a message from
 
 ---
 
-This example highlights the capabilities of the [AutoGen](https://docs.ag2.ai/){target="_blank"} runtime within FastAgency, demonstrating how seamlessly LLM-powered agents can be integrated with [WhatsApp](https://www.whatsapp.com/){target="_blank"} for real-time, automated messaging. By using FastAgency, developers can rapidly build interactive, scalable applications that connect with external APIs—such as those for [WhatsApp](https://www.whatsapp.com/){target="_blank"} messaging, CRM systems, or custom data services—enabling the retrieval and delivery of dynamic content directly through [WhatsApp](https://www.whatsapp.com/){target="_blank"}. This setup empowers users to automate communication workflows, integrate live data, and facilitate on-demand, personalized interactions with end users.
+This example highlights the capabilities of the [AG2](https://docs.ag2.ai/){target="_blank"} runtime within FastAgency, demonstrating how seamlessly LLM-powered agents can be integrated with [WhatsApp](https://www.whatsapp.com/){target="_blank"} for real-time, automated messaging. By using FastAgency, developers can rapidly build interactive, scalable applications that connect with external APIs—such as those for [WhatsApp](https://www.whatsapp.com/){target="_blank"} messaging, CRM systems, or custom data services—enabling the retrieval and delivery of dynamic content directly through [WhatsApp](https://www.whatsapp.com/){target="_blank"}. This setup empowers users to automate communication workflows, integrate live data, and facilitate on-demand, personalized interactions with end users.

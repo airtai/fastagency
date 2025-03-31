@@ -16,7 +16,7 @@ In this tutorial, we will explore how to leverage the **FastAgency** framework t
 ### When to Use Web Scraping and Giphy API Integration?
 - **API Integration**: Learn how to integrate external APIs like Giphy with FastAgency.
 - **Autonomous Agents**: Build and register agents that autonomously scrape the web for relevant information.
-- **User-Agent Workflows**: Use [AutoGen workflows](../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) to manage agent interactions and user input.
+- **User-Agent Workflows**: Use [AG2 workflows](../api/fastagency/runtimes/autogen/AutoGenWorkflows.md) to manage agent interactions and user input.
 - **Personalized Content**: Present scraped content to users and offer personalized GIF suggestions based on that content.
 
 [Let’s dive into Web Scraping and Giphy API Integration →](giphy/index.md)
@@ -33,7 +33,7 @@ In this tutorial, we will explore how to build a chatbot using the **FastAgency*
 ### When to Use WhatsApp API Integration and Web Scraping?
 - **API Integration**: Learn how to integrate the Infobip WhatsApp API using OpenAPI.
 - **Autonomous Agents**: Build and register agents that autonomously scrape the web using the [**`WebSurferAgent`**](../api/fastagency/runtimes/autogen/agents/websurfer/WebSurferAgent.md).
-- **User-Agent Workflows**: Manage user interactions and send scraped content via WhatsApp using [AutoGen workflows](../api/fastagency/runtimes/autogen/AutoGenWorkflows.md).
+- **User-Agent Workflows**: Manage user interactions and send scraped content via WhatsApp using [AG2 workflows](../api/fastagency/runtimes/autogen/AutoGenWorkflows.md).
 - **Security**: Handle secure API credentials using [**`APIKeyHeader`**](../api/fastagency/api/openapi/security/APIKeyHeader.md) and ensure safe communication.
 
 [Let’s dive into WhatsApp API Integration and Web Scraping →](whatsapp/index.md)

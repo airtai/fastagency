@@ -1,6 +1,6 @@
 # Security
 
-In the [previous chapter](./index.md){.internal-link}, we learned how to integrate external REST APIs into `AutoGen` agents using `FastAgency`, and we used a weather API route which had no security. However, not all external REST APIs are open to the public; some are behind a paywall and require security parameters for access. This section of the documentation explains how to create an agent that accesses an external REST API with security.
+In the [previous chapter](./index.md){.internal-link}, we learned how to integrate external REST APIs into `AG2` agents using `FastAgency`, and we used a weather API route which had no security. However, not all external REST APIs are open to the public; some are behind a paywall and require security parameters for access. This section of the documentation explains how to create an agent that accesses an external REST API with security.
 
 ## Supported Security Schemas
 

@@ -63,9 +63,9 @@ This application is part of our system's backend and consists of:
 
 This application is also part of our system's backend and consists of:
 
-- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md): This adapter connects to the `NatsProvider` and is responsible for communicating with AutoGen workflows.
+- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md): This adapter connects to the `NatsProvider` and is responsible for communicating with AG2 workflows.
 
-- **AutoGen Workflows**: These workflows, defined using the AutoGen framework, embody the core logic and behavior of your application. They leverage agents to perform various tasks and accomplish specific goals.
+- **AG2 Workflows**: These workflows, defined using the AG2 framework, embody the core logic and behavior of your application. They leverage agents to perform various tasks and accomplish specific goals.
 
 This architecture promotes a clear separation of concerns between the user interface, the API layer, and the workflow execution logic, enhancing modularity and maintainability. The [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} framework provides a user-friendly and efficient [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}, while the `NATSAdapter`, combined with the [**Nats.io**](https://nats.io/){target="_blank"} message broker, ensures scalability and asynchronous communication.
 

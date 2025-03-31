@@ -34,7 +34,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
             Choose from [1/2/3] (1):
         ```
 
-        This command installs FastAgency with support for both the Console and Mesop interfaces for AutoGen workflows.
+        This command installs FastAgency with support for both the Console and Mesop interfaces for AG2 workflows.
 
 
     4. Executing the `cookiecutter` command will create the following file structure:

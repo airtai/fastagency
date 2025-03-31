@@ -100,7 +100,7 @@ Alternatively, you can use **pip + venv**. To install **FastAgency** with MesopU
     pip install "fastagency[autogen,mesop,firebase]"
     ```
 
-This command ensures that the required dependencies for both **AutoGen** and **Mesop** are installed.
+This command ensures that the required dependencies for both **AG2** and **Mesop** are installed.
 
 ## Usage
 
@@ -179,7 +179,7 @@ This example shows how to create a simple learning chat where a student agent in
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.
+We begin by importing the necessary modules from **FastAgency** and **AG2**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.
 
 === "No Authentication"
 

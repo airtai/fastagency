@@ -10,13 +10,13 @@ We **strongly recommend** using [**Cookiecutter**](../../../user-guide/cookiecut
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
+Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AG2 runtime by running the following command:
 
 ```bash
 pip install "fastagency[autogen]"
 ```
 
-This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
+This installation includes the AG2 runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
 
 ## Example: Student and Teacher Learning Chat
 
@@ -25,7 +25,7 @@ This example demonstrates how to create a workflow where a student agent interac
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating the ConsoleUI.
+We begin by importing the necessary modules from **FastAgency** and **AG2**. These imports provide the essential building blocks for creating agents, workflows, and integrating the ConsoleUI.
 
 ```python
 {! docs_src/getting_started/no_auth/mesop/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-6] !}

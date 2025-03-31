@@ -19,13 +19,13 @@ We **strongly recommend** using [**Cookiecutter**](../../../user-guide/cookiecut
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
+Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AG2 runtime by running the following command:
 
 ```bash
 pip install "fastagency[autogen]"
 ```
 
-This command installs FastAgency with support for the Console interface and AutoGen framework.
+This command installs FastAgency with support for the Console interface and AG2 framework.
 
 ### Create Bing Web Search API Key
 To create [Bing Web Search](https://www.microsoft.com/en-us/bing/apis/pricing){target="_blank"} API key, follow the guide provided.
@@ -65,7 +65,7 @@ The example starts by importing the necessary modules from **AG2** and **FastAge
     {!> docs_src/user_guide/runtimes/autogen/websurfer_tool.py [ln:1-10] !}
     ```
 
-    To enhance existing agents with web surfing capability, import `WebSurferTool` from FastAgency and `ConversableAgent` from AutoGen.
+    To enhance existing agents with web surfing capability, import `WebSurferTool` from FastAgency and `ConversableAgent` from AG2.
 
 
 #### 2. **Configure the Language Model (LLM)**
@@ -290,4 +290,4 @@ The agent will summarize its findings and then prompt you again with "I can help
 
 ---
 
-This example demonstrates the power of the AutoGen runtime within FastAgency, showcasing how easily LLM-powered agents can be integrated with browsing capabilities to fetch and process real-time information. By leveraging FastAgency, developers can quickly build interactive, scalable applications that interact with live data sources.
+This example demonstrates the power of the AG2 runtime within FastAgency, showcasing how easily LLM-powered agents can be integrated with browsing capabilities to fetch and process real-time information. By leveraging FastAgency, developers can quickly build interactive, scalable applications that interact with live data sources.
