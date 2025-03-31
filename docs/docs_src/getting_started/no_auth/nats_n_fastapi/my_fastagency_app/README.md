@@ -12,7 +12,7 @@ To run this [`FastAgency`](https://github.com/airtai/fastagency) application, fo
    export OPENAI_API_KEY=paste_openai_api_key_here
    ```
 
-   If you want to use a different LLM provider, follow [this guide](https://fastagency.ai/latest/user-guide/runtimes/autogen/using_non_openai_models/).
+   If you want to use a different LLM provider, follow [this guide](https://fastagency.ai/latest/user-guide/runtimes/ag2/using_non_openai_models/).
 
    Alternatively, you can skip this step and set the LLM API key as an environment variable later in the devcontainer's terminal. If you open the project in `VSCode` using GUI, you will need to manually set the environment variable in the devcontainer's terminal.
 
@@ -30,9 +30,9 @@ To run this [`FastAgency`](https://github.com/airtai/fastagency) application, fo
 
 3. Press `Ctrl+Shift+P`(for windows/linux) or `Cmd+Shift+P`(for mac) and select the option `Dev Containers: Rebuild and Reopen in Container`. This will open the current repository in a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) using Docker and will install all the requirements to run the example application.
 4. This example needs `NATS` to be up and running. `NATS` is automatically started by the devcontainer.
-5. The `workflow.py` file defines the autogen workflows. It is imported and used in the files that define the `UI`.
+5. The `workflow.py` file defines the AG2 workflows. It is imported and used in the files that define the `UI`.
 
-6. The `main_1_nats.py` file defines the autogen workflows and includes the `NatsAdapter` to exchange the workflow conversation as messages via NATS. In a devcontainer terminal(**Terminal 1**), run the following command:
+6. The `main_1_nats.py` file defines the AG2 workflows and includes the `NatsAdapter` to exchange the workflow conversation as messages via NATS. In a devcontainer terminal(**Terminal 1**), run the following command:
 
    ```bash
    uvicorn my_fastagency_app.deployment.main_1_nats:app --reload
@@ -50,11 +50,11 @@ To run this [`FastAgency`](https://github.com/airtai/fastagency) application, fo
    gunicorn my_fastagency_app.deployment.main_3_mesop:app -b 0.0.0.0:8888 --reload
    ```
 
-9. Open the Mesop UI URL [http://localhost:8888](http://localhost:8888) in your browser. You can now use the graphical user interface to start and run the autogen workflow.
+9. Open the Mesop UI URL [http://localhost:8888](http://localhost:8888) in your browser. You can now use the graphical user interface to start and run the AG2 workflow.
 
 ## Running tests
 
-This `FastAgency` project includes tests to test the autogen workflow. Run these tests with the following command:
+This `FastAgency` project includes tests to test the AG2 workflow. Run these tests with the following command:
 
 ```bash
 pytest -s
@@ -100,4 +100,4 @@ This `FastAgency` project includes a `fly.toml` file for deployment to [fly.io](
 
 ## What's Next?
 
-Once you’ve experimented with the default workflow in the `workflow.py` file, modify the autogen workflow to define your own workflows and try them out.
+Once you’ve experimented with the default workflow in the `workflow.py` file, modify the AG2 workflow to define your own workflows and try them out.

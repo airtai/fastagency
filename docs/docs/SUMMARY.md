@@ -160,13 +160,13 @@ search:
                 - [WorkflowStarted](api/fastagency/messages/WorkflowStarted.md)
             - runtimes
                 - ag2
-                    - [Workflow](api/fastagency/runtimes/ag2/Workflow.md)
                     - [IOStreamAdapter](api/fastagency/runtimes/ag2/IOStreamAdapter.md)
+                    - [Workflow](api/fastagency/runtimes/ag2/Workflow.md)
                     - ag2
-                        - [Workflow](api/fastagency/runtimes/ag2/ag2/Workflow.md)
                         - [CurrentMessage](api/fastagency/runtimes/ag2/ag2/CurrentMessage.md)
                         - [IOStreamAdapter](api/fastagency/runtimes/ag2/ag2/IOStreamAdapter.md)
                         - [Toolable](api/fastagency/runtimes/ag2/ag2/Toolable.md)
+                        - [Workflow](api/fastagency/runtimes/ag2/ag2/Workflow.md)
                     - agents
                         - websurfer
                             - [WebSurferAgent](api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md)

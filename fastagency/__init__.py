@@ -2,7 +2,7 @@
 
 from .__about__ import __version__
 from .app import FastAgency
-from .base import UI, UIBase, Workflow, WorkflowsProtocol
+from .base import UI, UIBase, WorkflowTypeVar, WorkflowsProtocol
 from .messages import (
     FunctionCallExecution,
     IOMessage,
@@ -24,7 +24,7 @@ __all__ = [
     "TextInput",
     "TextMessage",
     "UIBase",
-    "Workflow",
+    "WorkflowTypeVar",
     "WorkflowsProtocol",
     "__version__",
 ]

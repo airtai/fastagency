@@ -17,7 +17,7 @@ from autogen.io import IOStream
 
 from ...base import (
     UI,
-    Workflow,
+    WorkflowTypeVar,
     WorkflowsProtocol,
     check_register_decorator,
 )
@@ -36,8 +36,8 @@ if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
-    "Workflow",
     "IOStreamAdapter",
+    "Workflow",
 ]
 
 
@@ -294,8 +294,8 @@ class Workflow(WorkflowsProtocol):
 
     def register(
         self, name: str, description: str, *, fail_on_redefintion: bool = False
-    ) -> Callable[[Workflow], Workflow]:
-        def decorator(func: Workflow) -> Workflow:
+    ) -> Callable[[WorkflowTypeVar], WorkflowTypeVar]:
+        def decorator(func: WorkflowTypeVar) -> WorkflowTypeVar:
             check_register_decorator(func)
             if name in self._workflows:
                 if fail_on_redefintion:

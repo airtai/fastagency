@@ -26,7 +26,7 @@ __all__ = [
     "Runnable",
     "UIBase",
     "WSGIProtocol",
-    "Workflow",
+    "WorkflowTypeVar",
     "WorkflowsProtocol",
 ]
 
@@ -313,7 +313,7 @@ class ASGIProtocol(Protocol):
 
 
 # signature of a function decorated with @wf.register
-Workflow = TypeVar("Workflow", bound=Callable[[UI, dict[str, Any]], str])
+WorkflowTypeVar = TypeVar("WorkflowTypeVar", bound=Callable[[UI, dict[str, Any]], str])
 
 
 Agent = TypeVar("Agent")
@@ -351,7 +351,7 @@ class ProviderProtocol(Protocol):
 class WorkflowsProtocol(ProviderProtocol, Protocol):
     def register(
         self, name: str, description: str
-    ) -> Callable[[Workflow], Workflow]: ...
+    ) -> Callable[[WorkflowTypeVar], WorkflowTypeVar]: ...
 
     def register_api(
         self,
@@ -364,7 +364,7 @@ class WorkflowsProtocol(ProviderProtocol, Protocol):
     ) -> None: ...
 
 
-def check_register_decorator(func: Workflow) -> None:
+def check_register_decorator(func: WorkflowTypeVar) -> None:
     # get names of all parameters in the function signature
     sig = inspect.signature(func)
     params = list(sig.parameters.keys())
