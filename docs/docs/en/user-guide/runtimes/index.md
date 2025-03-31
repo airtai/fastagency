@@ -9,13 +9,6 @@ FastAgency seamlessly integrates with AG2, helping you transition from developme
 
 For more information on using AG2 within FastAgency, visit the [AG2 section](autogen/index.md).
 
-## [CrewAI (coming soon)](crewai/basics.md)
-The **CrewAI** runtime is an upcoming integration designed to further expand FastAgency’s capabilities. CrewAI offers a highly modular approach, providing greater flexibility for building more complex and dynamic workflows where agents need to collaborate autonomously. Its role-based design, combined with autonomous task delegation, makes CrewAI particularly suitable for projects involving a large number of specialized agents working in tandem.
-
-As the AI ecosystem continues to evolve, FastAgency’s support for CrewAI ensures that your workflows remain adaptable and ready for future innovations. This planned integration allows you to harness the advanced features of CrewAI, offering more options for scaling your multi-agent applications.
-
-For future updates and documentation on CrewAI, please visit the [CrewAI section](crewai/basics.md).
-
 ---
 
-With support for multiple runtimes, FastAgency enables developers to easily switch between frameworks like AG2 and CrewAI, providing unmatched flexibility when building and deploying AI workflows. Whether you are utilizing the established features of AG2 or preparing to explore CrewAI’s advanced capabilities, FastAgency ensures that your AI solutions are future-ready and capable of evolving alongside new technologies.
+With support for AG2 runtime, FastAgency enables developers to easily build and deploy AI workflows. FastAgency ensures that your AI solutions are future-ready and capable of evolving alongside new technologies.
