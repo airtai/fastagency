@@ -1,5 +1,6 @@
 import pytest
 from autogen import ConversableAgent, LLMConfig, UserProxyAgent
+from pydantic import ValidationError
 
 from fastagency.runtimes.ag2.ag2 import Toolable
 from fastagency.runtimes.ag2.tools import WebSurferTool
@@ -20,8 +21,8 @@ class TestWebSurferTool:
         self,
     ) -> None:
         with pytest.raises(
-            ValueError,
-            match="When using OpenAI or Azure OpenAI endpoints, specify a non-empty 'model' either in 'llm_config' or in each config of 'config_list'.",
+            ValidationError,
+            match="Field required",
         ):
             WebSurferTool(
                 name_prefix="test",
