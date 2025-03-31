@@ -303,8 +303,7 @@ To learn how to create keys and add them as secrets, use the following links:
 
 ## Future Plans
 
-We are actively working on expanding FastAgency’s capabilities. In addition to supporting AG2 (formerly AutoGen), we plan to integrate support for other frameworks, other network provider and other UI frameworks.
-
+We are actively working on expanding FastAgency’s capabilities. In addition to supporting AG2 (formerly AutoGen), we plan to integrate support for other frameworks, other network providers and other UI frameworks.
 ---
 
 ## ⭐⭐⭐ Stay in touch ⭐⭐⭐
