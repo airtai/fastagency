@@ -44,4 +44,4 @@ def test_main(monkeypatch: pytest.MonkeyPatch) -> None:
     assert "content" in json
 
     assert result.exit_code == 0
-    assert "AutoGenWorkflows -> User [workflow_completed]" in result.stdout
+    assert "Workflow -> User [workflow_completed]" in result.stdout

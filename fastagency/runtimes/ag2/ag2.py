@@ -36,7 +36,7 @@ if TYPE_CHECKING:
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
-    "AutoGenWorkflows",
+    "Workflow",
     "IOStreamAdapter",
 ]
 
@@ -287,7 +287,7 @@ class IOStreamAdapter:  # IOStream
         return retval
 
 
-class AutoGenWorkflows(WorkflowsProtocol):
+class Workflow(WorkflowsProtocol):
     def __init__(self) -> None:
         """Initialize the workflows."""
         self._workflows: dict[str, tuple[Callable[[UI, dict[str, Any]], str], str]] = {}
@@ -323,7 +323,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
             # todo: inject user_id into call (and other stuff)
             try:
                 ui.workflow_started(
-                    sender="AutoGenWorkflows",
+                    sender="Workflow",
                     recipient="User",
                     name=name,
                     description=self.get_description(name),
@@ -337,7 +337,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
                     exc_info=True,
                 )
                 ui.error(
-                    sender="AutoGenWorkflows",
+                    sender="Workflow",
                     recipient="User",
                     short="Unhandled exception occurred when executing the workflow.",
                     long=str(e),
@@ -347,7 +347,7 @@ class AutoGenWorkflows(WorkflowsProtocol):
                 )
 
             ui.workflow_completed(
-                sender="AutoGenWorkflows",
+                sender="Workflow",
                 recipient="User",
                 result=retval,
             )

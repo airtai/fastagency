@@ -5,10 +5,10 @@ from autogen import register_function
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 @wf.register(name="text_message", description="Text message test")
 def many_multiple_choice_workflow(

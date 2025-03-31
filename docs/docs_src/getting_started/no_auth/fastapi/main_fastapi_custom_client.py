@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse
 
 from fastagency import UI
 from fastagency.adapters.fastapi import FastAPIAdapter
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 
 html = """
 <!DOCTYPE html>
@@ -106,7 +106,7 @@ llm_config = {
     "temperature": 0.8,
 }
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")
 def simple_workflow(ui: UI, params: dict[str, Any]) -> str:

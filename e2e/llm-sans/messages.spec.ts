@@ -86,7 +86,7 @@ test('workflow started', async ({ page }) => {
     await page.goto('/');
     const startWorkflow = await page.getByRole('button', { name: 'Workflow started' })
     await startWorkflow.click()
-    const started = await page.getByText("Workflow started: AutoGenWorkflows")
+    const started = await page.getByText("Workflow started: Workflow")
     await expect(started).toBeVisible()
     const name = await page.getByText('_workflow_started_')
     await expect(name).toBeVisible()

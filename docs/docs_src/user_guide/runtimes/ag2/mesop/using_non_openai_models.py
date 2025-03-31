@@ -6,7 +6,7 @@ from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
@@ -30,7 +30,7 @@ memory. ALWAYS respond with: "Please hold on while I retrieve the real-time
 weather data for [city name]." and immediately call the provided function to
 retrieve real-time data for that city. Be concise in your response."""
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 @wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
 def weather_workflow(

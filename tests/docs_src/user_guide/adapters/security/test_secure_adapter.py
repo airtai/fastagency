@@ -148,7 +148,7 @@ async def test_secure_authorized_websocket(
         response = response.decode() if isinstance(response, bytes) else response
 
         expected = {
-            "sender": "AutoGenWorkflows",
+            "sender": "Workflow",
             "recipient": "User",
             "auto_reply": False,
             "content": {

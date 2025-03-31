@@ -6,7 +6,7 @@ from autogen import ConversableAgent, UserProxyAgent
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 
 open_api_key = os.getenv("OPENAI_API_KEY")
@@ -26,7 +26,7 @@ giphy_api = OpenAPI.create(openapi_url=openapi_url)
 giphy_api.set_security_params(APIKeyQuery.Parameters(value=giphy_api_key))
 
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 @wf.register(name="giphy_chat", description="Giphy chat")
 def giphy_workflow(

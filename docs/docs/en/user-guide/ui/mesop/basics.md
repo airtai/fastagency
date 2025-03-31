@@ -207,7 +207,7 @@ We begin by importing the necessary modules from **FastAgency** and **AG2**. The
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency.md)**: The core class responsible for orchestrating workflows and connecting them with UIs.
 - **[UI](../../../../api/fastagency/UI.md)** and **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.md)**: These classes define the user interface for interaction, with **MesopUI** enabling a web-based interaction.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md)**: Manages the creation and execution of multi-agent workflows.
+- **[Workflow](../../../../api/fastagency/runtimes/ag2/Workflow.md)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
 Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
@@ -219,7 +219,7 @@ Next, we configure the language model that powers the agents. In this case, we'r
 - **Explanation**: The configuration specifies the LLM model and API key used for powering the conversation between agents. The temperature is set to `0.0` to ensure deterministic responses from the agents, making interactions consistent and reliable.
 
 #### 3. **Define the Workflow and Agents**
-Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
+Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **Workflow**.
 
 ```python
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:26-58] !}

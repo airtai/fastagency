@@ -14,7 +14,7 @@ By the end of this tutorial, you’ll understand how to:
 
 1. Integrate external APIs like [Giphy](https://giphy.com){target="_blank"} with **FastAgency**.
 2. Build and register agents that autonomously scrape the web for relevant information using [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md).
-3. Use [**`AutoGenWorkflows`**](../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md) to manage agent interactions and user input.
+3. Use [**`Workflow`**](../../api/fastagency/runtimes/ag2/Workflow.md) to manage agent interactions and user input.
 4. Present scraped content to the user and offer personalized GIF suggestions based on that content.
 
 We will walk through setting up each agent, handling API security, and creating a cohesive conversation that can scrape data, process user input, and generate GIFs in response.
@@ -103,7 +103,7 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 
 ### Registering the Workflow
 
-Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"giphy_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both Giphy agent and WebSurferAgent.
+Here, we initialize a new workflow using ***Workflow()*** and register it under the name ***"giphy_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both Giphy agent and WebSurferAgent.
 
 ```python
 {! docs_src/tutorials/giphy/main.py [ln:56-59] !}

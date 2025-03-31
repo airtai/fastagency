@@ -4,7 +4,7 @@ from typing import Any
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
@@ -18,7 +18,7 @@ llm_config = {
 }
 
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")

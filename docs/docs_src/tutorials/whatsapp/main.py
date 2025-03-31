@@ -7,7 +7,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI
 from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.runtimes.ag2.agents.websurfer import WebSurferAgent
 
 llm_config = {
@@ -57,7 +57,7 @@ by using 'present_completed_task_or_ask_question'.
 "from" number is always the same.
 """
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(name="whatsapp_and_websurfer", description="WhatsApp and WebSurfer chat")

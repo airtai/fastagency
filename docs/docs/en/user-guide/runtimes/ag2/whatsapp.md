@@ -205,7 +205,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     2024-11-06 12:05:31,512 [INFO] Patched Operation.function_name
     2024-11-06 12:05:31,512 [INFO] Patched fastapi_code_generator.__main__.generate_code
     2024-11-06 12:05:31,512 [INFO] Patched Parser.__apply_discriminator_type,
-    2024-11-06 12:05:31,712 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.ag2.AutoGenWorkflows object at 0xffffafd51810> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffffa043ccd0>
+    2024-11-06 12:05:31,712 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.ag2.Workflow object at 0xffffafd51810> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffffa043ccd0>
     2024-11-06 12:05:31,712 [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭───────────────────── Importable FastAgency app ──────────────────────╮
@@ -214,7 +214,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     │                                                                      │
     ╰──────────────────────────────────────────────────────────────────────╯
 
-    ╭─ AutoGenWorkflows -> User [workflow_started] ────────────────────────────────╮
+    ╭─ Workflow -> User [workflow_started] ────────────────────────────────╮
     │                                                                              │
     │ {                                                                            │
     │   "name": "simple_whatsapp",                                                 │
@@ -258,7 +258,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     2024-11-06 12:01:56,374 [INFO] Patched Operation.function_name
     2024-11-06 12:01:56,374 [INFO] Patched fastapi_code_generator.__main__.generate_code
     2024-11-06 12:01:56,374 [INFO] Patched Parser.__apply_discriminator_type,
-    2024-11-06 12:01:56,611 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.ag2.AutoGenWorkflows object at 0xffff88721840> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffff89e50760>
+    2024-11-06 12:01:56,611 [INFO] Initializing FastAgency <FastAgency title=FastAgency application> with workflows: <fastagency.runtimes.ag2.ag2.Workflow object at 0xffff88721840> and UI: <fastagency.ui.console.console.ConsoleUI object at 0xffff89e50760>
     2024-11-06 12:01:56,611 [INFO] Initialized FastAgency: <FastAgency title=FastAgency application>
 
     ╭──────────────────────── Importable FastAgency app ────────────────────────╮
@@ -267,7 +267,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     │                                                                           │
     ╰───────────────────────────────────────────────────────────────────────────╯
 
-    ╭─ AutoGenWorkflows -> User [workflow_started] ────────────────────────────────╮
+    ╭─ Workflow -> User [workflow_started] ────────────────────────────────╮
     │                                                                              │
     │ {                                                                            │
     │   "name": "simple_whatsapp",                                                 │
@@ -342,7 +342,7 @@ This will initiate the task, allowing you to see the real-time conversation betw
 │ TERMINATE                                                                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
-╭─ AutoGenWorkflows -> User [workflow_completed] ──────────────────────────────╮
+╭─ Workflow -> User [workflow_completed] ──────────────────────────────╮
 │                                                                              │
 │ {                                                                            │
 │   "result": "The message \"Hi!\" was successfully sent to the number         │

@@ -1,8 +1,8 @@
 # AG2 in FastAgency
 
-The [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
+The [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
 
-In this example, we will create a simple weather [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} using [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime in FastAgency. The chatbot will enable a user to interact with a weather agent that fetches real-time weather information from an external REST API using [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_Specification){target="_blank"}.
+In this example, we will create a simple weather [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} using [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime in FastAgency. The chatbot will enable a user to interact with a weather agent that fetches real-time weather information from an external REST API using [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_Specification){target="_blank"}.
 
 ## Installation
 
@@ -10,7 +10,7 @@ We **strongly recommend** using [**Cookiecutter**](../../../user-guide/cookiecut
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules by running the following command:
+Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules by running the following command:
 
 ```bash
 pip install "fastagency[autogen,mesop,openapi]"
@@ -86,7 +86,7 @@ In this step, we define two agents and specify the initial message that will be 
 
 - [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent#conversableagent){target="_blank"}: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
-The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md)**.
+The workflow is registered using **[Workflow](../../../api/fastagency/runtimes/ag2/Workflow.md)**.
 
 ```python
 {! docs_src/user_guide/runtimes/ag2/mesop/main.py [ln:32-57] !}
@@ -167,6 +167,6 @@ Once you run the command above, FastAgency will start a [**Mesop**](https://goog
 
 ---
 
-This example demonstrates the power of the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime within FastAgency, showing how easy it is to integrate [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}-powered agents with real-time [**Rest API**](https://en.wikipedia.org/wiki/REST){target="_blank"} services. By leveraging FastAgency, developers can quickly create interactive, scalable applications that interact with external data sources in real-time.
+This example demonstrates the power of the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime within FastAgency, showing how easy it is to integrate [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}-powered agents with real-time [**Rest API**](https://en.wikipedia.org/wiki/REST){target="_blank"} services. By leveraging FastAgency, developers can quickly create interactive, scalable applications that interact with external data sources in real-time.
 
-For more detailed documentation, visit the [**AG2 Reference**](../../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md).
+For more detailed documentation, visit the [**AG2 Reference**](../../../api/fastagency/runtimes/ag2/Workflow.md).

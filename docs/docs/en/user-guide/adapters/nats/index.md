@@ -44,7 +44,7 @@ We **strongly recommend** using [**Cookiecutter**](../../../user-guide/cookiecut
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-Alternatively, you can use **pip + venv**. Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server** and **nats** submodules by running the following command:
+Alternatively, you can use **pip + venv**. Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server** and **nats** submodules by running the following command:
 
 ```bash
 pip install "fastagency[autogen,mesop,fastapi,server,nats]"

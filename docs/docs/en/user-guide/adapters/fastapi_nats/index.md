@@ -92,7 +92,7 @@ Alternatively, you can use **pip + venv**.
 
 === "Mesop"
 
-    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server**, and **nats** submodules by running the following command:
+    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server**, and **nats** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,mesop,fastapi,server,nats]"
@@ -102,7 +102,7 @@ Alternatively, you can use **pip + venv**.
 
 === "Custom REST API and WebSocket"
 
-    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/AutoGenWorkflows.md) runtime, along with the **fastapi**, **server**, and **nats** submodules by running the following command:
+    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime, along with the **fastapi**, **server**, and **nats** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,fastapi,server,nats]"

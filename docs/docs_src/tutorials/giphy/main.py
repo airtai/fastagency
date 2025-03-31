@@ -8,7 +8,7 @@ from fastagency import UI
 from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.runtimes.ag2.agents.websurfer import WebSurferAgent
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 
 llm_config = {
     "config_list": [
@@ -50,7 +50,7 @@ e.g.:
 
 Write 'TERMINATE' to end the conversation."""
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(name="giphy_and_websurfer", description="Giphy and Websurfer chat")

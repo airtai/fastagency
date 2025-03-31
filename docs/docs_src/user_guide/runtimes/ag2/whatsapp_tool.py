@@ -5,7 +5,7 @@ from autogen import UserProxyAgent
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.runtimes.ag2.tools import WhatsAppTool
 from fastagency.ui.console import ConsoleUI
 
@@ -19,7 +19,7 @@ llm_config = {
     "temperature": 0.8,
 }
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(name="simple_whatsapp", description="WhatsApp chat")  # type: ignore[type-var]

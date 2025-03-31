@@ -9,7 +9,7 @@ from openai import InternalServerError
 
 from fastagency.api.openapi import OpenAPI
 from fastagency.base import UI
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.runtimes.ag2.ag2 import _findall, _match
 from fastagency.ui.console import ConsoleUI
 from tests.conftest import InputMock
@@ -137,7 +137,7 @@ class TestPatternMatching:
 @pytest.mark.openai
 @pytest.mark.xfail(strict=False, raises=InternalServerError)
 def test_simple(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
-    wf = AutoGenWorkflows()
+    wf = Workflow()
 
     @wf.register(
         name="simple_learning", description="Student and teacher learning chat"
@@ -208,7 +208,7 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
     openapi_json = json_path.read_text()
     client = OpenAPI.create(openapi_json=openapi_json)
 
-    wf = AutoGenWorkflows()
+    wf = Workflow()
     function_to_register = "update_item_items__item_id__ships__ship__put"
     wf.register_api(
         api=client,
@@ -224,10 +224,10 @@ def test_register_api(openai_gpt4o_mini_llm_config: dict[str, Any]) -> None:
 
 @pytest.mark.openai
 @pytest.mark.xfail(strict=False, raises=InternalServerError)
-class TestAutoGenWorkflowsWithHumanInputAlways:
+class TestWorkflowWithHumanInputAlways:
     @pytest.fixture
-    def wf(self, openai_gpt4o_mini_llm_config: dict[str, Any]) -> AutoGenWorkflows:
-        wf = AutoGenWorkflows()
+    def wf(self, openai_gpt4o_mini_llm_config: dict[str, Any]) -> Workflow:
+        wf = Workflow()
 
         @wf.register(
             name="test_workflow",
@@ -271,7 +271,7 @@ class TestAutoGenWorkflowsWithHumanInputAlways:
 
     @pytest.mark.parametrize("response", ["", "Reject"])
     def test(
-        self, wf: AutoGenWorkflows, response: str, monkeypatch: pytest.MonkeyPatch
+        self, wf: Workflow, response: str, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         monkeypatch.setattr("builtins.input", InputMock([response] * 7))
 

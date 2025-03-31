@@ -14,7 +14,7 @@ By the end of this tutorial, you will understand how to:
 
 1. Integrate external APIs like [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} using [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md).
 2. Build and register agents that autonomously scrape the web for relevant information using [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md).
-3. Use [**`AutoGenWorkflows`**](../../api/fastagency/runtimes/ag2/AutoGenWorkflows.md) to manage agent interactions and user input.
+3. Use [**`Workflow`**](../../api/fastagency/runtimes/ag2/Workflow.md) to manage agent interactions and user input.
 4. Present scraped content to the user and offer sending that content via WhatsApp.
 5. Handle secure API credentials and ensure safe communication between agents using [**`APIKeyHeader`**](../../api/fastagency/api/openapi/security/APIKeyHeader.md).
 
@@ -89,7 +89,7 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 
 ### Registering the Workflow
 
-Here, we initialize a new workflow using ***AutoGenWorkflows()*** and register it under the name ***"whatsapp_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both WhatsAppAgent and WebSurferAgent.
+Here, we initialize a new workflow using ***Workflow()*** and register it under the name ***"whatsapp_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both WhatsAppAgent and WebSurferAgent.
 
 ```python
 {! docs_src/tutorials/whatsapp/main.py [ln:63-64] !}

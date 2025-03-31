@@ -6,7 +6,7 @@ from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
-from fastagency.runtimes.ag2 import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 
 llm_config = {
@@ -29,7 +29,7 @@ Do not respond until the data is retrieved. Provide the actual weather
 concisely based only on the real-time data from the function. Do not
 use any pre-existing knowledge or memory."""
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(name="simple_weather", description="Weather chat")  # type: ignore[type-var]
