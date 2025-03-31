@@ -81,7 +81,7 @@ Now, lets go through the steps on how to build the [OAuth2](https://oauth.net/2/
     ```
 
 This command installs FastAgency with support for both the Console and [Mesop](https://google.github.io/mesop/)
-interfaces for [AutoGen](https://microsoft.github.io/autogen/) workflows, but with FastAPI both serving input requests
+interfaces for [AG2](https://docs.ag2.ai/) workflows, but with FastAPI both serving input requests
 and running workflows.
 
 Alternatively, you can use [**Cookiecutter**](../../cookiecutter/index.md), which is the preferred method. Cookiecutter creates the project folder structure, default workflow, automatically installs all the necessary requirements, and creates a [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers){target="_blank"} that can be used with [Visual Studio Code](https://code.visualstudio.com/){target="_blank"}.

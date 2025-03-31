@@ -9,7 +9,7 @@ from ....helpers import skip_internal_server_error
 runner = CliRunner()
 
 INPUT_MESSAGE = (
-    "Search for information about Microsoft AutoGen and summarize the results,"
+    "Search for information about AG2 (formerly AutoGen) and summarize the results,"
 )
 
 

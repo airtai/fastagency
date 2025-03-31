@@ -1,6 +1,6 @@
 # AutoGen in FastAgency
 
-The [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
+The [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
 
 In this example, we will create a simple weather [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} using [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime in FastAgency. The chatbot will enable a user to interact with a weather agent that fetches real-time weather information from an external REST API using [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_Specification){target="_blank"}.
 
@@ -16,7 +16,7 @@ Alternatively, you can use **pip + venv**. Before getting started, make sure you
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+These components enable you to build  [**multi-agent workflows**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ## Prerequisites
 
@@ -54,12 +54,12 @@ Run the following command in the [**same terminal**](#running-the-application) w
     set OPENAI_API_KEY="your_open_api_key"
     ```
 
-## Example: Integrating a Weather API with AutoGen
+## Example: Integrating a Weather API with AG2
 
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-The example starts by importing the necessary modules from [**AutoGen**](https://microsoft.github.io/autogen/){target="_blank"} and **FastAgency**. These imports lay the foundation for building and running [**multi-agent**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} workflows.
+The example starts by importing the necessary modules from [**AG2**](https://docs.ag2.ai/){target="_blank"} and **FastAgency**. These imports lay the foundation for building and running [**multi-agent**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} workflows.
 
 ```python
 {! docs_src/user_guide/runtimes/autogen/mesop/main.py [ln:1-10] !}
@@ -82,9 +82,9 @@ We define the [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_
 #### 4. **Define the Workflow and Agents**
 In this step, we define two agents and specify the initial message that will be displayed to users when the workflow starts.
 
-- [**`UserProxyAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/user_proxy_agent/#userproxyagent){target="_blank"}: This agent simulates the user interacting with the system.
+- [**`UserProxyAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/UserProxyAgent){target="_blank"}: This agent simulates the user interacting with the system.
 
-- [**`ConversableAgent`**](https://microsoft.github.io/autogen/0.2/docs/reference/agentchat/conversable_agent/#conversableagent){target="_blank"}: This agent acts as the weather agent, responsible for fetching weather data from the API.
+- [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent#conversableagent){target="_blank"}: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
 The workflow is registered using **[AutoGenWorkflows](../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md)**.
 

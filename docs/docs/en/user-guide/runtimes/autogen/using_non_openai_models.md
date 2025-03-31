@@ -2,8 +2,8 @@
 
 FastAgency makes it simple to work with **non-OpenAI models** through its [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime. You can do this in a couple of ways:
 
-- Using a [**proxy server that provides an OpenAI-compatible API**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#openai-compatible-api-proxy-server){target="_blank"} or
-- By [**using a custom model client class**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/about-using-nonopenai-models/#custom-model-client-class){target="_blank"}, which lets you define and load your own models.
+- Using a [**proxy server that provides an OpenAI-compatible API**](https://docs.ag2.ai/docs/user-guide/models/litellm-proxy-server/installation){target="_blank"} or
+- By [**using a custom model client class**](https://docs.ag2.ai/docs/blog/2024-01-26-Custom-Models/index){target="_blank"}, which lets you define and load your own models.
 
 This flexibility allows you to **access a variety of models**, assign **tailored models to agents**, and **optimise inference costs**, among other advantages.
 
@@ -23,7 +23,7 @@ Alternatively, you can use **pip + venv**. Before getting started, ensure that y
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-This command installs the FastAgency library along with the  [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+This command installs the FastAgency library along with the  [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime and the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**openapi**](../../../api/fastagency/api/openapi/OpenAPI.md) submodules. These components enable you to build  [**multi-agent workflows**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ## Prerequisites
 
@@ -83,7 +83,7 @@ Next, add two parameters: `api_type` and `hide_tools`.
 
 - `hide_tools`
 
-    The [**`hide_tools`**](https://microsoft.github.io/autogen/0.2/docs/topics/non-openai-models/local-ollama#reducing-repetitive-tool-calls){target="_blank"} in [**AutoGen**](https://microsoft.github.io/autogen/){target="_blank"} controls when tools are visible during [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"} conversations. It addresses a common issue where LLMs might **repeatedly recommend tool calls**, even after they've been executed, potentially creating an **endless loop** of tool invocations.
+    The [**`hide_tools`**](https://docs.ag2.ai/docs/user-guide/models/ollama#reducing-repetitive-tool-calls){target="_blank"} in [**AG2**](https://docs.ag2.ai/){target="_blank"} controls when tools are visible during [**LLM**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"} conversations. It addresses a common issue where LLMs might **repeatedly recommend tool calls**, even after they've been executed, potentially creating an **endless loop** of tool invocations.
 
     This parameter offers three options to control tool visibility:
 

@@ -57,7 +57,7 @@ This application is part of our system's backend and consists of:
 
 - [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with `NatsProvider`, and implements routes and websocket for FastAPI.
 
-- [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+- [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AG2**](https://docs.ag2.ai/){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 #### 3. Nats App
 
@@ -92,17 +92,17 @@ Alternatively, you can use **pip + venv**.
 
 === "Mesop"
 
-    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server**, and **nats** submodules by running the following command:
+    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server**, and **nats** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,mesop,fastapi,server,nats]"
     ```
 
-    This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and independent workers communicating over [**Nats.io**](https://nats.io/){target="_blank"} protocol running workflows.
+    This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for [**AG2**](https://docs.ag2.ai/){target="_blank"} workflows, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and independent workers communicating over [**Nats.io**](https://nats.io/){target="_blank"} protocol running workflows.
 
 === "Custom REST API and WebSocket"
 
-    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the **fastapi**, **server**, and **nats** submodules by running the following command:
+    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the **fastapi**, **server**, and **nats** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,fastapi,server,nats]"

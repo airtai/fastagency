@@ -11,7 +11,7 @@ FastAgency provides two ways to add web surfing capabilities to agents. You can 
 
 In this guide, we'll demonstrate both methods with a real-world example. We’ll create a workflow where agents search the web for real-time data.
 
-We’ll build agents and assign them the task: “Search for information about Microsoft AutoGen and summarize the results” to showcase its ability to browse and gather real-time data in action.
+We’ll build agents and assign them the task: “Search for information about AG2 (formerly AutoGen) and summarize the results” to showcase its ability to browse and gather real-time data in action.
 
 ## Installation & Setup
 
@@ -46,12 +46,12 @@ You can set the Binga API key in your terminal as an environment variable:
     set BING_API_KEY="your_bing_api_key"
     ```
 
-## Example: Search for information about Microsoft AutoGen and summarize the results
+## Example: Search for information about AG2 (formerly AutoGen) and summarize the results
 
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-The example starts by importing the necessary modules from **AutoGen** and **FastAgency**. These imports lay the foundation for building and running multi-agent workflows.
+The example starts by importing the necessary modules from **AG2** and **FastAgency**. These imports lay the foundation for building and running multi-agent workflows.
 
 === "Using WebSurferAgent"
     ```python hl_lines="8"
@@ -252,7 +252,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
     ```
 
 
-In the prompt, type **Search for information about Microsoft AutoGen and summarize the results** and press Enter.
+In the prompt, type **Search for information about AG2 (formerly AutoGen) and summarize the results** and press Enter.
 
 This will initiate the task, allowing you to see the real-time conversation between the agents as they collaborate to complete it. Once the task is finished, you’ll see an output similar to the one below.
 
@@ -260,12 +260,12 @@ This will initiate the task, allowing you to see the real-time conversation betw
 ╭─ workflow -> user [workflow_completed] ──────────────────────────────────────╮
 │                                                                              │
 │ {                                                                            │
-│   "result": "Microsoft AutoGen is an open-source framework designed          │
+│   "result": "AG2 (formerly AutoGen) is an open-source framework designed          │
 │ to simplify the orchestration, optimization, and automation of large         │
 │ language model (LLM) workflows. It features customizable agents,             │
 │ multi-agent conversations, tool integration, and human involvement,          │
 │ making it suitable for complex AI applications. Key resources include        │
-│ the Microsoft Research Blog and the GitHub repository for AutoGen."          │
+│ the Microsoft Research Blog and the GitHub repository for AG2."          │
 │ }                                                                            │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
