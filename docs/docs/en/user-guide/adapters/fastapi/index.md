@@ -39,9 +39,9 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     The FastAPI App forms the backend of our system and consists of:
 
-    - **AutoGen Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
-    - The [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"}, and implements routes and [**websocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} for [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}.
-    - [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+    - **AG2 Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
+    - The [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with [**AG2**](https://docs.ag2.ai/){target="_blank"}, and implements routes and [**websocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} for [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}.
+    - [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AG2**](https://docs.ag2.ai/){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 
 === "Custom REST API and Websocket"
@@ -62,9 +62,9 @@ This section provides [**high-level architecture**](https://en.wikipedia.org/wik
 
     The FastAPI App forms the backend of our system and consists of:
 
-    - **AutoGen Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
-    - The [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"}, and implements routes and [**websocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} for [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}.
-    - [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+    - **AG2 Workflows**: These define the core logic and behavior of our application, utilizing agents to perform various tasks and achieve specific goals.
+    - The [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md): This component communicates with [**AG2**](https://docs.ag2.ai/){target="_blank"}, and implements routes and [**websocket**](https://en.wikipedia.org/wiki/WebSocket){target="_blank"} for [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}.
+    - [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"}: Provides the infrastructure for building and exposing [**AG2**](https://docs.ag2.ai/){target="_blank"} workflows via [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
     #### Building Custom Client Applications
 
@@ -188,17 +188,17 @@ Alternatively, you can use **pip + venv**.
 
 === "Mesop"
 
-    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, and **server** submodules by running the following command:
+    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, and **server** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,mesop,fastapi,server]"
     ```
 
-    This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} workflows, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and running workflows.
+    This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for [**AG2**](https://docs.ag2.ai/){target="_blank"} workflows, but with [**FastAPI**](https://fastapi.tiangolo.com/){target="_blank"} serving input requests and running workflows.
 
 === "Custom REST API and Websocket"
 
-    Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the **fastapi**, and **server** submodules by running the following command:
+    Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime, along with the **fastapi**, and **server** submodules by running the following command:
 
     ```bash
     pip install "fastagency[autogen,fastapi,server]"
@@ -238,7 +238,7 @@ To get started, define the workflow that your application will use. This is wher
 
 === "Custom REST API and Websocket"
 
-    Next, import the required modules from the **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+    Next, import the required modules from the **FastAgency** and **AG2**. These imports provide the essential building blocks for creating agents, workflows, and integrating with the custom client. Additionally, import the [**`FastAPIAdapter`**](../../../api/fastagency/adapters/fastapi/FastAPIAdapter.md) and [**`HTMLResponse`**](https://fastapi.tiangolo.com/advanced/custom-response/#html-response){target="_blank"} class to expose the workflows as a [**REST API**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
     ```python hl_lines="6 9"
     {!> docs_src/getting_started/no_auth/fastapi/main_fastapi_custom_client.py [ln:1-10] !}

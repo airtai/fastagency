@@ -5,7 +5,7 @@ import pytest
 
 from fastagency.app import FastAgency
 from fastagency.messages import TextMessage
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 
 if sys.version_info >= (3, 10):
     from fastagency.ui.mesop.mesop import MesopUI
@@ -22,7 +22,7 @@ if sys.version_info >= (3, 10):
             with pytest.raises(RuntimeError, match="MesopUI has not been created yet."):
                 MesopUI.get_created_instance()
 
-            wf = AutoGenWorkflows()
+            wf = Workflow()
             app = FastAgency(provider=wf, ui=mesop_ui)
 
             with mesop_ui.create(app, "import_string"):

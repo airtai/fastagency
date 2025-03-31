@@ -1,6 +1,6 @@
 # Dependency Injection
 
-[Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection){target="_blank"} is a secure way to connect external functions to agents in `AutoGen` without exposing sensitive data such as passwords, tokens, or personal information. This approach ensures that sensitive information remains protected while still allowing agents to perform their tasks effectively, even when working with large language models (LLMs).
+[Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection){target="_blank"} is a secure way to connect external functions to agents in `AG2` without exposing sensitive data such as passwords, tokens, or personal information. This approach ensures that sensitive information remains protected while still allowing agents to perform their tasks effectively, even when working with large language models (LLMs).
 
 In this guide, we’ll explore how to use `FastAgency` to build secure workflows that handle sensitive data safely.
 

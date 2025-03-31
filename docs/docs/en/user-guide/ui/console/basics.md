@@ -10,13 +10,13 @@ We **strongly recommend** using [**Cookiecutter**](../../../user-guide/cookiecut
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AutoGen runtime by running the following command:
+Alternatively, you can use **pip + venv**. Before getting started, make sure you have installed FastAgency with support for the AG2 runtime by running the following command:
 
 ```bash
 pip install "fastagency[autogen]"
 ```
 
-This installation includes the AutoGen runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
+This installation includes the AG2 runtime, allowing you to build multi-agent workflows and integrate external APIs seamlessly.
 
 ## Example: Student and Teacher Learning Chat
 
@@ -25,7 +25,7 @@ This example demonstrates how to create a workflow where a student agent interac
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating the ConsoleUI.
+We begin by importing the necessary modules from **FastAgency** and **AG2**. These imports provide the essential building blocks for creating agents, workflows, and integrating the ConsoleUI.
 
 ```python
 {! docs_src/getting_started/no_auth/mesop/my_fastagency_app/my_fastagency_app/workflow.py [ln:1-6] !}
@@ -34,7 +34,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency.md)**: The core class responsible for orchestrating workflows and connecting them with UIs.
 - **[UI](../../../../api/fastagency/UI.md)** and **[ConsoleUI](../../../../api/fastagency/ui/console/ConsoleUI.md)**: These classes define the user interface for interaction, with ConsoleUI providing a text-based interface.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md)**: Manages the creation and execution of multi-agent workflows.
+- **[Workflow](../../../../api/fastagency/runtimes/ag2/Workflow.md)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
 Next, we configure the language model that will power the agents. In this case, we're using **gpt-4o-mini**, and the API key is retrieved from the environment.
@@ -46,7 +46,7 @@ Next, we configure the language model that will power the agents. In this case, 
 - **Explanation**: The configuration specifies the LLM model and API key used for powering the conversation between agents. The temperature is set to `0.0` to ensure deterministic responses from the agents, making interactions consistent and reliable. This is particularly useful for scenarios where repeatability and predictability are required, such as testing.
 
 #### 3. **Define the Workflow and Agents**
-Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
+Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **Workflow**.
 
 ```python
 {! docs_src/getting_started/no_auth/mesop/my_fastagency_app/my_fastagency_app/workflow.py [ln:18-48] !}
@@ -112,7 +112,7 @@ Once you run it, FastAgency automatically detects the appropriate app to execute
 │                             │
 ╰─────────────────────────────╯
 
-╭─ AutoGenWorkflows -> User [workflow_started] ────────────────────────────────╮
+╭─ Workflow -> User [workflow_started] ────────────────────────────────╮
 │                                                                              │
 │ {                                                                            │
 │   "name": "simple_learning",                                                 │
@@ -134,7 +134,7 @@ Enter a math topic you're interested in, such as **What is the triangle inequali
 This will start the task, letting you watch the agents collaborate in real time to complete it. When the task is finished, you'll see an **output similar to the example below**
 
 ```console
-╭─ AutoGenWorkflows -> User [workflow_completed] ──────────────────────────────╮
+╭─ Workflow -> User [workflow_completed] ──────────────────────────────╮
 │                                                                              │
 │ {                                                                            │
 │   "result": "The triangle inequality states that for any triangle,           │

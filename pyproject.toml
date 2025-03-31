@@ -62,6 +62,7 @@ mesop = [
 
 # moved to main dependencies
 autogen = []
+ag2 = []
 
 openapi = [
     "fastapi-code-generator==0.5.2",

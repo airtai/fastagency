@@ -1,6 +1,6 @@
 # Mesop
 
-[**`MesopUI`**](../../../../api/fastagency/ui/mesop/MesopUI.md) in FastAgency offers a web-based interface for interacting with [**multi-agent workflows**](https://microsoft.github.io/autogen/0.2/docs/Use-Cases/agent_chat){target="_blank"}. Unlike the [**`ConsoleUI`**](../../../../api/fastagency/ui/console/ConsoleUI.md), which is text-based and runs in the command line, MesopUI provides a user-friendly browser interface, making it ideal for applications that need a more engaging and rich user experience.
+[**`MesopUI`**](../../../../api/fastagency/ui/mesop/MesopUI.md) in FastAgency offers a web-based interface for interacting with [**multi-agent workflows**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"}. Unlike the [**`ConsoleUI`**](../../../../api/fastagency/ui/console/ConsoleUI.md), which is text-based and runs in the command line, MesopUI provides a user-friendly browser interface, making it ideal for applications that need a more engaging and rich user experience.
 
 When creating a [**Mesop**](https://google.github.io/mesop/){target="_blank"} application, you can choose between the following modes:
 
@@ -100,7 +100,7 @@ Alternatively, you can use **pip + venv**. To install **FastAgency** with MesopU
     pip install "fastagency[autogen,mesop,firebase]"
     ```
 
-This command ensures that the required dependencies for both **AutoGen** and **Mesop** are installed.
+This command ensures that the required dependencies for both **AG2** and **Mesop** are installed.
 
 ## Usage
 
@@ -179,7 +179,7 @@ This example shows how to create a simple learning chat where a student agent in
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-We begin by importing the necessary modules from **FastAgency** and **AutoGen**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.
+We begin by importing the necessary modules from **FastAgency** and **AG2**. These imports provide the essential building blocks for creating agents, workflows, and integrating MesopUI.
 
 === "No Authentication"
 
@@ -207,7 +207,7 @@ We begin by importing the necessary modules from **FastAgency** and **AutoGen**.
 - **ConversableAgent**: This class allows the creation of agents that can engage in conversational tasks.
 - **[FastAgency](../../../../api/fastagency/FastAgency.md)**: The core class responsible for orchestrating workflows and connecting them with UIs.
 - **[UI](../../../../api/fastagency/UI.md)** and **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.md)**: These classes define the user interface for interaction, with **MesopUI** enabling a web-based interaction.
-- **[AutoGenWorkflows](../../../../api/fastagency/runtimes/autogen/AutoGenWorkflows.md)**: Manages the creation and execution of multi-agent workflows.
+- **[Workflow](../../../../api/fastagency/runtimes/ag2/Workflow.md)**: Manages the creation and execution of multi-agent workflows.
 
 #### 2. **Configure the Language Model (LLM)**
 Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
@@ -219,7 +219,7 @@ Next, we configure the language model that powers the agents. In this case, we'r
 - **Explanation**: The configuration specifies the LLM model and API key used for powering the conversation between agents. The temperature is set to `0.0` to ensure deterministic responses from the agents, making interactions consistent and reliable.
 
 #### 3. **Define the Workflow and Agents**
-Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **AutoGenWorkflows**.
+Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **Workflow**.
 
 ```python
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:26-58] !}

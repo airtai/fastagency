@@ -5,7 +5,7 @@ import mesop as me
 from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 from fastagency.ui.mesop.auth.basic_auth import BasicAuth
 from fastagency.ui.mesop.styles import (
@@ -24,7 +24,7 @@ llm_config = {
     "temperature": 0.8,
 }
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(name="simple_learning", description="Student and teacher learning chat")

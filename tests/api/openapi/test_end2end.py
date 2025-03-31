@@ -144,6 +144,7 @@ class TestOpenAPIEnd2End:
                                     "application/json": {
                                         "schema": {
                                             "type": "object",
+                                            "additionalProperties": True,
                                             "title": "Response Read Item Items  Item Id  Get",
                                         }
                                     }
@@ -196,6 +197,7 @@ class TestOpenAPIEnd2End:
                                     "application/json": {
                                         "schema": {
                                             "type": "object",
+                                            "additionalProperties": True,
                                             "title": "Response Update Item Items  Item Id  Put",
                                         }
                                     }
@@ -237,6 +239,7 @@ class TestOpenAPIEnd2End:
                                     "application/json": {
                                         "schema": {
                                             "type": "object",
+                                            "additionalProperties": True,
                                             "title": "Response Delete Item Items  Item Id  Delete",
                                         }
                                     }
@@ -276,6 +279,7 @@ class TestOpenAPIEnd2End:
                                 "content": {
                                     "application/json": {
                                         "schema": {
+                                            "additionalProperties": True,
                                             "type": "object",
                                             "title": "Response Create Item Items  Post",
                                         }
@@ -357,6 +361,7 @@ class TestOpenAPIEnd2End:
             # print(f"pydantic28_delta = '{jsondiff.diff(expected, openapi_schema, dump=True)}'")
             expected = jsondiff.patch(json.dumps(expected), pydantic28_delta, load=True)
         # print(openapi_schema)
+        # print(expected)
         assert openapi_schema == expected
 
     @pytest.fixture
@@ -639,7 +644,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field, RootModel
+from pydantic import BaseModel, ConfigDict, Field, RootModel
 
 
 class Item(BaseModel):
@@ -659,6 +664,9 @@ class ValidationError(BaseModel):
 
 class ItemsItemIdGetResponse(BaseModel):
     pass
+    model_config = ConfigDict(
+        extra='allow',
+    )
 
 
 class Q(RootModel[Optional[str]]):
@@ -669,14 +677,23 @@ class Q(RootModel[Optional[str]]):
 
 class ItemsItemIdPutResponse(BaseModel):
     pass
+    model_config = ConfigDict(
+        extra='allow',
+    )
 
 
 class ItemsItemIdDeleteResponse(BaseModel):
     pass
+    model_config = ConfigDict(
+        extra='allow',
+    )
 
 
 class ItemsPostResponse(BaseModel):
     pass
+    model_config = ConfigDict(
+        extra='allow',
+    )
 
 
 class HTTPValidationError(BaseModel):
@@ -697,6 +714,8 @@ class HTTPValidationError(BaseModel):
 
         with path.open() as f:
             models = f.read()
+            # print(models)
+            # print(expected)
             assert models == expected
 
     @pytest.fixture

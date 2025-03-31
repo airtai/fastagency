@@ -5,7 +5,7 @@ import pytest
 
 from fastagency.app import FastAgency
 from fastagency.base import UI
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.console import ConsoleUI
 
 
@@ -16,7 +16,7 @@ def import_string() -> str:
 
 @pytest.fixture
 def app(import_string: str) -> Iterator[FastAgency]:
-    wf = AutoGenWorkflows()
+    wf = Workflow()
     console = ConsoleUI()
     app = FastAgency(provider=wf, ui=console)
 

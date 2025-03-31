@@ -6,7 +6,7 @@ from autogen.agentchat import ConversableAgent
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -31,7 +31,7 @@ weather_api.set_security_params(APIKeyHeader.Parameters(value="secure weather ke
 #     "get_daily_weather_daily_get",
 # )
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(

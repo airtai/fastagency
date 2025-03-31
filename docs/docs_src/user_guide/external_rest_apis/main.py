@@ -5,7 +5,7 @@ from autogen.agentchat import ConversableAgent
 
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
-from fastagency.runtimes.autogen import AutoGenWorkflows
+from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.console import ConsoleUI
 
 llm_config = {
@@ -21,7 +21,7 @@ llm_config = {
 WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
 weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
 
-wf = AutoGenWorkflows()
+wf = Workflow()
 
 
 @wf.register(name="simple_weather", description="Weather chat")

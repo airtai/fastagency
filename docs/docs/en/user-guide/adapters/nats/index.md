@@ -32,8 +32,8 @@ This application handles all client interactions and presents the results back t
 
 This application forms the backend of the system and consists of:
 
-- **AutoGen Workflows**: The workflows defined using the [**AutoGen**](https://microsoft.github.io/autogen){target="_blank"} framework. They are executed by the workers in the Nats Adapter.
-- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md): Communicates with AutoGen, and makes the workflow messages available on corresponding [**Nats topics**](https://docs.nats.io/nats-concepts/subjects){target="_blank"}.
+- **AG2 Workflows**: The workflows defined using the [**AG2**](https://docs.ag2.ai/){target="_blank"} framework. They are executed by the workers in the Nats Adapter.
+- [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md): Communicates with AG2, and makes the workflow messages available on corresponding [**Nats topics**](https://docs.nats.io/nats-concepts/subjects){target="_blank"}.
 
 
 Now, it's time to see the Nats Adapter using FastAgency in action. Let's dive into an example and learn how to use it!
@@ -44,13 +44,13 @@ We **strongly recommend** using [**Cookiecutter**](../../../user-guide/cookiecut
 
 You can setup the project using Cookiecutter by following the [**project setup guide**](../../../user-guide/cookiecutter/index.md).
 
-Alternatively, you can use **pip + venv**. Before getting started, ensure that FastAgency is installed with support for the [**AutoGen**](../../../api/fastagency/runtimes/autogen/autogen/AutoGenWorkflows.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server** and **nats** submodules by running the following command:
+Alternatively, you can use **pip + venv**. Before getting started, ensure that FastAgency is installed with support for the [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime, along with the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md), **fastapi**, **server** and **nats** submodules by running the following command:
 
 ```bash
 pip install "fastagency[autogen,mesop,fastapi,server,nats]"
 ```
 
-This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AutoGen workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
+This command installs FastAgency with support for both the [**mesop**](../../../api/fastagency/ui/mesop/MesopUI.md) and [**console**](../../../api/fastagency/ui/console/ConsoleUI.md) interfaces for AG2 workflows and the [**`NatsAdapter`**](../../../api/fastagency/adapters/nats/NatsAdapter.md) for workflow execution.
 
 ## Example: Student and Teacher Learning Chat
 
