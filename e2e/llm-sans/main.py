@@ -93,7 +93,7 @@ def error_message(
     )
     return "Completed OK"  # type: ignore[no-any-return]
 
-@wf.register(name="workflow_started", description="Workflow started")
+@wf.register(name="workflow_started", description="test_workflow_started")
 def workflow_started(
     ui: UI, params: dict[str, Any]
 ) -> str:

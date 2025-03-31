@@ -84,11 +84,9 @@ test('error message', async ({ page }) => {
 
 test('workflow started', async ({ page }) => {
     await page.goto('/');
-    const startWorkflow = await page.getByRole('button', { name: 'Workflow started' })
+    const startWorkflow = await page.getByRole('button', { name: 'test_workflow_started' })
     await startWorkflow.click()
-    // There are two workflow started messages, not sure why
-    // but we want to check the first one
-    const started = await page.getByText("Workflow started: Workflow").first()
+    const started = await page.getByText("test_workflow_started")
     await expect(started).toBeVisible()
     const name = await page.getByText('_workflow_started_')
     await expect(name).toBeVisible()
