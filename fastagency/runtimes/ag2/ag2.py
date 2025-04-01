@@ -263,7 +263,7 @@ class IOStreamAdapter:  # IOStream
             self.ui.process_message(message)
 
     def send(self, message: "BaseMessage") -> None:
-        message.print()
+        message.print(f=self.print)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")
