@@ -71,7 +71,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def _format_message(self, console_msg: ConsoleMessage) -> str:
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
-        title = f"{console_msg.sender} -> {console_msg.recipient} {heading}"[:74]
+        title = f"{console_msg.sender} (to {console_msg.recipient}) {heading}"[:74]
 
         s = f"""╭─ {title} {"─" * (74 - len(title))}─╮
 │
