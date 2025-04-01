@@ -74,7 +74,7 @@ class TestMessageBox:
         assert_called_with_one_of(
             me.markdown,
             "this is a test message",
-            "**Text message: sender -> recipient**",
+            "**Text message: sender (to recipient)**",
         )
 
     def test_system_message(self, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -99,7 +99,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**System message: sender -> recipient**",
+            "**System message: sender (to recipient)**",
             '\n```\n{\n    "type": "test",\n    "data": "this is a test message"\n}\n```\n',
         )
 
@@ -127,7 +127,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Suggested function call: sender -> recipient**",
+            "**Suggested function call: sender (to recipient)**",
             """**function_name**: `function_name`<br>
 **call_id**: `my_call_id`<br>
 **arguments**:
@@ -164,7 +164,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Function call execution: sender -> recipient**",
+            "**Function call execution: sender (to recipient)**",
             """**function_name**: `function_name`<br>
 **call_id**: `my_call_id`<br>
 **retval**: return_value""",
@@ -193,7 +193,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Text input: sender -> recipient**",
+            "**Text input: sender (to recipient)**",
             """Who is the president of the United States?
  Suggestions: Donald Trump,Joe Biden""",
         )
@@ -222,7 +222,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Multiple choice: sender -> recipient**",
+            "**Multiple choice: sender (to recipient)**",
             "Who is the president of the United States?",
         )
         assert_called_with_one_of(
@@ -256,7 +256,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Multiple choice: sender -> recipient**",
+            "**Multiple choice: sender (to recipient)**",
             "Who are Snow White helpers?",
         )
         assert me.checkbox.call_count == 7
@@ -283,7 +283,7 @@ class TestMessageBox:
 
         assert_called_with_one_of(
             me.markdown,
-            "**Workflow completed: sender -> recipient**",
+            "**Workflow completed: sender (to recipient)**",
             """
 ```
 {

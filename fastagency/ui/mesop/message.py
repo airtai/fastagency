@@ -425,7 +425,7 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
         with me.box(style=box_style or self._styles.message.default.header_box):
             h = title if title else message.type
             if message.sender and message.recipient:
-                h += f": {message.sender} -> {message.recipient}"
+                h += f": {message.sender} (to {message.recipient})"
             elif message.sender:
                 h += f": to {message.sender}"
             elif message.recipient:
