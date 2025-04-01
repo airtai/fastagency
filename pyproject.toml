@@ -169,10 +169,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/airtai/fastagency"
+Homepage = "https://github.com/ag2ai/fastagency"
 Documentation = "https://fastagency.ai/latest/"
-Tracker = "https://github.com/airtai/fastagency/issues"
-Source = "https://github.com/airtai/fastagency"
+Tracker = "https://github.com/ag2ai/fastagency/issues"
+Source = "https://github.com/ag2ai/fastagency"
 Discord = "https://discord.gg/kJjSGWrknU"
 
 [project.scripts]

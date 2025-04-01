@@ -1,7 +1,7 @@
 {
   "name": "fastagency",
   "version": "1.0.0",
-  "description": "![alt text](https://github.com/airtai/fastagency/blob/main/docs/docs/assets/img/FA-Secondary-LOGO.jpg?raw=true)",
+  "description": "![alt text](https://github.com/ag2ai/fastagency/blob/main/docs/docs/assets/img/FA-Secondary-LOGO.jpg?raw=true)",
   "main": "index.js",
   "directories": {
     "doc": "docs",

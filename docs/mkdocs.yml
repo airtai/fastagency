@@ -14,8 +14,8 @@ watch:
   - overrides
 
 repo_name: airtai/fastagency
-repo_url: https://github.com/airtai/fastagency
-edit_uri: https://github.com/airtai/fastagency/tree/main/docs/docs
+repo_url: https://github.com/ag2ai/fastagency
+edit_uri: https://github.com/ag2ai/fastagency/tree/main/docs/docs
 
 exclude_docs: |
   navigation_template.txt
@@ -167,7 +167,7 @@ extra:
     - icon: fontawesome/brands/discord
       link: https://discord.gg/kJjSGWrknU
     - icon: fontawesome/brands/github-alt
-      link: https://github.com/airtai/fastagency
+      link: https://github.com/ag2ai/fastagency
     - icon: fontawesome/brands/twitter
       link: https://x.com/FastAgencyAI
     - icon: fontawesome/brands/facebook
