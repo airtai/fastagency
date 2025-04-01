@@ -14,8 +14,8 @@
     <img src="https://github.com/ag2ai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
-  <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
-      <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
+  <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/ag2ai/fastagency" target="_blank">
+      <img src="https://coverage-badge.samuelcolvin.workers.dev/ag2ai/fastagency.svg" alt="Coverage">
   </a>
 
   <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
@@ -41,7 +41,7 @@
   </a>
 
   <a href="https://github.com/ag2ai/fastagency/blob/main/LICENSE" target="_blank">
-    <img src="https://img.shields.io/github/license/airtai/fastagency.png" alt="License">
+    <img src="https://img.shields.io/github/license/ag2ai/fastagency.png" alt="License">
   </a>
 
   <a href="https://github.com/ag2ai/fastagency/blob/main/CODE_OF_CONDUCT.md" target="_blank">
@@ -322,5 +322,5 @@ support!
 Thanks to all of these amazing people who made the project better!
 
 <a href="https://github.com/ag2ai/fastagency/graphs/contributors" target="_blank">
-  <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
+  <img src="https://contrib.rocks/image?repo=ag2ai/fastagency"/>
 </a>

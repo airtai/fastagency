@@ -20,7 +20,7 @@ llm_config = {
     "temperature": 0.8,
 }
 
-openapi_url = "https://raw.githubusercontent.com/airtai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
+openapi_url = "https://raw.githubusercontent.com/ag2ai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
 giphy_api = OpenAPI.create(openapi_url=openapi_url)
 
 giphy_api_key = os.getenv("GIPHY_API_KEY", "")

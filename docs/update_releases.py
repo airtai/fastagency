@@ -29,7 +29,7 @@ def _find_header(lines: list[str]) -> tuple[str, list[str]]:
 
 def _get_github_releases() -> Sequence[tuple[str, str]]:
     # Get the latest version from GitHub releases
-    response = requests.get("https://api.github.com/repos/airtai/FastAgency/releases")
+    response = requests.get("https://api.github.com/repos/ag2ai/FastAgency/releases")
     return ((x["tag_name"], x["body"]) for x in reversed(response.json()))
 
 

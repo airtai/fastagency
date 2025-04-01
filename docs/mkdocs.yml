@@ -13,7 +13,7 @@ watch:
   - includes
   - overrides
 
-repo_name: airtai/fastagency
+repo_name: ag2ai/fastagency
 repo_url: https://github.com/ag2ai/fastagency
 edit_uri: https://github.com/ag2ai/fastagency/tree/main/docs/docs
 
@@ -160,7 +160,7 @@ extra:
   analytics:
     provider: google
     property: G-X9JHPKFSDN
-  # social_image: https://opengraph.githubassets.com/1671805243.560327/airtai/fastagency
+  # social_image: https://opengraph.githubassets.com/1671805243.560327/ag2ai/fastagency
   social_image: https://fastagency.ai/latest/assets/img/FA-Main-LOGO-640x320-tinypng.png
   social:
     # Discord link should be first
