@@ -12,6 +12,15 @@ hide:
 ---
 
 # Release Notes
+## v0.8.4rc1
+
+### What's Changed
+* Change airt links to ag2ai links by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#660](https://github.com/ag2ai/fastagency/pull/660){.external-link target="_blank"}
+* Fix message.print and follow ag2's style of message header by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#661](https://github.com/ag2ai/fastagency/pull/661){.external-link target="_blank"}
+
+
+**Full Changelog**: [#v0.8.4rc0...v0.8.4rc1](https://github.com/ag2ai/fastagency/compare/v0.8.4rc0...v0.8.4rc1){.external-link target="_blank"}
+
 ## v0.8.4rc0
 
 ### What's Changed
