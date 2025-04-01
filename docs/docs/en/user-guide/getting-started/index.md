@@ -542,10 +542,10 @@ Retrieving tenants and subscriptions for the selection...
 
 No     Subscription name                     Subscription ID                       Tenant
 -----  ------------------------------------  ------------------------------------  ------------------------
-[1] *  Subscription 1                        18a56427-c3d6-4bd8-96fe-c99d96d5f1ef  airt technologies d.o.o.
-[2]    Subscription 2                        66699c06-f666-471f-b390-9d6af1f1b522  airt technologies d.o.o.
+[1] *  Subscription 1                        18a56427-c3d6-4bd8-96fe-c99d96d5f1ef  My Tenant Organization
+[2]    Subscription 2                        66699c06-f666-471f-b390-9d6af1f1b522  My Tenant Organization
 
-The default is marked with an *; the default tenant is 'airt technologies d.o.o.' and subscription is 'Subscription 1' (18a56427-c3d6-4bd8-96fe-c99d96d5f1ef).
+The default is marked with an *; the default tenant is 'My Tenant Organization' and subscription is 'Subscription 1' (18a56427-c3d6-4bd8-96fe-c99d96d5f1ef).
 ```
 
 If you have multiple subscriptions, you will be prompted to select the subscription you want to use. After selecting the subscription, the script will deploy your application to Azure without any further input. The output will look like this:

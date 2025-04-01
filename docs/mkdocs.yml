@@ -2,8 +2,8 @@ site_name: FastAgency
 # description to improve website indexing
 site_description: The fastest way to bring multi-agent workflows to production.
 site_url: https://fastagency.ai/
-site_author: airt
-copyright: '&copy; 2024 onwards <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
+site_author: ag2ai
+copyright: '&copy; April 2025 onwards <a href="https://ag2.ai/" target="_blank" rel="noopener">ag2ai</a>'
 
 docs_dir: docs
 
@@ -170,10 +170,8 @@ extra:
       link: https://github.com/ag2ai/fastagency
     - icon: fontawesome/brands/twitter
       link: https://x.com/FastAgencyAI
-    - icon: fontawesome/brands/facebook
-      link: https://www.facebook.com/airt.ai.api/
     - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/company/airt-ai/
+      link: https://www.linkedin.com/company/ag2ai/
 
   version:
     provider: mike

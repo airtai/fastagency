@@ -100,7 +100,7 @@ support the following network adapters:
 
 - [**REST API**](https://en.wikipedia.org/wiki/REST) via [**FastAPI**](https://fastapi.tiangolo.com/): Use the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/) server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
 
-- [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/airtai/faststream): Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
+- [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/ag2ai/faststream): Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
 
 
 ## Quick Start
@@ -116,7 +116,7 @@ We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for
 
 2. Run the `cookiecutter` command:
     ```console
-    cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+    cookiecutter https://github.com/ag2ai/cookiecutter-fastagency.git
     ```
 
 3. Assuming that you used the default values, you should get the following output:

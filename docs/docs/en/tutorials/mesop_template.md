@@ -14,7 +14,7 @@ You could also use virtual environment managers such as [venv](https://docs.pyth
 
     2. Run the `cookiecutter` command:
         ```console
-        cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+        cookiecutter https://github.com/ag2ai/cookiecutter-fastagency.git
         ```
 
     3. Depending on the type of the project, choose the appropriate option in step 3:

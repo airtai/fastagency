@@ -11,7 +11,7 @@ We **strongly recommend** using [**Cookiecutter**](./user-guide/cookiecutter/ind
 
 2. Run the `cookiecutter` command:
     ```console
-    cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+    cookiecutter https://github.com/ag2ai/cookiecutter-fastagency.git
     ```
 
 3. Assuming that you used the default values, you should get the following output:

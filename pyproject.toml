@@ -7,7 +7,7 @@ name = "fastagency"
 description = "The fastest way to bring multi-agent workflows to production"
 readme = "README.md"
 authors = [
-    { name = "airt", email = "info@airt.ai" },
+    { name = "ag2ai", email = "support@ag2.ai" },
 ]
 
 keywords = ["ag2", "multi-agent", "LLM", "AI", "autonomous agents"]
