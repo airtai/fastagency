@@ -1,3 +1,3 @@
 """The fastest way to bring multi-agent workflows to production."""
 
-__version__ = "0.8.4"
+__version__ = "0.8.4rc0"
