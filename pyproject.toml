@@ -10,7 +10,7 @@ authors = [
     { name = "ag2ai", email = "support@ag2.ai" },
 ]
 
-keywords = ["ag2", "multi-agent", "LLM", "AI", "autonomous agents"]
+keywords = ["ag2", "autogen", "multi-agent", "LLM", "AI", "autonomous agents"]
 
 requires-python = ">=3.9"
 
@@ -96,7 +96,7 @@ firebase = [
 ]
 
 submodules = [
-    "fastagency[openai,mesop,autogen,openapi,fastapi,nats,server,firebase,basic_auth]"
+    "fastagency[openai,mesop,openapi,fastapi,nats,server,firebase,basic_auth]"
 ]
 
 # dev dependencies
