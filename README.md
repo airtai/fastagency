@@ -1,4 +1,4 @@
-![alt text](https://github.com/airtai/fastagency/blob/main/docs/docs/assets/img/FA-Secondary-LOGO.jpg?raw=true)
+![alt text](https://github.com/ag2ai/fastagency/blob/main/docs/docs/assets/img/FA-Secondary-LOGO.jpg?raw=true)
 
 
 # FastAgency
@@ -10,12 +10,12 @@
 ---
 
 <p align="center">
-  <a href="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
+  <a href="https://github.com/ag2ai/fastagency/actions/workflows/pipeline.yaml" target="_blank">
+    <img src="https://github.com/ag2ai/fastagency/actions/workflows/pipeline.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
-  <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/airtai/fastagency" target="_blank">
-      <img src="https://coverage-badge.samuelcolvin.workers.dev/airtai/fastagency.svg" alt="Coverage">
+  <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/ag2ai/fastagency" target="_blank">
+      <img src="https://coverage-badge.samuelcolvin.workers.dev/ag2ai/fastagency.svg" alt="Coverage">
   </a>
 
   <a href="https://www.pepy.tech/projects/fastagency" target="_blank">
@@ -32,19 +32,19 @@
 
   <br/>
 
-  <a href="https://github.com/airtai/fastagency/actions/workflows/codeql.yml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/codeql.yml/badge.svg" alt="CodeQL">
+  <a href="https://github.com/ag2ai/fastagency/actions/workflows/codeql.yml" target="_blank">
+    <img src="https://github.com/ag2ai/fastagency/actions/workflows/codeql.yml/badge.svg" alt="CodeQL">
   </a>
 
-  <a href="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml" target="_blank">
-    <img src="https://github.com/airtai/fastagency/actions/workflows/dependency-review.yaml/badge.svg" alt="Dependency Review">
+  <a href="https://github.com/ag2ai/fastagency/actions/workflows/dependency-review.yaml" target="_blank">
+    <img src="https://github.com/ag2ai/fastagency/actions/workflows/dependency-review.yaml/badge.svg" alt="Dependency Review">
   </a>
 
-  <a href="https://github.com/airtai/fastagency/blob/main/LICENSE" target="_blank">
-    <img src="https://img.shields.io/github/license/airtai/fastagency.png" alt="License">
+  <a href="https://github.com/ag2ai/fastagency/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/ag2ai/fastagency.png" alt="License">
   </a>
 
-  <a href="https://github.com/airtai/fastagency/blob/main/CODE_OF_CONDUCT.md" target="_blank">
+  <a href="https://github.com/ag2ai/fastagency/blob/main/CODE_OF_CONDUCT.md" target="_blank">
     <img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Code of Conduct">
   </a>
 
@@ -100,7 +100,7 @@ support the following network adapters:
 
 - [**REST API**](https://en.wikipedia.org/wiki/REST) via [**FastAPI**](https://fastapi.tiangolo.com/): Use the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve your workflow using [**FastAPI**](https://fastapi.tiangolo.com/) server. This setup allows you to work your workflows in multiple workers and serve them using the highly extensible and stable ASGI server.
 
-- [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/airtai/faststream): Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
+- [**NATS.io**](https://nats.io/) via [**FastStream**](https://github.com/ag2ai/faststream): Utilize the [**`NatsAdapter`**](../api/fastagency/adapters/nats/NatsAdapter.md) to use [**NATS.io MQ**](https://nats.io/) message broker for highly-scalable, production-ready setup. This interface is suitable for setups in VPN-s or, in combination with the [**`FastAPIAdapter`**](../api/fastagency/adapters/fastapi/FastAPIAdapter.md) to serve public workflows in an authenticated, secure manner.
 
 
 ## Quick Start
@@ -116,7 +116,7 @@ We **strongly recommend** using [**Cookiecutter**](../cookiecutter/index.md) for
 
 2. Run the `cookiecutter` command:
     ```console
-    cookiecutter https://github.com/airtai/cookiecutter-fastagency.git
+    cookiecutter https://github.com/ag2ai/cookiecutter-fastagency.git
     ```
 
 3. Assuming that you used the default values, you should get the following output:
@@ -308,7 +308,7 @@ We are actively working on expanding FastAgency’s capabilities. In addition to
 
 Stay up to date with new features and integrations by following our documentation and community updates on our [**Discord server**](https://discord.gg/kJjSGWrknU). FastAgency is continually evolving to support new frameworks, APIs, and deployment strategies, ensuring you remain at the forefront of AI-driven development.
 
-Last but not least, show us your support by giving a star to our [**GitHub repository**](https://github.com/airtai/fastagency/).
+Last but not least, show us your support by giving a star to our [**GitHub repository**](https://github.com/ag2ai/fastagency/).
 
 
 Your support helps us to stay in touch with you and encourages us to
@@ -321,6 +321,6 @@ support!
 
 Thanks to all of these amazing people who made the project better!
 
-<a href="https://github.com/airtai/fastagency/graphs/contributors" target="_blank">
-  <img src="https://contrib.rocks/image?repo=airtai/fastagency"/>
+<a href="https://github.com/ag2ai/fastagency/graphs/contributors" target="_blank">
+  <img src="https://contrib.rocks/image?repo=ag2ai/fastagency"/>
 </a>

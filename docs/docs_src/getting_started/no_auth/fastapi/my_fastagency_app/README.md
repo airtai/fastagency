@@ -1,10 +1,10 @@
 # My FastAgency App
 
-This repository contains a [`FastAgency`](https://github.com/airtai/fastagency) application which uses [FastAPI](https://fastapi.tiangolo.com/), and [Mesop](https://google.github.io/mesop/). Below, you'll find a guide on how to run the application.
+This repository contains a [`FastAgency`](https://github.com/ag2ai/fastagency) application which uses [FastAPI](https://fastapi.tiangolo.com/), and [Mesop](https://google.github.io/mesop/). Below, you'll find a guide on how to run the application.
 
 ## Running FastAgency Application
 
-To run this [`FastAgency`](https://github.com/airtai/fastagency) application, follow these steps:
+To run this [`FastAgency`](https://github.com/ag2ai/fastagency) application, follow these steps:
 
 1. To run the `FastAgency` application, you need an API key for any LLM. The most commonly used LLM is [OpenAI](https://platform.openai.com/docs/models). To use it, create an [OpenAI API Key](https://openai.com/index/openai-api/) and set it as an environment variable in the terminal using the following command:
 

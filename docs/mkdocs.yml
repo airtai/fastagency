@@ -2,8 +2,8 @@ site_name: FastAgency
 # description to improve website indexing
 site_description: The fastest way to bring multi-agent workflows to production.
 site_url: https://fastagency.ai/
-site_author: airt
-copyright: '&copy; 2024 onwards <a href="https://airt.ai/" target="_blank" rel="noopener">airt</a>'
+site_author: ag2ai
+copyright: '&copy; April 2025 onwards <a href="https://ag2.ai/" target="_blank" rel="noopener">ag2ai</a>'
 
 docs_dir: docs
 
@@ -13,9 +13,9 @@ watch:
   - includes
   - overrides
 
-repo_name: airtai/fastagency
-repo_url: https://github.com/airtai/fastagency
-edit_uri: https://github.com/airtai/fastagency/tree/main/docs/docs
+repo_name: ag2ai/fastagency
+repo_url: https://github.com/ag2ai/fastagency
+edit_uri: https://github.com/ag2ai/fastagency/tree/main/docs/docs
 
 exclude_docs: |
   navigation_template.txt
@@ -160,20 +160,18 @@ extra:
   analytics:
     provider: google
     property: G-X9JHPKFSDN
-  # social_image: https://opengraph.githubassets.com/1671805243.560327/airtai/fastagency
+  # social_image: https://opengraph.githubassets.com/1671805243.560327/ag2ai/fastagency
   social_image: https://fastagency.ai/latest/assets/img/FA-Main-LOGO-640x320-tinypng.png
   social:
     # Discord link should be first
     - icon: fontawesome/brands/discord
       link: https://discord.gg/kJjSGWrknU
     - icon: fontawesome/brands/github-alt
-      link: https://github.com/airtai/fastagency
+      link: https://github.com/ag2ai/fastagency
     - icon: fontawesome/brands/twitter
       link: https://x.com/FastAgencyAI
-    - icon: fontawesome/brands/facebook
-      link: https://www.facebook.com/airt.ai.api/
     - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/company/airt-ai/
+      link: https://www.linkedin.com/company/ag2ai/
 
   version:
     provider: mike

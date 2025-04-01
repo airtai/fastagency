@@ -16,7 +16,7 @@ Follow the steps below to begin contributing using Codespaces.
 
 ### 1. Fork the Repository
 
-- Navigate to the <a href="https://github.com/airtai/fastagency" target="_blank">FastAgency GitHub repository</a>.
+- Navigate to the <a href="https://github.com/ag2ai/fastagency" target="_blank">FastAgency GitHub repository</a>.
 - Click on the **Fork** button in the top-right corner to create your own copy of the repository.
 
 ### 2. Open a Codespace
@@ -94,7 +94,7 @@ Before you begin, make sure you have the following installed:
 
 #### 1. Fork the repository
 
-- Navigate to the <a href="https://github.com/airtai/fastagency" target="_blank">FastAgency GitHub repository</a>.
+- Navigate to the <a href="https://github.com/ag2ai/fastagency" target="_blank">FastAgency GitHub repository</a>.
 - Click on the **Fork** button in the top-right corner to create your own copy of the repository.
 
 
@@ -160,4 +160,4 @@ Depending on your contribution, you may need to set a few optional environment v
     - Create a new pull request targeting our project's main branch.
     - Provide a clear title and description for your changes.
 
-Thank you for your contributions! If you have any questions or need assistance, feel free to <a  href="https://github.com/airtai/fastagency/issues" target="_blank">open an issue</a> or reach out to the maintainers.
+Thank you for your contributions! If you have any questions or need assistance, feel free to <a  href="https://github.com/ag2ai/fastagency/issues" target="_blank">open an issue</a> or reach out to the maintainers.
