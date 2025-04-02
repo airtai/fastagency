@@ -12,6 +12,47 @@ hide:
 ---
 
 # Release Notes
+## v0.8.4
+
+### What's Changed
+* Add basic auth to getting started by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#572](https://github.com/ag2ai/fastagency/pull/572){.external-link target="_blank"}
+* Update cookiecutter by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#574](https://github.com/ag2ai/fastagency/pull/574){.external-link target="_blank"}
+* Add authentication section in getting started page by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#577](https://github.com/ag2ai/fastagency/pull/577){.external-link target="_blank"}
+* Show appropriate message when unauthorized user tried to access the a… by [@harishmohanraj](https://github.com/harishmohanraj){.external-link target="_blank"} in [#571](https://github.com/ag2ai/fastagency/pull/571){.external-link target="_blank"}
+* Fix WhatsAppAgent docs by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#578](https://github.com/ag2ai/fastagency/pull/578){.external-link target="_blank"}
+* Fix broken tutorial image by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#581](https://github.com/ag2ai/fastagency/pull/581){.external-link target="_blank"}
+* Add excluded URLs from CI check by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#582](https://github.com/ag2ai/fastagency/pull/582){.external-link target="_blank"}
+* Add Playwright coverage to CI by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#555](https://github.com/ag2ai/fastagency/pull/555){.external-link target="_blank"}
+* Update deploy docs by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#591](https://github.com/ag2ai/fastagency/pull/591){.external-link target="_blank"}
+* Add a section explaining how to deploy using github actions by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#592](https://github.com/ag2ai/fastagency/pull/592){.external-link target="_blank"}
+* Update cookiecutter generated files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#595](https://github.com/ag2ai/fastagency/pull/595){.external-link target="_blank"}
+* Update packages by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#596](https://github.com/ag2ai/fastagency/pull/596){.external-link target="_blank"}
+* Update cookiecutter generated files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#604](https://github.com/ag2ai/fastagency/pull/604){.external-link target="_blank"}
+* Filter one pytest warning by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#607](https://github.com/ag2ai/fastagency/pull/607){.external-link target="_blank"}
+* Add dependency injection by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#609](https://github.com/ag2ai/fastagency/pull/609){.external-link target="_blank"}
+* Update cookiecutter generated files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#615](https://github.com/ag2ai/fastagency/pull/615){.external-link target="_blank"}
+* Add deploy to azure section in quick start page by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#616](https://github.com/ag2ai/fastagency/pull/616){.external-link target="_blank"}
+* Add prompt leakage probing tutorial by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#617](https://github.com/ag2ai/fastagency/pull/617){.external-link target="_blank"}
+* Update dependency versions by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#621](https://github.com/ag2ai/fastagency/pull/621){.external-link target="_blank"}
+* Add deploy to aws section in getting started page by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#622](https://github.com/ag2ai/fastagency/pull/622){.external-link target="_blank"}
+* Update cache version to v04 to fix failing CI by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#628](https://github.com/ag2ai/fastagency/pull/628){.external-link target="_blank"}
+* chore: group dependantbot PRs by [@Lancetnik](https://github.com/Lancetnik){.external-link target="_blank"} in [#626](https://github.com/ag2ai/fastagency/pull/626){.external-link target="_blank"}
+* Upgrade ag2 version by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#645](https://github.com/ag2ai/fastagency/pull/645){.external-link target="_blank"}
+* Use python 3.12 to deploy docs by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#649](https://github.com/ag2ai/fastagency/pull/649){.external-link target="_blank"}
+* Rename AutoGen to AG2 by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#651](https://github.com/ag2ai/fastagency/pull/651){.external-link target="_blank"}
+* Update ag2 version to 0.8.4 and add support for new version by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#654](https://github.com/ag2ai/fastagency/pull/654){.external-link target="_blank"}
+* fix flaky playwright test triggered by ag2 rename by [@davorinrusevljan](https://github.com/davorinrusevljan){.external-link target="_blank"} in [#657](https://github.com/ag2ai/fastagency/pull/657){.external-link target="_blank"}
+* Update version to 0.8.4rc0 by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#659](https://github.com/ag2ai/fastagency/pull/659){.external-link target="_blank"}
+* Change airt links to ag2ai links by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#660](https://github.com/ag2ai/fastagency/pull/660){.external-link target="_blank"}
+* Fix message.print and follow ag2's style of message header by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#661](https://github.com/ag2ai/fastagency/pull/661){.external-link target="_blank"}
+* Use PYPI_API_TOKEN for pypi releases by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#662](https://github.com/ag2ai/fastagency/pull/662){.external-link target="_blank"}
+* Prepare for 0.8.4 version release by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#663](https://github.com/ag2ai/fastagency/pull/663){.external-link target="_blank"}
+
+### New Contributors
+* [@Lancetnik](https://github.com/Lancetnik){.external-link target="_blank"} made their first contribution in [#626](https://github.com/ag2ai/fastagency/pull/626){.external-link target="_blank"}
+
+**Full Changelog**: [#0.3.4...v0.8.4](https://github.com/ag2ai/fastagency/compare/0.3.4...v0.8.4){.external-link target="_blank"}
+
 ## 0.3.4
 
 ### What's Changed
