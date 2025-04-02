@@ -63,7 +63,7 @@ The example starts by importing the necessary modules from **AG2** and **FastAge
     {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:1-10] !}
     ```
 
-    To enhance existing agents with WhatsApp communication capability, import [**`WhatsAppTool`**](../../../api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md) from FastAgency and [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} from [AG2](https://docs.ag2.ai/){target="_blank"}.
+    To enhance existing agents with WhatsApp communication capability, import [**`WhatsAppTool`**](../../../api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md) from FastAgency and [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} from [AG2](https://docs.ag2.ai/){target="_blank"}.
 
 #### 2. **Configure the Language Model (LLM)**
 Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md) can interact effectively.
@@ -78,7 +78,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     In this step, we are going to create two agents and specify the initial message that will be displayed to users when the workflow starts:
 
-    - [**`UserProxyAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/UserProxyAgent){target="_blank"}: This agent simulates the user interacting with the system.
+    - [**`UserProxyAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/UserProxyAgent/){target="_blank"}: This agent simulates the user interacting with the system.
 
     - [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md): This agent has built-in capability to communicate with [Infobip WhatsApp API](https://www.infobip.com/docs/whatsapp/api){target="_blank"}.
 
@@ -86,7 +86,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     {!> docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:34-52] !}
     ```
 
-    When initiating the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md), the executor parameter must be provided. This can be either a single instance of [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} or a `list of `[**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} instances.
+    When initiating the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md), the executor parameter must be provided. This can be either a single instance of [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} or a `list of `[**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} instances.
 
     The [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md) relies on the executor agent(s) to execute the sending of WhatsApp messages. In this example, the `whatsapp_agent` agent will call the `user_agent` agent with the necessary instructions when contacting the WhatsApp API required, and the `user_agent` will execute those instructions.
 
@@ -94,11 +94,11 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
 
     In this step, we create two agents, a WhatsApp tool and set an initial message that will be displayed to users when the workflow starts:
 
-    - [**`UserProxyAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/UserProxyAgent){target="_blank"}: This agent simulates the user interacting with the system.
+    - [**`UserProxyAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/UserProxyAgent/){target="_blank"}: This agent simulates the user interacting with the system.
 
-    - [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"}: This is the conversable agent to which we will be adding WhatsApp capabilities.
+    - [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"}: This is the conversable agent to which we will be adding WhatsApp capabilities.
 
-    - [**`WhatsAppTool`**](../../../api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md): The tool that gives the [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} the ability to interact with WhatsApp.
+    - [**`WhatsAppTool`**](../../../api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md): The tool that gives the [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} the ability to interact with WhatsApp.
 
     ```python
     {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:36-53] !}
@@ -110,7 +110,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:55-58] !}
     ```
 
-    The `executor` can be either a single instance of [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} or a `list of `[**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} instances.
+    The `executor` can be either a single instance of [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} or a `list of `[**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} instances.
 
     The `caller` relies on the executor agent(s) to execute the WhatsApp tasks. In this example, the `assistant_agent` agent will call the `user_agent` agent with the necessary instructions when WhatsApp interaction is required, and the `user_agent` will execute those instructions.
 

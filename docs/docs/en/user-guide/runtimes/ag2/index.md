@@ -1,6 +1,6 @@
 # AG2 in FastAgency
 
-The [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
+The [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime is a key component of FastAgency, empowering developers to create intelligent, [**multi-agent systems**](https://docs.ag2.ai/latest/docs/user-guide/basic-concepts/orchestration/orchestrations/){target="_blank"} powered by [**large language models (LLMs)**](https://en.wikipedia.org/wiki/Large_language_model){target="_blank"}. It allows agents to communicate, collaborate, and perform complex tasks autonomously while easily integrating with external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"} for real-time data and functionality.
 
 In this example, we will create a simple weather [**chatbot**](https://en.wikipedia.org/wiki/Chatbot){target="_blank"} using [**AG2**](../../../api/fastagency/runtimes/ag2/ag2/Workflow.md) runtime in FastAgency. The chatbot will enable a user to interact with a weather agent that fetches real-time weather information from an external REST API using [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_Specification){target="_blank"}.
 
@@ -16,7 +16,7 @@ Alternatively, you can use **pip + venv**. Before getting started, make sure you
 pip install "fastagency[autogen,mesop,openapi]"
 ```
 
-These components enable you to build  [**multi-agent workflows**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
+These components enable you to build  [**multi-agent workflows**](https://docs.ag2.ai/latest/docs/user-guide/basic-concepts/orchestration/orchestrations/){target="_blank"} and seamlessly integrate with the external [**Rest APIs**](https://en.wikipedia.org/wiki/REST){target="_blank"}.
 
 ## Prerequisites
 
@@ -59,7 +59,7 @@ Run the following command in the [**same terminal**](#running-the-application) w
 ### Step-by-Step Breakdown
 
 #### 1. **Import Required Modules**
-The example starts by importing the necessary modules from [**AG2**](https://docs.ag2.ai/){target="_blank"} and **FastAgency**. These imports lay the foundation for building and running [**multi-agent**](https://docs.ag2.ai/docs/user-guide/basic-concepts/orchestration/orchestrations){target="_blank"} workflows.
+The example starts by importing the necessary modules from [**AG2**](https://docs.ag2.ai/){target="_blank"} and **FastAgency**. These imports lay the foundation for building and running [**multi-agent**](https://docs.ag2.ai/latest/docs/user-guide/basic-concepts/orchestration/orchestrations/){target="_blank"} workflows.
 
 ```python
 {! docs_src/user_guide/runtimes/ag2/mesop/main.py [ln:1-10] !}
@@ -82,9 +82,9 @@ We define the [**OpenAPI specification**](https://en.wikipedia.org/wiki/OpenAPI_
 #### 4. **Define the Workflow and Agents**
 In this step, we define two agents and specify the initial message that will be displayed to users when the workflow starts.
 
-- [**`UserProxyAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/UserProxyAgent){target="_blank"}: This agent simulates the user interacting with the system.
+- [**`UserProxyAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/UserProxyAgent/){target="_blank"}: This agent simulates the user interacting with the system.
 
-- [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent#conversableagent){target="_blank"}: This agent acts as the weather agent, responsible for fetching weather data from the API.
+- [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/#conversableagent){target="_blank"}: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
 The workflow is registered using **[Workflow](../../../api/fastagency/runtimes/ag2/Workflow.md)**.
 

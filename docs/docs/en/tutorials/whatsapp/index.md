@@ -4,7 +4,7 @@ In this tutorial, we will explore how to leverage the **FastAgency** framework t
 
 1. [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md): A web-scraping agent capable of retrieving relevant content from webpages (learn more [here](../../user-guide/runtimes/ag2/websurfer.md)).
 
-2. **WhatsApp agent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send WhatsApp messages based on the user’s request. It will be created using the standard [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} from [AG2](https://docs.ag2.ai/){target="_blank"} and the [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md) object instantiated with an OpenAPI [specification](https://dev.infobip.com/openapi/products/whatsapp.json){target="_blank"} of Infobip's [REST API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"}.
+2. **WhatsApp agent** – An agent that interacts with the [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"} to send WhatsApp messages based on the user’s request. It will be created using the standard [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} from [AG2](https://docs.ag2.ai/){target="_blank"} and the [**`OpenAPI`**](../../api/fastagency/api/openapi/OpenAPI.md) object instantiated with an OpenAPI [specification](https://dev.infobip.com/openapi/products/whatsapp.json){target="_blank"} of Infobip's [REST API](https://www.infobip.com/docs/api/channels/whatsapp){target="_blank"}.
 
 The chat system will operate between these two agents and the user, allowing them to scrape web content and send the relevant information via WhatsApp, all within a seamless conversation. This tutorial will guide you through setting up these agents, handling user interaction, and ensuring secure API communication.
 
@@ -105,7 +105,7 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 
 ### Creating the WhatsApp and WebSurfer Agents
 
-- **WhatsAppAgent**: A [**`ConversableAgent`**](https://docs.ag2.ai/docs/api-reference/autogen/ConversableAgent){target="_blank"} is created with the name "WhatsApp_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
+- **WhatsAppAgent**: A [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} is created with the name "WhatsApp_Agent". It uses the system message defined earlier and relies on the termination function to end the chat when needed.
 - [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md): The [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md) is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/ag2/websurfer.md).
 
 ```python
