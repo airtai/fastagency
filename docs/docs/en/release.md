@@ -29,7 +29,7 @@ hide:
 * Update packages by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#596](https://github.com/ag2ai/fastagency/pull/596){.external-link target="_blank"}
 * Update cookiecutter generated files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#604](https://github.com/ag2ai/fastagency/pull/604){.external-link target="_blank"}
 * Filter one pytest warning by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#607](https://github.com/ag2ai/fastagency/pull/607){.external-link target="_blank"}
-* Add dependancy injection by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#609](https://github.com/ag2ai/fastagency/pull/609){.external-link target="_blank"}
+* Add dependency injection by [@rjambrecic](https://github.com/rjambrecic){.external-link target="_blank"} in [#609](https://github.com/ag2ai/fastagency/pull/609){.external-link target="_blank"}
 * Update cookiecutter generated files by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#615](https://github.com/ag2ai/fastagency/pull/615){.external-link target="_blank"}
 * Add deploy to azure section in quick start page by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#616](https://github.com/ag2ai/fastagency/pull/616){.external-link target="_blank"}
 * Add prompt leakage probing tutorial by [@sternakt](https://github.com/sternakt){.external-link target="_blank"} in [#617](https://github.com/ag2ai/fastagency/pull/617){.external-link target="_blank"}
