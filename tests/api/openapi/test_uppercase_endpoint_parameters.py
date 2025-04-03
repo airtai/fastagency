@@ -242,7 +242,7 @@ def test_end2end(
     )
 
     message_existed = False
-    expected_message_content = '[{"id": 1, "title": "Gif 1", "url": "https://gif.example.com/gif1?topic=funny"}, {"id": 2, "title": "Gif 2", "url": "https://gif.example.com/gif2?topic=funny"}]'
+    expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"
     for message in agent.chat_messages[user_proxy]:
         if (
             isinstance(message, dict)
