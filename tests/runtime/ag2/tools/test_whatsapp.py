@@ -7,14 +7,12 @@ from fastagency.runtimes.ag2.tools import WhatsAppTool
 
 
 class TestWhatsApp:
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_whatsapp_chat_constructor_positive(self) -> None:
         whatsapp_tool = WhatsAppTool(
             whatsapp_api_key="api_key",  # pragma: allowlist secret
         )
         assert isinstance(whatsapp_tool, Toolable)
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     @pytest.mark.llm
     def test_whatsapp_chat_register(self, azure_gpt4o_llm_config: LLMConfig) -> None:
         user_agent = UserProxyAgent(
@@ -42,7 +40,6 @@ class TestWhatsApp:
         registered_function = assistant_agent.llm_config["tools"][0]["function"]
         assert registered_function["name"] == "send_whatsapp_text_message"
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     @pytest.mark.llm
     def test_whatsapp_agent(self, azure_gpt4o_llm_config: LLMConfig) -> None:
         user_agent = UserProxyAgent(

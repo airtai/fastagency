@@ -19,6 +19,7 @@ from pydantic_core import PydanticUndefined
 
 from fastagency.helpers import optional_temp_path
 
+from ...logging import get_logger
 from .fastapi_code_generator_helpers import patch_get_parameter_type
 from .security import BaseSecurity, BaseSecurityParameters
 
@@ -27,19 +28,52 @@ if TYPE_CHECKING:
 
 __all__ = ["OpenAPI"]
 
+logger = get_logger(__name__)
+
+
+# A list of known problematic module prefixes (e.g., internal pytest modules)
+PROTECTED_MODULES = [
+    "_pytest",
+    "pytest",  # Pytest internal modules
+    "py.error",  # PyError-related modules
+    "pydantic",  # Pydantic modules
+]
+
 
 @contextmanager
-def add_to_globals(new_globals: dict[str, Any]) -> Iterator[None]:
-    old_globals: dict[str, Any] = {}
+def add_to_globals(new_globals: dict[str, Any]) -> Iterator[None]:  # noqa: C901
+    old_globals_per_module = {}
+
     try:
-        for key, value in new_globals.items():
-            if key in globals():
-                old_globals[key] = globals()[key]
-            globals()[key] = value
+        for module_name, module in sys.modules.items():
+            if not hasattr(module, "__dict__"):
+                continue
+
+            if any(module_name.startswith(prefix) for prefix in PROTECTED_MODULES):
+                continue
+
+            old_globals = {}
+            for key, value in new_globals.items():
+                try:
+                    if hasattr(module, key):  # Store existing values safely
+                        old_globals[key] = getattr(module, key)
+                    setattr(module, key, value)  # Inject into module
+                except Exception as e:  # noqa: PERF203
+                    logger.warning(f"Skipping {key} in {module_name}: {e}")  # Debugging
+
+            old_globals_per_module[module_name] = old_globals
+
         yield
+
     finally:
-        for key, value in old_globals.items():
-            globals()[key] = value
+        for module_name, old_globals in old_globals_per_module.items():
+            module = sys.modules.get(module_name)  # type: ignore[assignment]
+            if module:
+                for key, value in old_globals.items():
+                    try:
+                        setattr(module, key, value)  # Restore previous values
+                    except Exception as e:  # noqa: PERF203
+                        logger.warning(f"Skipping restore {key} in {module_name}: {e}")
 
 
 class OpenAPI:
@@ -55,8 +89,6 @@ class OpenAPI:
 
         self._security: dict[str, list[BaseSecurity]] = {}
         self._security_params: dict[Optional[str], BaseSecurityParameters] = {}
-
-        raise NotImplementedError("Currently not implemented.")
 
     @staticmethod
     def _convert_camel_case_within_braces_to_snake(text: str) -> str:
@@ -341,7 +373,13 @@ class OpenAPI:
     ) -> dict[Callable[..., Any], dict[str, Union[str, None]]]:
         if functions is None:
             return {
-                f: {"name": None, "description": None} for f in self._registered_funcs
+                f: {
+                    "name": None,
+                    "description": f._description
+                    if hasattr(f, "_description")
+                    else None,
+                }
+                for f in self._registered_funcs
             }
 
         functions_with_name_desc: dict[str, dict[str, Union[str, None]]] = {}
