@@ -44,14 +44,14 @@ def websurfer_workflow(
         bing_api_key=os.getenv("BING_API_KEY"),
     )
 
-    run_response = user_agent.run(
+    chat_result = user_agent.initiate_chat(
         web_surfer,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=3,
     )
 
-    return run_response.summary  # type: ignore[no-any-return]
+    return chat_result.summary  # type: ignore[no-any-return]
 
 
 app = FastAgency(provider=wf, ui=ConsoleUI())
