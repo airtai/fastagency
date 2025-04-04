@@ -14,7 +14,7 @@ from typing import (
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
-from autogen.events.base_event import BaseEvent
+from autogen.events import BaseEvent
 
 from ...base import (
     UI,
