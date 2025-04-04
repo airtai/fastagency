@@ -724,7 +724,6 @@ class HTTPValidationError(BaseModel):
         client = OpenAPI.create(openapi_json=json.dumps(openapi_schema))
         return client
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_client(self, client: OpenAPI) -> None:
         assert client is not None
         assert isinstance(client, OpenAPI)
@@ -743,7 +742,6 @@ class HTTPValidationError(BaseModel):
         }
         assert func_desc == expected_func_desc
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_register_for_llm(
         self,
         client: OpenAPI,
@@ -902,12 +900,10 @@ class HTTPValidationError(BaseModel):
             expected_tools, cls=JSONEncoder
         )
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_client_get_function(self, client: OpenAPI) -> None:
         f = client.get_function("create_item_items__post")
         assert f is not None
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_client_get_function_not_found(self, client: OpenAPI) -> None:
         function_name = "create_item_items__post__not_found"
         with pytest.raises(
@@ -915,14 +911,12 @@ class HTTPValidationError(BaseModel):
         ):
             client.get_function(function_name)
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_set_function(self, client: OpenAPI) -> None:
         def create_item_items__post() -> dict[str, Any]:
             return {"item_id": 1}
 
         client.set_function(create_item_items__post.__name__, create_item_items__post)
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_get_functions(self, client: OpenAPI) -> None:
         with pytest.raises(
             expected_exception=DeprecationWarning,
@@ -930,7 +924,6 @@ class HTTPValidationError(BaseModel):
         ):
             client.get_functions()
 
-    @pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
     def test_register_for_execution(
         self, client: OpenAPI, azure_gpt35_turbo_16k_llm_config: LLMConfig
     ) -> None:

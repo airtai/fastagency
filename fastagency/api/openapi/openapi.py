@@ -19,6 +19,7 @@ from pydantic_core import PydanticUndefined
 
 from fastagency.helpers import optional_temp_path
 
+from ...logging import get_logger
 from .fastapi_code_generator_helpers import patch_get_parameter_type
 from .security import BaseSecurity, BaseSecurityParameters
 
@@ -27,20 +28,50 @@ if TYPE_CHECKING:
 
 __all__ = ["OpenAPI"]
 
+logger = get_logger(__name__)
+
+
+def get_or_import_module(module_name: str):
+    """Dynamically imports a module and ensures it's in sys.modules."""
+    if module_name in sys.modules:
+        return sys.modules[module_name]
+
+    try:
+        module = importlib.import_module(module_name)
+        sys.modules[module_name] = module  # Ensure it's registered
+        return module
+    except ModuleNotFoundError:
+        logger.warning(f"Module '{module_name}' not found.")
+        return None
+
 
 @contextmanager
-def add_to_globals(new_globals: dict[str, Any]) -> Iterator[None]:
-    old_globals: dict[str, Any] = {}
-    try:
-        for key, value in new_globals.items():
-            if key in globals():
-                old_globals[key] = globals()[key]
-            globals()[key] = value
-        yield
-    finally:
-        for key, value in old_globals.items():
-            globals()[key] = value
+def add_to_globals(modules: list[str], new_globals: dict[str, Any]) -> Iterator[None]:
+    old_globals_per_module = {}
 
+    try:
+        for module_name in modules:
+            module = get_or_import_module(module_name)
+            if not module:
+                continue
+
+            old_globals = {}
+            for key, value in new_globals.items():
+                if hasattr(module, key):
+                    old_globals[key] = getattr(module, key)  # Store old value
+                setattr(module, key, value)  # Inject new global
+
+            old_globals_per_module[module_name] = old_globals
+
+        yield
+
+    finally:
+        # Restore old values for target modules
+        for module_name, old_globals in old_globals_per_module.items():
+            module = sys.modules.get(module_name)
+            if module:
+                for key, value in old_globals.items():
+                    setattr(module, key, value)
 
 class OpenAPI:
     def __init__(
@@ -55,8 +86,6 @@ class OpenAPI:
 
         self._security: dict[str, list[BaseSecurity]] = {}
         self._security_params: dict[Optional[str], BaseSecurityParameters] = {}
-
-        raise NotImplementedError("Currently not implemented.")
 
     @staticmethod
     def _convert_camel_case_within_braces_to_snake(text: str) -> str:
@@ -341,7 +370,13 @@ class OpenAPI:
     ) -> dict[Callable[..., Any], dict[str, Union[str, None]]]:
         if functions is None:
             return {
-                f: {"name": None, "description": None} for f in self._registered_funcs
+                f: {
+                    "name": None,
+                    "description": f._description
+                    if hasattr(f, "_description")
+                    else None,
+                }
+                for f in self._registered_funcs
             }
 
         functions_with_name_desc: dict[str, dict[str, Union[str, None]]] = {}
@@ -418,7 +453,9 @@ class OpenAPI:
     ) -> None:
         funcs_to_register = self._get_functions_to_register(functions)
 
-        with add_to_globals(self._globals):
+        with add_to_globals(
+            modules=["autogen.tools.function_utils", "autogen.tools", "autogen"], new_globals=self._globals
+        ):
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
 

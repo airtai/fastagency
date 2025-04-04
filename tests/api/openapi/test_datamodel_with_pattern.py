@@ -129,7 +129,6 @@ def test_openapi_schema(openapi_schema: dict[str, Any]) -> None:
     assert openapi_schema == expected_schema
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_generate_client(openapi_schema: dict[str, Any]) -> None:
     api_client = OpenAPI.create(
         openapi_json=json.dumps(openapi_schema),
