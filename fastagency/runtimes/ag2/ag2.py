@@ -265,7 +265,61 @@ class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
 
     def send(self, message: Any) -> None:
         if hasattr(message, "type") and hasattr(message, "content"):
-            self.process_event(message)
+            if event_type := getattr(message, "type", None):
+                if event_type == "text":
+                    sender = getattr(message, "sender", None)
+                    recipient = getattr(message, "recipient", None)
+                    content = getattr(message, "content", "")
+                    
+                    self.current_message.sender = sender
+                    self.current_message.recipient = recipient
+                    self.current_message.body = content
+                    self.current_message.type = "text_message"
+                    
+                    msgs = self.current_message.create_message()
+                    for msg in msgs:
+                        self.messages.append(msg)
+                        self.ui.process_message(msg)
+                    self.current_message = CurrentMessage(self.ui._workflow_uuid)
+                    
+                elif event_type == "function_call":
+                    self.current_message.sender = getattr(message, "sender", None)
+                    self.current_message.recipient = getattr(message, "recipient", None)
+                    self.current_message.function_name = getattr(message, "function_name", None)
+                    self.current_message.call_id = f"call_{hash(getattr(message, 'function_name', ''))}"
+                    self.current_message.arguments = getattr(message, "function_args", None)
+                    self.current_message.type = "suggested_function_call"
+                    
+                    msgs = self.current_message.create_message()
+                    for msg in msgs:
+                        self.messages.append(msg)
+                        self.ui.process_message(msg)
+                    self.current_message = CurrentMessage(self.ui._workflow_uuid)
+                    
+                elif event_type == "function_response":
+                    self.current_message.sender = getattr(message, "sender", None)
+                    self.current_message.recipient = getattr(message, "recipient", None)
+                    self.current_message.function_name = getattr(message, "function_name", None)
+                    self.current_message.retval = getattr(message, "content", None)
+                    self.current_message.type = "function_call_execution"
+                    
+                    msgs = self.current_message.create_message()
+                    for msg in msgs:
+                        self.messages.append(msg)
+                        self.ui.process_message(msg)
+                    self.current_message = CurrentMessage(self.ui._workflow_uuid)
+                    
+                elif event_type == "input_request":
+                    prompt = getattr(message, "prompt", "")
+                    password = getattr(message, "password", False)
+                    input_msg = TextInput(
+                        sender=None,
+                        recipient=None,
+                        prompt=prompt,
+                        password=password,
+                        workflow_uuid=self.ui._workflow_uuid,
+                    )
+                    self.ui.process_message(input_msg)
         else:
             message.print(f=self.print)
 
@@ -290,58 +344,6 @@ class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
         # logger.info(f"input(): {retval=}")
         return retval
 
-    def process_event(self, event: Any) -> None:
-        """Process an event from a RunResponse object.
-
-        Args:
-            event: An event from RunResponse.events
-        """
-        if hasattr(event, "type") and event.type == "text":
-            content = event.content
-            self.current_message.sender = event.sender
-            self.current_message.recipient = event.recipient
-            self.current_message.body = content
-            self.current_message.type = "text_message"
-            msgs = self.current_message.create_message()
-            for msg in msgs:
-                self.messages.append(msg)
-                self.ui.process_message(msg)
-            self.current_message = CurrentMessage(self.ui._workflow_uuid)
-
-        elif hasattr(event, "type") and event.type == "function_call":
-            self.current_message.sender = event.sender
-            self.current_message.recipient = event.recipient
-            self.current_message.function_name = event.function_name
-            self.current_message.call_id = f"call_{hash(event.function_name)}"
-            self.current_message.arguments = event.function_args
-            self.current_message.type = "suggested_function_call"
-            msgs = self.current_message.create_message()
-            for msg in msgs:
-                self.messages.append(msg)
-                self.ui.process_message(msg)
-            self.current_message = CurrentMessage(self.ui._workflow_uuid)
-
-        elif hasattr(event, "type") and event.type == "function_response":
-            self.current_message.sender = event.sender
-            self.current_message.recipient = event.recipient
-            self.current_message.function_name = event.function_name
-            self.current_message.retval = event.content
-            self.current_message.type = "function_call_execution"
-            msgs = self.current_message.create_message()
-            for msg in msgs:
-                self.messages.append(msg)
-                self.ui.process_message(msg)
-            self.current_message = CurrentMessage(self.ui._workflow_uuid)
-
-        elif hasattr(event, "type") and event.type == "input_request":
-            message = TextInput(
-                sender=None,
-                recipient=None,
-                prompt=event.prompt,
-                password=event.password,
-                workflow_uuid=self.ui._workflow_uuid,
-            )
-            self.ui.process_message(message)
 
 
 class Workflow(WorkflowsProtocol):
