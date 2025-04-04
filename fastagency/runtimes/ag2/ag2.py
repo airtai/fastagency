@@ -12,7 +12,7 @@ from typing import (
     runtime_checkable,
 )
 
-from autogen.agentchat import ConversableAgent, ChatResult
+from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
 
 from ...base import (
@@ -286,7 +286,7 @@ class IOStreamAdapter:  # IOStream
         # logger.info(f"input(): {retval=}")
         return retval
 
-    def process_event(self, event) -> None:
+    def process_event(self, event: Any) -> None:
         """Process an event from a RunResponse object.
 
         Args:
@@ -384,11 +384,11 @@ class Workflow(WorkflowsProtocol):
                 )
                 result = workflow(ui, kwargs)
 
-                if hasattr(result, 'events') and hasattr(result, 'summary'):
-                    if hasattr(result, 'events'):
+                if hasattr(result, "events") and hasattr(result, "summary"):
+                    if hasattr(result, "events"):
                         for event in result.events:
                             iostream.process_event(event)
-                    retval = result.summary
+                    retval = str(result.summary)
                 else:
                     retval = result
 

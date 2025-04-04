@@ -3,7 +3,6 @@ from typing import Annotated, Any, Optional, Union
 from autogen import LLMConfig
 from autogen.agentchat import AssistantAgent as AutoGenAssistantAgent
 from autogen.agentchat import ConversableAgent as AutoGenConversableAgent
-from autogen.agentchat import ChatResult
 from autogen.agentchat.contrib.web_surfer import WebSurferAgent as AutoGenWebSurferAgent
 from pydantic import BaseModel, Field, HttpUrl
 
