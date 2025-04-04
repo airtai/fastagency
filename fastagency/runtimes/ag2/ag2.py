@@ -13,6 +13,7 @@ from typing import (
 )
 
 from autogen.agentchat import ConversableAgent
+from autogen.events.base_event import BaseEvent
 from autogen.io import IOStream
 
 from ...base import (
@@ -226,7 +227,7 @@ class CurrentMessage:
         return retval
 
 
-class IOStreamAdapter:  # IOStream
+class IOStreamAdapter:  # Implement IOStream Protocol
     def __init__(self, ui: UI) -> None:
         """Initialize the adapter with a ChatableIO object.
 
@@ -246,6 +247,7 @@ class IOStreamAdapter:  # IOStream
             msgs = self.current_message.create_message()
             for msg in msgs:
                 self.messages.append(msg)
+                self.ui.process_message(msg)
             self.current_message = CurrentMessage(self.ui._workflow_uuid)
 
             return len(msgs)
@@ -257,13 +259,72 @@ class IOStreamAdapter:  # IOStream
     ) -> None:
         # logger.info(f"print(): {objects=}, {sep=}, {end=}, {flush=}")
         body = sep.join(map(str, objects)) + end
+        # print("AT print()")
+        # print(f"body: {body}")
         num_to_send = self._process_message_chunk(body)
         for i in range(-num_to_send, 0, 1):
             message = self.messages[i]
             self.ui.process_message(message)
 
-    def send(self, message: "BaseMessage") -> None:
-        message.print(f=self.print)
+    def send(self, message: Any) -> None:
+        if hasattr(message, "type") and hasattr(message, "content"):
+            if event_type := getattr(message, "type", None):
+                if event_type == "text":
+                    sender = getattr(message, "sender_name", None)
+                    recipient = getattr(message, "recipient_name", None)
+                    content = getattr(message, "content", "")
+                    
+                    self.current_message.sender = sender
+                    self.current_message.recipient = recipient
+                    self.current_message.body = content
+                    self.current_message.type = "text_message"
+                    
+                    msgs = self.current_message.create_message()
+                    for msg in msgs:
+                        self.messages.append(msg)
+                        self.ui.process_message(msg)
+                    self.current_message = CurrentMessage(self.ui._workflow_uuid)
+                    
+                elif event_type == "function_call":
+                    self.current_message.sender = getattr(message, "sender_name", None)
+                    self.current_message.recipient = getattr(message, "recipient_name", None)
+                    self.current_message.function_name = getattr(message, "function_name", None)
+                    self.current_message.call_id = f"call_{hash(getattr(message, 'function_name', ''))}"
+                    self.current_message.arguments = getattr(message, "function_args", None)
+                    self.current_message.type = "suggested_function_call"
+                    
+                    msgs = self.current_message.create_message()
+                    for msg in msgs:
+                        self.messages.append(msg)
+                        self.ui.process_message(msg)
+                    self.current_message = CurrentMessage(self.ui._workflow_uuid)
+                    
+                elif event_type == "function_response":
+                    self.current_message.sender = getattr(message, "sender_name", None)
+                    self.current_message.recipient = getattr(message, "recipient_name", None)
+                    self.current_message.function_name = getattr(message, "function_name", None)
+                    self.current_message.retval = getattr(message, "content", None)
+                    self.current_message.type = "function_call_execution"
+                    
+                    msgs = self.current_message.create_message()
+                    for msg in msgs:
+                        self.messages.append(msg)
+                        self.ui.process_message(msg)
+                    self.current_message = CurrentMessage(self.ui._workflow_uuid)
+                    
+                elif event_type == "input_request":
+                    prompt = getattr(message, "prompt", "")
+                    password = getattr(message, "password", False)
+                    input_msg = TextInput(
+                        sender=None,
+                        recipient=None,
+                        prompt=prompt,
+                        password=password,
+                        workflow_uuid=self.ui._workflow_uuid,
+                    )
+                    self.ui.process_message(input_msg)
+        else:
+            message.print(f=self.print)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")
@@ -285,6 +346,7 @@ class IOStreamAdapter:  # IOStream
 
         # logger.info(f"input(): {retval=}")
         return retval
+
 
 
 class Workflow(WorkflowsProtocol):
@@ -329,7 +391,16 @@ class Workflow(WorkflowsProtocol):
                     description=self.get_description(name),
                     params=kwargs,
                 )
-                retval = workflow(ui, kwargs)
+                result = workflow(ui, kwargs)
+
+                try:
+                    if hasattr(result, "summary"):
+                        summary = getattr(result, "summary", None)
+                        retval = str(summary) if summary is not None else ""
+                    else:
+                        retval = result
+                except (AttributeError, TypeError):
+                    retval = result
 
             except Exception as e:
                 logger.error(
