@@ -295,6 +295,9 @@ class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
                 self.messages.append(msg)
                 self.ui.process_message(msg)
             self.current_message = CurrentMessage(self.ui._workflow_uuid)
+            for i in range(-len(msgs), 0, 1):
+                message = self.messages[i]
+                self.ui.process_message(message)
             
         else:
             # print("At else of send()")
