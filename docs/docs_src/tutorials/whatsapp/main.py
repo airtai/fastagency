@@ -117,11 +117,11 @@ If you are presenting a completed task, last message should be a question: 'Do y
         prompt="For which website would you like to receive a summary?",
     )
 
-    chat_result = whatsapp_agent.initiate_chat(
+    run_response = whatsapp_agent.run(
         web_surfer,
         message=f"Users initial message: {initial_message}",
         summary_method="reflection_with_llm",
         max_turns=10,
     )
 
-    return chat_result.summary  # type: ignore[no-any-return]
+    return run_response.summary  # type: ignore[no-any-return]

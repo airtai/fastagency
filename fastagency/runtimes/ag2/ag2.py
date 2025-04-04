@@ -12,7 +12,7 @@ from typing import (
     runtime_checkable,
 )
 
-from autogen.agentchat import ConversableAgent
+from autogen.agentchat import ConversableAgent, ChatResult
 from autogen.io import IOStream
 
 from ...base import (
@@ -286,6 +286,59 @@ class IOStreamAdapter:  # IOStream
         # logger.info(f"input(): {retval=}")
         return retval
 
+    def process_event(self, event) -> None:
+        """Process an event from a RunResponse object.
+
+        Args:
+            event: An event from RunResponse.events
+        """
+        if hasattr(event, "type") and event.type == "text":
+            content = event.content
+            self.current_message.sender = event.sender
+            self.current_message.recipient = event.recipient
+            self.current_message.body = content
+            self.current_message.type = "text_message"
+            msgs = self.current_message.create_message()
+            for msg in msgs:
+                self.messages.append(msg)
+                self.ui.process_message(msg)
+            self.current_message = CurrentMessage(self.ui._workflow_uuid)
+
+        elif hasattr(event, "type") and event.type == "function_call":
+            self.current_message.sender = event.sender
+            self.current_message.recipient = event.recipient
+            self.current_message.function_name = event.function_name
+            self.current_message.call_id = f"call_{hash(event.function_name)}"
+            self.current_message.arguments = event.function_args
+            self.current_message.type = "suggested_function_call"
+            msgs = self.current_message.create_message()
+            for msg in msgs:
+                self.messages.append(msg)
+                self.ui.process_message(msg)
+            self.current_message = CurrentMessage(self.ui._workflow_uuid)
+
+        elif hasattr(event, "type") and event.type == "function_response":
+            self.current_message.sender = event.sender
+            self.current_message.recipient = event.recipient
+            self.current_message.function_name = event.function_name
+            self.current_message.retval = event.content
+            self.current_message.type = "function_call_execution"
+            msgs = self.current_message.create_message()
+            for msg in msgs:
+                self.messages.append(msg)
+                self.ui.process_message(msg)
+            self.current_message = CurrentMessage(self.ui._workflow_uuid)
+
+        elif hasattr(event, "type") and event.type == "input_request":
+            message = TextInput(
+                sender=None,
+                recipient=None,
+                prompt=event.prompt,
+                password=event.password,
+                workflow_uuid=self.ui._workflow_uuid,
+            )
+            self.ui.process_message(message)
+
 
 class Workflow(WorkflowsProtocol):
     def __init__(self) -> None:
@@ -329,7 +382,15 @@ class Workflow(WorkflowsProtocol):
                     description=self.get_description(name),
                     params=kwargs,
                 )
-                retval = workflow(ui, kwargs)
+                result = workflow(ui, kwargs)
+
+                if hasattr(result, 'events') and hasattr(result, 'summary'):
+                    if hasattr(result, 'events'):
+                        for event in result.events:
+                            iostream.process_event(event)
+                    retval = result.summary
+                else:
+                    retval = result
 
             except Exception as e:
                 logger.error(

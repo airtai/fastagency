@@ -123,14 +123,14 @@ def exam_learning(ui: UI, params: dict[str, Any]) -> str:
         description="Get the final grade after submitting the answers.",
     )
 
-    chat_result = teacher_agent.initiate_chat(
+    run_response = teacher_agent.run(
         student_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=10,
     )
 
-    return chat_result.summary  # type: ignore[no-any-return]
+    return run_response.summary  # type: ignore[no-any-return]
 
 
 app = FastAgency(provider=wf, ui=ConsoleUI())
