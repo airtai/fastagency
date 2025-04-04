@@ -226,7 +226,7 @@ class CurrentMessage:
         return retval
 
 
-class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
+class IOStreamAdapter:  # Explicitly inherit from IOStream
     def __init__(self, ui: UI) -> None:
         """Initialize the adapter with a ChatableIO object.
 
@@ -258,50 +258,53 @@ class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
     ) -> None:
         # logger.info(f"print(): {objects=}, {sep=}, {end=}, {flush=}")
         body = sep.join(map(str, objects)) + end
+        # print("AT print()")
+        # print(f"body: {body}")
         num_to_send = self._process_message_chunk(body)
         for i in range(-num_to_send, 0, 1):
             message = self.messages[i]
             self.ui.process_message(message)
 
     def send(self, message: Any) -> None:
-        if hasattr(message, "type") and hasattr(message, "content"):
-            # print("At if of send()")
-            # print(f"message: {message}")
-            # print(f"message type: {type(message)}")
-            type_lookup = {
-                "text": "text_message",
-                "function_call": "function_call_execution",
-                "input_request": "text_input",
-                "using_auto_reply": "system_message",
-            }
-            event_type = getattr(message, "type", None)
-            local_event_type = type_lookup.get(event_type, None)
-            # print(f"event_type: {event_type}")
-            # print(f"local_event_type: {local_event_type}")
-            # ToDo: Convert autogen.events.agent_events.TextEvent to fastagency.messages.TextMessage
-            # ToDo: Convert autogen.events.agent_events.* to fastagency.messages.*
-            content = message.content
-            msgs = [
-                IOMessage.create(
-                    body=getattr(message, "body", None),
-                    sender=content.sender_name,
-                    recipient=content.recipient_name,
-                    type=local_event_type,
-                    workflow_uuid=self.ui._workflow_uuid,
-                    content=content.model_dump(),
-                )
-            ]
-            for msg in msgs:
-                self.messages.append(msg)
-                self.ui.process_message(msg)
-            self.current_message = CurrentMessage(self.ui._workflow_uuid)
-            for i in range(-len(msgs), 0, 1):
-                message = self.messages[i]
-                self.ui.process_message(message)
+        message.print(f=self.print)
+        # if hasattr(message, "type") and hasattr(message, "content"):
+        #     # print("At if of send()")
+        #     # print(f"message: {message}")
+        #     # print(f"message type: {type(message)}")
+        #     type_lookup = {
+        #         "text": "text_message",
+        #         "function_call": "function_call_execution",
+        #         "input_request": "text_input",
+        #         "using_auto_reply": "system_message",
+        #     }
+        #     event_type = getattr(message, "type", None)
+        #     local_event_type = type_lookup.get(event_type, None)
+        #     # print(f"event_type: {event_type}")
+        #     # print(f"local_event_type: {local_event_type}")
+        #     # ToDo: Convert autogen.events.agent_events.TextEvent to fastagency.messages.TextMessage
+        #     # ToDo: Convert autogen.events.agent_events.* to fastagency.messages.*
+        #     content = message.content
+        #     msgs = [
+        #         IOMessage.create(
+        #             body=getattr(message, "body", None),
+        #             sender=content.sender_name,
+        #             recipient=content.recipient_name,
+        #             type=local_event_type,
+        #             workflow_uuid=self.ui._workflow_uuid,
+        #             content=content.model_dump(),
+        #         )
+        #     ]
+        #     for msg in msgs:
+        #         self.messages.append(msg)
+        #         self.ui.process_message(msg)
+        #     self.current_message = CurrentMessage(self.ui._workflow_uuid)
+        #     for i in range(-len(msgs), 0, 1):
+        #         message = self.messages[i]
+        #         self.ui.process_message(message)
             
-        else:
-            # print("At else of send()")
-            message.print(f=self.print)
+        # else:
+        #     # print("At else of send()")
+        #     message.print(f=self.print)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")
