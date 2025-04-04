@@ -14,6 +14,7 @@ from typing import (
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
+from autogen.events.base_event import BaseEvent
 
 from ...base import (
     UI,
@@ -226,7 +227,7 @@ class CurrentMessage:
         return retval
 
 
-class IOStreamAdapter:  # IOStream
+class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
     def __init__(self, ui: UI) -> None:
         """Initialize the adapter with a ChatableIO object.
 
@@ -246,6 +247,7 @@ class IOStreamAdapter:  # IOStream
             msgs = self.current_message.create_message()
             for msg in msgs:
                 self.messages.append(msg)
+                self.ui.process_message(msg)
             self.current_message = CurrentMessage(self.ui._workflow_uuid)
 
             return len(msgs)
@@ -262,8 +264,11 @@ class IOStreamAdapter:  # IOStream
             message = self.messages[i]
             self.ui.process_message(message)
 
-    def send(self, message: "BaseMessage") -> None:
-        message.print(f=self.print)
+    def send(self, message: Any) -> None:
+        if isinstance(message, BaseEvent):
+            self.process_event(message)
+        else:
+            message.print(f=self.print)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
         # logger.info(f"input(): {prompt=}, {password=}")
@@ -384,10 +389,7 @@ class Workflow(WorkflowsProtocol):
                 )
                 result = workflow(ui, kwargs)
 
-                if hasattr(result, "events") and hasattr(result, "summary"):
-                    if hasattr(result, "events"):
-                        for event in result.events:
-                            iostream.process_event(event)
+                if hasattr(result, "summary"):
                     retval = str(result.summary)
                 else:
                     retval = result
