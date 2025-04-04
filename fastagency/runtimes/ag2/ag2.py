@@ -14,7 +14,6 @@ from typing import (
 
 from autogen.agentchat import ConversableAgent
 from autogen.io import IOStream
-from autogen.events import BaseEvent
 
 from ...base import (
     UI,
@@ -265,7 +264,7 @@ class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
             self.ui.process_message(message)
 
     def send(self, message: Any) -> None:
-        if isinstance(message, BaseEvent):
+        if hasattr(message, "type") and hasattr(message, "content"):
             self.process_event(message)
         else:
             message.print(f=self.print)
