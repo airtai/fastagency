@@ -234,6 +234,7 @@ class IOStreamAdapter(IOStream):  # Explicitly inherit from IOStream
             ui (ChatableIO): The ChatableIO object to adapt
 
         """
+        super().__init__()  # Initialize the IOStream base class
         self.ui = ui
         self.current_message = CurrentMessage(ui._workflow_uuid)
 
