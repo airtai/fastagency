@@ -1,3 +1,4 @@
+import builtins
 import importlib
 import inspect
 import json
@@ -9,7 +10,14 @@ from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
 from types import ModuleType
-from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Literal,
+    Optional,
+    Union,
+)
 
 import fastapi
 import requests
@@ -31,47 +39,21 @@ __all__ = ["OpenAPI"]
 logger = get_logger(__name__)
 
 
-def get_or_import_module(module_name: str):
-    """Dynamically imports a module and ensures it's in sys.modules."""
-    if module_name in sys.modules:
-        return sys.modules[module_name]
-
-    try:
-        module = importlib.import_module(module_name)
-        sys.modules[module_name] = module  # Ensure it's registered
-        return module
-    except ModuleNotFoundError:
-        logger.warning(f"Module '{module_name}' not found.")
-        return None
-
-
 @contextmanager
-def add_to_globals(modules: list[str], new_globals: dict[str, Any]) -> Iterator[None]:
-    old_globals_per_module = {}
+def add_to_builtins(new_globals: dict[str, Any]) -> Iterator[None]:
+    old_globals = {key: getattr(builtins, key, None) for key in new_globals}
 
     try:
-        for module_name in modules:
-            module = get_or_import_module(module_name)
-            if not module:
-                continue
-
-            old_globals = {}
-            for key, value in new_globals.items():
-                if hasattr(module, key):
-                    old_globals[key] = getattr(module, key)  # Store old value
-                setattr(module, key, value)  # Inject new global
-
-            old_globals_per_module[module_name] = old_globals
-
+        for key, value in new_globals.items():
+            setattr(builtins, key, value)  # Inject new global
         yield
-
     finally:
-        # Restore old values for target modules
-        for module_name, old_globals in old_globals_per_module.items():
-            module = sys.modules.get(module_name)
-            if module:
-                for key, value in old_globals.items():
-                    setattr(module, key, value)
+        for key, value in old_globals.items():
+            if value is None:
+                delattr(builtins, key)  # Remove added globals
+            else:
+                setattr(builtins, key, value)  # Restore original value
+
 
 class OpenAPI:
     def __init__(
@@ -453,8 +435,8 @@ class OpenAPI:
     ) -> None:
         funcs_to_register = self._get_functions_to_register(functions)
 
-        with add_to_globals(
-            modules=["autogen.tools.function_utils", "autogen.tools", "autogen"], new_globals=self._globals
+        with add_to_builtins(
+            new_globals=self._globals,
         ):
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
