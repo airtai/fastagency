@@ -154,7 +154,6 @@ def api(openapi_schema: dict[str, Any]) -> OpenAPI:
     return client
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 def test_register_for_llm(
     api: OpenAPI, azure_gpt35_turbo_16k_llm_config: LLMConfig
 ) -> None:
@@ -176,7 +175,7 @@ def test_register_for_llm(
         {
             "type": "function",
             "function": {
-                "description": "\n    Get Gifs For Topic\n    ",
+                "description": "Get GIFs for a topic.",
                 "name": "get_gifs_for_topic_gifs_get",
                 "parameters": {
                     "type": "object",
@@ -188,7 +187,7 @@ def test_register_for_llm(
         {
             "type": "function",
             "function": {
-                "description": "\n    Get Gif By Id\n    ",
+                "description": "Get GIF by Id.",
                 "name": "get_gif_by_id_gifs__gif_id__get",
                 "parameters": {
                     "type": "object",
@@ -206,7 +205,6 @@ def test_register_for_llm(
     )
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.azure_oai
 @pytest.mark.parametrize(
     "fastapi_openapi_url", [(create_gify_fastapi_app)], indirect=["fastapi_openapi_url"]
@@ -244,7 +242,7 @@ def test_end2end(
     )
 
     message_existed = False
-    expected_message_content = '[{"id": 1, "title": "Gif 1", "url": "https://gif.example.com/gif1?topic=funny"}, {"id": 2, "title": "Gif 2", "url": "https://gif.example.com/gif2?topic=funny"}]'
+    expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"
     for message in agent.chat_messages[user_proxy]:
         if (
             isinstance(message, dict)

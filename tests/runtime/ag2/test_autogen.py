@@ -188,7 +188,6 @@ def test_simple(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
     )
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.skipif(
     sys.platform == "darwin", reason="Test fails on macOS due to docker usage settings"
 )
