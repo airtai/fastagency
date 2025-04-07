@@ -1,0 +1,37 @@
+# fly.toml app configuration file generated for my_fastagency_app
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'my-fastagency-app'
+primary_region = 'ams'
+
+[build]
+  dockerfile = 'docker/Dockerfile'
+
+[http_service]
+  internal_port = 8888
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[[services]]
+  http_checks = []
+  internal_port = 8888
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+
+  [services.concurrency]
+    type = "connections"
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 8888
