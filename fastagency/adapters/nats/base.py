@@ -194,7 +194,7 @@ class NatsAdapter(MessageProcessorMixin, CreateWorkflowUIMixin):
                                 stack_info=True,
                             )
                             ui.error(
-                                sender="NatsAdapter",
+                                sender_name="NatsAdapter",
                                 short=f"Unexpected error: {e}",
                                 long=traceback.format_exc(),
                             )

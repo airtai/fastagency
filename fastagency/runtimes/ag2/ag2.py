@@ -101,8 +101,8 @@ def _findall(key: str, string: str, /) -> tuple[str, ...]:
 @dataclass
 class CurrentMessage:
     workflow_uuid: str
-    sender: Optional[str] = None
-    recipient: Optional[str] = None
+    sender_name:  Optional[str] = None
+    recipient_name: Optional[str] = None
     type: MessageType = "text_message"
     auto_reply: bool = False
     body: Optional[str] = None
@@ -121,7 +121,7 @@ class CurrentMessage:
             self.auto_reply = True
         elif _match("sender_recipient", chunk):
             # logger.info("CurrentMessage.process_chunk(): sender_recipient detected")
-            self.sender, self.recipient = _findall("sender_recipient", chunk)
+            self.sender_name, self.recipient_name = _findall("sender_recipient", chunk)
         elif _match("suggested_function_call", chunk):
             # logger.info("CurrentMessage.process_chunk(): suggested_function_call detected")
             self.call_id, self.function_name = _findall(
@@ -181,8 +181,8 @@ class CurrentMessage:
         if last_message.type == "suggested_function_call":
             # logger.info("IOStreamAdapter.input(): suggested_function_call detected")
             message = MultipleChoice(
-                sender=sender,
-                recipient=recipient,
+                sender_name=sender_name,
+                recipient_name=recipient_name,
                 prompt="Please approve the suggested function call.",
                 choices=["Approve", "Reject", "Exit"],
                 default="Approve",
@@ -191,8 +191,8 @@ class CurrentMessage:
         else:
             # logger.info("IOStreamAdapter.input(): text_message detected")
             message = TextInput(
-                sender=None,
-                recipient=None,
+                sender_name=None,
+                recipient_name=None,
                 prompt=prompt,
                 password=password,
                 workflow_uuid=self.workflow_uuid,
@@ -214,8 +214,8 @@ class CurrentMessage:
             retval = [
                 IOMessage.create(
                     body=body,
-                    sender=sender,
-                    recipient=recipient,
+                    sender_name=sender_name,
+                    recipient_name=recipient_name,
                     type="text_message",
                     workflow_uuid=workflow_uuid,
                 )
@@ -263,6 +263,9 @@ class IOStreamAdapter:  # IOStream
             self.ui.process_message(message)
 
     def send(self, message: "BaseMessage") -> None:
+        print("At IOStreamAdapter.send()")
+        print(f"message: {message}")
+        print(f"message type: {type(message)}")
         message.print(f=self.print)
 
     def input(self, prompt: str = "", *, password: bool = False) -> str:
@@ -323,8 +326,8 @@ class Workflow(WorkflowsProtocol):
             # todo: inject user_id into call (and other stuff)
             try:
                 ui.workflow_started(
-                    sender="Workflow",
-                    recipient="User",
+                    sender_name="Workflow",
+                    recipient_name="User",
                     name=name,
                     description=self.get_description(name),
                     params=kwargs,
@@ -337,8 +340,8 @@ class Workflow(WorkflowsProtocol):
                     exc_info=True,
                 )
                 ui.error(
-                    sender="Workflow",
-                    recipient="User",
+                    sender_name="Workflow",
+                    recipient_name="User",
                     short="Unhandled exception occurred when executing the workflow.",
                     long=str(e),
                 )
@@ -347,8 +350,8 @@ class Workflow(WorkflowsProtocol):
                 )
 
             ui.workflow_completed(
-                sender="Workflow",
-                recipient="User",
+                sender_name="Workflow",
+                recipient_name="User",
                 result=retval,
             )
             logger.info(f"Workflow '{name}' completed with result: {retval}")

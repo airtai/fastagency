@@ -35,6 +35,8 @@ from .auth import AuthProtocol
 from .styles import MesopHomePageStyles
 from .timer import configure_static_file_serving
 
+from autogen.events.agent_events import TextEvent, UsingAutoReplyEvent, TerminationEvent
+
 logger = get_logger(__name__)
 
 
@@ -228,6 +230,17 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
 
+    def visit_text(self, message: TextEvent)  -> None:
+        mesop_msg = self._mesop_message(message)
+        self._publish(mesop_msg)
+
+    def visit_using_auto_reply(self, message: UsingAutoReplyEvent) -> None:
+        mesop_msg = self._mesop_message(message)
+        self._publish(mesop_msg)
+
+    def visit_termination(self, message: TerminationEvent) -> None:
+        pass
+
     def visit_text_message(self, message: TextMessage) -> None:
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
@@ -243,6 +256,9 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         return self.in_queue.get()
 
     def process_message(self, message: IOMessage) -> Optional[str]:
+        print("At MesopUI.process_message")
+        print(f"Processing message: {message}")
+        print(type(message))
         return self.visit(message)
 
     def create_subconversation(self) -> "MesopUI":
@@ -267,6 +283,7 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
 
     def get_message_stream(self) -> Generator[MesopMessage, None, None]:
         while True:
+            print("At MesopUI.get_message_stream")
             message = self.out_queue.get()
             if self._is_stream_braker(message.io_message):
                 yield message
@@ -309,7 +326,7 @@ def run_workflow_mesop(provider: ProviderProtocol, name: str) -> UI:
                 exc_info=True,
             )
             ui.error(
-                sender="Mesop workflow_worker",
+                sender_name="Mesop workflow_worker",
                 short=f"Unexpected exception raised: {e}",
                 long=traceback.format_exc(),
             )

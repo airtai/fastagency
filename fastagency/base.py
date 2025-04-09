@@ -75,6 +75,13 @@ class UI:
     @property
     def ui_base(self) -> UIBase:
         return self._ui_base
+    
+    def new_processor(self, event: IOMessage) -> MessageProcessorProtocol:
+        from .runtimes.ag2 import IOStreamAdapter
+        iostream = IOStreamAdapter(self)
+
+        iostream.send(event)
+
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         return self._ui_base.process_message(message)
@@ -82,8 +89,8 @@ class UI:
     def text_message(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # text_message specific parameters
@@ -91,8 +98,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.text_message(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             body=body,
@@ -101,8 +108,8 @@ class UI:
     def suggested_function_call(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # suggested_function_call specific parameters
@@ -112,8 +119,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.suggested_function_call(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             function_name=function_name,
@@ -124,8 +131,8 @@ class UI:
     def function_call_execution(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # function_call_execution specific parameters
@@ -135,8 +142,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.function_call_execution(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             function_name=function_name,
@@ -147,8 +154,8 @@ class UI:
     def text_input(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # text_input specific parameters
@@ -158,8 +165,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.text_input(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             prompt=prompt,
@@ -170,8 +177,8 @@ class UI:
     def multiple_choice(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # multiple_choice specific parameters
@@ -182,8 +189,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.multiple_choice(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             prompt=prompt,
@@ -195,8 +202,8 @@ class UI:
     def system_message(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # system_message specific parameters
@@ -204,8 +211,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.system_message(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             message=message,
@@ -214,8 +221,8 @@ class UI:
     def workflow_started(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # workflow_started specific parameters
@@ -225,8 +232,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.workflow_started(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             name=name,
@@ -237,8 +244,8 @@ class UI:
     def workflow_completed(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # workflow_completed specific parameters
@@ -246,8 +253,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.workflow_completed(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             result=result,
@@ -256,8 +263,8 @@ class UI:
     def error(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # error specific parameters
@@ -266,8 +273,8 @@ class UI:
     ) -> Optional[str]:
         return self._ui_base.error(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
             short=short,
@@ -277,15 +284,15 @@ class UI:
     def keep_alive(
         self,
         # common parameters for all messages
-        sender: Optional[str] = None,
-        recipient: Optional[str] = None,
+        sender_name:  Optional[str] = None,
+        recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
     ) -> Optional[str]:
         return self._ui_base.keep_alive(
             workflow_uuid=self.workflow_uuid,
-            sender=sender,
-            recipient=recipient,
+            sender_name=sender_name,
+            recipient_name=recipient_name,
             auto_reply=auto_reply,
             uuid=uuid,
         )

@@ -29,7 +29,7 @@ class WhatsAppAgent(AssistantAgent):  # type: ignore[misc]
         name: str,
         llm_config: LLMConfig,
         executor: Union[ConversableAgent, list[ConversableAgent]],
-        sender: str,
+        sender_name:  str,
         whatsapp_api_key: str,
         **kwargs: Any,
     ):
@@ -47,7 +47,7 @@ class WhatsAppAgent(AssistantAgent):  # type: ignore[misc]
         super().__init__(
             *args,
             name=name,
-            system_message=WHATSAPP_SYSTEM_MESSAGE.format(sender=sender),
+            system_message=WHATSAPP_SYSTEM_MESSAGE.format(sender_name=sender_name),
             llm_config=llm_config,
             **kwargs,
         )

@@ -18,7 +18,10 @@ from ...messages import (
     MultipleChoice,
     TextInput,
     TextMessage,
+    WorkflowCompleted
 )
+
+from autogen.events.agent_events import TextEvent, UsingAutoReplyEvent, TerminationEvent, InputRequestEvent
 
 logger = get_logger(__name__)
 
@@ -28,8 +31,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
     class ConsoleMessage:
         """A console message."""
 
-        sender: Optional[str]
-        recipient: Optional[str]
+        sender_name:  Optional[str]
+        recipient_name: Optional[str]
         heading: Optional[str]
         body: Optional[str]
 
@@ -71,7 +74,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def _format_message(self, console_msg: ConsoleMessage) -> str:
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
-        title = f"{console_msg.sender} (to {console_msg.recipient}) {heading}"[:74]
+        title = f"{console_msg.sender_name} (to {console_msg.recipient_name}) {heading}"[:74]
 
         s = f"""╭─ {title} {"─" * (74 - len(title))}─╮
 │
@@ -104,48 +107,97 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         print(msg)  # noqa: T201 `print` found
 
     def visit_default(self, message: IOMessage) -> None:
-        content = message.model_dump()["content"]
+        if hasattr(message, "content"):
+            content = message.content
+            print("AT ConsoleUI.visit_default")
+            print(f"Content: {content}")
+            print(f"Content type: {type(content)}")
+            console_msg = self.ConsoleMessage(
+                sender_name=content.sender_name,
+                recipient_name=content.recipient_name,
+                heading=message.type,
+                body=getattr(content, "content", None),
+            )
+            self._format_and_print(console_msg)
+        else:
+            content = message.model_dump()["content"]
+            console_msg = self.ConsoleMessage(
+                sender_name=message.sender_name,
+                recipient_name=message.recipient_name,
+                heading=message.type,
+                body=json.dumps(content, indent=2),
+            )
+            self._format_and_print(console_msg)
+
+    def visit_text(self, message: TextEvent)  -> None:
+        content = message.content
+        print("AT ConsoleUI.visit_text")
+        print(f"Content: {content}")
+        print(f"Content type: {type(content)}")
         console_msg = self.ConsoleMessage(
-            sender=message.sender,
-            recipient=message.recipient,
+            sender_name=content.sender_name,
+            recipient_name=content.recipient_name,
             heading=message.type,
-            body=json.dumps(content, indent=2),
+            body=content.content,
         )
         self._format_and_print(console_msg)
 
+    def visit_using_auto_reply(self, message: UsingAutoReplyEvent) -> None:
+        content = message.content
+        console_msg = self.ConsoleMessage(
+            sender_name=content.sender_name,
+            recipient_name=content.recipient_name,
+            heading=message.type,
+            body=None,
+        )
+        self._format_and_print(console_msg)
+
+    def visit_termination(self, message: TerminationEvent) -> None:
+        pass
+
     def visit_text_message(self, message: TextMessage) -> None:
         console_msg = self.ConsoleMessage(
-            sender=message.sender,
-            recipient=message.recipient,
+            sender_name=message.sender_name,
+            recipient_name=message.recipient_name,
             heading=message.type,
             body=message.body,
         )
         self._format_and_print(console_msg)
 
     def visit_text_input(self, message: TextInput) -> str:
-        suggestions = (
-            f" (suggestions: {', '.join(message.suggestions)})"
-            if message.suggestions
-            else ""
-        )
-        console_msg = self.ConsoleMessage(
-            sender=message.sender,
-            recipient=message.recipient,
-            heading=message.type,
-            body=f"{message.prompt}{suggestions}:",
-        )
-
-        prompt = self._format_message(console_msg)
-        prompt = self._indent(prompt)
-        if message.password:
-            return getpass.getpass(prompt)
+        if isinstance(message, InputRequestEvent):
+            print("AT ConsoleUI.visit_text_input, type is InputRequestEvent")
+            prompt = message.content.prompt  # type: ignore[attr-defined]
+            if message.content.password:
+                result = getpass.getpass(prompt if prompt != "" else "Password: ")
+            result = input(prompt)
+            message.content.respond(result)
+            return result
         else:
-            return input(prompt)
+            print("AT ConsoleUI.visit_text_input, type is TextInput")
+            suggestions = (
+                f" (suggestions: {', '.join(message.suggestions)})"
+                if message.suggestions
+                else ""
+            )
+            console_msg = self.ConsoleMessage(
+                sender_name=message.sender_name,
+                recipient_name=message.recipient_name,
+                heading=message.type,
+                body=f"{message.prompt}{suggestions}:",
+            )
+
+            prompt = self._format_message(console_msg)
+            prompt = self._indent(prompt)
+            if message.password:
+                return getpass.getpass(prompt)
+            else:
+                return input(prompt)
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
         console_msg = self.ConsoleMessage(
-            sender=message.sender,
-            recipient=message.recipient,
+            sender_name=message.sender_name,
+            recipient_name=message.recipient_name,
             heading=message.type,
             body=f"{message.prompt} (choices: {', '.join(message.choices)}, default: {message.default})",
         )
@@ -164,6 +216,9 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         # logger.info(f"process_message(): {message=}")
+        print("At ConsoleUI.process_message")
+        print(f"Processing message: {message}")
+        print(type(message))
         return self.visit(message)
 
     # def process_streaming_message(self, message: IOStreamingMessage) -> str | None:

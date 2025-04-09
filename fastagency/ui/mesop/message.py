@@ -2,7 +2,7 @@ import json
 import random
 from collections.abc import Iterable, Iterator
 from typing import Callable, Optional
-from uuid import uuid4
+from uuid import uuid4, UUID
 
 import mesop as me
 import mesop.labs as mel
@@ -424,12 +424,12 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
     ) -> None:
         with me.box(style=box_style or self._styles.message.default.header_box):
             h = title if title else message.type
-            if message.sender and message.recipient:
-                h += f": {message.sender} (to {message.recipient})"
-            elif message.sender:
-                h += f": to {message.sender}"
+            if message.sender_name and message.recipient_name:
+                h += f": {message.sender_name} (to {message.recipient_name})"
+            elif message.sender_name: 
+                h += f": to {message.sender_name}"
             elif message.recipient:
-                h += f": from {message.recipient}"
+                h += f": from {message.recipient_name}"
             if message.auto_reply:
                 h += " (auto-reply)"
             h = f"**{h}**"
