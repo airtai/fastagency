@@ -2,10 +2,11 @@ import json
 import random
 from collections.abc import Iterable, Iterator
 from typing import Callable, Optional
-from uuid import uuid4, UUID
+from uuid import UUID, uuid4
 
 import mesop as me
 import mesop.labs as mel
+from autogen.events.agent_events import TextEvent, UsingAutoReplyEvent
 
 from fastagency.helpers import jsonify_string
 
@@ -24,6 +25,7 @@ from ...messages import (
     TextMessage,
     WorkflowCompleted,
 )
+from ...runtimes.ag2.ag2 import create_ag2_event
 from .components.inputs import input_text
 from .data_model import Conversation, ConversationMessage, State
 from .mesop import MesopMessage
@@ -32,6 +34,14 @@ from .styles import MesopHomePageStyles, MesopMessageStyles
 from .timer import wakeup_component
 
 logger = get_logger(__name__)
+
+
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            # if the obj is uuid, we simply return the value of uuid
+            return obj.hex
+        return json.JSONEncoder.default(self, obj)
 
 
 def consume_responses(responses: Iterable[MesopMessage]) -> Iterator[None]:
@@ -52,7 +62,11 @@ def handle_message(state: State, message: MesopMessage) -> None:
     conversation_id = message.conversation.id
     io_message = message.io_message
     message_dict = io_message.model_dump()
-    message_json = json.dumps(message_dict)
+    # if "content" in message_dict and "uuid" in message_dict["content"]:
+    #     if isinstance(message_dict["content"]["uuid"], UUID):
+    #         # ToDo: check if this is correct
+    #         message_dict["content"]["uuid"] = message_dict["content"]["uuid"].hex
+    message_json = json.dumps(message_dict, cls=UUIDEncoder)
     conversation_message = ConversationMessage(
         level=level,
         conversation_id=conversation_id,
@@ -96,7 +110,13 @@ def message_box(
     io_message_dict = json.loads(message.io_message_json)
     level = message.level
     conversation_id = message.conversation_id
-    io_message = IOMessage.create(**io_message_dict)
+    try:
+        io_message = IOMessage.create(**io_message_dict)
+    except Exception:
+        io_message = create_ag2_event(
+            **io_message_dict,
+        )
+
     visitor = MesopGUIMessageVisitor(level, conversation_id, message, styles, read_only)
     visitor.process_message(io_message)
 
@@ -169,7 +189,15 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
                 md_style=style.header_md,
             )
 
-            content = content or json.dumps(message.model_dump()["content"])
+            if isinstance(message, IOMessage):
+                content = content or json.dumps(
+                    message.model_dump()["content"], cls=UUIDEncoder
+                )
+            else:
+                content = message.content.content
+
+            # print("AT visit_default")
+            # print(f"Content: {content}")
 
             self._render_content(
                 content,
@@ -181,6 +209,22 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
 
             if inner_callback:
                 inner_callback()
+
+    def visit_text(self, message: TextEvent) -> None:
+        content = message.content.content
+        self.visit_default(
+            message,
+            content=content,
+            style=self._styles.message.text,
+        )
+
+    def visit_using_auto_repy(self, message: UsingAutoReplyEvent) -> None:
+        content = None
+        self.visit_default(
+            message,
+            content=content,
+            style=self._styles.message.system,
+        )
 
     def visit_text_message(self, message: TextMessage) -> None:
         content = message.body if message.body else ""
@@ -422,15 +466,22 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
         box_style: Optional[me.Style] = None,
         md_style: Optional[me.Style] = None,
     ) -> None:
+        if isinstance(message, IOMessage):
+            sender_name = message.sender_name
+            recipient_name = message.recipient_name
+        else:
+            sender_name = message.content.sender_name
+            recipient_name = message.content.recipient_name
+
         with me.box(style=box_style or self._styles.message.default.header_box):
             h = title if title else message.type
-            if message.sender_name and message.recipient_name:
-                h += f": {message.sender_name} (to {message.recipient_name})"
-            elif message.sender_name: 
-                h += f": to {message.sender_name}"
-            elif message.recipient:
-                h += f": from {message.recipient_name}"
-            if message.auto_reply:
+            if sender_name and recipient_name:
+                h += f": {sender_name} (to {recipient_name})"
+            elif sender_name:
+                h += f": to {sender_name}"
+            elif hasattr(message, "recipient") and message.recipient:
+                h += f": from {recipient_name}"
+            if hasattr(message, "auto_reply") and message.auto_reply:
                 h += " (auto-reply)"
             h = f"**{h}**"
             # style=me.Style(padding=me.Padding(top=8, right=16, left=16, bottom=8))

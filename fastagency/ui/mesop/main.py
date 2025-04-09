@@ -1,4 +1,5 @@
 import time
+import traceback
 from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Callable, Optional
@@ -118,6 +119,9 @@ class MesopHomePage:
                     if self.auth and state.authenticated_user:
                         self.auth.auth_component()
         except Exception as e:
+            tb = traceback.format_exc()
+            # print("Inside except")
+            # print(tb)
             logger.error(f"home_page(): Error rendering home page: {e}")
             me.text(text="Error: Something went wrong, please check logs for details.")
 

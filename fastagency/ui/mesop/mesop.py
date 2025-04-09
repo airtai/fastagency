@@ -11,6 +11,7 @@ from typing import Any, Callable, ClassVar, Optional
 from uuid import uuid4
 
 import mesop as me
+from autogen.events.agent_events import TerminationEvent, TextEvent, UsingAutoReplyEvent
 from mesop.bin.bin import FLAGS as MESOP_FLAGS
 from mesop.bin.bin import main as mesop_main
 
@@ -34,8 +35,6 @@ from ...messages import (
 from .auth import AuthProtocol
 from .styles import MesopHomePageStyles
 from .timer import configure_static_file_serving
-
-from autogen.events.agent_events import TextEvent, UsingAutoReplyEvent, TerminationEvent
 
 logger = get_logger(__name__)
 
@@ -230,7 +229,7 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
 
-    def visit_text(self, message: TextEvent)  -> None:
+    def visit_text(self, message: TextEvent) -> None:
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
 
@@ -256,9 +255,9 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         return self.in_queue.get()
 
     def process_message(self, message: IOMessage) -> Optional[str]:
-        print("At MesopUI.process_message")
-        print(f"Processing message: {message}")
-        print(type(message))
+        # print("At MesopUI.process_message")
+        # print(f"Processing message: {message}")
+        # print(type(message))
         return self.visit(message)
 
     def create_subconversation(self) -> "MesopUI":
@@ -279,11 +278,11 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
     ) -> Generator[MesopMessage, None, None]:
         conversation = cls.get_conversation(conversation_id)
         conversation.respond(message)
-        return conversation.get_message_stream()
+        m = conversation.get_message_stream()
+        return m
 
     def get_message_stream(self) -> Generator[MesopMessage, None, None]:
         while True:
-            print("At MesopUI.get_message_stream")
             message = self.out_queue.get()
             if self._is_stream_braker(message.io_message):
                 yield message

@@ -7,6 +7,13 @@ from dataclasses import dataclass
 from typing import Any, Optional
 from uuid import uuid4
 
+from autogen.events.agent_events import (
+    InputRequestEvent,
+    TerminationEvent,
+    TextEvent,
+    UsingAutoReplyEvent,
+)
+
 from ...base import (
     CreateWorkflowUIMixin,
     Runnable,
@@ -18,10 +25,7 @@ from ...messages import (
     MultipleChoice,
     TextInput,
     TextMessage,
-    WorkflowCompleted
 )
-
-from autogen.events.agent_events import TextEvent, UsingAutoReplyEvent, TerminationEvent, InputRequestEvent
 
 logger = get_logger(__name__)
 
@@ -31,7 +35,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
     class ConsoleMessage:
         """A console message."""
 
-        sender_name:  Optional[str]
+        sender_name: Optional[str]
         recipient_name: Optional[str]
         heading: Optional[str]
         body: Optional[str]
@@ -74,7 +78,11 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def _format_message(self, console_msg: ConsoleMessage) -> str:
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
-        title = f"{console_msg.sender_name} (to {console_msg.recipient_name}) {heading}"[:74]
+        title = (
+            f"{console_msg.sender_name} (to {console_msg.recipient_name}) {heading}"[
+                :74
+            ]
+        )
 
         s = f"""╭─ {title} {"─" * (74 - len(title))}─╮
 │
@@ -109,9 +117,6 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
     def visit_default(self, message: IOMessage) -> None:
         if hasattr(message, "content"):
             content = message.content
-            print("AT ConsoleUI.visit_default")
-            print(f"Content: {content}")
-            print(f"Content type: {type(content)}")
             console_msg = self.ConsoleMessage(
                 sender_name=content.sender_name,
                 recipient_name=content.recipient_name,
@@ -129,11 +134,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
             )
             self._format_and_print(console_msg)
 
-    def visit_text(self, message: TextEvent)  -> None:
+    def visit_text(self, message: TextEvent) -> None:
         content = message.content
-        print("AT ConsoleUI.visit_text")
-        print(f"Content: {content}")
-        print(f"Content type: {type(content)}")
         console_msg = self.ConsoleMessage(
             sender_name=content.sender_name,
             recipient_name=content.recipient_name,
@@ -143,14 +145,15 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         self._format_and_print(console_msg)
 
     def visit_using_auto_reply(self, message: UsingAutoReplyEvent) -> None:
-        content = message.content
-        console_msg = self.ConsoleMessage(
-            sender_name=content.sender_name,
-            recipient_name=content.recipient_name,
-            heading=message.type,
-            body=None,
-        )
-        self._format_and_print(console_msg)
+        # content = message.content
+        # console_msg = self.ConsoleMessage(
+        #     sender_name=content.sender_name,
+        #     recipient_name=content.recipient_name,
+        #     heading=message.type,
+        #     body=None,
+        # )
+        # self._format_and_print(console_msg)
+        pass
 
     def visit_termination(self, message: TerminationEvent) -> None:
         pass
@@ -166,7 +169,6 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def visit_text_input(self, message: TextInput) -> str:
         if isinstance(message, InputRequestEvent):
-            print("AT ConsoleUI.visit_text_input, type is InputRequestEvent")
             prompt = message.content.prompt  # type: ignore[attr-defined]
             if message.content.password:
                 result = getpass.getpass(prompt if prompt != "" else "Password: ")
@@ -174,7 +176,6 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
             message.content.respond(result)
             return result
         else:
-            print("AT ConsoleUI.visit_text_input, type is TextInput")
             suggestions = (
                 f" (suggestions: {', '.join(message.suggestions)})"
                 if message.suggestions
@@ -216,9 +217,6 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         # logger.info(f"process_message(): {message=}")
-        print("At ConsoleUI.process_message")
-        print(f"Processing message: {message}")
-        print(type(message))
         return self.visit(message)
 
     # def process_streaming_message(self, message: IOStreamingMessage) -> str | None:

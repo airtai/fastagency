@@ -29,7 +29,7 @@ class WhatsAppAgent(AssistantAgent):  # type: ignore[misc]
         name: str,
         llm_config: LLMConfig,
         executor: Union[ConversableAgent, list[ConversableAgent]],
-        sender_name:  str,
+        sender_name: str,
         whatsapp_api_key: str,
         **kwargs: Any,
     ):
@@ -40,7 +40,7 @@ class WhatsAppAgent(AssistantAgent):  # type: ignore[misc]
             name (str): The name of the agent.
             llm_config (dict[str, Any]): The LLM configuration.
             executor (Union[ConversableAgent, list[ConversableAgent]]): The executor agent(s).
-            sender (str): Number of the sender for WhatsApp API.
+            sender_name (str): Number of the sender for WhatsApp API.
             whatsapp_api_key (str): The WhatsApp API key
             **kwargs (Any): The keyword arguments.
         """

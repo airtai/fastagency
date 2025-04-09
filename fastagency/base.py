@@ -75,13 +75,13 @@ class UI:
     @property
     def ui_base(self) -> UIBase:
         return self._ui_base
-    
+
     def new_processor(self, event: IOMessage) -> MessageProcessorProtocol:
         from .runtimes.ag2 import IOStreamAdapter
+
         iostream = IOStreamAdapter(self)
 
         iostream.send(event)
-
 
     def process_message(self, message: IOMessage) -> Optional[str]:
         return self._ui_base.process_message(message)
@@ -89,7 +89,7 @@ class UI:
     def text_message(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -108,7 +108,7 @@ class UI:
     def suggested_function_call(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -131,7 +131,7 @@ class UI:
     def function_call_execution(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -154,7 +154,7 @@ class UI:
     def text_input(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -177,7 +177,7 @@ class UI:
     def multiple_choice(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -202,7 +202,7 @@ class UI:
     def system_message(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -221,7 +221,7 @@ class UI:
     def workflow_started(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -244,7 +244,7 @@ class UI:
     def workflow_completed(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -263,7 +263,7 @@ class UI:
     def error(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
@@ -284,7 +284,7 @@ class UI:
     def keep_alive(
         self,
         # common parameters for all messages
-        sender_name:  Optional[str] = None,
+        sender_name: Optional[str] = None,
         recipient_name: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
