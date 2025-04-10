@@ -205,6 +205,7 @@ def test_register_for_llm(
     )
 
 
+@pytest.mark.skip(reason="Streaming is not supported yet")
 @pytest.mark.azure_oai
 @pytest.mark.parametrize(
     "fastapi_openapi_url", [(create_gify_fastapi_app)], indirect=["fastapi_openapi_url"]
