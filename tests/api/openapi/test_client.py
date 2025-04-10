@@ -7,7 +7,6 @@ from fastapi.params import Query
 from fastagency.api.openapi import OpenAPI
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 class TestOpenAPI:
     def test_simple_create_client(self) -> None:
         json_path = Path(__file__).parent / "templates" / "openapi.json"

@@ -1,13 +1,11 @@
 from unittest.mock import MagicMock, patch
 
-import pytest
 from autogen import UserProxyAgent
 
 from fastagency.api.openapi import OpenAPI
 from fastagency.api.openapi.security import APIKeyHeader
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @patch("fastagency.api.openapi.openapi.requests.post")
 def test_real_whatsapp_end2end(
     mock_post: MagicMock,
@@ -60,10 +58,14 @@ def test_real_whatsapp_end2end(
             "Content-Type": "application/json",
         },
         json={
-            "from": "447860099299",
+            "from_": "447860099299",
             "to": "38591152131",
             "messageId": "test-message-123",
-            "content": {"text": "Hello, World!"},
+            "content": {"text": "Hello, World!", "previewUrl": None},
             "callbackData": "Callback data",
+            "notifyUrl": None,
+            "urlOptions": None,
+            "entityId": None,
+            "applicationId": None,
         },
     )

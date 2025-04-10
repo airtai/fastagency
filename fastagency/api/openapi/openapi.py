@@ -1,3 +1,4 @@
+import builtins
 import importlib
 import inspect
 import json
@@ -9,7 +10,14 @@ from contextlib import contextmanager
 from functools import wraps
 from pathlib import Path
 from types import ModuleType
-from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Literal,
+    Optional,
+    Union,
+)
 
 import fastapi
 import requests
@@ -19,6 +27,7 @@ from pydantic_core import PydanticUndefined
 
 from fastagency.helpers import optional_temp_path
 
+from ...logging import get_logger
 from .fastapi_code_generator_helpers import patch_get_parameter_type
 from .security import BaseSecurity, BaseSecurityParameters
 
@@ -27,19 +36,23 @@ if TYPE_CHECKING:
 
 __all__ = ["OpenAPI"]
 
+logger = get_logger(__name__)
+
 
 @contextmanager
-def add_to_globals(new_globals: dict[str, Any]) -> Iterator[None]:
-    old_globals: dict[str, Any] = {}
+def add_to_builtins(new_globals: dict[str, Any]) -> Iterator[None]:
+    old_globals = {key: getattr(builtins, key, None) for key in new_globals}
+
     try:
         for key, value in new_globals.items():
-            if key in globals():
-                old_globals[key] = globals()[key]
-            globals()[key] = value
+            setattr(builtins, key, value)  # Inject new global
         yield
     finally:
         for key, value in old_globals.items():
-            globals()[key] = value
+            if value is None:
+                delattr(builtins, key)  # Remove added globals
+            else:
+                setattr(builtins, key, value)  # Restore original value
 
 
 class OpenAPI:
@@ -55,8 +68,6 @@ class OpenAPI:
 
         self._security: dict[str, list[BaseSecurity]] = {}
         self._security_params: dict[Optional[str], BaseSecurityParameters] = {}
-
-        raise NotImplementedError("Currently not implemented.")
 
     @staticmethod
     def _convert_camel_case_within_braces_to_snake(text: str) -> str:
@@ -341,7 +352,13 @@ class OpenAPI:
     ) -> dict[Callable[..., Any], dict[str, Union[str, None]]]:
         if functions is None:
             return {
-                f: {"name": None, "description": None} for f in self._registered_funcs
+                f: {
+                    "name": None,
+                    "description": f._description
+                    if hasattr(f, "_description")
+                    else None,
+                }
+                for f in self._registered_funcs
             }
 
         functions_with_name_desc: dict[str, dict[str, Union[str, None]]] = {}
@@ -418,7 +435,9 @@ class OpenAPI:
     ) -> None:
         funcs_to_register = self._get_functions_to_register(functions)
 
-        with add_to_globals(self._globals):
+        with add_to_builtins(
+            new_globals=self._globals,
+        ):
             for f, v in funcs_to_register.items():
                 agent.register_for_llm(name=v["name"], description=v["description"])(f)
 

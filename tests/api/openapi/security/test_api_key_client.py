@@ -71,7 +71,6 @@ def create_api_key_query_fastapi_app(host: str, port: int) -> FastAPI:
     return app
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize(
     "fastapi_openapi_url, schema, in_",  # noqa: PT006
     [
@@ -132,7 +131,6 @@ def test_openapi_schema(
         assert openapi_json == expected_schema
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize(
     "fastapi_openapi_url, client_config_func",  # noqa: PT006
     [
@@ -162,7 +160,6 @@ def test_api_key_correct(
     assert response == {"message": "Hi!"}
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize(
     "fastapi_openapi_url, client_config_func",  # noqa: PT006
     [

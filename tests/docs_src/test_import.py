@@ -45,7 +45,6 @@ def test_list_submodules() -> None:
     assert "docs_src.getting_started" in submodules
 
 
-@pytest.mark.skip(reason="fastagency.api.openapi.OpenAPI is not implemented yet.")
 @pytest.mark.parametrize("module", list_submodules(module_name, include_path=root_path))
 def test_submodules(module: str, monkeypatch: pytest.MonkeyPatch) -> None:
     with add_to_sys_path(root_path):

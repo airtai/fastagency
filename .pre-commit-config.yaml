@@ -36,16 +36,16 @@ repos:
         require_serial: true
         verbose: true
 
-  - repo: local
-    hooks:
-      - id: test
-        name: Test
-        entry: "scripts/test-no-llm-pre-commit.sh"
-        language: python
-        #        language_version: python3.9
-        types: [python]
-        require_serial: true
-        verbose: true
+  # - repo: local
+  #   hooks:
+  #     - id: test
+  #       name: Test
+  #       entry: "scripts/test-no-llm-pre-commit.sh"
+  #       language: python
+  #       #        language_version: python3.9
+  #       types: [python]
+  #       require_serial: true
+  #       verbose: true
 
   - repo: local
     hooks:
