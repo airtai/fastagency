@@ -4,15 +4,10 @@ import textwrap
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 from uuid import uuid4
 
-from autogen.events.agent_events import (
-    InputRequestEvent,
-    TerminationEvent,
-    TextEvent,
-    UsingAutoReplyEvent,
-)
+from autogen.events.agent_events import InputRequestEvent
 
 from ...base import (
     CreateWorkflowUIMixin,
@@ -26,6 +21,14 @@ from ...messages import (
     TextInput,
     TextMessage,
 )
+
+if TYPE_CHECKING:
+    from autogen.events.agent_events import (
+        ExecuteFunctionEvent,
+        TerminationEvent,
+        TextEvent,
+        UsingAutoReplyEvent,
+    )
 
 logger = get_logger(__name__)
 
@@ -130,7 +133,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
             )
             self._format_and_print(console_msg)
 
-    def visit_text(self, message: TextEvent) -> None:
+    def visit_text(self, message: "TextEvent") -> None:
         content = message.content
         console_msg = self.ConsoleMessage(
             sender=content.sender,
@@ -140,11 +143,23 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         )
         self._format_and_print(console_msg)
 
-    def visit_using_auto_reply(self, message: UsingAutoReplyEvent) -> None:
+    def visit_using_auto_reply(self, message: "UsingAutoReplyEvent") -> None:
         # Do nothing if it is of type UsingAutoReplyEvent
         pass
 
-    def visit_termination(self, message: TerminationEvent) -> None:
+    def visit_execute_function(self, message: "ExecuteFunctionEvent") -> None:
+        content = message.content
+
+        body = f"\n>>>>>>>> EXECUTING FUNCTION {content.func_name}...\nCall ID: {content.call_id}\nInput arguments: {content.arguments}"
+        console_msg = self.ConsoleMessage(
+            sender="Workflow",
+            recipient=content.recipient,
+            heading=message.type,
+            body=body,
+        )
+        self._format_and_print(console_msg)
+
+    def visit_termination(self, message: "TerminationEvent") -> None:
         pass
 
     def visit_text_message(self, message: TextMessage) -> None:
