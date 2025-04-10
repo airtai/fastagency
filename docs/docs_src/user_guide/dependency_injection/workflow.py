@@ -74,11 +74,11 @@ def bank_workflow(ui: UI, params: dict[str, str]) -> str:
         description="Get balance",
     )
 
-    chat_result = user_agent.initiate_chat(
+    response = user_agent.run(
         banker_agent,
         message="We need to get user's balance.",
         summary_method="reflection_with_llm",
         max_turns=3,
     )
 
-    return chat_result.summary  # type: ignore[no-any-return]
+    return ui.process(response)  # type: ignore[no-any-return]

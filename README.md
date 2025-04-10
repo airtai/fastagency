@@ -222,14 +222,14 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         llm_config=llm_config,
     )
 
-    chat_result = student_agent.initiate_chat(
+    response = student_agent.run(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=3,
     )
 
-    return str(chat_result.summary)
+    return ui.process(response)
 ```
 
 This code snippet sets up a simple learning chat between a student and a teacher. It defines the agents and how they should interact and specify how the conversation should be summarized.
