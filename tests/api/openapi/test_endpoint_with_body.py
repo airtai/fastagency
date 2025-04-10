@@ -52,7 +52,13 @@ def test_end2end(
         summary_method="reflection_with_llm",
         max_turns=3,
     )
-    response.process()
+
+    events = []
+    for event in response.events:
+        events.append(event)
+
+        if event.type == "input_request":
+            event.content.respond("exit")
 
     message_existed = False
     expected_message = "Item created"
@@ -68,5 +74,5 @@ def test_end2end(
             message_existed = True
             break
     assert message_existed, (
-        f"Expected message '{expected_message}' not found in {message_contents}"
+        f"Expected message '{expected_message}' not found in {message_contents} {events}"
     )

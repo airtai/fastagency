@@ -246,7 +246,12 @@ def test_end2end(
         summary_method="reflection_with_llm",
         max_turns=2,
     )
-    response.process()
+    events = []
+    for event in response.events:
+        events.append(event)
+
+        if event.type == "input_request":
+            event.content.respond("exit")
 
     message_existed = False
     expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"
@@ -264,5 +269,5 @@ def test_end2end(
             break
 
     assert message_existed, (
-        f"Expected message '{expected_message_content}' not found in {message_contents}"
+        f"Expected message '{expected_message_content}' not found in {message_contents} {events}"
     )
