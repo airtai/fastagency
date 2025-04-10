@@ -255,14 +255,12 @@ def test_end2end(
 
     message_existed = False
     expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"
-    message_contents = []
     for message in response.messages:
         content = message.get("content", "")
-        message_contents.append(message)
         if message["role"] == "tool" and content == expected_message_content:
             message_existed = True
             break
 
     assert message_existed, (
-        f"Expected message '{expected_message_content}' not found in {message_contents} {response.messages}"
+        f"Expected message '{expected_message_content}' not found in {response.messages}"
     )
