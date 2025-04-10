@@ -231,6 +231,7 @@ def test_end2end(
         summary_method="reflection_with_llm",
         max_turns=3,
     )
+    response.process()
 
     # ToDo: Temporary fix to wait till summary is ready
     import time
@@ -245,6 +246,7 @@ def test_end2end(
         summary_method="reflection_with_llm",
         max_turns=2,
     )
+    response.process()
 
     message_existed = False
     expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"

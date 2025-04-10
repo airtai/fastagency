@@ -52,6 +52,7 @@ def test_end2end(
         summary_method="reflection_with_llm",
         max_turns=3,
     )
+    response.process()
 
     message_existed = False
     expected_message = "Item created"
