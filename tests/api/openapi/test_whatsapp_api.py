@@ -61,7 +61,7 @@ def test_real_whatsapp_end2end(
             "from_": "447860099299",
             "to": "38591152131",
             "messageId": "test-message-123",
-            "content": {"text": "Hello, World!", "previewUrl": None},
+            "content": {"text": "Hello, World!", "previewUrl": False},
             "callbackData": "Callback data",
             "notifyUrl": None,
             "urlOptions": None,
