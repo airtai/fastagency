@@ -205,7 +205,6 @@ def test_register_for_llm(
     )
 
 
-@pytest.mark.skip(reason="Streaming is not supported yet")
 @pytest.mark.azure_oai
 @pytest.mark.parametrize(
     "fastapi_openapi_url", [(create_gify_fastapi_app)], indirect=["fastapi_openapi_url"]
@@ -248,6 +247,11 @@ def test_end2end(
         max_turns=2,
     )
     response.process()
+
+    # ToDo: Remove this sleep when the issue is fixed
+    import time
+
+    time.sleep(5)
 
     message_existed = False
     expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"
