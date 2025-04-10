@@ -38,6 +38,7 @@ from .timer import configure_static_file_serving
 if TYPE_CHECKING:
     from autogen.events.agent_events import (
         ExecuteFunctionEvent,
+        InputRequestEvent,
         TerminationEvent,
         TextEvent,
         UsingAutoReplyEvent,
@@ -255,6 +256,11 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         self._publish(mesop_msg)
 
     def visit_text_input(self, message: TextInput) -> str:
+        mesop_msg = self._mesop_message(message)
+        self._publish(mesop_msg)
+        return self.in_queue.get()
+
+    def visit_input_request(self, message: "InputRequestEvent") -> str:
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
         return self.in_queue.get()

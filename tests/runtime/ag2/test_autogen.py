@@ -269,6 +269,7 @@ class TestWorkflowWithHumanInputAlways:
 
         return wf
 
+    # @pytest.mark.skip(reason="Test fails on macOS due to docker usage settings")
     @pytest.mark.parametrize("response", ["", "Reject"])
     def test(
         self, wf: Workflow, response: str, monkeypatch: pytest.MonkeyPatch

@@ -7,8 +7,6 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Optional
 from uuid import uuid4
 
-from autogen.events.agent_events import InputRequestEvent
-
 from ...base import (
     CreateWorkflowUIMixin,
     Runnable,
@@ -25,6 +23,7 @@ from ...messages import (
 if TYPE_CHECKING:
     from autogen.events.agent_events import (
         ExecuteFunctionEvent,
+        InputRequestEvent,
         TerminationEvent,
         TextEvent,
         UsingAutoReplyEvent,
@@ -172,32 +171,33 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         self._format_and_print(console_msg)
 
     def visit_text_input(self, message: TextInput) -> str:
-        if isinstance(message, InputRequestEvent):
-            prompt = message.content.prompt  # type: ignore[attr-defined]
-            if message.content.password:
-                result = getpass.getpass(prompt if prompt != "" else "Password: ")
-            result = input(prompt)
-            message.content.respond(result)
-            return result
-        else:
-            suggestions = (
-                f" (suggestions: {', '.join(message.suggestions)})"
-                if message.suggestions
-                else ""
-            )
-            console_msg = self.ConsoleMessage(
-                sender=message.sender,
-                recipient=message.recipient,
-                heading=message.type,
-                body=f"{message.prompt}{suggestions}:",
-            )
+        suggestions = (
+            f" (suggestions: {', '.join(message.suggestions)})"
+            if message.suggestions
+            else ""
+        )
+        console_msg = self.ConsoleMessage(
+            sender=message.sender,
+            recipient=message.recipient,
+            heading=message.type,
+            body=f"{message.prompt}{suggestions}:",
+        )
 
-            prompt = self._format_message(console_msg)
-            prompt = self._indent(prompt)
-            if message.password:
-                return getpass.getpass(prompt)
-            else:
-                return input(prompt)
+        prompt = self._format_message(console_msg)
+        prompt = self._indent(prompt)
+        if message.password:
+            return getpass.getpass(prompt)
+        else:
+            return input(prompt)
+
+    def visit_input_request(self, message: "InputRequestEvent") -> str:
+        prompt = message.content.prompt
+        if message.content.password:
+            result = getpass.getpass(prompt if prompt != "" else "Password: ")
+        else:
+            result = input(prompt)
+        message.content.respond(result)
+        return result
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
         console_msg = self.ConsoleMessage(
