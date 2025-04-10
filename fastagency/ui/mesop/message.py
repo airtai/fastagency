@@ -194,7 +194,12 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
                     message.model_dump()["content"], cls=UUIDEncoder
                 )
             else:
-                content = message.content.content
+                content = (
+                    message.content.content
+                    if hasattr(message, "content")
+                    and hasattr(message.content, "content")
+                    else ""
+                )
 
             # print("AT visit_default")
             # print(f"Content: {content}")

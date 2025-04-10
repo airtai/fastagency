@@ -14,6 +14,7 @@ from typing import (
 
 from autogen.agentchat import ConversableAgent
 from autogen.events.agent_events import TextEvent, UsingAutoReplyEvent
+from autogen.events.base_event import get_event_classes
 from pydantic import BaseModel
 
 from ...base import (
@@ -32,6 +33,8 @@ __all__ = [
     "create_ag2_event",
 ]
 
+
+EVENT_CLASSES = get_event_classes()
 
 # Get the logger
 logger = get_logger(__name__)
@@ -107,17 +110,16 @@ def _get_event_class(type: Optional[EventType] = None) -> Type[BaseModel]:
 
 
 def create_ag2_event(type: Optional[EventType] = None, **kwargs: Any) -> "BaseModel":
-    cls = _get_event_class(type)
+    # print("At create_ag2_event")
+    cls = EVENT_CLASSES[type]
+    # print(f"{cls=}")
 
     content = kwargs.pop("content", {})
     kwargs.update(content)
 
-    if cls == UsingAutoReplyEvent:
-        kwargs["sender"] = kwargs.pop("sender_name", None)
-        kwargs["recipient"] = kwargs.pop("recipient_name", None)
-
+    # print(f"{kwargs=}")
     o = cls(**kwargs)
-    # print("At create_ag2_event")
+
     # print(f"{o=}")
     return o
 

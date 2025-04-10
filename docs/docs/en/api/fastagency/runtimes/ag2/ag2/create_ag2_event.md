@@ -8,4 +8,4 @@ search:
   boost: 0.5
 ---
 
-::: fastagency.runtimes.ag2.ag2.IOStreamAdapter
+::: fastagency.runtimes.ag2.ag2.create_ag2_event
