@@ -31,7 +31,7 @@ __all__ = [
     "create_ag2_event",
 ]
 
-
+# Populate ag2 event classes for each event type
 EVENT_CLASSES = get_event_classes()
 
 # Get the logger
@@ -93,21 +93,16 @@ def _findall(key: str, string: str, /) -> tuple[str, ...]:
 
 def create_ag2_event(type: Optional[str] = None, **kwargs: Any) -> "BaseEvent":
     type = type or "text"
-    # print("At create_ag2_event")
     if type not in EVENT_CLASSES:
         raise ValueError(f"Unknown event type: {type}")
 
+    # Get the ag2 event class
     cls = EVENT_CLASSES[type]
-    # print(f"{cls=}")
 
     content = kwargs.pop("content", {})
     kwargs.update(content)
 
-    # print(f"{kwargs=}")
-    o = cls(**kwargs)
-
-    # print(f"{o=}")
-    return o
+    return cls(**kwargs)
 
 
 class Workflow(WorkflowsProtocol):
@@ -140,9 +135,6 @@ class Workflow(WorkflowsProtocol):
     ) -> str:
         workflow, _ = self._workflows[name]
 
-        # iostream = IOStreamAdapter(ui)
-
-        # with IOStream.set_default(iostream):
         # todo: inject user_id into call (and other stuff)
         try:
             ui.workflow_started(

@@ -255,9 +255,6 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         return self.in_queue.get()
 
     def process_message(self, message: IOMessage) -> Optional[str]:
-        # print("At MesopUI.process_message")
-        # print(f"Processing message: {message}")
-        # print(type(message))
         return self.visit(message)
 
     def create_subconversation(self) -> "MesopUI":
@@ -278,8 +275,7 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
     ) -> Generator[MesopMessage, None, None]:
         conversation = cls.get_conversation(conversation_id)
         conversation.respond(message)
-        m = conversation.get_message_stream()
-        return m
+        return conversation.get_message_stream()
 
     def get_message_stream(self) -> Generator[MesopMessage, None, None]:
         while True:

@@ -83,17 +83,12 @@ class IOMessage(
 
     @staticmethod
     def create(type: Optional[MessageType] = None, **kwargs: Any) -> "IOMessage":
-        # print("At fastagency/messages.py:IOMessage.create")
         cls = IOMessage._get_message_class(type)
-        # print("cls", cls)
 
         content = kwargs.pop("content", {})
         kwargs.update(content)
 
-        c = cls(**kwargs)
-        # print("c", c)
-        return c
-        # return cls(**kwargs)
+        return cls(**kwargs)
 
     @staticmethod
     def _get_parameters_names() -> list[str]:
@@ -322,8 +317,6 @@ class MessageProcessorProtocol(Protocol):
 class MessageProcessorMixin(ABC):
     def visit(self, message: IOMessage) -> Optional[str]:
         method_name = f"visit_{message.type}"
-        # print("At fastagency/messages.py:MessageProcessorMixin.visit")
-        # print("method_name", method_name)
         method = getattr(self, method_name, self.visit_default)
         return method(message)
 

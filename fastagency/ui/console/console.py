@@ -141,14 +141,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         self._format_and_print(console_msg)
 
     def visit_using_auto_reply(self, message: UsingAutoReplyEvent) -> None:
-        # content = message.content
-        # console_msg = self.ConsoleMessage(
-        #     sender=content.sender,
-        #     recipient=content.recipient,
-        #     heading=message.type,
-        #     body=None,
-        # )
-        # self._format_and_print(console_msg)
+        # Do nothing if it is of type UsingAutoReplyEvent
         pass
 
     def visit_termination(self, message: TerminationEvent) -> None:

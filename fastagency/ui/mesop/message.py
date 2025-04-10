@@ -62,10 +62,6 @@ def handle_message(state: State, message: MesopMessage) -> None:
     conversation_id = message.conversation.id
     io_message = message.io_message
     message_dict = io_message.model_dump()
-    # if "content" in message_dict and "uuid" in message_dict["content"]:
-    #     if isinstance(message_dict["content"]["uuid"], UUID):
-    #         # ToDo: check if this is correct
-    #         message_dict["content"]["uuid"] = message_dict["content"]["uuid"].hex
     message_json = json.dumps(message_dict, cls=UUIDEncoder)
     conversation_message = ConversationMessage(
         level=level,
@@ -200,9 +196,6 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
                     and hasattr(message.content, "content")
                     else ""
                 )
-
-            # print("AT visit_default")
-            # print(f"Content: {content}")
 
             self._render_content(
                 content,
