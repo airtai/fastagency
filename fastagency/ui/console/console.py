@@ -35,8 +35,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
     class ConsoleMessage:
         """A console message."""
 
-        sender_name: Optional[str]
-        recipient_name: Optional[str]
+        sender: Optional[str]
+        recipient: Optional[str]
         heading: Optional[str]
         body: Optional[str]
 
@@ -78,11 +78,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def _format_message(self, console_msg: ConsoleMessage) -> str:
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
-        title = (
-            f"{console_msg.sender_name} (to {console_msg.recipient_name}) {heading}"[
-                :74
-            ]
-        )
+        title = f"{console_msg.sender} (to {console_msg.recipient}) {heading}"[:74]
 
         s = f"""╭─ {title} {"─" * (74 - len(title))}─╮
 │
@@ -118,8 +114,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         if hasattr(message, "content"):
             content = message.content
             console_msg = self.ConsoleMessage(
-                sender_name=content.sender_name,
-                recipient_name=content.recipient_name,
+                sender=content.sender,
+                recipient=content.recipient,
                 heading=message.type,
                 body=getattr(content, "content", None),
             )
@@ -127,8 +123,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         else:
             content = message.model_dump()["content"]
             console_msg = self.ConsoleMessage(
-                sender_name=message.sender_name,
-                recipient_name=message.recipient_name,
+                sender=message.sender,
+                recipient=message.recipient,
                 heading=message.type,
                 body=json.dumps(content, indent=2),
             )
@@ -137,8 +133,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
     def visit_text(self, message: TextEvent) -> None:
         content = message.content
         console_msg = self.ConsoleMessage(
-            sender_name=content.sender_name,
-            recipient_name=content.recipient_name,
+            sender=content.sender,
+            recipient=content.recipient,
             heading=message.type,
             body=content.content,
         )
@@ -147,8 +143,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
     def visit_using_auto_reply(self, message: UsingAutoReplyEvent) -> None:
         # content = message.content
         # console_msg = self.ConsoleMessage(
-        #     sender_name=content.sender_name,
-        #     recipient_name=content.recipient_name,
+        #     sender=content.sender,
+        #     recipient=content.recipient,
         #     heading=message.type,
         #     body=None,
         # )
@@ -160,8 +156,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def visit_text_message(self, message: TextMessage) -> None:
         console_msg = self.ConsoleMessage(
-            sender_name=message.sender_name,
-            recipient_name=message.recipient_name,
+            sender=message.sender,
+            recipient=message.recipient,
             heading=message.type,
             body=message.body,
         )
@@ -182,8 +178,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
                 else ""
             )
             console_msg = self.ConsoleMessage(
-                sender_name=message.sender_name,
-                recipient_name=message.recipient_name,
+                sender=message.sender,
+                recipient=message.recipient,
                 heading=message.type,
                 body=f"{message.prompt}{suggestions}:",
             )
@@ -197,8 +193,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
         console_msg = self.ConsoleMessage(
-            sender_name=message.sender_name,
-            recipient_name=message.recipient_name,
+            sender=message.sender,
+            recipient=message.recipient,
             heading=message.type,
             body=f"{message.prompt} (choices: {', '.join(message.choices)}, default: {message.default})",
         )

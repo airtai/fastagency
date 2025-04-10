@@ -350,8 +350,8 @@ class Workflow(WorkflowsProtocol):
         # todo: inject user_id into call (and other stuff)
         try:
             ui.workflow_started(
-                sender_name="Workflow",
-                recipient_name="User",
+                sender="Workflow",
+                recipient="User",
                 name=name,
                 description=self.get_description(name),
                 params=kwargs,
@@ -364,16 +364,16 @@ class Workflow(WorkflowsProtocol):
                 exc_info=True,
             )
             ui.error(
-                sender_name="Workflow",
-                recipient_name="User",
+                sender="Workflow",
+                recipient="User",
                 short="Unhandled exception occurred when executing the workflow.",
                 long=str(e),
             )
             retval = f"Unhandled exception occurred when executing the workflow: {e}"
 
         ui.workflow_completed(
-            sender_name="Workflow",
-            recipient_name="User",
+            sender="Workflow",
+            recipient="User",
             result=retval,
         )
         logger.info(f"Workflow '{name}' completed with result: {retval}")

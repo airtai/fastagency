@@ -467,20 +467,20 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
         md_style: Optional[me.Style] = None,
     ) -> None:
         if isinstance(message, IOMessage):
-            sender_name = message.sender_name
-            recipient_name = message.recipient_name
+            sender = message.sender
+            recipient = message.recipient
         else:
-            sender_name = message.content.sender_name
-            recipient_name = message.content.recipient_name
+            sender = message.content.sender
+            recipient = message.content.recipient
 
         with me.box(style=box_style or self._styles.message.default.header_box):
             h = title if title else message.type
-            if sender_name and recipient_name:
-                h += f": {sender_name} (to {recipient_name})"
-            elif sender_name:
-                h += f": to {sender_name}"
+            if sender and recipient:
+                h += f": {sender} (to {recipient})"
+            elif sender:
+                h += f": to {sender}"
             elif hasattr(message, "recipient") and message.recipient:
-                h += f": from {recipient_name}"
+                h += f": from {recipient}"
             if hasattr(message, "auto_reply") and message.auto_reply:
                 h += " (auto-reply)"
             h = f"**{h}**"

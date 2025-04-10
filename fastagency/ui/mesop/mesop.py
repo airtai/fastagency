@@ -325,7 +325,7 @@ def run_workflow_mesop(provider: ProviderProtocol, name: str) -> UI:
                 exc_info=True,
             )
             ui.error(
-                sender_name="Mesop workflow_worker",
+                sender="Mesop workflow_worker",
                 short=f"Unexpected exception raised: {e}",
                 long=traceback.format_exc(),
             )

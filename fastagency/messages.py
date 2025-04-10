@@ -54,8 +54,8 @@ class IOMessage(
     ABC
 ):  # `IOMessage` is an abstract base class, but it has no abstract methods
     workflow_uuid: str
-    sender_name: Optional[str] = None
-    recipient_name: Optional[str] = None
+    sender: Optional[str] = None
+    recipient: Optional[str] = None
     auto_reply: bool = False
     uuid: str = field(default_factory=lambda: str(uuid4().hex))
 
@@ -192,8 +192,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # text_message specific parameters
@@ -204,8 +204,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # suggested_function_call specific parameters
@@ -218,8 +218,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # function_call_execution specific parameters
@@ -232,8 +232,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # text_input specific parameters
@@ -246,8 +246,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # multiple_choice specific parameters
@@ -261,8 +261,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # system_message specific parameters
@@ -273,8 +273,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # workflow_started specific parameters
@@ -287,8 +287,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # workflow_completed specific parameters
@@ -299,8 +299,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         # error specific parameters
@@ -312,8 +312,8 @@ class MessageProcessorProtocol(Protocol):
         self,
         # common parameters for all messages
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
     ) -> Optional[str]: ...
@@ -375,8 +375,8 @@ class MessageProcessorMixin(ABC):
     def text_message(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         body: Optional[str] = None,
@@ -384,8 +384,8 @@ class MessageProcessorMixin(ABC):
         uuid = uuid or str(uuid4().hex)
         return self.process_message(
             TextMessage(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -396,8 +396,8 @@ class MessageProcessorMixin(ABC):
     def suggested_function_call(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         function_name: Optional[str] = None,
@@ -408,8 +408,8 @@ class MessageProcessorMixin(ABC):
         arguments = arguments or {}
         return self.process_message(
             SuggestedFunctionCall(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -422,8 +422,8 @@ class MessageProcessorMixin(ABC):
     def function_call_execution(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         function_name: Optional[str] = None,
@@ -433,8 +433,8 @@ class MessageProcessorMixin(ABC):
         uuid = uuid or str(uuid4().hex)
         return self.process_message(
             FunctionCallExecution(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -447,8 +447,8 @@ class MessageProcessorMixin(ABC):
     def text_input(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         prompt: Optional[str] = None,
@@ -459,8 +459,8 @@ class MessageProcessorMixin(ABC):
         suggestions = suggestions or []
         return self.process_message(
             TextInput(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -473,8 +473,8 @@ class MessageProcessorMixin(ABC):
     def multiple_choice(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         prompt: Optional[str] = None,
@@ -486,8 +486,8 @@ class MessageProcessorMixin(ABC):
         choices = choices or []
         return self.process_message(
             MultipleChoice(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -501,8 +501,8 @@ class MessageProcessorMixin(ABC):
     def system_message(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         message: Optional[dict[str, Any]] = None,
@@ -511,8 +511,8 @@ class MessageProcessorMixin(ABC):
         message = message or {}
         return self.process_message(
             SystemMessage(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -523,8 +523,8 @@ class MessageProcessorMixin(ABC):
     def workflow_started(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         name: Optional[str] = None,
@@ -535,8 +535,8 @@ class MessageProcessorMixin(ABC):
         params = params or {}
         return self.process_message(
             WorkflowStarted(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -549,8 +549,8 @@ class MessageProcessorMixin(ABC):
     def workflow_completed(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         result: Optional[str] = None,
@@ -558,8 +558,8 @@ class MessageProcessorMixin(ABC):
         uuid = uuid or str(uuid4().hex)
         return self.process_message(
             WorkflowCompleted(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -570,8 +570,8 @@ class MessageProcessorMixin(ABC):
     def error(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
         short: Optional[str] = None,
@@ -580,8 +580,8 @@ class MessageProcessorMixin(ABC):
         uuid = uuid or str(uuid4().hex)
         return self.process_message(
             Error(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
@@ -593,16 +593,16 @@ class MessageProcessorMixin(ABC):
     def keep_alive(
         self,
         workflow_uuid: str,
-        sender_name: Optional[str] = None,
-        recipient_name: Optional[str] = None,
+        sender: Optional[str] = None,
+        recipient: Optional[str] = None,
         auto_reply: bool = False,
         uuid: Optional[str] = None,
     ) -> Optional[str]:
         uuid = uuid or str(uuid4().hex)
         return self.process_message(
             KeepAlive(
-                sender_name=sender_name,
-                recipient_name=recipient_name,
+                sender=sender,
+                recipient=recipient,
                 auto_reply=auto_reply,
                 uuid=uuid,
                 workflow_uuid=workflow_uuid,
