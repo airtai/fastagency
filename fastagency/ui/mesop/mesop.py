@@ -241,8 +241,7 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         self._publish(mesop_msg)
 
     def visit_using_auto_reply(self, message: "UsingAutoReplyEvent") -> None:
-        mesop_msg = self._mesop_message(message)
-        self._publish(mesop_msg)
+        pass
 
     def visit_execute_function(self, message: "ExecuteFunctionEvent") -> None:
         mesop_msg = self._mesop_message(message)
