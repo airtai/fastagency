@@ -225,16 +225,21 @@ def test_end2end(
     api._register_for_llm(agent)
     api._register_for_execution(user_proxy)
 
-    result = user_proxy.initiate_chat(
+    response = user_proxy.run(
         agent,
         message="I need the 'url' for gif with id 1",
         summary_method="reflection_with_llm",
         max_turns=3,
     )
 
-    assert "https://gif.example.com/gif1" in result.summary
+    # ToDo: Temporary fix to wait till summary is ready
+    import time
 
-    user_proxy.initiate_chat(
+    time.sleep(5)
+
+    assert "https://gif.example.com/gif1" in str(response.summary)
+
+    response = user_proxy.run(
         agent,
         message="I need the urls all gifs for 'topic' 'funny'. Within the summary, please include the 'url' for each gif.",
         summary_method="reflection_with_llm",
@@ -243,7 +248,7 @@ def test_end2end(
 
     message_existed = False
     expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"
-    for message in agent.chat_messages[user_proxy]:
+    for message in response.messages:
         if (
             isinstance(message, dict)
             and "content" in message

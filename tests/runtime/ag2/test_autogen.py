@@ -157,14 +157,14 @@ def test_simple(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
             llm_config=openai_gpt4o_mini_llm_config,
         )
 
-        chat_result = student_agent.initiate_chat(
+        response = student_agent.run(
             teacher_agent,
             message=initial_message,
             summary_method="reflection_with_llm",
             max_turns=3,
         )
 
-        return chat_result.summary  # type: ignore[no-any-return]
+        return ui.process(response)  # type: ignore[no-any-return]
 
     name = "simple_learning"
 
@@ -258,14 +258,14 @@ class TestWorkflowWithHumanInputAlways:
             ) -> str:
                 return "The weather in Zagreb right now is heavy rain."
 
-            chat_result = user_proxy.initiate_chat(
+            response = user_proxy.run(
                 assistant,
                 message=initial_message,
                 summary_method="reflection_with_llm",
                 max_turns=5,
             )
 
-            return chat_result.summary  # type: ignore[no-any-return]
+            return ui.process(response)  # type: ignore[no-any-return]
 
         return wf
 

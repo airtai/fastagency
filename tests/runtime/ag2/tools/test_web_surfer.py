@@ -98,18 +98,23 @@ class TestWebSurferTool:
             executor=user_agent,
         )
 
-        chat_result = user_agent.initiate_chat(
+        response = user_agent.run(
             assistant_agent,
             message=task,
             summary_method="reflection_with_llm",
             max_turns=3,
         )
 
-        assert answer in chat_result.summary.lower()
+        # ToDo: Temporary fix to wait till summary is ready
+        import time
+
+        time.sleep(5)
+
+        assert answer in response.summary.lower()
 
         xs = [
-            m["content"] if m["content"] is not None else ""
-            for m in chat_result.chat_history
+            str(m["content"]) if "content" in m else ""
+            for m in response.messages
             if m is not None
         ]
         assert any("We have successfully completed the task" in m for m in xs)

@@ -46,7 +46,7 @@ def test_end2end(
     api._register_for_execution(user_proxy)
 
     message = "Add item with name 'apple', price 1.0"
-    user_proxy.initiate_chat(
+    response = user_proxy.run(
         agent,
         message=message,
         summary_method="reflection_with_llm",
@@ -55,7 +55,7 @@ def test_end2end(
 
     message_existed = False
     expected_message = "Item created"
-    for message in agent.chat_messages[user_proxy]:
+    for message in response.messages:
         if (
             isinstance(message, dict)
             and "content" in message
