@@ -257,14 +257,9 @@ def test_end2end(
     expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"
     message_contents = []
     for message in response.messages:
-        if (
-            isinstance(message, dict)
-            and "content" in message
-            and isinstance(message["content"], str)
-            and message["role"] == "tool"
-            and message["content"] == expected_message_content
-        ):
-            message_contents.append(message.get("content", ""))
+        content = message.get("content", "")
+        message_contents.append(message)
+        if message["role"] == "tool" and content == expected_message_content:
             message_existed = True
             break
 

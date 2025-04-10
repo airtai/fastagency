@@ -63,14 +63,10 @@ def test_end2end(
     message_existed = False
     expected_message = "Item created"
     message_contents: list[str] = []
-    for message in response.messages:
-        if (
-            isinstance(message, dict)
-            and "content" in message
-            and isinstance(message["content"], str)
-            and message["content"] == expected_message
-        ):
-            message_contents.append(message.get("content", ""))
+    for m in response.messages:
+        content = m.get("content", "")
+        message_contents.append(m)
+        if content == expected_message:
             message_existed = True
             break
     assert message_existed, (
