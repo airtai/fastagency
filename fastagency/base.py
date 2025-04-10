@@ -81,6 +81,7 @@ class UI:
 
     def process(self, response: "RunResponse") -> str:
         """Process the response from the workflow.
+
         This method processes the events in the response and waits for the
         summary to be ready.
         """

@@ -37,7 +37,7 @@ logger = get_logger(__name__)
 
 
 class UUIDEncoder(json.JSONEncoder):
-    def default(self, obj):
+    def default(self, obj: object) -> object:
         if isinstance(obj, UUID):
             # if the obj is uuid, we simply return the value of uuid
             return obj.hex
