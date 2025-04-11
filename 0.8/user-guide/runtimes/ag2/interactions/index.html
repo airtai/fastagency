@@ -199,14 +199,14 @@
 <a id=__codelineno-5-123 name=__codelineno-5-123 href=#__codelineno-5-123></a>        <span class=n>description</span><span class=o>=</span><span class=s2>&quot;Get the final grade after submitting the answers.&quot;</span><span class=p>,</span>
 <a id=__codelineno-5-124 name=__codelineno-5-124 href=#__codelineno-5-124></a>    <span class=p>)</span>
 <a id=__codelineno-5-125 name=__codelineno-5-125 href=#__codelineno-5-125></a>
-<a id=__codelineno-5-126 name=__codelineno-5-126 href=#__codelineno-5-126></a>    <span class=n>chat_result</span> <span class=o>=</span> <span class=n>teacher_agent</span><span class=o>.</span><span class=n>initiate_chat</span><span class=p>(</span>
+<a id=__codelineno-5-126 name=__codelineno-5-126 href=#__codelineno-5-126></a>    <span class=n>response</span> <span class=o>=</span> <span class=n>teacher_agent</span><span class=o>.</span><span class=n>run</span><span class=p>(</span>
 <a id=__codelineno-5-127 name=__codelineno-5-127 href=#__codelineno-5-127></a>        <span class=n>student_agent</span><span class=p>,</span>
 <a id=__codelineno-5-128 name=__codelineno-5-128 href=#__codelineno-5-128></a>        <span class=n>message</span><span class=o>=</span><span class=n>initial_message</span><span class=p>,</span>
 <a id=__codelineno-5-129 name=__codelineno-5-129 href=#__codelineno-5-129></a>        <span class=n>summary_method</span><span class=o>=</span><span class=s2>&quot;reflection_with_llm&quot;</span><span class=p>,</span>
 <a id=__codelineno-5-130 name=__codelineno-5-130 href=#__codelineno-5-130></a>        <span class=n>max_turns</span><span class=o>=</span><span class=mi>10</span><span class=p>,</span>
 <a id=__codelineno-5-131 name=__codelineno-5-131 href=#__codelineno-5-131></a>    <span class=p>)</span>
 <a id=__codelineno-5-132 name=__codelineno-5-132 href=#__codelineno-5-132></a>
-<a id=__codelineno-5-133 name=__codelineno-5-133 href=#__codelineno-5-133></a>    <span class=k>return</span> <span class=n>chat_result</span><span class=o>.</span><span class=n>summary</span>  <span class=c1># type: ignore[no-any-return]</span>
+<a id=__codelineno-5-133 name=__codelineno-5-133 href=#__codelineno-5-133></a>    <span class=k>return</span> <span class=n>ui</span><span class=o>.</span><span class=n>process</span><span class=p>(</span><span class=n>response</span><span class=p>)</span>  <span class=c1># type: ignore[no-any-return]</span>
 <a id=__codelineno-5-134 name=__codelineno-5-134 href=#__codelineno-5-134></a>
 <a id=__codelineno-5-135 name=__codelineno-5-135 href=#__codelineno-5-135></a>
 <a id=__codelineno-5-136 name=__codelineno-5-136 href=#__codelineno-5-136></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span> <span class=n>ui</span><span class=o>=</span><span class=n>ConsoleUI</span><span class=p>())</span>

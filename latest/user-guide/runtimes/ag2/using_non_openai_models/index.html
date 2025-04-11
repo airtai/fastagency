@@ -99,14 +99,14 @@
 <a id=__codelineno-5-71 name=__codelineno-5-71 href=#__codelineno-5-71></a>        <span class=p>],</span>
 <a id=__codelineno-5-72 name=__codelineno-5-72 href=#__codelineno-5-72></a>    <span class=p>)</span>
 <a id=__codelineno-5-73 name=__codelineno-5-73 href=#__codelineno-5-73></a>
-<a id=__codelineno-5-74 name=__codelineno-5-74 href=#__codelineno-5-74></a>    <span class=n>chat_result</span> <span class=o>=</span> <span class=n>user_agent</span><span class=o>.</span><span class=n>initiate_chat</span><span class=p>(</span>
+<a id=__codelineno-5-74 name=__codelineno-5-74 href=#__codelineno-5-74></a>    <span class=n>response</span> <span class=o>=</span> <span class=n>user_agent</span><span class=o>.</span><span class=n>run</span><span class=p>(</span>
 <a id=__codelineno-5-75 name=__codelineno-5-75 href=#__codelineno-5-75></a>        <span class=n>weather_agent</span><span class=p>,</span>
 <a id=__codelineno-5-76 name=__codelineno-5-76 href=#__codelineno-5-76></a>        <span class=n>message</span><span class=o>=</span><span class=n>initial_message</span><span class=p>,</span>
 <a id=__codelineno-5-77 name=__codelineno-5-77 href=#__codelineno-5-77></a>        <span class=n>summary_method</span><span class=o>=</span><span class=s2>&quot;reflection_with_llm&quot;</span><span class=p>,</span>
 <a id=__codelineno-5-78 name=__codelineno-5-78 href=#__codelineno-5-78></a>        <span class=n>max_turns</span><span class=o>=</span><span class=mi>3</span><span class=p>,</span>
 <a id=__codelineno-5-79 name=__codelineno-5-79 href=#__codelineno-5-79></a>    <span class=p>)</span>
 <a id=__codelineno-5-80 name=__codelineno-5-80 href=#__codelineno-5-80></a>
-<a id=__codelineno-5-81 name=__codelineno-5-81 href=#__codelineno-5-81></a>    <span class=k>return</span> <span class=n>chat_result</span><span class=o>.</span><span class=n>summary</span>  <span class=c1># type: ignore[no-any-return]</span>
+<a id=__codelineno-5-81 name=__codelineno-5-81 href=#__codelineno-5-81></a>    <span class=k>return</span> <span class=n>ui</span><span class=o>.</span><span class=n>process</span><span class=p>(</span><span class=n>response</span><span class=p>)</span>  <span class=c1># type: ignore[no-any-return]</span>
 <a id=__codelineno-5-82 name=__codelineno-5-82 href=#__codelineno-5-82></a>
 <a id=__codelineno-5-83 name=__codelineno-5-83 href=#__codelineno-5-83></a>
 <a id=__codelineno-5-84 name=__codelineno-5-84 href=#__codelineno-5-84></a><span class=n>app</span> <span class=o>=</span> <span class=n>FastAgency</span><span class=p>(</span><span class=n>provider</span><span class=o>=</span><span class=n>wf</span><span class=p>,</span> <span class=n>ui</span><span class=o>=</span><span class=n>MesopUI</span><span class=p>())</span>
