@@ -233,11 +233,6 @@ def test_end2end(
     )
     response.process()
 
-    # ToDo: Temporary fix to wait till summary is ready
-    import time
-
-    time.sleep(5)
-
     assert "https://gif.example.com/gif1" in str(response.summary)
 
     response = user_proxy.run(
@@ -247,11 +242,6 @@ def test_end2end(
         max_turns=2,
     )
     response.process()
-
-    # ToDo: Remove this sleep when the issue is fixed
-    import time
-
-    time.sleep(5)
 
     message_existed = False
     expected_message_content = "[{'id': 1, 'title': 'Gif 1', 'url': 'https://gif.example.com/gif1?topic=funny'}, {'id': 2, 'title': 'Gif 2', 'url': 'https://gif.example.com/gif2?topic=funny'}]"

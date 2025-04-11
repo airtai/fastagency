@@ -54,11 +54,6 @@ def test_end2end(
     )
     response.process()
 
-    # ToDo: Remove this sleep when the issue is fixed
-    import time
-
-    time.sleep(5)
-
     message_existed = False
     expected_message = "Item created"
     for m in response.messages:
