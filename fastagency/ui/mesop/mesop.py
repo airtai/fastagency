@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from queue import Queue
 from tempfile import TemporaryDirectory
-from typing import Any, Callable, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, Optional
 from uuid import uuid4
 
 import mesop as me
@@ -34,6 +34,15 @@ from ...messages import (
 from .auth import AuthProtocol
 from .styles import MesopHomePageStyles
 from .timer import configure_static_file_serving
+
+if TYPE_CHECKING:
+    from autogen.events.agent_events import (
+        ExecuteFunctionEvent,
+        InputRequestEvent,
+        TerminationEvent,
+        TextEvent,
+        UsingAutoReplyEvent,
+    )
 
 logger = get_logger(__name__)
 
@@ -228,11 +237,30 @@ class MesopUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # UIBase
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
 
+    def visit_text(self, message: "TextEvent") -> None:
+        mesop_msg = self._mesop_message(message)
+        self._publish(mesop_msg)
+
+    def visit_using_auto_reply(self, message: "UsingAutoReplyEvent") -> None:
+        pass
+
+    def visit_execute_function(self, message: "ExecuteFunctionEvent") -> None:
+        mesop_msg = self._mesop_message(message)
+        self._publish(mesop_msg)
+
+    def visit_termination(self, message: "TerminationEvent") -> None:
+        pass
+
     def visit_text_message(self, message: TextMessage) -> None:
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
 
     def visit_text_input(self, message: TextInput) -> str:
+        mesop_msg = self._mesop_message(message)
+        self._publish(mesop_msg)
+        return self.in_queue.get()
+
+    def visit_input_request(self, message: "InputRequestEvent") -> str:
         mesop_msg = self._mesop_message(message)
         self._publish(mesop_msg)
         return self.in_queue.get()

@@ -39,14 +39,14 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         llm_config=llm_config,
     )
 
-    chat_result = student_agent.initiate_chat(
+    response = student_agent.run(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=5,
     )
 
-    return chat_result.summary
+    return ui.process(response)
 
 
 app = FastAgency(provider=wf, ui=MesopUI())

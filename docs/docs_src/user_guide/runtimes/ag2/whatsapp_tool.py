@@ -57,14 +57,14 @@ def whatsapp_workflow(ui: UI, params: dict[str, Any]) -> str:
         executor=user_agent,
     )
 
-    chat_result = user_agent.initiate_chat(
+    response = user_agent.run(
         assistant_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=5,
     )
 
-    return chat_result.summary  # type: ignore[no-any-return]
+    return ui.process(response)  # type: ignore[no-any-return]
 
 
 app = FastAgency(provider=wf, ui=ConsoleUI())

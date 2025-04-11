@@ -1,7 +1,5 @@
-import json
 import re
 from collections.abc import Iterable, Mapping
-from dataclasses import asdict, dataclass
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -13,7 +11,7 @@ from typing import (
 )
 
 from autogen.agentchat import ConversableAgent
-from autogen.io import IOStream
+from autogen.events.base_event import get_event_classes
 
 from ...base import (
     UI,
@@ -22,24 +20,19 @@ from ...base import (
     check_register_decorator,
 )
 from ...logging import get_logger
-from ...messages import (
-    AskingMessage,
-    IOMessage,
-    MessageType,
-    MultipleChoice,
-    TextInput,
-)
 
 if TYPE_CHECKING:
-    from autogen.messages import BaseMessage
+    from autogen.events.base_event import BaseEvent
 
     from fastagency.api.openapi import OpenAPI
 
 __all__ = [
-    "IOStreamAdapter",
     "Workflow",
+    "create_ag2_event",
 ]
 
+# Populate ag2 event classes for each event type
+EVENT_CLASSES = get_event_classes()
 
 # Get the logger
 logger = get_logger(__name__)
@@ -98,193 +91,18 @@ def _findall(key: str, string: str, /) -> tuple[str, ...]:
     return ()  # type: ignore[no-any-return]
 
 
-@dataclass
-class CurrentMessage:
-    workflow_uuid: str
-    sender: Optional[str] = None
-    recipient: Optional[str] = None
-    type: MessageType = "text_message"
-    auto_reply: bool = False
-    body: Optional[str] = None
-    call_id: Optional[str] = None
-    function_name: Optional[str] = None
-    arguments: Optional[dict[str, Any]] = None
-    retval: Optional[Any] = None
+def create_ag2_event(type: Optional[str] = None, **kwargs: Any) -> "BaseEvent":
+    type = type or "text"
+    if type not in EVENT_CLASSES:
+        raise ValueError(f"Unknown event type: {type}")
 
-    def process_chunk(self, chunk: str) -> bool:  # noqa: C901
-        # logger.info(f"CurrentMessage.process_chunk({chunk=}):")
-        if _match("end_of_message", chunk):
-            return True
+    # Get the ag2 event class
+    cls = EVENT_CLASSES[type]
 
-        if _match("auto_reply", chunk):
-            # logger.info("CurrentMessage.process_chunk(): auto_reply detected")
-            self.auto_reply = True
-        elif _match("sender_recipient", chunk):
-            # logger.info("CurrentMessage.process_chunk(): sender_recipient detected")
-            self.sender, self.recipient = _findall("sender_recipient", chunk)
-        elif _match("suggested_function_call", chunk):
-            # logger.info("CurrentMessage.process_chunk(): suggested_function_call detected")
-            self.call_id, self.function_name = _findall(
-                "suggested_function_call", chunk
-            )
-            self.type = "suggested_function_call"
-        elif _match("stars", chunk):
-            # logger.info("CurrentMessage.process_chunk(): stars detected")
-            pass
-        elif _match("function_call_execution", chunk):
-            # logger.info("CurrentMessage.process_chunk(): function_call_execution detected")
-            self.function_name = _findall("function_call_execution", chunk)  # type: ignore[assignment]
-            self.type = "function_call_execution"
-        elif _match("response_from_calling_tool", chunk):
-            # logger.info("CurrentMessage.process_chunk(): response_from_calling_tool detected")
-            self.type = "function_call_execution"
-            self.call_id = _findall("response_from_calling_tool", chunk)  # type: ignore[assignment]
-        elif _match("no_human_input_received", chunk):
-            # logger.info("CurrentMessage.process_chunk(): no_human_input_received detected")
-            pass
-        elif _match("user_interrupted", chunk):
-            # logger.info("CurrentMessage.process_chunk(): user_interrupted detected")
-            pass
-        elif _match("next_speaker", chunk):
-            # logger.info("CurrentMessage.process_chunk(): next_speaker detected")
-            pass
-        else:
-            if self.type == "suggested_function_call":
-                if _match("arguments", chunk):
-                    # logger.info("CurrentMessage.process_chunk(): parsing arguments")
-                    arguments_json: str = _findall("arguments", chunk)  # type: ignore[assignment]
-                    self.arguments = json.loads(arguments_json)
-                else:
-                    logger.warning(
-                        f"CurrentMessage.process_chunk(): unexpected chunk: {chunk=}, {self=}"
-                    )
-            elif self.type == "function_call_execution":
-                # logger.info("CurrentMessage.process_chunk(): parsing retval")
-                self.retval = chunk
-            else:
-                # logger.info("CurrentMessage.process_chunk(): parsing body")
-                self.body = chunk if self.body is None else self.body + chunk
+    content = kwargs.pop("content", {})
+    kwargs.update(content)
 
-        return False
-
-    def process_input(
-        self, prompt: str, password: bool, messages: list[IOMessage]
-    ) -> AskingMessage:
-        last_message = messages[-1]
-        sender, recipient = None, None
-        message: AskingMessage
-
-        if _match("auto_reply_input", prompt):
-            # logger.info("IOStreamAdapter.input(): auto_reply_input detected")
-            sender, recipient = _findall("auto_reply_input", prompt)  # type: ignore[assignment]
-
-        if last_message.type == "suggested_function_call":
-            # logger.info("IOStreamAdapter.input(): suggested_function_call detected")
-            message = MultipleChoice(
-                sender=sender,
-                recipient=recipient,
-                prompt="Please approve the suggested function call.",
-                choices=["Approve", "Reject", "Exit"],
-                default="Approve",
-                workflow_uuid=self.workflow_uuid,
-            )
-        else:
-            # logger.info("IOStreamAdapter.input(): text_message detected")
-            message = TextInput(
-                sender=None,
-                recipient=None,
-                prompt=prompt,
-                password=password,
-                workflow_uuid=self.workflow_uuid,
-            )
-
-        return message
-
-    def create_message(self) -> list[IOMessage]:
-        retval: list[IOMessage] = []
-        kwargs = {k: v for k, v in asdict(self).items() if v is not None}
-        if (
-            kwargs.get("type") in ["suggested_function_call", "function_call_execution"]
-            and "body" in kwargs
-        ):
-            body = kwargs.pop("body")
-            sender = kwargs.get("sender")
-            recipient = kwargs.get("recipient")
-            workflow_uuid = kwargs.get("workflow_uuid")
-            retval = [
-                IOMessage.create(
-                    body=body,
-                    sender=sender,
-                    recipient=recipient,
-                    type="text_message",
-                    workflow_uuid=workflow_uuid,
-                )
-            ]
-
-        retval.append(IOMessage.create(**kwargs))
-        # logger.info(f"CurrentMessage.create_message(): {kwargs=}")
-        return retval
-
-
-class IOStreamAdapter:  # IOStream
-    def __init__(self, ui: UI) -> None:
-        """Initialize the adapter with a ChatableIO object.
-
-        Args:
-            ui (ChatableIO): The ChatableIO object to adapt
-
-        """
-        self.ui = ui
-        self.current_message = CurrentMessage(ui._workflow_uuid)
-
-        self.messages: list[IOMessage] = []
-        # if not isinstance(self.ui, UI):
-        #     raise ValueError("The ui object must be an instance of UI.")
-
-    def _process_message_chunk(self, chunk: str) -> int:
-        if self.current_message.process_chunk(chunk):
-            msgs = self.current_message.create_message()
-            for msg in msgs:
-                self.messages.append(msg)
-            self.current_message = CurrentMessage(self.ui._workflow_uuid)
-
-            return len(msgs)
-        else:
-            return 0
-
-    def print(
-        self, *objects: Any, sep: str = " ", end: str = "\n", flush: bool = False
-    ) -> None:
-        # logger.info(f"print(): {objects=}, {sep=}, {end=}, {flush=}")
-        body = sep.join(map(str, objects)) + end
-        num_to_send = self._process_message_chunk(body)
-        for i in range(-num_to_send, 0, 1):
-            message = self.messages[i]
-            self.ui.process_message(message)
-
-    def send(self, message: "BaseMessage") -> None:
-        message.print(f=self.print)
-
-    def input(self, prompt: str = "", *, password: bool = False) -> str:
-        # logger.info(f"input(): {prompt=}, {password=}")
-        message: AskingMessage = self.current_message.process_input(
-            prompt, password, self.messages
-        )
-
-        retval: str = self.ui.process_message(message)  # type: ignore[assignment]
-
-        # in case of approving a suggested function call, we need to return an empty string to AutoGen
-        if (
-            message.type == "multiple_choice"
-            and self.messages[-1].type == "suggested_function_call"
-            and retval == "Approve"
-        ):
-            retval = ""
-        if retval == "Exit":
-            retval = "exit"
-
-        # logger.info(f"input(): {retval=}")
-        return retval
+    return cls(**kwargs)
 
 
 class Workflow(WorkflowsProtocol):
@@ -317,43 +135,38 @@ class Workflow(WorkflowsProtocol):
     ) -> str:
         workflow, _ = self._workflows[name]
 
-        iostream = IOStreamAdapter(ui)
-
-        with IOStream.set_default(iostream):
-            # todo: inject user_id into call (and other stuff)
-            try:
-                ui.workflow_started(
-                    sender="Workflow",
-                    recipient="User",
-                    name=name,
-                    description=self.get_description(name),
-                    params=kwargs,
-                )
-                retval = workflow(ui, kwargs)
-
-            except Exception as e:
-                logger.error(
-                    f"Unhandled exception occurred when executing the workflow: {e}",
-                    exc_info=True,
-                )
-                ui.error(
-                    sender="Workflow",
-                    recipient="User",
-                    short="Unhandled exception occurred when executing the workflow.",
-                    long=str(e),
-                )
-                retval = (
-                    f"Unhandled exception occurred when executing the workflow: {e}"
-                )
-
-            ui.workflow_completed(
+        # todo: inject user_id into call (and other stuff)
+        try:
+            ui.workflow_started(
                 sender="Workflow",
                 recipient="User",
-                result=retval,
+                name=name,
+                description=self.get_description(name),
+                params=kwargs,
             )
-            logger.info(f"Workflow '{name}' completed with result: {retval}")
+            retval = workflow(ui, kwargs)
 
-            return retval
+        except Exception as e:
+            logger.error(
+                f"Unhandled exception occurred when executing the workflow: {e}",
+                exc_info=True,
+            )
+            ui.error(
+                sender="Workflow",
+                recipient="User",
+                short="Unhandled exception occurred when executing the workflow.",
+                long=str(e),
+            )
+            retval = f"Unhandled exception occurred when executing the workflow: {e}"
+
+        ui.workflow_completed(
+            sender="Workflow",
+            recipient="User",
+            result=retval,
+        )
+        logger.info(f"Workflow '{name}' completed with result: {retval}")
+
+        return retval
 
     @property
     def names(self) -> list[str]:

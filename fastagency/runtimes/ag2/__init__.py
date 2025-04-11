@@ -3,6 +3,6 @@ from ...helpers import check_imports
 check_imports(["autogen"], "autogen")
 
 
-from .ag2 import IOStreamAdapter, Workflow  # noqa: E402
+from .ag2 import Workflow  # noqa: E402
 
-__all__ = ["IOStreamAdapter", "Workflow"]
+__all__ = ["Workflow"]

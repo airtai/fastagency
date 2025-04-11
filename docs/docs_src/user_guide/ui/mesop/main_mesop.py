@@ -47,14 +47,14 @@ def simple_workflow(
         llm_config=llm_config,
     )
 
-    chat_result = student_agent.initiate_chat(
+    response = student_agent.run(
         teacher_agent,
         message=initial_message,
         summary_method="reflection_with_llm",
         max_turns=5,
     )
 
-    return chat_result.summary  # type: ignore[no-any-return]
+    return ui.process(response)  # type: ignore[no-any-return]
 
 
 security_policy=me.SecurityPolicy(allowed_iframe_parents=["https://acme.com"], allowed_script_srcs=["https://cdn.jsdelivr.net"])

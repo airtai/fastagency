@@ -46,22 +46,21 @@ def test_end2end(
     api._register_for_execution(user_proxy)
 
     message = "Add item with name 'apple', price 1.0"
-    user_proxy.initiate_chat(
+    response = user_proxy.run(
         agent,
         message=message,
         summary_method="reflection_with_llm",
         max_turns=3,
     )
+    response.process()
 
     message_existed = False
     expected_message = "Item created"
-    for message in agent.chat_messages[user_proxy]:
-        if (
-            isinstance(message, dict)
-            and "content" in message
-            and isinstance(message["content"], str)
-            and message["content"] == expected_message
-        ):
+    for m in response.messages:
+        content = m.get("content", "")
+        if content == expected_message:
             message_existed = True
             break
-    assert message_existed, f"Expected message '{expected_message}' not found"
+    assert message_existed, (
+        f"Expected message '{expected_message}' not found in {response.messages}"
+    )

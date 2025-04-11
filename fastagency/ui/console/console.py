@@ -4,7 +4,7 @@ import textwrap
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 from uuid import uuid4
 
 from ...base import (
@@ -19,6 +19,15 @@ from ...messages import (
     TextInput,
     TextMessage,
 )
+
+if TYPE_CHECKING:
+    from autogen.events.agent_events import (
+        ExecuteFunctionEvent,
+        InputRequestEvent,
+        TerminationEvent,
+        TextEvent,
+        UsingAutoReplyEvent,
+    )
 
 logger = get_logger(__name__)
 
@@ -104,14 +113,53 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         print(msg)  # noqa: T201 `print` found
 
     def visit_default(self, message: IOMessage) -> None:
-        content = message.model_dump()["content"]
+        if hasattr(message, "content"):
+            content = message.content
+            console_msg = self.ConsoleMessage(
+                sender=content.sender,
+                recipient=content.recipient,
+                heading=message.type,
+                body=getattr(content, "content", None),
+            )
+            self._format_and_print(console_msg)
+        else:
+            content = message.model_dump()["content"]
+            console_msg = self.ConsoleMessage(
+                sender=message.sender,
+                recipient=message.recipient,
+                heading=message.type,
+                body=json.dumps(content, indent=2),
+            )
+            self._format_and_print(console_msg)
+
+    def visit_text(self, message: "TextEvent") -> None:
+        content = message.content
         console_msg = self.ConsoleMessage(
-            sender=message.sender,
-            recipient=message.recipient,
+            sender=content.sender,
+            recipient=content.recipient,
             heading=message.type,
-            body=json.dumps(content, indent=2),
+            body=content.content,
         )
         self._format_and_print(console_msg)
+
+    def visit_using_auto_reply(self, message: "UsingAutoReplyEvent") -> None:
+        # Do nothing if it is of type UsingAutoReplyEvent
+        pass
+
+    def visit_execute_function(self, message: "ExecuteFunctionEvent") -> None:
+        content = message.content
+
+        body = f"\n>>>>>>>> EXECUTING FUNCTION {content.func_name}...\nCall ID: {content.call_id}\nInput arguments: {content.arguments}"
+        console_msg = self.ConsoleMessage(
+            sender="Workflow",
+            recipient=content.recipient,
+            heading=message.type,
+            body=body,
+        )
+        self._format_and_print(console_msg)
+
+    def visit_termination(self, message: "TerminationEvent") -> None:
+        pass
 
     def visit_text_message(self, message: TextMessage) -> None:
         console_msg = self.ConsoleMessage(
@@ -141,6 +189,15 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
             return getpass.getpass(prompt)
         else:
             return input(prompt)
+
+    def visit_input_request(self, message: "InputRequestEvent") -> str:
+        prompt = message.content.prompt
+        if message.content.password:
+            result = getpass.getpass(prompt if prompt != "" else "Password: ")
+        else:
+            result = input(prompt)
+        message.content.respond(result)
+        return result
 
     def visit_multiple_choice(self, message: MultipleChoice) -> str:
         console_msg = self.ConsoleMessage(

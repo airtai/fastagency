@@ -160,13 +160,11 @@ search:
                 - [WorkflowStarted](api/fastagency/messages/WorkflowStarted.md)
             - runtimes
                 - ag2
-                    - [IOStreamAdapter](api/fastagency/runtimes/ag2/IOStreamAdapter.md)
                     - [Workflow](api/fastagency/runtimes/ag2/Workflow.md)
                     - ag2
-                        - [CurrentMessage](api/fastagency/runtimes/ag2/ag2/CurrentMessage.md)
-                        - [IOStreamAdapter](api/fastagency/runtimes/ag2/ag2/IOStreamAdapter.md)
                         - [Toolable](api/fastagency/runtimes/ag2/ag2/Toolable.md)
                         - [Workflow](api/fastagency/runtimes/ag2/ag2/Workflow.md)
+                        - [create_ag2_event](api/fastagency/runtimes/ag2/ag2/create_ag2_event.md)
                     - agents
                         - websurfer
                             - [WebSurferAgent](api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md)
@@ -226,6 +224,7 @@ search:
                         - [run_workflow_mesop](api/fastagency/ui/mesop/mesop/run_workflow_mesop.md)
                     - message
                         - [MesopGUIMessageVisitor](api/fastagency/ui/mesop/message/MesopGUIMessageVisitor.md)
+                        - [UUIDEncoder](api/fastagency/ui/mesop/message/UUIDEncoder.md)
                         - [consume_responses](api/fastagency/ui/mesop/message/consume_responses.md)
                         - [find_suitable_title](api/fastagency/ui/mesop/message/find_suitable_title.md)
                         - [handle_message](api/fastagency/ui/mesop/message/handle_message.md)
