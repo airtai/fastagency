@@ -365,7 +365,8 @@ class MessageProcessorMixin(ABC):
             logger.error(f"Error processing message ({message}): {e}", exc_info=True)
             return None
 
-    def _body_to_str(self, body: Optional[Union[str, list[dict[str, Any]]]]) -> str:
+    @staticmethod
+    def _body_to_str(body: Optional[Union[str, list[dict[str, Any]]]]) -> str:
         if body is None:
             return ""
         if isinstance(body, str):
@@ -380,7 +381,7 @@ class MessageProcessorMixin(ABC):
             if content_type == "text":
                 final_msg += msg.get("text", "")
             else:
-                final_msg += f"Using {content_type} content"
+                final_msg += f"Inserting '{content_type}' content"
         return final_msg
 
     def text_message(
