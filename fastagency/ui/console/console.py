@@ -4,7 +4,7 @@ import textwrap
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Optional, Union
 from uuid import uuid4
 
 from ...base import (
@@ -41,7 +41,7 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         sender: Optional[str]
         recipient: Optional[str]
         heading: Optional[str]
-        body: Optional[str]
+        body: Optional[Union[str, list[dict[str, Any]]]]
 
     def __init__(
         self,
@@ -80,12 +80,13 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
         )
 
     def _format_message(self, console_msg: ConsoleMessage) -> str:
+        body = self._body_to_str(console_msg.body)
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
         title = f"{console_msg.sender} (to {console_msg.recipient}) {heading}"[:74]
 
         s = f"""╭─ {title} {"─" * (74 - len(title))}─╮
 │
-{textwrap.indent(textwrap.fill(console_msg.body if console_msg.body else "", replace_whitespace=False, drop_whitespace=False), "│ ", predicate=lambda line: True)}
+{textwrap.indent(textwrap.fill(body, replace_whitespace=False, drop_whitespace=False), "│ ", predicate=lambda line: True)}
 ╰{"─" * 78}╯
 """
         # remove empty lines

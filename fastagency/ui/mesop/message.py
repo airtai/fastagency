@@ -202,6 +202,7 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
                     and hasattr(message.content, "content")
                     else ""
                 )
+            content = self._body_to_str(content)
 
             self._render_content(
                 content,
