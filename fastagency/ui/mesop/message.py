@@ -449,7 +449,7 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
 
             content = (
                 "Failed to render message:"
-                + json.dumps(message.model_dump(), indent=2)
+                + json.dumps(message.model_dump(), indent=2, cls=UUIDEncoder)
                 + f"<br>Error: {e}"
             )
 
