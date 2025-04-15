@@ -79,30 +79,8 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
             0 if self.super_conversation is None else self.super_conversation.level + 1
         )
 
-    @staticmethod
-    def _body_to_str(body: Optional[Union[str, list[dict[str, Any]]]]) -> str:
-        if body is None:
-            return ""
-        if isinstance(body, str):
-            return body
-        elif not isinstance(body, list):
-            raise TypeError(
-                f"Unsupported body type: {type(body)}. Expected str or list[dict]."
-            )
-        final_msg = ""
-        for msg in body:
-            content_type = msg.get("type")
-            if content_type == "text":
-                final_msg += msg.get("text", "")
-            else:
-                final_msg += f"Using {content_type} content"
-        return final_msg
-
     def _format_message(self, console_msg: ConsoleMessage) -> str:
-        print(f"ConsoleMSG: {console_msg.body=}")
-        print(type(console_msg.body))
         body = self._body_to_str(console_msg.body)
-        print(f"Converted to body: {body=}")
         heading = f"[{console_msg.heading}]" if console_msg.heading else ""
         title = f"{console_msg.sender} (to {console_msg.recipient}) {heading}"[:74]
 

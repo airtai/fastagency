@@ -1,7 +1,7 @@
 import re
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field, fields
-from typing import Any, Literal, Optional, Protocol, Type
+from typing import Any, Literal, Optional, Protocol, Type, Union
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel
@@ -114,7 +114,7 @@ class AskingMessage(IOMessage): ...
 # type of output messages
 @dataclass
 class TextMessage(IOMessage):
-    body: Optional[str] = None
+    body: Optional[Union[str, list[dict[str, Any]]]] = None
 
     def __post_init__(self) -> None:
         """Set the default value for the `type` attribute."""
@@ -364,6 +364,24 @@ class MessageProcessorMixin(ABC):
             # log the error and return None
             logger.error(f"Error processing message ({message}): {e}", exc_info=True)
             return None
+
+    def _body_to_str(self, body: Optional[Union[str, list[dict[str, Any]]]]) -> str:
+        if body is None:
+            return ""
+        if isinstance(body, str):
+            return body
+        elif not isinstance(body, list):
+            raise TypeError(
+                f"Unsupported body type: {type(body)}. Expected str or list[dict]."
+            )
+        final_msg = ""
+        for msg in body:
+            content_type = msg.get("type")
+            if content_type == "text":
+                final_msg += msg.get("text", "")
+            else:
+                final_msg += f"Using {content_type} content"
+        return final_msg
 
     def text_message(
         self,

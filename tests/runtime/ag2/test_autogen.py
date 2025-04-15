@@ -139,8 +139,17 @@ class TestPatternMatching:
 
 
 @pytest.mark.openai
-# @pytest.mark.xfail(strict=False, raises=InternalServerError)
-def test_simple(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
+@pytest.mark.xfail(strict=False, raises=InternalServerError)
+@pytest.mark.parametrize(
+    "agent_class",
+    [
+        ConversableAgent,
+        MultimodalConversableAgent,
+    ],
+)
+def test_simple(
+    openai_gpt4o_mini_llm_config: LLMConfig, agent_class: type[ConversableAgent]
+) -> None:
     wf = Workflow()
 
     @wf.register(
@@ -159,7 +168,7 @@ def test_simple(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
         #     system_message="You are a math teacher.",
         #     llm_config=openai_gpt4o_mini_llm_config,
         # )
-        teacher_agent = MultimodalConversableAgent(
+        teacher_agent = agent_class(
             name="Teacher_Agent",
             system_message="You are a math teacher.",
             llm_config=openai_gpt4o_mini_llm_config,

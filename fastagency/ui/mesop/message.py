@@ -235,7 +235,7 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
         pass
 
     def visit_text_message(self, message: TextMessage) -> None:
-        content = message.body if message.body else ""
+        content = self._body_to_str(message.body)
         content = content if content.strip() != "" else "*(empty message)*"
         self.visit_default(
             message,
