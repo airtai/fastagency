@@ -6,6 +6,9 @@ from uuid import uuid4
 import pytest
 from autogen import LLMConfig
 from autogen.agentchat import ConversableAgent, UserProxyAgent
+from autogen.agentchat.contrib.multimodal_conversable_agent import (
+    MultimodalConversableAgent,
+)
 from openai import InternalServerError
 
 from fastagency.api.openapi import OpenAPI
@@ -136,7 +139,7 @@ class TestPatternMatching:
 
 
 @pytest.mark.openai
-@pytest.mark.xfail(strict=False, raises=InternalServerError)
+# @pytest.mark.xfail(strict=False, raises=InternalServerError)
 def test_simple(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
     wf = Workflow()
 
@@ -151,7 +154,12 @@ def test_simple(openai_gpt4o_mini_llm_config: LLMConfig) -> None:
             system_message="You are a student willing to learn.",
             llm_config=openai_gpt4o_mini_llm_config,
         )
-        teacher_agent = ConversableAgent(
+        # teacher_agent = ConversableAgent(
+        #     name="Teacher_Agent",
+        #     system_message="You are a math teacher.",
+        #     llm_config=openai_gpt4o_mini_llm_config,
+        # )
+        teacher_agent = MultimodalConversableAgent(
             name="Teacher_Agent",
             system_message="You are a math teacher.",
             llm_config=openai_gpt4o_mini_llm_config,
