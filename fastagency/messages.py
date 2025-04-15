@@ -114,7 +114,7 @@ class AskingMessage(IOMessage): ...
 # type of output messages
 @dataclass
 class TextMessage(IOMessage):
-    body: Optional[Union[str, list[dict[str, Any]]]] = None
+    body: Optional[str] = None
 
     def __post_init__(self) -> None:
         """Set the default value for the `type` attribute."""

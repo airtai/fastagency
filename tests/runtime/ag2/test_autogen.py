@@ -163,11 +163,6 @@ def test_simple(
             system_message="You are a student willing to learn.",
             llm_config=openai_gpt4o_mini_llm_config,
         )
-        # teacher_agent = ConversableAgent(
-        #     name="Teacher_Agent",
-        #     system_message="You are a math teacher.",
-        #     llm_config=openai_gpt4o_mini_llm_config,
-        # )
         teacher_agent = agent_class(
             name="Teacher_Agent",
             system_message="You are a math teacher.",
