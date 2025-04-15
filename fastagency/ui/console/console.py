@@ -24,6 +24,7 @@ if TYPE_CHECKING:
     from autogen.events.agent_events import (
         ExecuteFunctionEvent,
         InputRequestEvent,
+        RunCompletionEvent,
         TerminationEvent,
         TextEvent,
         UsingAutoReplyEvent,
@@ -144,6 +145,10 @@ class ConsoleUI(MessageProcessorMixin, CreateWorkflowUIMixin):  # implements UI
 
     def visit_using_auto_reply(self, message: "UsingAutoReplyEvent") -> None:
         # Do nothing if it is of type UsingAutoReplyEvent
+        pass
+
+    def visit_run_completion(self, message: "RunCompletionEvent") -> None:
+        # We can ignore the RunCompletionEvent as we handle RunResponse already
         pass
 
     def visit_execute_function(self, message: "ExecuteFunctionEvent") -> None:

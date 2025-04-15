@@ -1,12 +1,11 @@
 import json
 import random
 from collections.abc import Iterable, Iterator
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 from uuid import UUID, uuid4
 
 import mesop as me
 import mesop.labs as mel
-from autogen.events.agent_events import TextEvent, UsingAutoReplyEvent
 
 from fastagency.helpers import jsonify_string
 
@@ -32,6 +31,13 @@ from .mesop import MesopMessage
 from .send_prompt import get_more_messages, send_user_feedback_to_autogen
 from .styles import MesopHomePageStyles, MesopMessageStyles
 from .timer import wakeup_component
+
+if TYPE_CHECKING:
+    from autogen.events.agent_events import (
+        RunCompletionEvent,
+        TextEvent,
+        UsingAutoReplyEvent,
+    )
 
 logger = get_logger(__name__)
 
@@ -208,7 +214,7 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
             if inner_callback:
                 inner_callback()
 
-    def visit_text(self, message: TextEvent) -> None:
+    def visit_text(self, message: "TextEvent") -> None:
         content = message.content.content
         self.visit_default(
             message,
@@ -216,13 +222,17 @@ class MesopGUIMessageVisitor(MessageProcessorMixin):
             style=self._styles.message.text,
         )
 
-    def visit_using_auto_repy(self, message: UsingAutoReplyEvent) -> None:
+    def visit_using_auto_repy(self, message: "UsingAutoReplyEvent") -> None:
         content = None
         self.visit_default(
             message,
             content=content,
             style=self._styles.message.system,
         )
+
+    def visit_run_completion(self, message: "RunCompletionEvent") -> None:
+        # We can ignore the RunCompletionEvent as we handle RunResponse already
+        pass
 
     def visit_text_message(self, message: TextMessage) -> None:
         content = message.body if message.body else ""
