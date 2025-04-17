@@ -1,8 +1,7 @@
 import os
 from typing import Annotated, Any
 
-from autogen import UserProxyAgent, register_function
-from autogen.agentchat import ConversableAgent
+from autogen import UserProxyAgent, register_function, ConversableAgent, LLMConfig
 from fastagency import UI
 from fastagency.api.dependency_injection import inject_params
 from fastagency.runtimes.ag2 import Workflow
@@ -23,15 +22,11 @@ def get_balance(
     return f"Your balance is {account_ballace_dict[(username, password)]}$"
 
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 wf = Workflow()
 
@@ -49,18 +44,17 @@ def bank_workflow(ui: UI, params: dict[str, str]) -> str:
         prompt="Enter your password:",
     )
 
-    user_agent = UserProxyAgent(
-        name="User_Agent",
-        system_message="You are a user agent",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-    )
-    banker_agent = ConversableAgent(
-        name="Banker_Agent",
-        system_message="You are a banker agent",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-    )
+    with llm_config:
+        user_agent = UserProxyAgent(
+            name="User_Agent",
+            system_message="You are a user agent",
+            human_input_mode="NEVER",
+        )
+        banker_agent = ConversableAgent(
+            name="Banker_Agent",
+            system_message="You are a banker agent",
+            human_input_mode="NEVER",
+        )
 
     ctx: dict[str, Any] = {
         "username": username,

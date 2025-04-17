@@ -1,7 +1,7 @@
 import os
 from typing import Any
 
-from autogen.agentchat import ConversableAgent
+from autogen import ConversableAgent, LLMConfig
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
@@ -96,15 +96,11 @@ html = """
 </html>
 """
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 wf = Workflow()
 
@@ -116,18 +112,17 @@ def simple_workflow(ui: UI, params: dict[str, Any]) -> str:
         prompt="I can help you learn about mathematics. What subject you would like to explore?",
     )
 
-    student_agent = ConversableAgent(
-        name="Student_Agent",
-        system_message="You are a student willing to learn.",
-        llm_config=llm_config,
-        # human_input_mode="ALWAYS",
-    )
-    teacher_agent = ConversableAgent(
-        name="Teacher_Agent",
-        system_message="You are a math teacher.",
-        llm_config=llm_config,
-        # human_input_mode="ALWAYS",
-    )
+    with llm_config:
+        student_agent = ConversableAgent(
+            name="Student_Agent",
+            system_message="You are a student willing to learn.",
+            # human_input_mode="ALWAYS",
+        )
+        teacher_agent = ConversableAgent(
+            name="Teacher_Agent",
+            system_message="You are a math teacher.",
+            # human_input_mode="ALWAYS",
+        )
 
     response = student_agent.run(
         teacher_agent,

@@ -1,23 +1,18 @@
 import os
 from typing import Any
 
-from autogen import UserProxyAgent
-from autogen.agentchat import ConversableAgent
+from autogen import UserProxyAgent, ConversableAgent, LLMConfig
 
 from fastagency import UI, FastAgency
 from fastagency.runtimes.ag2 import Workflow
 from fastagency.runtimes.ag2.tools import WebSurferTool
 from fastagency.ui.console import ConsoleUI
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 wf = Workflow()
 
@@ -32,18 +27,17 @@ def websurfer_workflow(
         prompt="I can help you with your web search. What would you like to know?",
     )
 
-    user_agent = UserProxyAgent(
-        name="User_Agent",
-        system_message="You are a user agent",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-    )
-    assistant_agent = ConversableAgent(
-        name="Assistant_Agent",
-        system_message="You are a useful assistant",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-    )
+    with llm_config:
+        user_agent = UserProxyAgent(
+            name="User_Agent",
+            system_message="You are a user agent",
+            human_input_mode="NEVER",
+        )
+        assistant_agent = ConversableAgent(
+            name="Assistant_Agent",
+            system_message="You are a useful assistant",
+            human_input_mode="NEVER",
+        )
 
     web_surfer = WebSurferTool(
         name_prefix="Web_Surfer",

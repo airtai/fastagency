@@ -68,7 +68,7 @@ The `get_balance` function is central to this workflow. It retrieves the user's 
 The key consideration here is that both username and password should **NEVER** be exposed to the LLM. Instead, they will be securely injected into the `get_balance` function later in the workflow using the [**`inject_params`**](../../../api/fastagency/api/dependency_injection/inject_params.md) mechanism, ensuring that sensitive information remains confidential while still allowing the function to access the required data.
 
 ```python
-{! docs_src/user_guide/dependency_injection/workflow.py [ln:10-23] !}
+{! docs_src/user_guide/dependency_injection/workflow.py [ln:9-22] !}
 ```
 
 
@@ -76,7 +76,7 @@ The key consideration here is that both username and password should **NEVER** b
 Here, the large language model is configured to use the `gpt-4o-mini` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
 
 ```python
-{! docs_src/user_guide/dependency_injection/workflow.py [ln:26-34] !}
+{! docs_src/user_guide/dependency_injection/workflow.py [ln:25-29] !}
 ```
 
 ### Define the Workflow and Agents
@@ -95,7 +95,7 @@ The `bank_workflow` handles user interaction and integrates agents to retrieve b
         - **ConversableAgent**: Acts as the banker agent, retrieving the user's balance.
 
 ```python
-{! docs_src/user_guide/dependency_injection/workflow.py [ln:36-63] !}
+{! docs_src/user_guide/dependency_injection/workflow.py [ln:31-57] !}
 ```
 
 ### Dependency Injection
@@ -105,20 +105,20 @@ These parameters are **never shared with the LLM** and they are only used intern
 Using [**`inject_params`**](../../../api/fastagency/api/dependency_injection/inject_params.md), the sensitive parameters from the `ctx` dictionary are injected into the `get_balance` function.
 
 ```python
-{! docs_src/user_guide/dependency_injection/workflow.py [ln:65-69] !}
+{! docs_src/user_guide/dependency_injection/workflow.py [ln:58-63] !}
 ```
 
 ### Register Function with the Agents
 In this step, we register the `get_balance_with_params`
 ```python
-{! docs_src/user_guide/dependency_injection/workflow.py [ln:70-75] !}
+{! docs_src/user_guide/dependency_injection/workflow.py [ln:64-69] !}
 ```
 
 ### Enable Agent Interaction and Chat
 Here, the user agent initiates a chat with the banker agent, which retrieves the user's balance. The conversation is summarized using a method provided by the LLM.
 
 ```python
-{! docs_src/user_guide/dependency_injection/workflow.py [ln:77-84] !}
+{! docs_src/user_guide/dependency_injection/workflow.py [ln:70-78] !}
 ```
 
 ## Run Application

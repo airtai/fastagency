@@ -1,8 +1,7 @@
 import os
 from typing import Annotated, Any, Optional
 
-from autogen import register_function
-from autogen.agentchat import ConversableAgent
+from autogen import register_function, ConversableAgent, LLMConfig
 
 from fastagency import UI
 from fastagency.api.openapi import OpenAPI
@@ -10,15 +9,11 @@ from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.runtimes.ag2.agents.websurfer import WebSurferAgent
 from fastagency.runtimes.ag2 import Workflow
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 openapi_url = "https://raw.githubusercontent.com/ag2ai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
 giphy_api = OpenAPI.create(openapi_url=openapi_url)

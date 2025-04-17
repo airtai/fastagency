@@ -81,7 +81,7 @@ The following lines shows how to initializes the WhatsApp API by loading the Ope
 
 Also, we configure the **WhatsApp API** with the __*WHATSAPP_API_KEY*__ using __*set_security_params*__ to authenticate our requests.
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:24-34] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:20-28] !}
 ```
 
 For more information, visit [**API Integration User Guide**](../../user-guide/api/index.md){target="_blank"}.
@@ -92,7 +92,7 @@ For more information, visit [**API Integration User Guide**](../../user-guide/ap
 Here, we initialize a new workflow using ***Workflow()*** and register it under the name ***"whatsapp_and_websurfer"***. The ***@wf.register*** decorator registers the function to handle chat flow with security enabled, combining both WhatsAppAgent and WebSurferAgent.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:63-64] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:58-59] !}
     ...
 ```
 
@@ -100,7 +100,7 @@ Here, we initialize a new workflow using ***Workflow()*** and register it under 
 This is a core function used by the **WhatsAppAgent** to either present the task result or ask a follow-up question to the user. The message is wrapped in a ***TextInput*** object, and then ***ui.process_message()*** sends it for user interaction.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:68-78] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:62-73] !}
 ```
 
 ### Creating the WhatsApp and WebSurfer Agents
@@ -109,7 +109,7 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 - [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md): The [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md) is responsible for scraping web content and passes the retrieved data to the **WhatsAppAgent**. It’s configured with a summarizer to condense web content, which is useful when presenting concise data to the user. For more information, visit [**WebSurfer User Guide**](../../user-guide/runtimes/ag2/websurfer.md).
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:80-97] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:74-91] !}
 ```
 
 
@@ -118,13 +118,13 @@ This is a core function used by the **WhatsAppAgent** to either present the task
 The function ***present_completed_task_or_ask_question*** is registered to allow the **WhatsAppAgent** to ask questions or present completed tasks after receiving data from the [**`WebSurferAgent`**](../../api/fastagency/runtimes/ag2/agents/websurfer/WebSurferAgent.md).
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:98-106] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:92-100] !}
 ```
 
 
 We register the WhatsApp API, which allows the **WhatsAppAgent** to handle tasks like suggesting messages that will be sent to the user.
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:107-113] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:101-107] !}
 ```
 
 ### Initiating the Chat
@@ -134,7 +134,7 @@ We initiate the conversation between the user, [**`WebSurferAgent`**](../../api/
 Once the conversation ends, the summary is returned to the user, wrapping up the session.
 
 ```python
-{! docs_src/tutorials/whatsapp/main.py [ln:120-127] !}
+{! docs_src/tutorials/whatsapp/main.py [ln:114-122] !}
 ```
 
 ### Starting the Application

@@ -69,7 +69,7 @@ The example starts by importing the necessary modules from **AG2** and **FastAge
 Here, the large language model is configured to use the `gpt-4o` model, and the API key is retrieved from the environment. This setup ensures that both the user and [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md) can interact effectively.
 
 ```python
-{! docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:11-19] !}
+{! docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:11-15] !}
 ```
 
 #### 3. **Define the Workflow and Agents**
@@ -83,7 +83,7 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     - [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md): This agent has built-in capability to communicate with [Infobip WhatsApp API](https://www.infobip.com/docs/whatsapp/api){target="_blank"}.
 
     ```python
-    {!> docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:34-52] !}
+    {!> docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:30-48] !}
     ```
 
     When initiating the [**`WhatsAppAgent`**](../../../api/fastagency/runtimes/ag2/agents/whatsapp/WhatsAppAgent.md), the executor parameter must be provided. This can be either a single instance of [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} or a `list of `[**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} instances.
@@ -101,13 +101,13 @@ Here, the large language model is configured to use the `gpt-4o` model, and the 
     - [**`WhatsAppTool`**](../../../api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md): The tool that gives the [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} the ability to interact with WhatsApp.
 
     ```python
-    {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:36-53] !}
+    {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:32-48] !}
     ```
 
     Now, we need to register the [**`WhatsAppTool`**](../../../api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md) with a caller and executor. This setup allows the caller to use the [**`WhatsAppTool`**](../../../api/fastagency/runtimes/ag2/tools/whatsapp/WhatsAppTool.md) for performing real-time WhatsApp interactions.
 
     ```python
-    {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:55-58] !}
+    {!> docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:50-53] !}
     ```
 
     The `executor` can be either a single instance of [**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} or a `list of `[**`ConversableAgent`**](https://docs.ag2.ai/latest/docs/api-reference/autogen/ConversableAgent/){target="_blank"} instances.
@@ -120,20 +120,20 @@ Here, the user agent starts a conversation with the [**`WhatsAppAgent`**](../../
 === "Using WhatsAppAgent"
 
     ```python
-{! docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:54-61] !}
+{! docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:50-57] !}
     ```
 
 === "Enhancing an existing agent"
 
     ```python
-{! docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:60-67] !}
+{! docs_src/user_guide/runtimes/ag2/whatsapp_tool.py [ln:55-62] !}
     ```
 
 #### 5. **Create and Run the Application**
 Finally, we create the FastAgency application and launch it using the console interface.
 
 ```python
-{! docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:64] !}
+{! docs_src/user_guide/runtimes/ag2/whatsapp.py [ln:60] !}
 ```
 
 ### Complete Application Code

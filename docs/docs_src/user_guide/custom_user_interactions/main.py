@@ -1,23 +1,18 @@
 import os
 from typing import Annotated, Any, Optional
 
-from autogen import register_function
-from autogen.agentchat import ConversableAgent
+from autogen import register_function, ConversableAgent, LLMConfig
 
 from fastagency import UI, FastAgency
 from fastagency.messages import MultipleChoice, SystemMessage, TextInput
 from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.console import ConsoleUI
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 wf = Workflow()
 
@@ -33,25 +28,24 @@ def exam_learning(ui: UI, params: dict[str, Any]) -> str:
     def is_termination_msg(msg: dict[str, Any]) -> bool:
         return msg["content"] is not None and "TERMINATE" in msg["content"]
 
-    student_agent = ConversableAgent(
-        name="Student_Agent",
-        system_message="You are a student writing a practice test. Your task is as follows:\n"
-        "  1) Retrieve exam questions by calling a function.\n"
-        "  2) Write a draft of proposed answers and engage in dialogue with your tutor.\n"
-        "  3) Once you are done with the dialogue, register the final answers by calling a function.\n"
-        "  4) Retrieve the final grade by calling a function.\n"
-        "Finally, terminate the chat by saying 'TERMINATE'.",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-        is_termination_msg=is_termination_msg,
-    )
-    teacher_agent = ConversableAgent(
-        name="Teacher_Agent",
-        system_message="You are a teacher.",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-        is_termination_msg=is_termination_msg,
-    )
+    with llm_config:
+        student_agent = ConversableAgent(
+            name="Student_Agent",
+            system_message="You are a student writing a practice test. Your task is as follows:\n"
+            "  1) Retrieve exam questions by calling a function.\n"
+            "  2) Write a draft of proposed answers and engage in dialogue with your tutor.\n"
+            "  3) Once you are done with the dialogue, register the final answers by calling a function.\n"
+            "  4) Retrieve the final grade by calling a function.\n"
+            "Finally, terminate the chat by saying 'TERMINATE'.",
+            human_input_mode="NEVER",
+            is_termination_msg=is_termination_msg,
+        )
+        teacher_agent = ConversableAgent(
+            name="Teacher_Agent",
+            system_message="You are a teacher.",
+            human_input_mode="NEVER",
+            is_termination_msg=is_termination_msg,
+        )
 
     def retrieve_exam_questions(
         message: Annotated[str, "Message for examiner"],
