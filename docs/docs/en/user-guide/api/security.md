@@ -171,21 +171,21 @@ pip install "fastagency[autogen,openapi]"
 The imports are the same as in the [previous chapter](./index.md){.internal-link}, except here we also import `APIKeyHeader` to set the security value in the header:
 
 ```python hl_lines="8"
-{! docs_src/user_guide/external_rest_apis/security.py [ln:1-10] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:1-9] !}
 ```
 
 ### Configure the Language Model (LLM)
 Here, the large language model is configured to use the `gpt-4o-mini` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:11-20] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:11-15] !}
 ```
 
 ### Set Up the Weather API
 We define the OpenAPI specification URL for the weather service. This API will later be used by the weather agent to fetch real-time weather data.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:22,23] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:17,18] !}
 ```
 
 ### Configuring API Security Parameters
@@ -193,13 +193,13 @@ We define the OpenAPI specification URL for the weather service. This API will l
 Here, we define security settings for the weather API by setting API keys for authentication. This ensures secure access when interacting with the API, globally across all methods.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:25,26] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:20,21] !}
 ```
 
 You can also set security parameters for a specific method. The code below demonstrates how to apply security parameters to a specific method instead of globally. In this example, the security settings are only applied to the `get_daily_weather_daily_get` method.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:28,29.3,30.3,31.3,32.3] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:23,24.3,25.3,26.3,27.3] !}
 ```
 
 ### Define the Workflow and Agents
@@ -211,21 +211,21 @@ In this step, we define two agents and specify the initial message that will be 
 - **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:34-61] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:29-55] !}
 ```
 
 ### Register API Functions with the Agents
 In this step, we register the weather API functions to ensure that the weather agent can call the correct functions to retrieve the required weather data.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:62-67] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:56-61] !}
 ```
 
 ### Enable Agent Interaction and Chat
 Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:68-75] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:62-70] !}
 ```
 
 ### Define FastAgency Application
@@ -233,7 +233,7 @@ Here, the user agent initiates a chat with the weather agent, which queries the 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/security.py [ln:78] !}
+{! docs_src/user_guide/external_rest_apis/security.py [ln:73] !}
 ```
 
 ### Complete Application Code

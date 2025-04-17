@@ -131,7 +131,7 @@ You can pass a custom [SecurityPolicy](https://google.github.io/mesop/api/page/#
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:60] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:55] !}
 
 ui = MesopUI(security_policy=security_policy)
 ```
@@ -167,7 +167,7 @@ All [Styles](https://google.github.io/mesop/api/style/){target="_blank"} used in
 
 {! docs_src/user_guide/ui/mesop/main_mesop.py [ln:9] !}
 
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:62-86] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:57-81] !}
 
 ui = MesopUI(styles=styles)
 ```
@@ -213,7 +213,7 @@ We begin by importing the necessary modules from **FastAgency** and **AG2**. The
 Next, we configure the language model that powers the agents. In this case, we're using **GPT-4o**, and the API key is retrieved from the environment.
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:16-24] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:16-20] !}
 ```
 
 - **Explanation**: The configuration specifies the LLM model and API key used for powering the conversation between agents. The temperature is set to `0.0` to ensure deterministic responses from the agents, making interactions consistent and reliable.
@@ -222,7 +222,7 @@ Next, we configure the language model that powers the agents. In this case, we'r
 Here, we define a simple workflow where the **Student Agent** interacts with the **Teacher Agent**. The student asks questions, and the teacher responds as a math teacher. The workflow is registered using **Workflow**.
 
 ```python
-{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:26-58] !}
+{! docs_src/user_guide/ui/mesop/main_mesop.py [ln:22-52] !}
 ```
 
 - **Agent Overview**: The **Student Agent** is configured with a system message, "You are a student willing to learn," and will initiate questions during the interaction. The **Teacher Agent**, on the other hand, is set up as a math teacher and will respond to the student's questions.
@@ -233,14 +233,14 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
 
 === "No Authentication"
     ```python
-    {!> docs_src/user_guide/ui/mesop/main_mesop.py [ln:59-90] !}
+    {!> docs_src/user_guide/ui/mesop/main_mesop.py [ln:55-84] !}
     ```
 
     - **Explanation**: Here, we set up the **MesopUI** as the user interface for the workflow, which will allow the entire agent interaction to take place through a web-based platform.
 
 === "Basic Authentication"
     ```python hl_lines="29-37 39"
-    {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:61-101] !}
+    {!> docs_src/user_guide/ui/mesop/main_mesop_basic_auth.py [ln:56-96] !}
     ```
 
     The [**`BasicAuth`**](../../../../api/fastagency/ui/mesop/auth/basic_auth/BasicAuth.md) class allows you to define a set of allowed users with [**bcrypt-hashed**](https://en.wikipedia.org/wiki/Bcrypt){target="_blank"} passwords, providing secure access to your Mesop application. Only users listed in the **`allowed_users`** dictionary can successfully authenticate.
@@ -286,7 +286,7 @@ Finally, we instantiate **[MesopUI](../../../../api/fastagency/ui/mesop/MesopUI.
 
 === "Firebase Authentication"
     ```python hl_lines="29-36 39-44 46"
-    {!> docs_src/user_guide/ui/mesop/main_mesop_firebase_auth.py [ln:60-107] !}
+    {!> docs_src/user_guide/ui/mesop/main_mesop_firebase_auth.py [ln:56-101] !}
     ```
 
     - **Create Firebase Configuration**:

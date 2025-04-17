@@ -1,22 +1,18 @@
 import os
 from typing import Any
 
-from autogen import UserProxyAgent
+from autogen import UserProxyAgent, LLMConfig
 
 from fastagency import UI, FastAgency
 from fastagency.runtimes.ag2 import Workflow
 from fastagency.runtimes.ag2.agents.whatsapp import WhatsAppAgent
 from fastagency.ui.console import ConsoleUI
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 wf = Workflow()
 

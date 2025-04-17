@@ -2,22 +2,18 @@ import os
 from typing import Any
 
 from autogen import UserProxyAgent
-from autogen.agentchat import ConversableAgent
+from autogen import ConversableAgent, LLMConfig
 
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 openapi_url = "https://weather.tools.fastagency.ai/openapi.json"
 
@@ -42,19 +38,18 @@ def weather_workflow(
         prompt="I can help you with the weather. What would you like to know?",
     )
 
-    user_agent = UserProxyAgent(
-        name="User_Agent",
-        system_message="You are a user agent",
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-        code_execution_config=False
-    )
-    weather_agent = ConversableAgent(
-        name="Weather_Agent",
-        system_message=weather_agent_system_message,
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-    )
+    with llm_config:
+        user_agent = UserProxyAgent(
+            name="User_Agent",
+            system_message="You are a user agent",
+            human_input_mode="NEVER",
+            code_execution_config=False
+        )
+        weather_agent = ConversableAgent(
+            name="Weather_Agent",
+            system_message=weather_agent_system_message,
+            human_input_mode="NEVER",
+        )
 
     wf.register_api(  # type: ignore[attr-defined]
         api=weather_api,

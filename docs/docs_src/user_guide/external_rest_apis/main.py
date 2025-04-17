@@ -1,22 +1,17 @@
 import os
 
-from autogen import UserProxyAgent
-from autogen.agentchat import ConversableAgent
+from autogen import UserProxyAgent, ConversableAgent, LLMConfig
 
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
 from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.console import ConsoleUI
 
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 WEATHER_OPENAPI_URL = "https://weather.tools.fastagency.ai/openapi.json"
 weather_api = OpenAPI.create(openapi_url=WEATHER_OPENAPI_URL)
@@ -37,14 +32,14 @@ def weather_workflow(
     user_agent = UserProxyAgent(
         name="User_Agent",
         system_message="You are a user agent",
-        llm_config=llm_config,
         human_input_mode="NEVER",
+        llm_config=llm_config,
     )
     weather_agent = ConversableAgent(
         name="Weather_Agent",
         system_message="You are a weather agent",
-        llm_config=llm_config,
         human_input_mode="NEVER",
+        llm_config=llm_config,
     )
 
     wf.register_api(

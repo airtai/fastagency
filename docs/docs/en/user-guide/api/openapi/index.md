@@ -32,14 +32,14 @@ These imports are similar to the imports section we have already covered, with t
 Here, the large language model is configured to use the `gpt-4o-mini` model, and the API key is retrieved from the environment. This setup ensures that both the user and weather agents can interact effectively.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:11-19] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:10-14] !}
 ```
 
 ## Set Up the Weather API
 We define the OpenAPI specification URL for the weather service. This API will later be used by the weather agent to fetch real-time weather data.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:21-22] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:16-17] !}
 ```
 
 ## Define the Workflow and Agents
@@ -51,21 +51,21 @@ In this step, we define two agents and specify the initial message that will be 
 - **ConversableAgent**: This agent acts as the weather agent, responsible for fetching weather data from the API.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:24-48] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:19-43] !}
 ```
 
 ## Register API Functions with the Agents
 In this step, we register the weather API functions to ensure that the weather agent can call the correct functions to retrieve the required weather data.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:50-54] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:44-49] !}
 ```
 
 ## Enable Agent Interaction and Chat
 Here, the user agent initiates a chat with the weather agent, which queries the API and returns the weather information. The conversation is summarized using a method provided by the LLM.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:56-63] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:50-58] !}
 ```
 
 ## Define FastAgency Application
@@ -73,7 +73,7 @@ Here, the user agent initiates a chat with the weather agent, which queries the 
 Next, define your FastAgency application.
 
 ```python
-{! docs_src/user_guide/external_rest_apis/main.py [ln:66] !}
+{! docs_src/user_guide/external_rest_apis/main.py [ln:61] !}
 ```
 
 ## Complete Application Code

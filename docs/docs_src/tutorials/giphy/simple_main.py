@@ -1,7 +1,7 @@
 import os
 from typing import Any
 
-from autogen import ConversableAgent, UserProxyAgent
+from autogen import ConversableAgent, LLMConfig, UserProxyAgent
 
 from fastagency import UI, FastAgency
 from fastagency.api.openapi import OpenAPI
@@ -9,16 +9,11 @@ from fastagency.api.openapi.security import APIKeyQuery
 from fastagency.runtimes.ag2 import Workflow
 from fastagency.ui.mesop import MesopUI
 
-open_api_key = os.getenv("OPENAI_API_KEY")
-llm_config = {
-    "config_list": [
-        {
-            "model": "gpt-4o-mini",
-            "api_key": open_api_key,
-        }
-    ],
-    "temperature": 0.8,
-}
+llm_config = LLMConfig(
+    model="gpt-4o-mini",
+    api_key=os.getenv("OPENAI_API_KEY"),
+    temperature=0.8,
+)
 
 giphy_api_key = os.getenv("GIPHY_API_KEY", "")
 openapi_url="https://raw.githubusercontent.com/ag2ai/fastagency/refs/heads/main/examples/openapi/giphy_openapi.json"
@@ -45,13 +40,13 @@ def giphy_workflow(
         Giphy API. When using API calls, always limit the response size to 5 items.
         When finished, write 'TERMINATE' to end the conversation."""
 
-    giphy_agent = ConversableAgent(
-        name="Giphy_Agent",
-        system_message=system_message,
-        llm_config=llm_config,
-        human_input_mode="NEVER",
-        is_termination_msg=is_termination_msg,
-    )
+    with llm_config:
+        giphy_agent = ConversableAgent(
+            name="Giphy_Agent",
+            system_message=system_message,
+            human_input_mode="NEVER",
+            is_termination_msg=is_termination_msg,
+        )
 
     wf.register_api(
         api=giphy_api,

@@ -66,22 +66,14 @@ def azure_model_llm_config(model_env_name: str) -> LLMConfig:
     openai.api_type = "azure"
     openai.api_version = os.getenv("AZURE_API_VERSION", default="2024-02-01")
 
-    config_list = [
-        {
-            "model": gpt_model_name,
-            "api_key": api_key,
-            "base_url": api_base,
-            "api_type": openai.api_type,
-            "api_version": openai.api_version,
-        }
-    ]
-
-    llm_config = {
-        "config_list": config_list,
-        "temperature": 0.8,
-    }
-
-    return LLMConfig(**llm_config)
+    return LLMConfig(
+        model=gpt_model_name,
+        api_key=api_key,
+        base_url=api_base,
+        api_type=openai.api_type,
+        api_version=openai.api_version,
+        temperature=0.8,
+    )
 
 
 @tag("llm_config")
@@ -106,19 +98,11 @@ def openai_llm_config(model: str) -> LLMConfig:
     zeros = "0" * 20
     api_key = os.getenv("OPENAI_API_KEY", default=f"sk-{zeros}T3BlbkFJ{zeros}")
 
-    config_list = [
-        {
-            "model": model,
-            "api_key": api_key,
-        }
-    ]
-
-    llm_config = {
-        "config_list": config_list,
-        "temperature": 0.8,
-    }
-
-    return LLMConfig(**llm_config)
+    return LLMConfig(
+        model=model,
+        api_key=api_key,
+        temperature=0.8,
+    )
 
 
 @tag("llm_config")
