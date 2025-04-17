@@ -41,17 +41,18 @@ def weather_workflow_with_security(
         prompt="What do you want to know about the weather?",
     )
 
-    with llm_config:
-        user_agent = UserProxyAgent(
-            name="User_Agent",
-            system_message="You are a user agent",
-            human_input_mode="NEVER",
-        )
-        weather_agent = ConversableAgent(
-            name="Weather_Agent",
-            system_message="You are a weather agent",
-            human_input_mode="NEVER",
-        )
+    user_agent = UserProxyAgent(
+        name="User_Agent",
+        system_message="You are a user agent",
+        human_input_mode="NEVER",
+        llm_config=llm_config,
+    )
+    weather_agent = ConversableAgent(
+        name="Weather_Agent",
+        system_message="You are a weather agent",
+        human_input_mode="NEVER",
+        llm_config=llm_config,
+    )
 
     wf.register_api(
         api=weather_api,
