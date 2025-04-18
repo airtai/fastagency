@@ -1,3 +1,4 @@
+import asyncio
 import inspect
 from collections.abc import Awaitable, Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
@@ -17,7 +18,7 @@ from .logging import get_logger
 from .messages import IOMessage, MessageProcessorProtocol
 
 if TYPE_CHECKING:
-    from autogen.io.run_response import RunResponse
+    from autogen.io.run_response import AsyncRunResponse, RunResponse
 
     from fastagency.api.openapi import OpenAPI
 
@@ -78,6 +79,19 @@ class UI:
     @property
     def ui_base(self) -> UIBase:
         return self._ui_base
+
+    async def async_process(self, response: "AsyncRunResponse") -> str:
+        """Process the async response from the workflow.
+
+        This method processes the events in the response and waits for the
+        summary to be ready.
+        """
+        async for event in response.events:
+            self.process_message(event)
+
+        # Wait for the summary to be ready
+        await asyncio.sleep(1)
+        return str(await response.summary)
 
     def process(self, response: "RunResponse") -> str:
         """Process the response from the workflow.
