@@ -1,3 +1,4 @@
+import asyncio
 import re
 from collections.abc import Iterable, Mapping
 from typing import (
@@ -144,7 +145,11 @@ class Workflow(WorkflowsProtocol):
                 description=self.get_description(name),
                 params=kwargs,
             )
-            retval = workflow(ui, kwargs)
+            retval = (
+                asyncio.run(workflow(ui, kwargs))
+                if asyncio.iscoroutinefunction(workflow)
+                else workflow(ui, kwargs)
+            )
 
         except Exception as e:
             logger.error(

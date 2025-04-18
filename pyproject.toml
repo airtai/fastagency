@@ -156,6 +156,7 @@ testing = [
     "python-multipart>=0.0.20",
     "PyJWT==2.10.0",
     "passlib[bcrypt]==1.7.4",
+    "pillow==10.4.0,<11",  # MultimodalConversableAgent internally needs pillow
 ]
 
 dev = [
