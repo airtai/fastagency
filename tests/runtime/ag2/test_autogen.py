@@ -200,6 +200,8 @@ def test_simple(
         result=result,
     )
 
+    assert "triangle inequality" in result.lower()
+
 
 @pytest.mark.openai
 @pytest.mark.xfail(strict=False, raises=InternalServerError)
