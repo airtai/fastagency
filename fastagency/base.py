@@ -1,8 +1,6 @@
-import asyncio
 import inspect
 from collections.abc import Awaitable, Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
-from time import sleep
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -89,8 +87,6 @@ class UI:
         async for event in response.events:
             self.process_message(event)
 
-        # Wait for the summary to be ready
-        await asyncio.sleep(1)
         return str(await response.summary)
 
     def process(self, response: "RunResponse") -> str:
@@ -102,9 +98,6 @@ class UI:
         for event in response.events:
             self.process_message(event)
 
-        # Wait for the summary to be ready
-        # ToDo: Sleep is not working
-        sleep(1)
         return str(response.summary)
 
     def process_message(self, message: IOMessage) -> Optional[str]:
