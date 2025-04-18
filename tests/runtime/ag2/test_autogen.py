@@ -242,7 +242,7 @@ def test_simple_async(
         async_func_response = await async_function()
         assert async_func_response == "Async function completed!"
 
-        response = student_agent.a_run(
+        response = await student_agent.a_run(
             teacher_agent,
             message=initial_message,
             summary_method="reflection_with_llm",
