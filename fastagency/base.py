@@ -1,7 +1,6 @@
 import inspect
 from collections.abc import Awaitable, Generator, Iterable, Iterator, Mapping
 from contextlib import contextmanager
-from time import sleep
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -17,7 +16,7 @@ from .logging import get_logger
 from .messages import IOMessage, MessageProcessorProtocol
 
 if TYPE_CHECKING:
-    from autogen.io.run_response import RunResponse
+    from autogen.io.run_response import AsyncRunResponse, RunResponse
 
     from fastagency.api.openapi import OpenAPI
 
@@ -79,6 +78,17 @@ class UI:
     def ui_base(self) -> UIBase:
         return self._ui_base
 
+    async def async_process(self, response: "AsyncRunResponse") -> str:
+        """Process the async response from the workflow.
+
+        This method processes the events in the response and waits for the
+        summary to be ready.
+        """
+        async for event in response.events:
+            self.process_message(event)
+
+        return str(await response.summary)
+
     def process(self, response: "RunResponse") -> str:
         """Process the response from the workflow.
 
@@ -88,9 +98,6 @@ class UI:
         for event in response.events:
             self.process_message(event)
 
-        # Wait for the summary to be ready
-        # ToDo: Sleep is not working
-        sleep(1)
         return str(response.summary)
 
     def process_message(self, message: IOMessage) -> Optional[str]:
