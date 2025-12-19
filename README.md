@@ -319,3 +319,14 @@ Thanks to all of these amazing people who made the project better!
 <a href="https://github.com/ag2ai/fastagency/graphs/contributors" target="_blank">
   <img src="https://contrib.rocks/image?repo=ag2ai/fastagency"/>
 </a>
+
+## RunLedger CI gate
+
+This repo includes a deterministic CI gate for tool-using agents:
+
+```bash
+runledger run evals/runledger --mode replay --baseline baselines/runledger-demo.json
+```
+
+It replays recorded tool calls and fails the PR on schema/tool/budget regressions.
+
